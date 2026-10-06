@@ -1,0 +1,494 @@
+name: Hengce live quotes
+
+"on":
+  workflow_dispatch:
+
+  schedule:
+    # 台灣時間 09:00–13:30，週一到週五
+    - cron: "*/5 1-4 * * 1-5"
+    - cron: "0-30/5 5 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-live-quotes
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify secret
+        shell: bash
+        run: |
+          if [ -z "$FUGLE_API_KEY" ]; then
+            echo "ERROR: FUGLE_API_KEY missing"
+            exit 1
+          fi
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          mkdir -p live/quotes
+          mkdir -p .tmp_quotes
+
+      - name: Fetch live quotes
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import os
+          import json
+          import time
+          import random
+          import urllib.request
+          import urllib.error
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          API_KEY = os.environ["FUGLE_API_KEY"]
+
+          TZ = ZoneInfo("Asia/Taipei")
+          now = datetime.now(TZ)
+
+          # 衡策盤中池
+          SYMBOLS = [
+              "3042",  # 晶技
+              "2344",  # 華邦電
+              "2357",  # 華碩
+              "2451",  # 創見
+              "3006",  # 晶豪科
+              "2351",  # 順德
+              "2368",  # 金像電
+              "3413",  # 京鼎
+              "3013",
+              "3016",  # 嘉晶
+              "3189",  # 景碩
+              "3037",  # 欣興
+              "4566",  # 時碩工業
+              "3550",
+              "4968",  # 立積
+              "6409",  # 旭隼
+              "6271",  # 同欣電
+              "8031",  # 光菱
+              "8103",  # 瀚荃
+              "4961",  # 天鈺
+              "6415",  # 矽力*-KY
+              "3605",  # 宏致
+              "6191",
+              "1477",  # 聚陽
+              "3041"   # 揚智
+          ]
+
+          def market_status(dt):
+              weekday = dt.weekday()
+
+              if weekday >= 5:
+                  return "closed"
+
+              hm = dt.hour * 60 + dt.minute
+
+              if hm < 9 * 60:
+                  return "preopen"
+
+              if hm <= 13 * 60 + 30:
+                  return "open"
+
+              return "closed"
+
+          def request_quote(symbol):
+              url = (
+                  "https://api.fugle.tw/marketdata/v1.0/"
+                  f"stock/intraday/quote/{symbol}"
+              )
+
+              req = urllib.request.Request(
+                  url,
+                  headers={
+                      "X-API-KEY": API_KEY,
+                      "Accept": "application/json",
+                      "User-Agent": "HENGCE-LIVE/1.0"
+                  }
+              )
+
+              attempts = 4
+
+              for attempt in range(attempts):
+                  try:
+                      with urllib.request.urlopen(
+                          req,
+                          timeout=15
+                      ) as res:
+                          return json.load(res)
+
+                  except urllib.error.HTTPError as e:
+                      if e.code in (401, 403):
+                          raise RuntimeError(
+                              f"{symbol}: authentication/plan error "
+                              f"HTTP {e.code}"
+                          )
+
+                      if e.code == 429:
+                          if attempt == attempts - 1:
+                              raise RuntimeError(
+                                  f"{symbol}: rate limit HTTP 429"
+                              )
+
+                          delay = (
+                              (2 ** attempt)
+                              + random.uniform(0.2, 0.8)
+                          )
+
+                          time.sleep(delay)
+                          continue
+
+                      if 500 <= e.code < 600:
+                          if attempt == attempts - 1:
+                              raise
+
+                          delay = (
+                              (2 ** attempt)
+                              + random.uniform(0.2, 0.8)
+                          )
+
+                          time.sleep(delay)
+                          continue
+
+                      raise
+
+                  except Exception:
+                      if attempt == attempts - 1:
+                          raise
+
+                      delay = (
+                          (2 ** attempt)
+                          + random.uniform(0.2, 0.8)
+                      )
+
+                      time.sleep(delay)
+
+          def build_item(row, requested_symbol):
+              total = row.get("total") or {}
+
+              symbol = str(
+                  row.get("symbol")
+                  or requested_symbol
+              )
+
+              price = row.get("lastPrice")
+
+              if price is None:
+                  price = row.get("closePrice")
+
+              previous_close = row.get("previousClose")
+              change = row.get("change")
+              change_percent = row.get("changePercent")
+
+              if (
+                  change is None
+                  and price is not None
+                  and previous_close is not None
+              ):
+                  change = round(
+                      float(price) - float(previous_close),
+                      4
+                  )
+
+              if (
+                  change_percent is None
+                  and price is not None
+                  and previous_close not in (None, 0)
+              ):
+                  change_percent = round(
+                      (
+                          float(price)
+                          / float(previous_close)
+                          - 1
+                      ) * 100,
+                      4
+                  )
+
+              source_updated = (
+                  row.get("lastUpdated")
+                  or row.get("closeTime")
+                  or row.get("date")
+              )
+
+              return {
+                  "schema_version": 1,
+                  "symbol": symbol,
+                  "company_name": row.get("name"),
+                  "exchange": row.get("exchange"),
+                  "market": row.get("market"),
+                  "date": row.get("date"),
+                  "price": price,
+                  "previous_close": previous_close,
+                  "reference_price": row.get("referencePrice"),
+                  "open": row.get("openPrice"),
+                  "high": row.get("highPrice"),
+                  "low": row.get("lowPrice"),
+                  "avg_price": row.get("avgPrice"),
+                  "change": change,
+                  "change_percent": change_percent,
+                  "volume": (
+                      total.get("tradeVolume")
+                      if isinstance(total, dict)
+                      else None
+                  ),
+                  "trade_value": (
+                      total.get("tradeValue")
+                      if isinstance(total, dict)
+                      else None
+                  ),
+                  "source_updated_at": source_updated,
+                  "fetched_at_taipei": datetime.now(
+                      TZ
+                  ).isoformat(),
+                  "market_status": market_status(
+                      datetime.now(TZ)
+                  ),
+                  "source": "Fugle MarketData"
+              }
+
+          good = []
+          failures = []
+
+          for index, symbol in enumerate(SYMBOLS):
+              try:
+                  row = request_quote(symbol)
+                  item = build_item(row, symbol)
+
+                  if item["price"] is None:
+                      raise RuntimeError(
+                          "price is null"
+                      )
+
+                  if not item["company_name"]:
+                      raise RuntimeError(
+                          "company_name is null"
+                      )
+
+                  good.append(item)
+
+                  temp_path = (
+                      f".tmp_quotes/{symbol}.json"
+                  )
+
+                  with open(
+                      temp_path,
+                      "w",
+                      encoding="utf-8"
+                  ) as f:
+                      json.dump(
+                          item,
+                          f,
+                          ensure_ascii=False,
+                          indent=2
+                      )
+
+                  print(
+                      symbol,
+                      item["company_name"],
+                      "price=",
+                      item["price"],
+                      "volume=",
+                      item["volume"]
+                  )
+
+              except Exception as e:
+                  failures.append({
+                      "symbol": symbol,
+                      "error": str(e)
+                  })
+
+                  print(
+                      f"WARNING {symbol}: {e}"
+                  )
+
+              # 主動留 API 餘裕
+              if index != len(SYMBOLS) - 1:
+                  time.sleep(0.35)
+
+          if not good:
+              raise SystemExit(
+                  "ERROR: all quote requests failed; "
+                  "old live data preserved"
+              )
+
+          generated_at = datetime.now(
+              TZ
+          ).isoformat()
+
+          active_payload = {
+              "schema_version": 1,
+              "source": "Fugle MarketData",
+              "generated_at_taipei": generated_at,
+              "market_status": market_status(
+                  datetime.now(TZ)
+              ),
+              "requested_count": len(SYMBOLS),
+              "success_count": len(good),
+              "failure_count": len(failures),
+              "data": good
+          }
+
+          status_payload = {
+              "schema_version": 1,
+              "service": "HENGCE LIVE QUOTES",
+              "source": "Fugle MarketData",
+              "generated_at_taipei": generated_at,
+              "market_status": market_status(
+                  datetime.now(TZ)
+              ),
+              "healthy": len(good) > 0,
+              "requested_count": len(SYMBOLS),
+              "success_count": len(good),
+              "failure_count": len(failures),
+              "failures": failures
+          }
+
+          with open(
+              ".tmp_active.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+              json.dump(
+                  active_payload,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+          with open(
+              ".tmp_status.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+              json.dump(
+                  status_payload,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+          print(
+              "SUCCESS",
+              len(good),
+              "/",
+              len(SYMBOLS)
+          )
+          PY
+
+      - name: Publish atomically
+        shell: bash
+        run: |
+          cp .tmp_active.json live/active.json
+          cp .tmp_active.json latest.json
+          cp .tmp_status.json live/status.json
+
+          for f in .tmp_quotes/*.json; do
+            [ -e "$f" ] || continue
+            cp "$f" "live/quotes/$(basename "$f")"
+          done
+
+      - name: Validate published data
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          import os
+          import sys
+
+          with open(
+              "latest.json",
+              "r",
+              encoding="utf-8"
+          ) as f:
+              latest = json.load(f)
+
+          if not latest.get("data"):
+              sys.exit(
+                  "ERROR: latest.json has no data"
+              )
+
+          symbols = {
+              str(x.get("symbol"))
+              for x in latest["data"]
+          }
+
+          if "3042" not in symbols:
+              sys.exit(
+                  "ERROR: 3042 晶技 missing"
+              )
+
+          required = [
+              "live/status.json",
+              "live/active.json",
+              "live/quotes/3042.json"
+          ]
+
+          for path in required:
+              if not os.path.exists(path):
+                  sys.exit(
+                      f"ERROR: missing {path}"
+                  )
+
+          print(
+              "HENGCE LIVE DATA VERIFIED"
+          )
+          PY
+
+      - name: Clean temporary files
+        if: always()
+        shell: bash
+        run: |
+          rm -rf .tmp_quotes
+          rm -f .tmp_active.json
+          rm -f .tmp_status.json
+
+      - name: Commit live data
+        shell: bash
+        run: |
+          git config \
+            user.name \
+            "hengce-live-bot"
+
+          git config \
+            user.email \
+            "hengce-live-bot@users.noreply.github.com"
+
+          git add \
+            latest.json \
+            live/
+
+          if git diff --cached --quiet; then
+            echo "No live quote changes."
+            exit 0
+          fi
+
+          TS="$(
+            TZ=Asia/Taipei \
+            date '+%Y-%m-%d %H:%M:%S'
+          )"
+
+          git commit \
+            -m "HENGCE live ${TS}"
+
+          git pull \
+            --rebase \
+            origin \
+            main
+
+          git push \
+            origin \
+            HEAD:main
