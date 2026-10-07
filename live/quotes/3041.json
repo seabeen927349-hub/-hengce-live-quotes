@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_id": "20261007T130451+0800",
+  "snapshot_id": "20261007T130647+0800",
   "symbol": "3041",
   "company_name": "揚智",
   "price": 24.05,
@@ -22,10 +22,10 @@
   "best_ask": 24.1,
   "best_ask_size": 4,
   "last_trade_time": "2026-10-07T13:02:22.870677+08:00",
-  "trade_age_seconds": 148,
+  "trade_age_seconds": 264,
   "trade_idle_warning": false,
   "source_last_price": 24.05,
-  "source_last_updated": "2026-10-07T13:04:58.919372+08:00",
+  "source_last_updated": "2026-10-07T13:07:13.612726+08:00",
   "quote_age_seconds": 0,
   "is_trial": false,
   "trial_price": null,
@@ -38,8 +38,8 @@
   "quote_date": "2026-10-07",
   "stale_at_publish": false,
   "fetch_ok": true,
-  "fetched_at_taipei": "2026-10-07T13:04:51.365959+08:00",
-  "cache_expires_at_taipei": "2026-10-07T13:14:51.365959+08:00",
+  "fetched_at_taipei": "2026-10-07T13:06:47.342235+08:00",
+  "cache_expires_at_taipei": "2026-10-07T13:16:47.342235+08:00",
   "market_phase": "open",
   "source": "Fugle MarketData"
 }
