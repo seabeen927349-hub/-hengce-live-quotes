@@ -1,0 +1,8 @@
+{
+  "system": "HENGCE",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-08",
+  "connected": ["GitHub", "TWSE_MI_INDEX", "TWSE_T86", "TWSE_MI_MARGN", "Fugle", "Q012"],
+  "rule": "Treat these as existing connected capabilities unless concrete new failure evidence proves otherwise. Data publication status is separate from connectivity status.",
+  "source_commit": "538b9b3fba7d8fdce8d04a2f61c9bbba9ab7659f"
+}
