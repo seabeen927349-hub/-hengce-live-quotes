@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_id": "20261008T130234+0800",
+  "snapshot_id": "20261008T130636+0800",
   "symbol": "4968",
   "company_name": "立積",
   "price": 96.7,
@@ -22,11 +22,11 @@
   "best_ask": 96.8,
   "best_ask_size": 3,
   "last_trade_time": "2026-10-08T12:59:54.886727+08:00",
-  "trade_age_seconds": 159,
+  "trade_age_seconds": 402,
   "trade_idle_warning": false,
   "source_last_price": 96.7,
-  "source_last_updated": "2026-10-08T13:02:49.366232+08:00",
-  "quote_age_seconds": 0,
+  "source_last_updated": "2026-10-08T13:05:44.623044+08:00",
+  "quote_age_seconds": 52,
   "is_trial": false,
   "trial_price": null,
   "last_trial_price": null,
@@ -38,8 +38,8 @@
   "quote_date": "2026-10-08",
   "stale_at_publish": false,
   "fetch_ok": true,
-  "fetched_at_taipei": "2026-10-08T13:02:34.306887+08:00",
-  "cache_expires_at_taipei": "2026-10-08T13:12:34.306887+08:00",
+  "fetched_at_taipei": "2026-10-08T13:06:36.983270+08:00",
+  "cache_expires_at_taipei": "2026-10-08T13:16:36.983270+08:00",
   "market_phase": "open",
   "source": "Fugle MarketData"
 }
