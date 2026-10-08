@@ -1,0 +1,117 @@
+name: HENGCE Q012 microstructure shadow
+
+"on":
+  workflow_dispatch:
+  push:
+    paths:
+      - "research/q012/**"
+      - ".github/workflows/hengce-q012-microstructure.yml"
+  schedule:
+    # Taiwan regular session 09:00-13:25 (UTC+8), weekdays.
+    - cron: "*/15 1-4 * * 1-5"
+    - cron: "0-15/15 5 * * 1-5"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-q012-microstructure
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+      # Frozen from committed HENGCE_DAILY_CLOSE_20261007_R1 D active pool.
+      # Capture universe != recommendation list.
+      HENGCE_SYMBOLS: "7711,3443,3605,1326,2351,2615,4736,5876,2426,3006,6770,2605,2801,2881,6426"
+      HENGCE_MICRO_OUT: ${{ github.workspace }}/hengce_microstructure
+
+    steps:
+      - name: Checkout existing vessel repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install frozen collector dependency
+        shell: bash
+        run: npm install --no-save @fugle/marketdata
+
+      - name: Capture Q-012 books and trades
+        id: capture
+        shell: bash
+        run: |
+          set +e
+          timeout 90s node research/q012/HENGCE_MICROSTRUCTURE_SHADOW_COLLECTOR_v0_1.mjs
+          RC=$?
+          set -e
+          # timeout(124) is expected: collector is intentionally bounded per Actions run.
+          if [ "$RC" -ne 0 ] && [ "$RC" -ne 124 ]; then
+            echo "collector_exit_code=$RC"
+            exit "$RC"
+          fi
+          echo "collector_exit_code=$RC"
+
+      - name: Verify raw capture and freeze hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p hengce_microstructure/verification
+
+          BOOKS=$(find hengce_microstructure -type f -name '*.books.ndjson' 2>/dev/null | wc -l | tr -d ' ')
+          TRADES=$(find hengce_microstructure -type f -name '*.trades.ndjson' 2>/dev/null | wc -l | tr -d ' ')
+          BYTES=$(find hengce_microstructure -type f -name '*.ndjson' -printf '%s\n' 2>/dev/null | awk '{s+=$1} END{print s+0}')
+
+          {
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "commit=${GITHUB_SHA}"
+            echo "books_files=${BOOKS}"
+            echo "trades_files=${TRADES}"
+            echo "raw_bytes=${BYTES}"
+            echo "universe=7711,3443,3605,1326,2351,2615,4736,5876,2426,3006,6770,2605,2801,2881,6426"
+            echo "source_run=HENGCE_DAILY_CLOSE_20261007_R1"
+          } > hengce_microstructure/verification/capture_status.txt
+
+          find hengce_microstructure -type f -name '*.ndjson' -print0 2>/dev/null \
+            | sort -z \
+            | xargs -0 -r sha256sum \
+            > hengce_microstructure/verification/SHA256SUMS.txt
+
+          cat hengce_microstructure/verification/capture_status.txt
+
+          # Scheduled in-session runs must produce both direct observables.
+          # Push/manual runs outside market hours are deployment transport checks only.
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
+            if [ "$BOOKS" -lt 1 ] || [ "$TRADES" -lt 1 ] || [ "$BYTES" -lt 1 ]; then
+              echo "Q012_SCHEDULED_CAPTURE_NO_REAL_BOOKS_TRADES"
+              exit 12
+            fi
+          fi
+
+      - name: Extract frozen Q-012 features when raw exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' FILES < <(find hengce_microstructure -type f -name '*.ndjson' -print0 2>/dev/null)
+          if [ "${#FILES[@]}" -eq 0 ]; then
+            echo "No raw events yet; feature extraction deferred."
+            exit 0
+          fi
+          python3 research/q012/HENGCE_MICROSTRUCTURE_FEATURES_v0_1.py \
+            "${FILES[@]}" \
+            --out hengce_microstructure/features.ndjson
+
+      - name: Upload immutable Q-012 raw artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_Q012_${{ github.run_id }}_${{ github.run_attempt }}
+          path: hengce_microstructure/
+          if-no-files-found: error
+          retention-days: 90
