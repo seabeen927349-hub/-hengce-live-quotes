@@ -28,21 +28,46 @@ jobs:
       # Capture universe != recommendation list.
       HENGCE_SYMBOLS: "7711,3443,3605,1326,2351,2615,4736,5876,2426,3006,6770,2605,2801,2881,6426"
       HENGCE_MICRO_OUT: ${{ github.workspace }}/hengce_microstructure
+      # Official TWSE 2026 weekday closures. Weekend closures are already excluded by cron.
+      TWSE_CLOSED_DATES_2026: "2026-01-01,2026-02-12,2026-02-13,2026-02-16,2026-02-17,2026-02-18,2026-02-19,2026-02-20,2026-02-27,2026-04-03,2026-04-06,2026-05-01,2026-06-19,2026-09-25,2026-09-28,2026-10-09,2026-10-26,2026-12-25"
 
     steps:
+      - name: Gate scheduled runs by TWSE trading calendar
+        id: market_day
+        shell: bash
+        run: |
+          set -euo pipefail
+          TODAY_TW=$(TZ=Asia/Taipei date +%F)
+          if [ "${GITHUB_EVENT_NAME}" != "schedule" ]; then
+            echo "is_open=true" >> "$GITHUB_OUTPUT"
+            echo "Q012 non-scheduled transport/deployment check: ${TODAY_TW}"
+            exit 0
+          fi
+          if [[ ",${TWSE_CLOSED_DATES_2026}," == *",${TODAY_TW},"* ]]; then
+            echo "is_open=false" >> "$GITHUB_OUTPUT"
+            echo "Q012_SKIP_TWSE_CLOSED_DATE=${TODAY_TW}"
+          else
+            echo "is_open=true" >> "$GITHUB_OUTPUT"
+            echo "Q012_TWSE_TRADING_DATE=${TODAY_TW}"
+          fi
+
       - name: Checkout existing vessel repo
+        if: steps.market_day.outputs.is_open == 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node
+        if: steps.market_day.outputs.is_open == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install frozen collector dependency
+        if: steps.market_day.outputs.is_open == 'true'
         shell: bash
         run: npm install --no-save @fugle/marketdata
 
       - name: Capture Q-012 books and trades
+        if: steps.market_day.outputs.is_open == 'true'
         id: capture
         shell: bash
         run: |
@@ -58,6 +83,7 @@ jobs:
           echo "collector_exit_code=$RC"
 
       - name: Verify raw capture and freeze hashes
+        if: steps.market_day.outputs.is_open == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -96,6 +122,7 @@ jobs:
           fi
 
       - name: Extract frozen Q-012 features when raw exists
+        if: steps.market_day.outputs.is_open == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -109,6 +136,7 @@ jobs:
             --out hengce_microstructure/features.ndjson
 
       - name: Upload immutable Q-012 raw artifact
+        if: steps.market_day.outputs.is_open == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: HENGCE_Q012_${{ github.run_id }}_${{ github.run_attempt }}
