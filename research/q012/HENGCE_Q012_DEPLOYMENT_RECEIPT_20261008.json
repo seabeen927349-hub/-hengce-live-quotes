@@ -1,0 +1,46 @@
+{
+  "system": "HENGCE",
+  "research_id": "Q-012",
+  "receipt": "HENGCE_Q012_DEPLOYMENT_RECEIPT_20261008",
+  "status": "DEPLOYED_TRANSPORT_VERIFIED_WAITING_FIRST_IN_SESSION_RAW",
+  "timestamp_taipei": "2026-10-08T17:26:10+08:00",
+  "repo": "seabeen927349-hub/-hengce-live-quotes",
+  "workflow": ".github/workflows/hengce-q012-microstructure.yml",
+  "commits": {
+    "collector": "1df781f79f115905b96b8bb8ae48242611aa5b73",
+    "features": "68f853b38983b84a8a10bb74cecf620591abe2be",
+    "workflow": "fb9e1437c9e64be5753a7f94b345aa2b461d38ec"
+  },
+  "github_actions": {
+    "run_id": 37756416707,
+    "job_id": 113241972130,
+    "conclusion": "success",
+    "dependency_install": "PASS",
+    "websocket_log_status": "RUNNING",
+    "collector_exit_code": 124,
+    "collector_exit_interpretation": "expected bounded timeout after 90s",
+    "after_hours_capture": {
+      "books_files": 0,
+      "trades_files": 0,
+      "raw_bytes": 0,
+      "interpretation": "after-hours transport verification only; not a failed in-session capture"
+    },
+    "verification_artifact_id": 11540521126,
+    "verification_artifact_zip_sha256": "0c1432e605576877bfa0545fe8da357c8e3aaf2ec931e8096be256c51638b8d1"
+  },
+  "universe_source": {
+    "run_id": "HENGCE_DAILY_CLOSE_20261007_R1",
+    "layer": "D active pool",
+    "count": 15,
+    "symbols": ["7711","3443","3605","1326","2351","2615","4736","5876","2426","3006","6770","2605","2801","2881","6426"]
+  },
+  "production_vessel_modified": false,
+  "existing_fugle_live_workflow_modified": false,
+  "next_only_action": "VERIFY_FIRST_IN_SESSION_RAW_BOOKS_TRADES_AND_PERSIST_SHA256_RECEIPT",
+  "success_condition_remaining": [
+    "scheduled in-session run produces at least one .books.ndjson",
+    "scheduled in-session run produces at least one .trades.ndjson",
+    "raw bytes > 0",
+    "sha256 verification receipt persisted"
+  ]
+}
