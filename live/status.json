@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "service": "HENGCE LIVE QUOTES",
-  "snapshot_id": "20261009T100952+0800",
-  "generated_at_taipei": "2026-10-09T10:09:52.207022+08:00",
-  "cache_expires_at_taipei": "2026-10-09T10:19:52.207022+08:00",
+  "snapshot_id": "20261009T102820+0800",
+  "generated_at_taipei": "2026-10-09T10:28:20.008845+08:00",
+  "cache_expires_at_taipei": "2026-10-09T10:38:20.008845+08:00",
   "cache_ttl_seconds": 600,
   "market_phase": "open",
   "requested_count": 25,
