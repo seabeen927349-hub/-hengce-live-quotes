@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_id": "20261009T132507+0800",
+  "snapshot_id": "20261009T134119+0800",
   "symbol": "3037",
   "company_name": "欣興",
   "price": 1270,
@@ -22,11 +22,11 @@
   "best_ask": 1270,
   "best_ask_size": 51,
   "last_trade_time": "2026-10-08T13:30:00+08:00",
-  "trade_age_seconds": 86107,
+  "trade_age_seconds": 87079,
   "trade_idle_warning": true,
   "source_last_price": 1270,
   "source_last_updated": "2026-10-08T13:30:00+08:00",
-  "quote_age_seconds": 86107,
+  "quote_age_seconds": 87079,
   "is_trial": false,
   "trial_price": null,
   "last_trial_price": 1265,
@@ -38,8 +38,8 @@
   "quote_date": "2026-10-08",
   "stale_at_publish": true,
   "fetch_ok": true,
-  "fetched_at_taipei": "2026-10-09T13:25:07.741625+08:00",
-  "cache_expires_at_taipei": "2026-10-09T13:35:07.741625+08:00",
-  "market_phase": "open",
+  "fetched_at_taipei": "2026-10-09T13:41:19.993783+08:00",
+  "cache_expires_at_taipei": "2026-10-09T13:51:19.993783+08:00",
+  "market_phase": "closed",
   "source": "Fugle MarketData"
 }
