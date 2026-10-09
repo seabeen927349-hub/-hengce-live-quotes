@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_id": "20261009T110109+0800",
+  "snapshot_id": "20261009T112233+0800",
   "symbol": "6409",
   "company_name": "旭隼",
   "price": 868,
@@ -22,11 +22,11 @@
   "best_ask": 869,
   "best_ask_size": 1,
   "last_trade_time": "2026-10-08T13:30:00+08:00",
-  "trade_age_seconds": 77469,
+  "trade_age_seconds": 78753,
   "trade_idle_warning": true,
   "source_last_price": 868,
   "source_last_updated": "2026-10-08T13:30:00+08:00",
-  "quote_age_seconds": 77469,
+  "quote_age_seconds": 78753,
   "is_trial": false,
   "trial_price": null,
   "last_trial_price": 868,
@@ -38,8 +38,8 @@
   "quote_date": "2026-10-08",
   "stale_at_publish": true,
   "fetch_ok": true,
-  "fetched_at_taipei": "2026-10-09T11:01:09.070864+08:00",
-  "cache_expires_at_taipei": "2026-10-09T11:11:09.070864+08:00",
+  "fetched_at_taipei": "2026-10-09T11:22:33.773566+08:00",
+  "cache_expires_at_taipei": "2026-10-09T11:32:33.773566+08:00",
   "market_phase": "open",
   "source": "Fugle MarketData"
 }
