@@ -1,0 +1,41 @@
+{
+  "system": "HENGCE",
+  "artifact": "FULL_MARKET_INTRADAY_SHADOW_SMOKE_RECEIPT",
+  "test_date": "2026-10-10",
+  "market_state": "WEEKEND_CLOSED",
+  "workflow_run_id": 38036583055,
+  "workflow_run_conclusion": "SUCCESS",
+  "artifact_id": 11663908261,
+  "artifact_digest": "sha256:fa67cf866d58e5a7c8f97e52a8131d72dc44bc532eb2dccb473c758e2d096304",
+  "snapshot": {
+    "snapshot_id": "20261010T160359+0800",
+    "generated_at_taipei": "2026-10-10T16:03:59.270013+08:00",
+    "universe_count": 1086,
+    "provider_covered_count": 1086,
+    "price_covered_count": 1042,
+    "coverage_ratio": 1.0,
+    "price_coverage_ratio": 0.9594843462246777,
+    "fresh_count": 0,
+    "fresh_ratio_of_covered": 0.0,
+    "status": "SHADOW_PARTIAL_MARKET",
+    "provider_mix": {
+      "TWSE_MIS": 1062,
+      "FUGLE": 24,
+      "NONE": 0
+    },
+    "batch_failures": 0,
+    "fugle_priority_success": 24,
+    "payload_sha256": "7eccdb03a3c355ac8848d8f3d4f3277fa17b333f48d2fdf407725e239c9c90bb"
+  },
+  "assertions": {
+    "dynamic_official_universe_loaded": true,
+    "provider_coverage_ge_90pct": true,
+    "no_batch_failure": true,
+    "weekend_quotes_not_marked_fresh": true,
+    "false_full_market_label_prevented": true,
+    "authority_remains_shadow_only": true
+  },
+  "result": "PASS_WEEKEND_FAILSAFE_SMOKE",
+  "promotion_effect": "NONE",
+  "next_required_test": "FIRST_TRADING_DAY_INTRADAY_CAPTURE_VERIFY_COVERAGE_AND_FRESHNESS"
+}
