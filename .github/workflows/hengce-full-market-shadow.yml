@@ -1,0 +1,129 @@
+name: HENGCE full-market rolling shadow
+
+"on":
+  workflow_dispatch:
+  schedule:
+    # Asia/Taipei 09:00-13:30, Mon-Fri (UTC 01:00-05:30)
+    - cron: "*/5 1-4 * * 1-5"
+    - cron: "0-30/5 5 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-full-market-shadow
+  cancel-in-progress: true
+
+jobs:
+  shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect full-market shadow snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p shadow
+          python3 scripts/hengce_full_market_shadow.py \
+            --out shadow/full_market_latest.json \
+            --priority-file shadow/priority_tickers.json
+
+      - name: Validate authority and market gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('shadow/full_market_latest.json')
+          if not p.exists():
+              raise SystemExit('SHADOW_SNAPSHOT_MISSING')
+          x=json.loads(p.read_text(encoding='utf-8'))
+          if x.get('authority')!='SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY':
+              raise SystemExit('AUTHORITY_BOUNDARY_BROKEN')
+          if int(x.get('universe_count') or 0)<900:
+              raise SystemExit('UNIVERSE_TOO_SMALL')
+          cov=float(x.get('coverage_ratio') or 0)
+          if cov < 0.90:
+              raise SystemExit(f'INSUFFICIENT_COVERAGE:{cov}')
+          gate=x.get('full_market_gate') or {}
+          if x.get('status')=='SHADOW_FULL_MARKET_READY' and not gate.get('pass'):
+              raise SystemExit('FALSE_FULL_MARKET_LABEL')
+          print(json.dumps({
+              'snapshot_id':x.get('snapshot_id'),
+              'universe_count':x.get('universe_count'),
+              'coverage_ratio':cov,
+              'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),
+              'status':x.get('status'),
+              'provider_mix':x.get('provider_mix'),
+              'payload_sha256':x.get('payload_sha256')
+          }, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Build shadow status receipt
+        if: always()
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          from datetime import datetime, timezone, timedelta
+          from pathlib import Path
+          TZ=timezone(timedelta(hours=8))
+          p=Path('shadow/full_market_latest.json')
+          if p.exists():
+              x=json.loads(p.read_text(encoding='utf-8'))
+              r={
+                  'system':'HENGCE',
+                  'artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS',
+                  'generated_at_taipei':datetime.now(TZ).isoformat(),
+                  'snapshot_id':x.get('snapshot_id'),
+                  'status':x.get('status'),
+                  'authority':x.get('authority'),
+                  'universe_count':x.get('universe_count'),
+                  'universe_sha256':x.get('universe_sha256'),
+                  'coverage_ratio':x.get('coverage_ratio'),
+                  'price_coverage_ratio':x.get('price_coverage_ratio'),
+                  'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),
+                  'full_market_gate':x.get('full_market_gate'),
+                  'provider_mix':x.get('provider_mix'),
+                  'payload_sha256':x.get('payload_sha256'),
+                  'production_core_effect':'NONE',
+                  'capital_authority':False
+              }
+          else:
+              r={
+                  'system':'HENGCE',
+                  'artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS',
+                  'generated_at_taipei':datetime.now(TZ).isoformat(),
+                  'status':'SHADOW_RUN_FAILED_BEFORE_SNAPSHOT',
+                  'production_core_effect':'NONE',
+                  'capital_authority':False
+              }
+          Path('shadow/deployment_status.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Commit shadow artifacts
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "hengce-shadow-bot"
+          git config user.email "hengce-shadow-bot@users.noreply.github.com"
+          git add shadow/
+          if git diff --cached --quiet; then
+            echo "No shadow changes."
+            exit 0
+          fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE full-market shadow ${TS}"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
