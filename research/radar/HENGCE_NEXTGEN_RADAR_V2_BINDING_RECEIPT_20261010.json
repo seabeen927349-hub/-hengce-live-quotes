@@ -1,0 +1,56 @@
+{
+  "system": "HENGCE",
+  "binding_id": "HENGCE_NEXTGEN_RADAR_V2_BINDING_20261010",
+  "status": "BOUND",
+  "bound_spec_path": "research/radar/HENGCE_NEXTGEN_RADAR_V2_DUAL_HEAD_SPEC_20261010.json",
+  "bound_spec_commit": "2118a003293860e300e91d9c277f736ac902bd49",
+  "approved_rule": "Radar is now dual-head: immutable V1R Reachability Champion + Early-Surface Shadow Head.",
+  "champion_artifacts": {
+    "runner_sha256": "d12b7d2cd4b1a23b7f7e7ebf12c84da23f7d3db7ae0878343895653b24e436b1",
+    "model_sha256": "e4bf778d98ffa588901034a5322954631b8e43d173bb80847dde664068752e30",
+    "prediction_ledger_sha256": "195b849a2425312786e73edebc7b197e2ed6d1df380b7fd26cb9fbf4571913af"
+  },
+  "champion_oos_2025": {
+    "auc": 0.7200675363764379,
+    "top1": 0.6822033898305084,
+    "top3": 0.6680790960451977,
+    "top5": 0.6610169491525424,
+    "top10": 0.6266949152542375,
+    "top20": 0.5919491525423728
+  },
+  "retained_weakness": {
+    "median_prior_5d_return_at_first_top20_surface": 0.08771929824561409,
+    "persistent_decline_rate": 0.3187022900763359,
+    "rule": "Do not mutate V1R to repair these diagnostics."
+  },
+  "early_surface_shadow": {
+    "status": "DESIGN_FROZEN_AWAITING_EXACT_SCORING_FREEZE_AND_PROSPECTIVE_GOLD",
+    "selection_data": "2023 development + 2024 validation only",
+    "2025_role": "RETROSPECTIVE_DIAGNOSTIC_ONLY_NOT_OOS",
+    "gold_start": "2026-10-12",
+    "buy_signal": false,
+    "capital_eligibility": false
+  },
+  "layer3_boundary": {
+    "consumer": "RADAR_CONDITIONED_MICROSTRUCTURE_ACTIVATION",
+    "rule": "Layer3 may consume Radar cohorts but may not rewrite Radar rank or back-project post-open evidence.",
+    "activation_engine": "EMPTY_UNTIL_FORWARD_PASS"
+  },
+  "industry_pit": {
+    "status": "PENDING_MISSING_CANONICAL_2025_PIT_INDUSTRY_ARTIFACT",
+    "rule": "Does not block prospective collection; current classifications or partial mappings may not be backfilled into 2025."
+  },
+  "forbidden": [
+    "Relabel Early-Surface as BUY",
+    "Use 2025 outcomes to tune Head-B",
+    "Use 2026 outcomes to rescue Head-B",
+    "Replace Radar cohort with D-Setup, Attention Ranking, B1, manual list, or user holdings",
+    "Change Production Core through this Radar binding"
+  ],
+  "next_only_actions": [
+    "Freeze exact Head-B scoring and Top-N selection using 2023/2024 only",
+    "Build immutable dual-head daily prediction ledger writer",
+    "Start prospective Head-A/Head-B prediction on 2026-10-12 before future outcomes",
+    "Route valid Radar cohorts to Q012 microstructure capture"
+  ]
+}
