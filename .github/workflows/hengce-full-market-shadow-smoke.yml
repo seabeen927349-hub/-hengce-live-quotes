@@ -1,0 +1,49 @@
+name: HENGCE full-market shadow smoke
+
+"on":
+  push:
+    paths:
+      - ".github/workflows/hengce-full-market-shadow-smoke.yml"
+      - "scripts/hengce_full_market_shadow.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run collector smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p smoke
+          python3 scripts/hengce_full_market_shadow.py --out smoke/snapshot.json
+      - name: Validate smoke semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json
+          x=json.load(open('smoke/snapshot.json',encoding='utf-8'))
+          assert x['authority']=='SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY'
+          assert int(x['universe_count'])>=900
+          assert 0 <= float(x['coverage_ratio']) <= 1
+          assert 0 <= float(x['fresh_ratio_of_covered']) <= 1
+          if x['status']=='SHADOW_FULL_MARKET_READY':
+              assert x['full_market_gate']['pass'] is True
+          print(json.dumps({k:x.get(k) for k in ['snapshot_id','generated_at_taipei','universe_count','coverage_ratio','price_coverage_ratio','fresh_ratio_of_covered','status','provider_mix','payload_sha256']},ensure_ascii=False,indent=2))
+          PY
+      - name: Upload smoke artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-full-market-shadow-smoke
+          path: smoke/
+          if-no-files-found: warn
+          retention-days: 3
