@@ -1,0 +1,176 @@
+{
+  "system": "HENGCE",
+  "component": "NEXTGEN_RADAR",
+  "version": "v2_20261010",
+  "status": "FROZEN_APPROVED_DUAL_HEAD_SHADOW_ARCHITECTURE",
+  "effective_at_taipei": "2026-10-10",
+  "production_core_effect": "NONE",
+  "activation_engine_effect": "NONE",
+  "capital_eligibility": false,
+  "buy_signal": false,
+  "architecture": {
+    "head_A": {
+      "id": "RADAR_V1R_REACHABILITY_CHAMPION",
+      "role": "CHAMPION_DISCOVERY_RANKER",
+      "model_status": "FROZEN_REPRODUCIBLE",
+      "target": "future 5-session maximum high reaches signal close +5%",
+      "oos_2025": {
+        "auc": 0.7200675363764379,
+        "top1": 0.6822033898305084,
+        "top3": 0.6680790960451977,
+        "top5": 0.6610169491525424,
+        "top10": 0.6266949152542375,
+        "top20": 0.5919491525423728,
+        "base_rate": 0.2563792109381435
+      },
+      "known_weakness": {
+        "first_surface_top20_events": 2096,
+        "first_surface_target_hit_rate": 0.6187977099236641,
+        "median_prior_5d_return_at_first_surface": 0.08771929824561409,
+        "persistent_decline_rate": 0.3187022900763359,
+        "interpretation": "Reachability edge is strong but first surface is often late/extended. This weakness must not be repaired by modifying the frozen champion."
+      },
+      "immutable_artifacts": {
+        "runner_sha256": "d12b7d2cd4b1a23b7f7e7ebf12c84da23f7d3db7ae0878343895653b24e436b1",
+        "model_sha256": "e4bf778d98ffa588901034a5322954631b8e43d173bb80847dde664068752e30",
+        "prediction_ledger_sha256": "195b849a2425312786e73edebc7b197e2ed6d1df380b7fd26cb9fbf4571913af"
+      }
+    },
+    "head_B": {
+      "id": "RADAR_EARLY_SURFACE_SHADOW_V1",
+      "role": "PRE_EXTENSION_EARLY_WARNING_SHADOW_HEAD",
+      "status": "FROZEN_DESIGN_AWAITING_PROSPECTIVE_GOLD",
+      "objective": "Surface probable future V1R leaders 1-5 sessions earlier, before material extension, without converting the output into a buy signal.",
+      "information_boundary": {
+        "allowed": [
+          "V1R raw_probability available at decision cutoff",
+          "V1R daily rank available at decision cutoff",
+          "rank acceleration over 1/3/5 sessions",
+          "same-day and trailing price-location state known at decision cutoff",
+          "same-day and trailing extension state known at decision cutoff"
+        ],
+        "forbidden": [
+          "future V1R rank",
+          "future prices or labels",
+          "Q012 microstructure",
+          "D-Setup",
+          "Attention Ranking",
+          "B1 rank substituted as Radar",
+          "manual ticker injection",
+          "user holdings",
+          "post-open evidence for a prior-close signal",
+          "2025 lead-time diagnostics used to retune after inspection"
+        ]
+      },
+      "score_design": {
+        "principle": "Smooth ranking, not a brittle hard-gate stack.",
+        "components": [
+          "reachability_strength = within-date percentile rank of frozen V1R raw_probability",
+          "rank_acceleration = robust percentile of normalized rank improvement over 1/3/5 sessions",
+          "pre_extension_quality = monotone soft penalty as trailing return becomes extended; never a hard delete",
+          "price_location_quality = smooth preference for approaching a recent pivot/high without requiring breakout confirmation"
+        ],
+        "combination_rule": "EARLY_SURFACE score must be a pre-registered monotone combination of the four components. Any fitted weights may use 2023 development and 2024 validation only. No 2025 or 2026 outcome may select or rescue weights.",
+        "abstention_rule": "Head B may abstain. Lack of a clean early-surface state must produce no shadow alert rather than a forced ranking claim."
+      },
+      "surface_levels": {
+        "shadow_watch": "Top-N Early-Surface cohort for research capture only; N must be frozen before prospective evaluation.",
+        "champion_intersection": "Names already in V1R Top20 remain Head A discoveries and are not counted as new early-surface wins.",
+        "new_early_surface": "A valid early-surface event must occur strictly before the name first enters frozen V1R Top20."
+      }
+    }
+  },
+  "three_pass_reasoning_locked": {
+    "pass_1": "Preserve V1R as immutable Champion; all earliness work is isolated in Head B.",
+    "pass_2": "2025 lead-time weakness is already known, so 2025 is contaminated for Early-Surface model selection. Use 2023 development and 2024 validation; 2025 is retrospective diagnostic only; Gold evidence begins prospectively.",
+    "pass_3": "Radar ends at opportunity discovery. Early-Surface cannot authorize entry. Layer3 microstructure activation is the only new orthogonal gate allowed to decide whether a Radar opportunity becomes executable."
+  },
+  "validation_policy": {
+    "head_A": {
+      "2025": "TRUE_OOS_RETAINED",
+      "2026": "PROSPECTIVE_MONITORING_ONLY_NO_RETUNING"
+    },
+    "head_B": {
+      "2023": "DEVELOPMENT",
+      "2024": "VALIDATION_AND_FREEZE",
+      "2025": "RETROSPECTIVE_DIAGNOSTIC_ONLY_NOT_OOS",
+      "gold_start": "2026-10-12",
+      "gold_rule": "Prediction must be immutably persisted before the relevant future outcome exists."
+    }
+  },
+  "head_B_success_metrics": {
+    "primary": [
+      "median lead-time improvement versus V1R first Top20 surface",
+      "T-5/T-3/T-2/T-1 recall before V1R Top20 surface",
+      "median trailing 5D return at first Head-B surface",
+      "future +5%/5-session reachability from Head-B surface"
+    ],
+    "safety_of_discovery": [
+      "persistent-decline false-positive rate",
+      "missed-winner rate",
+      "abstain rate",
+      "rank-decay curve",
+      "performance excluding best 10 dates",
+      "calendar/month robustness"
+    ],
+    "promotion_principle": "Earliness must improve materially without destroying the reachability edge."
+  },
+  "industry_pit_policy": {
+    "status": "PENDING_MISSING_CANONICAL_2025_PIT_INDUSTRY_ARTIFACT",
+    "rule": "Industry-PIT breadth is robustness-only and may not alter Head A or Head B scores. Do not backfill 2025 using current classifications or partial research-output mappings.",
+    "blocking_scope": "Does not block prospective Radar collection; blocks only claims that industry-PIT robustness has passed."
+  },
+  "daily_output_contract": {
+    "decision_basis": "prior-close only",
+    "required_fields": [
+      "decision_date",
+      "ticker",
+      "v1r_raw_probability",
+      "v1r_extension_adjusted_score",
+      "v1r_rank",
+      "v1r_rank_velocity_1",
+      "v1r_rank_velocity_3",
+      "v1r_rank_velocity_5",
+      "early_surface_score",
+      "early_surface_rank",
+      "early_surface_flag",
+      "first_early_surface_date",
+      "first_v1r_top20_date",
+      "extension_state",
+      "price_location_state",
+      "model_id",
+      "model_version",
+      "decision_cutoff",
+      "input_fingerprint",
+      "model_artifact_sha256",
+      "runner_sha256",
+      "run_id"
+    ],
+    "immutable_ledger_rule": "Persist the complete scored universe or a manifest-bound full score ledger before outcomes. Never reconstruct historical cohorts from Top-N summaries."
+  },
+  "layer3_interface": {
+    "consumer": "RADAR_CONDITIONED_MICROSTRUCTURE_ACTIVATION",
+    "capture_priority": [
+      "V1R Top20 Champion cohort",
+      "Head-B new early-surface shadow cohort not yet in V1R Top20",
+      "predeclared matched controls"
+    ],
+    "hard_rules": [
+      "Layer3 may consume Radar rank but may not rewrite it.",
+      "Head-B shadow status is not buyability.",
+      "No D gate, Attention Ranking, B1 rank, manual list, or familiar holding may substitute for a legal Radar cohort.",
+      "Microstructure evidence from after market open cannot be back-projected into prior-close Radar scoring."
+    ]
+  },
+  "failure_and_kill_rules": {
+    "head_A": "If future prospective evidence materially contradicts V1R discovery edge, downgrade Champion by versioned governance action; never silently retune.",
+    "head_B": "Kill or keep shadow-only if prospective Gold fails to improve lead time with acceptable reachability/false-positive tradeoff. No 2026 threshold rescue.",
+    "activation_boundary": "Until Layer3 independently passes forward/OOS economic and path-safety gates, Activation Engine remains EMPTY."
+  },
+  "next_actions": [
+    "Freeze exact Head-B scoring/selection recipe using only 2023 development and 2024 validation.",
+    "Create immutable daily dual-head prediction ledger schema and writer.",
+    "On 2026-10-12 begin prospective Head-A/Head-B predictions before outcomes and route both cohorts into Q012 capture.",
+    "Keep industry-PIT robustness PENDING until an authoritative historical artifact is available; do not let it delay prospective collection."
+  ]
+}
