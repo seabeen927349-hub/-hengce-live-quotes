@@ -1,0 +1,49 @@
+{
+  "system": "HENGCE",
+  "artifact": "REALTIME_INTEGRITY_HARD_RULE",
+  "version": "1.0",
+  "effective_date": "2026-10-12",
+  "status": "ACTIVE_HARD_BOUND",
+  "scope": [
+    "衡策掃一次",
+    "衡策評估",
+    "intraday HPS",
+    "current-price reporting",
+    "realtime overlay"
+  ],
+  "rules": {
+    "fresh_snapshot_required_for_live_claim": true,
+    "snapshot_ttl_seconds": 480,
+    "on_snapshot_age_gt_ttl": "REALTIME_FEED_LAG",
+    "stale_snapshot_cannot_substitute_current_intraday": true,
+    "no_fresh_quote_no_current_price_claim": true,
+    "no_fresh_quote_no_intraday_hps": true,
+    "no_fresh_quote_no_live_ready_claim": true,
+    "user_reported_price_source_label": "USER_LIVE_INPUT",
+    "user_reported_price_must_not_be_represented_as_system_auto_quote": true,
+    "partial_data_policy": "RUN_INDEPENDENT_FROZEN_STAGES_AND_MARK_REALTIME_DEPENDENT_FIELDS_PENDING_OR_HOLD",
+    "formal_activation_must_not_be_invented": true
+  },
+  "position_state": {
+    "forced_position": {
+      "ticker": "3042",
+      "name": "晶技",
+      "lots": 8,
+      "must_appear_in_user_facing_scan": true
+    },
+    "6415": {
+      "position_lots": 0,
+      "status": "SOLD",
+      "exit_price_user_reported": 414,
+      "must_not_be_described_as_current_holding": true
+    }
+  },
+  "production_semantics": {
+    "alpha_logic_changed": false,
+    "composite_formula_changed": false,
+    "entry_engine_changed": false,
+    "activation_authority_changed": false,
+    "hps_formula_changed": false,
+    "classification": "IMPLEMENTATION_INTEGRITY_RULE_ONLY"
+  }
+}
