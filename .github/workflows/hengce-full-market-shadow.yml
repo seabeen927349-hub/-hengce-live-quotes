@@ -21,8 +21,10 @@ name: HENGCE full-market rolling shadow
 permissions:
   contents: write
 
+# Keep duplicate protection inside each trigger class, but never allow a
+# workflow_run or push event to cancel the scheduled 5-minute rolling vessel.
 concurrency:
-  group: hengce-full-market-shadow
+  group: hengce-full-market-shadow-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
