@@ -1,18 +1,22 @@
 {
   "schema_version": 1,
   "service": "HENGCE LIVE QUOTES",
-  "snapshot_id": "20261012T122612+0800",
-  "generated_at_taipei": "2026-10-12T12:26:12.788596+08:00",
-  "cache_expires_at_taipei": "2026-10-12T12:36:12.788596+08:00",
+  "snapshot_id": "20261012T124924+0800",
+  "generated_at_taipei": "2026-10-12T12:49:24.639521+08:00",
+  "cache_expires_at_taipei": "2026-10-12T12:59:24.639521+08:00",
   "cache_ttl_seconds": 600,
   "market_phase": "open",
   "requested_count": 25,
-  "success_count": 24,
-  "failure_count": 1,
-  "stale_count": 0,
+  "success_count": 23,
+  "failure_count": 2,
+  "stale_count": 1,
   "trial_count": 1,
   "halted_count": 0,
   "failures": [
+    {
+      "symbol": "4566",
+      "error": "RATE_LIMIT_HTTP_429"
+    },
     {
       "symbol": "8031",
       "error": "HTTP Error 404: Not Found"
