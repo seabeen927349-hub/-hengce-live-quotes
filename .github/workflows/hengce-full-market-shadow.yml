@@ -2,8 +2,16 @@ name: HENGCE full-market rolling shadow
 
 "on":
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-full-market-shadow.yml'
+      - 'scripts/hengce_full_market_shadow.py'
+      - 'shadow/priority_tickers.json'
   schedule:
-    # Asia/Taipei 09:00-13:30, Mon-Fri (UTC 01:00-05:30)
+    # Asia/Taipei pre-open warmup 08:45/08:50/08:55 (UTC 00:45/00:50/00:55)
+    - cron: "45,50,55 0 * * 1-5"
+    # Asia/Taipei 09:00-13:30, Mon-Fri (UTC 01:00-05:30), every 5 minutes
     - cron: "*/5 1-4 * * 1-5"
     - cron: "0-30/5 5 * * 1-5"
 
