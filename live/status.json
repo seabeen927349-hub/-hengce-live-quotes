@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "service": "HENGCE LIVE QUOTES",
-  "snapshot_id": "20261012T103953+0800",
-  "generated_at_taipei": "2026-10-12T10:39:53.187816+08:00",
-  "cache_expires_at_taipei": "2026-10-12T10:49:53.187816+08:00",
+  "snapshot_id": "20261012T105821+0800",
+  "generated_at_taipei": "2026-10-12T10:58:21.616128+08:00",
+  "cache_expires_at_taipei": "2026-10-12T11:08:21.616128+08:00",
   "cache_ttl_seconds": 600,
   "market_phase": "open",
   "requested_count": 25,
   "success_count": 24,
   "failure_count": 1,
   "stale_count": 0,
-  "trial_count": 1,
+  "trial_count": 0,
   "halted_count": 0,
   "failures": [
     {
