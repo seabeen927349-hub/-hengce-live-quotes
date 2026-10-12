@@ -1,0 +1,90 @@
+{
+  "system": "HENGCE",
+  "artifact": "FRESH_FULL_MARKET_EXECUTION_CONTRACT",
+  "version": "1.0",
+  "bundle_version": "v9.2_FRESH_FULL_MARKET_EXECUTION_CONTRACT",
+  "effective_date": "2026-10-12",
+  "status": "ACTIVE_HARD_BOUND",
+  "trigger_phrases": ["衡策掃一次", "掃一次", "衡策掃全台股"],
+  "execution_semantics": {
+    "trigger_is_action_not_query": true,
+    "must_create_scan_request_id": true,
+    "must_record_user_request_time": true,
+    "must_record_pre_scan_snapshot_id": true,
+    "must_trigger_fresh_full_market_collector": true,
+    "must_record_workflow_run_id": true,
+    "must_require_post_snapshot_id_differs_from_pre_snapshot_id": true,
+    "must_require_snapshot_generated_after_user_request": true,
+    "must_bind_same_scan_request_id_across_execution_chain": true,
+    "must_write_forward_ledger_after_success": true,
+    "read_existing_snapshot_cannot_satisfy_scan_once": true,
+    "fallback_existing_snapshot_as_fresh_scan": false
+  },
+  "required_order": [
+    "CREATE_SCAN_REQUEST_ID",
+    "RECORD_USER_REQUEST_TIME",
+    "RECORD_PRE_SCAN_SNAPSHOT_ID",
+    "TRIGGER_FULL_MARKET_WORKFLOW",
+    "RECORD_WORKFLOW_RUN_ID",
+    "WAIT_FOR_TRIGGERED_WORKFLOW_RESULT",
+    "VERIFY_NEW_SNAPSHOT_ID",
+    "VERIFY_GENERATED_AFTER_REQUEST",
+    "VERIFY_FULL_MARKET_GATE",
+    "VERIFY_SAME_RUN_BINDING",
+    "RUN_REALTIME_OVERLAY",
+    "RUN_HPS_IF_AND_ONLY_IF_BOUND",
+    "WRITE_FORWARD_LEDGER",
+    "FRESH_FULL_MARKET_SCAN_COMPLETED"
+  ],
+  "hard_gates": {
+    "generated_at_gt_user_request_time": true,
+    "post_snapshot_id_ne_pre_snapshot_id": true,
+    "workflow_run_id_required": true,
+    "same_run_binding_required": true,
+    "fresh_snapshot_ttl_seconds": 480,
+    "full_market_fresh_ratio_required": 0.90,
+    "full_market_coverage_required": 0.98
+  },
+  "binding_identity": [
+    "user_command.scan_request_id",
+    "workflow.scan_request_id",
+    "full_market_snapshot.scan_request_id",
+    "binder.scan_request_id",
+    "hps.scan_request_id"
+  ],
+  "binding_rule": "ALL_PRESENT_AND_EQUAL",
+  "failure_statuses": [
+    "FRESH_SCAN_TRIGGER_FAILED",
+    "FRESH_SCAN_NOT_PRODUCED",
+    "FRESH_SCAN_GENERATED_BEFORE_REQUEST",
+    "WORKFLOW_RUN_ID_MISSING",
+    "REALTIME_FEED_LAG",
+    "FULL_MARKET_GATE_FAILED",
+    "BINDING_FAILED",
+    "PARTIAL_SCAN"
+  ],
+  "language_lock": {
+    "may_say_scan_completed_only_when": "execution_status == FRESH_FULL_MARKET_SCAN_COMPLETED",
+    "forbidden_success_phrases_otherwise": ["衡策掃完", "這輪掃完", "掃描完成", "已跑完全市場"],
+    "allowed_non_success_labels": ["READ_EXISTING_SNAPSHOT", "FRESH_SCAN_RUNNING", "FRESH_SCAN_FAILED", "REALTIME_FEED_LAG", "PARTIAL_SCAN", "BINDING_FAILED"]
+  },
+  "hps_rule": {
+    "compute_only_if_fresh_full_market_scan_completed": true,
+    "compute_only_if_same_run_binding": true,
+    "otherwise": "HPS_NOT_COMPUTED"
+  },
+  "partial_data_rule": {
+    "frozen_stages_continue": true,
+    "realtime_dependent_fields": "PENDING_OR_HOLD",
+    "must_not_upgrade_to_scan_completed": true
+  },
+  "production_semantics": {
+    "alpha_logic_changed": false,
+    "composite_formula_changed": false,
+    "entry_engine_changed": false,
+    "activation_authority_changed": false,
+    "hps_formula_changed": false,
+    "forty_day_freeze_changed": false,
+    "classification": "EXECUTION_INTEGRITY_IMPLEMENTATION_DEFECT_REPAIR"
+  }
+}
