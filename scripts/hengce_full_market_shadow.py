@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, hashlib, json, os, re, time, urllib.parse, urllib.request, urllib.error
+import argparse, hashlib, json, os, re, urllib.parse, urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
@@ -15,6 +16,8 @@ DEFAULT_PRIORITY = [
     "6415","3605","6191","1477","3041"
 ]
 BATCH_SIZE = 40
+MIS_WORKERS = 6
+FUGLE_WORKERS = 6
 FULL_COVERAGE = 0.98
 FULL_FRESH = 0.95
 FRESH_SECONDS = 420
@@ -25,7 +28,7 @@ def now_tw() -> datetime:
 
 
 def get_json(url: str, headers: dict[str,str] | None = None, timeout: int = 20) -> Any:
-    req = urllib.request.Request(url, headers=headers or {"User-Agent":"HENGCE-FULL-MARKET-SHADOW/1.0","Accept":"application/json"})
+    req = urllib.request.Request(url, headers=headers or {"User-Agent":"HENGCE-FULL-MARKET-SHADOW/1.1","Accept":"application/json"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.load(r)
 
@@ -93,7 +96,7 @@ def parse_mis_time(row: dict, generated: datetime):
 def fetch_mis_batch(tickers: list[str], generated: datetime) -> dict[str,dict]:
     ex_ch="|".join(f"tse_{t}.tw" for t in tickers)
     url=MIS_URL+"?"+urllib.parse.urlencode({"ex_ch":ex_ch,"json":"1","delay":"0"})
-    data=get_json(url,headers={"User-Agent":"Mozilla/5.0 HENGCE/1.0","Accept":"application/json","Referer":"https://mis.twse.com.tw/stock/index.jsp"},timeout=25)
+    data=get_json(url,headers={"User-Agent":"Mozilla/5.0 HENGCE/1.1","Accept":"application/json","Referer":"https://mis.twse.com.tw/stock/index.jsp"},timeout=25)
     rows=data.get("msgArray") if isinstance(data,dict) else None
     if not isinstance(rows,list):
         raise RuntimeError("MIS_MSGARRAY_MISSING")
@@ -104,32 +107,21 @@ def fetch_mis_batch(tickers: list[str], generated: datetime) -> dict[str,dict]:
         qt=parse_mis_time(r,generated)
         age=max(0,int((generated-qt).total_seconds())) if qt else None
         out[t]={
-            "ticker":t,
-            "name":str(r.get("n") or "").strip(),
-            "last_price":fnum(r.get("z")),
-            "reference_close":fnum(r.get("y")),
-            "open":fnum(r.get("o")),
-            "high":fnum(r.get("h")),
-            "low":fnum(r.get("l")),
-            "volume_lots":fint(r.get("v")),
-            "best_bid":fnum(str(r.get("b") or "").split("_")[0]),
-            "best_ask":fnum(str(r.get("a") or "").split("_")[0]),
-            "trade_time":qt.isoformat() if qt else None,
-            "freshness_seconds":age,
-            "source":"TWSE_MIS",
-            "fetch_ok":True,
-            "error":None
+            "ticker":t,"name":str(r.get("n") or "").strip(),"last_price":fnum(r.get("z")),
+            "reference_close":fnum(r.get("y")),"open":fnum(r.get("o")),"high":fnum(r.get("h")),"low":fnum(r.get("l")),
+            "volume_lots":fint(r.get("v")),"best_bid":fnum(str(r.get("b") or "").split("_")[0]),
+            "best_ask":fnum(str(r.get("a") or "").split("_")[0]),"trade_time":qt.isoformat() if qt else None,
+            "freshness_seconds":age,"source":"TWSE_MIS","fetch_ok":True,"error":None
         }
     return out
 
 
 def fugle_overlay(symbol: str, api_key: str, generated: datetime) -> dict | None:
     try:
-        row=get_json(FUGLE_BASE+symbol,headers={"X-API-KEY":api_key,"Accept":"application/json","User-Agent":"HENGCE-FULL-MARKET-SHADOW/1.0"},timeout=15)
+        row=get_json(FUGLE_BASE+symbol,headers={"X-API-KEY":api_key,"Accept":"application/json","User-Agent":"HENGCE-FULL-MARKET-SHADOW/1.1"},timeout=15)
         if str(row.get("symbol"))!=symbol: return None
         lt=row.get("lastTrade") or {}; total=row.get("total") or {}
-        price=fnum(lt.get("price")); ref=fnum(row.get("previousClose"))
-        tt=None
+        price=fnum(lt.get("price")); ref=fnum(row.get("previousClose")); tt=None
         raw=lt.get("time")
         try:
             if raw is not None:
@@ -159,21 +151,32 @@ def load_priority(path: str | None) -> list[str]:
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--out",required=True); ap.add_argument("--priority-file"); args=ap.parse_args()
     generated=now_tw(); universe=load_universe(); uhash=sha_obj(universe); tickers=[x["ticker"] for x in universe]; names={x["ticker"]:x["name"] for x in universe}
-    records={}; batch_failures=[]
-    for batch in chunks(tickers,BATCH_SIZE):
-        try:
-            records.update(fetch_mis_batch(batch,generated))
-        except Exception as e:
-            batch_failures.append({"tickers":batch,"error":f"{type(e).__name__}:{e}"})
-        time.sleep(0.15)
+    records={}; batch_failures=[]; batches=list(chunks(tickers,BATCH_SIZE))
+
+    # Bounded parallel MIS acquisition: data-pipeline repair only; no scoring/model semantics.
+    with ThreadPoolExecutor(max_workers=MIS_WORKERS) as ex:
+        futs={ex.submit(fetch_mis_batch,b,generated): b for b in batches}
+        for fut in as_completed(futs):
+            batch=futs[fut]
+            try:
+                records.update(fut.result())
+            except Exception as e:
+                batch_failures.append({"tickers":batch,"error":f"{type(e).__name__}:{e}"})
+
     priority=[t for t in load_priority(args.priority_file) if t in names]
     api_key=os.environ.get("FUGLE_API_KEY","").strip(); fugle_success=0
-    if api_key:
-        for t in priority:
-            q=fugle_overlay(t,api_key,generated)
-            if q:
-                records[t]=q; fugle_success+=1
-            time.sleep(0.22)
+    if api_key and priority:
+        with ThreadPoolExecutor(max_workers=FUGLE_WORKERS) as ex:
+            futs={ex.submit(fugle_overlay,t,api_key,generated): t for t in priority}
+            for fut in as_completed(futs):
+                t=futs[fut]
+                try:
+                    q=fut.result()
+                except Exception:
+                    q=None
+                if q:
+                    records[t]=q; fugle_success+=1
+
     normalized=[]
     for t in tickers:
         q=records.get(t) or {"ticker":t,"name":names[t],"last_price":None,"reference_close":None,"open":None,"high":None,"low":None,"volume_lots":None,"best_bid":None,"best_ask":None,"trade_time":None,"freshness_seconds":None,"source":"NONE","fetch_ok":False,"error":"MISSING_PROVIDER_RESULT"}
@@ -191,18 +194,17 @@ def main():
     payload={
         "schema_version":1,"service":"HENGCE_FULL_MARKET_ROLLING_SHADOW","authority":"SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
         "snapshot_id":generated.strftime("%Y%m%dT%H%M%S%z"),"generated_at_taipei":generated.isoformat(),
-        "universe_source":UNIVERSE_URL,"universe_count":len(normalized),"universe_sha256":uhash,
+        "collector_version":"1.1_BOUNDED_PARALLEL","universe_source":UNIVERSE_URL,"universe_count":len(normalized),"universe_sha256":uhash,
         "requested_count":len(normalized),"provider_covered_count":len(provider_covered),"price_covered_count":len(price_covered),
         "fresh_count":len(fresh),"coverage_ratio":coverage,"price_coverage_ratio":price_coverage,"fresh_ratio_of_covered":fresh_ratio,
         "full_market_gate":{"coverage_required":FULL_COVERAGE,"fresh_ratio_required":FULL_FRESH,"pass":full},
         "status":"SHADOW_FULL_MARKET_READY" if full else ("SHADOW_PARTIAL_MARKET" if coverage>=0.90 else "SHADOW_INSUFFICIENT"),
         "provider_mix":{"TWSE_MIS":sum(q.get("source")=="TWSE_MIS" for q in normalized),"FUGLE":sum(q.get("source")=="FUGLE" for q in normalized),"NONE":sum(q.get("source")=="NONE" for q in normalized)},
-        "priority_tickers":priority,"fugle_priority_success":fugle_success,"batch_failures":batch_failures,
-        "quotes":normalized
+        "priority_tickers":priority,"fugle_priority_success":fugle_success,"batch_failures":batch_failures,"quotes":normalized
     }
     payload["payload_sha256"]=sha_obj({k:v for k,v in payload.items() if k!="payload_sha256"})
     p=Path(args.out); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({k:payload[k] for k in ["snapshot_id","universe_count","coverage_ratio","price_coverage_ratio","fresh_ratio_of_covered","status","provider_mix","payload_sha256"]},ensure_ascii=False,indent=2))
+    print(json.dumps({k:payload[k] for k in ["snapshot_id","collector_version","universe_count","coverage_ratio","price_coverage_ratio","fresh_ratio_of_covered","status","provider_mix","payload_sha256"]},ensure_ascii=False,indent=2))
     if coverage < 0.90: raise SystemExit(2)
 
 if __name__=="__main__": main()
