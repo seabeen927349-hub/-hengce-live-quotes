@@ -1,14 +1,14 @@
 {
   "system": "HENGCE",
   "artifact": "FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS",
-  "generated_at_taipei": "2026-10-12T13:33:00.901058+08:00",
-  "snapshot_id": "20261012T133300+0800",
+  "generated_at_taipei": "2026-10-13T09:05:06.217344+08:00",
+  "snapshot_id": "20261013T090506+0800",
   "status": "SHADOW_FULL_MARKET_READY",
   "authority": "SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
-  "universe_count": 1086,
-  "universe_sha256": "46dbf37cd84c35dba3a0ba6aae295b4ffcbc0e98abb254af660c5654cb95ee78",
+  "universe_count": 1087,
+  "universe_sha256": "44c8339f9290b12040e4b880d21ae014954b336ac435a1b734cd72cf4c32fb22",
   "coverage_ratio": 1.0,
-  "price_coverage_ratio": 0.930939226519337,
+  "price_coverage_ratio": 0.0827966881324747,
   "fresh_ratio_of_covered": 1.0,
   "full_market_gate": {
     "coverage_required": 0.98,
@@ -17,11 +17,11 @@
     "pass": true
   },
   "provider_mix": {
-    "TWSE_MIS": 1062,
+    "TWSE_MIS": 1063,
     "FUGLE": 24,
     "NONE": 0
   },
-  "payload_sha256": "67f49122f4e07ad24b1aa29566caff64bb0a6e0a4f30f73d1982ce36805bd642",
+  "payload_sha256": "41d712273924ececaf5e20c173edcc7284be0db215f86786666268d355bc1f7f",
   "production_core_effect": "NONE",
   "capital_authority": false
 }
