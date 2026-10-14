@@ -1,0 +1,146 @@
+name: HENGCE EOD partial ingest 20261014
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-eod-partial-ingest-20261014.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-eod:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch and normalize published TWSE legs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import csv, json, re, urllib.request
+          from pathlib import Path
+
+          DATE='20261014'
+          ISO='2026-10-14'
+          OUT=Path('eod')/DATE
+          OUT.mkdir(parents=True,exist_ok=True)
+          PRICE_URL=f'https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date={DATE}&type=ALLBUT0999&response=json'
+          INST_URL=f'https://www.twse.com.tw/rwd/zh/fund/T86?date={DATE}&selectType=ALLBUT0999&response=json'
+          MARGIN_URL=f'https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date={DATE}&selectType=ALL&response=json'
+
+          def get_json(url):
+              req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 HENGCE-EOD/1.0','Accept':'application/json','Referer':'https://www.twse.com.tw/'})
+              with urllib.request.urlopen(req,timeout=60) as r:
+                  return json.load(r)
+          def clean(x):
+              if x is None: return ''
+              return str(x).replace(',','').strip()
+          def rows_of(obj):
+              for k in ('data','records'):
+                  if isinstance(obj,dict) and isinstance(obj.get(k),list): return obj[k]
+              return []
+
+          p=get_json(PRICE_URL)
+          if str(p.get('stat'))!='OK' or str(p.get('date'))!=DATE:
+              raise SystemExit(f'PRICE_NOT_READY stat={p.get("stat")} date={p.get("date")}')
+          stock_table=None
+          for t in p.get('tables') or []:
+              fs=t.get('fields') or []
+              if '證券代號' in fs and '收盤價' in fs and ('成交股數' in fs or '成交量' in fs):
+                  stock_table=t; break
+          if stock_table is None:
+              raise SystemExit('PRICE_STOCK_TABLE_NOT_FOUND')
+          pfields=stock_table.get('fields') or []
+          pdata=stock_table.get('data') or stock_table.get('records') or []
+          pidx={f:i for i,f in enumerate(pfields)}
+          def pv(row,*names):
+              for n in names:
+                  if n in pidx and pidx[n] < len(row): return clean(row[pidx[n]])
+              return ''
+          pcols=['Date','Ticker','Name','VolumeShares','Trades','TurnoverTWD','Open','High','Low','Close','ChangeSign','Change','LastBid','LastBidVolume','LastAsk','LastAskVolume','PE','Source']
+          pb={str(i):[] for i in range(1,10)}
+          for r in pdata:
+              ticker=pv(r,'證券代號')
+              if not re.fullmatch(r'[1-9]\d{3}',ticker): continue
+              pb[ticker[0]].append({
+                  'Date':ISO,'Ticker':ticker,'Name':pv(r,'證券名稱'),'VolumeShares':pv(r,'成交股數','成交量'),'Trades':pv(r,'成交筆數'),
+                  'TurnoverTWD':pv(r,'成交金額'),'Open':pv(r,'開盤價'),'High':pv(r,'最高價'),'Low':pv(r,'最低價'),'Close':pv(r,'收盤價'),
+                  'ChangeSign':pv(r,'漲跌(+/-)','漲跌'),'Change':pv(r,'漲跌價差'),'LastBid':pv(r,'最後揭示買價'),'LastBidVolume':pv(r,'最後揭示買量'),
+                  'LastAsk':pv(r,'最後揭示賣價'),'LastAskVolume':pv(r,'最後揭示賣量'),'PE':pv(r,'本益比'),'Source':PRICE_URL})
+          for k,rs in pb.items():
+              if not rs: continue
+              with (OUT/f'price_{k}.csv').open('w',encoding='utf-8-sig',newline='') as f:
+                  w=csv.DictWriter(f,fieldnames=pcols); w.writeheader(); w.writerows(rs)
+
+          q=get_json(INST_URL)
+          if str(q.get('stat'))!='OK' or str(q.get('date'))!=DATE:
+              raise SystemExit(f'INST_NOT_READY stat={q.get("stat")} date={q.get("date")}')
+          qfields=q.get('fields') or []
+          qdata=rows_of(q)
+          if not qdata and isinstance(q.get('tables'),list):
+              for t in q['tables']:
+                  fs=t.get('fields') or []
+                  if '證券代號' in fs and any('外陸資買賣超股數' in str(x) for x in fs):
+                      qfields=fs; qdata=t.get('data') or t.get('records') or []; break
+          qi={f:i for i,f in enumerate(qfields)}
+          def qv(row,exact=None,contains=None):
+              if exact and exact in qi and qi[exact] < len(row): return clean(row[qi[exact]])
+              if contains:
+                  for f,i in qi.items():
+                      if contains in f and i < len(row): return clean(row[i])
+              return ''
+          icols=['Date','Ticker','Name','ForeignBuy','ForeignSell','ForeignNet','ForeignDealerBuy','ForeignDealerSell','ForeignDealerNet','TrustBuy','TrustSell','TrustNet','DealerNet','DealerProprietaryBuy','DealerProprietarySell','DealerProprietaryNet','DealerHedgeBuy','DealerHedgeSell','DealerHedgeNet','TotalNet','Source']
+          ib={str(i):[] for i in range(1,10)}
+          for r in qdata:
+              ticker=qv(r,exact='證券代號')
+              if not re.fullmatch(r'[1-9]\d{3}',ticker): continue
+              ib[ticker[0]].append({
+                  'Date':ISO,'Ticker':ticker,'Name':qv(r,exact='證券名稱'),
+                  'ForeignBuy':qv(r,contains='外陸資買進股數(不含外資自營商)'),'ForeignSell':qv(r,contains='外陸資賣出股數(不含外資自營商)'),'ForeignNet':qv(r,contains='外陸資買賣超股數(不含外資自營商)'),
+                  'ForeignDealerBuy':qv(r,exact='外資自營商買進股數'),'ForeignDealerSell':qv(r,exact='外資自營商賣出股數'),'ForeignDealerNet':qv(r,exact='外資自營商買賣超股數'),
+                  'TrustBuy':qv(r,exact='投信買進股數'),'TrustSell':qv(r,exact='投信賣出股數'),'TrustNet':qv(r,exact='投信買賣超股數'),'DealerNet':qv(r,exact='自營商買賣超股數'),
+                  'DealerProprietaryBuy':qv(r,exact='自營商買進股數(自行買賣)'),'DealerProprietarySell':qv(r,exact='自營商賣出股數(自行買賣)'),'DealerProprietaryNet':qv(r,exact='自營商買賣超股數(自行買賣)'),
+                  'DealerHedgeBuy':qv(r,exact='自營商買進股數(避險)'),'DealerHedgeSell':qv(r,exact='自營商賣出股數(避險)'),'DealerHedgeNet':qv(r,exact='自營商買賣超股數(避險)'),
+                  'TotalNet':qv(r,exact='三大法人買賣超股數'),'Source':INST_URL})
+          for k,rs in ib.items():
+              if not rs: continue
+              with (OUT/f'institutional_{k}.csv').open('w',encoding='utf-8-sig',newline='') as f:
+                  w=csv.DictWriter(f,fieldnames=icols); w.writeheader(); w.writerows(rs)
+
+          # Margin is deliberately independent: check only, never block published legs.
+          margin_status='PENDING'
+          margin_date='2026-10-13'
+          try:
+              m=get_json(MARGIN_URL)
+              if str(m.get('stat'))=='OK' and str(m.get('date'))==DATE:
+                  margin_status='AVAILABLE_NOT_INGESTED_BY_THIS_ONE_SHOT'
+                  margin_date=ISO
+          except Exception as e:
+              margin_status='PENDING_FETCH_ERROR:'+type(e).__name__
+
+          status={
+              'system':'HENGCE','artifact':'EOD_PARTIAL_LEG_INGEST','target_date':ISO,
+              'price_status':'COMPLETE','price_date':ISO,'price_rows':sum(map(len,pb.values())),
+              'institutional_status':'COMPLETE','institutional_date':ISO,'institutional_rows':sum(map(len,ib.values())),
+              'margin_status':margin_status,'margin_date':margin_date,
+              'policy':'PER_LEG_INGEST_NO_GLOBAL_BLOCK','price_source':PRICE_URL,'institutional_source':INST_URL,'margin_source':MARGIN_URL
+          }
+          (OUT/'status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(status,ensure_ascii=False,indent=2))
+          if status['price_rows'] < 900 or status['institutional_rows'] < 900:
+              raise SystemExit('ROW_COUNT_TOO_SMALL')
+          PY
+      - name: Commit EOD artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-eod-bot'
+          git config user.email 'hengce-eod-bot@users.noreply.github.com'
+          git add eod/20261014/
+          git commit -m 'HENGCE EOD 2026-10-14 price+institutional partial ingest'
+          git push origin HEAD:main
