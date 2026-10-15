@@ -49,13 +49,15 @@ fi
 [[ -n "$BASE" && -f "$BASE" ]] || fail_closed "FORMAL_BASE_NOT_FOUND"
 
 # Reject a base that explicitly says formal scan is disallowed.
-python3 - "$BASE" <<'PY' || exit 21
+if ! python3 - "$BASE" <<'PY'
 import json,sys
 x=json.load(open(sys.argv[1],encoding='utf-8'))
 if x.get('formal_scan_allowed') is False:
     raise SystemExit(1)
 PY
-[[ $? -eq 0 ]] || fail_closed "FORMAL_BASE_DISALLOWED"
+then
+  fail_closed "FORMAL_BASE_DISALLOWED"
+fi
 
 # 2) Market Context: explicit override first. Otherwise newest JSON containing
 # MarketContextState/NewCapitalPolicy. Missing context is never neutral.
@@ -111,7 +113,7 @@ set -e
 [[ $rc -eq 0 ]] || fail_closed "INTRADAY_BRIDGE_FAIL_CLOSED_RC_$rc"
 
 python3 - "$OUT" "$RECEIPT" "$BASE" "$CTX" "$LIVE_LOCAL" <<'PY'
-import json,sys,hashlib,os
+import json,sys,hashlib
 from datetime import datetime, timezone
 outp,receipt,base,ctx,live=sys.argv[1:]
 x=json.load(open(outp,encoding='utf-8'))
