@@ -1,0 +1,81 @@
+{
+  "system": "HENGCE",
+  "artifact": "INTRADAY_ACTION_BOARD_CONTRACT",
+  "version": "1.0",
+  "effective_date": "2026-10-15",
+  "status": "ACTIVE_HARD_BOUND",
+  "purpose": "Bind fresh live quotes and market context into one formal intraday action artifact without changing frozen alpha, V1R, Composite, HPS, Entry geometry, or the 40TD freeze.",
+  "required_inputs": [
+    "POSTCLOSE_FORMAL_BASE_ARTIFACT",
+    "FRESH_LIVE_SNAPSHOT",
+    "MARKET_CONTEXT_STATE"
+  ],
+  "required_output": "HENGCE_INTRADAY_ACTION_BOARD.json",
+  "required_output_fields": [
+    "ActionLayer",
+    "BaseRunId",
+    "LiveSnapshotId",
+    "LiveGeneratedAt",
+    "MarketContextState",
+    "NewCapitalPolicy",
+    "Ticker",
+    "LivePrice",
+    "LiveHigh",
+    "LiveLow",
+    "LiveAvgPrice",
+    "PriceProof",
+    "FormalEntryTrigger",
+    "BaseActivationState",
+    "IntradayActivationState",
+    "ExecutionEligibility",
+    "FinalAction"
+  ],
+  "hard_rules": {
+    "action_layer_must_equal": "INTRADAY_ACTION_BOARD",
+    "fresh_live_snapshot_required": true,
+    "snapshot_ttl_seconds": 480,
+    "market_context_required": true,
+    "live_snapshot_must_match_trade_date": true,
+    "stale_live_snapshot_fails_closed": true,
+    "missing_market_context_fails_closed": true,
+    "chat_side_live_interpretation_is_not_formal_action_layer": true,
+    "postclose_only_artifact_cannot_be_described_as_intraday_ready": true,
+    "formal_activation_must_not_be_invented": true,
+    "single_live_snapshot_cannot_promote_false_formal_entry_trigger_to_true": true,
+    "no_chase_extension_must_not_be_upgraded_to_entry": true,
+    "failed_breakout_must_not_be_upgraded_to_entry": true,
+    "existing_position_exit_is_never_blocked_by_market_context": true,
+    "new_capital_block_policy_overrides_new_entry": true,
+    "probe_only_policy_cannot_become_full_entry": true
+  },
+  "price_proof_states": [
+    "LIVE_UNAVAILABLE",
+    "LIVE_BOUND_NO_GEOMETRY",
+    "BELOW_BREAKOUT_WAIT",
+    "IN_BREAKOUT_ZONE_NEEDS_ACCEPTANCE",
+    "ABOVE_BREAKOUT_NEEDS_FOLLOW_THROUGH",
+    "EXTENSION_NO_CHASE",
+    "FAILED_BREAKOUT",
+    "STRUCTURE_INVALIDATED"
+  ],
+  "execution_semantics": {
+    "NORMAL": "Preserve frozen production authority; live overlay may validate or downgrade but may not invent activation.",
+    "PROBE_ONLY": "Only a production-eligible probe may remain reviewable; full entry is downgraded.",
+    "BLOCK_NEW_CAPITAL": "All new-capital entries are blocked; exits remain permitted.",
+    "CONTEXT_UNAVAILABLE": "Fail closed for new capital."
+  },
+  "authority": {
+    "changes_v1r": false,
+    "changes_composite": false,
+    "changes_hps": false,
+    "changes_entry_geometry": false,
+    "changes_40td_freeze": false,
+    "can_upgrade_formal_entry_trigger": false,
+    "can_block_or_downgrade_execution": true,
+    "can_allow_exit": true
+  },
+  "language_lock": {
+    "may_call_intraday_action_formal_only_when": "artifact.ActionLayer == INTRADAY_ACTION_BOARD AND artifact.binding_status == PASS",
+    "otherwise_use": "POSTCLOSE_BASE_PLUS_LIVE_ANALYSIS_ONLY"
+  }
+}
