@@ -22,10 +22,11 @@ jobs:
         run: |
           set -euo pipefail
           python3 <<'PY'
-          import csv
+          import csv, json
           from pathlib import Path
           src = Path('eod/20261014')
           out = src / 'margin_balance_compact.csv'
+          outj = src / 'margin_balance_map.json'
           rows = []
           for p in sorted(src.glob('margin_[1-9].csv')):
               with p.open('r', encoding='utf-8-sig', newline='') as f:
@@ -36,9 +37,10 @@ jobs:
           if len(rows) < 500:
               raise SystemExit(f'COMPACT_MARGIN_ROWS_TOO_SMALL:{len(rows)}')
           with out.open('w', encoding='utf-8', newline='') as f:
-              w=csv.writer(f); w.writerow(['Date','Ticker','Name','MarginBalance'])
-              w.writerows(rows)
-          print('rows', len(rows), 'path', out)
+              w=csv.writer(f); w.writerow(['Date','Ticker','Name','MarginBalance']); w.writerows(rows)
+          mapping={t:int(float(b)) for _,t,_,b in rows}
+          outj.write_text(json.dumps(mapping,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+          print('rows', len(rows), 'paths', out, outj)
           PY
       - name: Commit compact rescue artifact
         shell: bash
@@ -46,9 +48,9 @@ jobs:
           set -euo pipefail
           git config user.name 'hengce-eod-bot'
           git config user.email 'hengce-eod-bot@users.noreply.github.com'
-          git add eod/20261014/margin_balance_compact.csv
-          if git diff --cached --quiet; then echo 'Compact artifact already current.'; exit 0; fi
-          git commit -m 'HENGCE EOD 2026-10-14 compact margin balance'
+          git add eod/20261014/margin_balance_compact.csv eod/20261014/margin_balance_map.json
+          if git diff --cached --quiet; then echo 'Compact artifacts already current.'; exit 0; fi
+          git commit -m 'HENGCE EOD 2026-10-14 compact margin artifacts'
           if ! git push origin HEAD:main; then
             git pull --rebase origin main
             git push origin HEAD:main
