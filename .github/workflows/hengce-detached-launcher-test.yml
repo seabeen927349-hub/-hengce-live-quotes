@@ -1,0 +1,61 @@
+name: HENGCE detached launcher test
+
+on:
+  push:
+    paths:
+      - 'scripts/RUN_IN_WORK_DETACHED.sh'
+      - 'scripts/CHECK_HENGCE_RUN.sh'
+      - '.github/workflows/hengce-detached-launcher-test.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shell syntax
+        run: |
+          bash -n scripts/RUN_IN_WORK_DETACHED.sh
+          bash -n scripts/CHECK_HENGCE_RUN.sh
+      - name: Functional detached-run test
+        run: |
+          set -euo pipefail
+          d="$(mktemp -d)"
+          mkdir -p "$d/work_output"
+          cat > "$d/RUN_IN_WORK.sh" <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          echo START
+          sleep 3
+          mkdir -p work_output/formal/production
+          printf '{"ok":true}\n' > work_output/formal/production/v2_scan.json
+          echo DONE
+          SH
+          chmod +x "$d/RUN_IN_WORK.sh"
+          HENGCE_ROOT="$d" bash scripts/RUN_IN_WORK_DETACHED.sh
+          # Launcher must return immediately while worker remains alive.
+          set +e
+          HENGCE_ROOT="$d" bash scripts/CHECK_HENGCE_RUN.sh
+          rc=$?
+          set -e
+          test "$rc" -eq 10
+          # Duplicate start must be rejected while first worker is alive.
+          set +e
+          HENGCE_ROOT="$d" bash scripts/RUN_IN_WORK_DETACHED.sh
+          dup=$?
+          set -e
+          test "$dup" -eq 3
+          sleep 5
+          HENGCE_ROOT="$d" bash scripts/CHECK_HENGCE_RUN.sh
+          test -f "$d/work_output/formal/production/v2_scan.json"
+          python3 - <<PY
+          import json
+          from pathlib import Path
+          d=Path('$d')
+          s=json.loads((d/'work_output/launcher_state/status.json').read_text())
+          assert s['state']=='PROCESS_COMPLETED', s
+          assert s['return_code']==0, s
+          assert json.loads((d/'work_output/formal/production/v2_scan.json').read_text())['ok'] is True
+          print('DETACHED_LAUNCHER_TEST_PASS')
+          PY
