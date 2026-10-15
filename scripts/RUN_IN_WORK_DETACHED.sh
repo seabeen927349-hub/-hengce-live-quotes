@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # HENGCE timeout-safe launcher.
-# Does NOT alter the model or production flow. It only detaches the existing
+# Does NOT alter model/ranking/production logic. It only detaches the existing
 # RUN_IN_WORK.sh so an outer 40s/240s command timeout cannot kill the scan.
 
 ROOT="${HENGCE_ROOT:-$(pwd)}"
@@ -11,31 +11,18 @@ STATE_DIR="${HENGCE_LAUNCH_STATE_DIR:-$ROOT/work_output/launcher_state}"
 LOG_DIR="$STATE_DIR/logs"
 PID_FILE="$STATE_DIR/run.pid"
 STATUS_FILE="$STATE_DIR/status.json"
-LOCK_FILE="${TMPDIR:-/tmp}/hengce_run_in_work.lock"
+# Key lock by root path so separate HENGCE roots do not block each other.
+ROOT_KEY="$(printf '%s' "$ROOT" | sha256sum | cut -c1-16)"
+LOCK_FILE="${TMPDIR:-/tmp}/hengce_run_in_work_${ROOT_KEY}.lock"
 
 mkdir -p "$LOG_DIR"
 
-python3 - "$STATUS_FILE" "$RUNNER" <<'PY'
+if [[ ! -f "$RUNNER" ]]; then
+  python3 - "$STATUS_FILE" "$RUNNER" <<'PY'
 import json, os, sys
 from datetime import datetime, timezone
 p, runner = sys.argv[1:]
 os.makedirs(os.path.dirname(p), exist_ok=True)
-obj = {
-  "schema_version": 1,
-  "launcher": "RUN_IN_WORK_DETACHED",
-  "state": "START_REQUESTED",
-  "runner": runner,
-  "requested_at_utc": datetime.now(timezone.utc).isoformat(),
-}
-with open(p, "w", encoding="utf-8") as f:
-    json.dump(obj, f, ensure_ascii=False, indent=2)
-PY
-
-if [[ ! -f "$RUNNER" ]]; then
-  python3 - "$STATUS_FILE" "$RUNNER" <<'PY'
-import json, sys
-from datetime import datetime, timezone
-p, runner = sys.argv[1:]
 obj = {
   "schema_version": 1,
   "launcher": "RUN_IN_WORK_DETACHED",
@@ -50,14 +37,16 @@ PY
   exit 2
 fi
 
-# Global non-blocking lock prevents duplicate launches against the same host.
+# Parent obtains the lock first. The detached worker INHERITS this exact open
+# file descriptor; there is no unlock/re-lock gap, so a second launcher cannot
+# slip through while the worker is starting.
 exec 9>"$LOCK_FILE"
 if ! flock -n 9; then
   echo "HENGCE already running; refusing duplicate launch."
   exit 3
 fi
 
-# If an existing PID is still alive, fail closed rather than overlap scans.
+# PID is a secondary guard/diagnostic. flock is the authority.
 if [[ -f "$PID_FILE" ]]; then
   old_pid="$(cat "$PID_FILE" 2>/dev/null || true)"
   if [[ -n "$old_pid" ]] && kill -0 "$old_pid" 2>/dev/null; then
@@ -68,7 +57,23 @@ fi
 
 TS="$(TZ=Asia/Taipei date '+%Y%m%dT%H%M%S%z')"
 LOG_FILE="$LOG_DIR/RUN_IN_WORK_${TS}.log"
-WRAPPER="$STATE_DIR/worker_${TS}.sh"
+WRAPPER="$STATE_DIR/worker_${TS}_$$.sh"
+
+python3 - "$STATUS_FILE" "$RUNNER" "$LOG_FILE" <<'PY'
+import json, os, sys
+from datetime import datetime, timezone
+p, runner, log = sys.argv[1:]
+os.makedirs(os.path.dirname(p), exist_ok=True)
+obj = {
+  "schema_version": 1,
+  "launcher": "RUN_IN_WORK_DETACHED",
+  "state": "START_REQUESTED",
+  "runner": runner,
+  "log_file": log,
+  "requested_at_utc": datetime.now(timezone.utc).isoformat(),
+}
+open(p,"w",encoding="utf-8").write(json.dumps(obj,ensure_ascii=False,indent=2))
+PY
 
 cat > "$WRAPPER" <<'SH'
 #!/usr/bin/env bash
@@ -79,28 +84,31 @@ STATUS_FILE="$3"
 LOG_FILE="$4"
 PID_FILE="$5"
 cd "$ROOT" || exit 97
-python3 - "$STATUS_FILE" "$LOG_FILE" <<'PY'
+python3 - "$STATUS_FILE" "$LOG_FILE" "$$" <<'PY'
 import json, sys
 from datetime import datetime, timezone
-p, log = sys.argv[1:]
+p, log, pid = sys.argv[1:]
 obj = {
   "schema_version": 1,
   "launcher": "RUN_IN_WORK_DETACHED",
   "state": "RUNNING",
+  "pid": int(pid),
   "log_file": log,
   "started_at_utc": datetime.now(timezone.utc).isoformat(),
 }
 open(p,"w",encoding="utf-8").write(json.dumps(obj,ensure_ascii=False,indent=2))
 PY
+
 bash "$RUNNER"
 rc=$?
+
 python3 - "$STATUS_FILE" "$LOG_FILE" "$rc" <<'PY'
-import json, os, sys
+import json, sys
 from datetime import datetime, timezone
 p, log, rc = sys.argv[1:]
 rc = int(rc)
-# Important: this launcher reports process completion only. Formal scan PASS is
-# determined by HENGCE artifacts/gates, never inferred from return code alone.
+# Return code describes process completion only. Formal HENGCE PASS/FAIL must
+# still be read from formal artifacts and gates; the launcher never invents it.
 obj = {
   "schema_version": 1,
   "launcher": "RUN_IN_WORK_DETACHED",
@@ -117,28 +125,12 @@ exit "$rc"
 SH
 chmod +x "$WRAPPER"
 
-# Hold the lock in the detached worker for the whole run.
-nohup bash -c 'exec 9>"$0"; flock -n 9 || exit 3; shift; exec "$@"' \
-  "$LOCK_FILE" "$WRAPPER" "$ROOT" "$RUNNER" "$STATUS_FILE" "$LOG_FILE" "$PID_FILE" \
-  >"$LOG_FILE" 2>&1 < /dev/null &
+# Critical detail: fd 9 is inherited by the worker (9>&9). Parent may exit,
+# but the worker retains the same flock for its entire lifetime.
+nohup "$WRAPPER" "$ROOT" "$RUNNER" "$STATUS_FILE" "$LOG_FILE" "$PID_FILE" \
+  9>&9 >"$LOG_FILE" 2>&1 < /dev/null &
 pid=$!
 echo "$pid" > "$PID_FILE"
-
-python3 - "$STATUS_FILE" "$LOG_FILE" "$pid" <<'PY'
-import json, sys
-from datetime import datetime, timezone
-p, log, pid = sys.argv[1:]
-obj = {
-  "schema_version": 1,
-  "launcher": "RUN_IN_WORK_DETACHED",
-  "state": "DETACHED",
-  "pid": int(pid),
-  "log_file": log,
-  "detached_at_utc": datetime.now(timezone.utc).isoformat(),
-  "note": "Outer command may exit now; worker continues independently.",
-}
-open(p,"w",encoding="utf-8").write(json.dumps(obj,ensure_ascii=False,indent=2))
-PY
 
 echo "HENGCE detached successfully. PID=$pid"
 echo "STATUS=$STATUS_FILE"
