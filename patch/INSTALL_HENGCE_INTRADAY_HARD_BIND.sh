@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PATCH_DIR="$(cd "$(dirname "$0")" && pwd)"
+BUNDLE_ROOT="$(cd "$PATCH_DIR/.." && pwd)"
+TARGET="${1:-${HENGCE_ROOT:-$(pwd)}}"
+EXPECTED_MODEL_SHA="e4bf778d98ffa588901034a5322954631b8e43d173bb80847dde664068752e30"
+STAMP="$(TZ=Asia/Taipei date '+%Y%m%dT%H%M%S%z')"
+BACKUP="$TARGET/work_output/patch_backups/INTRADAY_HARD_BIND_$STAMP"
+RECEIPT="$TARGET/work_output/HENGCE_INTRADAY_HARD_BIND_INSTALL_RECEIPT.json"
+mkdir -p "$BACKUP" "$(dirname "$RECEIPT")" "$TARGET/work" "$TARGET/governance"
+
+fail(){ echo "FAIL_CLOSED: $*" >&2; exit 2; }
+[[ -d "$TARGET" ]] || fail "TARGET_NOT_FOUND:$TARGET"
+[[ -f "$TARGET/RUN_IN_WORK.sh" ]] || fail "RUN_IN_WORK_NOT_FOUND:$TARGET/RUN_IN_WORK.sh"
+
+# Capture every joblib hash before installation. Patch is forbidden from touching models.
+BEFORE_MODELS="$(mktemp)"; AFTER_MODELS="$(mktemp)"
+trap 'rm -f "$BEFORE_MODELS" "$AFTER_MODELS"' EXIT
+python3 - "$TARGET" "$BEFORE_MODELS" <<'PY'
+import os,sys,hashlib,json
+root,out=sys.argv[1:]
+rows=[]
+for dp,_,fs in os.walk(root):
+    for f in fs:
+        if f.endswith('.joblib'):
+            p=os.path.join(dp,f); h=hashlib.sha256()
+            with open(p,'rb') as z:
+                for b in iter(lambda:z.read(1024*1024),b''):h.update(b)
+            rows.append([os.path.relpath(p,root),h.hexdigest()])
+json.dump(sorted(rows),open(out,'w'),indent=2)
+PY
+
+copy_one(){
+  local src="$1" dst="$2"
+  [[ -f "$src" ]] || fail "PATCH_PAYLOAD_MISSING:$src"
+  if [[ -f "$dst" ]]; then
+    mkdir -p "$BACKUP/$(dirname "${dst#$TARGET/}")"
+    cp -p "$dst" "$BACKUP/${dst#$TARGET/}"
+  fi
+  mkdir -p "$(dirname "$dst")"
+  cp "$src" "$dst"
+}
+
+copy_one "$BUNDLE_ROOT/scripts/hengce_intraday_action_board.py" "$TARGET/work/hengce_intraday_action_board.py"
+copy_one "$BUNDLE_ROOT/scripts/RUN_INTRADAY_ACTION_BOARD.sh" "$TARGET/RUN_INTRADAY_ACTION_BOARD.sh"
+copy_one "$BUNDLE_ROOT/scripts/RUN_HENGCE_COMPLETE.sh" "$TARGET/RUN_HENGCE_COMPLETE.sh"
+copy_one "$BUNDLE_ROOT/scripts/RUN_IN_WORK_DETACHED.sh" "$TARGET/RUN_IN_WORK_DETACHED.sh"
+copy_one "$BUNDLE_ROOT/scripts/CHECK_HENGCE_RUN.sh" "$TARGET/CHECK_HENGCE_RUN.sh"
+copy_one "$BUNDLE_ROOT/scripts/RUN_HENGCE.sh" "$TARGET/RUN_HENGCE.sh"
+copy_one "$BUNDLE_ROOT/hengce/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json" "$TARGET/governance/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json"
+chmod +x "$TARGET/RUN_INTRADAY_ACTION_BOARD.sh" "$TARGET/RUN_HENGCE_COMPLETE.sh" "$TARGET/RUN_IN_WORK_DETACHED.sh" "$TARGET/CHECK_HENGCE_RUN.sh" "$TARGET/RUN_HENGCE.sh"
+
+# Syntax + bridge self-test.
+bash -n "$TARGET/RUN_INTRADAY_ACTION_BOARD.sh"
+bash -n "$TARGET/RUN_HENGCE_COMPLETE.sh"
+bash -n "$TARGET/RUN_IN_WORK_DETACHED.sh"
+bash -n "$TARGET/CHECK_HENGCE_RUN.sh"
+bash -n "$TARGET/RUN_HENGCE.sh"
+python3 "$TARGET/work/hengce_intraday_action_board.py" --self-test >/dev/null
+
+python3 - "$TARGET" "$AFTER_MODELS" <<'PY'
+import os,sys,hashlib,json
+root,out=sys.argv[1:]
+rows=[]
+for dp,_,fs in os.walk(root):
+    for f in fs:
+        if f.endswith('.joblib'):
+            p=os.path.join(dp,f); h=hashlib.sha256()
+            with open(p,'rb') as z:
+                for b in iter(lambda:z.read(1024*1024),b''):h.update(b)
+            rows.append([os.path.relpath(p,root),h.hexdigest()])
+json.dump(sorted(rows),open(out,'w'),indent=2)
+PY
+cmp -s "$BEFORE_MODELS" "$AFTER_MODELS" || fail "MODEL_HASH_SET_CHANGED"
+
+# If frozen production model is present, record that explicitly; absence does not invent a PASS.
+MODEL_EXPECTED_PRESENT="$(python3 - "$AFTER_MODELS" "$EXPECTED_MODEL_SHA" <<'PY'
+import json,sys
+rows=json.load(open(sys.argv[1])); exp=sys.argv[2]
+print('true' if any(h==exp for _,h in rows) else 'false')
+PY
+)"
+
+python3 - "$TARGET" "$BACKUP" "$RECEIPT" "$AFTER_MODELS" "$MODEL_EXPECTED_PRESENT" <<'PY'
+import sys,os,json,hashlib
+from datetime import datetime,timezone
+root,backup,receipt,models,expected_present=sys.argv[1:]
+rels=[
+ 'work/hengce_intraday_action_board.py','RUN_INTRADAY_ACTION_BOARD.sh','RUN_HENGCE_COMPLETE.sh',
+ 'RUN_IN_WORK_DETACHED.sh','CHECK_HENGCE_RUN.sh','RUN_HENGCE.sh',
+ 'governance/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json']
+def sha(p):
+ h=hashlib.sha256()
+ with open(p,'rb') as f:
+  for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
+ return h.hexdigest()
+obj={
+ 'schema_version':1,'patch':'HENGCE_INTRADAY_HARD_BIND','status':'PASS',
+ 'target':root,'backup_dir':backup,'installed_at_utc':datetime.now(timezone.utc).isoformat(),
+ 'installed_files':{r:sha(os.path.join(root,r)) for r in rels},
+ 'all_joblib_hashes_after':json.load(open(models)),
+ 'expected_frozen_model_hash_present':expected_present=='true',
+ 'expected_frozen_model_sha256':'e4bf778d98ffa588901034a5322954631b8e43d173bb80847dde664068752e30',
+ 'production_model_mutated_by_patch':False,
+ 'entrypoint':'RUN_HENGCE.sh'
+}
+open(receipt,'w',encoding='utf-8').write(json.dumps(obj,ensure_ascii=False,indent=2))
+print(json.dumps(obj,ensure_ascii=False))
+PY
+
+echo "INSTALL_PASS: $RECEIPT"
+echo "NEW_ENTRYPOINT: $TARGET/RUN_HENGCE.sh"
