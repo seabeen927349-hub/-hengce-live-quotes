@@ -1,0 +1,55 @@
+name: HENGCE margin compact rescue 20261014
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-margin-compact-rescue-20261014.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  compact-margin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build compact canonical margin balance from committed official leg
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import csv
+          from pathlib import Path
+          src = Path('eod/20261014')
+          out = src / 'margin_balance_compact.csv'
+          rows = []
+          for p in sorted(src.glob('margin_[1-9].csv')):
+              with p.open('r', encoding='utf-8-sig', newline='') as f:
+                  for r in csv.DictReader(f):
+                      if r.get('Date') == '2026-10-14' and r.get('Ticker') and r.get('MarginBalance') not in (None, ''):
+                          rows.append((r['Date'], r['Ticker'], r.get('Name',''), r['MarginBalance']))
+          rows = sorted({(d,t):(d,t,n,b) for d,t,n,b in rows}.values(), key=lambda x:x[1])
+          if len(rows) < 500:
+              raise SystemExit(f'COMPACT_MARGIN_ROWS_TOO_SMALL:{len(rows)}')
+          with out.open('w', encoding='utf-8', newline='') as f:
+              w=csv.writer(f); w.writerow(['Date','Ticker','Name','MarginBalance'])
+              w.writerows(rows)
+          print('rows', len(rows), 'path', out)
+          PY
+      - name: Commit compact rescue artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-eod-bot'
+          git config user.email 'hengce-eod-bot@users.noreply.github.com'
+          git add eod/20261014/margin_balance_compact.csv
+          if git diff --cached --quiet; then echo 'Compact artifact already current.'; exit 0; fi
+          git commit -m 'HENGCE EOD 2026-10-14 compact margin balance'
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
