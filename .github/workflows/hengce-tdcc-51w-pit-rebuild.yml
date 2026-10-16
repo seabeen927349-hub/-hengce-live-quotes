@@ -1,0 +1,148 @@
+name: HENGCE TDCC 51W PIT rebuild
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-tdcc-51w-pit-rebuild.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-tdcc-51w:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install parser dependencies
+        run: pip install --quiet requests beautifulsoup4
+      - name: Fetch 51 historical TDCC weekly snapshots via official WebForms page
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import csv, hashlib, json, re, time, zipfile
+          from pathlib import Path
+          import requests
+          from bs4 import BeautifulSoup
+
+          DATES = '''20261008 20261002 20260924 20260918 20260911 20260904 20260828 20260821 20260814 20260807 20260731 20260724 20260717 20260709 20260703 20260626 20260618 20260612 20260605 20260529 20260522 20260515 20260508 20260430 20260424 20260417 20260410 20260402 20260327 20260320 20260313 20260306 20260226 20260213 20260206 20260130 20260123 20260116 20260109 20260102 20251226 20251219 20251212 20251205 20251128 20251121 20251114 20251107 20251031 20251023 20251017'''.split()
+          assert len(DATES) == 51 and len(set(DATES)) == 51
+          URL = 'https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
+          OUT = Path('tdcc_51w_raw'); OUT.mkdir(exist_ok=True)
+          S = requests.Session()
+          S.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-PIT/1.0','Accept-Language':'zh-TW,zh;q=0.9,en;q=0.7'})
+
+          def hidden_fields(soup):
+              d = {}
+              form = soup.find('form')
+              if form is None: raise RuntimeError('FORM_NOT_FOUND')
+              for inp in form.find_all('input'):
+                  n = inp.get('name')
+                  if not n: continue
+                  typ = (inp.get('type') or '').lower()
+                  if typ in ('submit','button','image','file','reset'): continue
+                  if typ in ('checkbox','radio') and not inp.has_attr('checked'): continue
+                  d[n] = inp.get('value','')
+              return d, form
+
+          def discover_names(soup):
+              form = soup.find('form')
+              if form is None: raise RuntimeError('FORM_NOT_FOUND')
+              selects = {x.get('name'): [o.get('value','') for o in x.find_all('option')] for x in form.find_all('select') if x.get('name')}
+              date_name = 'scaDate' if 'scaDate' in selects else next((n for n,vals in selects.items() if any(re.fullmatch(r'20\d{6}',str(v)) for v in vals)), None)
+              if not date_name: raise RuntimeError(f'DATE_SELECT_NOT_FOUND:{list(selects)}')
+              text_names = [i.get('name') for i in form.find_all('input') if i.get('name') and (i.get('type') or 'text').lower() in ('text','search')]
+              code_name = next((n for n in text_names if 'stock' in n.lower() and ('no' in n.lower() or 'code' in n.lower())), None)
+              name_name = next((n for n in text_names if 'stock' in n.lower() and 'name' in n.lower()), None)
+              submits = [(i.get('name'), i.get('value','')) for i in form.find_all('input') if (i.get('type') or '').lower() in ('submit','image') and i.get('name')]
+              return date_name, code_name, name_name, submits
+
+          def parse_result(html, expected_date):
+              soup = BeautifulSoup(html, 'html.parser')
+              best = None
+              for table in soup.find_all('table'):
+                  rows = table.find_all('tr')
+                  if not rows: continue
+                  headers = [c.get_text(' ',strip=True) for c in rows[0].find_all(['th','td'])]
+                  hs = ''.join(headers)
+                  if '證券代號' in hs and '持股分級' in hs and '人數' in hs and '股數' in hs:
+                      best=(headers,rows[1:]); break
+              if best is None:
+                  # Some TDCC layouts use div-based tables; extract any rows with exactly the expected six semantic values.
+                  raise RuntimeError('RESULT_TABLE_NOT_FOUND')
+              headers, trs = best
+              norm = lambda x: re.sub(r'\s+','',x)
+              idx={norm(h):i for i,h in enumerate(headers)}
+              def find_idx(*keys):
+                  for k in keys:
+                      for h,i in idx.items():
+                          if k in h: return i
+                  return None
+              i_date=find_idx('資料日期'); i_ticker=find_idx('證券代號'); i_level=find_idx('持股分級'); i_people=find_idx('人數'); i_shares=find_idx('股數'); i_pct=find_idx('占集保庫存數比例','占集保庫存數比例%')
+              if None in (i_ticker,i_level,i_people,i_shares,i_pct): raise RuntimeError(f'BAD_HEADERS:{headers}')
+              rows=[]
+              for tr in trs:
+                  vals=[c.get_text(' ',strip=True).replace(',','') for c in tr.find_all(['td','th'])]
+                  if len(vals) <= max(i_ticker,i_level,i_people,i_shares,i_pct): continue
+                  ticker=vals[i_ticker].strip(); level=vals[i_level].strip()
+                  if not ticker or not re.fullmatch(r'\d{4,6}',ticker): continue
+                  if not re.fullmatch(r'\d{1,2}',level): continue
+                  dval = vals[i_date].strip().replace('/','') if i_date is not None and i_date < len(vals) else expected_date
+                  rows.append({'資料日期':dval or expected_date,'證券代號':ticker,'持股分級':level,'人數':vals[i_people].strip(),'股數':vals[i_shares].strip(),'占集保庫存數比例%':vals[i_pct].strip()})
+              if len(rows) < 5000: raise RuntimeError(f'ROW_COUNT_TOO_SMALL:{len(rows)}')
+              levels={int(r['持股分級']) for r in rows}
+              if not set(range(1,16)).issubset(levels): raise RuntimeError(f'LEVELS_INCOMPLETE:{sorted(levels)}')
+              if any(int(r['持股分級']) < 1 or int(r['持股分級']) > 17 for r in rows): raise RuntimeError('LEVEL_OUT_OF_RANGE')
+              return rows
+
+          manifest=[]
+          for pos,date in enumerate(DATES,1):
+              last_err=None
+              for attempt in range(1,4):
+                  try:
+                      g=S.get(URL,timeout=60); g.raise_for_status(); soup=BeautifulSoup(g.text,'html.parser')
+                      payload, form = hidden_fields(soup)
+                      date_name, code_name, name_name, submits = discover_names(soup)
+                      payload[date_name]=date
+                      if code_name: payload[code_name]=''
+                      if name_name: payload[name_name]=''
+                      if submits:
+                          sn,sv=submits[0]; payload[sn]=sv or '查詢'
+                      action=form.get('action') or URL
+                      target=requests.compat.urljoin(URL,action)
+                      r=S.post(target,data=payload,timeout=120); r.raise_for_status()
+                      rows=parse_result(r.text,date)
+                      out=OUT/f'{date}.csv'
+                      cols=['資料日期','證券代號','持股分級','人數','股數','占集保庫存數比例%']
+                      with out.open('w',encoding='utf-8-sig',newline='') as f:
+                          w=csv.DictWriter(f,fieldnames=cols); w.writeheader(); w.writerows(rows)
+                      sha=hashlib.sha256(out.read_bytes()).hexdigest()
+                      tickers=len({x['證券代號'] for x in rows}); levels=sorted({int(x['持股分級']) for x in rows})
+                      manifest.append({'date':date,'rows':len(rows),'tickers':tickers,'levels':levels,'sha256':sha,'source':URL})
+                      print(f'[{pos:02d}/51] {date} rows={len(rows)} tickers={tickers} sha={sha[:12]}')
+                      break
+                  except Exception as e:
+                      last_err=f'{type(e).__name__}:{e}'; print(f'[{pos:02d}/51] {date} attempt {attempt} FAIL {last_err}',flush=True)
+                      time.sleep(2*attempt)
+              else:
+                  raise SystemExit(f'TDCC_WEEK_FAILED date={date} error={last_err}')
+              time.sleep(0.35)
+
+          if len(manifest)!=51: raise SystemExit(f'WEEK_COUNT_FAIL:{len(manifest)}')
+          (OUT/'manifest.json').write_text(json.dumps({'system':'HENGCE','artifact':'TDCC_51W_PIT_RAW','status':'COMPLETE','week_count':51,'dates':DATES,'weeks':manifest,'source':URL,'policy':'ALL_51_WEEKS_REQUIRED__NO_PARTIAL_COMPLETION'},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          with zipfile.ZipFile('tdcc-51w-raw.zip','w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
+              for p in sorted(OUT.iterdir()): z.write(p,p.as_posix())
+          print('COMPLETE 51/51')
+          PY
+      - name: Upload TDCC 51W raw artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdcc-51w-pit-raw
+          path: |
+            tdcc-51w-raw.zip
+            tdcc_51w_raw/manifest.json
+          if-no-files-found: error
+          retention-days: 30
