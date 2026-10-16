@@ -2,7 +2,6 @@ name: Hengce live quotes
 
 "on":
   workflow_dispatch:
-
   schedule:
     # 台灣時間 09:00–13:30，週一至週五
     - cron: "*/5 1-4 * * 1-5"
@@ -19,7 +18,6 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-
     env:
       FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
 
@@ -29,13 +27,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch Fugle quotes
+      - name: Fetch lifecycle-bound Fugle quotes
         shell: bash
         run: |
           python3 <<'PY'
+          import hashlib
           import json
           import os
           import random
+          import re
           import time
           import urllib.error
           import urllib.request
@@ -44,94 +44,86 @@ jobs:
           from zoneinfo import ZoneInfo
 
           API_KEY = os.environ.get("FUGLE_API_KEY")
-
           if not API_KEY:
               raise SystemExit("FUGLE_API_KEY missing")
 
           TZ = ZoneInfo("Asia/Taipei")
-
-          # GitHub 排程可能略有延遲，因此快取有效期設 10 分鐘。
           CACHE_TTL_SECONDS = 600
-
-          # 最後實際成交超過 15 分鐘，只標警告，
-          # 不直接視為行情源故障。
           TRADE_IDLE_SECONDS = 900
+          UNIVERSE_PATH = Path("hengce/live_universe.json")
 
-          # 盤中監控池。
-          SYMBOLS = [
-              "3042", "2344", "2357", "2451", "3006",
-              "2351", "2368", "3413", "3013", "3016",
-              "3189", "3037", "4566", "3550", "4968",
-              "6409", "6271", "8031", "8103", "4961",
-              "6415", "3605", "6191", "1477", "3041"
-          ]
+          if not UNIVERSE_PATH.exists():
+              raise SystemExit("LIVE_UNIVERSE_MISSING_FAIL_CLOSED")
 
-          BASE = (
-              "https://api.fugle.tw/marketdata/v1.0/"
-              "stock/intraday/quote/"
+          raw_universe = UNIVERSE_PATH.read_bytes()
+          universe = json.loads(raw_universe.decode("utf-8"))
+          SYMBOLS = [str(x).strip() for x in universe.get("symbols", [])]
+
+          if not SYMBOLS:
+              raise SystemExit("LIVE_UNIVERSE_EMPTY_FAIL_CLOSED")
+          if len(SYMBOLS) != len(set(SYMBOLS)):
+              raise SystemExit("LIVE_UNIVERSE_DUPLICATE_SYMBOLS")
+          bad = [x for x in SYMBOLS if not re.fullmatch(r"[1-9]\d{3}", x)]
+          if bad:
+              raise SystemExit(f"LIVE_UNIVERSE_BAD_SYMBOLS:{bad[:10]}")
+          declared = universe.get("requested_count")
+          if declared is not None and int(declared) != len(SYMBOLS):
+              raise SystemExit(
+                  f"LIVE_UNIVERSE_COUNT_MISMATCH declared={declared} actual={len(SYMBOLS)}"
+              )
+
+          universe_sha256 = hashlib.sha256(raw_universe).hexdigest()
+          universe_version = universe.get("version")
+          universe_target_date = universe.get("target_date")
+          universe_source_run_id = universe.get("source_run_id")
+
+          print(
+              "HENGCE LIVE UNIVERSE",
+              len(SYMBOLS),
+              universe_version,
+              universe_target_date,
+              universe_source_run_id,
           )
 
+          BASE = "https://api.fugle.tw/marketdata/v1.0/stock/intraday/quote/"
           quote_dir = Path("live/quotes")
           quote_dir.mkdir(parents=True, exist_ok=True)
-
 
           def now_tw():
               return datetime.now(TZ)
 
-
           def market_phase(dt):
               if dt.weekday() >= 5:
                   return "closed"
-
               minute = dt.hour * 60 + dt.minute
-
               if minute < 540:
                   return "preopen"
-
               if minute <= 810:
                   return "open"
-
               return "closed"
-
 
           def parse_timestamp(value):
               if value in (None, ""):
                   return None
-
               try:
                   value = float(value)
-
                   if value >= 1e14:
                       value /= 1_000_000
                   elif value >= 1e11:
                       value /= 1_000
-
                   return datetime.fromtimestamp(value, TZ)
-
               except Exception:
                   return None
-
 
           def age_seconds(now, dt):
               if dt is None:
                   return None
-
-              return max(
-                  0,
-                  int((now - dt).total_seconds())
-              )
-
+              return max(0, int((now - dt).total_seconds()))
 
           def first_level(value):
-              if (
-                  isinstance(value, list)
-                  and value
-                  and isinstance(value[0], dict)
-              ):
+              if isinstance(value, list) and value and isinstance(value[0], dict):
                   return value[0]
-
               return {}
-
 
           def fetch(symbol):
               request = urllib.request.Request(
@@ -139,89 +131,53 @@ jobs:
                   headers={
                       "X-API-KEY": API_KEY,
                       "Accept": "application/json",
-                      "User-Agent": "HENGCE-LIVE/1.0"
-                  }
+                      "User-Agent": "HENGCE-LIVE/2.0-LIFECYCLE-UNION",
+                  },
               )
-
               for attempt in range(4):
                   try:
-                      with urllib.request.urlopen(
-                          request,
-                          timeout=15
-                      ) as response:
+                      with urllib.request.urlopen(request, timeout=15) as response:
                           return json.load(response)
-
                   except urllib.error.HTTPError as e:
                       if e.code in (401, 403):
-                          raise RuntimeError(
-                              f"AUTH_OR_PLAN_HTTP_{e.code}"
-                          )
-
+                          raise RuntimeError(f"AUTH_OR_PLAN_HTTP_{e.code}")
                       if e.code == 429:
                           if attempt == 3:
-                              raise RuntimeError(
-                                  "RATE_LIMIT_HTTP_429"
-                              )
-
+                              raise RuntimeError("RATE_LIMIT_HTTP_429")
                       elif 500 <= e.code <= 599:
                           if attempt == 3:
-                              raise RuntimeError(
-                                  f"SERVER_HTTP_{e.code}"
-                              )
-
+                              raise RuntimeError(f"SERVER_HTTP_{e.code}")
                       else:
                           raise
-
                   except Exception:
                       if attempt == 3:
                           raise
-
-                  time.sleep(
-                      (2 ** attempt)
-                      + random.uniform(0.2, 0.8)
-                  )
-
+                  time.sleep((2 ** attempt) + random.uniform(0.2, 0.8))
 
           def load_previous(symbol):
               path = quote_dir / f"{symbol}.json"
-
               if not path.exists():
                   return None
-
               try:
-                  return json.loads(
-                      path.read_text(encoding="utf-8")
-                  )
+                  return json.loads(path.read_text(encoding="utf-8"))
               except Exception:
                   return None
 
-
           snapshot_time = now_tw()
-          snapshot_id = snapshot_time.strftime(
-              "%Y%m%dT%H%M%S%z"
-          )
-          expires_at = (
-              snapshot_time
-              + timedelta(seconds=CACHE_TTL_SECONDS)
-          )
-
+          snapshot_id = snapshot_time.strftime("%Y%m%dT%H%M%S%z")
+          expires_at = snapshot_time + timedelta(seconds=CACHE_TTL_SECONDS)
           records = []
           failures = []
           successful = 0
 
-
           for symbol in SYMBOLS:
               try:
                   row = fetch(symbol)
-
                   if not isinstance(row, dict):
                       raise RuntimeError("INVALID_RESPONSE")
-
                   if str(row.get("symbol")) != symbol:
                       raise RuntimeError("SYMBOL_MISMATCH")
-
                   name = row.get("name")
-
                   if not name:
                       raise RuntimeError("NAME_MISSING")
 
@@ -229,397 +185,169 @@ jobs:
                   last_trade = row.get("lastTrade") or {}
                   last_trial = row.get("lastTrial") or {}
                   halt = row.get("tradingHalt") or {}
-
-                  if not isinstance(total, dict):
-                      total = {}
-
-                  if not isinstance(last_trade, dict):
-                      last_trade = {}
-
-                  if not isinstance(last_trial, dict):
-                      last_trial = {}
-
-                  if not isinstance(halt, dict):
-                      halt = {}
+                  if not isinstance(total, dict): total = {}
+                  if not isinstance(last_trade, dict): last_trade = {}
+                  if not isinstance(last_trial, dict): last_trial = {}
+                  if not isinstance(halt, dict): halt = {}
 
                   bid = first_level(row.get("bids"))
                   ask = first_level(row.get("asks"))
-
-                  quote_time = parse_timestamp(
-                      row.get("lastUpdated")
-                  )
-
-                  trade_time = parse_timestamp(
-                      last_trade.get("time")
-                  )
-
-                  is_trial = bool(
-                      row.get("isTrial", False)
-                  )
-
-                  # 衡策正式成交價只採 lastTrade.price。
-                  # Fugle lastPrice 另外保留，因為可能是試撮。
+                  quote_time = parse_timestamp(row.get("lastUpdated"))
+                  trade_time = parse_timestamp(last_trade.get("time"))
+                  is_trial = bool(row.get("isTrial", False))
                   price = last_trade.get("price")
                   previous_close = row.get("previousClose")
-
                   change = None
                   change_percent = None
+                  if price is not None and previous_close not in (None, 0):
+                      change = round(float(price) - float(previous_close), 4)
+                      change_percent = round((float(price) / float(previous_close) - 1) * 100, 4)
 
-                  if (
-                      price is not None
-                      and previous_close not in (None, 0)
-                  ):
-                      change = round(
-                          float(price)
-                          - float(previous_close),
-                          4
-                      )
-
-                      change_percent = round(
-                          (
-                              float(price)
-                              / float(previous_close)
-                              - 1
-                          ) * 100,
-                          4
-                      )
-
-                  quote_age = age_seconds(
-                      snapshot_time,
-                      quote_time
-                  )
-
-                  trade_age = age_seconds(
-                      snapshot_time,
-                      trade_time
-                  )
-
+                  quote_age = age_seconds(snapshot_time, quote_time)
+                  trade_age = age_seconds(snapshot_time, trade_time)
                   quote_date = row.get("date")
-
-                  stale_at_publish = (
-                      quote_date
-                      != snapshot_time.date().isoformat()
-                  )
+                  stale_at_publish = quote_date != snapshot_time.date().isoformat()
 
                   record = {
-                      "schema_version": 1,
+                      "schema_version": 2,
                       "snapshot_id": snapshot_id,
-
                       "symbol": symbol,
                       "company_name": name,
-
                       "price": price,
                       "previous_close": previous_close,
-                      "reference_price":
-                          row.get("referencePrice"),
-
+                      "reference_price": row.get("referencePrice"),
                       "open": row.get("openPrice"),
                       "high": row.get("highPrice"),
                       "low": row.get("lowPrice"),
                       "avg_price": row.get("avgPrice"),
-
                       "change": change,
                       "change_percent": change_percent,
-
-                      "volume":
-                          total.get("tradeVolume"),
-                      "trade_value":
-                          total.get("tradeValue"),
-                      "transactions":
-                          total.get("transaction"),
-
-                      "volume_at_bid":
-                          total.get("tradeVolumeAtBid"),
-                      "volume_at_ask":
-                          total.get("tradeVolumeAtAsk"),
-
+                      "volume": total.get("tradeVolume"),
+                      "trade_value": total.get("tradeValue"),
+                      "transactions": total.get("transaction"),
+                      "volume_at_bid": total.get("tradeVolumeAtBid"),
+                      "volume_at_ask": total.get("tradeVolumeAtAsk"),
                       "best_bid": bid.get("price"),
                       "best_bid_size": bid.get("size"),
                       "best_ask": ask.get("price"),
                       "best_ask_size": ask.get("size"),
-
-                      "last_trade_time":
-                          (
-                              trade_time.isoformat()
-                              if trade_time
-                              else None
-                          ),
+                      "last_trade_time": trade_time.isoformat() if trade_time else None,
                       "trade_age_seconds": trade_age,
-                      "trade_idle_warning":
-                          (
-                              trade_age is not None
-                              and trade_age
-                              > TRADE_IDLE_SECONDS
-                          ),
-
-                      "source_last_price":
-                          row.get("lastPrice"),
-                      "source_last_updated":
-                          (
-                              quote_time.isoformat()
-                              if quote_time
-                              else None
-                          ),
+                      "trade_idle_warning": trade_age is not None and trade_age > TRADE_IDLE_SECONDS,
+                      "source_last_price": row.get("lastPrice"),
+                      "source_last_updated": quote_time.isoformat() if quote_time else None,
                       "quote_age_seconds": quote_age,
-
                       "is_trial": is_trial,
-                      "trial_price":
-                          (
-                              row.get("lastPrice")
-                              if is_trial
-                              else None
-                          ),
-                      "last_trial_price":
-                          last_trial.get("price"),
-
-                      "is_halted":
-                          bool(
-                              halt.get(
-                                  "isHalted",
-                                  False
-                              )
-                          ),
-
-                      "is_limit_up_price":
-                          bool(
-                              row.get(
-                                  "isLimitUpPrice",
-                                  False
-                              )
-                          ),
-                      "is_limit_down_price":
-                          bool(
-                              row.get(
-                                  "isLimitDownPrice",
-                                  False
-                              )
-                          ),
-
-                      "is_delayed_open":
-                          bool(
-                              row.get(
-                                  "isDelayedOpen",
-                                  False
-                              )
-                          ),
-                      "is_delayed_close":
-                          bool(
-                              row.get(
-                                  "isDelayedClose",
-                                  False
-                              )
-                          ),
-
+                      "trial_price": row.get("lastPrice") if is_trial else None,
+                      "last_trial_price": last_trial.get("price"),
+                      "is_halted": bool(halt.get("isHalted", False)),
+                      "is_limit_up_price": bool(row.get("isLimitUpPrice", False)),
+                      "is_limit_down_price": bool(row.get("isLimitDownPrice", False)),
+                      "is_delayed_open": bool(row.get("isDelayedOpen", False)),
+                      "is_delayed_close": bool(row.get("isDelayedClose", False)),
                       "quote_date": quote_date,
-                      "stale_at_publish":
-                          stale_at_publish,
-
+                      "stale_at_publish": stale_at_publish,
                       "fetch_ok": True,
-
-                      "fetched_at_taipei":
-                          snapshot_time.isoformat(),
-
-                      "cache_expires_at_taipei":
-                          expires_at.isoformat(),
-
-                      "market_phase":
-                          market_phase(snapshot_time),
-
-                      "source":
-                          "Fugle MarketData"
+                      "fetched_at_taipei": snapshot_time.isoformat(),
+                      "cache_expires_at_taipei": expires_at.isoformat(),
+                      "market_phase": market_phase(snapshot_time),
+                      "source": "Fugle MarketData",
+                      "universe_version": universe_version,
+                      "universe_source_run_id": universe_source_run_id,
                   }
-
                   records.append(record)
                   successful += 1
-
                   (quote_dir / f"{symbol}.json").write_text(
-                      json.dumps(
-                          record,
-                          ensure_ascii=False,
-                          indent=2
-                      ),
-                      encoding="utf-8"
+                      json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8"
                   )
-
-                  print(
-                      "OK",
-                      symbol,
-                      name,
-                      price
-                  )
-
+                  print("OK", symbol, name, price)
               except Exception as e:
                   error = str(e)
-
-                  failures.append({
-                      "symbol": symbol,
-                      "error": error
-                  })
-
+                  failures.append({"symbol": symbol, "error": error})
                   old = load_previous(symbol)
-
                   if old:
                       old["fetch_ok"] = False
                       old["stale_at_publish"] = True
                       old["fetch_error"] = error
-                      old["last_fetch_attempt_taipei"] = (
-                          snapshot_time.isoformat()
-                      )
-
+                      old["last_fetch_attempt_taipei"] = snapshot_time.isoformat()
                       records.append(old)
+                  print("FAIL", symbol, error)
+              time.sleep(0.45)
 
-                  print(
-                      "FAIL",
-                      symbol,
-                      error
-                  )
-
-              # 保守節流。
-              time.sleep(1.05)
-
-
-          # 完全抓不到資料時，不覆蓋舊 snapshot。
           if successful == 0:
-              raise SystemExit(
-                  "ALL_REQUESTS_FAILED"
-              )
+              raise SystemExit("ALL_REQUESTS_FAILED")
 
-
-          stale_count = sum(
-              bool(x.get("stale_at_publish"))
-              for x in records
-          )
-
-          trial_count = sum(
-              bool(x.get("is_trial"))
-              for x in records
-          )
-
-          halted_count = sum(
-              bool(x.get("is_halted"))
-              for x in records
-          )
+          stale_count = sum(bool(x.get("stale_at_publish")) for x in records)
+          trial_count = sum(bool(x.get("is_trial")) for x in records)
+          halted_count = sum(bool(x.get("is_halted")) for x in records)
 
           payload = {
-              "schema_version": 1,
+              "schema_version": 2,
               "service": "HENGCE LIVE QUOTES",
               "snapshot_id": snapshot_id,
-              "generated_at_taipei":
-                  snapshot_time.isoformat(),
-              "cache_expires_at_taipei":
-                  expires_at.isoformat(),
-              "cache_ttl_seconds":
-                  CACHE_TTL_SECONDS,
-              "market_phase":
-                  market_phase(snapshot_time),
-
-              "requested_count":
-                  len(SYMBOLS),
-              "success_count":
-                  successful,
-              "failure_count":
-                  len(failures),
-              "stale_count":
-                  stale_count,
-              "trial_count":
-                  trial_count,
-              "halted_count":
-                  halted_count,
-
-              "failures":
-                  failures,
-
-              "data":
-                  records
+              "generated_at_taipei": snapshot_time.isoformat(),
+              "cache_expires_at_taipei": expires_at.isoformat(),
+              "cache_ttl_seconds": CACHE_TTL_SECONDS,
+              "market_phase": market_phase(snapshot_time),
+              "universe_policy": "DAILY_ACTION_BOARD_ROWS_HARD_BIND",
+              "universe_version": universe_version,
+              "universe_target_date": universe_target_date,
+              "universe_source_run_id": universe_source_run_id,
+              "universe_sha256": universe_sha256,
+              "requested_count": len(SYMBOLS),
+              "success_count": successful,
+              "failure_count": len(failures),
+              "stale_count": stale_count,
+              "trial_count": trial_count,
+              "halted_count": halted_count,
+              "failures": failures,
+              "data": records,
           }
 
-          status = {
-              key: value
-              for key, value in payload.items()
-              if key != "data"
-          }
+          status = {key: value for key, value in payload.items() if key != "data"}
+          status["healthy"] = successful > 0
 
-          status["healthy"] = (
-              successful > 0
-          )
-
-          Path("live").mkdir(
-              parents=True,
-              exist_ok=True
-          )
-
-          Path("latest.json").write_text(
-              json.dumps(
-                  payload,
-                  ensure_ascii=False,
-                  indent=2
-              ),
-              encoding="utf-8"
-          )
-
-          Path("live/active.json").write_text(
-              json.dumps(
-                  payload,
-                  ensure_ascii=False,
-                  indent=2
-              ),
-              encoding="utf-8"
-          )
-
-          Path("live/status.json").write_text(
-              json.dumps(
-                  status,
-                  ensure_ascii=False,
-                  indent=2
-              ),
-              encoding="utf-8"
-          )
-
-          print(
-              "HENGCE SNAPSHOT OK",
-              successful,
-              "/",
-              len(SYMBOLS)
-          )
+          Path("live").mkdir(parents=True, exist_ok=True)
+          Path("latest.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+          Path("live/active.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+          Path("live/status.json").write_text(json.dumps(status, ensure_ascii=False, indent=2), encoding="utf-8")
+          print("HENGCE SNAPSHOT OK", successful, "/", len(SYMBOLS))
           PY
 
-      - name: Validate
+      - name: Validate lifecycle hard-bind
         shell: bash
         run: |
           python3 <<'PY'
           import json
           from pathlib import Path
 
-          required = [
-              Path("latest.json"),
-              Path("live/active.json"),
-              Path("live/status.json")
-          ]
-
-          for path in required:
-              if not path.exists():
-                  raise SystemExit(
-                      f"Missing {path}"
-                  )
-
-          latest = json.loads(
-              Path("latest.json").read_text(
-                  encoding="utf-8"
-              )
-          )
-
-          if not latest.get("data"):
-              raise SystemExit(
-                  "latest.json empty"
-              )
+          latest = json.loads(Path("latest.json").read_text(encoding="utf-8"))
+          universe = json.loads(Path("hengce/live_universe.json").read_text(encoding="utf-8"))
+          expected = [str(x) for x in universe.get("symbols", [])]
+          actual = [str(x.get("symbol")) for x in latest.get("data", [])]
 
           if not latest.get("snapshot_id"):
-              raise SystemExit(
-                  "snapshot_id missing"
-              )
+              raise SystemExit("snapshot_id missing")
+          if latest.get("requested_count") != len(expected):
+              raise SystemExit("requested_count does not match lifecycle universe")
+          if latest.get("universe_source_run_id") != universe.get("source_run_id"):
+              raise SystemExit("universe source run mismatch")
+          if "2033" not in expected or "6415" not in expected:
+              raise SystemExit("continuity/reentry regression symbol missing from universe")
+
+          missing_without_record = [x for x in expected if x not in actual]
+          # A failed quote may have no prior record yet. This is allowed in the payload only
+          # if it is explicitly listed in failures; it must never silently disappear.
+          failed = {str(x.get("symbol")) for x in latest.get("failures", [])}
+          silent = [x for x in missing_without_record if x not in failed]
+          if silent:
+              raise SystemExit(f"symbols silently missing from live snapshot: {silent[:10]}")
 
           print(
-              "HENGCE LIVE VERIFIED"
+              "HENGCE LIVE LIFECYCLE HARD-BIND VERIFIED",
+              latest.get("requested_count"),
+              latest.get("success_count"),
+              latest.get("failure_count"),
           )
           PY
 
@@ -627,24 +355,14 @@ jobs:
         shell: bash
         run: |
           git config user.name "hengce-live-bot"
-          git config user.email \
-            "hengce-live-bot@users.noreply.github.com"
-
+          git config user.email "hengce-live-bot@users.noreply.github.com"
           git add latest.json live/
-
           if git diff --cached --quiet; then
             echo "No changes."
             exit 0
           fi
-
-          TS="$(
-            TZ=Asia/Taipei \
-            date '+%Y-%m-%d %H:%M:%S'
-          )"
-
-          git commit \
-            -m "HENGCE live ${TS}"
-
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE live ${TS} lifecycle-union"
           if ! git push origin HEAD:main; then
             git pull --rebase origin main
             git push origin HEAD:main
