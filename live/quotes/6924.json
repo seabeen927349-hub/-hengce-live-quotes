@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "snapshot_id": "20261016T131819+0800",
+  "snapshot_id": "20261016T132258+0800",
   "symbol": "6924",
   "company_name": "榮惠-KY創",
   "price": 145,
@@ -22,11 +22,11 @@
   "best_ask": 145.5,
   "best_ask_size": 5,
   "last_trade_time": "2026-10-16T13:16:58.562823+08:00",
-  "trade_age_seconds": 80,
+  "trade_age_seconds": 359,
   "trade_idle_warning": false,
   "source_last_price": 145,
-  "source_last_updated": "2026-10-16T13:18:11.406475+08:00",
-  "quote_age_seconds": 7,
+  "source_last_updated": "2026-10-16T13:20:56.445317+08:00",
+  "quote_age_seconds": 121,
   "is_trial": false,
   "trial_price": null,
   "last_trial_price": 144,
@@ -38,10 +38,10 @@
   "quote_date": "2026-10-16",
   "stale_at_publish": false,
   "fetch_ok": true,
-  "fetched_at_taipei": "2026-10-16T13:18:19.128056+08:00",
-  "cache_expires_at_taipei": "2026-10-16T13:28:19.128056+08:00",
+  "fetched_at_taipei": "2026-10-16T13:22:58.296164+08:00",
+  "cache_expires_at_taipei": "2026-10-16T13:32:58.296164+08:00",
   "market_phase": "open",
   "source": "Fugle MarketData",
-  "universe_version": "HENGCE_LIVE_UNIVERSE_v1_1_AUS_RADAR_20261016",
-  "universe_source_run_id": "HENGCE_V3_SCAN_20261015_aa4c04f2"
+  "universe_version": "HENGCE_LIVE_UNIVERSE_v1_2_AUS_INTEGRATED_PRIORITY_20261016",
+  "universe_source_run_id": "HENGCE_V3_SCAN_20261015_ab5769b2"
 }
