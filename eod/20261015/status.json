@@ -1,0 +1,18 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_COMPLETE_LEG_INGEST",
+  "target_date": "2026-10-15",
+  "price_status": "COMPLETE",
+  "price_date": "2026-10-15",
+  "price_rows": 1085,
+  "institutional_status": "COMPLETE",
+  "institutional_date": "2026-10-15",
+  "institutional_rows": 1078,
+  "margin_status": "COMPLETE",
+  "margin_date": "2026-10-15",
+  "margin_rows": 1060,
+  "policy": "THREE_LEG_COMPLETE_REQUIRED",
+  "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261015&type=ALLBUT0999&response=json",
+  "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86?date=20261015&selectType=ALLBUT0999&response=json",
+  "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date=20261015&selectType=ALL&response=json"
+}
