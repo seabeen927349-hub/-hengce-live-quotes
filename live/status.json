@@ -1,21 +1,26 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "service": "HENGCE LIVE QUOTES",
-  "snapshot_id": "20261016T113220+0800",
-  "generated_at_taipei": "2026-10-16T11:32:20.560557+08:00",
-  "cache_expires_at_taipei": "2026-10-16T11:42:20.560557+08:00",
+  "snapshot_id": "20261016T114913+0800",
+  "generated_at_taipei": "2026-10-16T11:49:13.396245+08:00",
+  "cache_expires_at_taipei": "2026-10-16T11:59:13.396245+08:00",
   "cache_ttl_seconds": 600,
   "market_phase": "open",
-  "requested_count": 25,
-  "success_count": 24,
+  "universe_policy": "DAILY_ACTION_BOARD_ROWS_HARD_BIND",
+  "universe_version": "HENGCE_LIVE_UNIVERSE_v1_20261016",
+  "universe_target_date": "2026-10-15",
+  "universe_source_run_id": "HENGCE_V3_SCAN_20261015_b89a52d9",
+  "universe_sha256": "4fe44879ed3d0e43abcfd0af5c7441fbee6e8131cdbd0b749b053254dfb8eb54",
+  "requested_count": 66,
+  "success_count": 65,
   "failure_count": 1,
-  "stale_count": 0,
+  "stale_count": 1,
   "trial_count": 0,
   "halted_count": 0,
   "failures": [
     {
-      "symbol": "8031",
-      "error": "HTTP Error 404: Not Found"
+      "symbol": "6934",
+      "error": "RATE_LIMIT_HTTP_429"
     }
   ],
   "healthy": true
