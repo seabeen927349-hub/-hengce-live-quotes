@@ -1,0 +1,43 @@
+name: HENGCE TDCC blank historical probe
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/hengce-tdcc-blank-historical-probe.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe one missing historical week with official token payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          pip install --quiet requests pandas lxml
+          python3 <<'PY'
+          import io,re,requests,pandas as pd
+          URL='https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
+          D='20260424'
+          s=requests.Session(); s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-PROBE/1.0'})
+          g=s.get(URL,timeout=30,verify=False); g.raise_for_status()
+          m=re.search(r'name="SYNCHRONIZER_TOKEN"[^>]*value="([^"]*)"',g.text)
+          if not m: raise SystemExit('TOKEN_NOT_FOUND')
+          token=m.group(1)
+          data={'SYNCHRONIZER_TOKEN':token,'SYNCHRONIZER_URI':'/portal/zh/smWeb/qryStock','method':'submit','firDate':D,'scaDate':D,'sqlMethod':'StockNo','stockNo':'','stockName':''}
+          r=s.post(URL,data=data,timeout=60,verify=False); r.raise_for_status()
+          print('HTTP',r.status_code,'BYTES',len(r.content),'HAS_NO_DATA','查無此資料' in r.text)
+          print('TOKEN_ROTATED', bool(re.search(r'name="SYNCHRONIZER_TOKEN"[^>]*value="([^"]*)"',r.text)))
+          try: tables=pd.read_html(io.StringIO(r.text))
+          except Exception as e: raise SystemExit(f'READ_HTML_FAIL:{type(e).__name__}:{e}')
+          print('TABLE_COUNT',len(tables))
+          for i,t in enumerate(tables):
+              cols='|'.join(map(str,t.columns))
+              if '持股' in cols or '占集保庫存數比例' in cols:
+                  print('CANDIDATE_TABLE',i,'ROWS',len(t),'COLS',cols[:500])
+                  print(t.head(5).to_string(index=False))
+          PY
