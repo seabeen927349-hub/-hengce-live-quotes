@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "snapshot_id": "20261016T125655+0800",
+  "snapshot_id": "20261016T130819+0800",
   "symbol": "1516",
   "company_name": "川飛",
   "price": null,
@@ -38,8 +38,8 @@
   "quote_date": "2026-10-15",
   "stale_at_publish": true,
   "fetch_ok": true,
-  "fetched_at_taipei": "2026-10-16T12:56:55.110815+08:00",
-  "cache_expires_at_taipei": "2026-10-16T13:06:55.110815+08:00",
+  "fetched_at_taipei": "2026-10-16T13:08:19.519959+08:00",
+  "cache_expires_at_taipei": "2026-10-16T13:18:19.519959+08:00",
   "market_phase": "open",
   "source": "Fugle MarketData",
   "universe_version": "HENGCE_LIVE_UNIVERSE_v1_1_AUS_RADAR_20261016",
