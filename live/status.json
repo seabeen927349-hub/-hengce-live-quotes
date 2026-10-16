@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
   "service": "HENGCE LIVE QUOTES",
-  "snapshot_id": "20261016T132258+0800",
-  "generated_at_taipei": "2026-10-16T13:22:58.296164+08:00",
-  "cache_expires_at_taipei": "2026-10-16T13:32:58.296164+08:00",
+  "snapshot_id": "20261016T134937+0800",
+  "generated_at_taipei": "2026-10-16T13:49:37.303720+08:00",
+  "cache_expires_at_taipei": "2026-10-16T13:59:37.303720+08:00",
   "cache_ttl_seconds": 600,
-  "market_phase": "open",
+  "market_phase": "closed",
   "universe_policy": "DAILY_ACTION_BOARD_ROWS_HARD_BIND",
   "universe_version": "HENGCE_LIVE_UNIVERSE_v1_2_AUS_INTEGRATED_PRIORITY_20261016",
   "universe_target_date": "2026-10-15",
@@ -15,7 +15,7 @@
   "success_count": 76,
   "failure_count": 1,
   "stale_count": 1,
-  "trial_count": 1,
+  "trial_count": 0,
   "halted_count": 0,
   "failures": [
     {
