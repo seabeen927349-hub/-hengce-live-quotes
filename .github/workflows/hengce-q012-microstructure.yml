@@ -61,6 +61,11 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Test Q-012 feature integrity
+        if: steps.market_day.outputs.is_open == 'true'
+        shell: bash
+        run: python3 -m unittest discover -s research/q012 -p 'test_*.py'
+
       - name: Install frozen collector dependency
         if: steps.market_day.outputs.is_open == 'true'
         shell: bash
@@ -131,15 +136,17 @@ jobs:
             echo "No raw events yet; feature extraction deferred."
             exit 0
           fi
-          python3 research/q012/HENGCE_MICROSTRUCTURE_FEATURES_v0_1.py \
+          python3 research/q012/HENGCE_MICROSTRUCTURE_FEATURES_v0_2.py \
             "${FILES[@]}" \
-            --out hengce_microstructure/features.ndjson
+            --out hengce_microstructure/features.ndjson \
+            --require-aligned
 
       - name: Upload immutable Q-012 raw artifact
-        if: steps.market_day.outputs.is_open == 'true'
+        if: always() && steps.market_day.outputs.is_open == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: HENGCE_Q012_${{ github.run_id }}_${{ github.run_attempt }}
           path: hengce_microstructure/
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 90
+

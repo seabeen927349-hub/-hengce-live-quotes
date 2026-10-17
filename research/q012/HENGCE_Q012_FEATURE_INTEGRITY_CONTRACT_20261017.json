@@ -1,0 +1,32 @@
+{
+  "system": "HENGCE",
+  "artifact": "Q012_FEATURE_INTEGRITY_GUARD",
+  "research_id": "Q-012",
+  "version": "1.0.0",
+  "date": "2026-10-17",
+  "scope": "Research-only Q-012 raw-event transformer",
+  "production_core_changed": false,
+  "formal_ranking_changed": false,
+  "activation_or_execution_authority": false,
+  "rules": {
+    "all_valid_trade_events_retained": true,
+    "trades_without_prior_book_not_dropped": true,
+    "depth_features_require_trade_best_bid_ask_match": true,
+    "ambiguous_same_symbol_same_timestamp_book_updates_suppressed": true,
+    "book_timestamp_and_age_ms_emitted": true,
+    "no_predictive_or_alpha_threshold_added": true,
+    "deterministic_ordering_independent_of_file_enumeration": true,
+    "json_output_disallows_nan": true,
+    "quality_summary_written_even_when_aligned_row_requirement_fails": true
+  },
+  "limitations": [
+    "Book age is recorded without a tuned cutoff; any age-based exclusion must be specified before outcome analysis.",
+    "Matching best-bid/ask prices does not guarantee unchanged displayed depth; the measured age remains explicit for later prespecified sensitivity analysis."
+  ],
+  "additional_v71_repairs": [
+    "Invalid or empty newest book invalidates previously cached depth",
+    "Crossed, negative, nonfinite or empty top-size books excluded"
+  ],
+  "deployment_status": "AUTHORIZED_RESEARCH_BRANCH_CANDIDATE_NOT_MAIN_DEPLOYMENT",
+  "user_authorization": "2026-10-17: write Q-012 fix to seabeen927349-hub/-hengce-live-quotes research branch and draft PR"
+}
