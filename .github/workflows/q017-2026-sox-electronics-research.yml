@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: python -m pip install --disable-pip-version-check requests
+        run: python -m pip install --disable-pip-version-check requests openpyxl
       - name: Acquire PIT archive
         run: python research/q017_sox_tw_electronics/acquire_2026_sox_dxy_pit.py
       - name: Commit research archive
