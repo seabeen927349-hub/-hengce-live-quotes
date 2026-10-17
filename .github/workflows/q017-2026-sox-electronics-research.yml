@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/exit_clock_profit_2026.py'
+      - 'research/q017_sox_tw_electronics/participation_profit_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -25,20 +25,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify 2026 archives and locked causal entry replay
-        run: |
-          test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
-          test -s research/q017_sox_tw_electronics/fixed_clock_selection_2026/summary.json
-      - name: Run exit-clock terminal-capital search
-        run: python research/q017_sox_tw_electronics/exit_clock_profit_2026.py
-      - name: Commit exit-clock results
+      - name: Verify locked event candidate snapshot
+        run: test -s research/q017_sox_tw_electronics/capacity_aware_multistock_2026/summary.json
+      - name: Run participation terminal-capital search
+        run: python research/q017_sox_tw_electronics/participation_profit_2026.py
+      - name: Commit participation results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/exit_clock_profit_2026
+          git add research/q017_sox_tw_electronics/participation_profit_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Backtest Q017 executable exit clocks'
+            git commit -m 'Backtest Q017 higher executable participation'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
