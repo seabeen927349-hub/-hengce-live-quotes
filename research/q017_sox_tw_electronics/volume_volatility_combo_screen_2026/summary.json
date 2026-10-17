@@ -1,0 +1,383 @@
+{
+  "objective": "screen prior-known stock volume/volatility/liquidity filters inside validated SOX5 x DXY5 gate; no timing optimization",
+  "baseline": {
+    "metric": "none",
+    "side": "ge",
+    "threshold": 0,
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "tested": 53,
+  "best": {
+    "metric": "none",
+    "side": "ge",
+    "threshold": 0,
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "improvement": 0.0,
+  "local_same_family": [
+    {
+      "metric": "none",
+      "side": "ge",
+      "threshold": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    }
+  ],
+  "top25": [
+    {
+      "metric": "none",
+      "side": "ge",
+      "threshold": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "vol_ratio_5_20",
+      "side": "le",
+      "threshold": 1.25,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "vol_ratio_5_20",
+      "side": "le",
+      "threshold": 1.5,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "vol_ratio_5_20",
+      "side": "le",
+      "threshold": 2.0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "turnover20",
+      "side": "ge",
+      "threshold": 50000000.0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "turnover20",
+      "side": "ge",
+      "threshold": 100000000.0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "turnover20",
+      "side": "ge",
+      "threshold": 200000000.0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "turnover20",
+      "side": "ge",
+      "threshold": 500000000.0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "turnover20",
+      "side": "ge",
+      "threshold": 1000000000.0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "volatility20",
+      "side": "ge",
+      "threshold": 0.015,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "volatility20",
+      "side": "ge",
+      "threshold": 0.02,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "volatility20",
+      "side": "ge",
+      "threshold": 0.05,
+      "final": 16343051.21977623,
+      "ret": 7.171525609888114,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "volatility20",
+      "side": "ge",
+      "threshold": 0.06,
+      "final": 16343051.21977623,
+      "ret": 7.171525609888114,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "range1",
+      "side": "ge",
+      "threshold": 0.015,
+      "final": 15568360.57970908,
+      "ret": 6.78418028985454,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "range1",
+      "side": "ge",
+      "threshold": 0.02,
+      "final": 15568360.57970908,
+      "ret": 6.78418028985454,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "turnover20",
+      "side": "ge",
+      "threshold": 2000000000.0,
+      "final": 15213623.602304026,
+      "ret": 6.606811801152014,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "volatility20",
+      "side": "ge",
+      "threshold": 0.025,
+      "final": 15213623.602304026,
+      "ret": 6.606811801152014,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "volatility20",
+      "side": "ge",
+      "threshold": 0.03,
+      "final": 12905973.311485121,
+      "ret": 5.452986655742561,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "metric": "volatility20",
+      "side": "ge",
+      "threshold": 0.04,
+      "final": 12905973.311485121,
+      "ret": 5.452986655742561,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "metric": "vol_ratio_5_20",
+      "side": "le",
+      "threshold": 1.0,
+      "final": 12884104.15091434,
+      "ret": 5.44205207545717,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "metric": "vol_ratio_5_20",
+      "side": "ge",
+      "threshold": 0.5,
+      "final": 12349485.669017877,
+      "ret": 5.174742834508939,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "range1",
+      "side": "ge",
+      "threshold": 0.03,
+      "final": 12245675.278526971,
+      "ret": 5.122837639263485,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "range1",
+      "side": "ge",
+      "threshold": 0.04,
+      "final": 12245675.278526971,
+      "ret": 5.122837639263485,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "vol_ratio_5_20",
+      "side": "le",
+      "threshold": 0.75,
+      "final": 11705503.933082242,
+      "ret": 4.8527519665411205,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "metric": "range1",
+      "side": "le",
+      "threshold": 0.1,
+      "final": 10748676.251408072,
+      "ret": 4.374338125704036,
+      "events": 8,
+      "wins": 7
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "exit": "2026-03-18",
+      "net": 0.470422680412371,
+      "capital": 2940845.360824742,
+      "factor": {
+        "vol_ratio_5_20": 0.739481973053113,
+        "turnover20": 22511357538.65,
+        "volatility20": 0.06650973454795055,
+        "range1": 0.12440191387559808
+      },
+      "beta": 1.170347905692605,
+      "resid": -0.01819949770869858
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "exit": "2026-04-14",
+      "net": 0.30916101694915255,
+      "capital": 3850040.1032675165,
+      "factor": {
+        "vol_ratio_5_20": 0.328013234154653,
+        "turnover20": 14938094458.15,
+        "volatility20": 0.07816913052558352,
+        "range1": 0.0703125
+      },
+      "beta": 1.1028710296602542,
+      "resid": -0.025267140525159618
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "exit": "2026-06-02",
+      "net": 0.430229845626072,
+      "capital": 5506442.262550486,
+      "factor": {
+        "vol_ratio_5_20": 1.1288925365194855,
+        "turnover20": 36883320006.7,
+        "volatility20": 0.06119440447017703,
+        "range1": 0.07213114754098361
+      },
+      "beta": 0.8960597811040111,
+      "resid": -0.022151892175769572
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "exit": "2026-06-23",
+      "net": 0.39397222222222217,
+      "capital": 7675827.557265862,
+      "factor": {
+        "vol_ratio_5_20": 0.9145252236116729,
+        "turnover20": 49833262032.2,
+        "volatility20": 0.06134763685092344,
+        "range1": 0.05138888888888889
+      },
+      "beta": 0.6368260284798762,
+      "resid": -0.03468128778222483
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "exit": "2026-07-07",
+      "net": 0.015537735849056494,
+      "capital": 7795092.538273567,
+      "factor": {
+        "vol_ratio_5_20": 1.0678974260446228,
+        "turnover20": 16742566611.4,
+        "volatility20": 0.04392934583855118,
+        "range1": 0.05740181268882175
+      },
+      "beta": 0.8192344022784848,
+      "resid": 0.025224654376234126
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "exit": "2026-07-23",
+      "net": 0.1596856368563686,
+      "capital": 9039856.85460211,
+      "factor": {
+        "vol_ratio_5_20": 0.8769366704052989,
+        "turnover20": 5195546760.0,
+        "volatility20": 0.042686895874908225,
+        "range1": 0.09414758269720101
+      },
+      "beta": 0.44756136831664645,
+      "resid": -0.040265105361123044
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "exit": "2026-08-12",
+      "net": 0.4347376185458378,
+      "capital": 12969822.6955671,
+      "factor": {
+        "vol_ratio_5_20": 0.15437831933683305,
+        "turnover20": 8322170841.2,
+        "volatility20": 0.07742215120105221,
+        "range1": 0.0
+      },
+      "beta": 0.36966260068368895,
+      "resid": -0.0830103760700893
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "exit": "2026-10-01",
+      "net": 0.3343372093023256,
+      "capital": 17306117.02074897,
+      "factor": {
+        "vol_ratio_5_20": 0.9212170016533082,
+        "turnover20": 1902871616.1,
+        "volatility20": 0.02157611239641066,
+        "range1": 0.04503464203233263
+      },
+      "beta": 0.7590373439844261,
+      "resid": 0.037540298831315794
+    }
+  ]
+}
