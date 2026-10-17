@@ -1,0 +1,515 @@
+{
+  "objective": "rank only by normalized foreign/trust/margin intensity inside baseline TopN; no other factor and no timing optimization",
+  "baseline": {
+    "idx": 0,
+    "spec": {
+      "N": 1,
+      "w": 5,
+      "formula": "consensus",
+      "mode": "base"
+    },
+    "final": 17306117.02074897,
+    "events": 8,
+    "wins": 8
+  },
+  "tested": 169,
+  "best": {
+    "idx": 0,
+    "spec": {
+      "N": 1,
+      "w": 5,
+      "formula": "consensus",
+      "mode": "base"
+    },
+    "final": 17306117.02074897,
+    "events": 8,
+    "wins": 8
+  },
+  "improvement": 0.0,
+  "family_count": 1,
+  "family_within95pct": 1,
+  "top30": [
+    {
+      "idx": 0,
+      "spec": {
+        "N": 1,
+        "w": 5,
+        "formula": "consensus",
+        "mode": "base"
+      },
+      "final": 17306117.02074897,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 6,
+      "spec": {
+        "N": 3,
+        "w": 1,
+        "formula": "trust_margin",
+        "mode": "positive_only"
+      },
+      "final": 10945814.11350927,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 13,
+      "spec": {
+        "N": 3,
+        "w": 1,
+        "formula": "consecutive_consensus",
+        "mode": "teacher_first"
+      },
+      "final": 9225423.15819827,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 14,
+      "spec": {
+        "N": 3,
+        "w": 1,
+        "formula": "consecutive_consensus",
+        "mode": "positive_only"
+      },
+      "final": 9225423.15819827,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 83,
+      "spec": {
+        "N": 5,
+        "w": 3,
+        "formula": "consecutive_consensus",
+        "mode": "teacher_first"
+      },
+      "final": 9126670.467711065,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "idx": 84,
+      "spec": {
+        "N": 5,
+        "w": 3,
+        "formula": "consecutive_consensus",
+        "mode": "positive_only"
+      },
+      "final": 9126670.467711065,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "idx": 9,
+      "spec": {
+        "N": 3,
+        "w": 1,
+        "formula": "institution_margin",
+        "mode": "teacher_first"
+      },
+      "final": 8985506.973442417,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 10,
+      "spec": {
+        "N": 3,
+        "w": 1,
+        "formula": "institution_margin",
+        "mode": "positive_only"
+      },
+      "final": 8985506.973442417,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 99,
+      "spec": {
+        "N": 5,
+        "w": 10,
+        "formula": "consensus",
+        "mode": "teacher_first"
+      },
+      "final": 8888818.85317728,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 100,
+      "spec": {
+        "N": 5,
+        "w": 10,
+        "formula": "consensus",
+        "mode": "positive_only"
+      },
+      "final": 8888818.85317728,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 40,
+      "spec": {
+        "N": 3,
+        "w": 5,
+        "formula": "both_institution",
+        "mode": "positive_only"
+      },
+      "final": 8244797.92680288,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 27,
+      "spec": {
+        "N": 3,
+        "w": 3,
+        "formula": "consecutive_consensus",
+        "mode": "teacher_first"
+      },
+      "final": 8054221.72635094,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 28,
+      "spec": {
+        "N": 3,
+        "w": 3,
+        "formula": "consecutive_consensus",
+        "mode": "positive_only"
+      },
+      "final": 8054221.72635094,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 21,
+      "spec": {
+        "N": 3,
+        "w": 3,
+        "formula": "trust_absorbs_foreign",
+        "mode": "teacher_first"
+      },
+      "final": 8030303.838568264,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 22,
+      "spec": {
+        "N": 3,
+        "w": 3,
+        "formula": "trust_absorbs_foreign",
+        "mode": "positive_only"
+      },
+      "final": 8030303.838568264,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 12,
+      "spec": {
+        "N": 3,
+        "w": 1,
+        "formula": "both_institution",
+        "mode": "positive_only"
+      },
+      "final": 7963119.316699987,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 20,
+      "spec": {
+        "N": 3,
+        "w": 3,
+        "formula": "trust_margin",
+        "mode": "positive_only"
+      },
+      "final": 7921893.837348769,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 109,
+      "spec": {
+        "N": 5,
+        "w": 10,
+        "formula": "both_institution",
+        "mode": "teacher_first"
+      },
+      "final": 7915129.624667619,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "idx": 110,
+      "spec": {
+        "N": 5,
+        "w": 10,
+        "formula": "both_institution",
+        "mode": "positive_only"
+      },
+      "final": 7915129.624667619,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "idx": 5,
+      "spec": {
+        "N": 3,
+        "w": 1,
+        "formula": "trust_margin",
+        "mode": "teacher_first"
+      },
+      "final": 7859804.048046482,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 8,
+      "spec": {
+        "N": 3,
+        "w": 1,
+        "formula": "trust_absorbs_foreign",
+        "mode": "positive_only"
+      },
+      "final": 7808718.00816754,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 77,
+      "spec": {
+        "N": 5,
+        "w": 3,
+        "formula": "trust_absorbs_foreign",
+        "mode": "teacher_first"
+      },
+      "final": 7597103.448302569,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 78,
+      "spec": {
+        "N": 5,
+        "w": 3,
+        "formula": "trust_absorbs_foreign",
+        "mode": "positive_only"
+      },
+      "final": 7597103.448302569,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 97,
+      "spec": {
+        "N": 5,
+        "w": 5,
+        "formula": "consecutive_consensus",
+        "mode": "teacher_first"
+      },
+      "final": 7527531.671490618,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "idx": 98,
+      "spec": {
+        "N": 5,
+        "w": 5,
+        "formula": "consecutive_consensus",
+        "mode": "positive_only"
+      },
+      "final": 7527531.671490618,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "idx": 19,
+      "spec": {
+        "N": 3,
+        "w": 3,
+        "formula": "trust_margin",
+        "mode": "teacher_first"
+      },
+      "final": 7384174.922842154,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 45,
+      "spec": {
+        "N": 3,
+        "w": 10,
+        "formula": "foreign_margin",
+        "mode": "teacher_first"
+      },
+      "final": 7350015.243021053,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 46,
+      "spec": {
+        "N": 3,
+        "w": 10,
+        "formula": "foreign_margin",
+        "mode": "positive_only"
+      },
+      "final": 7350015.243021053,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 51,
+      "spec": {
+        "N": 3,
+        "w": 10,
+        "formula": "institution_margin",
+        "mode": "teacher_first"
+      },
+      "final": 7350015.243021053,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 52,
+      "spec": {
+        "N": 3,
+        "w": 10,
+        "formula": "institution_margin",
+        "mode": "positive_only"
+      },
+      "final": 7350015.243021053,
+      "events": 8,
+      "wins": 8
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "exit": "2026-03-18",
+      "net": 0.470422680412371,
+      "capital": 2940845.360824742,
+      "teacher": {
+        "F": -0.0909521545621567,
+        "T": 0.005862414898343305,
+        "M": -0.01393359258151361,
+        "Fc": 2,
+        "Tc": 5
+      },
+      "base": 1.7028415063934235
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "exit": "2026-04-14",
+      "net": 0.30916101694915255,
+      "capital": 3850040.1032675165,
+      "teacher": {
+        "F": 0.05217442027770196,
+        "T": -0.02968875660120576,
+        "M": 0.19016778010097404,
+        "Fc": 3,
+        "Tc": 0
+      },
+      "base": 1.7995309618490822
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "exit": "2026-06-02",
+      "net": 0.430229845626072,
+      "capital": 5506442.262550486,
+      "teacher": {
+        "F": -0.0018344843358624973,
+        "T": 0.0015965555550950703,
+        "M": 0.014952737189290782,
+        "Fc": 3,
+        "Tc": 3
+      },
+      "base": 1.3922952724555044
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "exit": "2026-06-23",
+      "net": 0.39397222222222217,
+      "capital": 7675827.557265862,
+      "teacher": {
+        "F": 0.011168104099845519,
+        "T": 0.011472992065286201,
+        "M": 0.1321041396731886,
+        "Fc": 2,
+        "Tc": 3
+      },
+      "base": 1.1889746975029236
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "exit": "2026-07-07",
+      "net": 0.015537735849056494,
+      "capital": 7795092.538273567,
+      "teacher": {
+        "F": 0.2931747283154218,
+        "T": -0.18266594174774647,
+        "M": 0.05140344944200203,
+        "Fc": 4,
+        "Tc": 0
+      },
+      "base": 0.8192344022784848
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "exit": "2026-07-23",
+      "net": 0.1596856368563686,
+      "capital": 9039856.85460211,
+      "teacher": {
+        "F": -0.01779046392774859,
+        "T": -0.08062988430336479,
+        "M": -0.13912133891213388,
+        "Fc": 1,
+        "Tc": 0
+      },
+      "base": 0.8980890095876006
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "exit": "2026-08-12",
+      "net": 0.4347376185458378,
+      "capital": 12969822.6955671,
+      "teacher": {
+        "F": 0.10044540091292625,
+        "T": -0.11663417031154015,
+        "M": 0.1428283844992451,
+        "Fc": 4,
+        "Tc": 2
+      },
+      "base": 1.1368083882286957
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "exit": "2026-10-01",
+      "net": 0.3343372093023256,
+      "capital": 17306117.02074897,
+      "teacher": {
+        "F": -0.050857101837248654,
+        "T": 0.0002161573145998641,
+        "M": 0.07047143974960876,
+        "Fc": 2,
+        "Tc": 2
+      },
+      "base": 0.7590373439844261
+    }
+  ]
+}
