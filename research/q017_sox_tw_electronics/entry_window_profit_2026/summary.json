@@ -1,0 +1,253 @@
+{
+  "objective": "maximize 2M terminal capital by causal entry timing only",
+  "baseline": {
+    "lag": 2,
+    "window": 20,
+    "field": "open",
+    "final": 12782674.321200002,
+    "ret": 5.391337160600001,
+    "n": 9,
+    "wins": 8
+  },
+  "best": {
+    "lag": 2,
+    "window": 20,
+    "field": "open",
+    "final": 12782674.321200002,
+    "ret": 5.391337160600001,
+    "n": 9,
+    "wins": 8
+  },
+  "improvement": 0.0,
+  "within_99pct_best": 2,
+  "within_95pct_best": 14,
+  "top15": [
+    {
+      "lag": 2,
+      "window": 20,
+      "field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 2,
+      "window": 25,
+      "field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 3,
+      "window": 20,
+      "field": "open",
+      "final": 12471141.289599998,
+      "ret": 5.235570644799999,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 3,
+      "window": 25,
+      "field": "open",
+      "final": 12471141.289599998,
+      "ret": 5.235570644799999,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 5,
+      "window": 15,
+      "field": "open",
+      "final": 12450677.150400003,
+      "ret": 5.225338575200002,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 5,
+      "window": 20,
+      "field": "open",
+      "final": 12361302.9712,
+      "ret": 5.1806514856,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 1,
+      "window": 20,
+      "field": "open",
+      "final": 12353214.048800005,
+      "ret": 5.176607024400003,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 1,
+      "window": 25,
+      "field": "open",
+      "final": 12353214.048800005,
+      "ret": 5.176607024400003,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 5,
+      "window": 25,
+      "field": "open",
+      "final": 12342327.5192,
+      "ret": 5.171163759600001,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 5,
+      "window": 15,
+      "field": "high",
+      "final": 12280343.4488,
+      "ret": 5.1401717244,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 5,
+      "window": 20,
+      "field": "high",
+      "final": 12217369.0208,
+      "ret": 5.1086845104,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 5,
+      "window": 25,
+      "field": "high",
+      "final": 12198393.5688,
+      "ret": 5.0991967844,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 1,
+      "window": 20,
+      "field": "high",
+      "final": 12161107.288000003,
+      "ret": 5.080553644000001,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 1,
+      "window": 25,
+      "field": "high",
+      "final": 12161107.288000003,
+      "ret": 5.080553644000001,
+      "n": 9,
+      "wins": 8
+    },
+    {
+      "lag": 4,
+      "window": 20,
+      "field": "open",
+      "final": 11921197.099599998,
+      "ret": 4.960598549799999,
+      "n": 9,
+      "wins": 8
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "capital_before": 2000000.0,
+      "deploy_ratio": 0.994986,
+      "shares": 20000,
+      "avg_entry": 99.4986,
+      "net": 0.30557624328382516,
+      "capital": 2608088.168
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "capital_before": 2608088.168,
+      "deploy_ratio": 0.9762254325751766,
+      "shares": 22000,
+      "avg_entry": 115.731,
+      "net": 0.2685072625312146,
+      "capital": 3291729.676
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "capital_before": 3291729.676,
+      "deploy_ratio": 0.9676851726994606,
+      "shares": 11000,
+      "avg_entry": 289.578,
+      "net": 0.31143433548128674,
+      "capital": 4283759.528000001
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "capital_before": 4283759.528000001,
+      "deploy_ratio": 0.9973781142646808,
+      "shares": 13000,
+      "avg_entry": 328.656,
+      "net": 0.5305610242928775,
+      "capital": 6550596.36
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "capital_before": 6550596.36,
+      "deploy_ratio": 0.9697865126893576,
+      "shares": 10000,
+      "avg_entry": 635.268,
+      "net": 0.01876435142333622,
+      "capital": 6669800.28
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "capital_before": 6669800.28,
+      "deploy_ratio": 0.8134921245347994,
+      "shares": 3000,
+      "avg_entry": 1808.61,
+      "net": 0.1689354476642284,
+      "capital": 7586415.300000001
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "capital_before": 7586415.300000001,
+      "deploy_ratio": 0.9400665159999874,
+      "shares": 15000,
+      "avg_entry": 475.449,
+      "net": 0.35271565614818834,
+      "capital": 10101889.89
+    },
+    {
+      "entry": "2026-08-20",
+      "ticker": "6691",
+      "capital_before": 10101889.89,
+      "deploy_ratio": 0.9923895537530948,
+      "shares": 16000,
+      "avg_entry": 626.563125,
+      "net": -0.03722291149834266,
+      "capital": 9728729.83
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "capital_before": 9728729.83,
+      "deploy_ratio": 0.9982582484768209,
+      "shares": 112000,
+      "avg_entry": 86.71236428571427,
+      "net": 0.31445759498295334,
+      "capital": 12782674.321200002
+    }
+  ]
+}
