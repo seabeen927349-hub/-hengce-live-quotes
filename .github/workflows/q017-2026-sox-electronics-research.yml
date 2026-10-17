@@ -7,6 +7,7 @@ on:
       - q017-2026-sox-dxy-electronics
     paths:
       - 'research/q017_sox_tw_electronics/acquire_2026_sox_dxy_pit.py'
+      - 'research/q017_sox_tw_electronics/analyze_2026_sox_response.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -14,7 +15,7 @@ permissions:
   contents: write
 
 jobs:
-  acquire:
+  research:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -25,18 +26,31 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: python -m pip install --disable-pip-version-check requests openpyxl
-      - name: Acquire PIT archive
-        run: python research/q017_sox_tw_electronics/acquire_2026_sox_dxy_pit.py
-      - name: Commit research archive
-        if: always()
+        run: python -m pip install --disable-pip-version-check requests openpyxl pandas numpy
+      - name: Verify materialized PIT archive
+        run: |
+          test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
+          test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/q017_sox_tw_electronics/archive_2026/acquisition_receipt_2026.json')
+          r=json.loads(p.read_text())
+          assert r['hard_gate']=='PASS', r
+          assert r['twse']['errors']==0, r
+          assert r['sox']['status']=='PASS', r
+          print('MATERIALIZED_ARCHIVE_PASS')
+          PY
+      - name: Analyze SOX response
+        run: python research/q017_sox_tw_electronics/analyze_2026_sox_response.py
+      - name: Commit research results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/archive_2026
+          git add research/q017_sox_tw_electronics/results_2026
           if git diff --cached --quiet; then
-            echo 'No archive changes'
+            echo 'No result changes'
           else
-            git commit -m 'Archive Q017 2026 SOX electronics PIT data'
+            git commit -m 'Analyze Q017 2026 SOX electronics response'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
