@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/fill_capacity_diagnostics_2026.py'
+      - 'research/q017_sox_tw_electronics/capacity_aware_multistock_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -15,7 +15,9 @@ permissions:
 jobs:
   research:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,18 +25,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify multi-minute stress
-        run: test -s research/q017_sox_tw_electronics/multiminute_fill_stress_2026/summary.json
-      - name: Diagnose fill-window capacity
-        run: python research/q017_sox_tw_electronics/fill_capacity_diagnostics_2026.py
-      - name: Commit diagnostics
+      - name: Verify 2026 archives
+        run: |
+          test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
+          test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
+      - name: Run capacity-aware TopN allocation
+        run: python research/q017_sox_tw_electronics/capacity_aware_multistock_2026.py
+      - name: Commit capacity-aware results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/fill_capacity_diagnostics_2026
+          git add research/q017_sox_tw_electronics/capacity_aware_multistock_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Diagnose Q017 fill capacity bottlenecks'
+            git commit -m 'Test Q017 capacity-aware TopN allocation'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
