@@ -1,6 +1,6 @@
 {
   "system": "HENGCE",
-  "study": "Q017 2026 SOX x DXY x Taiwan Electronics",
+  "study": "Q017 2026 SOX x Taiwan Electronics",
   "stage": "RESEARCH_ONLY_PIT_ACQUISITION",
   "historical_window": [
     "2026-01-01",
@@ -11,32 +11,23 @@
   "transport_intent": "GITHUB_ACTIONS_VESSEL",
   "sources": {
     "TWSE_electronics": "TWSE MI_INDEX type=13",
-    "SOX": "Nasdaq ExportHistory/SOX",
-    "DXY": "Yahoo DX-Y.NYB chart"
+    "SOX": "Nasdaq ExportHistory/SOX"
   },
   "twse": {
     "weekday_candidates": 207,
-    "pass_days": 78,
+    "pass_days": 190,
     "review_days": 0,
-    "errors": 117,
-    "no_data_weekdays": 12,
-    "rows": 35456,
+    "errors": 0,
+    "no_data_weekdays": 17,
+    "rows": 86615,
     "path": "research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv",
-    "sha256": "05ab69ee378b720079a74e83b11af6a971c1a9ba70fd03f1a7e64bf90a45f49b",
+    "sha256": "1b90e8d1d1e12c77bda968cb5785e572eea05c9a410cfb164df46257836f1260",
     "qa_path": "research/q017_sox_tw_electronics/archive_2026/twse_electronics_daily_qa_2026.csv",
-    "qa_sha256": "e723e8ba9c474733d9d1446e33aa0814b0cdc9526aaf13415505c6336fec7c11"
+    "qa_sha256": "25470fb61ee4c6ce474728706cb3e64307ceda1c67552e8fbb21822ac94e7da9"
   },
   "sox": {
     "status": "ERROR",
-    "error": "Error(\"new-line character seen in unquoted field - do you need to open the file with newline=''?\")"
-  },
-  "dxy": {
-    "status": "PASS",
-    "rows": 199,
-    "path": "research/q017_sox_tw_electronics/archive_2026/dxy_2026.csv",
-    "sha256": "aae8fe3bc2d338566fbddd5a32e8c1f82c7ea54eeb0244489fa0cd0725adec53",
-    "source": "Yahoo DX-Y.NYB chart",
-    "source_url": "https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB?period1=1767139200&period2=1792281600&interval=1d&events=history&includeAdjustedClose=true"
+    "error": "ModuleNotFoundError(\"No module named 'openpyxl'\")"
   },
   "hard_gate": "FAIL_REVIEW"
 }
