@@ -1,5 +1,6 @@
 {
-  "objective": "stress best executable 2026 rule for discrete sizing, entry-minute liquidity, slippage, and costs",
+  "objective": "stress best executable 2026 rule for discrete sizing, correctly unit-converted entry-minute liquidity, slippage, and costs",
+  "volume_unit_contract": "Fugle listed-stock minute volume is board lots; converted x1000 to shares",
   "entry_rule": {
     "hold": 10,
     "lag_min": 2,
@@ -10,23 +11,23 @@
   },
   "tested": 160,
   "best": {
-    "mode": "oddlot",
+    "mode": "share_proxy",
     "participation_cap": 1.0,
     "slippage": 0,
     "roundtrip_cost": 0.004,
-    "final": 3041472.7676000004,
-    "ret": 0.5207363838000001,
+    "final": 12257977.848000001,
+    "ret": 5.128988924000001,
     "executed": 9,
     "wins": 8
   },
   "practical_anchors": {
-    "oddlot_practical": {
-      "mode": "oddlot",
+    "share_proxy_practical": {
+      "mode": "share_proxy",
       "participation_cap": 0.1,
       "slippage": 0.002,
       "roundtrip_cost": 0.006,
-      "final": 2102325.4325743997,
-      "ret": 0.05116271628719993,
+      "final": 10830512.989114001,
+      "ret": 4.415256494557001,
       "executed": 9,
       "wins": 8
     },
@@ -35,170 +36,140 @@
       "participation_cap": 0.1,
       "slippage": 0.002,
       "roundtrip_cost": 0.006,
-      "final": 2000000.0,
-      "ret": 0.0,
-      "executed": 0,
-      "wins": 0
+      "final": 10239296.9212,
+      "ret": 4.1196484606,
+      "executed": 9,
+      "wins": 8
     }
   },
   "top20": [
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0,
       "roundtrip_cost": 0.004,
-      "final": 3041472.7676000004,
-      "ret": 0.5207363838000001,
+      "final": 12257977.848000001,
+      "ret": 5.128988924000001,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.001,
       "roundtrip_cost": 0.004,
-      "final": 3038169.9508676003,
-      "ret": 0.5190849754338,
+      "final": 12165281.915214006,
+      "ret": 5.082640957607003,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0,
       "roundtrip_cost": 0.006,
-      "final": 3034893.4514,
-      "ret": 0.5174467257000002,
+      "final": 12105529.281000001,
+      "ret": 5.0527646405,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.002,
       "roundtrip_cost": 0.004,
-      "final": 3034867.1341352,
-      "ret": 0.5174335670676,
+      "final": 12072853.656375999,
+      "ret": 5.036426828188,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.001,
       "roundtrip_cost": 0.006,
-      "final": 3031584.0553514003,
-      "ret": 0.5157920276757002,
+      "final": 12013038.163339008,
+      "ret": 5.006519081669504,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.003,
       "roundtrip_cost": 0.004,
-      "final": 3031564.3174028005,
-      "ret": 0.5157821587014002,
+      "final": 11981024.137082005,
+      "ret": 4.990512068541002,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0,
       "roundtrip_cost": 0.008,
-      "final": 3028314.1352,
-      "ret": 0.5141570676,
+      "final": 11953648.584,
+      "ret": 4.976824292000001,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.002,
       "roundtrip_cost": 0.006,
-      "final": 3028274.6593027995,
-      "ret": 0.5141373296513998,
+      "final": 11921737.460326,
+      "ret": 4.960868730163,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.001,
       "roundtrip_cost": 0.008,
-      "final": 3024998.1598352003,
-      "ret": 0.5124990799176001,
+      "final": 11863794.200064005,
+      "ret": 4.931897100032002,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.003,
       "roundtrip_cost": 0.006,
-      "final": 3024965.2632542006,
-      "ret": 0.5124826316271003,
+      "final": 11834604.427195007,
+      "ret": 4.9173022135975035,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0,
       "roundtrip_cost": 0.01,
-      "final": 3021734.8189999997,
-      "ret": 0.5108674094999999,
+      "final": 11806284.220000003,
+      "ret": 4.903142110000001,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.002,
       "roundtrip_cost": 0.008,
-      "final": 3021682.1844704007,
-      "ret": 0.5108410922352002,
+      "final": 11777013.573584,
+      "ret": 4.888506786792,
       "executed": 9,
       "wins": 8
     },
     {
-      "mode": "oddlot",
+      "mode": "share_proxy",
       "participation_cap": 1.0,
       "slippage": 0.001,
       "roundtrip_cost": 0.01,
-      "final": 3018412.2643190003,
-      "ret": 0.5092061321595001,
-      "executed": 9,
-      "wins": 8
-    },
-    {
-      "mode": "oddlot",
-      "participation_cap": 1.0,
-      "slippage": 0.003,
-      "roundtrip_cost": 0.008,
-      "final": 3018366.209105601,
-      "ret": 0.5091831045528006,
-      "executed": 9,
-      "wins": 8
-    },
-    {
-      "mode": "oddlot",
-      "participation_cap": 1.0,
-      "slippage": 0.002,
-      "roundtrip_cost": 0.01,
-      "final": 3015089.7096380005,
-      "ret": 0.5075448548190002,
-      "executed": 9,
-      "wins": 8
-    },
-    {
-      "mode": "oddlot",
-      "participation_cap": 1.0,
-      "slippage": 0.003,
-      "roundtrip_cost": 0.01,
-      "final": 3011767.1549570006,
-      "ret": 0.5058835774785002,
+      "final": 11719722.122005006,
+      "ret": 4.859861061002503,
       "executed": 9,
       "wins": 8
     },
@@ -207,40 +178,70 @@
       "participation_cap": 1.0,
       "slippage": 0,
       "roundtrip_cost": 0.004,
-      "final": 2765023.2,
-      "ret": 0.3825116000000002,
-      "executed": 4,
-      "wins": 4
+      "final": 11695994.399999999,
+      "ret": 4.847997199999999,
+      "executed": 9,
+      "wins": 8
+    },
+    {
+      "mode": "share_proxy",
+      "participation_cap": 1.0,
+      "slippage": 0.003,
+      "roundtrip_cost": 0.008,
+      "final": 11690868.291576007,
+      "ret": 4.845434145788004,
+      "executed": 9,
+      "wins": 8
     },
     {
       "mode": "boardlot",
       "participation_cap": 1.0,
       "slippage": 0.001,
       "roundtrip_cost": 0.004,
-      "final": 2762694.723200001,
-      "ret": 0.3813473616000005,
-      "executed": 4,
-      "wins": 4
+      "final": 11649156.394400004,
+      "ret": 4.824578197200002,
+      "executed": 9,
+      "wins": 8
+    },
+    {
+      "mode": "share_proxy",
+      "participation_cap": 1.0,
+      "slippage": 0.002,
+      "roundtrip_cost": 0.01,
+      "final": 11633764.64582,
+      "ret": 4.81688232291,
+      "executed": 9,
+      "wins": 8
     },
     {
       "mode": "boardlot",
       "participation_cap": 1.0,
       "slippage": 0,
       "roundtrip_cost": 0.006,
-      "final": 2760384.8,
-      "ret": 0.3801923999999999,
-      "executed": 4,
-      "wins": 4
+      "final": 11602691.6,
+      "ret": 4.8013458,
+      "executed": 9,
+      "wins": 8
     },
     {
       "mode": "boardlot",
       "participation_cap": 1.0,
       "slippage": 0.002,
       "roundtrip_cost": 0.004,
-      "final": 2760366.2464000005,
-      "ret": 0.38018312320000036,
-      "executed": 4,
-      "wins": 4
+      "final": 11602318.388799999,
+      "ret": 4.801159194399999,
+      "executed": 9,
+      "wins": 8
+    },
+    {
+      "mode": "boardlot",
+      "participation_cap": 1.0,
+      "slippage": 0.001,
+      "roundtrip_cost": 0.006,
+      "final": 11555760.291600008,
+      "ret": 4.777880145800004,
+      "executed": 9,
+      "wins": 8
     }
   ],
   "events_with_volume": [
@@ -258,7 +259,8 @@
       "ret_net": 0.3101993957703928,
       "capital": 2620398.7915407857,
       "entry_candle_time": "2026-03-04T09:03:00.000+08:00",
-      "entry_candle_volume": 9689.0,
+      "entry_candle_volume_lots": 9689.0,
+      "entry_candle_volume_shares": 9689000,
       "entry_candle_high": 102.5,
       "entry_candle_low": 99.1
     },
@@ -276,7 +278,8 @@
       "ret_net": 0.273056277056277,
       "capital": 3335915.1299616797,
       "entry_candle_time": "2026-03-27T09:20:00.000+08:00",
-      "entry_candle_volume": 7301.0,
+      "entry_candle_volume_lots": 7301.0,
+      "entry_candle_volume_shares": 7301000,
       "entry_candle_high": 115.5,
       "entry_candle_low": 115.5
     },
@@ -294,7 +297,8 @@
       "ret_net": 0.31606920415224904,
       "capital": 4390295.170208114,
       "entry_candle_time": "2026-05-19T09:02:00.000+08:00",
-      "entry_candle_volume": 1874.0,
+      "entry_candle_volume_lots": 1874.0,
+      "entry_candle_volume_shares": 1874000,
       "entry_candle_high": 292.5,
       "entry_candle_low": 288.5
     },
@@ -312,7 +316,8 @@
       "ret_net": 0.5356341463414633,
       "capital": 6741887.175889587,
       "entry_candle_time": "2026-06-08T09:02:00.000+08:00",
-      "entry_candle_volume": 1569.0,
+      "entry_candle_volume_lots": 1569.0,
+      "entry_candle_volume_shares": 1569000,
       "entry_candle_high": 330.0,
       "entry_candle_low": 327.5
     },
@@ -330,7 +335,8 @@
       "ret_net": 0.02281388012618302,
       "capital": 6895695.781744583,
       "entry_candle_time": "2026-06-24T09:02:00.000+08:00",
-      "entry_candle_volume": 330.0,
+      "entry_candle_volume_lots": 330.0,
+      "entry_candle_volume_shares": 330000,
       "entry_candle_high": 639.0,
       "entry_candle_low": 633.0
     },
@@ -348,7 +354,8 @@
       "ret_net": 0.17328531855955687,
       "capital": 8090618.621973985,
       "entry_candle_time": "2026-07-08T09:02:00.000+08:00",
-      "entry_candle_volume": 38.0,
+      "entry_candle_volume_lots": 38.0,
+      "entry_candle_volume_shares": 38000,
       "entry_candle_high": 1810.0,
       "entry_candle_low": 1800.0
     },
@@ -366,7 +373,8 @@
       "ret_net": 0.35743308746048474,
       "capital": 10982473.41549144,
       "entry_candle_time": "2026-07-29T09:20:00.000+08:00",
-      "entry_candle_volume": 283.0,
+      "entry_candle_volume_lots": 283.0,
+      "entry_candle_volume_shares": 283000,
       "entry_candle_high": 474.5,
       "entry_candle_low": 474.5
     },
@@ -384,7 +392,8 @@
       "ret_net": -0.03897615262321141,
       "capital": 10554418.855468882,
       "entry_candle_time": "2026-08-20T09:02:00.000+08:00",
-      "entry_candle_volume": 17.0,
+      "entry_candle_volume_lots": 17.0,
+      "entry_candle_volume_shares": 17000,
       "entry_candle_high": 629.0,
       "entry_candle_low": 627.0
     },
@@ -402,7 +411,8 @@
       "ret_net": 0.3212314814814814,
       "capital": 13944830.460587233,
       "entry_candle_time": "2026-09-15T09:02:00.000+08:00",
-      "entry_candle_volume": 61.0,
+      "entry_candle_volume_lots": 61.0,
+      "entry_candle_volume_shares": 61000,
       "entry_candle_high": 86.4,
       "entry_candle_low": 86.1
     }
