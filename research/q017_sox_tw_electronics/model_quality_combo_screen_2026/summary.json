@@ -1,0 +1,441 @@
+{
+  "objective": "screen SOX regression model-quality filters/weights inside validated SOX5 x DXY5 gate; no timing optimization",
+  "baseline": {
+    "metric": "none",
+    "side": "ge",
+    "threshold": 0,
+    "bonus": 0,
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "tested": 52,
+  "best": {
+    "metric": "idio",
+    "side": "ge",
+    "threshold": 0.04,
+    "bonus": 0,
+    "final": 17768196.40934975,
+    "ret": 7.884098204674876,
+    "events": 8,
+    "wins": 8
+  },
+  "improvement": 462079.38860078156,
+  "nearby_same_family": [
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0.04,
+      "bonus": 0,
+      "final": 17768196.40934975,
+      "ret": 7.884098204674876,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0.03,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0.05,
+      "bonus": 0,
+      "final": 12351150.991883032,
+      "ret": 5.175575495941516,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0.06,
+      "bonus": 0,
+      "final": 6873847.503594685,
+      "ret": 2.4369237517973428,
+      "events": 7,
+      "wins": 6
+    }
+  ],
+  "top25": [
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0.04,
+      "bonus": 0,
+      "final": 17768196.40934975,
+      "ret": 7.884098204674876,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "none",
+      "side": "ge",
+      "threshold": 0,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "r2",
+      "side": "ge",
+      "threshold": 0,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0.02,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0.03,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "le",
+      "threshold": 0.08,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "le",
+      "threshold": 0.1,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "beta_stability",
+      "side": "le",
+      "threshold": 0.5,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "beta_stability",
+      "side": "le",
+      "threshold": 0.75,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "beta_stability",
+      "side": "le",
+      "threshold": 1.0,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "beta_stability",
+      "side": "le",
+      "threshold": 1.5,
+      "bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "r2",
+      "side": "ge",
+      "threshold": 0.1,
+      "bonus": 0,
+      "final": 16096835.039735869,
+      "ret": 7.048417519867934,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "r2",
+      "side": "ge",
+      "threshold": 0.05,
+      "bonus": 0,
+      "final": 15568360.57970908,
+      "ret": 6.78418028985454,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "le",
+      "threshold": 0.06,
+      "bonus": 0,
+      "final": 13796963.624650892,
+      "ret": 5.898481812325446,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "beta_stability",
+      "side": "ge",
+      "threshold": 0.1,
+      "bonus": 0,
+      "final": 12426913.814274477,
+      "ret": 5.213456907137238,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0.05,
+      "bonus": 0,
+      "final": 12351150.991883032,
+      "ret": 5.175575495941516,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "metric": "beta_stability",
+      "side": "le",
+      "threshold": 0.3,
+      "bonus": 0,
+      "final": 12275694.355306862,
+      "ret": 5.137847177653431,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "beta_stability",
+      "side": "ge",
+      "threshold": 0.2,
+      "bonus": 0,
+      "final": 11622818.83083922,
+      "ret": 4.81140941541961,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "beta_stability",
+      "side": "ge",
+      "threshold": 0,
+      "bonus": 0.5,
+      "final": 10788601.98973149,
+      "ret": 4.394300994865746,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0,
+      "bonus": 2,
+      "final": 10401423.682817545,
+      "ret": 4.200711841408772,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0,
+      "bonus": 0.5,
+      "final": 9928360.091497252,
+      "ret": 3.964180045748626,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0,
+      "bonus": 1,
+      "final": 9928360.091497252,
+      "ret": 3.964180045748626,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0,
+      "bonus": 3,
+      "final": 9321588.1514065,
+      "ret": 3.66079407570325,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "idio",
+      "side": "ge",
+      "threshold": 0,
+      "bonus": 5,
+      "final": 9321588.1514065,
+      "ret": 3.66079407570325,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "metric": "beta_stability",
+      "side": "le",
+      "threshold": 0.2,
+      "bonus": 0,
+      "final": 9084776.450170971,
+      "ret": 3.542388225085486,
+      "events": 8,
+      "wins": 7
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "exit": "2026-03-18",
+      "net": 0.470422680412371,
+      "capital": 2940845.360824742,
+      "quality": {
+        "beta": 1.170347905692605,
+        "r2": 0.13262169005195834,
+        "idio": 0.05971523558055717,
+        "beta_stability": 0.19160142940082853,
+        "beta20": 0.9461075738740343
+      },
+      "resid": -0.01819949770869858
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "exit": "2026-04-14",
+      "net": 0.30916101694915255,
+      "capital": 3850040.1032675165,
+      "quality": {
+        "beta": 1.1028710296602542,
+        "r2": 0.11199627185647265,
+        "idio": 0.0651319225531792,
+        "beta_stability": 0.27121399522433615,
+        "beta20": 0.8037569712177053
+      },
+      "resid": -0.025267140525159618
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "exit": "2026-06-02",
+      "net": 0.430229845626072,
+      "capital": 5506442.262550486,
+      "quality": {
+        "beta": 0.8960597811040111,
+        "r2": 0.14988209418227016,
+        "idio": 0.056267953107888506,
+        "beta_stability": 0.08564755380869171,
+        "beta20": 0.8193144527004532
+      },
+      "resid": -0.022151892175769572
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "exit": "2026-06-23",
+      "net": 0.39397222222222217,
+      "capital": 7675827.557265862,
+      "quality": {
+        "beta": 0.6368260284798762,
+        "r2": 0.07657116515629936,
+        "idio": 0.05756072457769966,
+        "beta_stability": 0.35308990790845324,
+        "beta20": 0.8616828725826317
+      },
+      "resid": -0.03468128778222483
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3532",
+      "exit": "2026-07-07",
+      "net": 0.04265294924554187,
+      "capital": 8003224.240483454,
+      "quality": {
+        "beta": 0.7253534801379721,
+        "r2": 0.15052125123185445,
+        "idio": 0.05845867119625883,
+        "beta_stability": 0.2808123383926096,
+        "beta20": 0.5216652729383985
+      },
+      "resid": 0.03431998634995939
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "exit": "2026-07-23",
+      "net": 0.1596856368563686,
+      "capital": 9281224.200229382,
+      "quality": {
+        "beta": 0.44756136831664645,
+        "r2": 0.12563700180017257,
+        "idio": 0.04403235196891182,
+        "beta_stability": 0.42706704636218845,
+        "beta20": 0.25642265625676963
+      },
+      "resid": -0.040265105361123044
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "exit": "2026-08-12",
+      "net": 0.4347376185458378,
+      "capital": 13316121.506227102,
+      "quality": {
+        "beta": 0.36966260068368895,
+        "r2": 0.0410300645522248,
+        "idio": 0.07005477415177597,
+        "beta_stability": 0.3813746527194071,
+        "beta20": 0.5106425470241583
+      },
+      "resid": -0.0830103760700893
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "exit": "2026-10-01",
+      "net": 0.3343372093023256,
+      "capital": 17768196.40934975,
+      "quality": {
+        "beta": 0.7590373439844261,
+        "r2": 0.2156016292309153,
+        "idio": 0.04923528901275679,
+        "beta_stability": 0.4907744884854079,
+        "beta20": 0.3865211792583723
+      },
+      "resid": 0.037540298831315794
+    }
+  ]
+}
