@@ -1,0 +1,74 @@
+{
+  "as_of": "2026-10-14 09:01 Asia/Taipei",
+  "future_data_used": false,
+  "market": {
+    "us_date": "2026-10-13",
+    "shock": -0.002287664312228488,
+    "sox5": -0.07633846052662985,
+    "dxy_date": "2026-10-13",
+    "dxy5": 0.0034370860043955176,
+    "gate_GO": true,
+    "market_raw": 0.08706321084325386,
+    "market_percentile": 0.8580645161290322
+  },
+  "top3": [
+    {
+      "ticker": "3055",
+      "name": "蔚華科",
+      "open": 163.0,
+      "beta": 1.1128388385816734,
+      "resid": -0.09690171211586956,
+      "score": 3.808738557771673,
+      "hscore": 95.3,
+      "grade": "S",
+      "teacher": {
+        "foreign3": -178212.0,
+        "trust3": 0.0,
+        "margin5_change": -1106.0,
+        "label": "老師不同步"
+      },
+      "market_percentile": 0.8580645161290322,
+      "selection_percentile": 0.9806451612903225,
+      "leader_percentile": 0.9935483870967742
+    },
+    {
+      "ticker": "2327",
+      "name": "國巨*",
+      "open": 605.0,
+      "beta": 1.0596933636427894,
+      "resid": 0.012440917180728966,
+      "score": 1.0596933636427894,
+      "hscore": 33.2,
+      "grade": "WEAK",
+      "teacher": {
+        "foreign3": -18119167.0,
+        "trust3": 425423.0,
+        "margin5_change": -3736.0,
+        "label": "外資賣／投信接／融資退"
+      },
+      "market_percentile": 0.8580645161290322,
+      "selection_percentile": 0.2129032258064516,
+      "leader_percentile": 0.0
+    },
+    {
+      "ticker": "2492",
+      "name": "華新科",
+      "open": 401.0,
+      "beta": 1.0572739769009611,
+      "resid": 0.025377871618673713,
+      "score": 1.0572739769009611,
+      "hscore": 33.2,
+      "grade": "WEAK",
+      "teacher": {
+        "foreign3": -4744208.0,
+        "trust3": -88000.0,
+        "margin5_change": -2350.0,
+        "label": "老師不同步"
+      },
+      "market_percentile": 0.8580645161290322,
+      "selection_percentile": 0.2129032258064516,
+      "leader_percentile": 0.0
+    }
+  ],
+  "note": "H-Score display only; no switch authority; 10/14 close and later data not used."
+}
