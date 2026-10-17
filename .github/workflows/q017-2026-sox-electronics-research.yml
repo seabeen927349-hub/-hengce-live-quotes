@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/dxy_rank_combo_screen_2026.py'
+      - 'research/q017_sox_tw_electronics/beta_momentum_combo_screen_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -28,16 +28,16 @@ jobs:
           test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
           test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
           test -s research/q017_sox_tw_electronics/archive_2026/dxy_2026.csv
-      - name: Run DXY ranking combination screen
-        run: python research/q017_sox_tw_electronics/dxy_rank_combo_screen_2026.py
-      - name: Commit DXY ranking results
+      - name: Run beta and momentum combination screen
+        run: python research/q017_sox_tw_electronics/beta_momentum_combo_screen_2026.py
+      - name: Commit beta and momentum results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/dxy_rank_combo_screen_2026
+          git add research/q017_sox_tw_electronics/beta_momentum_combo_screen_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Screen Q017 DXY ranking combinations'
+            git commit -m 'Screen Q017 beta and momentum combinations'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
