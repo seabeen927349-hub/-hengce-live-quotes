@@ -1,0 +1,163 @@
+{
+  "system": "HENGCE",
+  "study": "Q017 2026 SOX x Taiwan Electronics Response",
+  "status": "PASS",
+  "scope": "TWSE-listed electronics via MI_INDEX type=13; OTC not included",
+  "alignment": "Each Taiwan date uses latest completed SOX session strictly before Taiwan calendar date; no same-date U.S. lookahead",
+  "cost_assumption_round_trip": 0.004,
+  "tw_days": 188,
+  "stock_rows": 85570,
+  "stocks": 462,
+  "sox_sessions": 198,
+  "basket_stats": {
+    "gap": {
+      "corr": 0.6904083888575714,
+      "beta_per_1pct_sox": 0.3122211903561129,
+      "n": 188
+    },
+    "intraday": {
+      "corr": -0.08844160744197496,
+      "beta_per_1pct_sox": -0.04203505989447258,
+      "n": 188
+    },
+    "cc": {
+      "corr": 0.4391514424731862,
+      "beta_per_1pct_sox": 0.27213423626748057,
+      "n": 188
+    },
+    "open_to_c1": {
+      "corr": -0.050079310500330036,
+      "beta_per_1pct_sox": -0.04052993878154696,
+      "n": 187
+    },
+    "open_to_c3": {
+      "corr": 0.03512416243326083,
+      "beta_per_1pct_sox": 0.04312972751575583,
+      "n": 185
+    },
+    "open_to_c5": {
+      "corr": -0.05301806627739567,
+      "beta_per_1pct_sox": -0.08186799497076415,
+      "n": 183
+    }
+  },
+  "beta_decomposition": {
+    "gap": 0.3122211903561129,
+    "intraday": -0.04203505989447258,
+    "cc": 0.27213423626748057,
+    "open_to_c1": -0.04052993878154696,
+    "open_to_c3": 0.04312972751575583,
+    "open_to_c5": -0.08186799497076415,
+    "gap_share_of_cc_beta": 1.1473058099504647,
+    "intraday_share_of_cc_beta": -0.1544644307567253
+  },
+  "top10_sensitive": [
+    {
+      "ticker": "2342",
+      "name": "茂矽",
+      "n": 188,
+      "gap_corr": 0.5247884882414218,
+      "intraday_corr": 0.18600545488246747,
+      "cc_corr": 0.44946662430223666,
+      "open_to_c1_corr": 0.08803988045301751,
+      "tradable_sox_score": 0.27518984422926646
+    },
+    {
+      "ticker": "3443",
+      "name": "創意",
+      "n": 188,
+      "gap_corr": 0.6176702969569345,
+      "intraday_corr": 0.05435907020534548,
+      "cc_corr": 0.4281212968115555,
+      "open_to_c1_corr": 0.12342857404851112,
+      "tradable_sox_score": 0.27223885072135134
+    },
+    {
+      "ticker": "3031",
+      "name": "佰鴻",
+      "n": 188,
+      "gap_corr": 0.5134735768764922,
+      "intraday_corr": 0.15402307984564545,
+      "cc_corr": 0.36466543479099245,
+      "open_to_c1_corr": 0.1270651462899402,
+      "tradable_sox_score": 0.27174337373973023
+    },
+    {
+      "ticker": "2369",
+      "name": "菱生",
+      "n": 188,
+      "gap_corr": 0.593515950635811,
+      "intraday_corr": 0.09462284462263239,
+      "cc_corr": 0.3783674475142568,
+      "open_to_c1_corr": 0.08416684427269659,
+      "tradable_sox_score": 0.26609863162226416
+    },
+    {
+      "ticker": "3711",
+      "name": "日月光投控",
+      "n": 188,
+      "gap_corr": 0.7242438471193737,
+      "intraday_corr": 0.018237546169987243,
+      "cc_corr": 0.5976222876358879,
+      "open_to_c1_corr": 0.016359170857716602,
+      "tradable_sox_score": 0.26477623890859125
+    },
+    {
+      "ticker": "3661",
+      "name": "世芯-KY",
+      "n": 188,
+      "gap_corr": 0.6772367903671832,
+      "intraday_corr": 0.00040910632355694736,
+      "cc_corr": 0.41000671935719735,
+      "open_to_c1_corr": 0.07404200961676087,
+      "tradable_sox_score": 0.2593886667267873
+    },
+    {
+      "ticker": "8150",
+      "name": "南茂",
+      "n": 188,
+      "gap_corr": 0.6158716108269121,
+      "intraday_corr": 0.06891978943471551,
+      "cc_corr": 0.3936788654351563,
+      "open_to_c1_corr": 0.051511197582722386,
+      "tradable_sox_score": 0.25513034936638634
+    },
+    {
+      "ticker": "6789",
+      "name": "采鈺",
+      "n": 188,
+      "gap_corr": 0.6140733595448363,
+      "intraday_corr": 0.04098810499873241,
+      "cc_corr": 0.3933077658275595,
+      "open_to_c1_corr": 0.07073087033077262,
+      "tradable_sox_score": 0.2504907736894808
+    },
+    {
+      "ticker": "2345",
+      "name": "智邦",
+      "n": 188,
+      "gap_corr": 0.5844402483733597,
+      "intraday_corr": 0.0790305445223985,
+      "cc_corr": 0.45882021983512766,
+      "open_to_c1_corr": 0.057885453690878434,
+      "tradable_sox_score": 0.24958041362077887
+    },
+    {
+      "ticker": "6257",
+      "name": "矽格",
+      "n": 188,
+      "gap_corr": 0.637320372862589,
+      "intraday_corr": 0.03859276206851412,
+      "cc_corr": 0.3935757614941375,
+      "open_to_c1_corr": 0.03273122249394822,
+      "tradable_sox_score": 0.24638896397407056
+    }
+  ],
+  "files": [
+    "sox_bins_basket_response.csv",
+    "sox_event_thresholds.csv",
+    "per_stock_sox_response.csv",
+    "top50_sox_sensitive_stocks.csv",
+    "pit_beta_bucket_response.csv"
+  ]
+}
