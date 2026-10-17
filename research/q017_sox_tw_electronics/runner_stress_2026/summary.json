@@ -1,0 +1,660 @@
+{
+  "objective": "verify D10-positive-day -> D11 runner remains profitable under execution stress",
+  "anchor": {
+    "entry_slip": 0.002,
+    "exit_slip": 0.002,
+    "cost": 0.006,
+    "field": "open",
+    "final": 14727617.460400002,
+    "ret": 6.363808730200001,
+    "events": 9,
+    "wins": 8
+  },
+  "harsh": {
+    "entry_slip": 0.005,
+    "exit_slip": 0.005,
+    "cost": 0.01,
+    "field": "high",
+    "final": 12789317.865000002,
+    "ret": 5.394658932500001,
+    "events": 9,
+    "wins": 7
+  },
+  "all_positive": true,
+  "min_final": 12789317.865000002,
+  "max_final": 14727617.460400002,
+  "grid": [
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.002,
+      "cost": 0.006,
+      "field": "open",
+      "final": 14727617.460400002,
+      "ret": 6.363808730200001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.002,
+      "cost": 0.006,
+      "field": "open",
+      "final": 14360144.293200001,
+      "ret": 6.180072146600001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.003,
+      "cost": 0.006,
+      "field": "open",
+      "final": 14347484.3288,
+      "ret": 6.1737421644,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.003,
+      "cost": 0.006,
+      "field": "open",
+      "final": 14289058.180400005,
+      "ret": 6.1445290902000025,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.002,
+      "cost": 0.008,
+      "field": "open",
+      "final": 14278687.236800004,
+      "ret": 6.139343618400002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.002,
+      "cost": 0.008,
+      "field": "open",
+      "final": 14247848.107200002,
+      "ret": 6.1239240536000015,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.002,
+      "cost": 0.006,
+      "field": "open",
+      "final": 14247524.934000002,
+      "ret": 6.1237624670000015,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.003,
+      "cost": 0.008,
+      "field": "open",
+      "final": 14235303.704799999,
+      "ret": 6.117651852399999,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.005,
+      "cost": 0.006,
+      "field": "open",
+      "final": 14209568.553600004,
+      "ret": 6.104784276800002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.002,
+      "cost": 0.01,
+      "field": "open",
+      "final": 14194201.356000002,
+      "ret": 6.097100678000001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.003,
+      "cost": 0.008,
+      "field": "open",
+      "final": 14154220.604800003,
+      "ret": 6.077110302400001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.003,
+      "cost": 0.006,
+      "field": "open",
+      "final": 14153897.956000002,
+      "ret": 6.076948978000001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.005,
+      "cost": 0.006,
+      "field": "open",
+      "final": 14128648.853600001,
+      "ret": 6.064324426800001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.002,
+      "cost": 0.01,
+      "field": "open",
+      "final": 14113070.356000004,
+      "ret": 6.0565351780000025,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.002,
+      "cost": 0.008,
+      "field": "open",
+      "final": 14112532.608000003,
+      "ret": 6.056266304000001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.003,
+      "cost": 0.01,
+      "field": "open",
+      "final": 14100660.904,
+      "ret": 6.050330452,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.005,
+      "cost": 0.008,
+      "field": "open",
+      "final": 14074981.603200007,
+      "ret": 6.037490801600003,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.003,
+      "cost": 0.01,
+      "field": "open",
+      "final": 14019733.678000003,
+      "ret": 6.009866839000002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.003,
+      "cost": 0.008,
+      "field": "open",
+      "final": 14019196.804000005,
+      "ret": 6.009598402000003,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.005,
+      "cost": 0.008,
+      "field": "open",
+      "final": 13994217.602399997,
+      "ret": 5.997108801199999,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.005,
+      "cost": 0.006,
+      "field": "open",
+      "final": 13993895.478,
+      "ret": 5.996947739,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.002,
+      "cost": 0.01,
+      "field": "open",
+      "final": 13977891.63,
+      "ret": 5.988945815,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.005,
+      "cost": 0.01,
+      "field": "open",
+      "final": 13940744.952000001,
+      "ret": 5.9703724760000005,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.003,
+      "cost": 0.01,
+      "field": "open",
+      "final": 13884847.000000004,
+      "ret": 5.942423500000002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.005,
+      "cost": 0.01,
+      "field": "open",
+      "final": 13860137.000000004,
+      "ret": 5.930068500000002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.005,
+      "cost": 0.008,
+      "field": "open",
+      "final": 13859601.000000004,
+      "ret": 5.929800500000002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.005,
+      "cost": 0.01,
+      "field": "open",
+      "final": 13725657.870000001,
+      "ret": 5.8628289350000005,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.002,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13471051.6716,
+      "ret": 5.7355258358,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.002,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13392504.387800008,
+      "ret": 5.696252193900004,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.003,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13380829.6252,
+      "ret": 5.6904148126,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.002,
+      "cost": 0.008,
+      "field": "high",
+      "final": 13341134.4336,
+      "ret": 5.670567216799999,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.003,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13329047.887800002,
+      "ret": 5.664523943900001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.003,
+      "cost": 0.008,
+      "field": "high",
+      "final": 13277677.9336,
+      "ret": 5.6388389668,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.002,
+      "cost": 0.008,
+      "field": "high",
+      "final": 13262748.657600008,
+      "ret": 5.631374328800004,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.002,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13262440.347000005,
+      "ret": 5.631220173500003,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.005,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13227497.578799997,
+      "ret": 5.613748789399998,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.002,
+      "cost": 0.01,
+      "field": "high",
+      "final": 13211569.097999997,
+      "ret": 5.605784548999999,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.003,
+      "cost": 0.008,
+      "field": "high",
+      "final": 13199407.657600004,
+      "ret": 5.599703828800002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.003,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13199099.347000003,
+      "ret": 5.599549673500001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.005,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13175804.168200007,
+      "ret": 5.587902084100003,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.002,
+      "cost": 0.01,
+      "field": "high",
+      "final": 13159670.14700001,
+      "ret": 5.579835073500004,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.003,
+      "cost": 0.01,
+      "field": "high",
+      "final": 13148228.097999997,
+      "ret": 5.5741140489999985,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.002,
+      "cost": 0.008,
+      "field": "high",
+      "final": 13132832.208000004,
+      "ret": 5.566416104000002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.005,
+      "cost": 0.008,
+      "field": "high",
+      "final": 13098278.743199999,
+      "ret": 5.549139371599999,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.003,
+      "cost": 0.01,
+      "field": "high",
+      "final": 13070119.681000002,
+      "ret": 5.535059840500001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.003,
+      "cost": 0.008,
+      "field": "high",
+      "final": 13069606.708000004,
+      "ret": 5.534803354000002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.005,
+      "cost": 0.008,
+      "field": "high",
+      "final": 13046571.064800004,
+      "ret": 5.523285532400002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.005,
+      "cost": 0.006,
+      "field": "high",
+      "final": 13046263.281000007,
+      "ret": 5.5231316405000035,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.002,
+      "cost": 0.01,
+      "field": "high",
+      "final": 13003577.025000006,
+      "ret": 5.501788512500003,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.002,
+      "exit_slip": 0.005,
+      "cost": 0.01,
+      "field": "high",
+      "final": 12969411.809999995,
+      "ret": 5.4847059049999975,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.003,
+      "cost": 0.01,
+      "field": "high",
+      "final": 12947572.375000004,
+      "ret": 5.473786187500002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.005,
+      "cost": 0.008,
+      "field": "high",
+      "final": 12935412.840000004,
+      "ret": 5.467706420000002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.003,
+      "exit_slip": 0.005,
+      "cost": 0.01,
+      "field": "high",
+      "final": 12922755.365000006,
+      "ret": 5.461377682500003,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "entry_slip": 0.005,
+      "exit_slip": 0.005,
+      "cost": 0.01,
+      "field": "high",
+      "final": 12789317.865000002,
+      "ret": 5.394658932500001,
+      "events": 9,
+      "wins": 7
+    }
+  ],
+  "anchor_curve": [
+    {
+      "entry": "2026-03-04",
+      "exit": "2026-03-18",
+      "ticker": "2337",
+      "capital_before": 2000000.0,
+      "shares": 20000,
+      "avg_entry": 99.4986,
+      "net": 0.43334688528280796,
+      "capital": 2862348.168
+    },
+    {
+      "entry": "2026-03-27",
+      "exit": "2026-04-13",
+      "ticker": "2337",
+      "capital_before": 2862348.168,
+      "shares": 24000,
+      "avg_entry": 115.731,
+      "net": 0.2659582480061524,
+      "capital": 3601058.9040000006
+    },
+    {
+      "entry": "2026-05-19",
+      "exit": "2026-06-02",
+      "ticker": "2408",
+      "capital_before": 3601058.9040000006,
+      "shares": 12000,
+      "avg_entry": 289.578,
+      "net": 0.4397624543300942,
+      "capital": 5129205.288000001
+    },
+    {
+      "entry": "2026-06-08",
+      "exit": "2026-06-23",
+      "ticker": "2408",
+      "capital_before": 5129205.288000001,
+      "shares": 15000,
+      "avg_entry": 328.656,
+      "net": 0.3741391120198627,
+      "capital": 6973651.248000001
+    },
+    {
+      "entry": "2026-06-24",
+      "exit": "2026-07-07",
+      "ticker": "3711",
+      "capital_before": 6973651.248000001,
+      "shares": 11000,
+      "avg_entry": 633.9016363636364,
+      "net": 0.018919266223982552,
+      "capital": 7105573.74
+    },
+    {
+      "entry": "2026-07-08",
+      "exit": "2026-07-23",
+      "ticker": "2360",
+      "capital_before": 7105573.74,
+      "shares": 3000,
+      "avg_entry": 1808.61,
+      "net": 0.18313972608799034,
+      "capital": 8099258.760000001
+    },
+    {
+      "entry": "2026-07-29",
+      "exit": "2026-08-12",
+      "ticker": "3026",
+      "capital_before": 8099258.760000001,
+      "shares": 17000,
+      "avg_entry": 475.449,
+      "net": 0.4318618947563251,
+      "capital": 11589839.962000001
+    },
+    {
+      "entry": "2026-08-20",
+      "exit": "2026-09-02",
+      "ticker": "6691",
+      "capital_before": 11589839.962000001,
+      "shares": 18000,
+      "avg_entry": 626.3056666666666,
+      "net": -0.03876302252840335,
+      "capital": 11152844.950000001
+    },
+    {
+      "entry": "2026-09-15",
+      "exit": "2026-10-01",
+      "ticker": "8150",
+      "capital_before": 11152844.950000001,
+      "shares": 128000,
+      "avg_entry": 86.82016875,
+      "net": 0.3216753738168703,
+      "capital": 14727617.460400002
+    }
+  ]
+}
