@@ -1,0 +1,76 @@
+{
+  "name": "HENGCE H-Score",
+  "version": "1.0-shadow",
+  "date": "2026-10-17",
+  "purpose": "Compare the relative strength of today's Top1/Top3 candidates without changing selection or execution authority.",
+  "hard_guards": {
+    "selection_authority": false,
+    "capital_authority": false,
+    "entry_authority": false,
+    "exit_authority": false,
+    "may_change_top1": false,
+    "may_trigger_switch": false,
+    "may_change_d10_d11": false,
+    "future_data_forbidden": true,
+    "probability_language_forbidden": true
+  },
+  "score_range": [0, 100],
+  "official_components": {
+    "market_context": {
+      "max_points": 25,
+      "inputs": ["sox_1d", "sox_5d", "dxy_5d"],
+      "method": "PIT percentile against prior eligible observations only",
+      "note": "Measures how strong the validated SOX/DXY market setup is relative to prior setups."
+    },
+    "q017_selection_strength": {
+      "max_points": 55,
+      "inputs": ["q017_base_score", "beta60", "residual"],
+      "method": "PIT percentile of q017_base_score against prior eligible candidates only",
+      "note": "Primary strength component. q017_base_score remains beta60*(1+25*max(-residual,0)) with residual<=4%."
+    },
+    "leader_separation": {
+      "max_points": 20,
+      "inputs": ["top1_score", "top2_score", "top3_score"],
+      "method": "PIT percentile of leader separation against prior eligible signal dates only",
+      "note": "Measures whether Top1 is clearly ahead or merely first among near-ties."
+    }
+  },
+  "shadow_component": {
+    "teacher_context": {
+      "max_display_points": 20,
+      "inputs": ["foreign_net", "trust_net", "margin_balance_change"],
+      "status": "DISPLAY_ONLY_NOT_IN_OFFICIAL_HSCORE",
+      "preferred_pattern": "foreign selling + investment trust buying + margin declining",
+      "reason": "2026 causal tests showed only a small terminal-capital improvement, insufficient for trading authority."
+    }
+  },
+  "grade_bands": {
+    "S": [90, 100],
+    "A": [80, 89.9999],
+    "B": [70, 79.9999],
+    "C": [60, 69.9999],
+    "WEAK": [0, 59.9999]
+  },
+  "display_contract": {
+    "top3_columns": ["Rank", "Ticker", "Name", "H-Score", "Grade", "Teacher", "NEW"],
+    "position_block": ["CurrentPosition", "Dn", "CapitalAvailable", "CurrentPositionHScore", "TodayTop1HScore", "ScoreGapVsPosition"],
+    "mandatory_label": "H-Score is relative signal strength, not probability of profit.",
+    "when_insufficient_history": "HSCORE_NA_INSUFFICIENT_PIT_HISTORY"
+  },
+  "calibration": {
+    "mode": "point_in_time_expanding_history",
+    "minimum_prior_signal_dates": 20,
+    "tie_method": "midrank_percentile",
+    "replay_rule": "For historical date t, calibration may use only observations strictly earlier than t.",
+    "live_rule": "For future live dates, use the latest frozen calibration ledger produced before that session."
+  },
+  "promotion_gate": {
+    "status": "SHADOW_ONLY",
+    "requirements": [
+      "Monotonic realized D10/D11 return by H-Score bands on non-overlapping causal samples",
+      "No isolated magic cutoffs",
+      "Forward validation after 2026-10-19",
+      "Explicit approval before H-Score can affect capital allocation or switching"
+    ]
+  }
+}
