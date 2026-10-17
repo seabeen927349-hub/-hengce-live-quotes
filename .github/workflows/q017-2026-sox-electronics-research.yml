@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/dynamic_exit_2026.py'
+      - 'research/q017_sox_tw_electronics/rank_switch_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -27,16 +27,16 @@ jobs:
         run: |
           test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
           test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
-      - name: Run 2026 dynamic exit optimization
-        run: python research/q017_sox_tw_electronics/dynamic_exit_2026.py
-      - name: Commit 2026 dynamic exit results
+      - name: Run candidate ranking and switch optimization
+        run: python research/q017_sox_tw_electronics/rank_switch_2026.py
+      - name: Commit rank and switch results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/dynamic_exit_2026
+          git add research/q017_sox_tw_electronics/rank_switch_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Optimize Q017 2026 dynamic exits'
+            git commit -m 'Optimize Q017 2026 candidate ranking and switches'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
