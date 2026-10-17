@@ -1,0 +1,476 @@
+{
+  "objective": "screen medium-term uptrend plus short-term pullback selection combinations inside validated SOX5 x DXY5 gate; no timing optimization",
+  "baseline": {
+    "filter": "none",
+    "pullback_bonus": 0,
+    "trend_bonus": 0,
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "tested": 210,
+  "best": {
+    "filter": "none",
+    "pullback_bonus": 0,
+    "trend_bonus": 0,
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "improvement": 0.0,
+  "nearby_same_filter": [
+    {
+      "filter": "none",
+      "pullback_bonus": 0,
+      "trend_bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 0,
+      "trend_bonus": 0.5,
+      "final": 8735276.728112804,
+      "ret": 3.3676383640564023,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 1,
+      "trend_bonus": 0,
+      "final": 10060602.962948361,
+      "ret": 4.030301481474181,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 0,
+      "trend_bonus": 1,
+      "final": 4430754.18831505,
+      "ret": 1.215377094157525,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 1,
+      "trend_bonus": 0.5,
+      "final": 14439928.132991994,
+      "ret": 6.219964066495997,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 2,
+      "trend_bonus": 0,
+      "final": 7502657.770173822,
+      "ret": 2.751328885086911,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 1,
+      "trend_bonus": 1,
+      "final": 7340547.238987056,
+      "ret": 2.670273619493528,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 0,
+      "trend_bonus": 2,
+      "final": 4738942.259081817,
+      "ret": 1.3694711295409085,
+      "events": 8,
+      "wins": 6
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 2,
+      "trend_bonus": 0.5,
+      "final": 7732497.865271344,
+      "ret": 2.866248932635672,
+      "events": 8,
+      "wins": 7
+    }
+  ],
+  "top30": [
+    {
+      "filter": "none",
+      "pullback_bonus": 0,
+      "trend_bonus": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 1,
+      "trend_bonus": 0.5,
+      "final": 14439928.132991994,
+      "ret": 6.219964066495997,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t10",
+      "pullback_bonus": 0,
+      "trend_bonus": 0,
+      "final": 12092256.32377453,
+      "ret": 5.046128161887265,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t10_t20",
+      "pullback_bonus": 0,
+      "trend_bonus": 0,
+      "final": 12092256.32377453,
+      "ret": 5.046128161887265,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20",
+      "pullback_bonus": 0,
+      "trend_bonus": 0,
+      "final": 11254000.457245879,
+      "ret": 4.627000228622939,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 2,
+      "trend_bonus": 1,
+      "final": 10768523.457961256,
+      "ret": 4.384261728980628,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 1,
+      "trend_bonus": 0,
+      "final": 10060602.962948361,
+      "ret": 4.030301481474181,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 3,
+      "trend_bonus": 0.5,
+      "final": 9837748.935163965,
+      "ret": 3.9188744675819827,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 5,
+      "trend_bonus": 0.5,
+      "final": 9837748.935163965,
+      "ret": 3.9188744675819827,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 8,
+      "trend_bonus": 0.5,
+      "final": 9837748.935163965,
+      "ret": 3.9188744675819827,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 8,
+      "trend_bonus": 1,
+      "final": 9837748.935163965,
+      "ret": 3.9188744675819827,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "p5_t20",
+      "pullback_bonus": 1,
+      "trend_bonus": 0.5,
+      "final": 9145945.602322204,
+      "ret": 3.572972801161102,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t10",
+      "pullback_bonus": 1,
+      "trend_bonus": 0,
+      "final": 8977772.716377296,
+      "ret": 3.4888863581886476,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t10",
+      "pullback_bonus": 2,
+      "trend_bonus": 0,
+      "final": 8977772.716377296,
+      "ret": 3.4888863581886476,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t10_t20",
+      "pullback_bonus": 1,
+      "trend_bonus": 0,
+      "final": 8977772.716377296,
+      "ret": 3.4888863581886476,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t10_t20",
+      "pullback_bonus": 2,
+      "trend_bonus": 0,
+      "final": 8977772.716377296,
+      "ret": 3.4888863581886476,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "none",
+      "pullback_bonus": 0,
+      "trend_bonus": 0.5,
+      "final": 8735276.728112804,
+      "ret": 3.3676383640564023,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 0,
+      "trend_bonus": 0,
+      "final": 8671678.608933486,
+      "ret": 3.3358393044667434,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 0,
+      "trend_bonus": 0.5,
+      "final": 8671678.608933486,
+      "ret": 3.3358393044667434,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 1,
+      "trend_bonus": 0.5,
+      "final": 8671678.608933486,
+      "ret": 3.3358393044667434,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20",
+      "pullback_bonus": 1,
+      "trend_bonus": 0,
+      "final": 8355418.1742338305,
+      "ret": 3.1777090871169156,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20",
+      "pullback_bonus": 2,
+      "trend_bonus": 0,
+      "final": 8355418.1742338305,
+      "ret": 3.1777090871169156,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20",
+      "pullback_bonus": 3,
+      "trend_bonus": 0,
+      "final": 8355418.1742338305,
+      "ret": 3.1777090871169156,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20",
+      "pullback_bonus": 3,
+      "trend_bonus": 0.5,
+      "final": 8355418.1742338305,
+      "ret": 3.1777090871169156,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 0,
+      "trend_bonus": 1,
+      "final": 7927641.479574112,
+      "ret": 2.963820739787056,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 0,
+      "trend_bonus": 2,
+      "final": 7927641.479574112,
+      "ret": 2.963820739787056,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 0,
+      "trend_bonus": 3,
+      "final": 7927641.479574112,
+      "ret": 2.963820739787056,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 1,
+      "trend_bonus": 1,
+      "final": 7927641.479574112,
+      "ret": 2.963820739787056,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 1,
+      "trend_bonus": 2,
+      "final": 7927641.479574112,
+      "ret": 2.963820739787056,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "p5_t20p10",
+      "pullback_bonus": 1,
+      "trend_bonus": 3,
+      "final": 7927641.479574112,
+      "ret": 2.963820739787056,
+      "events": 8,
+      "wins": 8
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "exit": "2026-03-18",
+      "net": 0.470422680412371,
+      "capital": 2940845.360824742,
+      "m5": -0.07929515418502198,
+      "m10": 0.29331683168316847,
+      "m20": 0.5079365079365079,
+      "beta": 1.170347905692605,
+      "resid": -0.01819949770869858
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "exit": "2026-04-14",
+      "net": 0.30916101694915255,
+      "capital": 3850040.1032675165,
+      "m5": -0.19999999999999996,
+      "m10": 0.17972350230414746,
+      "m20": 0.16363636363636358,
+      "beta": 1.1028710296602542,
+      "resid": -0.025267140525159618
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "exit": "2026-06-02",
+      "net": 0.430229845626072,
+      "capital": 5506442.262550486,
+      "m5": -0.049844236760124616,
+      "m10": 0.18908382066276808,
+      "m20": 0.47342995169082136,
+      "beta": 0.8960597811040111,
+      "resid": -0.022151892175769572
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "exit": "2026-06-23",
+      "net": 0.39397222222222217,
+      "capital": 7675827.557265862,
+      "m5": -0.056356487549148127,
+      "m10": 0.21621621621621623,
+      "m20": 0.1960132890365449,
+      "beta": 0.6368260284798762,
+      "resid": -0.03468128778222483
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "exit": "2026-07-07",
+      "net": 0.015537735849056494,
+      "capital": 7795092.538273567,
+      "m5": 0.1182432432432432,
+      "m10": 0.16344463971880496,
+      "m20": 0.08346972176759415,
+      "beta": 0.8192344022784848,
+      "resid": 0.025224654376234126
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "exit": "2026-07-23",
+      "net": 0.1596856368563686,
+      "capital": 9039856.85460211,
+      "m5": -0.13436123348017626,
+      "m10": -0.09027777777777779,
+      "m20": -0.17782426778242677,
+      "beta": 0.44756136831664645,
+      "resid": -0.040265105361123044
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "exit": "2026-08-12",
+      "net": 0.4347376185458378,
+      "capital": 12969822.6955671,
+      "m5": -0.20512820512820518,
+      "m10": -0.3711217183770883,
+      "m20": -0.37410926365795727,
+      "beta": 0.36966260068368895,
+      "resid": -0.0830103760700893
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "exit": "2026-10-01",
+      "net": 0.3343372093023256,
+      "capital": 17306117.02074897,
+      "m5": -0.04097452934662238,
+      "m10": -0.07081545064377692,
+      "m20": -0.02805836139169471,
+      "beta": 0.7590373439844261,
+      "resid": 0.037540298831315794
+    }
+  ]
+}
