@@ -1,0 +1,3555 @@
+{
+  "objective": "replace one-minute instant fill with boardlot accumulation across multiple minutes",
+  "contract": {
+    "boardlot": true,
+    "minute_participation_cap": 0.1,
+    "slippage": 0.002,
+    "roundtrip_cost": 0.006,
+    "volume_unit": "Fugle board lots"
+  },
+  "results": {
+    "1m_open": {
+      "final": 10239296.9212,
+      "ret": 4.1196484606,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.4986,
+          "invested": 1989972.0,
+          "cash_uninvested_at_entry": 10028.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.30557624328382516,
+          "pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 99.3,
+              "stressed_px": 99.4986,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 115.731,
+          "invested": 2546082.0,
+          "cash_uninvested_at_entry": 62006.16800000006,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 289.578,
+          "invested": 3185357.9999999995,
+          "cash_uninvested_at_entry": 106371.67600000044,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.31143433548128674,
+          "pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 289.0,
+              "stressed_px": 289.578,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 328.656,
+          "invested": 4272528.0,
+          "cash_uninvested_at_entry": 11231.528000000864,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5305610242928775,
+          "pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 328.0,
+              "stressed_px": 328.656,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 635.268,
+          "invested": 6352680.0,
+          "cash_uninvested_at_entry": 197916.36000000034,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01876435142333622,
+          "pnl": 119203.91999999953,
+          "capital": 6669800.28,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 634.0,
+              "stressed_px": 635.268,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1808.61,
+          "invested": 5425830.0,
+          "cash_uninvested_at_entry": 1243970.2800000003,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.1689354476642284,
+          "pnl": 916615.0200000005,
+          "capital": 7586415.300000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1805.0,
+              "stressed_px": 1808.61,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 454680.30000000075,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10101889.89,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 1000,
+          "avg_entry": 630.258,
+          "invested": 630258.0,
+          "cash_uninvested_at_entry": 9471631.89,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.0429023479273568,
+          "pnl": -27039.548000000043,
+          "capital": 10074850.342,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 6000,
+          "avg_entry": 86.5728,
+          "invested": 519436.8,
+          "cash_uninvested_at_entry": 9555413.542,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.31658630886375394,
+          "pnl": 164446.57919999998,
+          "capital": 10239296.9212,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            }
+          ]
+        }
+      ]
+    },
+    "1m_average": {
+      "final": 10144392.591400001,
+      "ret": 4.0721962957,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.12786000000001,
+          "invested": 1982557.2000000002,
+          "cash_uninvested_at_entry": 17442.799999999814,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.31048156229742063,
+          "pnl": 615547.4567999999,
+          "capital": 2615547.4568,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 98.93,
+              "stressed_px": 99.12786000000001,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 117.06366,
+          "invested": 2575400.52,
+          "cash_uninvested_at_entry": 40146.93679999979,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.25399819243649135,
+          "pnl": 654147.07688,
+          "capital": 3269694.53368,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 116.83,
+              "stressed_px": 117.06366,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 290.75034,
+          "invested": 3198253.7399999998,
+          "cash_uninvested_at_entry": 71440.79368000012,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.30612228333077796,
+          "pnl": 979056.7375600002,
+          "capital": 4248751.27124,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 290.17,
+              "stressed_px": 290.75034,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 325.93055999999996,
+          "invested": 4237097.279999999,
+          "cash_uninvested_at_entry": 11653.991240000352,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5434097883917361,
+          "pnl": 2302480.1363200005,
+          "capital": 6551231.40756,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 325.28,
+              "stressed_px": 325.93055999999996,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 637.79304,
+          "invested": 6377930.4,
+          "cash_uninvested_at_entry": 173301.00755999982,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.014707281471745054,
+          "pnl": 93802.01759999953,
+          "capital": 6645033.42516,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 636.52,
+              "stressed_px": 637.79304,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1829.92254,
+          "invested": 5489767.62,
+          "cash_uninvested_at_entry": 1155265.80516,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.15525133908673538,
+          "pnl": 852293.7742800004,
+          "capital": 7497327.199440001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1826.27,
+              "stressed_px": 1829.92254,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 365592.1994400006,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10012801.78944,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 1000,
+          "avg_entry": 636.15978,
+          "invested": 636159.7799999999,
+          "cash_uninvested_at_entry": 9376642.009440001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.05183719517760143,
+          "pnl": -32976.73867999998,
+          "capital": 9979825.050760001,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 634.89,
+              "stressed_px": 636.15978,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 6000,
+          "avg_entry": 86.55275999999999,
+          "invested": 519316.55999999994,
+          "cash_uninvested_at_entry": 9460508.49076,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.3168925339873623,
+          "pnl": 164567.54064000005,
+          "capital": 10144392.591400001,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.38,
+              "stressed_px": 86.55275999999999,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            }
+          ]
+        }
+      ]
+    },
+    "1m_high": {
+      "final": 9552402.0472,
+      "ret": 3.7762010235999997,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 19000,
+          "avg_entry": 102.705,
+          "invested": 1951395.0,
+          "cash_uninvested_at_entry": 48605.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.2646294727617935,
+          "pnl": 516396.63,
+          "capital": 2516396.63,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 102.5,
+              "stressed_px": 102.705,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 19
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 21000,
+          "avg_entry": 115.731,
+          "invested": 2430351.0,
+          "cash_uninvested_at_entry": 86045.62999999989,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 652566.894,
+          "capital": 3168963.5239999997,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 21
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 10000,
+          "avg_entry": 293.085,
+          "invested": 2930850.0,
+          "cash_uninvested_at_entry": 238113.52399999974,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.2956701639456132,
+          "pnl": 866564.9000000004,
+          "capital": 4035528.424,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 292.5,
+              "stressed_px": 293.085,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 12000,
+          "avg_entry": 330.66,
+          "invested": 3967920.0000000005,
+          "cash_uninvested_at_entry": 67608.42399999965,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5212485332365571,
+          "pnl": 2068272.4799999997,
+          "capital": 6103800.904,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 330.0,
+              "stressed_px": 330.66,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 12
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 9000,
+          "avg_entry": 640.278,
+          "invested": 5762502.0,
+          "cash_uninvested_at_entry": 341298.9040000001,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01074585102096282,
+          "pnl": 61922.988000000296,
+          "capital": 6165723.892,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 639.0,
+              "stressed_px": 640.278,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 9
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1813.62,
+          "invested": 5440860.0,
+          "cash_uninvested_at_entry": 724863.892,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.16568976963200677,
+          "pnl": 901494.8400000003,
+          "capital": 7067218.732000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1810.0,
+              "stressed_px": 1813.62,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 14000,
+          "avg_entry": 475.449,
+          "invested": 6656286.0,
+          "cash_uninvested_at_entry": 410932.7320000008,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2347776.284,
+          "capital": 9414995.016,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 14
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 1000,
+          "avg_entry": 630.258,
+          "invested": 630258.0,
+          "cash_uninvested_at_entry": 8784737.016,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.0429023479273568,
+          "pnl": -27039.548000000043,
+          "capital": 9387955.468,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 6000,
+          "avg_entry": 86.5728,
+          "invested": 519436.8,
+          "cash_uninvested_at_entry": 8868518.668,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.31658630886375394,
+          "pnl": 164446.57919999998,
+          "capital": 9552402.0472,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            }
+          ]
+        }
+      ]
+    },
+    "2m_open": {
+      "final": 10299753.147200001,
+      "ret": 4.1498765736,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.4986,
+          "invested": 1989972.0,
+          "cash_uninvested_at_entry": 10028.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.30557624328382516,
+          "pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 99.3,
+              "stressed_px": 99.4986,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 115.731,
+          "invested": 2546082.0,
+          "cash_uninvested_at_entry": 62006.16800000006,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 289.578,
+          "invested": 3185357.9999999995,
+          "cash_uninvested_at_entry": 106371.67600000044,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.31143433548128674,
+          "pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 289.0,
+              "stressed_px": 289.578,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 328.656,
+          "invested": 4272528.0,
+          "cash_uninvested_at_entry": 11231.528000000864,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5305610242928775,
+          "pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 328.0,
+              "stressed_px": 328.656,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 635.268,
+          "invested": 6352680.0,
+          "cash_uninvested_at_entry": 197916.36000000034,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01876435142333622,
+          "pnl": 119203.91999999953,
+          "capital": 6669800.28,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 634.0,
+              "stressed_px": 635.268,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1808.61,
+          "invested": 5425830.0,
+          "cash_uninvested_at_entry": 1243970.2800000003,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.1689354476642284,
+          "pnl": 916615.0200000005,
+          "capital": 7586415.300000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1805.0,
+              "stressed_px": 1808.61,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 454680.30000000075,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10101889.89,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 4000,
+          "avg_entry": 629.5065,
+          "invested": 2518026.0,
+          "cash_uninvested_at_entry": 7583863.890000001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.041752609385288235,
+          "pnl": -105134.1559999998,
+          "capital": 9996755.734000001,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 628.0,
+              "stressed_px": 629.256,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 11000,
+          "avg_entry": 86.43616363636364,
+          "invested": 950797.8,
+          "cash_uninvested_at_entry": 9045957.934,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.31867702386353836,
+          "pnl": 302997.4131999998,
+          "capital": 10299753.147200001,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.1,
+              "stressed_px": 86.2722,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            }
+          ]
+        }
+      ]
+    },
+    "2m_average": {
+      "final": 10185615.94844,
+      "ret": 4.09280797422,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.12786000000001,
+          "invested": 1982557.2000000002,
+          "cash_uninvested_at_entry": 17442.799999999814,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.31048156229742063,
+          "pnl": 615547.4567999999,
+          "capital": 2615547.4568,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 98.93,
+              "stressed_px": 99.12786000000001,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 117.06366,
+          "invested": 2575400.52,
+          "cash_uninvested_at_entry": 40146.93679999979,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.25399819243649135,
+          "pnl": 654147.07688,
+          "capital": 3269694.53368,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 116.83,
+              "stressed_px": 117.06366,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 290.75034,
+          "invested": 3198253.7399999998,
+          "cash_uninvested_at_entry": 71440.79368000012,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.30612228333077796,
+          "pnl": 979056.7375600002,
+          "capital": 4248751.27124,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 290.17,
+              "stressed_px": 290.75034,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 325.93055999999996,
+          "invested": 4237097.279999999,
+          "cash_uninvested_at_entry": 11653.991240000352,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5434097883917361,
+          "pnl": 2302480.1363200005,
+          "capital": 6551231.40756,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 325.28,
+              "stressed_px": 325.93055999999996,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 637.79304,
+          "invested": 6377930.4,
+          "cash_uninvested_at_entry": 173301.00755999982,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.014707281471745054,
+          "pnl": 93802.01759999953,
+          "capital": 6645033.42516,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 636.52,
+              "stressed_px": 637.79304,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1829.92254,
+          "invested": 5489767.62,
+          "cash_uninvested_at_entry": 1155265.80516,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.15525133908673538,
+          "pnl": 852293.7742800004,
+          "capital": 7497327.199440001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1826.27,
+              "stressed_px": 1829.92254,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 365592.1994400006,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10012801.78944,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 4000,
+          "avg_entry": 635.4233099999999,
+          "invested": 2541693.2399999998,
+          "cash_uninvested_at_entry": 7471108.549440001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.05073129888798055,
+          "pnl": -128943.39943999967,
+          "capital": 9883858.39,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 634.89,
+              "stressed_px": 636.15978,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 633.91,
+              "stressed_px": 635.17782,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 11000,
+          "avg_entry": 86.54820545454545,
+          "invested": 952030.26,
+          "cash_uninvested_at_entry": 8931828.13,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.3169621503837494,
+          "pnl": 301757.55844000005,
+          "capital": 10185615.94844,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.38,
+              "stressed_px": 86.55275999999999,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.37,
+              "stressed_px": 86.54274000000001,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            }
+          ]
+        }
+      ]
+    },
+    "2m_high": {
+      "final": 9598746.1052,
+      "ret": 3.7993730526,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 19000,
+          "avg_entry": 102.705,
+          "invested": 1951395.0,
+          "cash_uninvested_at_entry": 48605.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.2646294727617935,
+          "pnl": 516396.63,
+          "capital": 2516396.63,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 102.5,
+              "stressed_px": 102.705,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 19
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 21000,
+          "avg_entry": 115.731,
+          "invested": 2430351.0,
+          "cash_uninvested_at_entry": 86045.62999999989,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 652566.894,
+          "capital": 3168963.5239999997,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 21
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 10000,
+          "avg_entry": 293.085,
+          "invested": 2930850.0,
+          "cash_uninvested_at_entry": 238113.52399999974,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.2956701639456132,
+          "pnl": 866564.9000000004,
+          "capital": 4035528.424,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 292.5,
+              "stressed_px": 293.085,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 12000,
+          "avg_entry": 330.66,
+          "invested": 3967920.0000000005,
+          "cash_uninvested_at_entry": 67608.42399999965,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5212485332365571,
+          "pnl": 2068272.4799999997,
+          "capital": 6103800.904,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 330.0,
+              "stressed_px": 330.66,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 12
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 9000,
+          "avg_entry": 640.278,
+          "invested": 5762502.0,
+          "cash_uninvested_at_entry": 341298.9040000001,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01074585102096282,
+          "pnl": 61922.988000000296,
+          "capital": 6165723.892,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 639.0,
+              "stressed_px": 640.278,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 9
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1813.62,
+          "invested": 5440860.0,
+          "cash_uninvested_at_entry": 724863.892,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.16568976963200677,
+          "pnl": 901494.8400000003,
+          "capital": 7067218.732000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1810.0,
+              "stressed_px": 1813.62,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 14000,
+          "avg_entry": 475.449,
+          "invested": 6656286.0,
+          "cash_uninvested_at_entry": 410932.7320000008,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2347776.284,
+          "capital": 9414995.016,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 14
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 4000,
+          "avg_entry": 632.5125,
+          "invested": 2530050.0,
+          "cash_uninvested_at_entry": 6884945.016000001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.04633517124167518,
+          "pnl": -117230.3000000003,
+          "capital": 9297764.716,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 632.0,
+              "stressed_px": 633.264,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 11000,
+          "avg_entry": 86.61834545454546,
+          "invested": 952801.8,
+          "cash_uninvested_at_entry": 8344962.915999999,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.3158908696436131,
+          "pnl": 300981.3892,
+          "capital": 9598746.1052,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.5,
+              "stressed_px": 86.673,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            }
+          ]
+        }
+      ]
+    },
+    "3m_open": {
+      "final": 10628006.5088,
+      "ret": 4.3140032544,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.4986,
+          "invested": 1989972.0,
+          "cash_uninvested_at_entry": 10028.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.30557624328382516,
+          "pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 99.3,
+              "stressed_px": 99.4986,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 115.731,
+          "invested": 2546082.0,
+          "cash_uninvested_at_entry": 62006.16800000006,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 289.578,
+          "invested": 3185357.9999999995,
+          "cash_uninvested_at_entry": 106371.67600000044,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.31143433548128674,
+          "pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 289.0,
+              "stressed_px": 289.578,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 328.656,
+          "invested": 4272528.0,
+          "cash_uninvested_at_entry": 11231.528000000864,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5305610242928775,
+          "pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 328.0,
+              "stressed_px": 328.656,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 635.268,
+          "invested": 6352680.0,
+          "cash_uninvested_at_entry": 197916.36000000034,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01876435142333622,
+          "pnl": 119203.91999999953,
+          "capital": 6669800.28,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 634.0,
+              "stressed_px": 635.268,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1808.61,
+          "invested": 5425830.0,
+          "cash_uninvested_at_entry": 1243970.2800000003,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.1689354476642284,
+          "pnl": 916615.0200000005,
+          "capital": 7586415.300000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1805.0,
+              "stressed_px": 1808.61,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 454680.30000000075,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10101889.89,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 5000,
+          "avg_entry": 629.8572,
+          "invested": 3149286.0,
+          "cash_uninvested_at_entry": 6952603.890000001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.04228949546024085,
+          "pnl": -133181.71600000007,
+          "capital": 9968708.174,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 628.0,
+              "stressed_px": 629.256,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 630.0,
+              "stressed_px": 631.26,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 24000,
+          "avg_entry": 86.510175,
+          "invested": 2076244.2,
+          "cash_uninvested_at_entry": 7892463.973999999,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.317543733439448,
+          "pnl": 659298.3347999998,
+          "capital": 10628006.5088,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.1,
+              "stressed_px": 86.2722,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            }
+          ]
+        }
+      ]
+    },
+    "3m_average": {
+      "final": 10510724.3126,
+      "ret": 4.2553621562999995,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.12786000000001,
+          "invested": 1982557.2000000002,
+          "cash_uninvested_at_entry": 17442.799999999814,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.31048156229742063,
+          "pnl": 615547.4567999999,
+          "capital": 2615547.4568,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 98.93,
+              "stressed_px": 99.12786000000001,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 117.06366,
+          "invested": 2575400.52,
+          "cash_uninvested_at_entry": 40146.93679999979,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.25399819243649135,
+          "pnl": 654147.07688,
+          "capital": 3269694.53368,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 116.83,
+              "stressed_px": 117.06366,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 290.75034,
+          "invested": 3198253.7399999998,
+          "cash_uninvested_at_entry": 71440.79368000012,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.30612228333077796,
+          "pnl": 979056.7375600002,
+          "capital": 4248751.27124,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 290.17,
+              "stressed_px": 290.75034,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 325.93055999999996,
+          "invested": 4237097.279999999,
+          "cash_uninvested_at_entry": 11653.991240000352,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5434097883917361,
+          "pnl": 2302480.1363200005,
+          "capital": 6551231.40756,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 325.28,
+              "stressed_px": 325.93055999999996,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 637.79304,
+          "invested": 6377930.4,
+          "cash_uninvested_at_entry": 173301.00755999982,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.014707281471745054,
+          "pnl": 93802.01759999953,
+          "capital": 6645033.42516,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 636.52,
+              "stressed_px": 637.79304,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1829.92254,
+          "invested": 5489767.62,
+          "cash_uninvested_at_entry": 1155265.80516,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.15525133908673538,
+          "pnl": 852293.7742800004,
+          "capital": 7497327.199440001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1826.27,
+              "stressed_px": 1829.92254,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 365592.1994400006,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10012801.78944,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 5000,
+          "avg_entry": 635.268,
+          "invested": 3176340.0,
+          "cash_uninvested_at_entry": 6836461.789440001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.05049775527808741,
+          "pnl": -160398.04000000018,
+          "capital": 9852403.74944,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 634.89,
+              "stressed_px": 636.15978,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 633.91,
+              "stressed_px": 635.17782,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 633.38,
+              "stressed_px": 634.64676,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 24000,
+          "avg_entry": 86.55067249999999,
+          "invested": 2077216.14,
+          "cash_uninvested_at_entry": 7775187.60944,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.3169244405928795,
+          "pnl": 658320.5631600005,
+          "capital": 10510724.3126,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.38,
+              "stressed_px": 86.55275999999999,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.37,
+              "stressed_px": 86.54274000000001,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.38,
+              "stressed_px": 86.55275999999999,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            }
+          ]
+        }
+      ]
+    },
+    "3m_high": {
+      "final": 9924378.6356,
+      "ret": 3.9621893178,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 19000,
+          "avg_entry": 102.705,
+          "invested": 1951395.0,
+          "cash_uninvested_at_entry": 48605.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.2646294727617935,
+          "pnl": 516396.63,
+          "capital": 2516396.63,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 102.5,
+              "stressed_px": 102.705,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 19
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 21000,
+          "avg_entry": 115.731,
+          "invested": 2430351.0,
+          "cash_uninvested_at_entry": 86045.62999999989,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 652566.894,
+          "capital": 3168963.5239999997,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 21
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 10000,
+          "avg_entry": 293.085,
+          "invested": 2930850.0,
+          "cash_uninvested_at_entry": 238113.52399999974,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.2956701639456132,
+          "pnl": 866564.9000000004,
+          "capital": 4035528.424,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 292.5,
+              "stressed_px": 293.085,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 12000,
+          "avg_entry": 330.66,
+          "invested": 3967920.0000000005,
+          "cash_uninvested_at_entry": 67608.42399999965,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5212485332365571,
+          "pnl": 2068272.4799999997,
+          "capital": 6103800.904,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 330.0,
+              "stressed_px": 330.66,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 12
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 9000,
+          "avg_entry": 640.278,
+          "invested": 5762502.0,
+          "cash_uninvested_at_entry": 341298.9040000001,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01074585102096282,
+          "pnl": 61922.988000000296,
+          "capital": 6165723.892,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 639.0,
+              "stressed_px": 640.278,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 9
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1813.62,
+          "invested": 5440860.0,
+          "cash_uninvested_at_entry": 724863.892,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.16568976963200677,
+          "pnl": 901494.8400000003,
+          "capital": 7067218.732000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1810.0,
+              "stressed_px": 1813.62,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 14000,
+          "avg_entry": 475.449,
+          "invested": 6656286.0,
+          "cash_uninvested_at_entry": 410932.7320000008,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2347776.284,
+          "capital": 9414995.016,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 14
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 5000,
+          "avg_entry": 632.262,
+          "invested": 3161310.0,
+          "cash_uninvested_at_entry": 6253685.016000001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.04595495538242044,
+          "pnl": -145277.85999999958,
+          "capital": 9269717.156000001,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 632.0,
+              "stressed_px": 633.264,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 630.0,
+              "stressed_px": 631.26,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 24000,
+          "avg_entry": 86.702225,
+          "invested": 2080853.4,
+          "cash_uninvested_at_entry": 7188863.756000001,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.3146120142822171,
+          "pnl": 654661.4796,
+          "capital": 9924378.6356,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.5,
+              "stressed_px": 86.673,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.6,
+              "stressed_px": 86.77319999999999,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            }
+          ]
+        }
+      ]
+    },
+    "5m_open": {
+      "final": 11017123.4688,
+      "ret": 4.508561734400001,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.4986,
+          "invested": 1989972.0,
+          "cash_uninvested_at_entry": 10028.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.30557624328382516,
+          "pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 99.3,
+              "stressed_px": 99.4986,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 115.731,
+          "invested": 2546082.0,
+          "cash_uninvested_at_entry": 62006.16800000006,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 289.578,
+          "invested": 3185357.9999999995,
+          "cash_uninvested_at_entry": 106371.67600000044,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.31143433548128674,
+          "pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 289.0,
+              "stressed_px": 289.578,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 328.656,
+          "invested": 4272528.0,
+          "cash_uninvested_at_entry": 11231.528000000864,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5305610242928775,
+          "pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 328.0,
+              "stressed_px": 328.656,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 635.268,
+          "invested": 6352680.0,
+          "cash_uninvested_at_entry": 197916.36000000034,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01876435142333622,
+          "pnl": 119203.91999999953,
+          "capital": 6669800.28,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 634.0,
+              "stressed_px": 635.268,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1808.61,
+          "invested": 5425830.0,
+          "cash_uninvested_at_entry": 1243970.2800000003,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.1689354476642284,
+          "pnl": 916615.0200000005,
+          "capital": 7586415.300000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1805.0,
+              "stressed_px": 1808.61,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 454680.30000000075,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10101889.89,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 6000,
+          "avg_entry": 629.59,
+          "invested": 3777540.0,
+          "cash_uninvested_at_entry": 6324349.890000001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.04188049365460066,
+          "pnl": -158205.2400000002,
+          "capital": 9943684.65,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 628.0,
+              "stressed_px": 629.256,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 630.0,
+              "stressed_px": 631.26,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:06:00.000+08:00",
+              "raw_px": 627.0,
+              "stressed_px": 628.254,
+              "minute_volume_lots": 18.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 39000,
+          "avg_entry": 86.4571846153846,
+          "invested": 3371830.1999999997,
+          "cash_uninvested_at_entry": 6571854.449999999,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.3183549452757142,
+          "pnl": 1073438.8188000002,
+          "capital": 11017123.4688,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.1,
+              "stressed_px": 86.2722,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            },
+            {
+              "time": "2026-09-15T09:05:00.000+08:00",
+              "raw_px": 86.2,
+              "stressed_px": 86.3724,
+              "minute_volume_lots": 39.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:06:00.000+08:00",
+              "raw_px": 86.2,
+              "stressed_px": 86.3724,
+              "minute_volume_lots": 120.0,
+              "fill_lots": 12
+            }
+          ]
+        }
+      ]
+    },
+    "5m_average": {
+      "final": 10892190.461520001,
+      "ret": 4.446095230760001,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.12786000000001,
+          "invested": 1982557.2000000002,
+          "cash_uninvested_at_entry": 17442.799999999814,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.31048156229742063,
+          "pnl": 615547.4567999999,
+          "capital": 2615547.4568,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 98.93,
+              "stressed_px": 99.12786000000001,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 117.06366,
+          "invested": 2575400.52,
+          "cash_uninvested_at_entry": 40146.93679999979,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.25399819243649135,
+          "pnl": 654147.07688,
+          "capital": 3269694.53368,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 116.83,
+              "stressed_px": 117.06366,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 290.75034,
+          "invested": 3198253.7399999998,
+          "cash_uninvested_at_entry": 71440.79368000012,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.30612228333077796,
+          "pnl": 979056.7375600002,
+          "capital": 4248751.27124,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 290.17,
+              "stressed_px": 290.75034,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 325.93055999999996,
+          "invested": 4237097.279999999,
+          "cash_uninvested_at_entry": 11653.991240000352,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5434097883917361,
+          "pnl": 2302480.1363200005,
+          "capital": 6551231.40756,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 325.28,
+              "stressed_px": 325.93055999999996,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 637.79304,
+          "invested": 6377930.4,
+          "cash_uninvested_at_entry": 173301.00755999982,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.014707281471745054,
+          "pnl": 93802.01759999953,
+          "capital": 6645033.42516,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 636.52,
+              "stressed_px": 637.79304,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1829.92254,
+          "invested": 5489767.62,
+          "cash_uninvested_at_entry": 1155265.80516,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.15525133908673538,
+          "pnl": 852293.7742800004,
+          "capital": 7497327.199440001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1826.27,
+              "stressed_px": 1829.92254,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 365592.1994400006,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10012801.78944,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 6000,
+          "avg_entry": 635.04088,
+          "invested": 3810245.28,
+          "cash_uninvested_at_entry": 6202556.509440001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.0501560234673396,
+          "pnl": -191106.75167999993,
+          "capital": 9821695.03776,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 634.89,
+              "stressed_px": 636.15978,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 633.91,
+              "stressed_px": 635.17782,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 633.38,
+              "stressed_px": 634.64676,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:06:00.000+08:00",
+              "raw_px": 632.64,
+              "stressed_px": 633.90528,
+              "minute_volume_lots": 18.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 39000,
+          "avg_entry": 86.53220615384616,
+          "invested": 3374756.04,
+          "cash_uninvested_at_entry": 6446938.997760002,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.31720675837652546,
+          "pnl": 1070495.42376,
+          "capital": 10892190.461520001,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.38,
+              "stressed_px": 86.55275999999999,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.37,
+              "stressed_px": 86.54274000000001,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.38,
+              "stressed_px": 86.55275999999999,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            },
+            {
+              "time": "2026-09-15T09:05:00.000+08:00",
+              "raw_px": 86.37,
+              "stressed_px": 86.54274000000001,
+              "minute_volume_lots": 39.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:06:00.000+08:00",
+              "raw_px": 86.32,
+              "stressed_px": 86.49264,
+              "minute_volume_lots": 120.0,
+              "fill_lots": 12
+            }
+          ]
+        }
+      ]
+    },
+    "5m_high": {
+      "final": 10313495.595600002,
+      "ret": 4.1567477978000005,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 19000,
+          "avg_entry": 102.705,
+          "invested": 1951395.0,
+          "cash_uninvested_at_entry": 48605.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.2646294727617935,
+          "pnl": 516396.63,
+          "capital": 2516396.63,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 102.5,
+              "stressed_px": 102.705,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 19
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 21000,
+          "avg_entry": 115.731,
+          "invested": 2430351.0,
+          "cash_uninvested_at_entry": 86045.62999999989,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 652566.894,
+          "capital": 3168963.5239999997,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 21
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 10000,
+          "avg_entry": 293.085,
+          "invested": 2930850.0,
+          "cash_uninvested_at_entry": 238113.52399999974,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.2956701639456132,
+          "pnl": 866564.9000000004,
+          "capital": 4035528.424,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 292.5,
+              "stressed_px": 293.085,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 12000,
+          "avg_entry": 330.66,
+          "invested": 3967920.0000000005,
+          "cash_uninvested_at_entry": 67608.42399999965,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5212485332365571,
+          "pnl": 2068272.4799999997,
+          "capital": 6103800.904,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 330.0,
+              "stressed_px": 330.66,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 12
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 9000,
+          "avg_entry": 640.278,
+          "invested": 5762502.0,
+          "cash_uninvested_at_entry": 341298.9040000001,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01074585102096282,
+          "pnl": 61922.988000000296,
+          "capital": 6165723.892,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 639.0,
+              "stressed_px": 640.278,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 9
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1813.62,
+          "invested": 5440860.0,
+          "cash_uninvested_at_entry": 724863.892,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.16568976963200677,
+          "pnl": 901494.8400000003,
+          "capital": 7067218.732000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1810.0,
+              "stressed_px": 1813.62,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 14000,
+          "avg_entry": 475.449,
+          "invested": 6656286.0,
+          "cash_uninvested_at_entry": 410932.7320000008,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2347776.284,
+          "capital": 9414995.016,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 14
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 6000,
+          "avg_entry": 631.594,
+          "invested": 3789564.0,
+          "cash_uninvested_at_entry": 5625431.016000001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.04493957194020214,
+          "pnl": -170301.3840000002,
+          "capital": 9244693.632000001,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 632.0,
+              "stressed_px": 633.264,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 630.0,
+              "stressed_px": 631.26,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:06:00.000+08:00",
+              "raw_px": 627.0,
+              "stressed_px": 628.254,
+              "minute_volume_lots": 18.0,
+              "fill_lots": 1
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 39000,
+          "avg_entry": 86.57536923076923,
+          "invested": 3376439.4,
+          "cash_uninvested_at_entry": 5868254.232000001,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.316547059485208,
+          "pnl": 1068801.9636,
+          "capital": 10313495.595600002,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.5,
+              "stressed_px": 86.673,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.6,
+              "stressed_px": 86.77319999999999,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            },
+            {
+              "time": "2026-09-15T09:05:00.000+08:00",
+              "raw_px": 86.2,
+              "stressed_px": 86.3724,
+              "minute_volume_lots": 39.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:06:00.000+08:00",
+              "raw_px": 86.2,
+              "stressed_px": 86.3724,
+              "minute_volume_lots": 120.0,
+              "fill_lots": 12
+            }
+          ]
+        }
+      ]
+    },
+    "10m_open": {
+      "final": 11666923.4924,
+      "ret": 4.8334617462,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.4986,
+          "invested": 1989972.0,
+          "cash_uninvested_at_entry": 10028.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.30557624328382516,
+          "pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 99.3,
+              "stressed_px": 99.4986,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 115.731,
+          "invested": 2546082.0,
+          "cash_uninvested_at_entry": 62006.16800000006,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 289.578,
+          "invested": 3185357.9999999995,
+          "cash_uninvested_at_entry": 106371.67600000044,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.31143433548128674,
+          "pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 289.0,
+              "stressed_px": 289.578,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 328.656,
+          "invested": 4272528.0,
+          "cash_uninvested_at_entry": 11231.528000000864,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5305610242928775,
+          "pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 328.0,
+              "stressed_px": 328.656,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 635.268,
+          "invested": 6352680.0,
+          "cash_uninvested_at_entry": 197916.36000000034,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01876435142333622,
+          "pnl": 119203.91999999953,
+          "capital": 6669800.28,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 634.0,
+              "stressed_px": 635.268,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1808.61,
+          "invested": 5425830.0,
+          "cash_uninvested_at_entry": 1243970.2800000003,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.1689354476642284,
+          "pnl": 916615.0200000005,
+          "capital": 7586415.300000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1805.0,
+              "stressed_px": 1808.61,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 454680.30000000075,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10101889.89,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 13000,
+          "avg_entry": 626.9436923076923,
+          "invested": 8150268.0,
+          "cash_uninvested_at_entry": 1951621.8900000006,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.037810978485615536,
+          "pnl": -308169.60800000076,
+          "capital": 9793720.282,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 628.0,
+              "stressed_px": 629.256,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 630.0,
+              "stressed_px": 631.26,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:06:00.000+08:00",
+              "raw_px": 627.0,
+              "stressed_px": 628.254,
+              "minute_volume_lots": 18.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:08:00.000+08:00",
+              "raw_px": 626.0,
+              "stressed_px": 627.252,
+              "minute_volume_lots": 13.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:09:00.000+08:00",
+              "raw_px": 625.0,
+              "stressed_px": 626.25,
+              "minute_volume_lots": 33.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:10:00.000+08:00",
+              "raw_px": 621.0,
+              "stressed_px": 622.242,
+              "minute_volume_lots": 34.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 68000,
+          "avg_entry": 86.43428823529412,
+          "invested": 5877531.6,
+          "cash_uninvested_at_entry": 3916188.681999999,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.31870576593752387,
+          "pnl": 1873203.2104,
+          "capital": 11666923.4924,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.1,
+              "stressed_px": 86.2722,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            },
+            {
+              "time": "2026-09-15T09:05:00.000+08:00",
+              "raw_px": 86.2,
+              "stressed_px": 86.3724,
+              "minute_volume_lots": 39.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:06:00.000+08:00",
+              "raw_px": 86.2,
+              "stressed_px": 86.3724,
+              "minute_volume_lots": 120.0,
+              "fill_lots": 12
+            },
+            {
+              "time": "2026-09-15T09:07:00.000+08:00",
+              "raw_px": 85.9,
+              "stressed_px": 86.07180000000001,
+              "minute_volume_lots": 68.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:08:00.000+08:00",
+              "raw_px": 86.1,
+              "stressed_px": 86.2722,
+              "minute_volume_lots": 45.0,
+              "fill_lots": 4
+            },
+            {
+              "time": "2026-09-15T09:09:00.000+08:00",
+              "raw_px": 86.3,
+              "stressed_px": 86.4726,
+              "minute_volume_lots": 108.0,
+              "fill_lots": 10
+            },
+            {
+              "time": "2026-09-15T09:10:00.000+08:00",
+              "raw_px": 86.3,
+              "stressed_px": 86.4726,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:11:00.000+08:00",
+              "raw_px": 86.5,
+              "stressed_px": 86.673,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            }
+          ]
+        }
+      ]
+    },
+    "10m_average": {
+      "final": 11487668.71844,
+      "ret": 4.74383435922,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 20000,
+          "avg_entry": 99.12786000000001,
+          "invested": 1982557.2000000002,
+          "cash_uninvested_at_entry": 17442.799999999814,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.31048156229742063,
+          "pnl": 615547.4567999999,
+          "capital": 2615547.4568,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 98.93,
+              "stressed_px": 99.12786000000001,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 20
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 22000,
+          "avg_entry": 117.06366,
+          "invested": 2575400.52,
+          "cash_uninvested_at_entry": 40146.93679999979,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.25399819243649135,
+          "pnl": 654147.07688,
+          "capital": 3269694.53368,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 116.83,
+              "stressed_px": 117.06366,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 22
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 11000,
+          "avg_entry": 290.75034,
+          "invested": 3198253.7399999998,
+          "cash_uninvested_at_entry": 71440.79368000012,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.30612228333077796,
+          "pnl": 979056.7375600002,
+          "capital": 4248751.27124,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 290.17,
+              "stressed_px": 290.75034,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 11
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 13000,
+          "avg_entry": 325.93055999999996,
+          "invested": 4237097.279999999,
+          "cash_uninvested_at_entry": 11653.991240000352,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5434097883917361,
+          "pnl": 2302480.1363200005,
+          "capital": 6551231.40756,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 325.28,
+              "stressed_px": 325.93055999999996,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 13
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 10000,
+          "avg_entry": 637.79304,
+          "invested": 6377930.4,
+          "cash_uninvested_at_entry": 173301.00755999982,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.014707281471745054,
+          "pnl": 93802.01759999953,
+          "capital": 6645033.42516,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 636.52,
+              "stressed_px": 637.79304,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1829.92254,
+          "invested": 5489767.62,
+          "cash_uninvested_at_entry": 1155265.80516,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.15525133908673538,
+          "pnl": 852293.7742800004,
+          "capital": 7497327.199440001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1826.27,
+              "stressed_px": 1829.92254,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 15000,
+          "avg_entry": 475.449,
+          "invested": 7131735.0,
+          "cash_uninvested_at_entry": 365592.1994400006,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "capital": 10012801.78944,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 15
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 13000,
+          "avg_entry": 633.4397353846153,
+          "invested": 8234716.56,
+          "cash_uninvested_at_entry": 1778085.229440001,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.047739938162486,
+          "pnl": -393124.8593599994,
+          "capital": 9619676.93008,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 634.89,
+              "stressed_px": 636.15978,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 633.91,
+              "stressed_px": 635.17782,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 633.38,
+              "stressed_px": 634.64676,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:06:00.000+08:00",
+              "raw_px": 632.64,
+              "stressed_px": 633.90528,
+              "minute_volume_lots": 18.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:08:00.000+08:00",
+              "raw_px": 632.22,
+              "stressed_px": 633.4844400000001,
+              "minute_volume_lots": 13.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:09:00.000+08:00",
+              "raw_px": 631.17,
+              "stressed_px": 632.43234,
+              "minute_volume_lots": 33.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:10:00.000+08:00",
+              "raw_px": 629.97,
+              "stressed_px": 631.22994,
+              "minute_volume_lots": 34.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 68000,
+          "avg_entry": 86.51046970588236,
+          "invested": 5882711.94,
+          "cash_uninvested_at_entry": 3736964.9900800018,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.3175392246658264,
+          "pnl": 1867991.7883599997,
+          "capital": 11487668.71844,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.38,
+              "stressed_px": 86.55275999999999,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.37,
+              "stressed_px": 86.54274000000001,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.38,
+              "stressed_px": 86.55275999999999,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            },
+            {
+              "time": "2026-09-15T09:05:00.000+08:00",
+              "raw_px": 86.37,
+              "stressed_px": 86.54274000000001,
+              "minute_volume_lots": 39.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:06:00.000+08:00",
+              "raw_px": 86.32,
+              "stressed_px": 86.49264,
+              "minute_volume_lots": 120.0,
+              "fill_lots": 12
+            },
+            {
+              "time": "2026-09-15T09:07:00.000+08:00",
+              "raw_px": 86.31,
+              "stressed_px": 86.48262,
+              "minute_volume_lots": 68.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:08:00.000+08:00",
+              "raw_px": 86.31,
+              "stressed_px": 86.48262,
+              "minute_volume_lots": 45.0,
+              "fill_lots": 4
+            },
+            {
+              "time": "2026-09-15T09:09:00.000+08:00",
+              "raw_px": 86.3,
+              "stressed_px": 86.4726,
+              "minute_volume_lots": 108.0,
+              "fill_lots": 10
+            },
+            {
+              "time": "2026-09-15T09:10:00.000+08:00",
+              "raw_px": 86.31,
+              "stressed_px": 86.48262,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:11:00.000+08:00",
+              "raw_px": 86.32,
+              "stressed_px": 86.49264,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            }
+          ]
+        }
+      ]
+    },
+    "10m_high": {
+      "final": 10951199.4752,
+      "ret": 4.4755997376,
+      "n": 9,
+      "wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "ticker": "2337",
+          "shares": 19000,
+          "avg_entry": 102.705,
+          "invested": 1951395.0,
+          "cash_uninvested_at_entry": 48605.0,
+          "exit_close": 130.5,
+          "net_ret_on_invested": 0.2646294727617935,
+          "pnl": 516396.63,
+          "capital": 2516396.63,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "raw_px": 102.5,
+              "stressed_px": 102.705,
+              "minute_volume_lots": 9689.0,
+              "fill_lots": 19
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "ticker": "2337",
+          "shares": 21000,
+          "avg_entry": 115.731,
+          "invested": 2430351.0,
+          "cash_uninvested_at_entry": 86045.62999999989,
+          "exit_close": 147.5,
+          "net_ret_on_invested": 0.2685072625312146,
+          "pnl": 652566.894,
+          "capital": 3168963.5239999997,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "raw_px": 115.5,
+              "stressed_px": 115.731,
+              "minute_volume_lots": 7301.0,
+              "fill_lots": 21
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "ticker": "2408",
+          "shares": 10000,
+          "avg_entry": 293.085,
+          "invested": 2930850.0,
+          "cash_uninvested_at_entry": 238113.52399999974,
+          "exit_close": 381.5,
+          "net_ret_on_invested": 0.2956701639456132,
+          "pnl": 866564.9000000004,
+          "capital": 4035528.424,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "raw_px": 292.5,
+              "stressed_px": 293.085,
+              "minute_volume_lots": 1874.0,
+              "fill_lots": 10
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "ticker": "2408",
+          "shares": 12000,
+          "avg_entry": 330.66,
+          "invested": 3967920.0000000005,
+          "cash_uninvested_at_entry": 67608.42399999965,
+          "exit_close": 505.0,
+          "net_ret_on_invested": 0.5212485332365571,
+          "pnl": 2068272.4799999997,
+          "capital": 6103800.904,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "raw_px": 330.0,
+              "stressed_px": 330.66,
+              "minute_volume_lots": 1569.0,
+              "fill_lots": 12
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "ticker": "3711",
+          "shares": 9000,
+          "avg_entry": 640.278,
+          "invested": 5762502.0,
+          "cash_uninvested_at_entry": 341298.9040000001,
+          "exit_close": 651.0,
+          "net_ret_on_invested": 0.01074585102096282,
+          "pnl": 61922.988000000296,
+          "capital": 6165723.892,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "raw_px": 639.0,
+              "stressed_px": 640.278,
+              "minute_volume_lots": 330.0,
+              "fill_lots": 9
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "ticker": "2360",
+          "shares": 3000,
+          "avg_entry": 1813.62,
+          "invested": 5440860.0,
+          "cash_uninvested_at_entry": 724863.892,
+          "exit_close": 2125.0,
+          "net_ret_on_invested": 0.16568976963200677,
+          "pnl": 901494.8400000003,
+          "capital": 7067218.732000001,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "raw_px": 1810.0,
+              "stressed_px": 1813.62,
+              "minute_volume_lots": 38.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "ticker": "3026",
+          "shares": 14000,
+          "avg_entry": 475.449,
+          "invested": 6656286.0,
+          "cash_uninvested_at_entry": 410932.7320000008,
+          "exit_close": 646.0,
+          "net_ret_on_invested": 0.35271565614818834,
+          "pnl": 2347776.284,
+          "capital": 9414995.016,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "raw_px": 474.5,
+              "stressed_px": 475.449,
+              "minute_volume_lots": 283.0,
+              "fill_lots": 14
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "ticker": "6691",
+          "shares": 13000,
+          "avg_entry": 628.254,
+          "invested": 8167302.0,
+          "cash_uninvested_at_entry": 1247693.0160000008,
+          "exit_close": 607.0,
+          "net_ret_on_invested": -0.039830266102563676,
+          "pnl": -325305.8120000005,
+          "capital": 9089689.204,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "raw_px": 629.0,
+              "stressed_px": 630.258,
+              "minute_volume_lots": 17.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "raw_px": 632.0,
+              "stressed_px": 633.264,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "raw_px": 630.0,
+              "stressed_px": 631.26,
+              "minute_volume_lots": 19.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:06:00.000+08:00",
+              "raw_px": 627.0,
+              "stressed_px": 628.254,
+              "minute_volume_lots": 18.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:08:00.000+08:00",
+              "raw_px": 628.0,
+              "stressed_px": 629.256,
+              "minute_volume_lots": 13.0,
+              "fill_lots": 1
+            },
+            {
+              "time": "2026-08-20T09:09:00.000+08:00",
+              "raw_px": 626.0,
+              "stressed_px": 627.252,
+              "minute_volume_lots": 33.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-08-20T09:10:00.000+08:00",
+              "raw_px": 621.0,
+              "stressed_px": 622.242,
+              "minute_volume_lots": 34.0,
+              "fill_lots": 3
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "ticker": "8150",
+          "shares": 68000,
+          "avg_entry": 86.60521764705882,
+          "invested": 5889154.8,
+          "cash_uninvested_at_entry": 3200534.4039999996,
+          "exit_close": 114.5,
+          "net_ret_on_invested": 0.31609124474024686,
+          "pnl": 1861510.2711999994,
+          "capital": 10951199.4752,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "raw_px": 86.5,
+              "stressed_px": 86.673,
+              "minute_volume_lots": 59.0,
+              "fill_lots": 5
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "raw_px": 86.6,
+              "stressed_px": 86.77319999999999,
+              "minute_volume_lots": 130.0,
+              "fill_lots": 13
+            },
+            {
+              "time": "2026-09-15T09:05:00.000+08:00",
+              "raw_px": 86.2,
+              "stressed_px": 86.3724,
+              "minute_volume_lots": 39.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:06:00.000+08:00",
+              "raw_px": 86.2,
+              "stressed_px": 86.3724,
+              "minute_volume_lots": 120.0,
+              "fill_lots": 12
+            },
+            {
+              "time": "2026-09-15T09:07:00.000+08:00",
+              "raw_px": 86.3,
+              "stressed_px": 86.4726,
+              "minute_volume_lots": 68.0,
+              "fill_lots": 6
+            },
+            {
+              "time": "2026-09-15T09:08:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 45.0,
+              "fill_lots": 4
+            },
+            {
+              "time": "2026-09-15T09:09:00.000+08:00",
+              "raw_px": 86.4,
+              "stressed_px": 86.5728,
+              "minute_volume_lots": 108.0,
+              "fill_lots": 10
+            },
+            {
+              "time": "2026-09-15T09:10:00.000+08:00",
+              "raw_px": 86.5,
+              "stressed_px": 86.673,
+              "minute_volume_lots": 35.0,
+              "fill_lots": 3
+            },
+            {
+              "time": "2026-09-15T09:11:00.000+08:00",
+              "raw_px": 86.8,
+              "stressed_px": 86.97359999999999,
+              "minute_volume_lots": 61.0,
+              "fill_lots": 6
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
