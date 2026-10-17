@@ -1,0 +1,635 @@
+{
+  "objective": "use foreign/trust/margin only to choose within baseline TopN, never as market gate; timing unchanged",
+  "baseline": {
+    "idx": 0,
+    "spec": {
+      "N": 1,
+      "fw": 5,
+      "tw": 5,
+      "mw": 5,
+      "pattern": "consensus_score",
+      "mode": "base"
+    },
+    "final": 17306117.02074897,
+    "events": 8,
+    "wins": 8
+  },
+  "tested": 2305,
+  "best": {
+    "idx": 33,
+    "spec": {
+      "N": 3,
+      "fw": 1,
+      "tw": 1,
+      "mw": 5,
+      "pattern": "institution_buy_margin_down",
+      "mode": "fallback_pattern"
+    },
+    "final": 17893580.344255295,
+    "events": 8,
+    "wins": 8
+  },
+  "improvement": 587463.3235063255,
+  "best_family_count": 64,
+  "best_family_within95pct": 11,
+  "top30": [
+    {
+      "idx": 33,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 1,
+        "mw": 5,
+        "pattern": "institution_buy_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 53,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 3,
+        "mw": 1,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 65,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 3,
+        "mw": 3,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 77,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 3,
+        "mw": 5,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 101,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 5,
+        "mw": 1,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 113,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 5,
+        "mw": 3,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 125,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 5,
+        "mw": 5,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 149,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 10,
+        "mw": 1,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 161,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 10,
+        "mw": 3,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 173,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 10,
+        "mw": 5,
+        "pattern": "foreign_buy_trust_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 177,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 10,
+        "mw": 5,
+        "pattern": "institution_buy_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17893580.344255295,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 267,
+      "spec": {
+        "N": 3,
+        "fw": 3,
+        "tw": 3,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 315,
+      "spec": {
+        "N": 3,
+        "fw": 3,
+        "tw": 5,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 363,
+      "spec": {
+        "N": 3,
+        "fw": 3,
+        "tw": 10,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 459,
+      "spec": {
+        "N": 3,
+        "fw": 5,
+        "tw": 3,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 507,
+      "spec": {
+        "N": 3,
+        "fw": 5,
+        "tw": 5,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 555,
+      "spec": {
+        "N": 3,
+        "fw": 5,
+        "tw": 10,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 591,
+      "spec": {
+        "N": 3,
+        "fw": 10,
+        "tw": 1,
+        "mw": 3,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 603,
+      "spec": {
+        "N": 3,
+        "fw": 10,
+        "tw": 1,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 639,
+      "spec": {
+        "N": 3,
+        "fw": 10,
+        "tw": 3,
+        "mw": 3,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 651,
+      "spec": {
+        "N": 3,
+        "fw": 10,
+        "tw": 3,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 687,
+      "spec": {
+        "N": 3,
+        "fw": 10,
+        "tw": 5,
+        "mw": 3,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 699,
+      "spec": {
+        "N": 3,
+        "fw": 10,
+        "tw": 5,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 735,
+      "spec": {
+        "N": 3,
+        "fw": 10,
+        "tw": 10,
+        "mw": 3,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 747,
+      "spec": {
+        "N": 3,
+        "fw": 10,
+        "tw": 10,
+        "mw": 5,
+        "pattern": "trust_buy_foreign_sell_margin_down",
+        "mode": "fallback_pattern"
+      },
+      "final": 17768196.40934975,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 0,
+      "spec": {
+        "N": 1,
+        "fw": 5,
+        "tw": 5,
+        "mw": 5,
+        "pattern": "consensus_score",
+        "mode": "base"
+      },
+      "final": 17306117.02074897,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 11,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 1,
+        "mw": 1,
+        "pattern": "consensus_score",
+        "mode": "fallback_pattern"
+      },
+      "final": 17306117.02074897,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 23,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 1,
+        "mw": 3,
+        "pattern": "consensus_score",
+        "mode": "fallback_pattern"
+      },
+      "final": 17306117.02074897,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 35,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 1,
+        "mw": 5,
+        "pattern": "consensus_score",
+        "mode": "fallback_pattern"
+      },
+      "final": 17306117.02074897,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 47,
+      "spec": {
+        "N": 3,
+        "fw": 1,
+        "tw": 1,
+        "mw": 10,
+        "pattern": "consensus_score",
+        "mode": "fallback_pattern"
+      },
+      "final": 17306117.02074897,
+      "events": 8,
+      "wins": 8
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "exit": "2026-03-18",
+      "net": 0.470422680412371,
+      "capital": 2940845.360824742,
+      "base_rank": 1,
+      "chip": {
+        "f1": -49039423.0,
+        "t1": 1418000.0,
+        "m1": -12652.0,
+        "f3": -40101629.0,
+        "t3": 2160000.0,
+        "m3": -5286.0,
+        "f5": -82102480.0,
+        "t5": 5292000.0,
+        "m5": 2329.0,
+        "f10": -42288152.0,
+        "t10": 11037000.0,
+        "m10": 29481.0
+      }
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "exit": "2026-04-14",
+      "net": 0.30916101694915255,
+      "capital": 3850040.1032675165,
+      "base_rank": 1,
+      "chip": {
+        "f1": 5393162.0,
+        "t1": -1470583.0,
+        "m1": -11113.0,
+        "f3": 17833367.0,
+        "t3": -5289658.0,
+        "m3": -28817.0,
+        "f5": 11319139.0,
+        "t5": -6440918.0,
+        "m5": -33561.0,
+        "f10": 86951481.0,
+        "t10": -7240918.0,
+        "m10": -19213.0
+      }
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "exit": "2026-06-02",
+      "net": 0.430229845626072,
+      "capital": 5506442.262550486,
+      "base_rank": 1,
+      "chip": {
+        "f1": 2181497.0,
+        "t1": -8258000.0,
+        "m1": -192.0,
+        "f3": -21338317.0,
+        "t3": -4617954.0,
+        "m3": -2292.0,
+        "f5": -1436384.0,
+        "t5": 1250088.0,
+        "m5": -1623.0,
+        "f10": 57078248.0,
+        "t10": 32424215.0,
+        "m10": -6833.0
+      }
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "3532",
+      "exit": "2026-06-22",
+      "net": 0.44129118773946363,
+      "capital": 7936386.70881017,
+      "base_rank": 2,
+      "chip": {
+        "f1": 30033.0,
+        "t1": -1000.0,
+        "m1": -136.0,
+        "f3": 62369.0,
+        "t3": -31000.0,
+        "m3": -481.0,
+        "f5": -19629.0,
+        "t5": -31000.0,
+        "m5": -762.0,
+        "f10": -1350246.0,
+        "t10": -367000.0,
+        "m10": 2404.0
+      }
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "exit": "2026-07-07",
+      "net": 0.015537735849056494,
+      "capital": 8059700.189087626,
+      "base_rank": 1,
+      "chip": {
+        "f1": 10811189.0,
+        "t1": -5642619.0,
+        "m1": -1291.0,
+        "f3": 39837520.0,
+        "t3": -20957997.0,
+        "m3": -608.0,
+        "f5": 43009701.0,
+        "t5": -26797697.0,
+        "m5": -456.0,
+        "f10": 33938583.0,
+        "t10": -30652382.0,
+        "m10": -161.0
+      }
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "exit": "2026-07-23",
+      "net": 0.1596856368563686,
+      "capital": 9346718.546653477,
+      "base_rank": 1,
+      "chip": {
+        "f1": -14281.0,
+        "t1": -437843.0,
+        "m1": -38.0,
+        "f3": -17186.0,
+        "t3": -750537.0,
+        "m3": -28.0,
+        "f5": -182549.0,
+        "t5": -827348.0,
+        "m5": 133.0,
+        "f10": 865352.0,
+        "t10": -1717808.0,
+        "m10": 170.0
+      }
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "exit": "2026-08-12",
+      "net": 0.4347376185458378,
+      "capital": 13410088.708843825,
+      "base_rank": 1,
+      "chip": {
+        "f1": 110000.0,
+        "t1": 3000.0,
+        "m1": -70.0,
+        "f3": 135796.0,
+        "t3": -660000.0,
+        "m3": -841.0,
+        "f5": 751828.0,
+        "t5": -873000.0,
+        "m5": -1419.0,
+        "f10": 6522873.0,
+        "t10": -537500.0,
+        "m10": -1364.0
+      }
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "exit": "2026-10-01",
+      "net": 0.3343372093023256,
+      "capital": 17893580.344255295,
+      "base_rank": 1,
+      "chip": {
+        "f1": 940985.0,
+        "t1": 0.0,
+        "m1": -469.0,
+        "f3": -12766121.0,
+        "t3": 5000.0,
+        "m3": 133.0,
+        "f5": -4940842.0,
+        "t5": 21000.0,
+        "m5": -1441.0,
+        "f10": 9981600.0,
+        "t10": 135000.0,
+        "m10": -2188.0
+      }
+    }
+  ]
+}
