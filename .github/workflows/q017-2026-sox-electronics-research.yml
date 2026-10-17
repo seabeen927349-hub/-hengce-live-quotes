@@ -31,7 +31,7 @@ jobs:
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/factor_join_2026/electronics_tickers.json
+          git add research/q017_sox_tw_electronics/factor_join_2026/electronics_tickers.json research/q017_sox_tw_electronics/factor_join_2026/electronics_tickers.txt
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
