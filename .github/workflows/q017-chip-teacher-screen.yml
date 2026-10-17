@@ -1,0 +1,45 @@
+name: Q017 chip teacher combo screen
+
+on:
+  push:
+    branches:
+      - q017-2026-sox-dxy-electronics
+    paths:
+      - 'research/q017_sox_tw_electronics/chip_teacher_combo_screen_2026.py'
+      - '.github/workflows/q017-chip-teacher-screen.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: q017-2026-sox-dxy-electronics
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: pip install requests
+      - name: Verify archives
+        run: |
+          test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
+          test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
+          test -s research/q017_sox_tw_electronics/archive_2026/dxy_2026.csv
+      - name: Run chip teacher screen
+        run: python research/q017_sox_tw_electronics/chip_teacher_combo_screen_2026.py
+      - name: Commit results
+        run: |
+          git config user.name 'hengce-research-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add research/q017_sox_tw_electronics/chip_teacher_combo_screen_2026/
+          if git diff --cached --quiet; then
+            echo 'No result changes'
+          else
+            git commit -m 'Store Q017 chip teacher combo results'
+            git push origin HEAD:q017-2026-sox-dxy-electronics
+          fi
