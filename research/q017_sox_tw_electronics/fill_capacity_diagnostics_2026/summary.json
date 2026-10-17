@@ -1,0 +1,486 @@
+{
+  "objective": "identify which trades actually benefit from wider fill windows",
+  "variant_final": {
+    "1m_open": 10239296.9212,
+    "3m_open": 10628006.5088,
+    "5m_open": 11017123.4688,
+    "10m_open": 11666923.4924,
+    "5m_high": 10313495.595600002,
+    "10m_high": 10951199.4752
+  },
+  "events": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "1m_open": {
+        "deploy_ratio": 0.994986,
+        "invested": 1989972.0,
+        "shares": 20000,
+        "fills": 1,
+        "avg_entry": 99.4986,
+        "pnl": 608088.1680000001
+      },
+      "3m_open": {
+        "deploy_ratio": 0.994986,
+        "invested": 1989972.0,
+        "shares": 20000,
+        "fills": 1,
+        "avg_entry": 99.4986,
+        "pnl": 608088.1680000001
+      },
+      "5m_open": {
+        "deploy_ratio": 0.994986,
+        "invested": 1989972.0,
+        "shares": 20000,
+        "fills": 1,
+        "avg_entry": 99.4986,
+        "pnl": 608088.1680000001
+      },
+      "10m_open": {
+        "deploy_ratio": 0.994986,
+        "invested": 1989972.0,
+        "shares": 20000,
+        "fills": 1,
+        "avg_entry": 99.4986,
+        "pnl": 608088.1680000001
+      },
+      "5m_high": {
+        "deploy_ratio": 0.9756975,
+        "invested": 1951395.0,
+        "shares": 19000,
+        "fills": 1,
+        "avg_entry": 102.705,
+        "pnl": 516396.63
+      },
+      "10m_high": {
+        "deploy_ratio": 0.9756975,
+        "invested": 1951395.0,
+        "shares": 19000,
+        "fills": 1,
+        "avg_entry": 102.705,
+        "pnl": 516396.63
+      }
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "1m_open": {
+        "deploy_ratio": 0.9762254325751766,
+        "invested": 2546082.0,
+        "shares": 22000,
+        "fills": 1,
+        "avg_entry": 115.731,
+        "pnl": 683641.5079999999
+      },
+      "3m_open": {
+        "deploy_ratio": 0.9762254325751766,
+        "invested": 2546082.0,
+        "shares": 22000,
+        "fills": 1,
+        "avg_entry": 115.731,
+        "pnl": 683641.5079999999
+      },
+      "5m_open": {
+        "deploy_ratio": 0.9762254325751766,
+        "invested": 2546082.0,
+        "shares": 22000,
+        "fills": 1,
+        "avg_entry": 115.731,
+        "pnl": 683641.5079999999
+      },
+      "10m_open": {
+        "deploy_ratio": 0.9762254325751766,
+        "invested": 2546082.0,
+        "shares": 22000,
+        "fills": 1,
+        "avg_entry": 115.731,
+        "pnl": 683641.5079999999
+      },
+      "5m_high": {
+        "deploy_ratio": 0.9658060144517043,
+        "invested": 2430351.0,
+        "shares": 21000,
+        "fills": 1,
+        "avg_entry": 115.731,
+        "pnl": 652566.894
+      },
+      "10m_high": {
+        "deploy_ratio": 0.9658060144517043,
+        "invested": 2430351.0,
+        "shares": 21000,
+        "fills": 1,
+        "avg_entry": 115.731,
+        "pnl": 652566.894
+      }
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "1m_open": {
+        "deploy_ratio": 0.9676851726994605,
+        "invested": 3185357.9999999995,
+        "shares": 11000,
+        "fills": 1,
+        "avg_entry": 289.578,
+        "pnl": 992029.8520000004
+      },
+      "3m_open": {
+        "deploy_ratio": 0.9676851726994605,
+        "invested": 3185357.9999999995,
+        "shares": 11000,
+        "fills": 1,
+        "avg_entry": 289.578,
+        "pnl": 992029.8520000004
+      },
+      "5m_open": {
+        "deploy_ratio": 0.9676851726994605,
+        "invested": 3185357.9999999995,
+        "shares": 11000,
+        "fills": 1,
+        "avg_entry": 289.578,
+        "pnl": 992029.8520000004
+      },
+      "10m_open": {
+        "deploy_ratio": 0.9676851726994605,
+        "invested": 3185357.9999999995,
+        "shares": 11000,
+        "fills": 1,
+        "avg_entry": 289.578,
+        "pnl": 992029.8520000004
+      },
+      "5m_high": {
+        "deploy_ratio": 0.9248607558286305,
+        "invested": 2930850.0,
+        "shares": 10000,
+        "fills": 1,
+        "avg_entry": 293.085,
+        "pnl": 866564.9000000004
+      },
+      "10m_high": {
+        "deploy_ratio": 0.9248607558286305,
+        "invested": 2930850.0,
+        "shares": 10000,
+        "fills": 1,
+        "avg_entry": 293.085,
+        "pnl": 866564.9000000004
+      }
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "1m_open": {
+        "deploy_ratio": 0.9973781142646808,
+        "invested": 4272528.0,
+        "shares": 13000,
+        "fills": 1,
+        "avg_entry": 328.656,
+        "pnl": 2266836.8319999995
+      },
+      "3m_open": {
+        "deploy_ratio": 0.9973781142646808,
+        "invested": 4272528.0,
+        "shares": 13000,
+        "fills": 1,
+        "avg_entry": 328.656,
+        "pnl": 2266836.8319999995
+      },
+      "5m_open": {
+        "deploy_ratio": 0.9973781142646808,
+        "invested": 4272528.0,
+        "shares": 13000,
+        "fills": 1,
+        "avg_entry": 328.656,
+        "pnl": 2266836.8319999995
+      },
+      "10m_open": {
+        "deploy_ratio": 0.9973781142646808,
+        "invested": 4272528.0,
+        "shares": 13000,
+        "fills": 1,
+        "avg_entry": 328.656,
+        "pnl": 2266836.8319999995
+      },
+      "5m_high": {
+        "deploy_ratio": 0.9832466985988946,
+        "invested": 3967920.0000000005,
+        "shares": 12000,
+        "fills": 1,
+        "avg_entry": 330.66,
+        "pnl": 2068272.4799999997
+      },
+      "10m_high": {
+        "deploy_ratio": 0.9832466985988946,
+        "invested": 3967920.0000000005,
+        "shares": 12000,
+        "fills": 1,
+        "avg_entry": 330.66,
+        "pnl": 2068272.4799999997
+      }
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "1m_open": {
+        "deploy_ratio": 0.9697865126893576,
+        "invested": 6352680.0,
+        "shares": 10000,
+        "fills": 1,
+        "avg_entry": 635.268,
+        "pnl": 119203.91999999953
+      },
+      "3m_open": {
+        "deploy_ratio": 0.9697865126893576,
+        "invested": 6352680.0,
+        "shares": 10000,
+        "fills": 1,
+        "avg_entry": 635.268,
+        "pnl": 119203.91999999953
+      },
+      "5m_open": {
+        "deploy_ratio": 0.9697865126893576,
+        "invested": 6352680.0,
+        "shares": 10000,
+        "fills": 1,
+        "avg_entry": 635.268,
+        "pnl": 119203.91999999953
+      },
+      "10m_open": {
+        "deploy_ratio": 0.9697865126893576,
+        "invested": 6352680.0,
+        "shares": 10000,
+        "fills": 1,
+        "avg_entry": 635.268,
+        "pnl": 119203.91999999953
+      },
+      "5m_high": {
+        "deploy_ratio": 0.9440842010793083,
+        "invested": 5762502.0,
+        "shares": 9000,
+        "fills": 1,
+        "avg_entry": 640.278,
+        "pnl": 61922.988000000296
+      },
+      "10m_high": {
+        "deploy_ratio": 0.9440842010793083,
+        "invested": 5762502.0,
+        "shares": 9000,
+        "fills": 1,
+        "avg_entry": 640.278,
+        "pnl": 61922.988000000296
+      }
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "1m_open": {
+        "deploy_ratio": 0.8134921245347994,
+        "invested": 5425830.0,
+        "shares": 3000,
+        "fills": 1,
+        "avg_entry": 1808.61,
+        "pnl": 916615.0200000005
+      },
+      "3m_open": {
+        "deploy_ratio": 0.8134921245347994,
+        "invested": 5425830.0,
+        "shares": 3000,
+        "fills": 1,
+        "avg_entry": 1808.61,
+        "pnl": 916615.0200000005
+      },
+      "5m_open": {
+        "deploy_ratio": 0.8134921245347994,
+        "invested": 5425830.0,
+        "shares": 3000,
+        "fills": 1,
+        "avg_entry": 1808.61,
+        "pnl": 916615.0200000005
+      },
+      "10m_open": {
+        "deploy_ratio": 0.8134921245347994,
+        "invested": 5425830.0,
+        "shares": 3000,
+        "fills": 1,
+        "avg_entry": 1808.61,
+        "pnl": 916615.0200000005
+      },
+      "5m_high": {
+        "deploy_ratio": 0.8824365306171902,
+        "invested": 5440860.0,
+        "shares": 3000,
+        "fills": 1,
+        "avg_entry": 1813.62,
+        "pnl": 901494.8400000003
+      },
+      "10m_high": {
+        "deploy_ratio": 0.8824365306171902,
+        "invested": 5440860.0,
+        "shares": 3000,
+        "fills": 1,
+        "avg_entry": 1813.62,
+        "pnl": 901494.8400000003
+      }
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "1m_open": {
+        "deploy_ratio": 0.9400665159999874,
+        "invested": 7131735.0,
+        "shares": 15000,
+        "fills": 1,
+        "avg_entry": 475.449,
+        "pnl": 2515474.59
+      },
+      "3m_open": {
+        "deploy_ratio": 0.9400665159999874,
+        "invested": 7131735.0,
+        "shares": 15000,
+        "fills": 1,
+        "avg_entry": 475.449,
+        "pnl": 2515474.59
+      },
+      "5m_open": {
+        "deploy_ratio": 0.9400665159999874,
+        "invested": 7131735.0,
+        "shares": 15000,
+        "fills": 1,
+        "avg_entry": 475.449,
+        "pnl": 2515474.59
+      },
+      "10m_open": {
+        "deploy_ratio": 0.9400665159999874,
+        "invested": 7131735.0,
+        "shares": 15000,
+        "fills": 1,
+        "avg_entry": 475.449,
+        "pnl": 2515474.59
+      },
+      "5m_high": {
+        "deploy_ratio": 0.941853684230924,
+        "invested": 6656286.0,
+        "shares": 14000,
+        "fills": 1,
+        "avg_entry": 475.449,
+        "pnl": 2347776.284
+      },
+      "10m_high": {
+        "deploy_ratio": 0.941853684230924,
+        "invested": 6656286.0,
+        "shares": 14000,
+        "fills": 1,
+        "avg_entry": 475.449,
+        "pnl": 2347776.284
+      }
+    },
+    {
+      "entry": "2026-08-20",
+      "ticker": "6691",
+      "1m_open": {
+        "deploy_ratio": 0.0623901078771311,
+        "invested": 630258.0,
+        "shares": 1000,
+        "fills": 1,
+        "avg_entry": 630.258,
+        "pnl": -27039.548000000043
+      },
+      "3m_open": {
+        "deploy_ratio": 0.31175216066426553,
+        "invested": 3149286.0,
+        "shares": 5000,
+        "fills": 3,
+        "avg_entry": 629.8572,
+        "pnl": -133181.71600000007
+      },
+      "5m_open": {
+        "deploy_ratio": 0.3739438898200067,
+        "invested": 3777540.0,
+        "shares": 6000,
+        "fills": 4,
+        "avg_entry": 629.59,
+        "pnl": -158205.2400000002
+      },
+      "10m_open": {
+        "deploy_ratio": 0.8068062598928208,
+        "invested": 8150268.0,
+        "shares": 13000,
+        "fills": 7,
+        "avg_entry": 626.9436923076923,
+        "pnl": -308169.60800000076
+      },
+      "5m_high": {
+        "deploy_ratio": 0.4025030277296962,
+        "invested": 3789564.0,
+        "shares": 6000,
+        "fills": 4,
+        "avg_entry": 631.594,
+        "pnl": -170301.3840000002
+      },
+      "10m_high": {
+        "deploy_ratio": 0.8674781012757149,
+        "invested": 8167302.0,
+        "shares": 13000,
+        "fills": 7,
+        "avg_entry": 628.254,
+        "pnl": -325305.8120000005
+      }
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "1m_open": {
+        "deploy_ratio": 0.05155776834069423,
+        "invested": 519436.8,
+        "shares": 6000,
+        "fills": 1,
+        "avg_entry": 86.5728,
+        "pnl": 164446.57919999998
+      },
+      "3m_open": {
+        "deploy_ratio": 0.20827615411745926,
+        "invested": 2076244.2,
+        "shares": 24000,
+        "fills": 3,
+        "avg_entry": 86.510175,
+        "pnl": 659298.3347999998
+      },
+      "5m_open": {
+        "deploy_ratio": 0.33909263202549367,
+        "invested": 3371830.1999999997,
+        "shares": 39000,
+        "fills": 5,
+        "avg_entry": 86.4571846153846,
+        "pnl": 1073438.8188000002
+      },
+      "10m_open": {
+        "deploy_ratio": 0.6001326799992837,
+        "invested": 5877531.6,
+        "shares": 68000,
+        "fills": 10,
+        "avg_entry": 86.43428823529412,
+        "pnl": 1873203.2104
+      },
+      "5m_high": {
+        "deploy_ratio": 0.3652299940273456,
+        "invested": 3376439.4,
+        "shares": 39000,
+        "fills": 5,
+        "avg_entry": 86.57536923076923,
+        "pnl": 1068801.9636
+      },
+      "10m_high": {
+        "deploy_ratio": 0.6478939673106121,
+        "invested": 5889154.8,
+        "shares": 68000,
+        "fills": 10,
+        "avg_entry": 86.60521764705882,
+        "pnl": 1861510.2711999994
+      }
+    }
+  ],
+  "diagnostic": {
+    "events_under_90pct_deployed_1m": 3,
+    "events_under_90pct_deployed_5m": 3,
+    "events_under_90pct_deployed_10m": 3
+  }
+}
