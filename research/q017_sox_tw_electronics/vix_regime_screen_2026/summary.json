@@ -1,0 +1,346 @@
+{
+  "objective": "screen VIX regime as third market factor on validated SOX5 x DXY5 gate; no buy/sell timing optimization",
+  "baseline": {
+    "filter": "none",
+    "threshold": 0,
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "tested": 58,
+  "best": {
+    "filter": "none",
+    "threshold": 0,
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "improvement": 0.0,
+  "same_family_within95pct_best": 1,
+  "top30": [
+    {
+      "filter": "none",
+      "threshold": 0,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vixge",
+      "threshold": 15,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vixle",
+      "threshold": 30,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vixle",
+      "threshold": 35,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix1ge",
+      "threshold": -0.2,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix1ge",
+      "threshold": -0.1,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix1ge",
+      "threshold": -0.05,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix1le",
+      "threshold": 0.4,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix5ge",
+      "threshold": -0.3,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix5ge",
+      "threshold": -0.2,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix5ge",
+      "threshold": -0.1,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix5ge",
+      "threshold": -0.05,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vix5le",
+      "threshold": 0.5,
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "filter": "vixge",
+      "threshold": 17,
+      "final": 13735048.729803754,
+      "ret": 5.867524364901877,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "vixle",
+      "threshold": 25,
+      "final": 13219242.550529698,
+      "ret": 5.609621275264849,
+      "events": 7,
+      "wins": 7
+    },
+    {
+      "filter": "vix1le",
+      "threshold": 0.15,
+      "final": 12669014.767420383,
+      "ret": 5.334507383710192,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "vix1le",
+      "threshold": 0.2,
+      "final": 12669014.767420383,
+      "ret": 5.334507383710192,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "vix1le",
+      "threshold": 0.3,
+      "final": 12669014.767420383,
+      "ret": 5.334507383710192,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "vix5le",
+      "threshold": 0.3,
+      "final": 12669014.767420383,
+      "ret": 5.334507383710192,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "filter": "vix1ge",
+      "threshold": 0,
+      "final": 11844910.435066098,
+      "ret": 4.92245521753305,
+      "events": 7,
+      "wins": 7
+    },
+    {
+      "filter": "vix5ge",
+      "threshold": 0,
+      "final": 9603385.617918875,
+      "ret": 3.8016928089594373,
+      "events": 7,
+      "wins": 6
+    },
+    {
+      "filter": "vix5ge",
+      "threshold": 0.05,
+      "final": 9603385.617918875,
+      "ret": 3.8016928089594373,
+      "events": 7,
+      "wins": 6
+    },
+    {
+      "filter": "vix1ge",
+      "threshold": 0.05,
+      "final": 9400746.674181044,
+      "ret": 3.7003733370905216,
+      "events": 7,
+      "wins": 6
+    },
+    {
+      "filter": "vix5ge",
+      "threshold": 0.1,
+      "final": 9400746.674181044,
+      "ret": 3.7003733370905216,
+      "events": 7,
+      "wins": 6
+    },
+    {
+      "filter": "vixle",
+      "threshold": 22,
+      "final": 8990097.01538502,
+      "ret": 3.49504850769251,
+      "events": 6,
+      "wins": 6
+    },
+    {
+      "filter": "vix1le",
+      "threshold": 0.1,
+      "final": 8444865.085588705,
+      "ret": 3.222432542794352,
+      "events": 7,
+      "wins": 6
+    },
+    {
+      "filter": "vix5le",
+      "threshold": 0.2,
+      "final": 8443127.031879079,
+      "ret": 3.2215635159395397,
+      "events": 6,
+      "wins": 6
+    },
+    {
+      "filter": "vixge",
+      "threshold": 19,
+      "final": 7654660.012586558,
+      "ret": 2.827330006293279,
+      "events": 5,
+      "wins": 5
+    },
+    {
+      "filter": "vixge",
+      "threshold": 20,
+      "final": 7537543.650395972,
+      "ret": 2.768771825197986,
+      "events": 4,
+      "wins": 4
+    },
+    {
+      "filter": "vixle",
+      "threshold": 20,
+      "final": 6581237.819662312,
+      "ret": 2.290618909831156,
+      "events": 6,
+      "wins": 5
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "exit": "2026-03-18",
+      "net": 0.470422680412371,
+      "capital": 2940845.360824742,
+      "vix": 23.57,
+      "vix1": 0.09934701492537301,
+      "vix5": 0.20562659846547304
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "exit": "2026-04-14",
+      "net": 0.30916101694915255,
+      "capital": 3850040.1032675165,
+      "vix": 27.44,
+      "vix1": 0.08330043426766687,
+      "vix5": 0.14048212801330018
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "exit": "2026-06-02",
+      "net": 0.430229845626072,
+      "capital": 5506442.262550486,
+      "vix": 17.82,
+      "vix1": -0.03309820944112851,
+      "vix5": -0.030467899891186034
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "exit": "2026-06-23",
+      "net": 0.39397222222222217,
+      "capital": 7675827.557265862,
+      "vix": 21.51,
+      "vix1": 0.39675324675324686,
+      "vix5": 0.40404699738903394
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "exit": "2026-07-07",
+      "net": 0.015537735849056494,
+      "capital": 7795092.538273567,
+      "vix": 19.49,
+      "vix1": 0.12789351851851838,
+      "vix5": 0.18769043266301022
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "exit": "2026-07-23",
+      "net": 0.1596856368563686,
+      "capital": 9039856.85460211,
+      "vix": 16.13,
+      "vix1": 0.03596660244059069,
+      "vix5": -0.0194528875379939
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "exit": "2026-08-12",
+      "net": 0.4347376185458378,
+      "capital": 12969822.6955671,
+      "vix": 18.21,
+      "vix1": -0.02463845741831816,
+      "vix5": 0.06803519061583585
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "exit": "2026-10-01",
+      "net": 0.3343372093023256,
+      "capital": 17306117.02074897,
+      "vix": 17.1,
+      "vix1": 0.07954545454545459,
+      "vix5": 0.11764705882352944
+    }
+  ]
+}
