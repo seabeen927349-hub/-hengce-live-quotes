@@ -1,0 +1,105 @@
+name: HENGCE Daily Command Center
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'self-test | premarket | radar | postclose'
+        required: false
+        default: 'self-test'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_daily_command_center.py'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json'
+      - '.github/workflows/hengce-daily-command-center.yml'
+  schedule:
+    # Asia/Taipei = UTC+8
+    # Premarket after US close, before TWSE open.
+    - cron: '30 22 * * 0-4'
+    # Post-open radar snapshots. Mon-Fri Taiwan.
+    - cron: '3 1 * * 1-5'
+    - cron: '10 1 * * 1-5'
+    - cron: '20 1 * * 1-5'
+    # Post-close official three-leg ingest + electronics history append.
+    - cron: '0 7 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-daily-command-center
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests openpyxl
+
+      - name: Resolve mode
+        id: mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          MODE='self-test'
+          if [[ '${{ github.event_name }}' == 'workflow_dispatch' ]]; then
+            MODE='${{ inputs.mode }}'
+          elif [[ '${{ github.event_name }}' == 'schedule' ]]; then
+            H='${{ github.event.schedule }}'
+            case "$H" in
+              '30 22 * * 0-4') MODE='premarket' ;;
+              '3 1 * * 1-5'|'10 1 * * 1-5'|'20 1 * * 1-5') MODE='radar' ;;
+              '0 7 * * 1-5') MODE='postclose' ;;
+              *) MODE='self-test' ;;
+            esac
+          fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "Resolved mode=$MODE"
+
+      - name: Run self-test
+        if: steps.mode.outputs.mode == 'self-test'
+        run: python scripts/hengce_daily_command_center.py --mode self-test
+
+      - name: Run premarket data gate
+        if: steps.mode.outputs.mode == 'premarket'
+        run: python scripts/hengce_daily_command_center.py --mode premarket
+
+      - name: Run post-open SOX electronics Top3 radar
+        if: steps.mode.outputs.mode == 'radar'
+        run: python scripts/hengce_daily_command_center.py --mode radar
+
+      - name: Run post-close official ingest and history append
+        if: steps.mode.outputs.mode == 'postclose'
+        run: python scripts/hengce_daily_command_center.py --mode postclose
+
+      - name: Commit command-center outputs
+        if: steps.mode.outputs.mode != 'self-test'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-command-center-bot'
+          git config user.email 'hengce-command-center-bot@users.noreply.github.com'
+          git add hengce/q017_radar/ eod/ || true
+          if git diff --cached --quiet; then
+            echo 'No command-center output changes.'
+            exit 0
+          fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE command center ${TS} ${{ steps.mode.outputs.mode }}"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
