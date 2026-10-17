@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/ndx_relative_screen_2026.py'
+      - 'research/q017_sox_tw_electronics/dual_sleeve_causal_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -16,6 +16,8 @@ jobs:
   research:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,18 +30,17 @@ jobs:
           test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
           test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
           test -s research/q017_sox_tw_electronics/archive_2026/dxy_2026.csv
-          test -s research/q017_sox_tw_electronics/archive_2026/ndx_2026.csv
-      - name: Run SOX relative-to-NDX screen
-        run: python research/q017_sox_tw_electronics/ndx_relative_screen_2026.py
-      - name: Commit relative-shock results
+      - name: Run fixed dual-sleeve causal validation
+        run: python research/q017_sox_tw_electronics/dual_sleeve_causal_2026.py
+      - name: Commit dual-sleeve results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/ndx_relative_screen_2026
+          git add research/q017_sox_tw_electronics/dual_sleeve_causal_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Screen Q017 SOX relative-to-NDX combinations'
+            git commit -m 'Validate Q017 fixed dual-sleeve allocation'
             git pull --rebase origin q017-2026-sox-dxy-electronics
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
