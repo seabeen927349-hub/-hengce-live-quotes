@@ -1,0 +1,746 @@
+{
+  "objective": "learn only from foreign, investment trust, and margin relationships; no timing optimization",
+  "market_gate": "SOX1<=0, SOX5<=-3%, DXY5>=-0.5%",
+  "baseline": {
+    "idx": 0,
+    "spec": {
+      "kind": "none"
+    },
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "tested": 387,
+  "best": {
+    "idx": 0,
+    "spec": {
+      "kind": "none"
+    },
+    "final": 17306117.02074897,
+    "ret": 7.653058510374484,
+    "events": 8,
+    "wins": 8
+  },
+  "improvement": 0.0,
+  "best_family": "none",
+  "family_count": 1,
+  "family_within95pct_best": 1,
+  "top30": [
+    {
+      "idx": 0,
+      "spec": {
+        "kind": "none"
+      },
+      "final": 17306117.02074897,
+      "ret": 7.653058510374484,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 268,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 10,
+        "mw": 1,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 12107947.39687386,
+      "ret": 5.05397369843693,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 220,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 3,
+        "mw": 1,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 10683897.692811005,
+      "ret": 4.3419488464055025,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 321,
+      "spec": {
+        "kind": "triple",
+        "fw": 10,
+        "tw": 3,
+        "mw": 3,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 10209064.8964429,
+      "ret": 4.10453244822145,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 244,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 5,
+        "mw": 1,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 10179007.32003451,
+      "ret": 4.089503660017255,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 172,
+      "spec": {
+        "kind": "triple",
+        "fw": 3,
+        "tw": 10,
+        "mw": 1,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 10153655.483799094,
+      "ret": 4.076827741899547,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 49,
+      "spec": {
+        "kind": "triple",
+        "fw": 1,
+        "tw": 5,
+        "mw": 1,
+        "fs": "pos",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "foreign+trust buy / margin down"
+      },
+      "final": 9540693.363172278,
+      "ret": 3.7703466815861386,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 67,
+      "spec": {
+        "kind": "triple",
+        "fw": 1,
+        "tw": 5,
+        "mw": 10,
+        "fs": "pos",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "foreign+trust buy / margin down"
+      },
+      "final": 9475020.126311047,
+      "ret": 3.737510063155524,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 285,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 10,
+        "mw": 10,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 9427640.577840663,
+      "ret": 3.7138202889203313,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 91,
+      "spec": {
+        "kind": "triple",
+        "fw": 1,
+        "tw": 10,
+        "mw": 10,
+        "fs": "pos",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "foreign+trust buy / margin down"
+      },
+      "final": 9361873.0589973,
+      "ret": 3.6809365294986494,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 73,
+      "spec": {
+        "kind": "triple",
+        "fw": 1,
+        "tw": 10,
+        "mw": 1,
+        "fs": "pos",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "foreign+trust buy / margin down"
+      },
+      "final": 9360416.202853441,
+      "ret": 3.6802081014267207,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 363,
+      "spec": {
+        "kind": "triple",
+        "fw": 10,
+        "tw": 10,
+        "mw": 1,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 9339498.568644641,
+      "ret": 3.6697492843223207,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 238,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 3,
+        "mw": 10,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 9293231.905882342,
+      "ret": 3.646615952941171,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 25,
+      "spec": {
+        "kind": "triple",
+        "fw": 1,
+        "tw": 3,
+        "mw": 1,
+        "fs": "pos",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "foreign+trust buy / margin down"
+      },
+      "final": 9172017.056667823,
+      "ret": 3.5860085283339114,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 291,
+      "spec": {
+        "kind": "triple",
+        "fw": 10,
+        "tw": 1,
+        "mw": 1,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 9151852.6752149,
+      "ret": 3.5759263376074495,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 297,
+      "spec": {
+        "kind": "triple",
+        "fw": 10,
+        "tw": 1,
+        "mw": 3,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 9151852.6752149,
+      "ret": 3.5759263376074495,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 148,
+      "spec": {
+        "kind": "triple",
+        "fw": 3,
+        "tw": 5,
+        "mw": 1,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 9149433.50510778,
+      "ret": 3.5747167525538908,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 282,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 10,
+        "mw": 5,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "pos",
+        "label": "trust buy / foreign sell / margin up"
+      },
+      "final": 9032796.23098158,
+      "ret": 3.516398115490791,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 327,
+      "spec": {
+        "kind": "triple",
+        "fw": 10,
+        "tw": 3,
+        "mw": 5,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 8897095.94134395,
+      "ret": 3.4485479706719753,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 286,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 10,
+        "mw": 10,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 8733255.597959466,
+      "ret": 3.3666277989797333,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 385,
+      "spec": {
+        "kind": "turn",
+        "who": "foreign"
+      },
+      "final": 8665566.209994035,
+      "ret": 3.3327831049970174,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 369,
+      "spec": {
+        "kind": "triple",
+        "fw": 10,
+        "tw": 10,
+        "mw": 3,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 8553806.658356111,
+      "ret": 3.2769033291780554,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 262,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 5,
+        "mw": 10,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 8474345.598371994,
+      "ret": 3.2371727991859967,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 43,
+      "spec": {
+        "kind": "triple",
+        "fw": 1,
+        "tw": 3,
+        "mw": 10,
+        "fs": "pos",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "foreign+trust buy / margin down"
+      },
+      "final": 8257761.039040052,
+      "ret": 3.1288805195200258,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 124,
+      "spec": {
+        "kind": "triple",
+        "fw": 3,
+        "tw": 3,
+        "mw": 1,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "neg",
+        "label": "trust buy / foreign sell / margin down"
+      },
+      "final": 8126783.566018029,
+      "ret": 3.0633917830090143,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 303,
+      "spec": {
+        "kind": "triple",
+        "fw": 10,
+        "tw": 1,
+        "mw": 5,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 7975746.272393941,
+      "ret": 2.9878731361969706,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 309,
+      "spec": {
+        "kind": "triple",
+        "fw": 10,
+        "tw": 1,
+        "mw": 10,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 7975746.272393941,
+      "ret": 2.9878731361969706,
+      "events": 8,
+      "wins": 8
+    },
+    {
+      "idx": 150,
+      "spec": {
+        "kind": "triple",
+        "fw": 3,
+        "tw": 5,
+        "mw": 1,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "pos",
+        "label": "trust buy / foreign sell / margin up"
+      },
+      "final": 7926151.545520125,
+      "ret": 2.9630757727600625,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 246,
+      "spec": {
+        "kind": "triple",
+        "fw": 5,
+        "tw": 5,
+        "mw": 1,
+        "fs": "neg",
+        "ts": "pos",
+        "ms": "pos",
+        "label": "trust buy / foreign sell / margin up"
+      },
+      "final": 7926151.545520125,
+      "ret": 2.9630757727600625,
+      "events": 8,
+      "wins": 7
+    },
+    {
+      "idx": 3,
+      "spec": {
+        "kind": "triple",
+        "fw": 1,
+        "tw": 1,
+        "mw": 1,
+        "fs": "pos",
+        "ts": "neg",
+        "ms": "neg",
+        "label": "foreign buy / trust sell / margin down"
+      },
+      "final": 7851435.47450541,
+      "ret": 2.925717737252705,
+      "events": 8,
+      "wins": 6
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "exit": "2026-03-18",
+      "net": 0.470422680412371,
+      "capital": 2940845.360824742,
+      "chip": {
+        "f1": -49039423.0,
+        "t1": 1418000.0,
+        "m1": -12652.0,
+        "f3": -40101629.0,
+        "t3": 2160000.0,
+        "m3": -5286.0,
+        "f5": -82102480.0,
+        "t5": 5292000.0,
+        "m5": 2329.0,
+        "f10": -42288152.0,
+        "t10": 11037000.0,
+        "m10": 29481.0
+      },
+      "beta": 1.170347905692605,
+      "resid": -0.01819949770869858
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "exit": "2026-04-14",
+      "net": 0.30916101694915255,
+      "capital": 3850040.1032675165,
+      "chip": {
+        "f1": 5393162.0,
+        "t1": -1470583.0,
+        "m1": -11113.0,
+        "f3": 17833367.0,
+        "t3": -5289658.0,
+        "m3": -28817.0,
+        "f5": 11319139.0,
+        "t5": -6440918.0,
+        "m5": -33561.0,
+        "f10": 86951481.0,
+        "t10": -7240918.0,
+        "m10": -19213.0
+      },
+      "beta": 1.1028710296602542,
+      "resid": -0.025267140525159618
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "exit": "2026-06-02",
+      "net": 0.430229845626072,
+      "capital": 5506442.262550486,
+      "chip": {
+        "f1": 2181497.0,
+        "t1": -8258000.0,
+        "m1": -192.0,
+        "f3": -21338317.0,
+        "t3": -4617954.0,
+        "m3": -2292.0,
+        "f5": -1436384.0,
+        "t5": 1250088.0,
+        "m5": -1623.0,
+        "f10": 57078248.0,
+        "t10": 32424215.0,
+        "m10": -6833.0
+      },
+      "beta": 0.8960597811040111,
+      "resid": -0.022151892175769572
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "exit": "2026-06-23",
+      "net": 0.39397222222222217,
+      "capital": 7675827.557265862,
+      "chip": {
+        "f1": -11331309.0,
+        "t1": -331824.0,
+        "m1": -8515.0,
+        "f3": -37641575.0,
+        "t3": 362704.0,
+        "m3": -10689.0,
+        "f5": 7696589.0,
+        "t5": 7906705.0,
+        "m5": -14172.0,
+        "f10": 101123168.0,
+        "t10": -1280690.0,
+        "m10": -17292.0
+      },
+      "beta": 0.6368260284798762,
+      "resid": -0.03468128778222483
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "exit": "2026-07-07",
+      "net": 0.015537735849056494,
+      "capital": 7795092.538273567,
+      "chip": {
+        "f1": 10811189.0,
+        "t1": -5642619.0,
+        "m1": -1291.0,
+        "f3": 39837520.0,
+        "t3": -20957997.0,
+        "m3": -608.0,
+        "f5": 43009701.0,
+        "t5": -26797697.0,
+        "m5": -456.0,
+        "f10": 33938583.0,
+        "t10": -30652382.0,
+        "m10": -161.0
+      },
+      "beta": 0.8192344022784848,
+      "resid": 0.025224654376234126
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "exit": "2026-07-23",
+      "net": 0.1596856368563686,
+      "capital": 9039856.85460211,
+      "chip": {
+        "f1": -14281.0,
+        "t1": -437843.0,
+        "m1": -38.0,
+        "f3": -17186.0,
+        "t3": -750537.0,
+        "m3": -28.0,
+        "f5": -182549.0,
+        "t5": -827348.0,
+        "m5": 133.0,
+        "f10": 865352.0,
+        "t10": -1717808.0,
+        "m10": 170.0
+      },
+      "beta": 0.44756136831664645,
+      "resid": -0.040265105361123044
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "exit": "2026-08-12",
+      "net": 0.4347376185458378,
+      "capital": 12969822.6955671,
+      "chip": {
+        "f1": 110000.0,
+        "t1": 3000.0,
+        "m1": -70.0,
+        "f3": 135796.0,
+        "t3": -660000.0,
+        "m3": -841.0,
+        "f5": 751828.0,
+        "t5": -873000.0,
+        "m5": -1419.0,
+        "f10": 6522873.0,
+        "t10": -537500.0,
+        "m10": -1364.0
+      },
+      "beta": 0.36966260068368895,
+      "resid": -0.0830103760700893
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "exit": "2026-10-01",
+      "net": 0.3343372093023256,
+      "capital": 17306117.02074897,
+      "chip": {
+        "f1": 940985.0,
+        "t1": 0.0,
+        "m1": -469.0,
+        "f3": -12766121.0,
+        "t3": 5000.0,
+        "m3": 133.0,
+        "f5": -4940842.0,
+        "t5": 21000.0,
+        "m5": -1441.0,
+        "f10": 9981600.0,
+        "t10": 135000.0,
+        "m10": -2188.0
+      },
+      "beta": 0.7590373439844261,
+      "resid": 0.037540298831315794
+    }
+  ],
+  "data": {
+    "gate_dates": [
+      "2026-02-05",
+      "2026-02-06",
+      "2026-03-04",
+      "2026-03-06",
+      "2026-03-09",
+      "2026-03-27",
+      "2026-03-31",
+      "2026-05-19",
+      "2026-06-08",
+      "2026-06-10",
+      "2026-06-11",
+      "2026-06-24",
+      "2026-06-29",
+      "2026-07-08",
+      "2026-07-14",
+      "2026-07-17",
+      "2026-07-20",
+      "2026-07-29",
+      "2026-07-30",
+      "2026-09-15",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16"
+    ],
+    "downloaded_chip_dates": 122,
+    "source_inst": "https://www.twse.com.tw/rwd/zh/fund/T86",
+    "source_margin": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN"
+  }
+}
