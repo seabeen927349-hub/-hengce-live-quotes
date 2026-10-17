@@ -1,0 +1,615 @@
+{
+  "objective": "fully causal fixed-clock selection: rank only stocks whose first trade existed by decision time, then fill starting next minute",
+  "contract": {
+    "hold_days": 10,
+    "overshoot_k": 25,
+    "sox5_max": -0.02,
+    "resid_max": 0.04,
+    "boardlot": true,
+    "minute_participation_cap": 0.1,
+    "slippage": 0.002,
+    "roundtrip_cost": 0.006,
+    "fill_window_min": 20
+  },
+  "retrieval_audit": {
+    "2026-02-05": {
+      "ranked_candidates": 0,
+      "fetched_until_all_cutoffs_resolved": 0,
+      "unresolved": [
+        "09:01",
+        "09:03",
+        "09:05",
+        "09:10",
+        "09:15",
+        "09:20",
+        "09:25",
+        "09:30"
+      ]
+    },
+    "2026-03-04": {
+      "ranked_candidates": 378,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    },
+    "2026-03-27": {
+      "ranked_candidates": 420,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    },
+    "2026-05-19": {
+      "ranked_candidates": 419,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    },
+    "2026-06-08": {
+      "ranked_candidates": 391,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    },
+    "2026-06-24": {
+      "ranked_candidates": 401,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    },
+    "2026-07-08": {
+      "ranked_candidates": 335,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    },
+    "2026-07-29": {
+      "ranked_candidates": 404,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    },
+    "2026-08-20": {
+      "ranked_candidates": 414,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    },
+    "2026-09-15": {
+      "ranked_candidates": 401,
+      "fetched_until_all_cutoffs_resolved": 1,
+      "unresolved": []
+    }
+  },
+  "tested": 16,
+  "best": {
+    "cutoff": "09:01",
+    "price_field": "open",
+    "final": 12782674.321200002,
+    "ret": 5.391337160600001,
+    "events": 10,
+    "wins": 8
+  },
+  "grid": [
+    {
+      "cutoff": "09:01",
+      "price_field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:15",
+      "price_field": "open",
+      "final": 12484597.030399997,
+      "ret": 5.242298515199998,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:05",
+      "price_field": "open",
+      "final": 12425075.141200002,
+      "ret": 5.212537570600001,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:10",
+      "price_field": "open",
+      "final": 12369114.316399999,
+      "ret": 5.1845571582,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:15",
+      "price_field": "high",
+      "final": 12333405.393599998,
+      "ret": 5.166702696799999,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:10",
+      "price_field": "high",
+      "final": 12253908.707999999,
+      "ret": 5.1269543539999995,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:05",
+      "price_field": "high",
+      "final": 12252120.608400002,
+      "ret": 5.126060304200001,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:03",
+      "price_field": "open",
+      "final": 11921197.099599998,
+      "ret": 4.960598549799999,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:01",
+      "price_field": "high",
+      "final": 11891787.975600002,
+      "ret": 4.945893987800001,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:03",
+      "price_field": "high",
+      "final": 11809846.7632,
+      "ret": 4.9049233816,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:20",
+      "price_field": "open",
+      "final": 10106511.121199999,
+      "ret": 4.053255560599999,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:30",
+      "price_field": "open",
+      "final": 9898166.137999998,
+      "ret": 3.9490830689999994,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:25",
+      "price_field": "open",
+      "final": 9877706.8448,
+      "ret": 3.9388534223999994,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:20",
+      "price_field": "high",
+      "final": 9770301.3496,
+      "ret": 3.8851506748,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:25",
+      "price_field": "high",
+      "final": 9749772.4408,
+      "ret": 3.8748862203999996,
+      "events": 10,
+      "wins": 8
+    },
+    {
+      "cutoff": "09:30",
+      "price_field": "high",
+      "final": 9663514.956400001,
+      "ret": 3.831757478200001,
+      "events": 10,
+      "wins": 8
+    }
+  ],
+  "surface": {
+    "within_95pct_best": 7,
+    "within_90pct_best": 10,
+    "positive": 16
+  },
+  "best_curve": [
+    {
+      "entry": "2026-02-05",
+      "exit": "2026-03-02",
+      "capital_before": 2000000.0,
+      "capital": 2000000.0,
+      "reason": "NO_OPENED_CANDIDATE"
+    },
+    {
+      "entry": "2026-03-04",
+      "exit": "2026-03-17",
+      "ticker": "2337",
+      "score": 1.7028415063934235,
+      "beta": 1.170347905692605,
+      "resid": -0.01819949770869858,
+      "first_print": "2026-03-04T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 2000000.0,
+      "shares": 20000,
+      "spent": 1989972.0,
+      "deploy_ratio": 0.994986,
+      "avg_entry": 99.4986,
+      "exit_close": 130.5,
+      "net": 0.30557624328382516,
+      "pnl": 608088.1680000001,
+      "capital": 2608088.168,
+      "fills": [
+        {
+          "time": "2026-03-04T09:03:00.000+08:00",
+          "lots": 20,
+          "raw_px": 99.3,
+          "stressed_px": 99.4986
+        }
+      ]
+    },
+    {
+      "entry": "2026-03-27",
+      "exit": "2026-04-13",
+      "ticker": "2337",
+      "score": 1.7995309618490822,
+      "beta": 1.1028710296602542,
+      "resid": -0.025267140525159618,
+      "first_print": "2026-03-27T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 2608088.168,
+      "shares": 22000,
+      "spent": 2546082.0,
+      "deploy_ratio": 0.9762254325751766,
+      "avg_entry": 115.731,
+      "exit_close": 147.5,
+      "net": 0.2685072625312146,
+      "pnl": 683641.5079999999,
+      "capital": 3291729.676,
+      "fills": [
+        {
+          "time": "2026-03-27T09:20:00.000+08:00",
+          "lots": 22,
+          "raw_px": 115.5,
+          "stressed_px": 115.731
+        }
+      ]
+    },
+    {
+      "entry": "2026-05-19",
+      "exit": "2026-06-01",
+      "ticker": "2408",
+      "score": 1.3922952724555044,
+      "beta": 0.8960597811040111,
+      "resid": -0.022151892175769572,
+      "first_print": "2026-05-19T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 3291729.676,
+      "shares": 11000,
+      "spent": 3185357.9999999995,
+      "deploy_ratio": 0.9676851726994606,
+      "avg_entry": 289.578,
+      "exit_close": 381.5,
+      "net": 0.31143433548128674,
+      "pnl": 992029.8520000004,
+      "capital": 4283759.528000001,
+      "fills": [
+        {
+          "time": "2026-05-19T09:02:00.000+08:00",
+          "lots": 11,
+          "raw_px": 289.0,
+          "stressed_px": 289.578
+        }
+      ]
+    },
+    {
+      "entry": "2026-06-08",
+      "exit": "2026-06-22",
+      "ticker": "2408",
+      "score": 1.1889746975029236,
+      "beta": 0.6368260284798762,
+      "resid": -0.03468128778222483,
+      "first_print": "2026-06-08T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 4283759.528000001,
+      "shares": 13000,
+      "spent": 4272528.0,
+      "deploy_ratio": 0.9973781142646808,
+      "avg_entry": 328.656,
+      "exit_close": 505.0,
+      "net": 0.5305610242928775,
+      "pnl": 2266836.8319999995,
+      "capital": 6550596.36,
+      "fills": [
+        {
+          "time": "2026-06-08T09:02:00.000+08:00",
+          "lots": 13,
+          "raw_px": 328.0,
+          "stressed_px": 328.656
+        }
+      ]
+    },
+    {
+      "entry": "2026-06-24",
+      "exit": "2026-07-07",
+      "ticker": "3711",
+      "score": 0.8192344022784848,
+      "beta": 0.8192344022784848,
+      "resid": 0.025224654376234126,
+      "first_print": "2026-06-24T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 6550596.36,
+      "shares": 10000,
+      "spent": 6352680.0,
+      "deploy_ratio": 0.9697865126893576,
+      "avg_entry": 635.268,
+      "exit_close": 651.0,
+      "net": 0.01876435142333622,
+      "pnl": 119203.91999999953,
+      "capital": 6669800.28,
+      "fills": [
+        {
+          "time": "2026-06-24T09:02:00.000+08:00",
+          "lots": 10,
+          "raw_px": 634.0,
+          "stressed_px": 635.268
+        }
+      ]
+    },
+    {
+      "entry": "2026-07-08",
+      "exit": "2026-07-22",
+      "ticker": "2360",
+      "score": 0.8980890095876006,
+      "beta": 0.44756136831664645,
+      "resid": -0.040265105361123044,
+      "first_print": "2026-07-08T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 6669800.28,
+      "shares": 3000,
+      "spent": 5425830.0,
+      "deploy_ratio": 0.8134921245347994,
+      "avg_entry": 1808.61,
+      "exit_close": 2125.0,
+      "net": 0.1689354476642284,
+      "pnl": 916615.0200000005,
+      "capital": 7586415.300000001,
+      "fills": [
+        {
+          "time": "2026-07-08T09:02:00.000+08:00",
+          "lots": 3,
+          "raw_px": 1805.0,
+          "stressed_px": 1808.61
+        }
+      ]
+    },
+    {
+      "entry": "2026-07-29",
+      "exit": "2026-08-11",
+      "ticker": "3026",
+      "score": 1.1368083882286957,
+      "beta": 0.36966260068368895,
+      "resid": -0.0830103760700893,
+      "first_print": "2026-07-29T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 7586415.300000001,
+      "shares": 15000,
+      "spent": 7131735.0,
+      "deploy_ratio": 0.9400665159999874,
+      "avg_entry": 475.449,
+      "exit_close": 646.0,
+      "net": 0.35271565614818834,
+      "pnl": 2515474.59,
+      "capital": 10101889.89,
+      "fills": [
+        {
+          "time": "2026-07-29T09:20:00.000+08:00",
+          "lots": 15,
+          "raw_px": 474.5,
+          "stressed_px": 475.449
+        }
+      ]
+    },
+    {
+      "entry": "2026-08-20",
+      "exit": "2026-09-02",
+      "ticker": "6691",
+      "score": 0.9043366990707596,
+      "beta": 0.26818790796734865,
+      "resid": -0.09488105499236169,
+      "first_print": "2026-08-20T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 10101889.89,
+      "shares": 16000,
+      "spent": 10025010.0,
+      "deploy_ratio": 0.9923895537530948,
+      "avg_entry": 626.563125,
+      "exit_close": 607.0,
+      "net": -0.03722291149834266,
+      "pnl": -373160.0600000002,
+      "capital": 9728729.83,
+      "fills": [
+        {
+          "time": "2026-08-20T09:02:00.000+08:00",
+          "lots": 1,
+          "raw_px": 629.0,
+          "stressed_px": 630.258
+        },
+        {
+          "time": "2026-08-20T09:03:00.000+08:00",
+          "lots": 3,
+          "raw_px": 628.0,
+          "stressed_px": 629.256
+        },
+        {
+          "time": "2026-08-20T09:04:00.000+08:00",
+          "lots": 1,
+          "raw_px": 630.0,
+          "stressed_px": 631.26
+        },
+        {
+          "time": "2026-08-20T09:06:00.000+08:00",
+          "lots": 1,
+          "raw_px": 627.0,
+          "stressed_px": 628.254
+        },
+        {
+          "time": "2026-08-20T09:08:00.000+08:00",
+          "lots": 1,
+          "raw_px": 626.0,
+          "stressed_px": 627.252
+        },
+        {
+          "time": "2026-08-20T09:09:00.000+08:00",
+          "lots": 3,
+          "raw_px": 625.0,
+          "stressed_px": 626.25
+        },
+        {
+          "time": "2026-08-20T09:10:00.000+08:00",
+          "lots": 3,
+          "raw_px": 621.0,
+          "stressed_px": 622.242
+        },
+        {
+          "time": "2026-08-20T09:13:00.000+08:00",
+          "lots": 1,
+          "raw_px": 619.0,
+          "stressed_px": 620.238
+        },
+        {
+          "time": "2026-08-20T09:14:00.000+08:00",
+          "lots": 1,
+          "raw_px": 624.0,
+          "stressed_px": 625.248
+        },
+        {
+          "time": "2026-08-20T09:15:00.000+08:00",
+          "lots": 1,
+          "raw_px": 628.0,
+          "stressed_px": 629.256
+        }
+      ]
+    },
+    {
+      "entry": "2026-09-15",
+      "exit": "2026-09-30",
+      "ticker": "8150",
+      "score": 0.7590373439844261,
+      "beta": 0.7590373439844261,
+      "resid": 0.037540298831315794,
+      "first_print": "2026-09-15T09:00:00.000+08:00",
+      "decision_cutoff": "09:01",
+      "capital_before": 9728729.83,
+      "shares": 112000,
+      "spent": 9711784.799999999,
+      "deploy_ratio": 0.9982582484768209,
+      "avg_entry": 86.71236428571427,
+      "exit_close": 114.5,
+      "net": 0.31445759498295334,
+      "pnl": 3053944.491200002,
+      "capital": 12782674.321200002,
+      "fills": [
+        {
+          "time": "2026-09-15T09:02:00.000+08:00",
+          "lots": 6,
+          "raw_px": 86.4,
+          "stressed_px": 86.5728
+        },
+        {
+          "time": "2026-09-15T09:03:00.000+08:00",
+          "lots": 5,
+          "raw_px": 86.1,
+          "stressed_px": 86.2722
+        },
+        {
+          "time": "2026-09-15T09:04:00.000+08:00",
+          "lots": 13,
+          "raw_px": 86.4,
+          "stressed_px": 86.5728
+        },
+        {
+          "time": "2026-09-15T09:05:00.000+08:00",
+          "lots": 3,
+          "raw_px": 86.2,
+          "stressed_px": 86.3724
+        },
+        {
+          "time": "2026-09-15T09:06:00.000+08:00",
+          "lots": 12,
+          "raw_px": 86.2,
+          "stressed_px": 86.3724
+        },
+        {
+          "time": "2026-09-15T09:07:00.000+08:00",
+          "lots": 6,
+          "raw_px": 85.9,
+          "stressed_px": 86.07180000000001
+        },
+        {
+          "time": "2026-09-15T09:08:00.000+08:00",
+          "lots": 4,
+          "raw_px": 86.1,
+          "stressed_px": 86.2722
+        },
+        {
+          "time": "2026-09-15T09:09:00.000+08:00",
+          "lots": 10,
+          "raw_px": 86.3,
+          "stressed_px": 86.4726
+        },
+        {
+          "time": "2026-09-15T09:10:00.000+08:00",
+          "lots": 3,
+          "raw_px": 86.3,
+          "stressed_px": 86.4726
+        },
+        {
+          "time": "2026-09-15T09:11:00.000+08:00",
+          "lots": 6,
+          "raw_px": 86.5,
+          "stressed_px": 86.673
+        },
+        {
+          "time": "2026-09-15T09:12:00.000+08:00",
+          "lots": 12,
+          "raw_px": 86.8,
+          "stressed_px": 86.97359999999999
+        },
+        {
+          "time": "2026-09-15T09:13:00.000+08:00",
+          "lots": 5,
+          "raw_px": 86.9,
+          "stressed_px": 87.0738
+        },
+        {
+          "time": "2026-09-15T09:14:00.000+08:00",
+          "lots": 8,
+          "raw_px": 87.0,
+          "stressed_px": 87.174
+        },
+        {
+          "time": "2026-09-15T09:15:00.000+08:00",
+          "lots": 11,
+          "raw_px": 86.9,
+          "stressed_px": 87.0738
+        },
+        {
+          "time": "2026-09-15T09:16:00.000+08:00",
+          "lots": 6,
+          "raw_px": 87.3,
+          "stressed_px": 87.4746
+        },
+        {
+          "time": "2026-09-15T09:17:00.000+08:00",
+          "lots": 2,
+          "raw_px": 87.4,
+          "stressed_px": 87.57480000000001
+        }
+      ]
+    }
+  ]
+}
