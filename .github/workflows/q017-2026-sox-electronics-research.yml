@@ -8,6 +8,7 @@ on:
     paths:
       - 'research/q017_sox_tw_electronics/acquire_2026_sox_dxy_pit.py'
       - 'research/q017_sox_tw_electronics/analyze_2026_sox_response.py'
+      - 'research/q017_sox_tw_electronics/backtest_2m_capital.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -41,16 +42,16 @@ jobs:
           assert r['sox']['status']=='PASS', r
           print('MATERIALIZED_ARCHIVE_PASS')
           PY
-      - name: Analyze SOX response
-        run: python research/q017_sox_tw_electronics/analyze_2026_sox_response.py
-      - name: Commit research results
+      - name: Run 2M capital backtest
+        run: python research/q017_sox_tw_electronics/backtest_2m_capital.py
+      - name: Commit 2M backtest results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/results_2026
+          git add research/q017_sox_tw_electronics/backtest_2m
           if git diff --cached --quiet; then
-            echo 'No result changes'
+            echo 'No backtest changes'
           else
-            git commit -m 'Analyze Q017 2026 SOX electronics response'
+            git commit -m 'Backtest Q017 with 2M capital'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
