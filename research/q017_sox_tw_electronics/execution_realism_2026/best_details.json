@@ -1,0 +1,110 @@
+[
+  {
+    "entry": "2026-03-04",
+    "ticker": "2337",
+    "shares": 9689,
+    "minute_volume": 9689,
+    "participation_used": 1.0,
+    "entry_px_stressed": 99.3,
+    "exit_close": 130.5,
+    "net_ret_on_invested": 0.3101993957703928,
+    "pnl": 298448.32920000004,
+    "capital": 2298448.3292
+  },
+  {
+    "entry": "2026-03-27",
+    "ticker": "2337",
+    "shares": 7301,
+    "minute_volume": 7301,
+    "participation_used": 1.0,
+    "entry_px_stressed": 115.5,
+    "exit_close": 147.5,
+    "net_ret_on_invested": 0.273056277056277,
+    "pnl": 230258.93799999994,
+    "capital": 2528707.2672
+  },
+  {
+    "entry": "2026-05-19",
+    "ticker": "2408",
+    "shares": 1874,
+    "minute_volume": 1874,
+    "participation_used": 1.0,
+    "entry_px_stressed": 289.0,
+    "exit_close": 381.5,
+    "net_ret_on_invested": 0.31606920415224904,
+    "pnl": 171178.65599999996,
+    "capital": 2699885.9232
+  },
+  {
+    "entry": "2026-06-08",
+    "ticker": "2408",
+    "shares": 1569,
+    "minute_volume": 1569,
+    "participation_used": 1.0,
+    "entry_px_stressed": 328.0,
+    "exit_close": 505.0,
+    "net_ret_on_invested": 0.5356341463414633,
+    "pnl": 275654.47199999995,
+    "capital": 2975540.3952
+  },
+  {
+    "entry": "2026-06-24",
+    "ticker": "3711",
+    "shares": 330,
+    "minute_volume": 330,
+    "participation_used": 1.0,
+    "entry_px_stressed": 634.0,
+    "exit_close": 651.0,
+    "net_ret_on_invested": 0.02281388012618302,
+    "pnl": 4773.120000000012,
+    "capital": 2980313.5152000003
+  },
+  {
+    "entry": "2026-07-08",
+    "ticker": "2360",
+    "shares": 38,
+    "minute_volume": 38,
+    "participation_used": 1.0,
+    "entry_px_stressed": 1805.0,
+    "exit_close": 2125.0,
+    "net_ret_on_invested": 0.17328531855955687,
+    "pnl": 11885.640000000005,
+    "capital": 2992199.1552000004
+  },
+  {
+    "entry": "2026-07-29",
+    "ticker": "3026",
+    "shares": 283,
+    "minute_volume": 283,
+    "participation_used": 1.0,
+    "entry_px_stressed": 474.5,
+    "exit_close": 646.0,
+    "net_ret_on_invested": 0.35743308746048474,
+    "pnl": 47997.366,
+    "capital": 3040196.5212000003
+  },
+  {
+    "entry": "2026-08-20",
+    "ticker": "6691",
+    "shares": 17,
+    "minute_volume": 17,
+    "participation_used": 1.0,
+    "entry_px_stressed": 629.0,
+    "exit_close": 607.0,
+    "net_ret_on_invested": -0.03897615262321141,
+    "pnl": -416.77199999999965,
+    "capital": 3039779.7492000004
+  },
+  {
+    "entry": "2026-09-15",
+    "ticker": "8150",
+    "shares": 61,
+    "minute_volume": 61,
+    "participation_used": 1.0,
+    "entry_px_stressed": 86.4,
+    "exit_close": 114.5,
+    "net_ret_on_invested": 0.3212314814814814,
+    "pnl": 1693.0183999999997,
+    "capital": 3041472.7676000004
+  }
+]
