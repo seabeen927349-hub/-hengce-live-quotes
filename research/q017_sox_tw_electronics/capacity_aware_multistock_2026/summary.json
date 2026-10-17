@@ -1,0 +1,1638 @@
+{
+  "objective": "maximize executable capital deployment by routing leftover cash to next-highest pre-trade score candidates",
+  "contract": {
+    "boardlot": true,
+    "minute_participation_cap": 0.1,
+    "lag_minutes_after_first_print": 2,
+    "slippage": 0.002,
+    "roundtrip_cost": 0.006,
+    "hold_market_days": 10
+  },
+  "results": {
+    "top1_sequential": {
+      "final": 10239296.9212,
+      "ret": 4.1196484606,
+      "events": 9,
+      "position_wins": 8,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "exit": "2026-03-17",
+          "capital_before": 2000000.0,
+          "cash_not_deployed": 10028.0,
+          "deploy_ratio": 0.994986,
+          "event_pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "positions": [
+            {
+              "ticker": "2337",
+              "rank": 1,
+              "score": 1.7028415063934235,
+              "lots": 20,
+              "invested": 1989972.0,
+              "entry_price": 99.4986,
+              "exit_close": 130.5,
+              "net": 0.30557624328382516,
+              "pnl": 608088.1680000001
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "exit": "2026-04-13",
+          "capital_before": 2608088.168,
+          "cash_not_deployed": 62006.16800000006,
+          "deploy_ratio": 0.9762254325751766,
+          "event_pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "positions": [
+            {
+              "ticker": "2337",
+              "rank": 1,
+              "score": 1.7995309618490822,
+              "lots": 22,
+              "invested": 2546082.0,
+              "entry_price": 115.731,
+              "exit_close": 147.5,
+              "net": 0.2685072625312146,
+              "pnl": 683641.5079999999
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "exit": "2026-06-01",
+          "capital_before": 3291729.676,
+          "cash_not_deployed": 106371.67600000044,
+          "deploy_ratio": 0.9676851726994606,
+          "event_pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "positions": [
+            {
+              "ticker": "2408",
+              "rank": 1,
+              "score": 1.3922952724555044,
+              "lots": 11,
+              "invested": 3185357.9999999995,
+              "entry_price": 289.578,
+              "exit_close": 381.5,
+              "net": 0.31143433548128674,
+              "pnl": 992029.8520000004
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "exit": "2026-06-22",
+          "capital_before": 4283759.528000001,
+          "cash_not_deployed": 11231.528000000864,
+          "deploy_ratio": 0.9973781142646808,
+          "event_pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "positions": [
+            {
+              "ticker": "2408",
+              "rank": 1,
+              "score": 1.1889746975029236,
+              "lots": 13,
+              "invested": 4272528.0,
+              "entry_price": 328.656,
+              "exit_close": 505.0,
+              "net": 0.5305610242928775,
+              "pnl": 2266836.8319999995
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "exit": "2026-07-07",
+          "capital_before": 6550596.36,
+          "cash_not_deployed": 197916.36000000034,
+          "deploy_ratio": 0.9697865126893576,
+          "event_pnl": 119203.91999999953,
+          "capital": 6669800.28,
+          "positions": [
+            {
+              "ticker": "3711",
+              "rank": 1,
+              "score": 0.8192344022784848,
+              "lots": 10,
+              "invested": 6352680.0,
+              "entry_price": 635.268,
+              "exit_close": 651.0,
+              "net": 0.01876435142333622,
+              "pnl": 119203.91999999953
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "exit": "2026-07-22",
+          "capital_before": 6669800.28,
+          "cash_not_deployed": 1243970.2800000003,
+          "deploy_ratio": 0.8134921245347994,
+          "event_pnl": 916615.0200000005,
+          "capital": 7586415.300000001,
+          "positions": [
+            {
+              "ticker": "2360",
+              "rank": 1,
+              "score": 0.8980890095876006,
+              "lots": 3,
+              "invested": 5425830.0,
+              "entry_price": 1808.61,
+              "exit_close": 2125.0,
+              "net": 0.1689354476642284,
+              "pnl": 916615.0200000005
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "exit": "2026-08-11",
+          "capital_before": 7586415.300000001,
+          "cash_not_deployed": 454680.30000000075,
+          "deploy_ratio": 0.9400665159999874,
+          "event_pnl": 2515474.59,
+          "capital": 10101889.89,
+          "positions": [
+            {
+              "ticker": "3026",
+              "rank": 1,
+              "score": 1.1368083882286957,
+              "lots": 15,
+              "invested": 7131735.0,
+              "entry_price": 475.449,
+              "exit_close": 646.0,
+              "net": 0.35271565614818834,
+              "pnl": 2515474.59
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "exit": "2026-09-02",
+          "capital_before": 10101889.89,
+          "cash_not_deployed": 9471631.89,
+          "deploy_ratio": 0.06239010787713106,
+          "event_pnl": -27039.548000000043,
+          "capital": 10074850.342,
+          "positions": [
+            {
+              "ticker": "6691",
+              "rank": 1,
+              "score": 0.9043366990707596,
+              "lots": 1,
+              "invested": 630258.0,
+              "entry_price": 630.258,
+              "exit_close": 607.0,
+              "net": -0.0429023479273568,
+              "pnl": -27039.548000000043
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "exit": "2026-09-30",
+          "capital_before": 10074850.342,
+          "cash_not_deployed": 9555413.542,
+          "deploy_ratio": 0.051557768340694254,
+          "event_pnl": 164446.57919999998,
+          "capital": 10239296.9212,
+          "positions": [
+            {
+              "ticker": "8150",
+              "rank": 1,
+              "score": 0.7590373439844261,
+              "lots": 6,
+              "invested": 519436.8,
+              "entry_price": 86.5728,
+              "exit_close": 114.5,
+              "net": 0.31658630886375394,
+              "pnl": 164446.57919999998
+            }
+          ]
+        }
+      ]
+    },
+    "top2_sequential": {
+      "final": 11996687.3988,
+      "ret": 4.9983436994,
+      "events": 9,
+      "position_wins": 12,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "exit": "2026-03-17",
+          "capital_before": 2000000.0,
+          "cash_not_deployed": 10028.0,
+          "deploy_ratio": 0.994986,
+          "event_pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "positions": [
+            {
+              "ticker": "2337",
+              "rank": 1,
+              "score": 1.7028415063934235,
+              "lots": 20,
+              "invested": 1989972.0,
+              "entry_price": 99.4986,
+              "exit_close": 130.5,
+              "net": 0.30557624328382516,
+              "pnl": 608088.1680000001
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "exit": "2026-04-13",
+          "capital_before": 2608088.168,
+          "cash_not_deployed": 62006.16800000006,
+          "deploy_ratio": 0.9762254325751766,
+          "event_pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "positions": [
+            {
+              "ticker": "2337",
+              "rank": 1,
+              "score": 1.7995309618490822,
+              "lots": 22,
+              "invested": 2546082.0,
+              "entry_price": 115.731,
+              "exit_close": 147.5,
+              "net": 0.2685072625312146,
+              "pnl": 683641.5079999999
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "exit": "2026-06-01",
+          "capital_before": 3291729.676,
+          "cash_not_deployed": 106371.67600000044,
+          "deploy_ratio": 0.9676851726994606,
+          "event_pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "positions": [
+            {
+              "ticker": "2408",
+              "rank": 1,
+              "score": 1.3922952724555044,
+              "lots": 11,
+              "invested": 3185357.9999999995,
+              "entry_price": 289.578,
+              "exit_close": 381.5,
+              "net": 0.31143433548128674,
+              "pnl": 992029.8520000004
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "exit": "2026-06-22",
+          "capital_before": 4283759.528000001,
+          "cash_not_deployed": 11231.528000000864,
+          "deploy_ratio": 0.9973781142646808,
+          "event_pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "positions": [
+            {
+              "ticker": "2408",
+              "rank": 1,
+              "score": 1.1889746975029236,
+              "lots": 13,
+              "invested": 4272528.0,
+              "entry_price": 328.656,
+              "exit_close": 505.0,
+              "net": 0.5305610242928775,
+              "pnl": 2266836.8319999995
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "exit": "2026-07-07",
+          "capital_before": 6550596.36,
+          "cash_not_deployed": 197916.36000000034,
+          "deploy_ratio": 0.9697865126893576,
+          "event_pnl": 119203.91999999953,
+          "capital": 6669800.28,
+          "positions": [
+            {
+              "ticker": "3711",
+              "rank": 1,
+              "score": 0.8192344022784848,
+              "lots": 10,
+              "invested": 6352680.0,
+              "entry_price": 635.268,
+              "exit_close": 651.0,
+              "net": 0.01876435142333622,
+              "pnl": 119203.91999999953
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "exit": "2026-07-22",
+          "capital_before": 6669800.28,
+          "cash_not_deployed": 601688.2800000003,
+          "deploy_ratio": 0.90978916088324,
+          "event_pnl": 926479.3280000004,
+          "capital": 7596279.608000001,
+          "positions": [
+            {
+              "ticker": "2360",
+              "rank": 1,
+              "score": 0.8980890095876006,
+              "lots": 3,
+              "invested": 5425830.0,
+              "entry_price": 1808.61,
+              "exit_close": 2125.0,
+              "net": 0.1689354476642284,
+              "pnl": 916615.0200000005
+            },
+            {
+              "ticker": "3711",
+              "rank": 2,
+              "score": 0.6507279089064102,
+              "lots": 1,
+              "invested": 642282.0,
+              "entry_price": 642.282,
+              "exit_close": 656.0,
+              "net": 0.01535821959824491,
+              "pnl": 9864.307999999937
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "exit": "2026-08-11",
+          "capital_before": 7596279.608000001,
+          "cash_not_deployed": 63243.60800000094,
+          "deploy_ratio": 0.9916743970385982,
+          "event_pnl": 2645765.784,
+          "capital": 10242045.392,
+          "positions": [
+            {
+              "ticker": "3026",
+              "rank": 1,
+              "score": 1.1368083882286957,
+              "lots": 15,
+              "invested": 7131735.0,
+              "entry_price": 475.449,
+              "exit_close": 646.0,
+              "net": 0.35271565614818834,
+              "pnl": 2515474.59
+            },
+            {
+              "ticker": "2344",
+              "rank": 2,
+              "score": 1.0020283225861055,
+              "lots": 3,
+              "invested": 401301.0,
+              "entry_price": 133.767,
+              "exit_close": 178.0,
+              "net": 0.32467198935462416,
+              "pnl": 130291.19400000003
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "exit": "2026-09-02",
+          "capital_before": 10242045.392,
+          "cash_not_deployed": 9560985.992,
+          "deploy_ratio": 0.0664964246821218,
+          "event_pnl": -13145.756400000038,
+          "capital": 10228899.6356,
+          "positions": [
+            {
+              "ticker": "6691",
+              "rank": 1,
+              "score": 0.9043366990707596,
+              "lots": 1,
+              "invested": 630258.0,
+              "entry_price": 630.258,
+              "exit_close": 607.0,
+              "net": -0.0429023479273568,
+              "pnl": -27039.548000000043
+            },
+            {
+              "ticker": "2434",
+              "rank": 2,
+              "score": 0.6790028843366457,
+              "lots": 1,
+              "invested": 50801.4,
+              "entry_price": 50.8014,
+              "exit_close": 65.0,
+              "net": 0.2734922974563694,
+              "pnl": 13893.791600000004
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "exit": "2026-09-30",
+          "capital_before": 10228899.6356,
+          "cash_not_deployed": 122326.83559999987,
+          "deploy_ratio": 0.9880410562271761,
+          "event_pnl": 1767787.7631999992,
+          "capital": 11996687.3988,
+          "positions": [
+            {
+              "ticker": "8150",
+              "rank": 1,
+              "score": 0.7590373439844261,
+              "lots": 6,
+              "invested": 519436.8,
+              "entry_price": 86.5728,
+              "exit_close": 114.5,
+              "net": 0.31658630886375394,
+              "pnl": 164446.57919999998
+            },
+            {
+              "ticker": "3711",
+              "rank": 2,
+              "score": 0.7388883976908462,
+              "lots": 16,
+              "invested": 9587136.0,
+              "entry_price": 599.196,
+              "exit_close": 703.0,
+              "net": 0.16723880666760116,
+              "pnl": 1603341.1839999992
+            }
+          ]
+        }
+      ]
+    },
+    "top3_sequential": {
+      "final": 12148713.0804,
+      "ret": 5.074356540199999,
+      "events": 9,
+      "position_wins": 13,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "exit": "2026-03-17",
+          "capital_before": 2000000.0,
+          "cash_not_deployed": 10028.0,
+          "deploy_ratio": 0.994986,
+          "event_pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "positions": [
+            {
+              "ticker": "2337",
+              "rank": 1,
+              "score": 1.7028415063934235,
+              "lots": 20,
+              "invested": 1989972.0,
+              "entry_price": 99.4986,
+              "exit_close": 130.5,
+              "net": 0.30557624328382516,
+              "pnl": 608088.1680000001
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "exit": "2026-04-13",
+          "capital_before": 2608088.168,
+          "cash_not_deployed": 62006.16800000006,
+          "deploy_ratio": 0.9762254325751766,
+          "event_pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "positions": [
+            {
+              "ticker": "2337",
+              "rank": 1,
+              "score": 1.7995309618490822,
+              "lots": 22,
+              "invested": 2546082.0,
+              "entry_price": 115.731,
+              "exit_close": 147.5,
+              "net": 0.2685072625312146,
+              "pnl": 683641.5079999999
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "exit": "2026-06-01",
+          "capital_before": 3291729.676,
+          "cash_not_deployed": 106371.67600000044,
+          "deploy_ratio": 0.9676851726994606,
+          "event_pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "positions": [
+            {
+              "ticker": "2408",
+              "rank": 1,
+              "score": 1.3922952724555044,
+              "lots": 11,
+              "invested": 3185357.9999999995,
+              "entry_price": 289.578,
+              "exit_close": 381.5,
+              "net": 0.31143433548128674,
+              "pnl": 992029.8520000004
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "exit": "2026-06-22",
+          "capital_before": 4283759.528000001,
+          "cash_not_deployed": 11231.528000000864,
+          "deploy_ratio": 0.9973781142646808,
+          "event_pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "positions": [
+            {
+              "ticker": "2408",
+              "rank": 1,
+              "score": 1.1889746975029236,
+              "lots": 13,
+              "invested": 4272528.0,
+              "entry_price": 328.656,
+              "exit_close": 505.0,
+              "net": 0.5305610242928775,
+              "pnl": 2266836.8319999995
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "exit": "2026-07-07",
+          "capital_before": 6550596.36,
+          "cash_not_deployed": 197916.36000000034,
+          "deploy_ratio": 0.9697865126893576,
+          "event_pnl": 119203.91999999953,
+          "capital": 6669800.28,
+          "positions": [
+            {
+              "ticker": "3711",
+              "rank": 1,
+              "score": 0.8192344022784848,
+              "lots": 10,
+              "invested": 6352680.0,
+              "entry_price": 635.268,
+              "exit_close": 651.0,
+              "net": 0.01876435142333622,
+              "pnl": 119203.91999999953
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "exit": "2026-07-22",
+          "capital_before": 6669800.28,
+          "cash_not_deployed": 219926.28000000026,
+          "deploy_ratio": 0.9670265569031401,
+          "event_pnl": 1010426.7560000004,
+          "capital": 7680227.036,
+          "positions": [
+            {
+              "ticker": "2360",
+              "rank": 1,
+              "score": 0.8980890095876006,
+              "lots": 3,
+              "invested": 5425830.0,
+              "entry_price": 1808.61,
+              "exit_close": 2125.0,
+              "net": 0.1689354476642284,
+              "pnl": 916615.0200000005
+            },
+            {
+              "ticker": "3711",
+              "rank": 2,
+              "score": 0.6507279089064102,
+              "lots": 1,
+              "invested": 642282.0,
+              "entry_price": 642.282,
+              "exit_close": 656.0,
+              "net": 0.01535821959824491,
+              "pnl": 9864.307999999937
+            },
+            {
+              "ticker": "3532",
+              "rank": 3,
+              "score": 0.5561555186896978,
+              "lots": 1,
+              "invested": 381762.0,
+              "entry_price": 381.762,
+              "exit_close": 468.0,
+              "net": 0.21989466735819696,
+              "pnl": 83947.42799999999
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "exit": "2026-08-11",
+          "capital_before": 7680227.036,
+          "cash_not_deployed": 73043.03600000031,
+          "deploy_ratio": 0.9904894691709475,
+          "event_pnl": 2683172.896,
+          "capital": 10363399.932,
+          "positions": [
+            {
+              "ticker": "3026",
+              "rank": 1,
+              "score": 1.1368083882286957,
+              "lots": 16,
+              "invested": 7607184.0,
+              "entry_price": 475.449,
+              "exit_close": 646.0,
+              "net": 0.35271565614818834,
+              "pnl": 2683172.896
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "exit": "2026-09-02",
+          "capital_before": 10363399.932,
+          "cash_not_deployed": 7740264.132,
+          "deploy_ratio": 0.2531153692043002,
+          "event_pnl": 17525.38520000011,
+          "capital": 10380925.3172,
+          "positions": [
+            {
+              "ticker": "6691",
+              "rank": 1,
+              "score": 0.9043366990707596,
+              "lots": 1,
+              "invested": 630258.0,
+              "entry_price": 630.258,
+              "exit_close": 607.0,
+              "net": -0.0429023479273568,
+              "pnl": -27039.548000000043
+            },
+            {
+              "ticker": "2434",
+              "rank": 2,
+              "score": 0.6790028843366457,
+              "lots": 1,
+              "invested": 50801.4,
+              "entry_price": 50.8014,
+              "exit_close": 65.0,
+              "net": 0.2734922974563694,
+              "pnl": 13893.791600000004
+            },
+            {
+              "ticker": "8150",
+              "rank": 3,
+              "score": 0.6780884358298944,
+              "lots": 22,
+              "invested": 1942076.3999999997,
+              "entry_price": 88.27619999999999,
+              "exit_close": 90.2,
+              "net": 0.015792963448811877,
+              "pnl": 30671.141600000148
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "exit": "2026-09-30",
+          "capital_before": 10380925.3172,
+          "cash_not_deployed": 274352.5171999987,
+          "deploy_ratio": 0.9735714776075474,
+          "event_pnl": 1767787.7631999992,
+          "capital": 12148713.0804,
+          "positions": [
+            {
+              "ticker": "8150",
+              "rank": 1,
+              "score": 0.7590373439844261,
+              "lots": 6,
+              "invested": 519436.8,
+              "entry_price": 86.5728,
+              "exit_close": 114.5,
+              "net": 0.31658630886375394,
+              "pnl": 164446.57919999998
+            },
+            {
+              "ticker": "3711",
+              "rank": 2,
+              "score": 0.7388883976908462,
+              "lots": 16,
+              "invested": 9587136.0,
+              "entry_price": 599.196,
+              "exit_close": 703.0,
+              "net": 0.16723880666760116,
+              "pnl": 1603341.1839999992
+            }
+          ]
+        }
+      ]
+    },
+    "top5_sequential": {
+      "final": 12212406.562400002,
+      "ret": 5.106203281200001,
+      "events": 9,
+      "position_wins": 14,
+      "curve": [
+        {
+          "entry": "2026-03-04",
+          "exit": "2026-03-17",
+          "capital_before": 2000000.0,
+          "cash_not_deployed": 10028.0,
+          "deploy_ratio": 0.994986,
+          "event_pnl": 608088.1680000001,
+          "capital": 2608088.168,
+          "positions": [
+            {
+              "ticker": "2337",
+              "rank": 1,
+              "score": 1.7028415063934235,
+              "lots": 20,
+              "invested": 1989972.0,
+              "entry_price": 99.4986,
+              "exit_close": 130.5,
+              "net": 0.30557624328382516,
+              "pnl": 608088.1680000001
+            }
+          ]
+        },
+        {
+          "entry": "2026-03-27",
+          "exit": "2026-04-13",
+          "capital_before": 2608088.168,
+          "cash_not_deployed": 62006.16800000006,
+          "deploy_ratio": 0.9762254325751766,
+          "event_pnl": 683641.5079999999,
+          "capital": 3291729.676,
+          "positions": [
+            {
+              "ticker": "2337",
+              "rank": 1,
+              "score": 1.7995309618490822,
+              "lots": 22,
+              "invested": 2546082.0,
+              "entry_price": 115.731,
+              "exit_close": 147.5,
+              "net": 0.2685072625312146,
+              "pnl": 683641.5079999999
+            }
+          ]
+        },
+        {
+          "entry": "2026-05-19",
+          "exit": "2026-06-01",
+          "capital_before": 3291729.676,
+          "cash_not_deployed": 106371.67600000044,
+          "deploy_ratio": 0.9676851726994606,
+          "event_pnl": 992029.8520000004,
+          "capital": 4283759.528000001,
+          "positions": [
+            {
+              "ticker": "2408",
+              "rank": 1,
+              "score": 1.3922952724555044,
+              "lots": 11,
+              "invested": 3185357.9999999995,
+              "entry_price": 289.578,
+              "exit_close": 381.5,
+              "net": 0.31143433548128674,
+              "pnl": 992029.8520000004
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-08",
+          "exit": "2026-06-22",
+          "capital_before": 4283759.528000001,
+          "cash_not_deployed": 11231.528000000864,
+          "deploy_ratio": 0.9973781142646808,
+          "event_pnl": 2266836.8319999995,
+          "capital": 6550596.36,
+          "positions": [
+            {
+              "ticker": "2408",
+              "rank": 1,
+              "score": 1.1889746975029236,
+              "lots": 13,
+              "invested": 4272528.0,
+              "entry_price": 328.656,
+              "exit_close": 505.0,
+              "net": 0.5305610242928775,
+              "pnl": 2266836.8319999995
+            }
+          ]
+        },
+        {
+          "entry": "2026-06-24",
+          "exit": "2026-07-07",
+          "capital_before": 6550596.36,
+          "cash_not_deployed": 19059.360000000335,
+          "deploy_ratio": 0.9970904389535611,
+          "event_pnl": 101573.77799999953,
+          "capital": 6652170.138,
+          "positions": [
+            {
+              "ticker": "3711",
+              "rank": 1,
+              "score": 0.8192344022784848,
+              "lots": 10,
+              "invested": 6352680.0,
+              "entry_price": 635.268,
+              "exit_close": 651.0,
+              "net": 0.01876435142333622,
+              "pnl": 119203.91999999953
+            },
+            {
+              "ticker": "6909",
+              "rank": 4,
+              "score": 0.6823705752339236,
+              "lots": 3,
+              "invested": 178857.0,
+              "entry_price": 59.619,
+              "exit_close": 54.1,
+              "net": -0.09857116020060719,
+              "pnl": -17630.142
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-08",
+          "exit": "2026-07-22",
+          "capital_before": 6652170.138,
+          "cash_not_deployed": 202296.13800000027,
+          "deploy_ratio": 0.9695894521932926,
+          "event_pnl": 1010426.7560000004,
+          "capital": 7662596.894,
+          "positions": [
+            {
+              "ticker": "2360",
+              "rank": 1,
+              "score": 0.8980890095876006,
+              "lots": 3,
+              "invested": 5425830.0,
+              "entry_price": 1808.61,
+              "exit_close": 2125.0,
+              "net": 0.1689354476642284,
+              "pnl": 916615.0200000005
+            },
+            {
+              "ticker": "3711",
+              "rank": 2,
+              "score": 0.6507279089064102,
+              "lots": 1,
+              "invested": 642282.0,
+              "entry_price": 642.282,
+              "exit_close": 656.0,
+              "net": 0.01535821959824491,
+              "pnl": 9864.307999999937
+            },
+            {
+              "ticker": "3532",
+              "rank": 3,
+              "score": 0.5561555186896978,
+              "lots": 1,
+              "invested": 381762.0,
+              "entry_price": 381.762,
+              "exit_close": 468.0,
+              "net": 0.21989466735819696,
+              "pnl": 83947.42799999999
+            }
+          ]
+        },
+        {
+          "entry": "2026-07-29",
+          "exit": "2026-08-11",
+          "capital_before": 7662596.894,
+          "cash_not_deployed": 55412.89400000032,
+          "deploy_ratio": 0.9927683923914372,
+          "event_pnl": 2683172.896,
+          "capital": 10345769.790000001,
+          "positions": [
+            {
+              "ticker": "3026",
+              "rank": 1,
+              "score": 1.1368083882286957,
+              "lots": 16,
+              "invested": 7607184.0,
+              "entry_price": 475.449,
+              "exit_close": 646.0,
+              "net": 0.35271565614818834,
+              "pnl": 2683172.896
+            }
+          ]
+        },
+        {
+          "entry": "2026-08-20",
+          "exit": "2026-09-02",
+          "capital_before": 10345769.790000001,
+          "cash_not_deployed": 9237.990000002086,
+          "deploy_ratio": 0.9991070756272837,
+          "event_pnl": 98849.00920000068,
+          "capital": 10444618.799200002,
+          "positions": [
+            {
+              "ticker": "6691",
+              "rank": 1,
+              "score": 0.9043366990707596,
+              "lots": 1,
+              "invested": 630258.0,
+              "entry_price": 630.258,
+              "exit_close": 607.0,
+              "net": -0.0429023479273568,
+              "pnl": -27039.548000000043
+            },
+            {
+              "ticker": "2434",
+              "rank": 2,
+              "score": 0.6790028843366457,
+              "lots": 1,
+              "invested": 50801.4,
+              "entry_price": 50.8014,
+              "exit_close": 65.0,
+              "net": 0.2734922974563694,
+              "pnl": 13893.791600000004
+            },
+            {
+              "ticker": "8150",
+              "rank": 3,
+              "score": 0.6780884358298944,
+              "lots": 22,
+              "invested": 1942076.3999999997,
+              "entry_price": 88.27619999999999,
+              "exit_close": 90.2,
+              "net": 0.015792963448811877,
+              "pnl": 30671.141600000148
+            },
+            {
+              "ticker": "3711",
+              "rank": 4,
+              "score": 0.6753884865124052,
+              "lots": 13,
+              "invested": 7529027.999999999,
+              "entry_price": 579.156,
+              "exit_close": 589.0,
+              "net": 0.010997147573365456,
+              "pnl": 82797.83200000056
+            },
+            {
+              "ticker": "2493",
+              "rank": 5,
+              "score": 0.6638643690319349,
+              "lots": 1,
+              "invested": 184368.0,
+              "entry_price": 184.368,
+              "exit_close": 184.0,
+              "net": -0.007996007984031878,
+              "pnl": -1474.2079999999892
+            }
+          ]
+        },
+        {
+          "entry": "2026-09-15",
+          "exit": "2026-09-30",
+          "capital_before": 10444618.799200002,
+          "cash_not_deployed": 338045.99920000136,
+          "deploy_ratio": 0.9676344339895014,
+          "event_pnl": 1767787.7631999992,
+          "capital": 12212406.562400002,
+          "positions": [
+            {
+              "ticker": "8150",
+              "rank": 1,
+              "score": 0.7590373439844261,
+              "lots": 6,
+              "invested": 519436.8,
+              "entry_price": 86.5728,
+              "exit_close": 114.5,
+              "net": 0.31658630886375394,
+              "pnl": 164446.57919999998
+            },
+            {
+              "ticker": "3711",
+              "rank": 2,
+              "score": 0.7388883976908462,
+              "lots": 16,
+              "invested": 9587136.0,
+              "entry_price": 599.196,
+              "exit_close": 703.0,
+              "net": 0.16723880666760116,
+              "pnl": 1603341.1839999992
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "event_candidate_snapshot": [
+    {
+      "entry": "2026-03-04",
+      "exit": "2026-03-17",
+      "shock": -0.04577342938707463,
+      "sox5": -0.06810341605891379,
+      "candidates": [
+        {
+          "ticker": "2337",
+          "score": 1.7028415063934235,
+          "beta": 1.170347905692605,
+          "resid": -0.01819949770869858,
+          "official_open": 97.0,
+          "exit_close": 130.5,
+          "entry_time": "2026-03-04T09:03:00.000+08:00",
+          "entry_price": 99.4986,
+          "minute_volume_lots": 9689.0,
+          "capacity_lots": 968
+        },
+        {
+          "ticker": "6770",
+          "score": 1.7007505883614138,
+          "beta": 1.0236747073474466,
+          "resid": -0.026456681059099763,
+          "official_open": 63.2,
+          "exit_close": 71.7,
+          "entry_time": "2026-03-04T09:02:00.000+08:00",
+          "entry_price": 64.5288,
+          "minute_volume_lots": 4809.0,
+          "capacity_lots": 480
+        },
+        {
+          "ticker": "2408",
+          "score": 1.6862859943836264,
+          "beta": 1.3875440292830026,
+          "resid": -0.00861210768944018,
+          "official_open": 238.0,
+          "exit_close": 271.5,
+          "entry_time": "2026-03-04T09:03:00.000+08:00",
+          "entry_price": 245.49,
+          "minute_volume_lots": 1452.0,
+          "capacity_lots": 145
+        },
+        {
+          "ticker": "2455",
+          "score": 1.5767056525917291,
+          "beta": 1.1163011810360008,
+          "resid": -0.016497500114742963,
+          "official_open": 234.5,
+          "exit_close": 216.0,
+          "entry_time": "2026-03-04T09:05:00.000+08:00",
+          "entry_price": 234.969,
+          "minute_volume_lots": 343.0,
+          "capacity_lots": 34
+        },
+        {
+          "ticker": "2360",
+          "score": 1.517098808529283,
+          "beta": 0.9189239224170757,
+          "resid": -0.026038059148087392,
+          "official_open": 1300.0,
+          "exit_close": 1470.0,
+          "entry_time": "2026-03-04T09:05:00.000+08:00",
+          "entry_price": 1302.6,
+          "minute_volume_lots": 171.0,
+          "capacity_lots": 17
+        }
+      ]
+    },
+    {
+      "entry": "2026-03-27",
+      "exit": "2026-04-13",
+      "shock": -0.0479275074358636,
+      "sox5": -0.0352819837352476,
+      "candidates": [
+        {
+          "ticker": "2337",
+          "score": 1.7995309618490822,
+          "beta": 1.1028710296602542,
+          "resid": -0.025267140525159618,
+          "official_open": 118.0,
+          "exit_close": 147.5,
+          "entry_time": "2026-03-27T09:20:00.000+08:00",
+          "entry_price": 115.731,
+          "minute_volume_lots": 7301.0,
+          "capacity_lots": 730
+        },
+        {
+          "ticker": "8271",
+          "score": 1.6470923232005354,
+          "beta": 0.7250654190898675,
+          "resid": -0.0508658600912472,
+          "official_open": 133.5,
+          "exit_close": 156.0,
+          "entry_time": "2026-03-27T09:20:00.000+08:00",
+          "entry_price": 132.765,
+          "minute_volume_lots": 244.0,
+          "capacity_lots": 24
+        },
+        {
+          "ticker": "3006",
+          "score": 1.4454453970540015,
+          "beta": 1.0999300630580464,
+          "resid": -0.012564992833647877,
+          "official_open": 157.5,
+          "exit_close": 159.5,
+          "entry_time": "2026-03-27T09:07:00.000+08:00",
+          "entry_price": 158.316,
+          "minute_volume_lots": 194.0,
+          "capacity_lots": 19
+        },
+        {
+          "ticker": "7795",
+          "score": 1.3284179543203083,
+          "beta": 1.3284179543203083,
+          "resid": 0.02672844739945246,
+          "official_open": 365.0,
+          "exit_close": 378.0,
+          "entry_time": "2026-03-27T09:02:00.000+08:00",
+          "entry_price": 365.73,
+          "minute_volume_lots": 1.0,
+          "capacity_lots": 0
+        },
+        {
+          "ticker": "2451",
+          "score": 1.2923711102923832,
+          "beta": 0.6868637819157374,
+          "resid": -0.03526214916662633,
+          "official_open": 225.5,
+          "exit_close": 245.0,
+          "entry_time": "2026-03-27T09:05:00.000+08:00",
+          "entry_price": 225.951,
+          "minute_volume_lots": 98.0,
+          "capacity_lots": 9
+        }
+      ]
+    },
+    {
+      "entry": "2026-05-19",
+      "exit": "2026-06-01",
+      "shock": -0.024675142632733738,
+      "sox5": -0.06444190799623262,
+      "candidates": [
+        {
+          "ticker": "2408",
+          "score": 1.3922952724555044,
+          "beta": 0.8960597811040111,
+          "resid": -0.022151892175769572,
+          "official_open": 291.5,
+          "exit_close": 381.5,
+          "entry_time": "2026-05-19T09:02:00.000+08:00",
+          "entry_price": 289.578,
+          "minute_volume_lots": 1874.0,
+          "capacity_lots": 187
+        },
+        {
+          "ticker": "3661",
+          "score": 1.3566176843309186,
+          "beta": 1.0735473018120003,
+          "resid": -0.01054710424183953,
+          "official_open": 4420.0,
+          "exit_close": 4855.0,
+          "entry_time": "2026-05-19T09:02:00.000+08:00",
+          "entry_price": 4493.97,
+          "minute_volume_lots": 27.0,
+          "capacity_lots": 2
+        },
+        {
+          "ticker": "3711",
+          "score": 1.3302769369741936,
+          "beta": 0.9570115802436177,
+          "resid": -0.0156012890308206,
+          "official_open": 490.0,
+          "exit_close": 601.0,
+          "entry_time": "2026-05-19T09:02:00.000+08:00",
+          "entry_price": 493.485,
+          "minute_volume_lots": 243.0,
+          "capacity_lots": 24
+        },
+        {
+          "ticker": "2344",
+          "score": 1.2134660971681943,
+          "beta": 0.7681089267052026,
+          "resid": -0.023192396545804926,
+          "official_open": 125.0,
+          "exit_close": 168.0,
+          "entry_time": "2026-05-19T09:02:00.000+08:00",
+          "entry_price": 123.747,
+          "minute_volume_lots": 3532.0,
+          "capacity_lots": 353
+        },
+        {
+          "ticker": "3443",
+          "score": 1.01974087502187,
+          "beta": 1.01974087502187,
+          "resid": 0.018833137615542683,
+          "official_open": 4710.0,
+          "exit_close": 4655.0,
+          "entry_time": "2026-05-19T09:02:00.000+08:00",
+          "entry_price": 4679.34,
+          "minute_volume_lots": 30.0,
+          "capacity_lots": 3
+        }
+      ]
+    },
+    {
+      "entry": "2026-06-08",
+      "exit": "2026-06-22",
+      "shock": -0.10256916221482493,
+      "sox5": -0.04743972235733984,
+      "candidates": [
+        {
+          "ticker": "2408",
+          "score": 1.1889746975029236,
+          "beta": 0.6368260284798762,
+          "resid": -0.03468128778222483,
+          "official_open": 324.0,
+          "exit_close": 505.0,
+          "entry_time": "2026-06-08T09:02:00.000+08:00",
+          "entry_price": 328.656,
+          "minute_volume_lots": 1569.0,
+          "capacity_lots": 156
+        },
+        {
+          "ticker": "3532",
+          "score": 1.1840198122714092,
+          "beta": 0.7458331009452,
+          "resid": -0.023500523683965865,
+          "official_open": 261.0,
+          "exit_close": 378.5,
+          "entry_time": "2026-06-08T09:20:00.000+08:00",
+          "entry_price": 261.522,
+          "minute_volume_lots": 40.0,
+          "capacity_lots": 4
+        },
+        {
+          "ticker": "3533",
+          "score": 1.1832782460540325,
+          "beta": 0.6890691426003116,
+          "resid": -0.028688505863939548,
+          "official_open": 2130.0,
+          "exit_close": 2315.0,
+          "entry_time": "2026-06-08T09:02:00.000+08:00",
+          "entry_price": 2179.35,
+          "minute_volume_lots": 6.0,
+          "capacity_lots": 0
+        },
+        {
+          "ticker": "8021",
+          "score": 1.1825012018762386,
+          "beta": 0.6631660878791165,
+          "resid": -0.03132458812289496,
+          "official_open": 412.5,
+          "exit_close": 581.0,
+          "entry_time": "2026-06-08T09:20:00.000+08:00",
+          "entry_price": 413.325,
+          "minute_volume_lots": 447.0,
+          "capacity_lots": 44
+        },
+        {
+          "ticker": "3481",
+          "score": 1.180609532470133,
+          "beta": 0.7342276368455432,
+          "resid": -0.02431844693519722,
+          "official_open": 48.35,
+          "exit_close": 66.0,
+          "entry_time": "2026-06-08T09:05:00.000+08:00",
+          "entry_price": 48.4467,
+          "minute_volume_lots": 4498.0,
+          "capacity_lots": 449
+        }
+      ]
+    },
+    {
+      "entry": "2026-06-24",
+      "exit": "2026-07-07",
+      "shock": -0.07873153113217002,
+      "sox5": -0.04376817392315768,
+      "candidates": [
+        {
+          "ticker": "3711",
+          "score": 0.8192344022784848,
+          "beta": 0.8192344022784848,
+          "resid": 0.025224654376234126,
+          "official_open": 636.0,
+          "exit_close": 651.0,
+          "entry_time": "2026-06-24T09:02:00.000+08:00",
+          "entry_price": 635.268,
+          "minute_volume_lots": 330.0,
+          "capacity_lots": 33
+        },
+        {
+          "ticker": "3532",
+          "score": 0.7253534801379721,
+          "beta": 0.7253534801379721,
+          "resid": 0.03431998634995939,
+          "official_open": 364.5,
+          "exit_close": 383.0,
+          "entry_time": "2026-06-24T09:20:00.000+08:00",
+          "entry_price": 361.722,
+          "minute_volume_lots": 95.0,
+          "capacity_lots": 9
+        },
+        {
+          "ticker": "3037",
+          "score": 0.687254487234579,
+          "beta": 0.687254487234579,
+          "resid": 0.017147612431149442,
+          "official_open": 938.0,
+          "exit_close": 840.0,
+          "entry_time": "2026-06-24T09:02:00.000+08:00",
+          "entry_price": 941.88,
+          "minute_volume_lots": 580.0,
+          "capacity_lots": 58
+        },
+        {
+          "ticker": "6909",
+          "score": 0.6823705752339236,
+          "beta": 0.3417439562427128,
+          "resid": -0.039869219369520204,
+          "official_open": 57.3,
+          "exit_close": 54.1,
+          "entry_time": "2026-06-24T09:02:00.000+08:00",
+          "entry_price": 59.619,
+          "minute_volume_lots": 299.0,
+          "capacity_lots": 29
+        },
+        {
+          "ticker": "2408",
+          "score": 0.679648354262799,
+          "beta": 0.679648354262799,
+          "resid": 0.021606565243537795,
+          "official_open": 440.0,
+          "exit_close": 403.0,
+          "entry_time": "2026-06-24T09:02:00.000+08:00",
+          "entry_price": 443.385,
+          "minute_volume_lots": 2681.0,
+          "capacity_lots": 268
+        }
+      ]
+    },
+    {
+      "entry": "2026-07-08",
+      "exit": "2026-07-22",
+      "shock": -0.04648211039125005,
+      "sox5": -0.10278474396230342,
+      "candidates": [
+        {
+          "ticker": "2360",
+          "score": 0.8980890095876006,
+          "beta": 0.44756136831664645,
+          "resid": -0.040265105361123044,
+          "official_open": 1845.0,
+          "exit_close": 2125.0,
+          "entry_time": "2026-07-08T09:02:00.000+08:00",
+          "entry_price": 1808.61,
+          "minute_volume_lots": 38.0,
+          "capacity_lots": 3
+        },
+        {
+          "ticker": "3711",
+          "score": 0.6507279089064102,
+          "beta": 0.6507279089064102,
+          "resid": 0.01335012508324462,
+          "official_open": 640.0,
+          "exit_close": 656.0,
+          "entry_time": "2026-07-08T09:02:00.000+08:00",
+          "entry_price": 642.282,
+          "minute_volume_lots": 454.0,
+          "capacity_lots": 45
+        },
+        {
+          "ticker": "3532",
+          "score": 0.5561555186896978,
+          "beta": 0.5561555186896978,
+          "resid": 0.036295146444202536,
+          "official_open": 387.0,
+          "exit_close": 468.0,
+          "entry_time": "2026-07-08T09:02:00.000+08:00",
+          "entry_price": 381.762,
+          "minute_volume_lots": 83.0,
+          "capacity_lots": 8
+        },
+        {
+          "ticker": "6715",
+          "score": 0.5528129398043694,
+          "beta": 0.4725135889884692,
+          "resid": -0.006797633142174863,
+          "official_open": 439.0,
+          "exit_close": 387.0,
+          "entry_time": "2026-07-08T09:05:00.000+08:00",
+          "entry_price": 444.888,
+          "minute_volume_lots": 2.0,
+          "capacity_lots": 0
+        },
+        {
+          "ticker": "2454",
+          "score": 0.514354507431618,
+          "beta": 0.514354507431618,
+          "resid": 0.016464114260182242,
+          "official_open": 4000.0,
+          "exit_close": 3850.0,
+          "entry_time": "2026-07-08T09:02:00.000+08:00",
+          "entry_price": 4018.02,
+          "minute_volume_lots": 129.0,
+          "capacity_lots": 12
+        }
+      ]
+    },
+    {
+      "entry": "2026-07-29",
+      "exit": "2026-08-11",
+      "shock": -0.044933183010194,
+      "sox5": -0.10686819775828271,
+      "candidates": [
+        {
+          "ticker": "3026",
+          "score": 1.1368083882286957,
+          "beta": 0.36966260068368895,
+          "resid": -0.0830103760700893,
+          "official_open": 474.5,
+          "exit_close": 646.0,
+          "entry_time": "2026-07-29T09:20:00.000+08:00",
+          "entry_price": 475.449,
+          "minute_volume_lots": 283.0,
+          "capacity_lots": 28
+        },
+        {
+          "ticker": "2344",
+          "score": 1.0020283225861055,
+          "beta": 0.7027604806674917,
+          "resid": -0.01703384582094685,
+          "official_open": 137.0,
+          "exit_close": 178.0,
+          "entry_time": "2026-07-29T09:02:00.000+08:00",
+          "entry_price": 133.767,
+          "minute_volume_lots": 6367.0,
+          "capacity_lots": 636
+        },
+        {
+          "ticker": "6531",
+          "score": 0.9854375162878061,
+          "beta": 0.5225979128486629,
+          "resid": -0.035426058318237114,
+          "official_open": 655.0,
+          "exit_close": 831.0,
+          "entry_time": "2026-07-29T09:03:00.000+08:00",
+          "entry_price": 640.278,
+          "minute_volume_lots": 261.0,
+          "capacity_lots": 26
+        },
+        {
+          "ticker": "8039",
+          "score": 0.8970524587952211,
+          "beta": 0.3657039483838717,
+          "resid": -0.058117886094421284,
+          "official_open": 180.0,
+          "exit_close": 216.0,
+          "entry_time": "2026-07-29T09:02:00.000+08:00",
+          "entry_price": 175.851,
+          "minute_volume_lots": 41.0,
+          "capacity_lots": 4
+        },
+        {
+          "ticker": "2492",
+          "score": 0.8636138358072742,
+          "beta": 0.6368846945737906,
+          "resid": -0.014239886319467172,
+          "official_open": 234.5,
+          "exit_close": 300.5,
+          "entry_time": "2026-07-29T09:24:00.000+08:00",
+          "entry_price": 226.953,
+          "minute_volume_lots": 644.0,
+          "capacity_lots": 64
+        }
+      ]
+    },
+    {
+      "entry": "2026-08-20",
+      "exit": "2026-09-02",
+      "shock": -0.02119975240006311,
+      "sox5": -0.0533212546669819,
+      "candidates": [
+        {
+          "ticker": "6691",
+          "score": 0.9043366990707596,
+          "beta": 0.26818790796734865,
+          "resid": -0.09488105499236169,
+          "official_open": 635.0,
+          "exit_close": 607.0,
+          "entry_time": "2026-08-20T09:02:00.000+08:00",
+          "entry_price": 630.258,
+          "minute_volume_lots": 17.0,
+          "capacity_lots": 1
+        },
+        {
+          "ticker": "2434",
+          "score": 0.6790028843366457,
+          "beta": 0.6790028843366457,
+          "resid": 0.02035890773859539,
+          "official_open": 50.6,
+          "exit_close": 65.0,
+          "entry_time": "2026-08-20T09:06:00.000+08:00",
+          "entry_price": 50.8014,
+          "minute_volume_lots": 17.0,
+          "capacity_lots": 1
+        },
+        {
+          "ticker": "8150",
+          "score": 0.6780884358298944,
+          "beta": 0.6780884358298944,
+          "resid": 0.02239363455089629,
+          "official_open": 88.0,
+          "exit_close": 90.2,
+          "entry_time": "2026-08-20T09:02:00.000+08:00",
+          "entry_price": 88.27619999999999,
+          "minute_volume_lots": 229.0,
+          "capacity_lots": 22
+        },
+        {
+          "ticker": "3711",
+          "score": 0.6753884865124052,
+          "beta": 0.6753884865124052,
+          "resid": 0.0007126265110455905,
+          "official_open": 580.0,
+          "exit_close": 589.0,
+          "entry_time": "2026-08-20T09:02:00.000+08:00",
+          "entry_price": 579.156,
+          "minute_volume_lots": 236.0,
+          "capacity_lots": 23
+        },
+        {
+          "ticker": "2493",
+          "score": 0.6638643690319349,
+          "beta": 0.6638643690319349,
+          "resid": 0.016806000687859507,
+          "official_open": 183.5,
+          "exit_close": 184.0,
+          "entry_time": "2026-08-20T09:02:00.000+08:00",
+          "entry_price": 184.368,
+          "minute_volume_lots": 21.0,
+          "capacity_lots": 2
+        }
+      ]
+    },
+    {
+      "entry": "2026-09-15",
+      "exit": "2026-09-30",
+      "shock": -0.05858566202342319,
+      "sox5": -0.051467200104400423,
+      "candidates": [
+        {
+          "ticker": "8150",
+          "score": 0.7590373439844261,
+          "beta": 0.7590373439844261,
+          "resid": 0.037540298831315794,
+          "official_open": 86.0,
+          "exit_close": 114.5,
+          "entry_time": "2026-09-15T09:02:00.000+08:00",
+          "entry_price": 86.5728,
+          "minute_volume_lots": 61.0,
+          "capacity_lots": 6
+        },
+        {
+          "ticker": "3711",
+          "score": 0.7388883976908462,
+          "beta": 0.7388883976908462,
+          "resid": 0.025314409730994247,
+          "official_open": 601.0,
+          "exit_close": 703.0,
+          "entry_time": "2026-09-15T09:02:00.000+08:00",
+          "entry_price": 599.196,
+          "minute_volume_lots": 162.0,
+          "capacity_lots": 16
+        },
+        {
+          "ticker": "7795",
+          "score": 0.7053823745335431,
+          "beta": 0.7053823745335431,
+          "resid": 0.03216032394160006,
+          "official_open": 486.5,
+          "exit_close": 488.0,
+          "entry_time": "2026-09-15T09:02:00.000+08:00",
+          "entry_price": 488.976,
+          "minute_volume_lots": 23.0,
+          "capacity_lots": 2
+        },
+        {
+          "ticker": "6715",
+          "score": 0.6982431171537503,
+          "beta": 0.6982431171537503,
+          "resid": 0.004779867641693247,
+          "official_open": 333.5,
+          "exit_close": 442.0,
+          "entry_time": "2026-09-15T09:02:00.000+08:00",
+          "entry_price": 339.177,
+          "minute_volume_lots": 9.0,
+          "capacity_lots": 0
+        },
+        {
+          "ticker": "3450",
+          "score": 0.690510974622034,
+          "beta": 0.690510974622034,
+          "resid": 0.034560132955951936,
+          "official_open": 506.0,
+          "exit_close": 523.0,
+          "entry_time": "2026-09-15T09:02:00.000+08:00",
+          "entry_price": 505.008,
+          "minute_volume_lots": 71.0,
+          "capacity_lots": 7
+        }
+      ]
+    }
+  ]
+}
