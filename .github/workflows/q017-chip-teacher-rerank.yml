@@ -1,0 +1,42 @@
+name: Q017 chip teacher rerank
+
+on:
+  push:
+    branches:
+      - q017-2026-sox-dxy-electronics
+    paths:
+      - 'research/q017_sox_tw_electronics/chip_teacher_rerank_2026.py'
+      - '.github/workflows/q017-chip-teacher-rerank.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: q017-2026-sox-dxy-electronics
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify chip cache and archives
+        run: |
+          test -d research/q017_sox_tw_electronics/chip_teacher_combo_screen_2026/cache
+          test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
+      - name: Run teacher rerank
+        run: python research/q017_sox_tw_electronics/chip_teacher_rerank_2026.py
+      - name: Commit results
+        run: |
+          git config user.name 'hengce-research-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add research/q017_sox_tw_electronics/chip_teacher_rerank_2026/
+          if git diff --cached --quiet; then
+            echo 'No result changes'
+          else
+            git commit -m 'Store Q017 teacher rerank results'
+            git push origin HEAD:q017-2026-sox-dxy-electronics
+          fi
