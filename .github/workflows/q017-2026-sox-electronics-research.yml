@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/entry_price_cap_profit_2026.py'
+      - 'research/q017_sox_tw_electronics/score_sizing_profit_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -27,16 +27,16 @@ jobs:
           python-version: '3.12'
       - name: Verify locked event candidate snapshot
         run: test -s research/q017_sox_tw_electronics/capacity_aware_multistock_2026/summary.json
-      - name: Run entry-price cap terminal-capital search
-        run: python research/q017_sox_tw_electronics/entry_price_cap_profit_2026.py
-      - name: Commit entry-price results
+      - name: Run score-sizing terminal-capital search
+        run: python research/q017_sox_tw_electronics/score_sizing_profit_2026.py
+      - name: Commit score-sizing results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/entry_price_cap_profit_2026
+          git add research/q017_sox_tw_electronics/score_sizing_profit_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Backtest Q017 no-chase entry caps'
+            git commit -m 'Backtest Q017 causal score sizing'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
