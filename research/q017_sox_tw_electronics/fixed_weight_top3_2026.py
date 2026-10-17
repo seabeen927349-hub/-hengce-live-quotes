@@ -15,7 +15,7 @@ def dt(v):
  except:return None
 def fetch(sym,d):
  base=f'https://api.fugle.tw/marketdata/v1.0/stock/historical/candles/{sym}';q=urllib.parse.urlencode({'timeframe':'1','from':d,'to':d,'fields':'open,high,low,close,volume,average','sort':'asc'})
- req=urllib.request.Request(base+'?'+q,headers={'X-API-KEY':API_KEY,'Accept':'application/json','User-Agent':'HENGCE-Q017-FIXED-WEIGHT/1.0'})
+ req=urllib.request.Request(base+'?'+q,headers={'X-API-KEY':API_KEY,'Accept':'application/json','User-Agent':'HENGCE-Q017-FIXED-WEIGHT/1.1'})
  for a in range(5):
   try:
    with urllib.request.urlopen(req,timeout=30) as rr:return json.load(rr).get('data',[])
@@ -31,12 +31,9 @@ for ev in events:
    if z:cache[key]={'t0':dt(z[0]['date']),'rows':z}
    time.sleep(.12)
 
-def fill_candidate(c,entry,target_cash,timeout_min,pfield):
- z=cache.get((c['ticker'],entry])
-
 def execute_one(c,entry,target_cash,timeout_min,pfield):
  z=cache.get((c['ticker'],entry))
- if not z or not z['t0'] or target_cash<=0:return {'shares':0,'spent':0.0,'fills':[]}
+ if not z or not z['t0'] or target_cash<=0:return {'shares':0,'spent':0.0,'fills':[],'unfilled_target':target_cash}
  order_time=z['t0']+timedelta(minutes=LAG);deadline=order_time+timedelta(minutes=timeout_min)
  remaining=target_cash;shares=0;spent=0.0;fills=[]
  for x in z['rows']:
@@ -58,8 +55,8 @@ def sim(ws,timeout,pfield):
    ex=execute_one(c,ev['entry'],before*w,timeout,pfield)
    if ex['shares']<=0:continue
    avg=ex['spent']/ex['shares'];net=c['exit_close']/avg-1-COST;pp=ex['spent']*net;pnl+=pp;spent_total+=ex['spent'];wins+=net>0
-   pos.append({'rank':rank,'ticker':c['ticker'],'weight_target':w,'shares':ex['shares'],'spent':ex['spent'],'avg_entry':avg,'net':net,'pnl':pp,'fills':ex['fills']})
-  cap+=pnl;curve.append({'entry':ev['entry'],'capital_before':before,'deploy_ratio':spent_total/before if before else 0,'event_pnl':pnl,'capital':cap,'positions':pos})
+   pos.append({'rank':rank,'ticker':c['ticker'],'weight_target':w,'shares':ex['shares'],'spent':ex['spent'],'unfilled_target':ex['unfilled_target'],'avg_entry':avg,'net':net,'pnl':pp,'fills':ex['fills']})
+  cap+=pnl;curve.append({'entry':ev['entry'],'capital_before':before,'deploy_ratio':spent_total/before if before else 0,'cash_not_deployed':before-spent_total,'event_pnl':pnl,'capital':cap,'positions':pos})
  return {'final':cap,'ret':cap/START-1,'position_wins':wins,'curve':curve}
 rows=[];details={}
 for name,ws in weights.items():
