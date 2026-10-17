@@ -1,0 +1,592 @@
+{
+  "objective": "causal Top3 allocation: reserve fixed capital weights ex ante, no retroactive overflow reallocation",
+  "contract": {
+    "minute_participation_cap": 0.1,
+    "lag_minutes_after_first_print": 2,
+    "slippage": 0.002,
+    "roundtrip_cost": 0.006
+  },
+  "tested": 64,
+  "best": {
+    "weights": "100_0_0",
+    "timeout_min": 20,
+    "price_field": "open",
+    "final": 12782674.321200002,
+    "ret": 5.391337160600001,
+    "position_wins": 8
+  },
+  "top20": [
+    {
+      "weights": "100_0_0",
+      "timeout_min": 20,
+      "price_field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "position_wins": 8
+    },
+    {
+      "weights": "100_0_0",
+      "timeout_min": 30,
+      "price_field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "position_wins": 8
+    },
+    {
+      "weights": "100_0_0",
+      "timeout_min": 20,
+      "price_field": "high",
+      "final": 11891787.975600002,
+      "ret": 4.945893987800001,
+      "position_wins": 8
+    },
+    {
+      "weights": "100_0_0",
+      "timeout_min": 30,
+      "price_field": "high",
+      "final": 11872812.5236,
+      "ret": 4.9364062618,
+      "position_wins": 8
+    },
+    {
+      "weights": "80_20_0",
+      "timeout_min": 30,
+      "price_field": "open",
+      "final": 10541325.1822,
+      "ret": 4.2706625911,
+      "position_wins": 16
+    },
+    {
+      "weights": "80_20_0",
+      "timeout_min": 20,
+      "price_field": "open",
+      "final": 10526272.1768,
+      "ret": 4.2631360884,
+      "position_wins": 16
+    },
+    {
+      "weights": "70_30_0",
+      "timeout_min": 30,
+      "price_field": "open",
+      "final": 10184800.425800001,
+      "ret": 4.0924002129,
+      "position_wins": 16
+    },
+    {
+      "weights": "70_30_0",
+      "timeout_min": 20,
+      "price_field": "open",
+      "final": 10169747.420400001,
+      "ret": 4.0848737102,
+      "position_wins": 16
+    },
+    {
+      "weights": "80_20_0",
+      "timeout_min": 30,
+      "price_field": "high",
+      "final": 9922413.179399999,
+      "ret": 3.9612065896999997,
+      "position_wins": 16
+    },
+    {
+      "weights": "80_20_0",
+      "timeout_min": 20,
+      "price_field": "high",
+      "final": 9907360.174,
+      "ret": 3.9536800870000004,
+      "position_wins": 16
+    },
+    {
+      "weights": "70_30_0",
+      "timeout_min": 30,
+      "price_field": "high",
+      "final": 9665650.766600002,
+      "ret": 3.832825383300001,
+      "position_wins": 16
+    },
+    {
+      "weights": "70_30_0",
+      "timeout_min": 20,
+      "price_field": "high",
+      "final": 9623290.799200002,
+      "ret": 3.8116453996000015,
+      "position_wins": 16
+    },
+    {
+      "weights": "70_20_10",
+      "timeout_min": 30,
+      "price_field": "open",
+      "final": 8841068.818600003,
+      "ret": 3.420534409300001,
+      "position_wins": 19
+    },
+    {
+      "weights": "70_20_10",
+      "timeout_min": 20,
+      "price_field": "open",
+      "final": 8826015.8132,
+      "ret": 3.4130079066000008,
+      "position_wins": 19
+    },
+    {
+      "weights": "60_30_10",
+      "timeout_min": 30,
+      "price_field": "open",
+      "final": 8379025.0238,
+      "ret": 3.1895125118999994,
+      "position_wins": 19
+    },
+    {
+      "weights": "60_30_10",
+      "timeout_min": 20,
+      "price_field": "open",
+      "final": 8363972.0183999995,
+      "ret": 3.1819860092,
+      "position_wins": 19
+    },
+    {
+      "weights": "70_20_10",
+      "timeout_min": 30,
+      "price_field": "high",
+      "final": 8276683.756600001,
+      "ret": 3.1383418783000003,
+      "position_wins": 19
+    },
+    {
+      "weights": "70_20_10",
+      "timeout_min": 20,
+      "price_field": "high",
+      "final": 8261630.751200002,
+      "ret": 3.130815375600001,
+      "position_wins": 19
+    },
+    {
+      "weights": "60_20_20",
+      "timeout_min": 30,
+      "price_field": "open",
+      "final": 7995505.150999999,
+      "ret": 2.9977525754999994,
+      "position_wins": 22
+    },
+    {
+      "weights": "60_20_20",
+      "timeout_min": 20,
+      "price_field": "open",
+      "final": 7980452.1455999985,
+      "ret": 2.990226072799999,
+      "position_wins": 22
+    }
+  ],
+  "surface": {
+    "within_95pct_best": 2,
+    "within_90pct_best": 4,
+    "positive": 64
+  },
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "capital_before": 2000000.0,
+      "deploy_ratio": 0.994986,
+      "cash_not_deployed": 10028.0,
+      "event_pnl": 608088.1680000001,
+      "capital": 2608088.168,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "2337",
+          "weight_target": 1,
+          "shares": 20000,
+          "spent": 1989972.0,
+          "unfilled_target": 10028.0,
+          "avg_entry": 99.4986,
+          "net": 0.30557624328382516,
+          "pnl": 608088.1680000001,
+          "fills": [
+            {
+              "time": "2026-03-04T09:03:00.000+08:00",
+              "lots": 20,
+              "raw_px": 99.3,
+              "stressed_px": 99.4986
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entry": "2026-03-27",
+      "capital_before": 2608088.168,
+      "deploy_ratio": 0.9762254325751766,
+      "cash_not_deployed": 62006.16800000006,
+      "event_pnl": 683641.5079999999,
+      "capital": 3291729.676,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "2337",
+          "weight_target": 1,
+          "shares": 22000,
+          "spent": 2546082.0,
+          "unfilled_target": 62006.16800000006,
+          "avg_entry": 115.731,
+          "net": 0.2685072625312146,
+          "pnl": 683641.5079999999,
+          "fills": [
+            {
+              "time": "2026-03-27T09:20:00.000+08:00",
+              "lots": 22,
+              "raw_px": 115.5,
+              "stressed_px": 115.731
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entry": "2026-05-19",
+      "capital_before": 3291729.676,
+      "deploy_ratio": 0.9676851726994606,
+      "cash_not_deployed": 106371.67600000044,
+      "event_pnl": 992029.8520000004,
+      "capital": 4283759.528000001,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "2408",
+          "weight_target": 1,
+          "shares": 11000,
+          "spent": 3185357.9999999995,
+          "unfilled_target": 106371.67600000044,
+          "avg_entry": 289.578,
+          "net": 0.31143433548128674,
+          "pnl": 992029.8520000004,
+          "fills": [
+            {
+              "time": "2026-05-19T09:02:00.000+08:00",
+              "lots": 11,
+              "raw_px": 289.0,
+              "stressed_px": 289.578
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entry": "2026-06-08",
+      "capital_before": 4283759.528000001,
+      "deploy_ratio": 0.9973781142646808,
+      "cash_not_deployed": 11231.528000000864,
+      "event_pnl": 2266836.8319999995,
+      "capital": 6550596.36,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "2408",
+          "weight_target": 1,
+          "shares": 13000,
+          "spent": 4272528.0,
+          "unfilled_target": 11231.528000000864,
+          "avg_entry": 328.656,
+          "net": 0.5305610242928775,
+          "pnl": 2266836.8319999995,
+          "fills": [
+            {
+              "time": "2026-06-08T09:02:00.000+08:00",
+              "lots": 13,
+              "raw_px": 328.0,
+              "stressed_px": 328.656
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entry": "2026-06-24",
+      "capital_before": 6550596.36,
+      "deploy_ratio": 0.9697865126893576,
+      "cash_not_deployed": 197916.36000000034,
+      "event_pnl": 119203.91999999953,
+      "capital": 6669800.28,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "3711",
+          "weight_target": 1,
+          "shares": 10000,
+          "spent": 6352680.0,
+          "unfilled_target": 197916.36000000034,
+          "avg_entry": 635.268,
+          "net": 0.01876435142333622,
+          "pnl": 119203.91999999953,
+          "fills": [
+            {
+              "time": "2026-06-24T09:02:00.000+08:00",
+              "lots": 10,
+              "raw_px": 634.0,
+              "stressed_px": 635.268
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entry": "2026-07-08",
+      "capital_before": 6669800.28,
+      "deploy_ratio": 0.8134921245347994,
+      "cash_not_deployed": 1243970.2800000003,
+      "event_pnl": 916615.0200000005,
+      "capital": 7586415.300000001,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "2360",
+          "weight_target": 1,
+          "shares": 3000,
+          "spent": 5425830.0,
+          "unfilled_target": 1243970.2800000003,
+          "avg_entry": 1808.61,
+          "net": 0.1689354476642284,
+          "pnl": 916615.0200000005,
+          "fills": [
+            {
+              "time": "2026-07-08T09:02:00.000+08:00",
+              "lots": 3,
+              "raw_px": 1805.0,
+              "stressed_px": 1808.61
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entry": "2026-07-29",
+      "capital_before": 7586415.300000001,
+      "deploy_ratio": 0.9400665159999874,
+      "cash_not_deployed": 454680.30000000075,
+      "event_pnl": 2515474.59,
+      "capital": 10101889.89,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "3026",
+          "weight_target": 1,
+          "shares": 15000,
+          "spent": 7131735.0,
+          "unfilled_target": 454680.30000000075,
+          "avg_entry": 475.449,
+          "net": 0.35271565614818834,
+          "pnl": 2515474.59,
+          "fills": [
+            {
+              "time": "2026-07-29T09:20:00.000+08:00",
+              "lots": 15,
+              "raw_px": 474.5,
+              "stressed_px": 475.449
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entry": "2026-08-20",
+      "capital_before": 10101889.89,
+      "deploy_ratio": 0.9923895537530948,
+      "cash_not_deployed": 76879.8900000006,
+      "event_pnl": -373160.0600000002,
+      "capital": 9728729.83,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "6691",
+          "weight_target": 1,
+          "shares": 16000,
+          "spent": 10025010.0,
+          "unfilled_target": 76879.8900000006,
+          "avg_entry": 626.563125,
+          "net": -0.03722291149834266,
+          "pnl": -373160.0600000002,
+          "fills": [
+            {
+              "time": "2026-08-20T09:02:00.000+08:00",
+              "lots": 1,
+              "raw_px": 629.0,
+              "stressed_px": 630.258
+            },
+            {
+              "time": "2026-08-20T09:03:00.000+08:00",
+              "lots": 3,
+              "raw_px": 628.0,
+              "stressed_px": 629.256
+            },
+            {
+              "time": "2026-08-20T09:04:00.000+08:00",
+              "lots": 1,
+              "raw_px": 630.0,
+              "stressed_px": 631.26
+            },
+            {
+              "time": "2026-08-20T09:06:00.000+08:00",
+              "lots": 1,
+              "raw_px": 627.0,
+              "stressed_px": 628.254
+            },
+            {
+              "time": "2026-08-20T09:08:00.000+08:00",
+              "lots": 1,
+              "raw_px": 626.0,
+              "stressed_px": 627.252
+            },
+            {
+              "time": "2026-08-20T09:09:00.000+08:00",
+              "lots": 3,
+              "raw_px": 625.0,
+              "stressed_px": 626.25
+            },
+            {
+              "time": "2026-08-20T09:10:00.000+08:00",
+              "lots": 3,
+              "raw_px": 621.0,
+              "stressed_px": 622.242
+            },
+            {
+              "time": "2026-08-20T09:13:00.000+08:00",
+              "lots": 1,
+              "raw_px": 619.0,
+              "stressed_px": 620.238
+            },
+            {
+              "time": "2026-08-20T09:14:00.000+08:00",
+              "lots": 1,
+              "raw_px": 624.0,
+              "stressed_px": 625.248
+            },
+            {
+              "time": "2026-08-20T09:15:00.000+08:00",
+              "lots": 1,
+              "raw_px": 628.0,
+              "stressed_px": 629.256
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "entry": "2026-09-15",
+      "capital_before": 9728729.83,
+      "deploy_ratio": 0.9982582484768209,
+      "cash_not_deployed": 16945.030000001192,
+      "event_pnl": 3053944.491200002,
+      "capital": 12782674.321200002,
+      "positions": [
+        {
+          "rank": 1,
+          "ticker": "8150",
+          "weight_target": 1,
+          "shares": 112000,
+          "spent": 9711784.799999999,
+          "unfilled_target": 16945.029999999737,
+          "avg_entry": 86.71236428571427,
+          "net": 0.31445759498295334,
+          "pnl": 3053944.491200002,
+          "fills": [
+            {
+              "time": "2026-09-15T09:02:00.000+08:00",
+              "lots": 6,
+              "raw_px": 86.4,
+              "stressed_px": 86.5728
+            },
+            {
+              "time": "2026-09-15T09:03:00.000+08:00",
+              "lots": 5,
+              "raw_px": 86.1,
+              "stressed_px": 86.2722
+            },
+            {
+              "time": "2026-09-15T09:04:00.000+08:00",
+              "lots": 13,
+              "raw_px": 86.4,
+              "stressed_px": 86.5728
+            },
+            {
+              "time": "2026-09-15T09:05:00.000+08:00",
+              "lots": 3,
+              "raw_px": 86.2,
+              "stressed_px": 86.3724
+            },
+            {
+              "time": "2026-09-15T09:06:00.000+08:00",
+              "lots": 12,
+              "raw_px": 86.2,
+              "stressed_px": 86.3724
+            },
+            {
+              "time": "2026-09-15T09:07:00.000+08:00",
+              "lots": 6,
+              "raw_px": 85.9,
+              "stressed_px": 86.07180000000001
+            },
+            {
+              "time": "2026-09-15T09:08:00.000+08:00",
+              "lots": 4,
+              "raw_px": 86.1,
+              "stressed_px": 86.2722
+            },
+            {
+              "time": "2026-09-15T09:09:00.000+08:00",
+              "lots": 10,
+              "raw_px": 86.3,
+              "stressed_px": 86.4726
+            },
+            {
+              "time": "2026-09-15T09:10:00.000+08:00",
+              "lots": 3,
+              "raw_px": 86.3,
+              "stressed_px": 86.4726
+            },
+            {
+              "time": "2026-09-15T09:11:00.000+08:00",
+              "lots": 6,
+              "raw_px": 86.5,
+              "stressed_px": 86.673
+            },
+            {
+              "time": "2026-09-15T09:12:00.000+08:00",
+              "lots": 12,
+              "raw_px": 86.8,
+              "stressed_px": 86.97359999999999
+            },
+            {
+              "time": "2026-09-15T09:13:00.000+08:00",
+              "lots": 5,
+              "raw_px": 86.9,
+              "stressed_px": 87.0738
+            },
+            {
+              "time": "2026-09-15T09:14:00.000+08:00",
+              "lots": 8,
+              "raw_px": 87.0,
+              "stressed_px": 87.174
+            },
+            {
+              "time": "2026-09-15T09:15:00.000+08:00",
+              "lots": 11,
+              "raw_px": 86.9,
+              "stressed_px": 87.0738
+            },
+            {
+              "time": "2026-09-15T09:16:00.000+08:00",
+              "lots": 6,
+              "raw_px": 87.3,
+              "stressed_px": 87.4746
+            },
+            {
+              "time": "2026-09-15T09:17:00.000+08:00",
+              "lots": 2,
+              "raw_px": 87.4,
+              "stressed_px": 87.57480000000001
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
