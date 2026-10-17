@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/multistock_concentration_2026.py'
+      - 'research/q017_sox_tw_electronics/overflow_score_gate_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -25,16 +25,16 @@ jobs:
           python-version: '3.12'
       - name: Verify capacity-aware result
         run: test -s research/q017_sox_tw_electronics/capacity_aware_multistock_2026/summary.json
-      - name: Run Top3 concentration stress
-        run: python research/q017_sox_tw_electronics/multistock_concentration_2026.py
-      - name: Commit Top3 concentration stress
+      - name: Run overflow score-ratio gates
+        run: python research/q017_sox_tw_electronics/overflow_score_gate_2026.py
+      - name: Commit overflow gate results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/multistock_concentration_2026
+          git add research/q017_sox_tw_electronics/overflow_score_gate_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Stress Q017 capacity-aware Top3 concentration'
+            git commit -m 'Test Q017 overflow score-ratio gates'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
