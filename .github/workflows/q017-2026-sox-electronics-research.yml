@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/gate_extension_2026.py'
+      - 'research/q017_sox_tw_electronics/executable_entry_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -16,6 +16,8 @@ jobs:
   research:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,16 +29,16 @@ jobs:
         run: |
           test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
           test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
-      - name: Run extended SOX gate scan
-        run: python research/q017_sox_tw_electronics/gate_extension_2026.py
-      - name: Commit gate extension results
+      - name: Run executable post-open entry backtest
+        run: python research/q017_sox_tw_electronics/executable_entry_2026.py
+      - name: Commit executable-entry results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/gate_extension_2026
+          git add research/q017_sox_tw_electronics/executable_entry_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Extend Q017 2026 SOX gate search'
+            git commit -m 'Backtest Q017 executable post-open entries'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
