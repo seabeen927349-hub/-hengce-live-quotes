@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/executable_hold_timing_surface_2026.py'
+      - 'research/q017_sox_tw_electronics/execution_realism_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -25,20 +25,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify 2026 materialized PIT archive
-        run: |
-          test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
-          test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
-      - name: Run executable timing x hold capital surface
-        run: python research/q017_sox_tw_electronics/executable_hold_timing_surface_2026.py
-      - name: Commit executable surface results
+      - name: Verify executable surface
+        run: test -s research/q017_sox_tw_electronics/executable_hold_timing_surface_2026/summary.json
+      - name: Run execution realism stress
+        run: python research/q017_sox_tw_electronics/execution_realism_2026.py
+      - name: Commit realism results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/executable_hold_timing_surface_2026
+          git add research/q017_sox_tw_electronics/execution_realism_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Map Q017 executable timing and hold surface'
+            git commit -m 'Stress Q017 execution realism'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
