@@ -1,5 +1,6 @@
 name: Q017 2026 SOX x Taiwan electronics research
 
+# 2026-only combined gate screen rerun after CSV-output fix.
 on:
   push:
     branches:
