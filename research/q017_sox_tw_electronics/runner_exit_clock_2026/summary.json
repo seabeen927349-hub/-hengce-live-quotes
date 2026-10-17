@@ -1,0 +1,237 @@
+{
+  "objective": "increase D11 runner terminal capital by executable exit clock only",
+  "baseline_D11_close": {
+    "time": "CLOSE",
+    "field": "close",
+    "final": 14727617.460400002,
+    "ret": 6.363808730200001,
+    "events": 9,
+    "wins": 8
+  },
+  "best": {
+    "time": "13:25",
+    "field": "open",
+    "final": 14727617.460400002,
+    "ret": 6.363808730200001,
+    "events": 9,
+    "wins": 8
+  },
+  "improvement": 0.0,
+  "within_99pct_best": 7,
+  "grid": [
+    {
+      "time": "13:25",
+      "field": "open",
+      "final": 14727617.460400002,
+      "ret": 6.363808730200001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:25",
+      "field": "low",
+      "final": 14727617.460400002,
+      "ret": 6.363808730200001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:28",
+      "field": "open",
+      "final": 14727617.460400002,
+      "ret": 6.363808730200001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:28",
+      "field": "low",
+      "final": 14727617.460400002,
+      "ret": 6.363808730200001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:29",
+      "field": "open",
+      "final": 14727617.460400002,
+      "ret": 6.363808730200001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:29",
+      "field": "low",
+      "final": 14727617.460400002,
+      "ret": 6.363808730200001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "CLOSE",
+      "field": "close",
+      "final": 14727617.460400002,
+      "ret": 6.363808730200001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:20",
+      "field": "open",
+      "final": 14350812.720800001,
+      "ret": 6.1754063604,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:10",
+      "field": "open",
+      "final": 14301990.8168,
+      "ret": 6.1509954084,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:20",
+      "field": "low",
+      "final": 14298095.6256,
+      "ret": 6.1490478128,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:00",
+      "field": "open",
+      "final": 14287020.8168,
+      "ret": 6.1435104084,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:10",
+      "field": "low",
+      "final": 14243954.1496,
+      "ret": 6.121977074799999,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "time": "13:00",
+      "field": "low",
+      "final": 14182507.065600002,
+      "ret": 6.0912535328000015,
+      "events": 9,
+      "wins": 8
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "exit": "2026-03-18",
+      "ticker": "2337",
+      "extend": true,
+      "capital_before": 2000000.0,
+      "avg_entry": 99.4986,
+      "raw_exit": 143.5,
+      "exit_ts": "2026-03-18T13:30:00.000+08:00",
+      "net": 0.43334688528280796,
+      "capital": 2862348.168
+    },
+    {
+      "entry": "2026-03-27",
+      "exit": "2026-04-13",
+      "ticker": "2337",
+      "extend": false,
+      "capital_before": 2862348.168,
+      "avg_entry": 115.731,
+      "raw_exit": 147.5,
+      "exit_ts": "2026-04-13 CLOSE",
+      "net": 0.2659582480061524,
+      "capital": 3601058.9040000006
+    },
+    {
+      "entry": "2026-05-19",
+      "exit": "2026-06-02",
+      "ticker": "2408",
+      "extend": true,
+      "capital_before": 3601058.9040000006,
+      "avg_entry": 289.578,
+      "raw_exit": 419.5,
+      "exit_ts": "2026-06-02T13:30:00.000+08:00",
+      "net": 0.4397624543300942,
+      "capital": 5129205.288000001
+    },
+    {
+      "entry": "2026-06-08",
+      "exit": "2026-06-23",
+      "ticker": "2408",
+      "extend": true,
+      "capital_before": 5129205.288000001,
+      "avg_entry": 328.656,
+      "raw_exit": 454.5,
+      "exit_ts": "2026-06-23T13:30:00.000+08:00",
+      "net": 0.3741391120198627,
+      "capital": 6973651.248000001
+    },
+    {
+      "entry": "2026-06-24",
+      "exit": "2026-07-07",
+      "ticker": "3711",
+      "extend": false,
+      "capital_before": 6973651.248000001,
+      "avg_entry": 633.9016363636364,
+      "raw_exit": 651.0,
+      "exit_ts": "2026-07-07 CLOSE",
+      "net": 0.018919266223982552,
+      "capital": 7105573.74
+    },
+    {
+      "entry": "2026-07-08",
+      "exit": "2026-07-23",
+      "ticker": "2360",
+      "extend": true,
+      "capital_before": 7105573.74,
+      "avg_entry": 1808.61,
+      "raw_exit": 2155.0,
+      "exit_ts": "2026-07-23T13:30:00.000+08:00",
+      "net": 0.18313972608799034,
+      "capital": 8099258.760000001
+    },
+    {
+      "entry": "2026-07-29",
+      "exit": "2026-08-12",
+      "ticker": "3026",
+      "extend": true,
+      "capital_before": 8099258.760000001,
+      "avg_entry": 475.449,
+      "raw_exit": 685.0,
+      "exit_ts": "2026-08-12T13:30:00.000+08:00",
+      "net": 0.4318618947563251,
+      "capital": 11589839.962000001
+    },
+    {
+      "entry": "2026-08-20",
+      "exit": "2026-09-02",
+      "ticker": "6691",
+      "extend": false,
+      "capital_before": 11589839.962000001,
+      "avg_entry": 626.3056666666666,
+      "raw_exit": 607.0,
+      "exit_ts": "2026-09-02 CLOSE",
+      "net": -0.03876302252840335,
+      "capital": 11152844.950000001
+    },
+    {
+      "entry": "2026-09-15",
+      "exit": "2026-10-01",
+      "ticker": "8150",
+      "extend": true,
+      "capital_before": 11152844.950000001,
+      "avg_entry": 86.82016875,
+      "raw_exit": 115.5,
+      "exit_ts": "2026-10-01T13:30:00.000+08:00",
+      "net": 0.3216753738168703,
+      "capital": 14727617.460400002
+    }
+  ]
+}
