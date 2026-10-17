@@ -1,0 +1,281 @@
+{
+  "objective": "hard-stress fully causal Top1 20-minute execution",
+  "contract": {
+    "boardlot": true,
+    "lag_minutes_after_first_print": 2,
+    "timeout_min": 20
+  },
+  "tested": 54,
+  "anchors": {
+    "base": {
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "events": 9,
+      "wins": 8
+    },
+    "high_price": {
+      "final": 11891787.975600002,
+      "ret": 4.945893987800001,
+      "events": 9,
+      "wins": 8
+    },
+    "5pct_capacity": {
+      "final": 11764626.0916,
+      "ret": 4.8823130458,
+      "events": 9,
+      "wins": 8
+    },
+    "2pct_capacity": {
+      "final": 9004078.374,
+      "ret": 3.5020391870000003,
+      "events": 9,
+      "wins": 8
+    },
+    "cost1pct": {
+      "final": 12321821.990000002,
+      "ret": 5.160910995000001,
+      "events": 9,
+      "wins": 8
+    },
+    "slip05pct": {
+      "final": 12369936.485000003,
+      "ret": 5.184968242500002,
+      "events": 9,
+      "wins": 8
+    },
+    "hard_combo": {
+      "final": 10919929.565000005,
+      "ret": 4.459964782500003,
+      "events": 9,
+      "wins": 8
+    }
+  },
+  "concentration": {
+    "base": {
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "events": 9,
+      "wins": 8
+    },
+    "remove_top_1": {
+      "final": 9728729.83,
+      "ret": 3.8643649150000003,
+      "events": 8,
+      "wins": 7
+    },
+    "remove_top_2": {
+      "final": 7297221.144000001,
+      "ret": 2.648610572000001,
+      "events": 7,
+      "wins": 6
+    },
+    "remove_top_3": {
+      "final": 4784137.808000002,
+      "ret": 1.3920689040000012,
+      "events": 6,
+      "wins": 5
+    }
+  },
+  "top20": [
+    {
+      "participation": 0.1,
+      "slippage": 0.002,
+      "cost": 0.006,
+      "price_field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.003,
+      "cost": 0.006,
+      "price_field": "open",
+      "final": 12505416.007600004,
+      "ret": 5.252708003800002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.002,
+      "cost": 0.008,
+      "price_field": "open",
+      "final": 12456192.8512,
+      "ret": 5.2280964255999995,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.003,
+      "cost": 0.008,
+      "price_field": "open",
+      "final": 12370228.088000001,
+      "ret": 5.1851140440000005,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.005,
+      "cost": 0.006,
+      "price_field": "open",
+      "final": 12369936.485000003,
+      "ret": 5.184968242500002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.002,
+      "cost": 0.01,
+      "price_field": "open",
+      "final": 12321821.990000002,
+      "ret": 5.160910995000001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.003,
+      "cost": 0.01,
+      "price_field": "open",
+      "final": 12272735.485000001,
+      "ret": 5.136367742500001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.005,
+      "cost": 0.008,
+      "price_field": "open",
+      "final": 12246187.872000005,
+      "ret": 5.123093936000003,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.005,
+      "cost": 0.01,
+      "price_field": "open",
+      "final": 12122790.205000002,
+      "ret": 5.061395102500001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.002,
+      "cost": 0.006,
+      "price_field": "high",
+      "final": 11891787.975600002,
+      "ret": 4.945893987800001,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.003,
+      "cost": 0.006,
+      "price_field": "high",
+      "final": 11818225.334800005,
+      "ret": 4.909112667400002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.002,
+      "cost": 0.008,
+      "price_field": "high",
+      "final": 11771537.497599997,
+      "ret": 4.885768748799999,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.05,
+      "slippage": 0.002,
+      "cost": 0.006,
+      "price_field": "open",
+      "final": 11764626.0916,
+      "ret": 4.8823130458,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.003,
+      "cost": 0.008,
+      "price_field": "high",
+      "final": 11724381.846400004,
+      "ret": 4.862190923200002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.005,
+      "cost": 0.006,
+      "price_field": "high",
+      "final": 11697864.077000003,
+      "ret": 4.848932038500002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.002,
+      "cost": 0.01,
+      "price_field": "high",
+      "final": 11651636.918000003,
+      "ret": 4.8258184590000015,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.003,
+      "cost": 0.01,
+      "price_field": "high",
+      "final": 11604475.877000006,
+      "ret": 4.802237938500003,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.1,
+      "slippage": 0.005,
+      "cost": 0.008,
+      "price_field": "high",
+      "final": 11577947.328000003,
+      "ret": 4.788973664000002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.05,
+      "slippage": 0.003,
+      "cost": 0.006,
+      "price_field": "open",
+      "final": 11551324.141400004,
+      "ret": 4.775662070700002,
+      "events": 9,
+      "wins": 8
+    },
+    {
+      "participation": 0.05,
+      "slippage": 0.002,
+      "cost": 0.008,
+      "price_field": "open",
+      "final": 11512703.8368,
+      "ret": 4.7563519184,
+      "events": 9,
+      "wins": 8
+    }
+  ]
+}
