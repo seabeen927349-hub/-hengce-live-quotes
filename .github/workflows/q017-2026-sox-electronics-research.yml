@@ -1,5 +1,6 @@
 name: Q017 2026 SOX x Taiwan electronics research
 
+# Registered on main; this branch push starts the research vessel.
 on:
   push:
     branches:
