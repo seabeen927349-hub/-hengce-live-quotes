@@ -1,0 +1,45 @@
+name: Q017 blind replay 2026-10-14 H-Score
+
+on:
+  push:
+    branches:
+      - q017-2026-sox-dxy-electronics
+    paths:
+      - 'research/q017_sox_tw_electronics/replay_20261014_hscore.py'
+      - '.github/workflows/q017-replay-20261014-hscore.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: q017-2026-sox-dxy-electronics
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify archives
+        run: |
+          test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
+          test -s research/q017_sox_tw_electronics/archive_2026/sox_2026.csv
+          test -s research/q017_sox_tw_electronics/archive_2026/dxy_2026.csv
+      - name: Run blind replay
+        env:
+          FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+        run: python research/q017_sox_tw_electronics/replay_20261014_hscore.py
+      - name: Commit replay report
+        run: |
+          git config user.name 'hengce-research-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add research/q017_sox_tw_electronics/replay_20261014_hscore/
+          if git diff --cached --quiet; then
+            echo 'No changes'
+          else
+            git commit -m 'Store blind 2026-10-14 H-Score replay'
+            git push origin HEAD:q017-2026-sox-dxy-electronics
+          fi
