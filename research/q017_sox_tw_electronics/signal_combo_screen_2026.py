@@ -10,7 +10,6 @@ def f(x):
     try:return float(str(x).replace(',','').strip())
     except:return None
 
-# SOX history / strictly prior US session
 sox=[]
 for r in csv.DictReader((ARC/'sox_2026.csv').open(encoding='utf-8')):
     c=f(r['close'])
@@ -19,7 +18,6 @@ sox.sort(); sd=[d for d,_ in sox]; sret={sox[i][0]:sox[i][1]/sox[i-1][1]-1 for i
 def prevus(d):
     z=[u for u in sd if u<d]; return z[-1] if z else None
 
-# Taiwan electronics
 by_t=defaultdict(list);by_d=defaultdict(list)
 for r in csv.DictReader((ARC/'twse_electronics_membership_2026.csv').open(encoding='utf-8')):
     o=f(r.get('open'));c=f(r.get('close'))
@@ -29,7 +27,6 @@ for r in csv.DictReader((ARC/'twse_electronics_membership_2026.csv').open(encodi
 for t in by_t:by_t[t].sort(key=lambda x:x['date'])
 mdates=sorted(by_d); mi={d:i for i,d in enumerate(mdates)}; aligned={d:sret.get(prevus(d)) for d in mdates}
 
-# strictly-prior beta, previous close, prior stock momentum
 beta={};prevc={};mom={}
 for t,rs in by_t.items():
     obs=[];pc=None
@@ -60,8 +57,7 @@ for d in mdates:
         t=r['ticker']; b=beta.get((d,t));pc=prevc.get((d,t))
         if b is None or b<=0 or not pc:continue
         gap=r['open']/pc-1;res=gap-b*ft['shock']
-        lst.append({'ticker':t,'open':r['open'],'beta':b,'resid':res,'gap':gap,
-                    'm5':mom.get((d,t,5)),'m10':mom.get((d,t,10)),'m20':mom.get((d,t,20))})
+        lst.append({'ticker':t,'open':r['open'],'beta':b,'resid':res,'gap':gap,'m5':mom.get((d,t,5)),'m10':mom.get((d,t,10)),'m20':mom.get((d,t,20))})
     cand[d]=lst
 
 def score(x,k,trend_mode,trend_k):
@@ -94,8 +90,7 @@ def run(p):
             if not passes_trend(x,p['trend_filter'],p['trend_th']):continue
             zz.append((score(x,p['k'],p['trend_mode'],p['trend_k']),x))
         if not zz:continue
-        zz.sort(key=lambda q:q[0],reverse=True);x=zz[0];t=x['ticker'];entry=x['open']
-        # screening uses daily open only; same exit policy for all combos: if D10 close > D9 close, extend to D11.
+        zz.sort(key=lambda q:q[0],reverse=True);x=zz[0][1];t=x['ticker'];entry=x['open']
         mp={r['date']:r['close'] for r in by_t[t]}
         c9,c10,c11=mp.get(d9),mp.get(d10),mp.get(d11)
         if not c9 or not c10 or not c11:continue
@@ -112,23 +107,20 @@ res_grid=[.06,.05,.04,.03,.02,.01,0,-.01]
 k_grid=[0,10,25,50]
 trend_modes=[('none',0),('strong5',2),('weak5',2),('strong20',1),('weak20',1)]
 trend_filters=[('none',0),('m5ge',0),('m5le',0),('m20ge',0),('m20le',0),('m5ge',.05),('m5le',-.05),('m20ge',.10),('m20le',-.10)]
-# Keep grid finite: baseline ranking families + one trend filter family at a time.
 rows=[]
 for sh in shock_grid:
  for s5 in sox5_grid:
   for rg in res_grid:
    for k in k_grid:
     for tm,tk in trend_modes:
-     # score modifiers use no hard trend filter
      p={'shock':sh,'sox5':s5,'resmax':rg,'k':k,'trend_mode':tm,'trend_k':tk,'trend_filter':'none','trend_th':0}
      final,curve=run(p);rows.append({**p,'final':final,'ret':final/START-1,'events':len(curve),'wins':sum(x['net']>0 for x in curve)})
-    # hard trend filters only with current proven score K=25 to avoid combinatorial noise
     if k==25:
      for tf,th in trend_filters[1:]:
       p={'shock':sh,'sox5':s5,'resmax':rg,'k':25,'trend_mode':'none','trend_k':0,'trend_filter':tf,'trend_th':th}
       final,curve=run(p);rows.append({**p,'final':final,'ret':final/START-1,'events':len(curve),'wins':sum(x['net']>0 for x in curve)})
 rows.sort(key=lambda x:x['final'],reverse=True)
-# family robustness: count neighbors around each top row in shock/sox5/resid/k dimensions that stay within 90% of its final.
+
 def neigh(grid,v):
     i=grid.index(v);return grid[max(0,i-1):min(len(grid),i+2)]
 def robust(r):
@@ -141,8 +133,7 @@ def robust(r):
         f0,_=run(p);vals.append(f0)
     vals.sort();return {'n':len(vals),'positive':sum(v>START for v in vals),'above90pct_anchor':sum(v>=.9*r['final'] for v in vals),'median':vals[len(vals)//2],'min':vals[0]}
 
-top=[]
-seen=set()
+top=[];seen=set()
 for r in rows:
     fam=(r['trend_mode'],r['trend_filter'],r['trend_th'])
     if fam in seen:continue
