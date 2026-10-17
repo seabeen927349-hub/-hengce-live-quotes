@@ -5,7 +5,7 @@ on:
     branches:
       - q017-2026-sox-dxy-electronics
     paths:
-      - 'research/q017_sox_tw_electronics/export_electronics_tickers_2026.py'
+      - 'research/q017_sox_tw_electronics/chip_margin10_causal_2026.py'
       - '.github/workflows/q017-2026-sox-electronics-research.yml'
   workflow_dispatch:
 
@@ -16,6 +16,8 @@ jobs:
   research:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,16 +27,16 @@ jobs:
           python-version: '3.12'
       - name: Verify electronics archive
         run: test -s research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv
-      - name: Export electronics universe
-        run: python research/q017_sox_tw_electronics/export_electronics_tickers_2026.py
-      - name: Commit electronics universe
+      - name: Run causal margin10 ranking validation
+        run: python research/q017_sox_tw_electronics/chip_margin10_causal_2026.py
+      - name: Commit causal margin10 results
         run: |
           git config user.name 'hengce-research-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add research/q017_sox_tw_electronics/factor_join_2026/electronics_tickers.json research/q017_sox_tw_electronics/factor_join_2026/electronics_tickers.txt
+          git add research/q017_sox_tw_electronics/chip_margin10_causal_2026
           if git diff --cached --quiet; then
             echo 'No result changes'
           else
-            git commit -m 'Export Q017 electronics ticker universe'
+            git commit -m 'Validate Q017 margin10 ranking causally'
             git push origin HEAD:q017-2026-sox-dxy-electronics
           fi
