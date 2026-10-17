@@ -1,0 +1,299 @@
+{
+  "objective": "maximize 2026 final capital; fixed market gate; compare candidate rank and live-feasible switch policies",
+  "tested": 126,
+  "best": {
+    "mode": "FIXED",
+    "rank": "beta_x_overshoot",
+    "switch_ratio": "",
+    "min_age": "",
+    "final": 7481641.599485418,
+    "ret": 2.7408207997427088,
+    "n": 9,
+    "wins": 9
+  },
+  "top20": [
+    {
+      "mode": "FIXED",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": "",
+      "min_age": "",
+      "final": 7481641.599485418,
+      "ret": 2.7408207997427088,
+      "n": 9,
+      "wins": 9
+    },
+    {
+      "mode": "FIXED",
+      "rank": "beta",
+      "switch_ratio": "",
+      "min_age": "",
+      "final": 6730022.830086333,
+      "ret": 2.3650114150431665,
+      "n": 9,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.0,
+      "min_age": 1,
+      "final": 6492325.487087789,
+      "ret": 2.2461627435438944,
+      "n": 12,
+      "wins": 10
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.05,
+      "min_age": 1,
+      "final": 6492325.487087789,
+      "ret": 2.2461627435438944,
+      "n": 12,
+      "wins": 10
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.1,
+      "min_age": 1,
+      "final": 6492325.487087789,
+      "ret": 2.2461627435438944,
+      "n": 12,
+      "wins": 10
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.0,
+      "min_age": 3,
+      "final": 6244072.258127301,
+      "ret": 2.1220361290636505,
+      "n": 11,
+      "wins": 10
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.05,
+      "min_age": 3,
+      "final": 6244072.258127301,
+      "ret": 2.1220361290636505,
+      "n": 11,
+      "wins": 10
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.1,
+      "min_age": 3,
+      "final": 6244072.258127301,
+      "ret": 2.1220361290636505,
+      "n": 11,
+      "wins": 10
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.2,
+      "min_age": 1,
+      "final": 5962615.151772061,
+      "ret": 1.9813075758860306,
+      "n": 11,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_overshoot_bonus",
+      "switch_ratio": 1.0,
+      "min_age": 1,
+      "final": 5829544.903459573,
+      "ret": 1.9147724517297866,
+      "n": 12,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_overshoot_bonus",
+      "switch_ratio": 1.05,
+      "min_age": 1,
+      "final": 5829544.903459573,
+      "ret": 1.9147724517297866,
+      "n": 12,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.0,
+      "min_age": 5,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.0,
+      "min_age": 7,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.05,
+      "min_age": 5,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.05,
+      "min_age": 7,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.1,
+      "min_age": 5,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.1,
+      "min_age": 7,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.2,
+      "min_age": 3,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.2,
+      "min_age": 5,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    },
+    {
+      "mode": "SWITCH",
+      "rank": "beta_x_overshoot",
+      "switch_ratio": 1.2,
+      "min_age": 7,
+      "final": 5734616.96107443,
+      "ret": 1.8673084805372149,
+      "n": 10,
+      "wins": 9
+    }
+  ],
+  "best_events": [
+    {
+      "entry": "2026-03-04",
+      "exit": "2026-03-17",
+      "ticker": "2408",
+      "ret": 0.13675630252100834,
+      "capital": 2273512.6050420166,
+      "beta": 1.3875440292830026,
+      "resid": -0.00861210768944018
+    },
+    {
+      "entry": "2026-03-31",
+      "exit": "2026-04-15",
+      "ticker": "2408",
+      "ret": 0.015277108433734869,
+      "capital": 2308245.3036347064,
+      "beta": 1.5026067592208432,
+      "resid": 0.004578101981179805
+    },
+    {
+      "entry": "2026-05-19",
+      "exit": "2026-06-01",
+      "ticker": "3661",
+      "ret": 0.09441628959276027,
+      "capital": 2526181.26067381,
+      "beta": 1.0735473018120003,
+      "resid": -0.01054710424183953
+    },
+    {
+      "entry": "2026-06-08",
+      "exit": "2026-06-22",
+      "ticker": "3711",
+      "ret": 0.2921538461538462,
+      "capital": 3264214.832061435,
+      "beta": 0.9092032466569799,
+      "resid": -0.005530613130271755
+    },
+    {
+      "entry": "2026-06-24",
+      "exit": "2026-07-07",
+      "ticker": "3711",
+      "ret": 0.01958490566037741,
+      "capital": 3328144.171602563,
+      "beta": 0.8192344022784848,
+      "resid": 0.025224654376234126
+    },
+    {
+      "entry": "2026-07-08",
+      "exit": "2026-07-22",
+      "ticker": "3711",
+      "ret": 0.02099999999999991,
+      "capital": 3398035.1992062167,
+      "beta": 0.6507279089064102,
+      "resid": 0.01335012508324462
+    },
+    {
+      "entry": "2026-07-29",
+      "exit": "2026-08-11",
+      "ticker": "2344",
+      "ret": 0.2952700729927007,
+      "capital": 4401373.300507602,
+      "beta": 0.7027604806674917,
+      "resid": -0.01703384582094685
+    },
+    {
+      "entry": "2026-08-20",
+      "exit": "2026-09-02",
+      "ticker": "2434",
+      "ret": 0.28058498023715406,
+      "capital": 5636332.541046865,
+      "beta": 0.6790028843366457,
+      "resid": 0.02035890773859539
+    },
+    {
+      "entry": "2026-09-15",
+      "exit": "2026-09-30",
+      "ticker": "8150",
+      "ret": 0.3273953488372092,
+      "capital": 7481641.599485418,
+      "beta": 0.7590373439844261,
+      "resid": 0.037540298831315794
+    }
+  ]
+}
