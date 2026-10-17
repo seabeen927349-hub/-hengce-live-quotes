@@ -1,0 +1,406 @@
+{
+  "objective": "increase 2M terminal capital only through causal no-chase entry price caps",
+  "baseline": {
+    "cap_pct": null,
+    "field": "open",
+    "final": 12782674.321200002,
+    "ret": 5.391337160600001,
+    "n": 9,
+    "filled_events": 9,
+    "wins": 8
+  },
+  "best": {
+    "cap_pct": 0.02,
+    "field": "open",
+    "final": 12802834.5612,
+    "ret": 5.4014172806000005,
+    "n": 9,
+    "filled_events": 9,
+    "wins": 8
+  },
+  "improvement": 20160.23999999836,
+  "open_cap_curve": [
+    {
+      "cap_pct": -0.02,
+      "field": "open",
+      "final": 3825905.3744000006,
+      "ret": 0.9129526872000002,
+      "n": 9,
+      "filled_events": 5,
+      "wins": 4
+    },
+    {
+      "cap_pct": -0.01,
+      "field": "open",
+      "final": 4945751.0,
+      "ret": 1.4728754999999998,
+      "n": 9,
+      "filled_events": 6,
+      "wins": 5
+    },
+    {
+      "cap_pct": -0.005,
+      "field": "open",
+      "final": 4893006.122,
+      "ret": 1.446503061,
+      "n": 9,
+      "filled_events": 6,
+      "wins": 5
+    },
+    {
+      "cap_pct": 0,
+      "field": "open",
+      "final": 6605937.5352,
+      "ret": 2.3029687676,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0.005,
+      "field": "open",
+      "final": 8147828.3584,
+      "ret": 3.0739141792,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0.01,
+      "field": "open",
+      "final": 8473697.480800001,
+      "ret": 3.2368487404,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0.015,
+      "field": "open",
+      "final": 12644234.451599998,
+      "ret": 5.3221172258,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": 0.02,
+      "field": "open",
+      "final": 12802834.5612,
+      "ret": 5.4014172806000005,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": 0.03,
+      "field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": null,
+      "field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    }
+  ],
+  "grid": [
+    {
+      "cap_pct": 0.02,
+      "field": "open",
+      "final": 12802834.5612,
+      "ret": 5.4014172806000005,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": null,
+      "field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": 0.03,
+      "field": "open",
+      "final": 12782674.321200002,
+      "ret": 5.391337160600001,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": 0.015,
+      "field": "open",
+      "final": 12644234.451599998,
+      "ret": 5.3221172258,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": 0.02,
+      "field": "high",
+      "final": 12360572.536400001,
+      "ret": 5.180286268200001,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": 0.03,
+      "field": "high",
+      "final": 12360572.536400001,
+      "ret": 5.180286268200001,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": null,
+      "field": "high",
+      "final": 11891787.975600002,
+      "ret": 4.945893987800001,
+      "n": 9,
+      "filled_events": 9,
+      "wins": 8
+    },
+    {
+      "cap_pct": 0.01,
+      "field": "open",
+      "final": 8473697.480800001,
+      "ret": 3.2368487404,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0.015,
+      "field": "high",
+      "final": 8331678.753200002,
+      "ret": 3.165839376600001,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0.01,
+      "field": "high",
+      "final": 8197663.973200002,
+      "ret": 3.0988319866000005,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0.005,
+      "field": "open",
+      "final": 8147828.3584,
+      "ret": 3.0739141792,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0.005,
+      "field": "high",
+      "final": 7463500.836400002,
+      "ret": 2.731750418200001,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0,
+      "field": "open",
+      "final": 6605937.5352,
+      "ret": 2.3029687676,
+      "n": 9,
+      "filled_events": 8,
+      "wins": 7
+    },
+    {
+      "cap_pct": 0,
+      "field": "high",
+      "final": 6383530.266000002,
+      "ret": 2.191765133000001,
+      "n": 9,
+      "filled_events": 7,
+      "wins": 6
+    },
+    {
+      "cap_pct": -0.01,
+      "field": "open",
+      "final": 4945751.0,
+      "ret": 1.4728754999999998,
+      "n": 9,
+      "filled_events": 6,
+      "wins": 5
+    },
+    {
+      "cap_pct": -0.01,
+      "field": "high",
+      "final": 4917198.409999999,
+      "ret": 1.4585992049999996,
+      "n": 9,
+      "filled_events": 6,
+      "wins": 5
+    },
+    {
+      "cap_pct": -0.005,
+      "field": "open",
+      "final": 4893006.122,
+      "ret": 1.446503061,
+      "n": 9,
+      "filled_events": 6,
+      "wins": 5
+    },
+    {
+      "cap_pct": -0.005,
+      "field": "high",
+      "final": 4859237.720000001,
+      "ret": 1.4296188600000002,
+      "n": 9,
+      "filled_events": 6,
+      "wins": 5
+    },
+    {
+      "cap_pct": -0.02,
+      "field": "open",
+      "final": 3825905.3744000006,
+      "ret": 0.9129526872000002,
+      "n": 9,
+      "filled_events": 5,
+      "wins": 4
+    },
+    {
+      "cap_pct": -0.02,
+      "field": "high",
+      "final": 3512428.5660000006,
+      "ret": 0.7562142830000003,
+      "n": 9,
+      "filled_events": 4,
+      "wins": 3
+    }
+  ],
+  "best_curve": [
+    {
+      "entry": "2026-03-04",
+      "ticker": "2337",
+      "capital_before": 2000000.0,
+      "deploy_ratio": 0.984966,
+      "reference": 97.0,
+      "limit": 98.94,
+      "shares": 20000,
+      "avg_entry": 98.4966,
+      "net": 0.3189188296854917,
+      "capital": 2628248.408
+    },
+    {
+      "entry": "2026-03-27",
+      "ticker": "2337",
+      "capital_before": 2628248.408,
+      "deploy_ratio": 0.9687371986034892,
+      "reference": 118.0,
+      "limit": 120.36,
+      "shares": 22000,
+      "avg_entry": 115.731,
+      "net": 0.2685072625312146,
+      "capital": 3311889.9159999997
+    },
+    {
+      "entry": "2026-05-19",
+      "ticker": "2408",
+      "capital_before": 3311889.9159999997,
+      "deploy_ratio": 0.9617946492156293,
+      "reference": 291.5,
+      "limit": 297.33,
+      "shares": 11000,
+      "avg_entry": 289.578,
+      "net": 0.31143433548128674,
+      "capital": 4303919.768
+    },
+    {
+      "entry": "2026-06-08",
+      "ticker": "2408",
+      "capital_before": 4303919.768,
+      "deploy_ratio": 0.9927062376409986,
+      "reference": 324.0,
+      "limit": 330.48,
+      "shares": 13000,
+      "avg_entry": 328.656,
+      "net": 0.5305610242928775,
+      "capital": 6570756.6
+    },
+    {
+      "entry": "2026-06-24",
+      "ticker": "3711",
+      "capital_before": 6570756.6,
+      "deploy_ratio": 0.96681103664683,
+      "reference": 636.0,
+      "limit": 648.72,
+      "shares": 10000,
+      "avg_entry": 635.268,
+      "net": 0.01876435142333622,
+      "capital": 6689960.52
+    },
+    {
+      "entry": "2026-07-08",
+      "ticker": "2360",
+      "capital_before": 6689960.52,
+      "deploy_ratio": 0.811040660670446,
+      "reference": 1845.0,
+      "limit": 1881.9,
+      "shares": 3000,
+      "avg_entry": 1808.61,
+      "net": 0.1689354476642284,
+      "capital": 7606575.54
+    },
+    {
+      "entry": "2026-07-29",
+      "ticker": "3026",
+      "capital_before": 7606575.54,
+      "deploy_ratio": 0.9375749918602662,
+      "reference": 474.5,
+      "limit": 483.99,
+      "shares": 15000,
+      "avg_entry": 475.449,
+      "net": 0.35271565614818834,
+      "capital": 10122050.129999999
+    },
+    {
+      "entry": "2026-08-20",
+      "ticker": "6691",
+      "capital_before": 10122050.129999999,
+      "deploy_ratio": 0.9904129965023203,
+      "reference": 635.0,
+      "limit": 647.7,
+      "shares": 16000,
+      "avg_entry": 626.563125,
+      "net": -0.03722291149834266,
+      "capital": 9748890.069999998
+    },
+    {
+      "entry": "2026-09-15",
+      "ticker": "8150",
+      "capital_before": 9748890.069999998,
+      "deploy_ratio": 0.9961938979993032,
+      "reference": 86.0,
+      "limit": 87.72,
+      "shares": 112000,
+      "avg_entry": 86.71236428571427,
+      "net": 0.31445759498295334,
+      "capital": 12802834.5612
+    }
+  ]
+}
