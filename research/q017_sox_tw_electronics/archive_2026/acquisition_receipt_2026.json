@@ -26,8 +26,12 @@
     "qa_sha256": "25470fb61ee4c6ce474728706cb3e64307ceda1c67552e8fbb21822ac94e7da9"
   },
   "sox": {
-    "status": "ERROR",
-    "error": "ModuleNotFoundError(\"No module named 'openpyxl'\")"
+    "status": "PASS",
+    "rows": 199,
+    "path": "research/q017_sox_tw_electronics/archive_2026/sox_2026.csv",
+    "sha256": "765c13ed39f8b76165bf1e143c62818c36e316b6bd7ca8d066e61603aa448d22",
+    "raw_sha256": "a2b6327333af62fdb2dd6a5fa53ec5dde9df205ba400aeec01cd096e624d3441",
+    "source_url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-01-01T00%3A00%3A00.000&endDate=2026-10-17T00%3A00%3A00.000&timeOfDay=EOD"
   },
-  "hard_gate": "FAIL_REVIEW"
+  "hard_gate": "PASS"
 }
