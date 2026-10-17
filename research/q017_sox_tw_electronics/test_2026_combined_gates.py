@@ -13,7 +13,6 @@ def eq(z):
     c=START;pk=c;dd=0;wins=0
     for e in z:c*=1+e['ret'];pk=max(pk,c);dd=min(dd,c/pk-1);wins+=e['ret']>0
     return {'n':len(z),'wins':wins,'win_rate':wins/len(z) if z else 0,'final':c,'return':c/START-1,'mdd':dd}
-# Round, interpretable thresholds only. No percentile-derived cutoffs here.
 sox5_th=[0.00,-0.01,-0.02,-0.03,-0.04,-0.05]
 resid_th=[0.00,0.01,0.02,0.025,0.03,0.04]
 gap_th=[0.00,-0.01,-0.02,-0.03]
@@ -26,15 +25,11 @@ for s in sox5_th:
   for g in gap_th:
     z=[e for e in rows if e['sox_ret5']<=s and e['gap_mean']<=g]
     x=eq(z);out.append({'kind':'SOX5+GAP','sox5_max':s,'resid_max':'','gap_max':g,**x})
-# single round gates as controls
 for s in sox5_th:out.append({'kind':'SOX5_ONLY','sox5_max':s,'resid_max':'','gap_max':'',**eq([e for e in rows if e['sox_ret5']<=s])})
 for rr in resid_th:out.append({'kind':'RESID_ONLY','sox5_max':'','resid_max':rr,'gap_max':'',**eq([e for e in rows if e['residual_mean']<=rr])})
-# keep only rules with enough observations to matter
-valid=[x for x in out if x['n']>=8]
+valid=[dict(x) for x in out if x['n']>=8]
 valid.sort(key=lambda x:(x['return'],x['mdd']),reverse=True)
-# robust-zone stats for nearby sensible family: SOX5 -1~-3 and residual 2~3%
-zone=[x for x in out if x['kind']=='SOX5+RESID' and x['sox5_max'] in (-.01,-.02,-.03) and x['resid_max'] in (.02,.025,.03) and x['n']>=8]
-# monthly for top candidates
+zone=[dict(x) for x in out if x['kind']=='SOX5+RESID' and x['sox5_max'] in (-.01,-.02,-.03) and x['resid_max'] in (.02,.025,.03) and x['n']>=8]
 for x in valid[:15]:
     if x['kind']=='SOX5+RESID':z=[e for e in rows if e['sox_ret5']<=x['sox5_max'] and e['residual_mean']<=x['resid_max']]
     elif x['kind']=='SOX5+GAP':z=[e for e in rows if e['sox_ret5']<=x['sox5_max'] and e['gap_mean']<=x['gap_max']]
@@ -46,5 +41,6 @@ for x in valid[:15]:
 summary={'baseline':eq(rows),'tested':len(out),'valid_ge8':len(valid),'top15':valid[:15],'robust_zone':zone}
 (OUT/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
 with (OUT/'grid.csv').open('w',newline='',encoding='utf-8') as f:
-    w=csv.DictWriter(f,fieldnames=['kind','sox5_max','resid_max','gap_max','n','wins','win_rate','final','return','mdd']);w.writeheader();w.writerows(out)
+    fields=['kind','sox5_max','resid_max','gap_max','n','wins','win_rate','final','return','mdd']
+    w=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');w.writeheader();w.writerows(out)
 print(json.dumps(summary,ensure_ascii=False,indent=2))
