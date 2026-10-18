@@ -1,0 +1,31 @@
+{
+  "system": "HENGCE",
+  "module": "DAILY_DATA_GATE",
+  "generated_at_taipei": "2026-10-19T06:49:09.940529+08:00",
+  "trade_date": "2026-10-19",
+  "status": "PASS",
+  "required": {
+    "sox": {
+      "status": "PASS",
+      "source": "Nasdaq ExportHistory/SOX",
+      "latest_session": "2026-10-16",
+      "rows": 199,
+      "stale_days": 3,
+      "refreshed_at_taipei": "2026-10-19T06:49:08.598185+08:00"
+    },
+    "latest_eod_date": "20261015",
+    "latest_eod_complete": true,
+    "electronics_history": {
+      "status": "PASS",
+      "source": "Q017_VALIDATED_2026_SEED",
+      "seeded": true
+    },
+    "electronics_history_latest": "2026-10-16"
+  },
+  "sox": {
+    "session": "2026-10-16",
+    "sox_1d": -0.03833177716245828,
+    "sox_5d": -0.11414930877578389
+  },
+  "policy": "NO_REQUIRED_DATA_NO_FORMAL_SIGNAL"
+}
