@@ -1,0 +1,81 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_DUAL_ENGINE_LOCK",
+  "created_date": "2026-10-18",
+  "status": "FROZEN_RESEARCH_OPERATION_CONTRACT",
+  "capital_twd": {
+    "total": 5000000,
+    "q017": 2000000,
+    "e2": 3000000
+  },
+  "global_constraints": {
+    "cash_equity_only": true,
+    "long_only": true,
+    "shorting": false,
+    "securities_lending": false,
+    "intraday": false,
+    "margin_or_leverage": false,
+    "signal_timing": "EOD point-in-time; earliest execution next TWSE session",
+    "cost_assumption_round_trip": 0.006
+  },
+  "engine_q017": {
+    "status": "FROZEN_DO_NOT_MUTATE",
+    "capital_twd": 2000000,
+    "universe": "TWSE listed electronics",
+    "sox_1d_max": 0.0,
+    "sox_5d_max": -0.02,
+    "residual_max": 0.04,
+    "score": "beta * (1 + 25 * max(-residual, 0))",
+    "beta_min_observations": 30,
+    "beta_max_observations": 60,
+    "ranking_count": 3,
+    "research_hold_days": 10,
+    "authority_note": "These values supersede any stale -3% SOX or DXY-gate prose from older handoff documents."
+  },
+  "engine_e2": {
+    "status": "FROZEN_CHALLENGER_NOT_PRODUCTION",
+    "capital_twd": 3000000,
+    "parent_universe": "formal strong/D-Setup candidates",
+    "selection": {
+      "method": "same-date relative ordering",
+      "favorable_conditions": [
+        "inst_ratio5 higher than same-date median",
+        "tight_ratio at_or_below same-date median",
+        "dist20high at_or_below same-date median"
+      ],
+      "minimum_favorable": 2
+    },
+    "market_regime": {
+      "rolling_over": "DEGRADED",
+      "other_states": "NORMAL unless other risk checks fail"
+    },
+    "sox_overlay": {
+      "role": "environment_and_relative_resilience_only",
+      "rule": "SOX weakness plus stock resilience may raise priority; SOX strength never relaxes the 2-of-3 requirement",
+      "hard_sox_threshold_for_e2_entry": null
+    },
+    "research_hold_days": 5,
+    "same_sample_2026_reference": {
+      "favorable_N": 95,
+      "mean_5d": 0.0388,
+      "median_5d": 0.0230,
+      "ex_top5_mean_5d": 0.0282,
+      "ex_top10_mean_5d": 0.0212,
+      "warning": "Discovery/same-sample evidence only; not valid OOS production proof."
+    }
+  },
+  "scan_contract": {
+    "trigger_phrase": "衡策掃一次",
+    "must_run_both_engines": true,
+    "must_keep_rankings_separate": true,
+    "must_keep_capital_separate": true,
+    "summary_fields": [
+      "Q017 state and Top1-Top3",
+      "E2 state and favorable-condition checkmarks",
+      "market regime",
+      "SOX environment/resilience label",
+      "buy/sell/hold/pass actions",
+      "capital used and remaining by engine"
+    ]
+  }
+}
