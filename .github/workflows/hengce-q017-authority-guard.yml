@@ -9,7 +9,10 @@ on:
       - 'hengce/q017_radar/decision/**'
       - 'scripts/hengce_q017_authority_guard.py'
       - 'scripts/hengce_q017_decision_lock.py'
-      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json'
+      - 'scripts/hengce_q017_authority_guard_v4.py'
+      - 'scripts/hengce_q017_decision_lock_v4.py'
+      - 'scripts/test_hengce_q017_adversarial_v4.py'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json'
       - '.github/workflows/hengce-q017-authority-guard.yml'
 
 permissions:
@@ -32,8 +35,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Enforce formal Q017 authority
-        run: python scripts/hengce_q017_authority_guard.py --mode check-and-repair
+      - name: Self-test schema-v4 guard
+        run: python scripts/hengce_q017_authority_guard_v4.py --mode self-test
+
+      - name: Enforce formal Q017 schema-v4 authority
+        run: python scripts/hengce_q017_authority_guard_v4.py --mode check-and-repair
 
       - name: Commit fail-closed repair if needed
         shell: bash
@@ -43,13 +49,13 @@ jobs:
           git config user.email 'hengce-authority-guard-bot@users.noreply.github.com'
           git add hengce/q017_radar/latest.json
           if git diff --cached --quiet; then
-            echo 'Q017 authority is already valid.'
+            echo 'Q017 schema-v4 authority is already valid.'
             exit 0
           fi
-          git commit -m 'HENGCE Q017 authority guard: quarantine unauthorized latest output'
+          git commit -m 'HENGCE Q017 schema-v4 authority guard: quarantine unauthorized latest output'
           if ! git push origin HEAD:main; then
             git pull --rebase origin main
-            python scripts/hengce_q017_authority_guard.py --mode check-and-repair
+            python scripts/hengce_q017_authority_guard_v4.py --mode check-and-repair
             git add hengce/q017_radar/latest.json
             if ! git diff --cached --quiet; then
               git commit --amend --no-edit
