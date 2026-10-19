@@ -1,0 +1,126 @@
+{
+  "contract_id": "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019",
+  "status": "FROZEN_DUAL_OBSERVER_RECOVERY_AND_UNIVERSE_AUTHORITY",
+  "supersedes_live_routing": "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019",
+  "historical_q017_model_lock_unchanged": true,
+  "historical_e2_model_lock_unchanged": true,
+  "architecture": "DUAL_ENGINE_Q017_PLUS_E2",
+  "q017": {
+    "formal_schema_minimum": 5,
+    "research_scope": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "research_scope_reason": "Q017 was researched on Taiwan listed electronics against the Philadelphia Semiconductor Index. Non-electronics extrapolation has no formal authority.",
+    "universe_source": "TWSE_MI_INDEX_TYPE_13_ELECTRONICS_HISTORY",
+    "full_market_transport_semantics": "Quote transport may cover the full market, but ranking membership remains the causal TWSE listed-electronics universe only.",
+    "market_gate_authority": "Q017_LOCK_20261018.json",
+    "market_gate": {
+      "SOX_1D_lte": 0.0,
+      "SOX_5D_lte": -0.03,
+      "DXY_5D_gte": -0.005
+    },
+    "stock_rules_unchanged": {
+      "beta": "Beta60",
+      "K": 25,
+      "residual_max": 0.04,
+      "score": "beta*(1+25*max(-residual,0))",
+      "top_n": 3
+    },
+    "observation_time_authority": {
+      "formal_market_observation_window_taipei": "09:01:00-09:01:59.999999",
+      "calculation_deadline_is_not_0901": true,
+      "calculation_may_occur_later": true,
+      "formal_late_calculation_requires_persisted_0901_evidence": true,
+      "late_market_refetch_forbidden": true,
+      "late_quote_substitution_forbidden": true,
+      "observation_sha256_binding_required": true,
+      "universe_sha256_binding_required": true,
+      "eligible_provider_coverage_required": 1.0
+    },
+    "observation_lanes": {
+      "canonical": {
+        "script": "scripts/hengce_q017_observation_lock_v5.py --mode observe",
+        "artifact": "hengce/q017_radar/observations/YYYYMMDD_0901_observation.json",
+        "direct_ranking_authority": true,
+        "must_be_persisted_before_ranking": true
+      },
+      "backup": {
+        "script": "scripts/hengce_q017_backup_observer_v5.py --mode observe",
+        "workflow": ".github/workflows/hengce-q017-backup-observer.yml",
+        "artifact": "hengce/q017_radar/backup_observations/YYYYMMDD_0901_observation.json",
+        "authority": "RECOVERY_EVIDENCE_ONLY_NO_DIRECT_RANKING_AUTHORITY",
+        "independent_workflow_lane": true,
+        "same_underlying_quote_plumbing_caveat": true
+      }
+    },
+    "recovery": {
+      "script": "scripts/hengce_q017_recovery_compute_v5.py --mode compute",
+      "workflow": ".github/workflows/hengce-q017-recovery.yml",
+      "scheduled_taipei": ["09:02", "09:04", "09:06"],
+      "canonical_observation_wins_if_present": true,
+      "backup_may_be_promoted_only_if_canonical_absent": true,
+      "canonical_and_backup_may_not_be_blended": true,
+      "market_refetch_during_recovery": false,
+      "existing_valid_decision_is_idempotent": true,
+      "if_no_0901_evidence": "Q017_NEW_ENTRY_FAIL_CLOSED_ONLY"
+    },
+    "failure_isolation": {
+      "q017_missing_0901_evidence_stops_whole_hengce": false,
+      "q017_missing_0901_evidence_stops_q017_new_entry_only": true,
+      "e2_must_continue": true,
+      "existing_position_management_must_continue": true,
+      "later_intraday_monitoring_must_continue": true
+    },
+    "authority_guard": {
+      "script": "scripts/hengce_q017_authority_guard_v5.py",
+      "requires_schema": 5,
+      "requires_valid_0901_observation": true,
+      "requires_observation_hash_binding": true,
+      "requires_universe_hash_binding": true,
+      "recomputes_decision_from_locked_observation": true,
+      "rejects_non_electronics_eligible_models": true,
+      "rejects_non_electronics_top3": true,
+      "rejects_0902_or_later_market_backfill": true,
+      "rejects_legacy_schema_formal_authority": true
+    },
+    "resilience_boundary": {
+      "protected_against": [
+        "ranking process failure after a valid 09:01 observation was persisted",
+        "single main observation workflow failure when independent backup observation succeeds",
+        "stale or later quotes being substituted for 09:01 data",
+        "full-market transport accidentally expanding Q017 into non-electronics"
+      ],
+      "not_claimed_to_protect_against": [
+        "simultaneous outage of all 09:01 collectors",
+        "simultaneous GitHub Actions and quote-provider outage",
+        "total TWSE MIS source outage when no independent provider supplies equivalent timestamped evidence"
+      ],
+      "policy_on_total_0901_evidence_loss": "No formal Q017 new entry for that day; do not invent a later-time substitute."
+    }
+  },
+  "e2": {
+    "independent_from_q017_observation_success": true,
+    "morning_semantics": "Use prior-close locked E2 state only.",
+    "morning_bridge": "scripts/hengce_e2_live.py --mode morning",
+    "postclose_refresh": "scripts/hengce_e2_live.py --mode postclose",
+    "capital_state_machine_unchanged": "SIGNAL -> PENDING_ENTRY -> HELD_D1..D5 -> EXITED_EOD"
+  },
+  "scan_once_contract": {
+    "must_report_q017_and_e2_separately": true,
+    "mixed_ranking_forbidden": true,
+    "engine_failure_isolated": true,
+    "q017_no_evidence_output": "0 new BUY authority; E2 and position-management lane still reported",
+    "e2_invalid_output": "E2 fail-closed separately; valid Q017 may still be reported"
+  },
+  "verification_required": [
+    "schema-v5 observation-time self-test",
+    "09:03 deterministic computation from 09:01 evidence",
+    "non-electronics high-score injection rejection",
+    "full-market extra quote cannot expand Q017",
+    "09:02 quote cannot backfill 09:01",
+    "primary collector failure with valid backup observation recovery",
+    "no primary and no backup observation fail-closed",
+    "independent schema-v5 authority guard",
+    "E2 live bridge regression",
+    "historical Q017 lock hash unchanged",
+    "complete-package clean-extract verification"
+  ]
+}
