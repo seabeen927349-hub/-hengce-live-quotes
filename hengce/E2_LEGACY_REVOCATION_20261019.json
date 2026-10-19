@@ -1,0 +1,22 @@
+{
+  "contract_id": "E2_LEGACY_REVOCATION_20261019",
+  "effective_date": "2026-10-19",
+  "status": "REVOKED_ZERO_AUTHORITY",
+  "scope": "ALL_PRE_20261019_LEGACY_E2_IMPLEMENTATIONS",
+  "reason": "Legacy E2 used the wrong research population (all TWSE stocks). It is superseded by the PIT-validated TWSE-electronics E2_PROFIT_MAX research engine.",
+  "authority": {
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "automatic_order_submission": false,
+    "buy_allowed": false,
+    "watch_as_capital_action_allowed": false,
+    "pending_entry_authority": false
+  },
+  "historical_treatment": "AUDIT_ONLY_DO_NOT_USE_FOR_NEW_E2_AUTHORITY",
+  "successor": {
+    "engine": "E2_PROFIT_MAX",
+    "model_lock": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_PIT_VALIDATION_LOCK_20261019.json",
+    "display_lock": "hengce/E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json"
+  },
+  "q017_mutated": false
+}
