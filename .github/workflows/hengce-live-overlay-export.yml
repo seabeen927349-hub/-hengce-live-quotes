@@ -13,11 +13,19 @@ on:
       - 'scripts/test_hengce_q017_resilience_v5.py'
       - 'scripts/hengce_q017_decision_lock_v4.py'
       - 'scripts/hengce_q017_decision_lock.py'
+      - 'scripts/hengce_q017_10d_review.py'
+      - 'scripts/hengce_q017_10d_review_extension.py'
       - 'scripts/hengce_daily_command_center.py'
       - 'scripts/hengce_daily_command_center_core_legacy.py'
       - 'scripts/hengce_e2_live.py'
       - 'hengce/e2_live/**'
+      - 'hengce/q017_review_10d/**'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019.json'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019.json'
+      - 'hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019.json'
+      - 'hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_1_20261019.json'
+      - 'receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_*.json'
+      - 'receipts/HENGCE_Q017_10D_HYPOTHETICAL_D1_SEED_*.json'
       - '.github/workflows/hengce-daily-command-center.yml'
       - '.github/workflows/hengce-q017-authority-guard.yml'
       - '.github/workflows/hengce-q017-backup-observer.yml'
@@ -39,7 +47,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p export/scripts export/workflows export/hengce/e2_live export/contracts
+          mkdir -p export/scripts export/workflows export/hengce/e2_live export/hengce/q017_review_10d export/contracts export/receipts
           cp scripts/hengce_q017_observation_lock_v5.py export/scripts/
           cp scripts/hengce_q017_authority_guard_v5.py export/scripts/
           cp scripts/hengce_q017_backup_observer_v5.py export/scripts/
@@ -47,11 +55,19 @@ jobs:
           cp scripts/test_hengce_q017_resilience_v5.py export/scripts/
           cp scripts/hengce_q017_decision_lock_v4.py export/scripts/
           cp scripts/hengce_q017_decision_lock.py export/scripts/
+          cp scripts/hengce_q017_10d_review.py export/scripts/
+          cp scripts/hengce_q017_10d_review_extension.py export/scripts/
           cp scripts/hengce_daily_command_center.py export/scripts/
           cp scripts/hengce_daily_command_center_core_legacy.py export/scripts/
           cp scripts/hengce_e2_live.py export/scripts/
           cp hengce/e2_live/state_latest.json export/hengce/e2_live/
+          if [[ -d hengce/q017_review_10d ]]; then cp -a hengce/q017_review_10d/. export/hengce/q017_review_10d/; fi
           cp hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019.json export/contracts/
+          if [[ -f hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019.json ]]; then cp hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019.json export/contracts/; fi
+          cp hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019.json export/contracts/
+          cp hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_1_20261019.json export/contracts/
+          if compgen -G 'receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_*.json' > /dev/null; then cp receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_*.json export/receipts/; fi
+          if compgen -G 'receipts/HENGCE_Q017_10D_HYPOTHETICAL_D1_SEED_*.json' > /dev/null; then cp receipts/HENGCE_Q017_10D_HYPOTHETICAL_D1_SEED_*.json export/receipts/; fi
           cp .github/workflows/hengce-daily-command-center.yml export/workflows/
           cp .github/workflows/hengce-q017-authority-guard.yml export/workflows/
           cp .github/workflows/hengce-q017-backup-observer.yml export/workflows/
