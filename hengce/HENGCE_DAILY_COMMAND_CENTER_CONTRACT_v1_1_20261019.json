@@ -24,8 +24,7 @@
       "requirements": [
         "latest completed SOX",
         "previous completed TWSE EOD three-leg status",
-        "electronics beta history",
-        "EOD date and electronics-history date must agree"
+        "electronics beta history"
       ],
       "outputs": ["DATA_STATUS", "SOX_1D", "SOX_5D", "MARKET_STATE"]
     },
