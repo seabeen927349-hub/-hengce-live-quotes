@@ -2,19 +2,22 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime, time as dtime
+from datetime import datetime, time as dtime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import requests
 
 import hengce_daily_command_center as core
 
 TZ = core.TZ
+ET = ZoneInfo('America/New_York')
 ROOT = core.ROOT
 RADAR = core.RADAR
 HISTORY = core.HISTORY
@@ -23,12 +26,23 @@ SIGNAL_LEDGER = core.SIGNAL_LEDGER
 DECISION_DIR = RADAR / 'decision'
 DECISION_LATEST = RADAR / 'decision_latest.json'
 MIS_URL = 'https://mis.twse.com.tw/stock/api/getStockInfo.jsp'
+DXY_ENDPOINTS = [
+    'https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB',
+    'https://query2.finance.yahoo.com/v8/finance/chart/DX-Y.NYB',
+]
+DXY_CSV = core.DATA / 'dxy_2026.csv'
+DXY_STATUS = core.DATA / 'dxy_status.json'
 DECISION_HOUR = 9
 DECISION_MINUTE = 1
 DECISION_SECOND = 5
 MIN_PROVIDER_COVERAGE = 0.98
 BATCH_SIZE = 40
 WORKERS = 10
+
+# Frozen Q017_LOCK_20261018 market gate. Do not tune here.
+SOX_1D_MAX = 0.0
+SOX_5D_MAX = -0.03
+DXY_5D_MIN = -0.005
 
 DECISION_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -104,20 +118,147 @@ def wait_for_decision_minute(today):
     return target, end
 
 
+def _dxy_rows_from_yahoo(payload, today):
+    chart = (payload or {}).get('chart') or {}
+    if chart.get('error'):
+        raise RuntimeError(f'DXY_YAHOO_ERROR:{chart.get("error")}')
+    results = chart.get('result') or []
+    if not results:
+        raise RuntimeError('DXY_YAHOO_RESULT_MISSING')
+    result = results[0]
+    timestamps = result.get('timestamp') or []
+    indicators = result.get('indicators') or {}
+    quotes = indicators.get('quote') or []
+    closes = (quotes[0].get('close') if quotes else None) or []
+    if not timestamps or not closes:
+        raise RuntimeError('DXY_YAHOO_SERIES_MISSING')
+    rows = {}
+    for ts, close in zip(timestamps, closes):
+        c = fnum(close)
+        if c is None or c <= 0:
+            continue
+        # Yahoo daily bars are assigned to the exchange-local session date.
+        # At Taiwan 09:01, the previous US weekday session is completed. We
+        # exclude same/future Taiwan dates and weekend pseudo/live bars so a
+        # Sunday streaming row can never enter the completed-session gate.
+        d = datetime.fromtimestamp(int(ts), timezone.utc).astimezone(ET).date()
+        if d.year != 2026 or d >= today or d.weekday() >= 5:
+            continue
+        rows[d.isoformat()] = c
+    return [{'date': d, 'close': rows[d]} for d in sorted(rows)]
+
+
+def _load_dxy_cache():
+    if not DXY_CSV.exists():
+        return []
+    out = []
+    with DXY_CSV.open(encoding='utf-8-sig', newline='') as f:
+        for r in csv.DictReader(f):
+            c = fnum(r.get('close'))
+            d = str(r.get('date') or '')
+            if len(d) == 10 and c is not None and c > 0:
+                out.append({'date': d, 'close': c})
+    return sorted({r['date']: r for r in out}.values(), key=lambda x: x['date'])
+
+
+def _dxy_status_from_rows(rows, today, source, refreshed_at):
+    rows = [r for r in rows if r['date'] < today.isoformat() and datetime.strptime(r['date'], '%Y-%m-%d').date().weekday() < 5]
+    if len(rows) < 6:
+        raise RuntimeError(f'DXY_ROWS_TOO_FEW:{len(rows)}')
+    latest_date = datetime.strptime(rows[-1]['date'], '%Y-%m-%d').date()
+    stale_days = (today - latest_date).days
+    if stale_days > 7:
+        raise RuntimeError(f'DXY_STALE:{latest_date}')
+    dxy5 = rows[-1]['close'] / rows[-6]['close'] - 1
+    return {
+        'status': 'PASS',
+        'source': source,
+        'symbol': 'DX-Y.NYB',
+        'latest_session': rows[-1]['date'],
+        'latest_close': rows[-1]['close'],
+        'five_sessions_back': rows[-6]['date'],
+        'five_sessions_back_close': rows[-6]['close'],
+        'dxy_5d': dxy5,
+        'rows': len(rows),
+        'stale_days': stale_days,
+        'refreshed_at_taipei': refreshed_at,
+        'causal_rule': 'completed weekday sessions strictly before Taiwan trade date; weekend/current pseudo-bars excluded',
+    }
+
+
+def refresh_dxy(today=None):
+    today = today or core.now_tw().date()
+    now = core.now_tw()
+    period1 = int(datetime(2026, 1, 1, tzinfo=timezone.utc).timestamp())
+    period2 = int(now.astimezone(timezone.utc).timestamp()) + 86400
+    errors = []
+    for endpoint in DXY_ENDPOINTS:
+        try:
+            r = requests.get(
+                endpoint,
+                params={
+                    'period1': period1,
+                    'period2': period2,
+                    'interval': '1d',
+                    'events': 'history',
+                    'includeAdjustedClose': 'true',
+                },
+                headers={'User-Agent': 'Mozilla/5.0 HENGCE-Q017-DXY/1.0', 'Accept': 'application/json'},
+                timeout=(8, 25),
+            )
+            r.raise_for_status()
+            rows = _dxy_rows_from_yahoo(r.json(), today)
+            status = _dxy_status_from_rows(rows, today, f'Yahoo Finance chart {endpoint.split("//",1)[1].split("/",1)[0]} / DX-Y.NYB', now.isoformat())
+            DXY_CSV.parent.mkdir(parents=True, exist_ok=True)
+            with DXY_CSV.open('w', encoding='utf-8', newline='') as f:
+                w = csv.DictWriter(f, fieldnames=['date', 'close'])
+                w.writeheader(); w.writerows(rows)
+            core.atomic_json(DXY_STATUS, status)
+            return status
+        except Exception as e:
+            errors.append(f'{endpoint}:{type(e).__name__}:{e}')
+
+    # Same-symbol cache is allowed only as a continuity fallback and is still
+    # subject to the completed-session freshness test. A different index or
+    # futures proxy is never substituted.
+    cached = _load_dxy_cache()
+    if cached:
+        try:
+            status = _dxy_status_from_rows(cached, today, 'LOCAL_CACHED_DX-Y.NYB_SAME_SYMBOL', now.isoformat())
+            status['network_errors'] = errors
+            status['cache_fallback'] = True
+            core.atomic_json(DXY_STATUS, status)
+            return status
+        except Exception as e:
+            errors.append(f'CACHE:{type(e).__name__}:{e}')
+    raise RuntimeError('DXY_DOWNLOAD_FAIL:' + ' | '.join(errors[-4:]))
+
+
+def evaluate_market_gate(sf, dxy_status):
+    checks = {
+        'sox_1d_lte_0': sf['sox_1d'] <= SOX_1D_MAX,
+        'sox_5d_lte_minus_3pct': sf['sox_5d'] <= SOX_5D_MAX,
+        'dxy_5d_gte_minus_0_5pct': dxy_status['dxy_5d'] >= DXY_5D_MIN,
+    }
+    return all(checks.values()), checks
+
+
 def prepare_model(today):
-    # Preserve the command-center's currently locked model thresholds and beta implementation.
-    # The decision layer additionally enforces the command-center contract's premarket PASS dependency.
+    # Q017 score/beta implementation is preserved. Market-gate thresholds are
+    # sourced from the frozen Q017_LOCK_20261018 contract, not the legacy
+    # command-center's old -2% SOX-only gate.
     gate = core.premarket(today)
     if gate.get('status') != 'PASS':
         raise RuntimeError(f'PREMARKET_GATE_NOT_PASS:{gate.get("status")}')
     req = gate.get('required') or {}
     seed = req.get('electronics_history') or core.ensure_tw_history()
     sox_status = req.get('sox') or core.refresh_sox(today)
+    dxy_status = refresh_dxy(today)
     history = core.load_tw_history()
     srows = core.read_sox()
     sf = core.sox_features(today)
     betas, prevclose, names, hist_date, universe = core.current_betas(history, srows)
-    return gate, sox_status, seed, sf, betas, prevclose, names, hist_date, universe
+    return gate, sox_status, dxy_status, seed, sf, betas, prevclose, names, hist_date, universe
 
 
 def write_once(path: Path, obj):
@@ -145,7 +286,7 @@ def capture_decision(today=None):
             raise RuntimeError('EXISTING_DECISION_SNAPSHOT_IS_DATA_PENDING')
         return existing
 
-    premarket_gate, sox_status, seed, sf, betas, prevclose, names, hist_date, universe = prepare_model(today)
+    premarket_gate, sox_status, dxy_status, seed, sf, betas, prevclose, names, hist_date, universe = prepare_model(today)
     eligible = [t for t in universe if betas.get(t) is not None and betas.get(t) > 0 and prevclose.get(t)]
     if not eligible:
         raise RuntimeError('NO_ELIGIBLE_BETA_UNIVERSE')
@@ -176,9 +317,9 @@ def capture_decision(today=None):
     provider_coverage = len(records) / len(eligible)
     binding = 'PASS' if in_window and provider_coverage >= MIN_PROVIDER_COVERAGE else 'DATA_PENDING'
 
-    one = sf['sox_1d'] <= 0.0
-    five = sf['sox_5d'] <= -0.02
-    market_state = 'GO' if one and five else 'WATCH' if one or five else 'CASH'
+    gate_go, gate_checks = evaluate_market_gate(sf, dxy_status)
+    passed_checks = sum(bool(v) for v in gate_checks.values())
+    market_state = 'GO' if gate_go else 'WATCH' if passed_checks >= 1 else 'CASH'
     if binding != 'PASS':
         market_state = 'DATA_PENDING'
 
@@ -191,7 +332,6 @@ def capture_decision(today=None):
         op = q.get('open')
         pc = q.get('reference_close') or prevclose.get(t)
         if op is None or pc in (None, 0):
-            # This is valid causal absence: no open was observable inside the locked minute.
             continue
         opened += 1
         beta = betas[t]
@@ -211,7 +351,7 @@ def capture_decision(today=None):
             'expected_gap': expected,
             'residual': residual,
             'score': score,
-            'qualified': binding == 'PASS' and market_state == 'GO',
+            'qualified': binding == 'PASS' and gate_go,
             'decision_observed_at_taipei': q.get('fetched_at_taipei'),
         })
 
@@ -230,7 +370,7 @@ def capture_decision(today=None):
         x['new'] = x['ticker'] not in previous_top
 
     payload = {
-        'schema_version': 2,
+        'schema_version': 3,
         'system': 'HENGCE',
         'module': 'Q017_SOX_ELECTRONICS_DECISION_LOCK',
         'trade_date': today.isoformat(),
@@ -252,6 +392,7 @@ def capture_decision(today=None):
         'data_status': {
             'premarket_gate': premarket_gate,
             'sox': sox_status,
+            'dxy': dxy_status,
             'tw_history': seed,
             'tw_history_latest_date': hist_date,
             'eligible_beta_count': len(eligible),
@@ -261,19 +402,34 @@ def capture_decision(today=None):
             'opened_by_decision_count': opened,
             'batch_failures': failures[:20],
         },
+        'market_gate': {
+            'gate_go': gate_go,
+            'checks': gate_checks,
+            'sox_1d': sf['sox_1d'],
+            'sox_5d': sf['sox_5d'],
+            'dxy_5d': dxy_status['dxy_5d'],
+            'source_lock': 'Q017_LOCK_20261018.json',
+        },
         'sox': sf,
+        'dxy': {
+            'session': dxy_status['latest_session'],
+            'five_sessions_back': dxy_status['five_sessions_back'],
+            'dxy_5d': dxy_status['dxy_5d'],
+        },
         'rules': {
-            'sox_1d_max': 0.0,
-            'sox_5d_max': -0.02,
+            'sox_1d_max': SOX_1D_MAX,
+            'sox_5d_max': SOX_5D_MAX,
+            'dxy_5d_min': DXY_5D_MIN,
             'residual_max': 0.04,
             'score': 'beta*(1+25*max(-residual,0))',
             'top_n': 3,
             'research_hold_days': 10,
+            'authority': 'Q017_LOCK_20261018.json',
         },
         'top3': top3,
         'new': [x['ticker'] for x in top3 if x.get('new')],
         'dropped': [t for t in previous_top if t not in current_top],
-        'note': 'Top3 is frozen from the 09:01 causal snapshot. Later radar runs may update marks only and may not rerank.',
+        'note': 'Top3 is frozen from the 09:01 causal snapshot. Later monitor runs may update marks only and may not rerank. Frozen market gate is SOX1D<=0, SOX5D<=-3%, DXY5D>=-0.5%.',
     }
     payload['decision_snapshot_sha256'] = canonical_sha({k: v for k, v in payload.items() if k != 'decision_snapshot_sha256'})
 
@@ -289,6 +445,7 @@ def capture_decision(today=None):
                 'date': stored['trade_date'],
                 'event': 'Q017_DECISION_LOCK',
                 'market_state': stored['market_state'],
+                'gate_go': stored['market_gate']['gate_go'],
                 'top3': current_top,
                 'decision_snapshot_sha256': stored['decision_snapshot_sha256'],
             }, ensure_ascii=False) + '\n')
@@ -330,15 +487,17 @@ def monitor(today=None):
     p = decision_path(today)
     if not p.exists():
         payload = {
-            'schema_version': 2,
+            'schema_version': 3,
             'system': 'HENGCE',
             'module': 'Q017_SOX_ELECTRONICS_RADAR_LOCKED',
             'trade_date': today.isoformat(),
             'generated_at_taipei': core.now_tw().isoformat(),
             'binding_status': 'DATA_PENDING',
             'market_state': 'DATA_PENDING',
+            'authority': 'NO_FORMAL_SIGNAL',
+            'formal_buy_count': 0,
             'top3': [],
-            'monitor': {'status': 'NO_DECISION_SNAPSHOT', 'rerank_performed': False},
+            'monitor': {'status': 'NO_DECISION_SNAPSHOT', 'rerank_performed': False, 'ranking_frozen': True},
             'policy': 'NO_0901_DECISION_LOCK_NO_FORMAL_SIGNAL',
         }
         core.atomic_json(LATEST, payload)
@@ -370,19 +529,41 @@ def monitor(today=None):
 
 def self_test():
     assert DECISION_MINUTE == 1
+    assert SOX_1D_MAX == 0.0
+    assert SOX_5D_MAX == -0.03
+    assert DXY_5D_MIN == -0.005
     sample = {'a': 1, 'b': [2, 3]}
     assert canonical_sha(sample) == canonical_sha({'b': [2, 3], 'a': 1})
-    print(json.dumps({'self_test': 'PASS', 'cutoff': '09:01', 'rerank_after_lock': False}))
+    go, checks = evaluate_market_gate({'sox_1d': -0.01, 'sox_5d': -0.03}, {'dxy_5d': -0.004})
+    assert go and all(checks.values())
+    go2, _ = evaluate_market_gate({'sox_1d': -0.01, 'sox_5d': -0.025}, {'dxy_5d': -0.004})
+    assert not go2
+    go3, _ = evaluate_market_gate({'sox_1d': -0.01, 'sox_5d': -0.04}, {'dxy_5d': -0.006})
+    assert not go3
+    print(json.dumps({
+        'self_test': 'PASS',
+        'cutoff': '09:01',
+        'rerank_after_lock': False,
+        'frozen_gate': {'sox_1d_max': SOX_1D_MAX, 'sox_5d_max': SOX_5D_MAX, 'dxy_5d_min': DXY_5D_MIN},
+    }))
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--mode', choices=['decision', 'monitor', 'self-test'], required=True)
+    ap.add_argument('--mode', choices=['decision', 'monitor', 'self-test', 'dxy-smoke'], required=True)
     ap.add_argument('--date')
     args = ap.parse_args()
     target = datetime.strptime(args.date, '%Y-%m-%d').date() if args.date else None
     if args.mode == 'self-test':
         self_test(); return 0
+    if args.mode == 'dxy-smoke':
+        try:
+            out = refresh_dxy(target)
+            print(json.dumps(out, ensure_ascii=False, indent=2))
+            return 0
+        except Exception as e:
+            print(json.dumps({'status': 'DATA_PENDING', 'authority': 'NO_FORMAL_SIGNAL', 'error': repr(e)}, ensure_ascii=False, indent=2))
+            return 2
     try:
         out = capture_decision(target) if args.mode == 'decision' else monitor(target)
         print(json.dumps(out, ensure_ascii=False, indent=2))
@@ -394,6 +575,8 @@ def main():
             'mode': args.mode,
             'generated_at_taipei': core.now_tw().isoformat(),
             'status': 'DATA_PENDING',
+            'authority': 'NO_FORMAL_SIGNAL',
+            'formal_buy_count': 0,
             'error': repr(e),
             'policy': 'FAIL_CLOSED_NO_FORMAL_SIGNAL',
         }
