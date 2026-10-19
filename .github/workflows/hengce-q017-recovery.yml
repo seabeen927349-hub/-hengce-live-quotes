@@ -1,0 +1,97 @@
+name: HENGCE Q017 Observation Recovery
+
+on:
+  workflow_dispatch:
+    inputs:
+      trade_date:
+        description: 'Optional YYYY-MM-DD; default today Taipei'
+        required: false
+        default: ''
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_q017_recovery_compute_v5.py'
+      - 'scripts/hengce_q017_backup_observer_v5.py'
+      - '.github/workflows/hengce-q017-recovery.yml'
+  schedule:
+    # Taipei 09:02/09:04/09:06. Repeated recovery is idempotent.
+    - cron: '2,4,6 1 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-q017-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests openpyxl
+
+      - name: Self-test on code pushes
+        if: github.event_name == 'push'
+        run: |
+          python scripts/hengce_q017_observation_lock_v5.py --mode self-test
+          python scripts/hengce_q017_backup_observer_v5.py --mode self-test
+          python scripts/hengce_q017_recovery_compute_v5.py --mode self-test
+          python scripts/hengce_q017_authority_guard_v5.py --mode self-test
+
+      - name: Resolve trade date argument
+        id: target
+        if: github.event_name != 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARG=''
+          if [[ '${{ github.event_name }}' == 'workflow_dispatch' && -n '${{ inputs.trade_date }}' ]]; then
+            [[ '${{ inputs.trade_date }}' =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || exit 2
+            ARG='--date ${{ inputs.trade_date }}'
+          fi
+          echo "arg=$ARG" >> "$GITHUB_OUTPUT"
+
+      - name: Recover decision only from persisted 09:01 evidence
+        id: recover
+        if: github.event_name != 'push'
+        continue-on-error: true
+        run: python scripts/hengce_q017_recovery_compute_v5.py --mode compute ${{ steps.target.outputs.arg }}
+
+      - name: Enforce schema-v5 authority after recovery
+        if: github.event_name != 'push' && steps.recover.outcome == 'success'
+        run: python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
+
+      - name: Persist promoted observation, decision, and recovery receipt
+        if: github.event_name != 'push' && steps.recover.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-q017-recovery-bot'
+          git config user.email 'hengce-q017-recovery-bot@users.noreply.github.com'
+          git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/decision/ hengce/q017_radar/decision_latest.json hengce/q017_radar/latest.json hengce/q017_radar/history/ hengce/q017_radar/recovery_receipts/ hengce/q017_radar/signal_ledger.jsonl || true
+          if git diff --cached --quiet; then
+            echo 'Recovery already persisted; no rerank performed.'
+            exit 0
+          fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE Q017 observation recovery ${TS}"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Report fail-closed without suppressing other engines
+        if: github.event_name != 'push' && steps.recover.outcome != 'success'
+        run: |
+          echo 'No valid persisted 09:01 observation available yet. Q017 new-entry authority remains 0; E2 and existing-position management are unaffected.'
+          exit 0
