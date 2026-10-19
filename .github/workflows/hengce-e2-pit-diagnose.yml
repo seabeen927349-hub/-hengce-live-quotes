@@ -1,0 +1,58 @@
+name: HENGCE E2 PIT Membership Diagnose
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-e2-pit-diagnose.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests
+      - name: Diagnose TWSE type13 historical responses
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,time,requests
+          from pathlib import Path
+          URL='https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX'
+          UA={'User-Agent':'Mozilla/5.0 HENGCE-E2-PIT-DIAG/1.0','Accept':'application/json,text/csv,*/*','Referer':'https://www.twse.com.tw/'}
+          dates=['20230103','20230313','20230627','20231031','20240103','20240416','20240722','20241118','20250102','20250328','20250822','20251118','20260205','20260519','20261015']
+          out=[]
+          s=requests.Session();s.headers.update(UA)
+          for ds in dates:
+            item={'date':ds}
+            for fmt in ('json','csv'):
+              try:
+                r=s.get(URL,params={'date':ds,'type':'13','response':fmt},timeout=(10,45))
+                text=r.text
+                item[fmt]={'status_code':r.status_code,'bytes':len(r.content),'prefix':text[:300].replace('\n',' ')}
+                if fmt=='json':
+                  try:
+                    z=r.json();item[fmt]['stat']=z.get('stat');item[fmt]['date']=z.get('date');item[fmt]['tables']=len(z.get('tables') or [])
+                  except Exception as e:item[fmt]['json_error']=repr(e)
+              except Exception as e:item[fmt]={'error':repr(e)}
+              time.sleep(1.0)
+            out.append(item);time.sleep(1.0)
+          p=Path('research/e2_profit_max/membership_debug.json');p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+      - name: Commit diagnostic
+        shell: bash
+        run: |
+          git config user.name hengce-e2-research-bot
+          git config user.email hengce-e2-research-bot@users.noreply.github.com
+          git add research/e2_profit_max/membership_debug.json
+          git commit -m 'HENGCE E2 PIT membership diagnostic' || exit 0
+          git push origin HEAD:main
