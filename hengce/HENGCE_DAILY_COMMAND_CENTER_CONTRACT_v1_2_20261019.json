@@ -16,20 +16,26 @@
     "no_post_lock_rerank": true,
     "missing_open_at_cutoff_is_not_data_failure": true,
     "no_0901_snapshot_no_formal_q017_signal": true,
-    "formal_q017_schema_minimum": 2,
+    "formal_q017_schema_minimum": 3,
     "legacy_q017_module_forbidden": "Q017_SOX_ELECTRONICS_RADAR",
     "schema_v1_q017_has_zero_capital_authority": true,
+    "schema_v2_q017_has_zero_capital_authority": true,
     "latest_must_bind_to_decision_snapshot_sha256": true,
     "latest_top3_must_equal_locked_decision_top3": true,
     "all_consumers_must_reject_legacy_radar_even_if_binding_status_says_PASS": true,
     "authority_guard_required_before_command_center_commit": true,
-    "authority_guard_required_on_latest_json_push": true
+    "authority_guard_required_on_latest_json_push": true,
+    "legacy_public_radar_cli_hard_disabled": true,
+    "market_gate_must_equal_q017_lock_20261018": true,
+    "dxy_is_mandatory_for_formal_gate": true,
+    "dxy_proxy_substitution_forbidden": true
   },
   "formal_q017_authority": {
     "allowed_modules": [
       "Q017_SOX_ELECTRONICS_DECISION_LOCK",
       "Q017_SOX_ELECTRONICS_RADAR_LOCKED"
     ],
+    "formal_schema": 3,
     "fail_closed_placeholder_module": "Q017_AUTHORITY_GUARD_FAIL_CLOSED",
     "required_decision_file": "hengce/q017_radar/decision/YYYYMMDD_0901.json",
     "required_binding": "decision_snapshot_sha256",
@@ -40,31 +46,40 @@
     "premarket": {
       "requirements": [
         "latest completed SOX",
+        "latest completed DXY DX-Y.NYB sessions",
         "previous completed TWSE EOD three-leg status",
         "electronics beta history"
-      ]
+      ],
+      "dxy_policy": "Yahoo Finance DX-Y.NYB completed weekday sessions strictly before Taiwan trade date; same-symbol fresh cache fallback only; no different index/futures proxy substitution"
     },
     "decision_lock": {
       "target_taipei": "09:01",
       "capture_window_taipei": "09:01:00-09:01:59.999999",
       "source": "TWSE MIS",
       "minimum_provider_coverage": 0.98,
-      "overwrite": false
+      "overwrite": false,
+      "market_gate_authority": "Q017_LOCK_20261018.json"
     },
     "post_open_monitor": {
-      "requirements": ["binding immutable 09:01 decision snapshot"],
+      "requirements": ["binding immutable schema-v3 09:01 decision snapshot"],
       "allowed_actions": ["refresh current marks", "refresh mark-to-market return", "report locked candidates"],
-      "forbidden_actions": ["rerank", "replace candidate because of later quote", "backfill a missing 09:01 snapshot", "publish schema-v1 radar as formal output"]
+      "forbidden_actions": ["rerank", "replace candidate because of later quote", "backfill a missing 09:01 snapshot", "publish schema-v1 radar as formal output", "publish schema-v2 SOX-only decision as formal output"]
     },
     "authority_guard": {
       "action_on_legacy_or_unbound_latest": "quarantine and replace latest.json with DATA_PENDING / NO_FORMAL_SIGNAL / formal_buy_count=0",
       "historical_evidence_policy": "retain rejected artifact metadata and revocation receipt; do not erase evidence",
-      "capital_policy": "zero authority until a valid immutable 09:01 decision snapshot exists"
+      "capital_policy": "zero authority until a valid schema-v3 immutable 09:01 decision snapshot exists",
+      "must_validate_gate_values": true
     }
   },
   "q017_model_frozen": {
+    "authority": "Q017_LOCK_20261018.json",
     "scope": "TWSE listed electronics",
-    "market_gate": {"sox_1d_max": 0.0, "sox_5d_max": -0.02},
+    "market_gate": {
+      "sox_1d_max": 0.0,
+      "sox_5d_max": -0.03,
+      "dxy_5d_min": -0.005
+    },
     "beta": {"max_observations": 60, "min_observations": 30, "point_in_time": true},
     "residual_max": 0.04,
     "score": "beta * (1 + 25 * max(-residual, 0))",
@@ -77,5 +92,10 @@
     "formal_status": "REVOKED_ZERO_AUTHORITY",
     "reason": "legacy schema-v1 radar reranked after the 09:01 cutoff and overwrote latest.json without a valid immutable decision snapshot",
     "formal_buy_count": 0
+  },
+  "gate_drift_repair_20261019": {
+    "finding": "live decision-lock inherited an obsolete SOX5D <= -2% SOX-only gate while the authoritative Q017 lock requires SOX1D <= 0, SOX5D <= -3%, DXY5D >= -0.5%",
+    "disposition": "repaired before next formal live decision",
+    "old_schema_v2_status": "REVOKED_ZERO_AUTHORITY"
   }
 }
