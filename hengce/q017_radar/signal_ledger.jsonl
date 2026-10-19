@@ -1,1 +1,2 @@
-{"time": "2026-10-19T09:40:14.138367+08:00", "date": "2026-10-19", "market_state": "GO", "top3": ["7795", "2455", "2492"]}
+{"time": "2026-10-19T09:40:14.138367+08:00", "date": "2026-10-19", "market_state": "GO", "top3": ["7795", "2455", "2492"], "authority": "REVOKED_ZERO_AUTHORITY", "revoked": true, "revocation_reason": "LEGACY_SCHEMA_V1_RADAR_NO_IMMUTABLE_0901_DECISION_SNAPSHOT"}
+{"time": "2026-10-19T10:00:00+08:00", "date": "2026-10-19", "event": "Q017_LEGACY_RADAR_REVOCATION", "revoked_top3": ["7795", "2455", "2492"], "formal_buy_count": 0, "authority": "NO_FORMAL_SIGNAL", "policy": "NO_VALID_0901_DECISION_LOCK_NO_FORMAL_Q017_SIGNAL"}
