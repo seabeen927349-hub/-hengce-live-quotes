@@ -1,0 +1,64 @@
+name: HENGCE Lane Coherence Repair
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_20261019_lane_coherence_repair.py'
+      - '.github/workflows/hengce-lane-coherence-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests openpyxl
+      - name: Apply exact lane repair
+        run: python scripts/apply_20261019_lane_coherence_repair.py
+      - name: Compile repaired engines
+        run: python -m py_compile scripts/hengce_daily_command_center_core_legacy.py scripts/hengce_e2_live.py
+      - name: Backfill missing 2026-10-16 local EOD archive
+        id: backfill
+        continue-on-error: true
+        run: python scripts/hengce_daily_command_center.py --mode postclose --date 2026-10-16
+      - name: Validate E2 morning lane after repair
+        id: e2check
+        continue-on-error: true
+        run: python scripts/hengce_e2_live.py --mode morning
+      - name: Commit repair and any successful backfill outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-coherence-repair-bot'
+          git config user.email 'hengce-coherence-repair-bot@users.noreply.github.com'
+          git add scripts/hengce_daily_command_center_core_legacy.py scripts/hengce_e2_live.py .github/workflows/hengce-daily-command-center.yml eod/ hengce/q017_radar/data/ hengce/q017_radar/data_status.json hengce/e2_live/ || true
+          if git diff --cached --quiet; then
+            echo 'No repair changes to commit.'
+          else
+            git commit -m 'HENGCE separate Q017/E2 data lanes and retry EOD archive'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Report repair state
+        if: always()
+        shell: bash
+        run: |
+          echo "backfill=${{ steps.backfill.outcome }} e2check=${{ steps.e2check.outcome }}"
+          python - <<'PY'
+          import json, pathlib
+          for p in ['hengce/q017_radar/data_status.json','hengce/e2_live/morning_latest.json','eod/20261016/status.json']:
+              q=pathlib.Path(p)
+              print('\n###',p)
+              print(q.read_text()[:4000] if q.exists() else 'MISSING')
+          PY
