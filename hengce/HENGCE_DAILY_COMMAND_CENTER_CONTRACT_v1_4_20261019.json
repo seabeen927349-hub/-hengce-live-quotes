@@ -1,0 +1,98 @@
+{
+  "contract_id": "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019",
+  "status": "FROZEN_OBSERVATION_TIME_AND_UNIVERSE_REPAIR",
+  "supersedes_live_routing": "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019",
+  "historical_model_locks_unchanged": true,
+  "architecture": "DUAL_ENGINE_Q017_PLUS_E2",
+  "q017": {
+    "formal_schema_minimum": 5,
+    "research_scope": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "research_scope_reason": "Q017 was researched as Taiwan listed electronics versus Philadelphia Semiconductor Index; no formal extrapolation to non-electronics is allowed.",
+    "universe_source": "TWSE_MI_INDEX_TYPE_13_ELECTRONICS_HISTORY",
+    "universe_membership_rule": "Membership must be causally known before the trade date and is hashed into the immutable 09:01 observation artifact.",
+    "full_market_transport_semantics": "Full-market quote transport may be used for data collection infrastructure, but it never expands the Q017 ranking universe.",
+    "pipeline": [
+      "premarket causal inputs",
+      "09:01 immutable market observation",
+      "immediate observation persistence",
+      "deterministic Q017 computation from the locked observation",
+      "locked monitor without rerank"
+    ],
+    "observation_time_authority": {
+      "cutoff_taipei": "09:01",
+      "window_taipei": "09:01:00-09:01:59.999999",
+      "required_provider_coverage": 1.0,
+      "required_scope": "TWSE_LISTED_ELECTRONICS_ONLY",
+      "raw_observation_must_be_persisted_before_ranking": true,
+      "calculation_may_occur_after_0901": true,
+      "late_calculation_is_formal_only_if_it_reads_the_immutable_0901_observation": true,
+      "late_market_backfill_forbidden": true,
+      "late_quote_substitution_forbidden": true,
+      "observation_sha256_binding_required": true
+    },
+    "failure_semantics": {
+      "no_valid_0901_observation": "Q017_NEW_ENTRY_FAIL_CLOSED_ONLY",
+      "q017_failure_does_not_stop_e2": true,
+      "q017_failure_does_not_stop_existing_position_management": true,
+      "if_observation_saved_but_computation_failed": "rerun compute from saved observation without refetching market data",
+      "manual_recovery_mode": "compute"
+    },
+    "market_gate_authority": "Q017_LOCK_20261018.json",
+    "market_gate": {
+      "SOX_1D_lte": 0.0,
+      "SOX_5D_lte": -0.03,
+      "DXY_5D_gte": -0.005
+    },
+    "stock_rules_unchanged": {
+      "K": 25,
+      "beta": "Beta60",
+      "residual_max": 0.04,
+      "score": "beta*(1+25*max(-residual,0))",
+      "top_n": 3
+    },
+    "authority_guard": {
+      "script": "scripts/hengce_q017_authority_guard_v5.py",
+      "requires_schema": 5,
+      "requires_observation_artifact": true,
+      "requires_observation_hash_binding": true,
+      "requires_universe_hash_binding": true,
+      "recomputes_decision_deterministically_from_observation": true,
+      "rejects_non_electronics_top3": true,
+      "rejects_non_electronics_eligible_models": true,
+      "rejects_late_market_observations": true,
+      "rejects_old_schema_formal_authority": true
+    },
+    "legacy": {
+      "schema_v1_v2_v3_v4_formal_authority": false,
+      "legacy_radar_module_formal_authority": false,
+      "legacy_public_radar_cli": "HARD_DISABLED_EXIT2_ZERO_AUTHORITY"
+    }
+  },
+  "e2": {
+    "formal_signal_timing": "after signal-date close using point-in-time daily data",
+    "morning_semantics": "Morning execution uses only prior-close locked E2 state.",
+    "independent_from_q017_observation_success": true,
+    "q017_fail_closed_must_not_skip_e2_morning_bridge": true,
+    "morning_bridge": "scripts/hengce_e2_live.py --mode morning",
+    "postclose_refresh": "scripts/hengce_e2_live.py --mode postclose",
+    "capital_state_machine_unchanged": "SIGNAL -> PENDING_ENTRY -> HELD_D1..D5 -> EXITED_EOD"
+  },
+  "scan_once_contract": {
+    "must_show_q017": true,
+    "must_show_e2": true,
+    "mixed_ranking_forbidden": true,
+    "engine_failure_isolated": true,
+    "if_q017_observation_missing": "Report Q017 0 new BUY authority while still running E2 and existing-position management.",
+    "if_e2_invalid": "Report E2 fail-closed separately without suppressing a valid Q017 decision."
+  },
+  "verification_required": [
+    "schema-v5 observation-time self-test",
+    "09:03 computation from 09:01 observation remains deterministic",
+    "non-electronics injection rejected before ranking authority",
+    "independent schema-v5 authority guard",
+    "Q017 failure does not skip E2 workflow step",
+    "DXY exact-symbol smoke test",
+    "E2 incremental reproduction",
+    "package hard-lock regression and clean-extract verification"
+  ]
+}
