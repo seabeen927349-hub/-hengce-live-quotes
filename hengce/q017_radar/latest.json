@@ -1,28 +1,33 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "system": "HENGCE",
   "module": "Q017_AUTHORITY_GUARD_FAIL_CLOSED",
-  "generated_at_taipei": "2026-10-19T10:18:00+08:00",
+  "generated_at_taipei": "2026-10-19T10:59:31.462887+08:00",
   "trade_date": "2026-10-19",
   "binding_status": "DATA_PENDING",
   "market_state": "DATA_PENDING",
   "authority": "NO_FORMAL_SIGNAL",
   "top3": [],
   "formal_buy_count": 0,
-  "reason": "NO_VALID_SCHEMA_V3_IMMUTABLE_0901_DECISION_SNAPSHOT_FOR_2026_10_19",
+  "reason": "FAIL_CLOSED_SCHEMA_TOO_OLD",
   "rejected_artifact": {
-    "module": "Q017_SOX_ELECTRONICS_RADAR",
-    "schema_version": 1,
-    "generated_at_taipei": "2026-10-19T09:40:14.138367+08:00",
-    "top3": ["7795", "2455", "2492"],
-    "status": "REVOKED_ZERO_AUTHORITY"
+    "module": "Q017_AUTHORITY_GUARD_FAIL_CLOSED",
+    "schema_version": 3,
+    "generated_at_taipei": "2026-10-19T10:18:00+08:00",
+    "top3": []
   },
-  "required_gate": {
-    "sox_1d_max": 0.0,
-    "sox_5d_max": -0.03,
-    "dxy_5d_min": -0.005,
-    "authority": "Q017_LOCK_20261018.json"
+  "policy": "NO_VALID_SCHEMA4_0901_PROVENANCE_NO_FORMAL_Q017_SIGNAL",
+  "required": {
+    "provider_coverage": 1.0,
+    "binding_status": "PASS",
+    "capture_minute": "09:01",
+    "immutable": true,
+    "rerank_after_lock": false,
+    "gate": {
+      "sox_1d_max": 0.0,
+      "sox_5d_max": -0.03,
+      "dxy_5d_min": -0.005
+    }
   },
-  "policy": "NO_VALID_SCHEMA_V3_0901_DECISION_LOCK_NO_FORMAL_Q017_SIGNAL",
-  "repair_note": "The 09:40 legacy radar result is revoked. 7795/2455/2492 are not formal Q017 signals for 2026-10-19 and have zero capital authority. Formal live Q017 publication requires a schema-v3 immutable 09:01 decision snapshot bound to the frozen SOX1D<=0, SOX5D<=-3%, DXY5D>=-0.5% gate; later monitors may mark prices only and may not rerank."
+  "repair_note": "Late, partial, wrong-date, non-binding, gate-drifted, or mathematically inconsistent Q017 output is zero authority."
 }
