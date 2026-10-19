@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "E2_LIVE_STATE_LOCK",
+  "signal_asof": "2026-10-16",
+  "market_regime": "LATE_DISTRIBUTION",
+  "strict": {
+    "authority": "E2_STRICT_RESEARCH_POPULATION_LOCK_20261018.json",
+    "cohort_count": 0,
+    "engine_status": "OFF",
+    "buy_count": 0,
+    "watch_count": 0,
+    "rows": []
+  },
+  "extension_shadow": {
+    "authority": "E2_EXTENSION_SHADOW_LOCK_20261018.json",
+    "cohort_count": 5,
+    "engine_status": "SHADOW_ONLY",
+    "capital_authorized": false,
+    "rows": [
+      {"Ticker":4956,"Name":"光鋐","E2Score":3,"E2Action":"SHADOW_FAVORABLE","E2Rank":1},
+      {"Ticker":1717,"Name":"長興","E2Score":2,"E2Action":"SHADOW_FAVORABLE","E2Rank":2},
+      {"Ticker":3092,"Name":"鴻碩","E2Score":2,"E2Action":"SHADOW_FAVORABLE","E2Rank":3},
+      {"Ticker":3714,"Name":"富采","E2Score":1,"E2Action":"SHADOW_PASS","E2Rank":4},
+      {"Ticker":3715,"Name":"定穎投控","E2Score":0,"E2Action":"SHADOW_PASS","E2Rank":5}
+    ]
+  },
+  "position_state": {
+    "asof": "2026-10-16",
+    "held": [],
+    "pending": [],
+    "occupied_next_session": 0,
+    "free_slots_next_session": 5,
+    "max_slots": 5
+  },
+  "locks": {
+    "population": "E2_STRICT_RESEARCH_POPULATION_LOCK_20261018.json",
+    "extension": "E2_EXTENSION_SHADOW_LOCK_20261018.json",
+    "capital": "E2_EXECUTION_CAPITAL_LOCK_20261018.json",
+    "state_machine": "E2_POSITION_STATE_MACHINE_LOCK_20261018.json"
+  },
+  "source": "PACKAGE_E2_SCAN_20261016_CLEAN_AND_POSITION_STATE",
+  "state_sha256": "0b097cb08ed78fa0ca05ee14f88ca0ce638af3da5f9c1de8f312190ecd611597"
+}
