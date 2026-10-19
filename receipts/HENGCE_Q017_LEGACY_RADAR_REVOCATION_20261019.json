@@ -25,8 +25,17 @@
     "legacy workflow_dispatch value radar is only a backward-compatible alias to locked monitor",
     "authority guard runs before every non-self-test command-center commit, including failed decision/monitor runs",
     "independent push-triggered authority guard revalidates every q017 latest.json change",
-    "contract v1.2 requires schema v2, immutable decision hash binding, and rejects legacy Q017_SOX_ELECTRONICS_RADAR even when it claims PASS"
+    "contract v1.2 requires schema v2, immutable decision hash binding, and rejects legacy Q017_SOX_ELECTRONICS_RADAR even when it claims PASS",
+    "public scripts/hengce_daily_command_center.py radar_run is permanently hard-disabled and --mode radar exits 2 with NO_FORMAL_SIGNAL and formal_buy_count=0",
+    "historical command-center implementation was retained unchanged only as a shared data-helper library so premarket, beta, and EOD logic were not rewritten"
   ],
+  "verification": {
+    "daily_command_center_ci_run_id": 39188412869,
+    "daily_command_center_ci_run_number": 14,
+    "daily_command_center_ci_conclusion": "success",
+    "negative_test": "legacy --mode radar must exit 2 and emit NO_FORMAL_SIGNAL / formal_buy_count=0",
+    "latest_after_repair": "Q017_AUTHORITY_GUARD_FAIL_CLOSED / DATA_PENDING / top3=[] / formal_buy_count=0"
+  },
   "canonical_rule": "NO_VALID_0901_DECISION_LOCK_NO_FORMAL_Q017_SIGNAL",
   "e2_changed": false,
   "q017_model_formula_changed": false,
