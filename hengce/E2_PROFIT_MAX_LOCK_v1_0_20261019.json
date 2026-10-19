@@ -1,0 +1,21 @@
+{
+  "lock_id": "E2_PROFIT_MAX_LOCK_v1_0_20261019",
+  "status": "VALIDATED_FROZEN",
+  "engine": "E2_PROFIT_MAX",
+  "supersedes": "LEGACY_E2_ALL_PRE_20261019",
+  "authority": "RESEARCH_ENGINE_AUTHORITY_ONLY_ZERO_REAL_CAPITAL",
+  "formula_source": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_FINAL_VALIDATION_20261019.json",
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT",
+  "K": 25,
+  "top_n": 1,
+  "beta_window_max": 60,
+  "beta_min_obs": 30,
+  "signal": "residual1=stock_ret1-beta60*electronics_m1; score=beta60*(1+25*max(-residual1,0))",
+  "filters": {"avg_turnover20_twd_min":20000000,"residual1_max":0.04},
+  "entry_gate": {"electronics_m1_lt":0,"electronics_m5_lte":-0.02,"sox_1d_lte":0,"sox_5d_lte":-0.03,"dxy_required":false},
+  "execution": {"signal_known":"after TWSE close using only causally available inputs","entry":"next TWSE trading day open","exit":"fixed20","roundtrip_cost":0.008,"overlap_allowed":false},
+  "validation": {"pit_2023_2025_nav":1.530103542875737,"pit_2023_2025_return":0.530103542875737,"pit_entries":13,"oos_2026_nav":1.749568124084571,"oos_2026_return":0.7495681240845711,"pass":true},
+  "q017_mutated": false,
+  "legacy_e2_capital_authority": 0,
+  "real_capital_authority_twd": 0
+}
