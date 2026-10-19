@@ -22,6 +22,7 @@ on:
       - 'scripts/hengce_q017_authority_guard_v4.py'
       - 'scripts/hengce_q017_observation_lock_v5.py'
       - 'scripts/hengce_q017_authority_guard_v5.py'
+      - 'scripts/hengce_q017_10d_review.py'
       - 'scripts/test_hengce_q017_decision_lock.py'
       - 'scripts/test_hengce_q017_adversarial_v4.py'
       - 'scripts/hengce_e2_live.py'
@@ -33,6 +34,8 @@ on:
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019.json'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019.json'
+      - 'hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019.json'
       - '.github/workflows/hengce-daily-command-center.yml'
   schedule:
     # Asia/Taipei = UTC+8
@@ -123,6 +126,7 @@ jobs:
           python scripts/test_hengce_q017_adversarial_v4.py
           python scripts/hengce_q017_observation_lock_v5.py --mode self-test
           python scripts/hengce_q017_authority_guard_v5.py --mode self-test
+          python scripts/hengce_q017_10d_review.py --mode self-test
           python scripts/hengce_e2_live.py --mode self-test
 
           set +e
@@ -193,6 +197,10 @@ jobs:
         if: steps.mode.outputs.mode == 'postclose'
         run: python scripts/hengce_e2_live.py --mode postclose
 
+      - name: Update all active Q017 10-session review cohorts
+        if: steps.mode.outputs.mode == 'postclose'
+        run: python scripts/hengce_q017_10d_review.py --mode update
+
       - name: Enforce Q017 schema-v5 observation-bound authority guard
         if: always() && steps.mode.outputs.mode != 'self-test'
         run: python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
@@ -204,7 +212,7 @@ jobs:
           set -euo pipefail
           git config user.name 'hengce-command-center-bot'
           git config user.email 'hengce-command-center-bot@users.noreply.github.com'
-          git add hengce/q017_radar/ hengce/e2_live/ eod/ || true
+          git add hengce/q017_radar/ hengce/q017_review_10d/ hengce/e2_live/ eod/ || true
           if git diff --cached --quiet; then
             echo 'No command-center output changes.'
           else
