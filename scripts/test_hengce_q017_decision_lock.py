@@ -20,6 +20,7 @@ def expect_raises(fn, text):
 
 
 def install_temp_paths(tmp: Path):
+    lock.ROOT = tmp
     lock.DECISION_DIR = tmp / 'decision'
     lock.DECISION_DIR.mkdir(parents=True, exist_ok=True)
     lock.DECISION_LATEST = tmp / 'decision_latest.json'
@@ -41,6 +42,7 @@ def test_immutable_write(tmp: Path):
 
 
 def test_capture_and_monitor_freeze(tmp: Path):
+    orig_root = lock.ROOT
     install_temp_paths(tmp)
     today = date(2026, 10, 20)
     fixed = datetime(2026, 10, 20, 9, 1, 10, tzinfo=lock.TZ)
@@ -109,6 +111,7 @@ def test_capture_and_monitor_freeze(tmp: Path):
         p.write_text(json.dumps(tampered, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         expect_raises(lambda: lock.monitor(today), 'DECISION_SNAPSHOT_HASH_MISMATCH')
     finally:
+        lock.ROOT = orig_root
         lock.prepare_model = orig_prepare
         lock.wait_for_decision_minute = orig_wait
         lock.mis_batch = orig_mis
@@ -117,9 +120,13 @@ def test_capture_and_monitor_freeze(tmp: Path):
 
 
 def test_no_snapshot_fail_closed(tmp: Path):
-    install_temp_paths(tmp)
-    today = date(2026, 10, 20)
-    expect_raises(lambda: lock.monitor(today), 'NO_IMMUTABLE_0901_DECISION_SNAPSHOT')
+    orig_root = lock.ROOT
+    try:
+        install_temp_paths(tmp)
+        today = date(2026, 10, 20)
+        expect_raises(lambda: lock.monitor(today), 'NO_IMMUTABLE_0901_DECISION_SNAPSHOT')
+    finally:
+        lock.ROOT = orig_root
 
 
 def main():
