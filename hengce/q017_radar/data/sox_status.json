@@ -3,6 +3,6 @@
   "source": "Nasdaq ExportHistory/SOX",
   "latest_session": "2026-10-16",
   "rows": 199,
-  "stale_days": 0,
-  "refreshed_at_taipei": "2026-10-19T12:17:27.161643+08:00"
+  "stale_days": 3,
+  "refreshed_at_taipei": "2026-10-19T21:52:43.125737+08:00"
 }

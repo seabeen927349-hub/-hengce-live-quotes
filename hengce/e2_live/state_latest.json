@@ -1,44 +1,115 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "system": "HENGCE",
-  "module": "E2_LIVE_STATE_LOCK",
-  "signal_asof": "2026-10-16",
-  "market_regime": "LATE_DISTRIBUTION",
-  "strict": {
-    "authority": "E2_STRICT_RESEARCH_POPULATION_LOCK_20261018.json",
-    "cohort_count": 0,
-    "engine_status": "OFF",
-    "buy_count": 0,
-    "watch_count": 0,
-    "rows": []
+  "module": "E2_PROFIT_MAX_STATE",
+  "generated_at_taipei": "2026-10-19T21:52:43.127238+08:00",
+  "signal_asof": "2026-10-19",
+  "engine": "E2_PROFIT_MAX",
+  "engine_status": "ON",
+  "binding_status": "PASS",
+  "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "market_regime": "PROFIT_MAX_GATE_GO",
+  "local_gate": {
+    "go": true,
+    "checks": {
+      "electronics_m1_lt_0": true,
+      "electronics_m5_lte_minus_2pct": true
+    },
+    "electronics_m1": -0.017241379310344862,
+    "electronics_m5": -0.0453115343216981
   },
-  "extension_shadow": {
-    "authority": "E2_EXTENSION_SHADOW_LOCK_20261018.json",
-    "cohort_count": 5,
-    "engine_status": "SHADOW_ONLY",
-    "capital_authorized": false,
+  "macro_gate": {
+    "go": true,
+    "checks": {
+      "sox_1d_lte_0": true,
+      "sox_5d_lte_minus_3pct": true
+    },
+    "sox_session": "2026-10-16",
+    "sox_1d": -0.03833177716245828,
+    "sox_5d": -0.11414930877578389,
+    "dxy_used": false
+  },
+  "top1": {
+    "ticker": "3026",
+    "name": "禾伸堂",
+    "beta60": 2.083939641519657,
+    "stock_r1": -0.0880893300248139,
+    "electronics_m1": -0.017241379310344862,
+    "electronics_m5": -0.0453115343216981,
+    "residual": -0.052159336205509395,
+    "score": 4.801362351369969,
+    "liq20_turnover_twd": 9255581992.3,
+    "signal_close": 735.0
+  },
+  "action": "ENTRY_PENDING",
+  "paper_position": {
+    "state": "ENTRY_PENDING",
+    "signal_date": "2026-10-19",
+    "ticker": "3026",
+    "name": "禾伸堂",
+    "score": 4.801362351369969,
+    "beta60": 2.083939641519657,
+    "residual": -0.052159336205509395,
+    "entry_due": "NEXT_TWSE_SESSION_OPEN",
+    "hold_target_intervals": 20,
+    "roundtrip_cost_model": 0.008
+  },
+  "strict": {
+    "authority": "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
+    "cohort_count": 1,
+    "engine_status": "ON",
+    "buy_count": 1,
+    "watch_count": 0,
     "rows": [
-      {"Ticker":4956,"Name":"光鋐","E2Score":3,"E2Action":"SHADOW_FAVORABLE","E2Rank":1},
-      {"Ticker":1717,"Name":"長興","E2Score":2,"E2Action":"SHADOW_FAVORABLE","E2Rank":2},
-      {"Ticker":3092,"Name":"鴻碩","E2Score":2,"E2Action":"SHADOW_FAVORABLE","E2Rank":3},
-      {"Ticker":3714,"Name":"富采","E2Score":1,"E2Action":"SHADOW_PASS","E2Rank":4},
-      {"Ticker":3715,"Name":"定穎投控","E2Score":0,"E2Action":"SHADOW_PASS","E2Rank":5}
+      {
+        "Ticker": 3026,
+        "Name": "禾伸堂",
+        "E2Score": 4.801362351369969,
+        "E2Action": "ENTRY_PENDING",
+        "E2Rank": 1
+      }
     ]
   },
+  "extension_shadow": {
+    "engine_status": "DISABLED_LEGACY_REVOKED",
+    "capital_authorized": false,
+    "rows": []
+  },
   "position_state": {
-    "asof": "2026-10-16",
+    "asof": "2026-10-19",
     "held": [],
-    "pending": [],
-    "occupied_next_session": 0,
-    "free_slots_next_session": 5,
-    "max_slots": 5
+    "pending": [
+      {
+        "state": "ENTRY_PENDING",
+        "signal_date": "2026-10-19",
+        "ticker": "3026",
+        "name": "禾伸堂",
+        "score": 4.801362351369969,
+        "beta60": 2.083939641519657,
+        "residual": -0.052159336205509395,
+        "entry_due": "NEXT_TWSE_SESSION_OPEN",
+        "hold_target_intervals": 20,
+        "roundtrip_cost_model": 0.008
+      }
+    ],
+    "max_slots": 1,
+    "occupied_next_session": 1,
+    "free_slots_next_session": 0
   },
   "locks": {
-    "population": "E2_STRICT_RESEARCH_POPULATION_LOCK_20261018.json",
-    "extension": "E2_EXTENSION_SHADOW_LOCK_20261018.json",
-    "capital": "E2_EXECUTION_CAPITAL_LOCK_20261018.json",
-    "state_machine": "E2_POSITION_STATE_MACHINE_LOCK_20261018.json"
+    "model": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_PIT_VALIDATION_LOCK_20261019.json",
+    "display_execution": "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
+    "legacy_revocation": "E2_LEGACY_REVOCATION_20261019.json"
   },
-  "source": "PACKAGE_E2_SCAN_20261016_CLEAN_AND_POSITION_STATE",
-  "state_sha256": "0b097cb08ed78fa0ca05ee14f88ca0ce638af3da5f9c1de8f312190ecd611597"
+  "rules": {
+    "K": 25.0,
+    "top_n": 1,
+    "hold_intervals": 20,
+    "cost_roundtrip": 0.008,
+    "overlap": "FORBIDDEN",
+    "dxy_used": false
+  },
+  "q017_effect": "NONE"
 }
