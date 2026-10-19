@@ -1,0 +1,58 @@
+{
+  "system": "HENGCE",
+  "engine": "E2_PROFIT_MAX",
+  "artifact": "E2_PROFIT_MAX_CANDIDATE_B_FINAL_VALIDATION_20261019",
+  "status": "PASS_FINAL_RESEARCH_VALIDATION",
+  "candidate": "B_FROZEN",
+  "formula_mutated": false,
+  "q017_mutated": false,
+  "legacy_e2": "REVOKED_ZERO_AUTHORITY",
+  "universe": "TWSE_LISTED_ELECTRONICS_POINT_IN_TIME_DAILY",
+  "pit_audit": {
+    "2023": {"trading_days":239,"pit_days":239,"nontrading_reclassified":21,"missing_trading_days":0},
+    "2024": {"trading_days":242,"pit_days":242,"nontrading_reclassified":20,"missing_trading_days":0},
+    "2025": {"trading_days":243,"pit_days":243,"nontrading_reclassified":18,"missing_trading_days":0},
+    "total_membership_rows": 313749,
+    "total_dates": 724,
+    "source": "TWSE MI_INDEX type=13 official daily electronics table"
+  },
+  "locked_model": {
+    "signal": "1D residual reversal vs PIT electronics median market return",
+    "beta": "prior max60 observations, min30, signal day excluded",
+    "K": 25,
+    "score": "beta60*(1+25*max(-residual1,0))",
+    "selection": "Top1",
+    "liquidity_20d_avg_turnover_min_twd": 20000000,
+    "residual1_max": 0.04,
+    "local_gate": "electronics_m1<0 AND electronics_m5<=-0.02",
+    "macro_gate": "latest completed prior U.S. session: SOX_1D<=0 AND SOX_5D<=-0.03",
+    "dxy": "EXCLUDED_AFTER_FINITE_SEARCH",
+    "entry": "next TWSE trading day open",
+    "exit": "fixed20",
+    "roundtrip_cost": 0.008,
+    "overlap": "FORBIDDEN"
+  },
+  "pit_2023_2025": {
+    "nav": 1.530103542875737,
+    "return": 0.530103542875737,
+    "entries": 13,
+    "wins": 8,
+    "winrate": 0.6153846153846154,
+    "maxdd": -0.41633333333333333,
+    "years": {
+      "2023": {"nav":1.1252421149566751,"return":0.12524211495667514,"entries":4,"wins":2,"winrate":0.5,"maxdd":-0.2421813889334401},
+      "2024": {"nav":1.3183324917884003,"return":0.3183324917884003,"entries":5,"wins":3,"winrate":0.6,"maxdd":-0.14653427890207638},
+      "2025": {"nav":1.0314540525052487,"return":0.031454052505248686,"entries":4,"wins":3,"winrate":0.75,"maxdd":-0.41633333333333333}
+    }
+  },
+  "oos_2026_to_20261016": {"nav":1.749568124084571,"ret":0.7495681240845711,"entries":6,"closed":5,"open_marked":1,"wins":3,"winrate":0.5,"mean_trade":0.12287828974885874,"maxdd":-0.10411945992507265},
+  "finite_search": {"macro_gates":8,"exit_policies":10,"total":80,"threshold_optimization":false,"signal_formula_research":false,"topn_research":false},
+  "integrity": {
+    "frozen_before_oos_sha256": "345e13e21380a67bd8cb5abf54597b05f485b55184ecc0b9ad867ae8154d36b1",
+    "oos_once_sha256": "243adcbc79be7c58c9607c95ae316c4295fc97f924e450eaf6f2fffab722f195",
+    "pit_final_validation_sha256": "81e69cd5e3153ce6b098d41f72657d3ce13ef5a063f39466ce414a2693ddb47d",
+    "pit_result_exactly_reproduces_frozen_discovery_metrics": true
+  },
+  "authority": {"model_status":"VALIDATED_AND_FROZEN","real_capital_authority":false,"capital_authority_twd":0,"note":"Engine validation does not itself authorize real-money trading."},
+  "no_rescue_rule": "If future locked validation fails, do not add conditions to rescue this frozen version; create a separately versioned research candidate."
+}
