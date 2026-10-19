@@ -1,0 +1,84 @@
+{
+  "system": "HENGCE",
+  "contract": "DAILY_COMMAND_CENTER",
+  "version": "1.1",
+  "effective_from": "2026-10-19",
+  "supersedes": "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json",
+  "principle": "DOWNLOAD_VERIFY_COMPUTE_LOCK_MONITOR",
+  "hard_rules": {
+    "no_required_data_no_signal": true,
+    "no_stale_substitution": true,
+    "no_future_data": true,
+    "existing_eod_pipeline_remains_authoritative": true,
+    "q017_radar_does_not_change_core_model": true,
+    "top1_is_strongest_candidate_not_mandatory_trade": true,
+    "always_show_top3_and_new_candidates": true,
+    "q017_decision_cutoff_taipei": "09:01",
+    "decision_snapshot_immutable": true,
+    "no_post_lock_rerank": true,
+    "missing_open_at_cutoff_is_not_data_failure": true,
+    "no_0901_snapshot_no_formal_q017_signal": true
+  },
+  "daily_phases": {
+    "premarket": {
+      "requirements": [
+        "latest completed SOX",
+        "previous completed TWSE EOD three-leg status",
+        "electronics beta history",
+        "EOD date and electronics-history date must agree"
+      ],
+      "outputs": ["DATA_STATUS", "SOX_1D", "SOX_5D", "MARKET_STATE"]
+    },
+    "decision_lock": {
+      "target_taipei": "09:01",
+      "capture_window_taipei": "09:01:00-09:01:59.999999",
+      "source": "TWSE MIS",
+      "minimum_provider_coverage": 0.98,
+      "eligibility": "positive-beta listed-electronics ticker whose open is observable in a provider response fetched inside the locked decision minute",
+      "missing_open_semantics": "NOT_OPENED_BY_DECISION_CUTOFF_NOT_DATA_FAILURE",
+      "outputs": ["immutable decision snapshot", "TOP1", "TOP2", "TOP3", "NEW", "DROPPED", "decision_snapshot_sha256"],
+      "overwrite": false
+    },
+    "post_open_monitor": {
+      "requirements": ["binding immutable 09:01 decision snapshot"],
+      "allowed_actions": ["refresh current marks", "refresh mark-to-market return", "report locked candidates"],
+      "forbidden_actions": ["rerank", "replace candidate because of later quote", "backfill a missing 09:01 snapshot"]
+    },
+    "position_tracking": {
+      "rule": "candidate ranking is frozen from the decision lock; position marks may continue while positions exist",
+      "outputs": ["position day count", "research D10 marker", "locked market candidates"]
+    },
+    "post_close": {
+      "requirements": ["price COMPLETE", "institutional COMPLETE", "margin COMPLETE"],
+      "action_on_missing": "download missing required official data before analysis",
+      "outputs": ["EOD_DATA_STATUS", "forward evidence", "next-session beta history update"]
+    }
+  },
+  "q017_radar": {
+    "scope": "TWSE listed electronics",
+    "market_gate": {"sox_1d_max": 0.0, "sox_5d_max": -0.02},
+    "beta": {"max_observations": 60, "min_observations": 30, "point_in_time": true},
+    "residual_max": 0.04,
+    "score": "beta * (1 + 25 * max(-residual, 0))",
+    "ranking_count": 3,
+    "research_hold_days": 10,
+    "execution_research_anchor": {
+      "decision_cutoff_taipei": "09:01",
+      "decision_snapshot_immutable": true,
+      "boardlot": true,
+      "fill_window_minutes": 20,
+      "minute_participation_cap": 0.10,
+      "slippage_stress": 0.002,
+      "roundtrip_cost_stress": 0.006
+    }
+  },
+  "authority": {
+    "changes_live_holdings": false,
+    "changes_forward_ledger_history": false,
+    "changes_existing_eod_schema": false,
+    "changes_core_ranking_formula": false,
+    "adds_causal_decision_lock": true,
+    "adds_fail_closed_missing_snapshot_gate": true,
+    "allows_post_lock_reranking": false
+  }
+}
