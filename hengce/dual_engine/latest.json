@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_DUAL_ENGINE_DISPLAY",
+  "generated_at_taipei": "2026-10-19T22:00:38.298028+08:00",
+  "architecture": "DUAL_ENGINE",
+  "rankings_separate": true,
+  "q017": {
+    "engine": "Q017",
+    "status": "DATA_PENDING",
+    "binding_status": "DATA_PENDING",
+    "authority": "NO_FORMAL_SIGNAL",
+    "formal_authority": false,
+    "formal_buy_count": 0,
+    "trade_date": "2026-10-19",
+    "top3": [],
+    "reason": "FAIL_CLOSED_SCHEMA_TOO_OLD",
+    "source_module": "Q017_AUTHORITY_GUARD_FAIL_CLOSED",
+    "schema_version": 5
+  },
+  "e2": {
+    "engine": "E2_PROFIT_MAX",
+    "status": "ON",
+    "binding_status": "PASS",
+    "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
+    "signal_asof": "2026-10-19",
+    "local_gate": {
+      "go": true,
+      "checks": {
+        "electronics_m1_lt_0": true,
+        "electronics_m5_lte_minus_2pct": true
+      },
+      "electronics_m1": -0.017241379310344862,
+      "electronics_m5": -0.0453115343216981
+    },
+    "macro_gate": {
+      "go": true,
+      "checks": {
+        "sox_1d_lte_0": true,
+        "sox_5d_lte_minus_3pct": true
+      },
+      "sox_session": "2026-10-16",
+      "sox_1d": -0.03833177716245828,
+      "sox_5d": -0.11414930877578389,
+      "dxy_used": false
+    },
+    "top1": {
+      "ticker": "3026",
+      "name": "禾伸堂",
+      "beta60": 2.083939641519657,
+      "stock_r1": -0.0880893300248139,
+      "electronics_m1": -0.017241379310344862,
+      "electronics_m5": -0.0453115343216981,
+      "residual": -0.052159336205509395,
+      "score": 4.801362351369969,
+      "liq20_turnover_twd": 9255581992.3,
+      "signal_close": 735.0
+    },
+    "action": "ENTRY_PENDING",
+    "paper_position": {
+      "state": "ENTRY_PENDING",
+      "signal_date": "2026-10-19",
+      "ticker": "3026",
+      "name": "禾伸堂",
+      "score": 4.801362351369969,
+      "beta60": 2.083939641519657,
+      "residual": -0.052159336205509395,
+      "entry_due": "NEXT_TWSE_SESSION_OPEN",
+      "hold_target_intervals": 20,
+      "roundtrip_cost_model": 0.008
+    },
+    "research_capital_twd": 3000000,
+    "broker_order_execution": false,
+    "dxy_used": false,
+    "source_module": "E2_PROFIT_MAX_STATE",
+    "schema_version": 2
+  },
+  "display_policy": "ALWAYS_SHOW_Q017_AND_E2_SEPARATELY; NEVER_MIX_RANKINGS"
+}
