@@ -69,11 +69,4 @@ def morning(td):
 """
 replace_once(Path('scripts/hengce_e2_live.py'),e2_old,e2_new)
 
-wf=ROOT/'.github/workflows/hengce-daily-command-center.yml'
-s=wf.read_text(encoding='utf-8')
-if "'30 7 * * 1-5'" not in s:
-    s=s.replace("    - cron: '0 7 * * 1-5'\n","    - cron: '0 7 * * 1-5'\n    - cron: '30 7 * * 1-5'\n    - cron: '0 8 * * 1-5'\n    - cron: '0 9 * * 1-5'\n",1)
-    s=s.replace("              '0 7 * * 1-5') MODE='postclose' ;;","              '0 7 * * 1-5'|'30 7 * * 1-5'|'0 8 * * 1-5'|'0 9 * * 1-5') MODE='postclose' ;;",1)
-    wf.write_text(s,encoding='utf-8')
-    print('PATCHED workflow postclose retries')
-else: print('ALREADY_PATCHED workflow')
+print('PASS LANE_COHERENCE_REPAIR_APPLIED_NO_WORKFLOW_MUTATION')
