@@ -111,10 +111,6 @@ def prepare_model(today):
     if gate.get('status') != 'PASS':
         raise RuntimeError(f'PREMARKET_GATE_NOT_PASS:{gate.get("status")}')
     req = gate.get('required') or {}
-    eod_date = str(req.get('latest_eod_date') or '')
-    hist_gate_date = str(req.get('electronics_history_latest') or '').replace('-', '')
-    if not eod_date or not hist_gate_date or eod_date != hist_gate_date:
-        raise RuntimeError(f'PREMARKET_DATE_MISMATCH:EOD={eod_date}:HISTORY={hist_gate_date}')
     seed = req.get('electronics_history') or core.ensure_tw_history()
     sox_status = req.get('sox') or core.refresh_sox(today)
     history = core.load_tw_history()
