@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "Q017_SOX_ELECTRONICS_RADAR",
+  "generated_at_taipei": "2026-10-19T09:40:14.138367+08:00",
+  "trade_date": "2026-10-19",
+  "binding_status": "PASS",
+  "market_state": "GO",
+  "data_status": {
+    "sox": {
+      "status": "PASS",
+      "source": "Nasdaq ExportHistory/SOX",
+      "latest_session": "2026-10-16",
+      "rows": 199,
+      "stale_days": 3,
+      "refreshed_at_taipei": "2026-10-19T09:32:25.050588+08:00"
+    },
+    "tw_history": {
+      "status": "PASS",
+      "source": "LOCAL_INCREMENTAL_HISTORY",
+      "seeded": false
+    },
+    "tw_history_latest_date": "2026-10-16",
+    "universe_count": 458,
+    "opened_quote_count": 414,
+    "quote_coverage": 0.9409090909090909,
+    "quote_failures": [
+      {
+        "ticker": "2357",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "2359",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "2457",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "2458",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "3043",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "3563",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "3576",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "5244",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "6426",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "7768",
+        "error": "HTTP_429"
+      },
+      {
+        "ticker": "7769",
+        "error": "HTTP_429"
+      }
+    ]
+  },
+  "sox": {
+    "session": "2026-10-16",
+    "sox_1d": -0.03833177716245828,
+    "sox_5d": -0.11414930877578389
+  },
+  "rules": {
+    "sox_1d_max": 0.0,
+    "sox_5d_max": -0.02,
+    "residual_max": 0.04,
+    "score": "beta*(1+25*max(-residual,0))",
+    "top_n": 3,
+    "research_hold_days": 10
+  },
+  "top3": [
+    {
+      "ticker": "7795",
+      "name": "長廣",
+      "beta": 0.9477857625174332,
+      "open": 425.0,
+      "previous_close": 456.0,
+      "gap": -0.06798245614035092,
+      "expected_gap": -0.03633031264656885,
+      "residual": -0.03165214349378207,
+      "score": 1.6977720364315694,
+      "qualified": true,
+      "new": true
+    },
+    {
+      "ticker": "2455",
+      "name": "全新",
+      "beta": 0.8792368660438354,
+      "open": 460.0,
+      "previous_close": 493.0,
+      "gap": -0.06693711967545635,
+      "expected_gap": -0.03370271162221048,
+      "residual": -0.033234408053245866,
+      "score": 1.6097597855827832,
+      "qualified": true,
+      "new": true
+    },
+    {
+      "ticker": "2492",
+      "name": "華新科",
+      "beta": 0.9747111686664146,
+      "open": 370.0,
+      "previous_close": 395.0,
+      "gap": -0.06329113924050633,
+      "expected_gap": -0.03736241131508029,
+      "residual": -0.02592872792542604,
+      "score": 1.6065366861220525,
+      "qualified": true,
+      "new": true
+    }
+  ],
+  "new": [
+    "7795",
+    "2455",
+    "2492"
+  ],
+  "dropped": [],
+  "note": "Top1 is strongest research candidate, not a mandatory trade. Top2/Top3 remain visible for market context."
+}
