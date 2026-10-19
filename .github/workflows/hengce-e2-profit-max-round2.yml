@@ -24,6 +24,28 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Verify and stage exact frozen payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64,gzip,hashlib,json
+          from pathlib import Path
+          root=Path('research/e2_profit_max/round2/input_shock')
+          p=root/'payload.json.gz.b64'
+          b=p.read_bytes().strip()
+          assert hashlib.sha256(b).hexdigest()=='e98cd47b64dc6df50ee3abd8b74b6ff8ae558a153581aeaca84148cc0da79d6d'
+          raw=gzip.decompress(base64.b64decode(b))
+          assert hashlib.sha256(raw).hexdigest()=='2a30a234a6370c4c93a5a9534485b33224cc53b547493b35390acc416842b2b8'
+          obj=json.loads(raw); assert len(obj['r'])==152 and obj['core']=='rev1_no_teacher_K25_Top1'
+          # Re-create the runner's three chunks from this verified single source.
+          s=b.decode('ascii')
+          for q in root.glob('r2shock_*.txt'): q.unlink()
+          pieces=[s[:7000],s[7000:14000],s[14000:]]
+          assert len(pieces)==3 and ''.join(pieces)==s
+          for i,x in enumerate(pieces,1): (root/f'r2shock_{i:02}.txt').write_text(x,encoding='ascii')
+          print('PASS ROUND2_PAYLOAD_SHA256 rows=152')
+          PY
       - name: Run exactly 80 frozen combinations
         shell: bash
         run: |
@@ -54,6 +76,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Discard the ephemeral re-split chunks; payload is the sole staged source.
+          git checkout -- research/e2_profit_max/round2/input_shock/r2shock_01.txt research/e2_profit_max/round2/input_shock/r2shock_02.txt research/e2_profit_max/round2/input_shock/r2shock_03.txt
           git config user.name 'hengce-e2-research-bot'
           git config user.email 'hengce-e2-research-bot@users.noreply.github.com'
           git add research/e2_profit_max/round2/train_grid_80.csv research/e2_profit_max/round2/round2_result.json
