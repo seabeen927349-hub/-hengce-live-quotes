@@ -1,0 +1,56 @@
+name: HENGCE Q017 Hypothetical Open Reconstruction
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_q017_hypothetical_open_reconstruction.py'
+      - '.github/workflows/hengce-q017-hypothetical-open-reconstruction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reconstruct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests openpyxl
+      - name: Run hypothetical reconstruction with zero authority
+        run: python scripts/hengce_q017_hypothetical_open_reconstruction.py --date 2026-10-19
+      - name: Assert zero formal authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          p='receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261019.json'
+          o=json.load(open(p,encoding='utf-8'))
+          assert o['authority']=='HYPOTHETICAL_ONLY_ZERO_CAPITAL_AUTHORITY'
+          assert o['formal_buy_count']==0
+          assert o['causality_warning']['actual_0901_observation_file_used'] is False
+          assert o['q017_universe_lock']['non_electronics_allowed'] is False
+          print('PASS HYPOTHETICAL_ZERO_AUTHORITY_ELECTRONICS_ONLY')
+          PY
+      - name: Commit hypothetical receipt only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-hypothetical-replay-bot'
+          git config user.email 'hengce-hypothetical-replay-bot@users.noreply.github.com'
+          git add receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261019.json
+          if git diff --cached --quiet; then
+            echo 'Receipt unchanged.'
+          else
+            git commit -m 'HENGCE Q017 hypothetical 2026-10-19 open reconstruction zero authority'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
