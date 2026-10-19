@@ -12,6 +12,7 @@ on:
     paths:
       - 'scripts/hengce_daily_command_center.py'
       - 'scripts/hengce_q017_decision_lock.py'
+      - 'scripts/test_hengce_q017_decision_lock.py'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json'
       - '.github/workflows/hengce-daily-command-center.yml'
@@ -80,6 +81,7 @@ jobs:
         run: |
           python scripts/hengce_daily_command_center.py --mode self-test
           python scripts/hengce_q017_decision_lock.py --mode self-test
+          python scripts/test_hengce_q017_decision_lock.py
 
       - name: Run premarket data gate
         if: steps.mode.outputs.mode == 'premarket'
