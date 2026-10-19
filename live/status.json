@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
   "service": "HENGCE LIVE QUOTES",
-  "snapshot_id": "20261019T132518+0800",
-  "generated_at_taipei": "2026-10-19T13:25:18.848108+08:00",
-  "cache_expires_at_taipei": "2026-10-19T13:35:18.848108+08:00",
+  "snapshot_id": "20261019T135429+0800",
+  "generated_at_taipei": "2026-10-19T13:54:29.618945+08:00",
+  "cache_expires_at_taipei": "2026-10-19T14:04:29.618945+08:00",
   "cache_ttl_seconds": 600,
-  "market_phase": "open",
+  "market_phase": "closed",
   "universe_policy": "DAILY_ACTION_BOARD_ROWS_HARD_BIND",
   "universe_version": "HENGCE_LIVE_UNIVERSE_v1_4_AUS_MICRO_PROBE_LADDER_20261016",
   "universe_target_date": "2026-10-15",
@@ -15,15 +15,15 @@
   "success_count": 75,
   "failure_count": 2,
   "stale_count": 3,
-  "trial_count": 72,
+  "trial_count": 2,
   "halted_count": 0,
   "failures": [
     {
-      "symbol": "1529",
+      "symbol": "6934",
       "error": "RATE_LIMIT_HTTP_429"
     },
     {
-      "symbol": "2388",
+      "symbol": "2897",
       "error": "RATE_LIMIT_HTTP_429"
     }
   ],
