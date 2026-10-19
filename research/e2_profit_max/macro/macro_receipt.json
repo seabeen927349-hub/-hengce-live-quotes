@@ -1,0 +1,19 @@
+{
+  "system": "HENGCE",
+  "module": "E2_PROFIT_MAX_MACRO_ARCHIVE",
+  "status": "PASS",
+  "research_only": true,
+  "start": "2022-12-01",
+  "end": "2026-10-19",
+  "sox_source": "Nasdaq ExportHistory/SOX",
+  "sox_rows": 972,
+  "sox_latest": "2026-10-16",
+  "dxy_symbol": "DX-Y.NYB",
+  "dxy_source": "https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB",
+  "dxy_rows": 975,
+  "dxy_latest": "2026-10-19",
+  "dxy_proxy_used": false,
+  "causal_join_rule": "For Taiwan signal date D, use latest completed U.S. session with session_date < D. Never use same-calendar-day U.S. close that occurs after Taiwan decision time.",
+  "threshold_policy": "Reuse Q017 thresholds; do not optimize SOX/DXY cutoffs in E2 round 2.",
+  "q017_mutated": false
+}
