@@ -94,7 +94,14 @@ jobs:
           set -euo pipefail
           git config user.name 'hengce-e2-live-bot'
           git config user.email 'hengce-e2-live-bot@users.noreply.github.com'
-          git add hengce/e2_live/ hengce/q017_radar/data/twse_electronics_history_2026.csv hengce/q017_radar/data/sox_2026.csv hengce/q017_radar/data/sox_status.json hengce/q017_radar/data/data_status.json 2>/dev/null || true
+          git add -A hengce/e2_live/
+          for p in \
+            hengce/q017_radar/data/twse_electronics_history_2026.csv \
+            hengce/q017_radar/data/sox_2026.csv \
+            hengce/q017_radar/data/sox_status.json \
+            hengce/q017_radar/data/data_status.json; do
+            if [ -e "$p" ]; then git add "$p"; fi
+          done
           if git diff --cached --quiet; then
             echo 'E2 state already current.'
             exit 0
