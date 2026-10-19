@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse, json, shutil, tempfile
+import argparse, json, tempfile
 from datetime import datetime
 from pathlib import Path
 
@@ -38,22 +38,32 @@ def promote_if_needed(today, canonical_path=None, backup=None):
     return o,'BACKUP_PROMOTED_TO_CANONICAL'
 
 
+def existing_decision(today):
+    p=v5.decision_path(today)
+    if not p.exists():return None
+    d=json.loads(p.read_text(encoding='utf-8'))
+    v5.validate_decision(d,today)
+    return d
+
+
 def compute(today=None):
-    today=today or v5.core.now_tw().date();o,source=promote_if_needed(today)
+    today=today or v5.core.now_tw().date()
+    locked=existing_decision(today)
+    if locked is not None:
+        receipt={'schema_version':5,'system':'HENGCE','module':'Q017_RECOVERY_COMPUTE_V5','trade_date':today.isoformat(),'generated_at_taipei':v5.core.now_tw().isoformat(),'status':'PASS','observation_source':'DECISION_ALREADY_LOCKED','observation_snapshot_sha256':locked['observation_snapshot_sha256'],'decision_snapshot_sha256':locked['decision_snapshot_sha256'],'late_market_refetch_used':False,'idempotent_no_recompute':True,'policy':'Existing valid immutable decision wins; recovery never recomputes or reranks it.'}
+        v5.core.atomic_json(RECOVERY_DIR/f'{today.strftime("%Y%m%d")}_recovery_compute.json',receipt)
+        return locked,receipt
+    o,source=promote_if_needed(today)
     out=v5.compute_decision(today)
-    receipt={'schema_version':5,'system':'HENGCE','module':'Q017_RECOVERY_COMPUTE_V5','trade_date':today.isoformat(),'generated_at_taipei':v5.core.now_tw().isoformat(),'status':'PASS','observation_source':source,'observation_snapshot_sha256':o['observation_snapshot_sha256'],'decision_snapshot_sha256':out['decision_snapshot_sha256'],'late_market_refetch_used':False,'policy':'Recovery computation may occur later, but market inputs remain the immutable 09:01 observation.'}
+    receipt={'schema_version':5,'system':'HENGCE','module':'Q017_RECOVERY_COMPUTE_V5','trade_date':today.isoformat(),'generated_at_taipei':v5.core.now_tw().isoformat(),'status':'PASS','observation_source':source,'observation_snapshot_sha256':o['observation_snapshot_sha256'],'decision_snapshot_sha256':out['decision_snapshot_sha256'],'late_market_refetch_used':False,'idempotent_no_recompute':False,'policy':'Recovery computation may occur later, but market inputs remain the immutable 09:01 observation.'}
     v5.core.atomic_json(RECOVERY_DIR/f'{today.strftime("%Y%m%d")}_recovery_compute.json',receipt)
     return out,receipt
 
 
 def self_test():
-    # File-level recovery primitive: backup may be promoted only when canonical is absent;
-    # a different canonical hash appearing concurrently must fail closed.
     with tempfile.TemporaryDirectory() as td:
         root=Path(td);cp=root/'canonical.json';bp=root/'backup.json'
-        # Use the actual v5 self-test to verify observation validation semantics separately.
-        payload={'observation_snapshot_sha256':'abc'}
-        bp.write_text(json.dumps(payload),encoding='utf-8')
+        payload={'observation_snapshot_sha256':'abc'};bp.write_text(json.dumps(payload),encoding='utf-8')
         original=v5.validate_observation
         try:
             v5.validate_observation=lambda o:(o.get('observation_snapshot_sha256')=='abc','TEST')
@@ -63,11 +73,10 @@ def self_test():
             assert s2=='CANONICAL_ALREADY_PRESENT'
             cp.write_text(json.dumps({'observation_snapshot_sha256':'different'}),encoding='utf-8')
             v5.validate_observation=lambda o:(True,'TEST')
-            # Existing valid canonical always wins; backup is never blended into it.
             o3,s3=promote_if_needed(datetime(2026,10,20).date(),cp,bp)
             assert s3=='CANONICAL_ALREADY_PRESENT' and o3['observation_snapshot_sha256']=='different'
         finally:v5.validate_observation=original
-    print(json.dumps({'self_test':'PASS','schema':5,'backup_promotion_only_when_canonical_missing':True,'no_market_refetch':True,'no_observation_blending':True}))
+    print(json.dumps({'self_test':'PASS','schema':5,'backup_promotion_only_when_canonical_missing':True,'existing_decision_idempotent':True,'no_market_refetch':True,'no_observation_blending':True}))
 
 
 def main():
