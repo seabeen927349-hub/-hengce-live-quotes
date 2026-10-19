@@ -1,0 +1,88 @@
+name: HENGCE E2 Profit Max Round2 Finite Retry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-e2-profit-max-round2-retry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finite-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify research payload identity and stage chunks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64,gzip,hashlib,json
+          from pathlib import Path
+          root=Path('research/e2_profit_max/round2/input_shock')
+          b=(root/'payload.json.gz.b64').read_bytes().strip()
+          print('repo_b64_sha256='+hashlib.sha256(b).hexdigest())
+          raw=gzip.decompress(base64.b64decode(b))
+          rawsha=hashlib.sha256(raw).hexdigest()
+          print('raw_json_sha256='+rawsha)
+          assert rawsha=='2a30a234a6370c4c93a5a9534485b33224cc53b547493b35390acc416842b2b8',rawsha
+          obj=json.loads(raw)
+          assert obj['schema']==1
+          assert obj['core']=='rev1_no_teacher_K25_Top1'
+          assert obj['pre_gate']=='TW_SHOCK_m1_lt_0_m5_lte_-0.02'
+          assert len(obj['r'])==152
+          s=base64.b64encode(gzip.compress(raw,mtime=0)).decode('ascii')
+          for q in root.glob('r2shock_*.txt'): q.unlink()
+          pieces=[s[:7000],s[7000:14000],s[14000:]]
+          for i,x in enumerate(pieces,1): (root/f'r2shock_{i:02}.txt').write_text(x,encoding='ascii')
+          # Runner cares about decompressed JSON, so deterministic re-gzip is valid.
+          test=gzip.decompress(base64.b64decode(''.join(pieces)))
+          assert hashlib.sha256(test).hexdigest()==rawsha
+          print('PASS ROUND2_RAW_IDENTITY rows=152')
+          PY
+      - name: Run frozen 80 combinations
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python research/e2_profit_max/round2/run_round2_finite.py | tee /tmp/e2_round2.log
+          RC=${PIPESTATUS[0]}
+          set -e
+          test -s research/e2_profit_max/round2/round2_result.json
+          test -s research/e2_profit_max/round2/train_grid_80.csv
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          p=Path('research/e2_profit_max/round2')
+          r=json.loads((p/'round2_result.json').read_text())
+          rows=list(csv.DictReader((p/'train_grid_80.csv').open()))
+          assert len(rows)==80
+          assert r['search_space']['count']==80
+          assert r['search_space']['frozen_signal_core']=='rev1_no_teacher_K25_Top1'
+          assert r['search_space']['dynamic_exit_has_no_hard_max'] is True
+          assert r['capital_authority_twd']==0 and r['q017_mutated'] is False
+          print('PASS E2_PROFIT_MAX_ROUND2_GRID_80')
+          print(json.dumps({'status':r['status'],'robust_count':r['robust_count'],'winner':r['winner'],'validation':r['validation'] and {k:v for k,v in r['validation'].items() if k!='events'}},ensure_ascii=False,indent=2))
+          PY
+          echo "research_rc=$RC"
+      - name: Commit research outputs only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout -- research/e2_profit_max/round2/input_shock/r2shock_01.txt research/e2_profit_max/round2/input_shock/r2shock_02.txt research/e2_profit_max/round2/input_shock/r2shock_03.txt
+          git config user.name 'hengce-e2-research-bot'
+          git config user.email 'hengce-e2-research-bot@users.noreply.github.com'
+          git add research/e2_profit_max/round2/train_grid_80.csv research/e2_profit_max/round2/round2_result.json
+          if [ -f research/e2_profit_max/round2/winner_validation_events.csv ]; then git add research/e2_profit_max/round2/winner_validation_events.csv; fi
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'HENGCE E2 profit-max round2 finite result'
+          git push origin HEAD:main
