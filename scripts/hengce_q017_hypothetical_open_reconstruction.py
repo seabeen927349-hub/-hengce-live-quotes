@@ -48,14 +48,17 @@ def main():
     qmap={str(q.get('ticker')):q for q in qrows if q.get('ticker') is not None}
 
     candidates=[]
+    quote_seen=0
     open_seen=0
-    ref_mismatch=[]
+    missing_quote=[]
     no_open=[]
+    ref_mismatch=[]
     for t in eligible:
         q=qmap.get(t)
         if not q:
-            no_open.append(t)
+            missing_quote.append(t)
             continue
+        quote_seen+=1
         op=f(q.get('open'))
         if op is None:
             no_open.append(t)
@@ -95,7 +98,7 @@ def main():
     e2_path=ROOT/'hengce'/'e2_live'/'state_latest.json'
     e2=json.loads(e2_path.read_text(encoding='utf-8')) if e2_path.exists() else None
     out={
-        'schema_version':1,
+        'schema_version':2,
         'system':'HENGCE',
         'module':'Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION',
         'trade_date':td.isoformat(),
@@ -108,7 +111,7 @@ def main():
             'actual_0901_observation_file_used':False,
             'late_snapshot_open_field_used':True,
             'open_price_is_session_open_but_0901_observability_cannot_be_proven':True,
-            'must_not_be_promoted_to_formal_signal':True,
+            'must_not_be_promoted_to_formal_signal':True
         },
         'source':{
             'file':'shadow/full_market_latest.json',
@@ -116,16 +119,23 @@ def main():
             'generated_at_taipei':sh.get('generated_at_taipei'),
             'source_authority':sh.get('authority'),
             'universe_count':sh.get('universe_count'),
-            'provider_covered_count':sh.get('provider_covered_count'),
+            'provider_covered_count':sh.get('provider_covered_count')
         },
         'q017_universe_lock':{
             'scope':'TWSE_LISTED_ELECTRONICS_ONLY',
             'history_latest_date':hist_date,
             'universe_count':len(members),
             'eligible_positive_beta_count':len(eligible),
+            'eligible_quote_row_count':quote_seen,
+            'eligible_quote_row_coverage':quote_seen/len(eligible) if eligible else 0,
             'eligible_with_open_field_count':open_seen,
-            'open_field_coverage':open_seen/len(eligible) if eligible else 0,
-            'non_electronics_allowed':False,
+            'opened_coverage':open_seen/len(eligible) if eligible else 0,
+            'missing_quote_count':len(missing_quote),
+            'missing_quote_tickers':missing_quote,
+            'quote_present_but_no_open_count':len(no_open),
+            'quote_present_but_no_open_tickers':no_open,
+            'coverage_interpretation':'Provider quote-row coverage and opened-trade coverage are different. A quote row with no open can be a causal not-yet-opened state and is not automatically a provider failure.',
+            'non_electronics_allowed':False
         },
         'market_gate':{
             'gate_go':gate_go,
@@ -133,25 +143,24 @@ def main():
             'sox_1d':sf['sox_1d'],
             'sox_5d':sf['sox_5d'],
             'dxy_5d':dxy['dxy_5d'],
-            'dxy_latest_session':dxy.get('latest_session'),
+            'dxy_latest_session':dxy.get('latest_session')
         },
         'model_rules':{
             'residual_max':0.04,
             'score':'beta*(1+25*max(-residual,0))',
-            'top_n':3,
+            'top_n':3
         },
         'hypothetical_top3':candidates[:3],
         'hypothetical_top10':candidates[:10],
         'qualified_candidate_count':len(candidates),
-        'missing_or_no_open_count':len(no_open),
         'reference_close_mismatch_count':len(ref_mismatch),
         'reference_close_mismatch_sample':ref_mismatch[:20],
         'e2_context':None if not e2 else {
             'signal_asof':e2.get('signal_asof'),
             'market_regime':e2.get('market_regime'),
             'strict_engine_status':(e2.get('strict') or {}).get('engine_status'),
-            'strict_buy_count':(e2.get('strict') or {}).get('buy_count'),
-        },
+            'strict_buy_count':(e2.get('strict') or {}).get('buy_count')
+        }
     }
     out['receipt_sha256']=sha({k:v for k,v in out.items() if k!='receipt_sha256'})
     path=OUTDIR/f'HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_{td.strftime("%Y%m%d")}.json'
