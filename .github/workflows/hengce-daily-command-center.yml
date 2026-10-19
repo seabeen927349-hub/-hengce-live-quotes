@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'self-test | premarket | decision | monitor | postclose'
+        description: 'self-test | premarket | decision | compute | monitor | postclose'
         required: false
         default: 'self-test'
+      trade_date:
+        description: 'Optional YYYY-MM-DD for manual compute/recovery'
+        required: false
+        default: ''
   push:
     branches: [main]
     paths:
@@ -16,6 +20,8 @@ on:
       - 'scripts/hengce_q017_authority_guard.py'
       - 'scripts/hengce_q017_decision_lock_v4.py'
       - 'scripts/hengce_q017_authority_guard_v4.py'
+      - 'scripts/hengce_q017_observation_lock_v5.py'
+      - 'scripts/hengce_q017_authority_guard_v5.py'
       - 'scripts/test_hengce_q017_decision_lock.py'
       - 'scripts/test_hengce_q017_adversarial_v4.py'
       - 'scripts/hengce_e2_live.py'
@@ -24,13 +30,14 @@ on:
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.json'
       - '.github/workflows/hengce-daily-command-center.yml'
   schedule:
     # Asia/Taipei = UTC+8
     - cron: '30 22 * * 0-4'
-    # Start early, prepare causal inputs, then wait inside the job for 09:01:05.
+    # Start early; collect and persist 09:01 observation first, then compute.
     - cron: '50 0 * * 1-5'
-    # Post-lock Q017 monitor snapshots; E2 remains bound to prior-close state.
+    # Post-lock monitor snapshots; E2 remains bound to prior-close state.
     - cron: '3 1 * * 1-5'
     - cron: '10 1 * * 1-5'
     - cron: '20 1 * * 1-5'
@@ -84,6 +91,18 @@ jobs:
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"
           echo "Resolved mode=$MODE"
 
+      - name: Resolve optional trade date
+        id: target
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE_ARG=''
+          if [[ '${{ github.event_name }}' == 'workflow_dispatch' && -n '${{ inputs.trade_date }}' ]]; then
+            [[ '${{ inputs.trade_date }}' =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || { echo 'BAD_TRADE_DATE_FORMAT'; exit 2; }
+            DATE_ARG='--date ${{ inputs.trade_date }}'
+          fi
+          echo "date_arg=$DATE_ARG" >> "$GITHUB_OUTPUT"
+
       - name: Run self-test
         if: steps.mode.outputs.mode == 'self-test'
         shell: bash
@@ -96,6 +115,8 @@ jobs:
           python scripts/hengce_q017_decision_lock_v4.py --mode self-test
           python scripts/hengce_q017_authority_guard_v4.py --mode self-test
           python scripts/test_hengce_q017_adversarial_v4.py
+          python scripts/hengce_q017_observation_lock_v5.py --mode self-test
+          python scripts/hengce_q017_authority_guard_v5.py --mode self-test
           python scripts/hengce_e2_live.py --mode self-test
 
           set +e
@@ -112,17 +133,51 @@ jobs:
         if: steps.mode.outputs.mode == 'premarket'
         run: python scripts/hengce_daily_command_center.py --mode premarket
 
-      - name: Capture immutable 09:01 Q017 schema-v4 decision snapshot
+      - name: Capture immutable 09:01 Q017 observation only
+        id: q017_observe
         if: steps.mode.outputs.mode == 'decision'
-        run: python scripts/hengce_q017_decision_lock_v4.py --mode decision
+        continue-on-error: true
+        shell: bash
+        run: python scripts/hengce_q017_observation_lock_v5.py --mode observe ${{ steps.target.outputs.date_arg }}
+
+      - name: Persist 09:01 observation before any ranking computation
+        if: always() && steps.mode.outputs.mode == 'decision' && steps.q017_observe.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-observation-lock-bot'
+          git config user.email 'hengce-observation-lock-bot@users.noreply.github.com'
+          git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/history/ || true
+          if git diff --cached --quiet; then
+            echo '09:01 observation already persisted.'
+          else
+            TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            git commit -m "HENGCE Q017 immutable 09:01 observation ${TS}"
+            if ! git push origin HEAD:main; then
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
+
+      - name: Compute Q017 only from locked 09:01 observation
+        id: q017_compute
+        if: steps.mode.outputs.mode == 'compute' || (steps.mode.outputs.mode == 'decision' && steps.q017_observe.outcome == 'success')
+        continue-on-error: true
+        shell: bash
+        run: python scripts/hengce_q017_observation_lock_v5.py --mode compute ${{ steps.target.outputs.date_arg }}
 
       - name: Bind E2 prior-close state for morning execution
-        if: steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'monitor'
+        id: e2_morning
+        if: always() && (steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
+        continue-on-error: true
         run: python scripts/hengce_e2_live.py --mode morning
 
-      - name: Run locked Q017 schema-v4 post-open monitor
+      - name: Run locked Q017 post-open monitor
+        id: q017_monitor
         if: steps.mode.outputs.mode == 'monitor'
-        run: python scripts/hengce_q017_decision_lock_v4.py --mode monitor
+        continue-on-error: true
+        shell: bash
+        run: python scripts/hengce_q017_observation_lock_v5.py --mode monitor ${{ steps.target.outputs.date_arg }}
 
       - name: Run post-close official ingest and history append
         if: steps.mode.outputs.mode == 'postclose'
@@ -132,9 +187,9 @@ jobs:
         if: steps.mode.outputs.mode == 'postclose'
         run: python scripts/hengce_e2_live.py --mode postclose
 
-      - name: Enforce Q017 schema-v4 authority guard
+      - name: Enforce Q017 schema-v5 observation-bound authority guard
         if: always() && steps.mode.outputs.mode != 'self-test'
-        run: python scripts/hengce_q017_authority_guard_v4.py --mode check-and-repair
+        run: python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
 
       - name: Commit command-center outputs
         if: always() && steps.mode.outputs.mode != 'self-test'
@@ -146,11 +201,33 @@ jobs:
           git add hengce/q017_radar/ hengce/e2_live/ eod/ || true
           if git diff --cached --quiet; then
             echo 'No command-center output changes.'
-            exit 0
+          else
+            TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            git commit -m "HENGCE command center ${TS} ${{ steps.mode.outputs.mode }}"
+            if ! git push origin HEAD:main; then
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
           fi
-          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "HENGCE command center ${TS} ${{ steps.mode.outputs.mode }}"
-          if ! git push origin HEAD:main; then
-            git pull --rebase origin main
-            git push origin HEAD:main
+
+      - name: Final engine health status
+        if: always() && (steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
+        shell: bash
+        run: |
+          set -euo pipefail
+          MODE='${{ steps.mode.outputs.mode }}'
+          Q017_OK=1
+          if [[ "$MODE" == 'decision' ]]; then
+            [[ '${{ steps.q017_observe.outcome }}' == 'success' && '${{ steps.q017_compute.outcome }}' == 'success' ]] || Q017_OK=0
+          elif [[ "$MODE" == 'compute' ]]; then
+            [[ '${{ steps.q017_compute.outcome }}' == 'success' ]] || Q017_OK=0
+          elif [[ "$MODE" == 'monitor' ]]; then
+            [[ '${{ steps.q017_monitor.outcome }}' == 'success' ]] || Q017_OK=0
+          fi
+          E2_OK=1
+          [[ '${{ steps.e2_morning.outcome }}' == 'success' ]] || E2_OK=0
+          echo "Q017_OK=$Q017_OK E2_OK=$E2_OK"
+          if [[ "$Q017_OK" -ne 1 || "$E2_OK" -ne 1 ]]; then
+            echo 'One engine is fail-closed; the other engine was still allowed to run and persist its state.'
+            exit 2
           fi
