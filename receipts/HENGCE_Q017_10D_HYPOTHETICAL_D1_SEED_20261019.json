@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "Q017_10D_HYPOTHETICAL_D1_SEED",
+  "signal_date": "2026-10-19",
+  "authority_lane": "HYPOTHETICAL_ZERO_CAPITAL_ONLY",
+  "capital_authority_twd": 0,
+  "formal_ledger_mutation": false,
+  "promotion_to_formal_forbidden": true,
+  "signal_day_is_D1": true,
+  "source": {
+    "provider": "TWSE official daily market data",
+    "basis": "2026-10-19 official OHLC used only to update the already-existing hypothetical zero-authority cohort",
+    "original_signal_receipt": "receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261019.json"
+  },
+  "members": [
+    {
+      "ticker": "7795",
+      "name": "長廣",
+      "open": 425.0,
+      "high": 452.5,
+      "low": 424.0,
+      "close": 444.5
+    },
+    {
+      "ticker": "2455",
+      "name": "全新",
+      "open": 460.0,
+      "high": 495.0,
+      "low": 459.0,
+      "close": 491.5
+    },
+    {
+      "ticker": "2492",
+      "name": "華新科",
+      "open": 370.0,
+      "high": 372.0,
+      "low": 355.5,
+      "close": 364.0
+    }
+  ],
+  "policy": "This receipt may only seed the isolated hypothetical Q017 10D review lane. It is not a formal 09:01 observation, not a formal Q017 BUY record, and has zero capital authority."
+}
