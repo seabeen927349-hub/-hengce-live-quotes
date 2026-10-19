@@ -1,0 +1,51 @@
+{
+  "contract_id": "HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019",
+  "status": "ACTIVE_PERFORMANCE_REVIEW_ONLY",
+  "formal_capital_authority": false,
+  "historical_q017_model_lock_unchanged": true,
+  "source_engine": "Q017_SCHEMA5_FORMAL_DECISIONS_ONLY",
+  "purpose": "Track every formally selected Q017 stock independently for ten Taiwan market sessions and produce a daily post-close review until D10 closure.",
+  "cohort_identity": "SIGNAL_DATE_X_TICKER",
+  "rules": {
+    "every_formal_signal_date_creates_new_cohorts": true,
+    "top3_change_next_day_does_not_delete_prior_cohorts": true,
+    "same_ticker_reselected_on_later_signal_date_creates_separate_cohort": true,
+    "signal_date_close_is_D1": true,
+    "D10_is_tenth_complete_market_session_including_signal_date": true,
+    "weekends_and_market_holidays_do_not_increment_day_count": true,
+    "formal_reference_price": "Q017_DECISION_OPEN",
+    "hypothetical_reconstruction_may_enter_ledger": false,
+    "shadow_or_diagnostic_selection_may_enter_ledger": false,
+    "D10_closure_is_mandatory": true,
+    "new_daily_selection_may_not_overwrite_existing_active_cohort": true
+  },
+  "daily_metrics": [
+    "close_return_from_selection",
+    "session_high_return_from_selection",
+    "session_low_return_from_selection",
+    "mfe_to_date",
+    "mae_to_date",
+    "current_day"
+  ],
+  "D10_final_metrics": [
+    "d10_close",
+    "d10_return_from_selection",
+    "mfe_10d",
+    "mae_10d",
+    "observed_price_sessions",
+    "missing_price_sessions"
+  ],
+  "inputs": {
+    "formal_decisions": "hengce/q017_radar/decision/YYYYMMDD_0901.json",
+    "eod_prices": "eod/YYYYMMDD/price_*.csv",
+    "eod_completeness": "eod/YYYYMMDD/status.json with price/institutional/margin all COMPLETE"
+  },
+  "outputs": {
+    "ledger": "hengce/q017_review_10d/ledger_latest.json",
+    "latest_review": "hengce/q017_review_10d/review_latest.json",
+    "daily_json": "hengce/q017_review_10d/daily/YYYYMMDD_review.json",
+    "daily_markdown": "hengce/q017_review_10d/daily/YYYYMMDD_review.md"
+  },
+  "implementation": "scripts/hengce_q017_10d_review.py",
+  "authority_boundary": "Review statistics may diagnose model performance but may not modify Q017 ranking, gate, capital authority, or historical frozen rules."
+}
