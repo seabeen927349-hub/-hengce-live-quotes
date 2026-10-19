@@ -394,7 +394,15 @@ def premarket(today=None):
     today=today or now_tw().date();sox=refresh_sox(today);seed=ensure_tw_history();ed,es=latest_eod_status();sf=sox_features(today)
     eod_ok=bool(es and es.get('price_status')=='COMPLETE' and es.get('institutional_status')=='COMPLETE' and es.get('margin_status')=='COMPLETE')
     hist=load_tw_history();latest_hist=max(r['date'] for r in hist)
-    status={'system':'HENGCE','module':'DAILY_DATA_GATE','generated_at_taipei':now_tw().isoformat(),'trade_date':today.isoformat(),'status':'PASS' if eod_ok else 'DATA_PENDING','required':{'sox':sox,'latest_eod_date':ed,'latest_eod_complete':eod_ok,'electronics_history':seed,'electronics_history_latest':latest_hist},'sox':sf,'policy':'NO_REQUIRED_DATA_NO_FORMAL_SIGNAL'}
+    try: hist_date=datetime.strptime(latest_hist,'%Y-%m-%d').date()
+    except Exception: hist_date=None
+    q017_ok=bool(hist_date and hist_date<today and sox.get('status')=='PASS')
+    eod_iso=None
+    if ed:
+        try:eod_iso=datetime.strptime(ed,'%Y%m%d').date().isoformat()
+        except Exception:eod_iso=str(ed)
+    e2_archive_status='PASS' if (eod_ok and eod_iso==latest_hist) else ('ARCHIVE_GAP' if eod_ok else 'DATA_PENDING')
+    status={'system':'HENGCE','module':'DAILY_DATA_GATE','generated_at_taipei':now_tw().isoformat(),'trade_date':today.isoformat(),'status':'PASS' if q017_ok else 'DATA_PENDING','lane_status':{'q017_inputs':'PASS' if q017_ok else 'DATA_PENDING','e2_eod_archive':e2_archive_status},'required':{'sox':sox,'latest_eod_date':ed,'latest_eod_complete':eod_ok,'electronics_history':seed,'electronics_history_latest':latest_hist},'sox':sf,'policy':'Q017_AND_E2_DATA_LANES_INDEPENDENT;E2_ARCHIVE_GAP_DOES_NOT_INVALIDATE_CAUSAL_Q017_INPUTS'}
     atomic_json(DATA_STATUS,status);return status
 
 

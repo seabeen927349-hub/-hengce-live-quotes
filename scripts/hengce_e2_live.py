@@ -57,15 +57,26 @@ def latest_complete_eod_date():
   except:continue
   if all(o.get(k)=='COMPLETE' for k in ['price_status','institutional_status','margin_status']):return datetime.strptime(p.name,'%Y%m%d').date()
  return None
+def latest_market_session_hint(td):
+ p=ROOT/'hengce'/'q017_radar'/'data_status.json'
+ if not p.exists():return None
+ try:o=read_json(p);x=((o.get('required') or {}).get('electronics_history_latest'))
+ except Exception:return None
+ try:d=datetime.strptime(str(x),'%Y-%m-%d').date()
+ except Exception:return None
+ return d if d<td else None
 def morning(td):
  if not STATE.exists():raise RuntimeError('E2_STATE_MISSING')
  s=read_json(STATE);validate_locked_state(s);sd=datetime.strptime(s['signal_asof'],'%Y-%m-%d').date()
  if sd>=td:raise RuntimeError('E2_SIGNAL_ASOF_NOT_PRIOR_TO_TRADE_DATE')
  if (td-sd).days>MAX_STATE_STALE_DAYS:raise RuntimeError('E2_STATE_TOO_STALE')
+ expected=latest_market_session_hint(td)
+ if expected and sd!=expected:raise RuntimeError(f'E2_STATE_NOT_LATEST_MARKET_SESSION:STATE={sd}:EXPECTED={expected}')
  le=latest_complete_eod_date()
  if le and le>sd:raise RuntimeError(f'E2_STATE_STALE_VS_COMPLETE_EOD:STATE={sd}:EOD={le}')
+ archive_gap=bool(le is None or le<sd)
  ps=s['position_state'];due=ps.get('pending') or []
- out={'schema_version':1,'system':'HENGCE','module':'E2_MORNING_EXECUTION_BRIDGE','trade_date':td.isoformat(),'generated_at_taipei':now_tw().isoformat(),'binding_status':'PASS','source_signal_asof':s['signal_asof'],'latest_complete_eod_date':le.isoformat() if le else None,'engine_status':s['strict']['engine_status'],'strict_cohort_count':s['strict']['cohort_count'],'new_signal_buy_count':s['strict']['buy_count'],'entry_due_count':len(due),'entry_due':due,'held_from_prior_close':ps.get('held') or [],'free_slots_before_today_entries':ps['free_slots_next_session'],'extension_shadow':s['extension_shadow'],'capital_authority':'STRICT_PENDING_ENTRY_ONLY','note':'E2 signals form after close; morning bridge executes only prior locked PENDING_ENTRY state. Shadow has zero capital authority.'};atomic_json(MORNING,out);return out
+ out={'schema_version':1,'system':'HENGCE','module':'E2_MORNING_EXECUTION_BRIDGE','trade_date':td.isoformat(),'generated_at_taipei':now_tw().isoformat(),'binding_status':'PASS','source_signal_asof':s['signal_asof'],'expected_prior_market_session':expected.isoformat() if expected else None,'latest_complete_eod_date':le.isoformat() if le else None,'local_eod_archive_gap':archive_gap,'engine_status':s['strict']['engine_status'],'strict_cohort_count':s['strict']['cohort_count'],'new_signal_buy_count':s['strict']['buy_count'],'entry_due_count':len(due),'entry_due':due,'held_from_prior_close':ps.get('held') or [],'free_slots_before_today_entries':ps['free_slots_next_session'],'extension_shadow':s['extension_shadow'],'capital_authority':'STRICT_PENDING_ENTRY_ONLY','note':'E2 state must match latest known prior market session. A lagging local EOD archive is repairable and has no authority over a separately hash-locked E2 state.'};atomic_json(MORNING,out);return out
 def get_json(url,params,tries=4):
  last=None
  for n in range(tries):

@@ -1,0 +1,202 @@
+﻿Date,Ticker,Name,VolumeShares,Trades,TurnoverTWD,Open,High,Low,Close,ChangeSign,Change,LastBid,LastBidVolume,LastAsk,LastAskVolume,PE,Source
+2026-10-16,1101,台泥,57437884,16647,1574086796,27.10,27.70,26.95,27.30,<p style= color:red>+</p>,0.50,27.25,438,27.30,376,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1102,亞泥,8156583,3795,310827960,37.85,38.25,37.75,38.20,<p style= color:red>+</p>,0.35,38.15,6,38.20,506,10.55,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1103,嘉泥,380230,204,5055212,13.30,13.35,13.25,13.30,<p style= color:red>+</p>,0.05,13.25,15,13.30,40,9.93,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1104,環泥,443370,288,12024592,26.90,27.20,26.90,27.15,<p style= color:red>+</p>,0.25,27.05,46,27.15,29,10.06,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1108,幸福,193827,97,2147759,11.05,11.15,11.00,11.05,<p> </p>,0.00,11.00,56,11.05,1,16.25,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1109,信大,70082,68,922069,13.20,13.20,13.10,13.15,<p style= color:red>+</p>,0.05,13.10,16,13.15,4,19.06,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1110,東泥,88110,74,1287008,14.40,14.70,14.40,14.70,<p style= color:red>+</p>,0.25,14.60,1,14.70,11,23.71,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1201,味全,642850,298,7439253,11.50,11.60,11.50,11.60,<p style= color:red>+</p>,0.10,11.55,97,11.60,24,19.02,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1203,味王,10141,39,438565,43.80,43.80,43.20,43.20,<p style= color:green>-</p>,0.10,43.20,5,43.60,1,20.57,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1210,大成,1310282,1132,67687328,51.80,51.90,51.50,51.70,<p style= color:green>-</p>,0.10,51.60,18,51.70,63,12.70,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1213,大飲,10178,11,75627,7.11,7.52,7.11,7.48,<p style= color:red>+</p>,0.31,7.20,1,7.44,2,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1215,卜蜂,674213,862,71982057,106.50,107.50,105.50,107.00,<p style= color:red>+</p>,0.50,106.50,41,107.00,6,12.33,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1216,統一,15818268,8213,1255133909,79.90,80.40,78.70,79.60,<p style= color:red>+</p>,0.10,79.50,73,79.60,507,19.23,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1217,愛之味,339592,238,3367447,9.92,9.95,9.89,9.92,<p> </p>,0.00,9.91,1,9.92,1,15.03,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1218,泰山,262456,206,3820485,14.65,14.65,14.50,14.60,<p style= color:red>+</p>,0.05,14.55,2,14.60,53,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1219,福壽,465011,274,5125097,11.10,11.10,10.95,11.10,<p style= color:red>+</p>,0.05,11.10,4,11.15,22,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1220,台榮,24692,75,268821,10.90,10.90,10.85,10.90,<p> </p>,0.00,10.85,5,10.95,15,155.71,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1225,福懋油,22552,59,560187,24.75,25.00,24.75,24.85,<p style= color:red>+</p>,0.10,24.80,9,24.85,1,118.33,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1227,佳格,663984,511,18924937,28.60,28.70,28.35,28.50,<p> </p>,0.00,28.45,3,28.50,110,17.70,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1229,聯華,1572693,2297,64638683,41.40,41.50,40.90,41.05,<p style= color:green>-</p>,0.35,41.00,22,41.05,10,16.49,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1231,聯華食,350481,715,26939610,76.60,77.20,76.60,76.90,<p style= color:red>+</p>,0.30,76.80,3,76.90,1,15.57,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1232,大統益,98653,144,15495009,157.50,157.50,156.50,157.00,<p style= color:red>+</p>,0.50,157.00,3,157.50,28,17.39,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1233,天仁,20125,25,566221,28.30,28.40,27.90,28.25,<p style= color:red>+</p>,0.05,27.95,3,28.30,4,30.71,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1234,黑松,56906,93,1859558,32.50,32.75,32.50,32.70,<p style= color:red>+</p>,0.20,32.65,20,32.70,4,19.94,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1235,興泰,18737,26,603000,32.00,33.00,31.95,31.95,<p style= color:red>+</p>,0.55,31.95,1,32.80,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1236,宏亞,22946,30,584746,25.60,25.60,25.40,25.60,<p style= color:red>+</p>,0.10,25.55,2,25.65,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1256,鮮活果汁-KY,118681,139,20126659,168.50,174.50,167.50,169.00,<p style= color:red>+</p>,1.50,169.00,2,171.00,1,10.86,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1301,台塑,101069113,57450,8317153939,81.00,84.30,80.50,82.10,<p style= color:red>+</p>,0.40,82.00,105,82.10,196,50.06,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1303,南亞,119583306,113684,37373408842,314.00,320.00,305.50,307.00,<p style= color:green>-</p>,7.50,307.00,54,307.50,76,49.52,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1304,台聚,4262080,1326,56939894,13.15,13.50,13.10,13.35,<p style= color:red>+</p>,0.15,13.35,37,13.40,46,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1305,華夏,2354348,667,31027686,13.10,13.30,13.00,13.15,<p> </p>,0.00,13.15,12,13.20,10,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1307,三芳,342379,303,10825109,31.60,31.75,31.45,31.45,<p style= color:red>+</p>,0.20,31.45,9,31.50,3,9.39,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1308,亞聚,1365288,637,20045526,14.60,14.80,14.60,14.70,<p style= color:red>+</p>,0.05,14.65,14,14.75,7,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1309,台達化,1798286,852,26243705,14.35,14.75,14.35,14.70,<p style= color:red>+</p>,0.35,14.70,7,14.75,43,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1310,台苯,4502922,1542,45284310,9.87,10.20,9.84,10.05,<p style= color:red>+</p>,0.18,10.05,44,10.10,39,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1312,國喬,80842130,23273,1330949690,16.50,17.05,16.05,16.15,<p style= color:green>-</p>,0.90,16.10,893,16.15,656,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1313,聯成,4439138,1443,58086271,12.90,13.25,12.90,13.05,<p style= color:red>+</p>,0.15,13.05,15,13.10,87,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1314,中石化,24463971,5365,219056101,8.86,9.03,8.82,8.99,<p style= color:red>+</p>,0.14,8.98,47,8.99,11,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1315,達新,151441,388,11015368,73.90,74.60,71.10,72.30,<p style= color:green>-</p>,2.10,72.10,1,72.60,1,29.63,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1316,上曜,1204293,541,12734598,10.45,10.65,10.45,10.55,<p style= color:red>+</p>,0.15,10.55,11,10.60,139,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1319,東陽,1214331,1063,101698348,83.40,84.50,83.00,83.50,<p style= color:red>+</p>,0.20,83.50,34,83.60,8,13.56,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1321,大洋,324183,275,11653046,36.45,36.50,35.40,36.15,<p style= color:red>+</p>,0.15,36.05,1,36.15,2,278.08,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1323,永裕,26851,70,586419,21.70,21.95,21.70,21.90,<p style= color:red>+</p>,0.10,21.75,2,21.90,9,17.24,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1324,地球,14251,40,141723,9.99,9.99,9.91,9.92,<p style= color:red>+</p>,0.02,9.92,4,9.95,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1325,恆大,1113819,730,31693446,28.65,28.95,28.20,28.45,<p style= color:green>-</p>,0.20,28.45,7,28.50,7,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1326,台化,50717598,30433,3958205659,76.50,79.00,75.50,78.70,<p style= color:red>+</p>,1.70,78.60,23,78.70,76,33.35,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1337,再生-KY,195833,126,866672,4.43,4.50,4.39,4.41,<p style= color:green>-</p>,0.02,4.41,25,4.44,30,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1338,廣華-KY,50111,63,730203,14.55,14.70,14.50,14.55,<p> </p>,0.00,14.50,13,14.55,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1339,昭輝,73137,87,3080441,42.30,42.60,41.95,42.35,<p style= color:red>+</p>,0.05,42.25,1,42.35,1,7.29,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1340,勝悅-KY,99000,81,501525,5.03,5.11,5.03,5.05,<p style= color:red>+</p>,0.03,5.05,12,5.06,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1341,富林-KY,1072,6,63775,59.50,59.50,59.50,59.50,<p style= color:red>+</p>,0.20,58.90,2,59.50,1,12.09,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1342,八貫,79816,102,8035447,101.00,101.00,100.00,100.00,<p style= color:green>-</p>,0.50,100.00,41,101.00,5,14.14,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1402,遠東新,6153227,2499,181196757,29.40,29.80,29.25,29.40,<p> </p>,0.00,29.35,15,29.40,17,15.23,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1409,新纖,9711940,4175,250858323,25.85,26.15,25.50,25.75,<p style= color:red>+</p>,0.25,25.70,139,25.75,6,11.70,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1410,南染,40003,34,940370,23.30,23.70,23.25,23.40,<p style= color:red>+</p>,0.05,23.40,5,23.50,1,32.05,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1413,宏洲,4000,3,37400,9.32,9.42,9.32,9.42,<p style= color:green>-</p>,0.02,9.34,1,9.43,2,30.39,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1414,東和,58862,54,1029909,17.60,17.60,17.40,17.60,<p style= color:red>+</p>,0.10,17.55,1,17.60,11,31.43,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1416,廣豐,1558823,727,20662872,13.45,13.50,13.05,13.20,<p style= color:green>-</p>,0.05,13.20,105,13.25,22,11.19,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1417,嘉裕,81489,84,660626,8.11,8.13,8.09,8.12,<p style= color:green>-</p>,0.01,8.10,1,8.11,10,15.92,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1418,東華,7128,19,130538,18.75,18.75,18.20,18.25,<p style= color:green>-</p>,0.35,18.20,2,18.40,2,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1419,新紡,26124,35,1715721,65.70,66.00,65.50,65.50,<p style= color:red>+</p>,0.20,65.50,1,65.90,4,4.71,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1423,利華,1205,28,41857,35.05,35.05,35.05,35.05,<p style= color:green>-</p>,0.95,35.00,1,35.90,1,10.28,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1432,大魯閣,101188,247,1515821,15.00,15.00,14.95,15.00,<p> </p>,0.00,14.95,24,15.00,55,2.94,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1434,福懋,3498788,1751,70830309,20.15,20.40,20.00,20.40,<p style= color:red>+</p>,0.30,20.35,11,20.40,153,22.17,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1435,中福,10546,34,220768,20.60,21.10,20.60,20.95,<p style= color:red>+</p>,0.95,20.60,2,21.15,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1436,華友聯,78728,169,2875246,36.50,36.70,36.25,36.45,<p style= color:green>-</p>,0.05,36.35,2,36.45,1,12.93,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1437,勤益控,71147,80,2198143,31.10,31.10,30.80,30.85,<p style= color:green>-</p>,0.15,30.80,12,30.95,1,7.12,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1438,三地開發,16976,28,369009,21.60,21.95,21.60,21.80,<p style= color:red>+</p>,0.20,21.60,2,21.85,6,8.42,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1439,雋揚,25144,23,726669,28.90,29.30,28.60,29.30,<p style= color:red>+</p>,0.35,29.10,2,29.20,1,9.54,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1440,南紡,5337757,1395,75602908,14.20,14.35,14.05,14.15,<p style= color:red>+</p>,0.05,14.15,31,14.20,163,471.67,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1441,大東,14951,106,143780,9.62,9.62,9.60,9.61,<p style= color:green>-</p>,0.01,9.64,2,9.98,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1442,名軒,94532,104,2552064,26.95,27.10,26.90,27.10,<p style= color:red>+</p>,0.35,27.05,1,27.10,23,15.85,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1443,立益物流,3084,12,69715,22.55,22.70,22.55,22.65,<p style= color:red>+</p>,0.10,22.55,1,22.65,1,11.16,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1444,力麗,973884,512,6793036,6.93,7.04,6.90,6.92,<p> </p>,0.00,6.92,24,6.93,2,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1445,大宇,75893,42,763403,10.00,10.10,9.97,10.10,<p style= color:red>+</p>,0.10,10.05,4,10.10,3,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1446,宏和,132532,107,1787815,13.60,13.60,13.45,13.50,<p> </p>,0.00,13.45,8,13.55,9,14.36,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1447,力鵬,1110169,493,7214722,6.46,6.61,6.46,6.46,<p style= color:green>-</p>,0.09,6.46,121,6.50,2,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1449,佳和,202128,173,2556381,12.60,12.80,12.55,12.55,<p style= color:green>-</p>,0.05,12.55,22,12.65,2,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1451,年興,125863,91,2148684,17.15,17.20,17.00,17.15,<p style= color:red>+</p>,0.05,17.10,3,17.15,10,11.36,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1452,宏益,164431,153,1744703,10.75,10.75,10.50,10.60,<p style= color:green>-</p>,0.15,10.55,17,10.60,4,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1453,大將,24975,66,274623,10.85,11.05,10.85,11.05,<p style= color:red>+</p>,0.20,11.00,1,11.05,2,15.79,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1454,台富,45953,85,585893,13.05,13.05,12.60,12.60,<p style= color:green>-</p>,0.25,12.60,7,12.65,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1455,集盛,1598644,612,16106000,10.05,10.20,10.00,10.10,<p style= color:red>+</p>,0.11,10.05,27,10.10,51,19.06,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1456,怡華,88000,47,1354550,15.55,15.55,15.25,15.30,<p style= color:green>-</p>,0.20,15.25,1,15.30,8,5.28,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1457,宜進,151597,86,2185801,14.40,14.45,14.30,14.45,<p style= color:red>+</p>,0.15,14.40,1,14.45,18,10.70,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1459,聯發,124639,148,2270995,18.20,18.55,18.10,18.10,<p style= color:green>-</p>,0.05,18.10,74,18.30,5,7.02,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1460,宏遠,270069,106,1660679,6.13,6.18,6.12,6.15,<p style= color:red>+</p>,0.01,6.14,33,6.15,14,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1463,強盛新,58636,58,1043914,17.90,18.00,17.70,18.00,<p style= color:red>+</p>,0.10,17.65,20,18.00,6,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1464,得力,302139,319,3001537,9.95,9.98,9.90,9.93,<p style= color:green>-</p>,0.02,9.93,107,9.95,1,11.96,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1465,偉全,47023,47,560718,11.85,12.00,11.85,11.95,<p style= color:red>+</p>,0.10,11.85,4,11.95,2,20.60,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1466,聚隆,146084,142,2117551,14.30,14.70,14.30,14.30,<p style= color:green>-</p>,0.05,14.30,18,14.50,7,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1467,南緯,195003,132,1573663,8.10,8.15,8.01,8.08,<p style= color:green>-</p>,0.02,8.08,4,8.09,2,31.08,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1468,昶和,65030,34,854597,13.10,13.25,13.05,13.25,<p style= color:red>+</p>,0.05,13.25,1,13.30,3,14.89,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1470,大統新創,0,0,0,--,--,--,--,<p> </p>,0.00,24.60,1,24.80,1,19.08,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1471,首利,195991,138,1793603,9.15,9.23,9.12,9.12,<p style= color:green>-</p>,0.02,9.12,7,9.13,1,45.60,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1472,三洋實業,16032,13,1427945,88.90,89.30,88.90,89.30,<p style= color:red>+</p>,1.00,88.50,5,89.30,2,13.95,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1473,台南,52556,78,991368,18.85,18.90,18.75,18.90,<p style= color:red>+</p>,0.05,18.90,1,18.95,5,54.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1474,弘裕,141219,71,1402176,10.05,10.05,9.88,9.95,<p style= color:green>-</p>,0.04,9.92,5,9.95,1,36.85,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1475,業旺,19072,15,487303,25.70,25.70,25.50,25.50,<p style= color:green>-</p>,0.10,25.50,10,25.60,1,6.56,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1476,儒鴻,2076940,2508,682810208,323.00,331.00,323.00,329.50,<p style= color:red>+</p>,5.50,329.00,7,329.50,7,13.65,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1477,聚陽,1345055,1589,284724678,209.00,214.50,209.00,211.00,<p style= color:red>+</p>,2.50,210.50,37,211.00,11,14.40,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1503,士電,583768,908,116542338,199.00,202.00,198.00,198.50,<p style= color:red>+</p>,1.50,198.00,30,198.50,2,27.34,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1504,東元,4871888,3211,342553609,69.60,71.00,69.60,69.70,<p style= color:red>+</p>,0.50,69.70,25,69.80,44,25.25,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1506,正道,60315,55,578721,9.60,9.64,9.56,9.58,<p style= color:green>-</p>,0.02,9.57,2,9.60,18,191.60,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1512,瑞利,91670,43,562983,6.23,6.23,6.07,6.20,<p style= color:green>-</p>,0.03,6.15,3,6.21,1,32.63,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1513,中興電,1375566,1599,227981331,166.00,167.00,165.00,165.00,<p> </p>,0.00,165.00,77,165.50,45,18.56,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1514,亞力,719966,896,73204296,101.00,103.00,101.00,101.00,<p style= color:red>+</p>,0.50,101.00,53,101.50,11,27.67,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1515,力山,750664,618,22010550,29.10,29.95,28.95,29.15,<p style= color:red>+</p>,0.40,29.10,33,29.15,1,19.56,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1517,利奇,95580,114,992841,10.35,10.45,10.35,10.40,<p style= color:red>+</p>,0.10,10.35,47,10.40,10,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1519,華城,867251,3508,575693058,659.00,673.00,655.00,656.00,<p style= color:red>+</p>,7.00,656.00,15,657.00,1,42.93,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1521,大億,20105,25,515148,25.70,25.70,25.55,25.65,<p style= color:green>-</p>,0.20,25.55,2,25.65,1,16.13,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1522,堤維西,690723,566,18934422,26.90,27.60,26.90,27.50,<p style= color:red>+</p>,0.65,27.45,3,27.50,12,28.65,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1524,耿鼎,364738,319,10053665,27.70,27.80,27.40,27.55,<p style= color:red>+</p>,0.20,27.50,4,27.55,10,13.50,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1525,江申,6105,11,377610,61.60,62.30,61.60,62.30,<p style= color:green>-</p>,0.30,61.70,1,62.00,1,42.38,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1526,日馳,55464,81,839487,14.95,15.35,14.95,15.00,<p style= color:red>+</p>,0.05,15.05,1,15.10,2,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1527,鑽全,65334,303,2125482,32.75,32.75,32.40,32.45,<p style= color:red>+</p>,0.05,32.45,1,32.50,2,15.38,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1528,恩德,5252067,3047,129848674,24.40,25.50,24.20,24.25,<p style= color:red>+</p>,0.60,24.25,29,24.40,2,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1529,樂事綠能,318366,240,4819143,15.15,15.35,15.05,15.05,<p> </p>,0.00,15.05,7,15.10,2,23.15,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1530,亞崴,76594,133,2075961,27.80,27.80,26.95,26.95,<p style= color:green>-</p>,0.25,26.90,4,27.10,1,14.34,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1531,高林股,33234,47,385181,11.70,11.70,11.55,11.55,<p style= color:green>-</p>,0.05,11.55,3,11.65,9,42.78,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1532,勤美,292423,195,6415642,21.80,22.15,21.75,22.00,<p style= color:red>+</p>,0.40,21.95,2,22.00,4,17.89,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1533,車王電,79987,81,2348926,29.25,29.60,29.20,29.25,<p style= color:red>+</p>,0.10,29.25,2,29.30,1,10.87,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1535,中宇,26306,24,1208234,46.30,46.30,45.85,46.00,<p style= color:red>+</p>,0.05,46.00,1,46.05,3,12.17,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1536,和大,460299,515,20603508,44.70,45.20,44.50,44.55,<p style= color:red>+</p>,0.25,44.55,5,44.60,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1537,廣隆,63952,80,7355521,115.50,115.50,114.50,115.50,<p style= color:red>+</p>,0.50,115.00,5,115.50,23,13.97,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1538,正峰,1,1,8,--,--,--,--,<p> </p>,0.00,8.35,1,9.00,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1539,巨庭,26182,24,405928,15.50,15.60,15.45,15.45,<p style= color:green>-</p>,0.10,15.45,29,15.55,1,18.39,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1540,喬福,65526,237,1223993,18.80,18.80,18.60,18.65,<p> </p>,0.00,18.60,21,18.65,18,15.29,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1541,錩泰,11020,15,218542,19.75,20.00,19.65,19.65,<p style= color:green>-</p>,0.15,19.60,1,19.75,1,7.28,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1558,伸興,139143,198,16353025,113.50,118.50,113.50,117.00,<p style= color:red>+</p>,1.00,117.00,6,117.50,4,14.57,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1560,中砂,1590114,6951,1410146625,903.00,913.00,871.00,874.00,<p style= color:green>-</p>,29.00,874.00,5,875.00,13,74.32,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1563,巧新,585735,1801,49401699,86.00,87.40,83.20,84.00,<p style= color:green>-</p>,0.30,83.60,4,84.00,5,79.25,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1568,倉佑,261057,195,7799403,30.10,30.25,29.50,29.80,<p style= color:green>-</p>,0.20,29.70,5,29.85,5,15.77,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1582,信錦,349820,455,24997385,70.00,72.10,70.00,71.10,<p style= color:red>+</p>,1.10,71.00,7,71.20,1,22.15,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1583,程泰,7054,12,335780,47.60,47.85,47.35,47.85,<p style= color:green>-</p>,0.35,47.60,1,48.00,1,10.92,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1587,吉茂,128043,97,3026269,23.45,24.10,23.40,23.45,<p> </p>,0.00,23.45,1,23.60,1,111.67,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1590,亞德客-KY,535059,1709,621963505,1160.00,1175.00,1155.00,1155.00,<p> </p>,0.00,1155.00,11,1160.00,11,22.19,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1597,直得,2408784,2270,347914367,144.50,147.00,141.50,144.00,<p style= color:green>-</p>,0.50,144.00,2,144.50,96,70.59,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1598,岱宇,117131,90,2313142,19.75,19.80,19.70,19.70,<p style= color:green>-</p>,0.05,19.70,6,19.85,2,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1603,華電,75266,75,2307275,30.70,30.75,30.60,30.65,<p style= color:red>+</p>,0.05,30.60,2,30.65,3,10.99,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1604,聲寶,113799,135,2678376,23.50,23.60,23.45,23.55,<p style= color:red>+</p>,0.05,23.50,1,23.55,2,13.46,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1605,華新,33605287,14770,1302035738,37.90,39.30,37.75,38.50,<p style= color:red>+</p>,0.80,38.45,55,38.50,262,11.67,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1608,華榮,1475637,1014,53593370,36.20,36.60,36.05,36.05,<p style= color:red>+</p>,0.05,36.05,15,36.10,3,3.13,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1609,大亞,3591490,2407,140144075,39.05,39.60,38.60,38.65,<p style= color:green>-</p>,0.45,38.65,20,38.75,64,14.26,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1611,中電,892636,394,10254907,11.35,11.55,11.35,11.50,<p style= color:red>+</p>,0.20,11.50,108,11.55,6,25.56,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1612,宏泰,278140,242,9496073,34.00,34.45,34.00,34.00,<p> </p>,0.00,34.00,45,34.10,18,8.72,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1614,三洋電,11979,101,378347,31.55,31.60,31.45,31.60,<p style= color:red>+</p>,0.05,31.55,1,31.65,2,25.08,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1615,大山,1334657,1224,67319448,50.10,51.40,49.55,50.50,<p style= color:green>-</p>,0.20,50.50,3,50.60,9,9.77,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1616,億泰,179116,150,3289968,18.40,18.55,18.25,18.40,<p style= color:red>+</p>,0.10,18.40,3,18.50,7,41.82,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1617,榮星,648274,406,14382930,22.20,22.55,21.90,22.10,<p style= color:green>-</p>,0.25,22.05,6,22.10,1,16.25,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1618,合機,278163,229,10892980,38.65,39.35,38.65,39.10,<p style= color:red>+</p>,0.35,39.05,21,39.15,1,8.06,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1623,大東電,60103,115,11366377,187.00,191.00,187.00,188.00,<p style= color:red>+</p>,1.00,188.00,1,188.50,2,15.14,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1626,艾美特-KY,29219,34,284034,9.75,9.77,9.70,9.77,<p style= color:red>+</p>,0.02,9.71,5,9.77,1,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1702,南僑,138557,185,4686397,33.90,33.90,33.75,33.80,<p style= color:red>+</p>,0.05,33.75,2,33.80,7,51.21,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1707,葡萄王,290959,722,25506868,88.20,88.70,87.20,87.30,<p style= color:green>-</p>,0.40,87.20,8,87.60,1,11.26,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1708,東鹼,2035756,1436,108095746,52.60,53.60,52.60,52.90,<p style= color:red>+</p>,0.10,52.90,45,53.00,22,12.81,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1709,和益,40385075,23794,2255572412,59.40,61.40,53.30,54.90,<p style= color:green>-</p>,3.90,54.90,16,55.00,33,27.31,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1710,東聯,5387675,2523,97887903,17.85,18.50,17.80,18.05,<p style= color:red>+</p>,0.05,18.05,48,18.10,24,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1711,永光,9457984,5374,421564121,43.80,45.80,43.55,44.45,<p style= color:red>+</p>,1.35,44.40,37,44.45,1,341.92,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1712,興農,757309,746,31117375,40.70,41.20,40.70,41.15,<p style= color:red>+</p>,0.55,41.15,13,41.20,63,15.53,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1713,國化,200809,132,9160700,45.95,45.95,45.35,45.90,<p style= color:red>+</p>,0.45,45.70,1,45.90,5,9.68,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1714,和桐,24226640,8960,470516983,19.00,19.90,18.90,19.25,<p style= color:red>+</p>,0.35,19.25,164,19.30,157,16.31,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1717,長興,5342203,4075,388743074,72.00,73.50,71.80,72.70,<p style= color:red>+</p>,0.90,72.60,2,72.70,13,38.26,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1718,中纖,31110564,8045,376536324,11.90,12.45,11.80,12.00,<p style= color:red>+</p>,0.20,11.95,488,12.00,336,20.34,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1720,生達,295444,340,17121562,58.20,58.20,57.50,57.90,<p> </p>,0.00,57.90,1,58.00,40,10.07,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1721,國慶科技,1211549,1328,30687466,25.05,25.75,25.00,25.40,<p> </p>,0.00,25.30,1,25.40,4,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1722,台肥,1156405,764,48710709,42.25,42.30,42.00,42.10,<p> </p>,0.00,42.10,3,42.15,31,50.12,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1723,中碳,403548,500,35095214,86.50,87.30,86.50,87.00,<p style= color:red>+</p>,0.50,86.80,3,87.00,10,27.97,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1725,元禎,88754,100,3068659,35.40,35.40,34.20,34.45,<p style= color:green>-</p>,0.40,34.25,2,34.50,4,14.06,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1726,永記,28310,25,2151738,76.00,76.10,76.00,76.00,<p style= color:red>+</p>,0.10,75.90,7,76.20,1,11.86,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1727,中華化,3241052,3063,319198349,97.40,100.50,96.80,98.60,<p style= color:red>+</p>,2.50,98.60,6,98.70,21,142.90,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1730,花仙子,25485,35,1301591,51.10,51.30,51.00,51.30,<p style= color:red>+</p>,0.30,51.10,3,51.20,1,10.73,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1731,美吾華,56617,79,1188749,20.95,21.05,20.95,21.00,<p> </p>,0.00,21.00,1,21.05,14,13.91,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1732,毛寶,155123,148,4134806,26.55,26.80,26.55,26.80,<p style= color:red>+</p>,0.25,26.75,1,26.80,4,21.79,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1733,五鼎,101026,145,3043512,29.80,30.35,29.80,30.10,<p style= color:red>+</p>,0.25,30.10,1,30.25,2,15.84,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1734,杏輝,137835,700,4334968,31.60,31.60,31.25,31.25,<p style= color:green>-</p>,0.35,31.25,3,31.40,2,16.89,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1735,日勝化,72885,74,1582547,22.10,22.15,21.55,21.60,<p style= color:green>-</p>,0.10,21.65,1,21.70,4,18.46,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1736,喬山,377747,242,46498907,123.00,124.50,122.00,124.00,<p style= color:red>+</p>,1.50,123.50,3,124.00,5,11.21,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1737,臺鹽,131784,140,3979423,30.20,30.30,30.15,30.15,<p style= color:green>-</p>,0.10,30.15,2,30.25,15,15.46,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1752,南光,45384,44,1433882,31.40,31.70,31.40,31.50,<p style= color:red>+</p>,0.20,31.50,9,31.60,1,15.52,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1760,寶齡富錦,37223,71,2014087,54.10,54.30,53.90,54.10,<p style= color:red>+</p>,0.30,54.10,1,54.20,4,21.55,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1762,中化生,80330,144,2798438,34.50,35.15,34.50,34.75,<p style= color:red>+</p>,0.05,34.70,5,34.75,5,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1773,勝一,264691,379,45146986,171.00,172.00,169.50,169.50,<p> </p>,0.00,169.00,16,169.50,1,21.13,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1776,展宇,29035,25,543549,19.15,19.15,18.60,18.70,<p> </p>,0.00,18.65,1,18.70,1,20.55,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1783,和康生,108710,80,4105952,37.50,38.50,37.50,37.50,<p style= color:red>+</p>,0.10,37.50,2,37.65,1,11.54,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1786,科妍,178622,232,7300570,40.25,41.20,40.10,40.95,<p style= color:red>+</p>,0.70,40.95,1,41.20,6,16.78,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1789,神隆,700604,510,13940509,20.00,20.20,19.70,19.70,<p style= color:green>-</p>,0.10,19.65,29,19.75,1,394.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1795,美時,876886,1742,160133559,183.00,184.50,181.00,181.00,<p style= color:red>+</p>,1.00,181.00,24,181.50,13,12.79,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1802,台玻,142656562,77224,9490721104,63.40,68.50,62.90,66.90,<p style= color:red>+</p>,4.20,66.90,390,67.00,500,77.79,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1805,寶徠,29320,18,292390,9.94,9.99,9.93,9.99,<p style= color:red>+</p>,0.04,9.99,1,10.00,7,83.25,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1806,冠軍,242336,189,1940996,7.98,8.08,7.97,7.99,<p> </p>,0.00,7.97,1,8.00,2,49.94,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1808,潤隆,509999,377,17695322,34.80,34.90,34.50,34.55,<p style= color:green>-</p>,0.05,34.55,4,34.60,1,8.17,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1809,中釉,1312401,1075,55371357,41.65,42.90,41.65,41.80,<p style= color:red>+</p>,0.70,41.80,9,41.95,10,209.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1810,和成,1898323,1098,44873250,23.35,24.15,23.30,23.40,<p style= color:red>+</p>,0.30,23.40,29,23.45,12,6.39,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1817,凱撒衛,5020,7,199999,39.80,39.90,39.80,39.90,<p style= color:red>+</p>,0.10,39.85,1,39.95,2,7.95,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1903,士紙,69587,98,3344591,48.00,48.25,47.85,48.15,<p style= color:red>+</p>,0.10,47.85,5,48.15,3,35.40,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1904,正隆,1114739,1230,28325997,25.65,25.70,25.20,25.35,<p style= color:green>-</p>,0.25,25.30,35,25.35,34,11.68,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1905,華紙,2229612,845,29321354,13.15,13.25,13.05,13.20,<p style= color:red>+</p>,0.10,13.15,17,13.20,39,0.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1906,寶隆,16963,73,185493,11.00,11.00,10.80,10.85,<p style= color:green>-</p>,0.10,10.80,4,10.90,2,17.79,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1907,永豐餘,974453,744,28789029,29.80,29.80,29.30,29.55,<p> </p>,0.00,29.50,13,29.55,15,17.38,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX
+2026-10-16,1909,榮成,2175218,690,22661113,10.35,10.50,10.35,10.35,<p> </p>,0.00,10.35,143,10.40,46,45.00,https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX

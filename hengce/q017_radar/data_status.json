@@ -1,31 +1,35 @@
 {
   "system": "HENGCE",
-  "module": "DAILY_DATA_GATE",
-  "generated_at_taipei": "2026-10-19T06:49:09.940529+08:00",
-  "trade_date": "2026-10-19",
+  "module": "POSTCLOSE_DATA_GATE",
+  "generated_at_taipei": "2026-10-19T12:12:22.632376+08:00",
   "status": "PASS",
-  "required": {
-    "sox": {
-      "status": "PASS",
-      "source": "Nasdaq ExportHistory/SOX",
-      "latest_session": "2026-10-16",
-      "rows": 199,
-      "stale_days": 3,
-      "refreshed_at_taipei": "2026-10-19T06:49:08.598185+08:00"
-    },
-    "latest_eod_date": "20261015",
-    "latest_eod_complete": true,
-    "electronics_history": {
-      "status": "PASS",
-      "source": "Q017_VALIDATED_2026_SEED",
-      "seeded": true
-    },
-    "electronics_history_latest": "2026-10-16"
+  "eod": {
+    "system": "HENGCE",
+    "artifact": "EOD_COMPLETE_LEG_INGEST",
+    "target_date": "2026-10-16",
+    "price_status": "COMPLETE",
+    "price_date": "2026-10-16",
+    "price_rows": 1086,
+    "institutional_status": "COMPLETE",
+    "institutional_date": "2026-10-16",
+    "institutional_rows": 1071,
+    "margin_status": "COMPLETE",
+    "margin_date": "2026-10-16",
+    "margin_rows": 1061,
+    "policy": "THREE_LEG_COMPLETE_REQUIRED",
+    "completed_at_taipei": "2026-10-19T12:12:20.535667+08:00"
+  },
+  "electronics_history_append": {
+    "status": "PASS",
+    "date": "2026-10-16",
+    "rows": 457
   },
   "sox": {
-    "session": "2026-10-16",
-    "sox_1d": -0.03833177716245828,
-    "sox_5d": -0.11414930877578389
-  },
-  "policy": "NO_REQUIRED_DATA_NO_FORMAL_SIGNAL"
+    "status": "PASS",
+    "source": "Nasdaq ExportHistory/SOX",
+    "latest_session": "2026-10-16",
+    "rows": 199,
+    "stale_days": 0,
+    "refreshed_at_taipei": "2026-10-19T12:12:22.630951+08:00"
+  }
 }

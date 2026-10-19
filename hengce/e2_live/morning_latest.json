@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "E2_MORNING_EXECUTION_BRIDGE",
+  "trade_date": "2026-10-19",
+  "generated_at_taipei": "2026-10-19T12:12:22.887877+08:00",
+  "binding_status": "PASS",
+  "source_signal_asof": "2026-10-16",
+  "expected_prior_market_session": null,
+  "latest_complete_eod_date": "2026-10-16",
+  "local_eod_archive_gap": false,
+  "engine_status": "OFF",
+  "strict_cohort_count": 0,
+  "new_signal_buy_count": 0,
+  "entry_due_count": 0,
+  "entry_due": [],
+  "held_from_prior_close": [],
+  "free_slots_before_today_entries": 5,
+  "extension_shadow": {
+    "authority": "E2_EXTENSION_SHADOW_LOCK_20261018.json",
+    "cohort_count": 5,
+    "engine_status": "SHADOW_ONLY",
+    "capital_authorized": false,
+    "rows": [
+      {
+        "Ticker": 4956,
+        "Name": "光鋐",
+        "E2Score": 3,
+        "E2Action": "SHADOW_FAVORABLE",
+        "E2Rank": 1
+      },
+      {
+        "Ticker": 1717,
+        "Name": "長興",
+        "E2Score": 2,
+        "E2Action": "SHADOW_FAVORABLE",
+        "E2Rank": 2
+      },
+      {
+        "Ticker": 3092,
+        "Name": "鴻碩",
+        "E2Score": 2,
+        "E2Action": "SHADOW_FAVORABLE",
+        "E2Rank": 3
+      },
+      {
+        "Ticker": 3714,
+        "Name": "富采",
+        "E2Score": 1,
+        "E2Action": "SHADOW_PASS",
+        "E2Rank": 4
+      },
+      {
+        "Ticker": 3715,
+        "Name": "定穎投控",
+        "E2Score": 0,
+        "E2Action": "SHADOW_PASS",
+        "E2Rank": 5
+      }
+    ]
+  },
+  "capital_authority": "STRICT_PENDING_ENTRY_ONLY",
+  "note": "E2 state must match latest known prior market session. A lagging local EOD archive is repairable and has no authority over a separately hash-locked E2 state."
+}

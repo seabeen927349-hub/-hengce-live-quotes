@@ -1,0 +1,16 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_COMPLETE_LEG_INGEST",
+  "target_date": "2026-10-16",
+  "price_status": "COMPLETE",
+  "price_date": "2026-10-16",
+  "price_rows": 1086,
+  "institutional_status": "COMPLETE",
+  "institutional_date": "2026-10-16",
+  "institutional_rows": 1071,
+  "margin_status": "COMPLETE",
+  "margin_date": "2026-10-16",
+  "margin_rows": 1061,
+  "policy": "THREE_LEG_COMPLETE_REQUIRED",
+  "completed_at_taipei": "2026-10-19T12:12:20.535667+08:00"
+}
