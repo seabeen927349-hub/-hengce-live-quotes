@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/hengce_q017_decision_lock.py'
+      - 'scripts/hengce_q017_decision_lock_v4.py'
       - '.github/workflows/hengce-q017-dxy-source-smoke.yml'
 
 permissions:
@@ -22,5 +23,5 @@ jobs:
           python-version: '3.12'
       - name: Install runtime dependencies
         run: python -m pip install --disable-pip-version-check requests openpyxl
-      - name: Verify exact DXY source and completed-session calculation
-        run: python scripts/hengce_q017_decision_lock.py --mode dxy-smoke
+      - name: Verify exact DXY source and completed-session calculation via schema-v4 route
+        run: python scripts/hengce_q017_decision_lock_v4.py --mode dxy-smoke
