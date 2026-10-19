@@ -26,7 +26,8 @@
   },
   "paper_state": {
     "entry_reference": "next TWSE session open when observable",
-    "exit_reference": "close after 20 held TWSE sessions; entry session is D1",
+    "exit_reference": "close after 20 completed TWSE trading intervals following entry; exactly matches validated fixed20 shift(-21) from signal / shift(-1) entry",
+    "progress_semantics": "H0/20 at entry; H20/20 exits at that session close",
     "overlap": "FORBIDDEN",
     "roundtrip_cost_model": 0.008,
     "states": ["IDLE", "ENTRY_PENDING", "HOLDING", "EXITED", "DATA_PENDING"]
@@ -36,7 +37,7 @@
     "show_gate_checks": true,
     "show_top1": true,
     "show_state": true,
-    "show_holding_session_of_20": true,
+    "show_holding_interval_of_20": true,
     "show_research_authority": true
   },
   "authority": {
