@@ -43,6 +43,10 @@ def observe(today=None):
         'observation_snapshot_sha256':out['observation_snapshot_sha256'],
         'universe_sha256':(out.get('universe_lock') or {}).get('universe_sha256'),
         'provider_coverage':(out.get('data_status') or {}).get('provider_coverage'),
+        'eligible_quote_row_coverage':(out.get('data_status') or {}).get('eligible_quote_row_coverage'),
+        'opened_coverage':(out.get('data_status') or {}).get('opened_coverage'),
+        'quote_present_but_no_open_count':(out.get('data_status') or {}).get('quote_present_but_no_open_count'),
+        'coverage_semantics':(out.get('data_status') or {}).get('coverage_semantics'),
         'policy':'May be promoted only if canonical 09:01 observation is absent and this artifact passes schema-v5 validation.'
     }
     v5.core.atomic_json(BACKUP_STATUS,receipt)

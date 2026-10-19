@@ -23,7 +23,7 @@ def fixture():
         '3333':{'ticker':'3333','name':'E3','open':99.0,'reference_close':100.0,'fetched_at_taipei':'2026-10-20T09:01:12+08:00'}},
       'previous_locked_top3':[],'market_inputs':{'sox':{'sox_1d':-0.01,'sox_5d':-0.04},'dxy':{'latest_session':'2026-10-19','five_sessions_back':'2026-10-12','dxy_5d':-0.004}},
       'premarket_gate':{'status':'PASS'},'premarket_coherence':{'status':'PASS'},'dxy_status':{'status':'PASS','symbol':'DX-Y.NYB','dxy_5d':-0.004},
-      'data_status':{'eligible_beta_count':3,'provider_returned_count':3,'provider_coverage':1.0,'provider_coverage_required':1.0,'critical_set_rule':'test','critical_set_count':3,'critical_set_complete':True,'critical_missing':[],'batch_failures':[]},
+      'data_status':{'eligible_beta_count':3,'provider_returned_count':3,'provider_coverage':1.0,'provider_coverage_required':1.0,'eligible_quote_row_count':3,'eligible_quote_row_coverage':1.0,'opened_by_decision_count':3,'opened_coverage':1.0,'quote_present_but_no_open_count':0,'coverage_semantics':'QUOTE_ROW_COVERAGE_IS_DATA_COMPLETENESS;OPENED_COVERAGE_IS_CAUSAL_MARKET_STATE','critical_set_rule':'test','critical_set_count':3,'critical_set_complete':True,'critical_missing':[],'batch_failures':[]},
       'policy':'ONLY_0901_OBSERVATION_IS_CAUSAL;COMPUTATION_TIME_MAY_BE_LATER'}
     o['observation_snapshot_sha256']=v5.csha({k:v for k,v in o.items() if k!='observation_snapshot_sha256'})
     return o
