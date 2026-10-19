@@ -4,20 +4,25 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'self-test | premarket | radar | postclose'
+        description: 'self-test | premarket | decision | radar | postclose'
         required: false
         default: 'self-test'
   push:
     branches: [main]
     paths:
       - 'scripts/hengce_daily_command_center.py'
+      - 'scripts/hengce_q017_decision_lock.py'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json'
       - '.github/workflows/hengce-daily-command-center.yml'
   schedule:
     # Asia/Taipei = UTC+8
     # Premarket after US close, before TWSE open.
     - cron: '30 22 * * 0-4'
-    # Post-open radar snapshots. Mon-Fri Taiwan.
+    # Start early, prepare causal inputs, then wait inside the job for 09:01:05.
+    # The decision script fails closed if the runner misses the 09:01 minute.
+    - cron: '50 0 * * 1-5'
+    # Post-lock monitor snapshots. These may mark prices but may not rerank.
     - cron: '3 1 * * 1-5'
     - cron: '10 1 * * 1-5'
     - cron: '20 1 * * 1-5'
@@ -61,6 +66,7 @@ jobs:
             H='${{ github.event.schedule }}'
             case "$H" in
               '30 22 * * 0-4') MODE='premarket' ;;
+              '50 0 * * 1-5') MODE='decision' ;;
               '3 1 * * 1-5'|'10 1 * * 1-5'|'20 1 * * 1-5') MODE='radar' ;;
               '0 7 * * 1-5') MODE='postclose' ;;
               *) MODE='self-test' ;;
@@ -71,15 +77,21 @@ jobs:
 
       - name: Run self-test
         if: steps.mode.outputs.mode == 'self-test'
-        run: python scripts/hengce_daily_command_center.py --mode self-test
+        run: |
+          python scripts/hengce_daily_command_center.py --mode self-test
+          python scripts/hengce_q017_decision_lock.py --mode self-test
 
       - name: Run premarket data gate
         if: steps.mode.outputs.mode == 'premarket'
         run: python scripts/hengce_daily_command_center.py --mode premarket
 
-      - name: Run post-open SOX electronics Top3 radar
+      - name: Capture immutable 09:01 Q017 decision snapshot
+        if: steps.mode.outputs.mode == 'decision'
+        run: python scripts/hengce_q017_decision_lock.py --mode decision
+
+      - name: Run locked Q017 post-open monitor
         if: steps.mode.outputs.mode == 'radar'
-        run: python scripts/hengce_daily_command_center.py --mode radar
+        run: python scripts/hengce_q017_decision_lock.py --mode monitor
 
       - name: Run post-close official ingest and history append
         if: steps.mode.outputs.mode == 'postclose'
