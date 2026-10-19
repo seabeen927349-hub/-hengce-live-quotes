@@ -44,7 +44,6 @@ jobs:
           for q in root.glob('r2shock_*.txt'): q.unlink()
           pieces=[s[:7000],s[7000:14000],s[14000:]]
           for i,x in enumerate(pieces,1): (root/f'r2shock_{i:02}.txt').write_text(x,encoding='ascii')
-          # Runner cares about decompressed JSON, so deterministic re-gzip is valid.
           test=gzip.decompress(base64.b64decode(''.join(pieces)))
           assert hashlib.sha256(test).hexdigest()==rawsha
           print('PASS ROUND2_RAW_IDENTITY rows=152')
@@ -86,3 +85,5 @@ jobs:
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'HENGCE E2 profit-max round2 finite result'
           git push origin HEAD:main
+
+# manual trigger 2026-10-19: raw-content identity only; frozen 80-combination research unchanged.
