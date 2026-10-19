@@ -1,0 +1,48 @@
+{
+  "contract_id": "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019",
+  "effective_date": "2026-10-19",
+  "engine": "E2_PROFIT_MAX",
+  "status": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
+  "validated_model_lock": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_PIT_VALIDATION_LOCK_20261019.json",
+  "legacy_e2": "REVOKED",
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT_ONLY",
+  "signal": {
+    "local_gate": "electronics_m1 < 0 AND compounded_electronics_m5 <= -0.02",
+    "beta_window": 60,
+    "beta_min_obs": 30,
+    "residual": "stock_r1 - beta60 * electronics_m1",
+    "score": "beta60 * (1 + 25 * max(-residual, 0))",
+    "beta_positive_only": true,
+    "residual_max": 0.04,
+    "liquidity_20d_turnover_twd_min": 20000000,
+    "top_n": 1,
+    "teacher_overlay": false
+  },
+  "macro_gate": {
+    "causality": "latest completed US session strictly before Taiwan signal date",
+    "sox_1d_max": 0.0,
+    "sox_5d_max": -0.03,
+    "dxy_used": false
+  },
+  "paper_state": {
+    "entry_reference": "next TWSE session open when observable",
+    "exit_reference": "close after 20 held TWSE sessions; entry session is D1",
+    "overlap": "FORBIDDEN",
+    "roundtrip_cost_model": 0.008,
+    "states": ["IDLE", "ENTRY_PENDING", "HOLDING", "EXITED", "DATA_PENDING"]
+  },
+  "display": {
+    "show_engine_on_off": true,
+    "show_gate_checks": true,
+    "show_top1": true,
+    "show_state": true,
+    "show_holding_session_of_20": true,
+    "show_research_authority": true
+  },
+  "authority": {
+    "broker_order_execution": false,
+    "automatic_order_submission": false,
+    "capital_authority_twd": 0
+  },
+  "q017_mutated": false
+}
