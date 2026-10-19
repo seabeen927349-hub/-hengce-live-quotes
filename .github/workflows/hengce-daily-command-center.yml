@@ -11,18 +11,18 @@ on:
     branches: [main]
     paths:
       - 'scripts/hengce_daily_command_center.py'
+      - 'scripts/hengce_daily_command_center_core_legacy.py'
       - 'scripts/hengce_q017_decision_lock.py'
       - 'scripts/hengce_q017_authority_guard.py'
       - 'scripts/test_hengce_q017_decision_lock.py'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json'
       - '.github/workflows/hengce-daily-command-center.yml'
   schedule:
     # Asia/Taipei = UTC+8
-    # Premarket after US close, before TWSE open.
     - cron: '30 22 * * 0-4'
     # Start early, prepare causal inputs, then wait inside the job for 09:01:05.
-    # The decision script fails closed if the runner misses the 09:01 minute.
     - cron: '50 0 * * 1-5'
     # Post-lock monitor snapshots. These may mark prices but may not rerank.
     - cron: '3 1 * * 1-5'
@@ -82,11 +82,25 @@ jobs:
 
       - name: Run self-test
         if: steps.mode.outputs.mode == 'self-test'
+        shell: bash
         run: |
+          set -euo pipefail
           python scripts/hengce_daily_command_center.py --mode self-test
           python scripts/hengce_q017_decision_lock.py --mode self-test
           python scripts/hengce_q017_authority_guard.py --mode self-test
           python scripts/test_hengce_q017_decision_lock.py
+
+          # Permanent negative test: the old schema-v1 radar CLI must be unable
+          # to run or publish any formal candidate.
+          set +e
+          python scripts/hengce_daily_command_center.py --mode radar > /tmp/legacy-radar-kill-switch.json 2>&1
+          RC=$?
+          set -e
+          test "$RC" -eq 2
+          grep -q 'LEGACY_RADAR_DISABLED_USE_Q017_IMMUTABLE_0901_DECISION_LOCK_AND_LOCKED_MONITOR' /tmp/legacy-radar-kill-switch.json
+          grep -q '"authority": "NO_FORMAL_SIGNAL"' /tmp/legacy-radar-kill-switch.json
+          grep -q '"formal_buy_count": 0' /tmp/legacy-radar-kill-switch.json
+          echo 'PASS LEGACY_RADAR_KILL_SWITCH_EXIT2_ZERO_AUTHORITY'
 
       - name: Run premarket data gate
         if: steps.mode.outputs.mode == 'premarket'
