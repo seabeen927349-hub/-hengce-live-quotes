@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-import csv, io, json
-from datetime import datetime, timezone
+import csv, io, json, bisect
+from datetime import datetime, timezone, date, timedelta
 from pathlib import Path
 import requests, openpyxl
 
@@ -18,14 +18,19 @@ def dt(x):
         try:return datetime.strptime(str(x).strip(),f).date().isoformat()
         except:pass
 
+def enriched(series):
+    ds=sorted(series); out={}
+    for i,d in enumerate(ds):
+        c=series[d]
+        out[d]=(c,c/series[ds[i-1]]-1 if i else None,c/series[ds[i-5]]-1 if i>=5 else None)
+    return ds,out
+
 def save(path, series):
-    ds=sorted(series)
+    ds,e=enriched(series)
     with path.open('w',newline='',encoding='utf-8') as f:
         w=csv.writer(f); w.writerow(['date','close','ret1','ret5'])
-        for i,d in enumerate(ds):
-            c=series[d]; r1=c/series[ds[i-1]]-1 if i else ''; r5=c/series[ds[i-5]]-1 if i>=5 else ''
-            w.writerow([d,c,r1,r5])
-    return ds
+        for d in ds:w.writerow([d,*e[d]])
+    return ds,e
 
 r=requests.get('https://indexes.nasdaq.com/Index/ExportHistory/SOX',params={'startDate':START+'T00:00:00.000','endDate':END+'T00:00:00.000','timeOfDay':'EOD'},headers=UA,timeout=60);r.raise_for_status()
 raw=r.content
@@ -48,9 +53,22 @@ for host in ('query1.finance.yahoo.com','query2.finance.yahoo.com'):
                 d=datetime.fromtimestamp(t,tz=timezone.utc).date().isoformat()
                 if START<=d<=END:dxy[d]=float(c)
         if len(dxy)>=900:src=u;break
-    except Exception: dxy={}
+    except Exception:dxy={}
 if not src:raise SystemExit('DXY_EXACT_DOWNLOAD_FAIL')
 
-sd=save(OUT/'sox_daily.csv',sox);dd=save(OUT/'dxy_DX-Y.NYB_daily.csv',dxy)
-rec={'status':'PASS','research_only':True,'sox_rows':len(sd),'sox_latest':sd[-1],'dxy_symbol':'DX-Y.NYB','dxy_rows':len(dd),'dxy_latest':dd[-1],'dxy_proxy_used':False,'causal_join_rule':'Taiwan signal date D may use only U.S. session_date < D','threshold_policy':'reuse Q017 thresholds; no threshold optimization','q017_mutated':False}
+sd,se=save(OUT/'sox_daily.csv',sox);dd,de=save(OUT/'dxy_DX-Y.NYB_daily.csv',dxy)
+# Daily causal bit mask for Taiwan decision dates. 1=SOX1<=0, 2=SOX5<=-3%, 4=DXY5>=-0.5%.
+# Each value uses the latest completed U.S. session strictly before Taiwan date D.
+with (OUT/'macro_gate_mask_daily.csv').open('w',newline='',encoding='utf-8') as f:
+    w=csv.writer(f);w.writerow(['date','mask'])
+    d=date(2023,1,1); end=date.fromisoformat(END)
+    while d<=end:
+        ds=d.isoformat(); si=bisect.bisect_left(sd,ds)-1; di=bisect.bisect_left(dd,ds)-1; mask=0
+        if si>=0 and di>=0:
+            _,s1,s5=se[sd[si]]; _,_,d5=de[dd[di]]
+            if s1 is not None and s1<=0:mask|=1
+            if s5 is not None and s5<=-0.03:mask|=2
+            if d5 is not None and d5>=-0.005:mask|=4
+        w.writerow([ds,mask]);d+=timedelta(days=1)
+rec={'status':'PASS','research_only':True,'sox_rows':len(sd),'sox_latest':sd[-1],'dxy_symbol':'DX-Y.NYB','dxy_rows':len(dd),'dxy_latest':dd[-1],'dxy_proxy_used':False,'causal_join_rule':'Taiwan signal date D may use only U.S. session_date < D','mask_bits':{'1':'SOX_1D<=0','2':'SOX_5D<=-0.03','4':'DXY_5D>=-0.005'},'threshold_policy':'reuse Q017 thresholds; no threshold optimization','q017_mutated':False}
 (OUT/'macro_receipt.json').write_text(json.dumps(rec,ensure_ascii=False,indent=2)+'\n');print(json.dumps(rec,ensure_ascii=False))
