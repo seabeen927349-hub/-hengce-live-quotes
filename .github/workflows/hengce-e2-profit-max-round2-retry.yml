@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify research payload identity and stage chunks
+      - name: Verify tracked research chunks
         shell: bash
         run: |
           set -euo pipefail
@@ -29,8 +29,10 @@ jobs:
           import base64,gzip,hashlib,json
           from pathlib import Path
           root=Path('research/e2_profit_max/round2/input_shock')
-          b=(root/'payload.json.gz.b64').read_bytes().strip()
-          print('repo_b64_sha256='+hashlib.sha256(b).hexdigest())
+          chunks=sorted(root.glob('r2shock_*.txt'))
+          assert len(chunks)==3, len(chunks)
+          b=''.join(p.read_text(encoding='ascii').strip() for p in chunks).encode('ascii')
+          print('tracked_chunks_b64_sha256='+hashlib.sha256(b).hexdigest())
           raw=gzip.decompress(base64.b64decode(b))
           rawsha=hashlib.sha256(raw).hexdigest()
           print('raw_json_sha256='+rawsha)
@@ -40,13 +42,7 @@ jobs:
           assert obj['core']=='rev1_no_teacher_K25_Top1'
           assert obj['pre_gate']=='TW_SHOCK_m1_lt_0_m5_lte_-0.02'
           assert len(obj['r'])==152
-          s=base64.b64encode(gzip.compress(raw,mtime=0)).decode('ascii')
-          for q in root.glob('r2shock_*.txt'): q.unlink()
-          pieces=[s[:7000],s[7000:14000],s[14000:]]
-          for i,x in enumerate(pieces,1): (root/f'r2shock_{i:02}.txt').write_text(x,encoding='ascii')
-          test=gzip.decompress(base64.b64decode(''.join(pieces)))
-          assert hashlib.sha256(test).hexdigest()==rawsha
-          print('PASS ROUND2_RAW_IDENTITY rows=152')
+          print('PASS ROUND2_TRACKED_CHUNK_IDENTITY rows=152')
           PY
       - name: Run frozen 80 combinations
         shell: bash
@@ -77,7 +73,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git checkout -- research/e2_profit_max/round2/input_shock/r2shock_01.txt research/e2_profit_max/round2/input_shock/r2shock_02.txt research/e2_profit_max/round2/input_shock/r2shock_03.txt
           git config user.name 'hengce-e2-research-bot'
           git config user.email 'hengce-e2-research-bot@users.noreply.github.com'
           git add research/e2_profit_max/round2/train_grid_80.csv research/e2_profit_max/round2/round2_result.json
@@ -86,4 +81,4 @@ jobs:
           git commit -m 'HENGCE E2 profit-max round2 finite result'
           git push origin HEAD:main
 
-# manual trigger 2026-10-19: raw-content identity only; frozen 80-combination research unchanged.
+# manual trigger: tracked chunks are the canonical runner input; broken convenience envelope is ignored.
