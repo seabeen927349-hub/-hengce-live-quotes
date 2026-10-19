@@ -1,0 +1,83 @@
+name: HENGCE Q017 Backup Observer
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'self-test | observe'
+        required: false
+        default: 'self-test'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_q017_observation_lock_v5.py'
+      - 'scripts/hengce_q017_backup_observer_v5.py'
+      - 'scripts/hengce_q017_recovery_compute_v5.py'
+      - '.github/workflows/hengce-q017-backup-observer.yml'
+  schedule:
+    # Asia/Taipei 08:54. Start early and wait for the causal 09:01 minute.
+    - cron: '54 0 * * 1-5'
+
+permissions:
+  contents: write
+
+# Deliberately independent from the main command-center concurrency group.
+concurrency:
+  group: hengce-q017-backup-observer
+  cancel-in-progress: false
+
+jobs:
+  backup-observer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests openpyxl
+
+      - name: Resolve mode
+        id: mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          MODE='self-test'
+          if [[ '${{ github.event_name }}' == 'schedule' ]]; then MODE='observe'; fi
+          if [[ '${{ github.event_name }}' == 'workflow_dispatch' ]]; then MODE='${{ inputs.mode }}'; fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Self-test backup and recovery lanes
+        if: steps.mode.outputs.mode == 'self-test'
+        run: |
+          python scripts/hengce_q017_observation_lock_v5.py --mode self-test
+          python scripts/hengce_q017_backup_observer_v5.py --mode self-test
+          python scripts/hengce_q017_recovery_compute_v5.py --mode self-test
+
+      - name: Capture independent 09:01 backup observation
+        if: steps.mode.outputs.mode == 'observe'
+        run: python scripts/hengce_q017_backup_observer_v5.py --mode observe
+
+      - name: Persist backup evidence only
+        if: steps.mode.outputs.mode == 'observe'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-backup-observer-bot'
+          git config user.email 'hengce-backup-observer-bot@users.noreply.github.com'
+          git add hengce/q017_radar/backup_observations/ hengce/q017_radar/backup_observation_history/ hengce/q017_radar/backup_observation_latest.json hengce/q017_radar/backup_observation_status.json hengce/q017_radar/backup_observation_attempts/ hengce/q017_radar/backup_observation_attempt_latest.json || true
+          if git diff --cached --quiet; then
+            echo 'Backup observation already persisted or no valid evidence.'
+            exit 0
+          fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE Q017 backup 09:01 observation ${TS}"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
