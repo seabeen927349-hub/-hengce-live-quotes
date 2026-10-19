@@ -1,0 +1,65 @@
+{
+  "contract_id": "E2_PROFIT_MAX_RESEARCH_CONTRACT_v1_0_20261019",
+  "engine": "E2_PROFIT_MAX",
+  "status": "RESEARCH_ONLY_ZERO_CAPITAL_AUTHORITY",
+  "effective_at_taipei": "2026-10-19T18:04:00+08:00",
+  "objective": {
+    "primary": "MAXIMIZE_WALK_FORWARD_OUT_OF_SAMPLE_REALIZED_NET_NAV",
+    "secondary_diagnostics": [
+      "OOS_NET_PROFIT",
+      "OOS_CAGR",
+      "MAX_DRAWDOWN",
+      "PROFIT_FACTOR",
+      "EXPECTANCY_PER_TRADE",
+      "TURNOVER",
+      "CAPACITY_AND_LIQUIDITY"
+    ],
+    "explicitly_not_primary": [
+      "WIN_RATE",
+      "TRAINING_SET_RETURN",
+      "SIGNAL_COUNT",
+      "IN_SAMPLE_SCORE"
+    ]
+  },
+  "mother_population": {
+    "exchange": "TWSE_LISTED_ONLY",
+    "sector": "TWSE_ELECTRONICS_ONLY",
+    "membership_policy": "POINT_IN_TIME_OBSERVED_ON_DATE_FROM_OFFICIAL_TWSE_ELECTRONICS_TABLE",
+    "current_constituent_backfill_for_history": "PROHIBITED",
+    "otc_tpex": "EXCLUDED",
+    "non_electronics": "EXCLUDED"
+  },
+  "causality": {
+    "signal_information_cutoff": "AFTER_SIGNAL_DATE_CLOSE_UNLESS_A_SEPARATE_EARLIER_TIMESTAMPED_MODEL_IS_TESTED",
+    "earliest_default_entry": "NEXT_TRADING_SESSION_OPEN",
+    "future_features": "PROHIBITED",
+    "same_day_barrier_ambiguity": "CONSERVATIVE_WORST_CASE_OR_INTRADAY_PROOF_REQUIRED"
+  },
+  "execution_research": {
+    "fees_taxes_slippage_must_be_included": true,
+    "zero_or_missing_volume_fill": "FORBIDDEN",
+    "liquidity_and_capacity_constraints": "REQUIRED",
+    "position_limit": "MUST_BE_FIXED_BEFORE_OOS_SCORING",
+    "capital_budget_twd": 3000000,
+    "capital_budget_status": "RESEARCH_ASSUMPTION_NOT_LIVE_PORTFOLIO"
+  },
+  "validation": {
+    "method": "PURGED_WALK_FORWARD_TIME_SPLIT",
+    "parameter_selection_uses_test_set": false,
+    "minimum_required": [
+      "MULTIPLE_OOS_WINDOWS",
+      "COSTED_EXECUTION",
+      "YEAR_BY_YEAR_STABILITY",
+      "NO_SINGLE_PERIOD_DEPENDENCE",
+      "FINAL_UNTOUCHED_HOLDOUT"
+    ],
+    "promotion_rule": "NO_CAPITAL_AUTHORITY_UNTIL_NEW_ENGINE_LOCK_EXPLICITLY_PROMOTES_A_FROZEN_MODEL_AFTER_OOS_PASS"
+  },
+  "legacy_e2": {
+    "authority": "REVOKED_ZERO_AUTHORITY",
+    "reuse_of_old_regime_thresholds": "FORBIDDEN",
+    "reuse_of_old_comparator_statistics": "FORBIDDEN",
+    "reuse_of_old_population_results_as_VALIDATION": "FORBIDDEN"
+  },
+  "q017_effect": "NONE"
+}
