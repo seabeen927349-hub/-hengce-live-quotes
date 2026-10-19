@@ -1,0 +1,91 @@
+{
+  "contract_id": "HENGCE_Q017_10D_REVIEW_CONTRACT_v1_1_20261019",
+  "status": "ACTIVE_OVERLAPPING_COHORT_REVIEW_FORMAL_PLUS_ISOLATED_HYPOTHETICAL",
+  "supersedes": "HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019",
+  "formal_capital_authority": false,
+  "historical_q017_model_lock_unchanged": true,
+  "purpose": "Track every Q017 signal-date x ticker independently for ten Taiwan market sessions; keep formal schema-v5 and hypothetical zero-capital lanes physically separate; produce daily EOD diagnostics without changing Q017 rules.",
+  "cohort_identity": "SIGNAL_DATE_X_TICKER_X_AUTHORITY_LANE",
+  "rules": {
+    "every_formal_signal_date_creates_new_cohorts": true,
+    "top3_change_next_day_does_not_delete_prior_cohorts": true,
+    "same_ticker_reselected_on_later_signal_date_creates_separate_cohort": true,
+    "signal_date_close_is_D1": true,
+    "D10_is_tenth_observed_market_session_including_signal_date": true,
+    "weekends_and_market_holidays_do_not_increment_day_count": true,
+    "formal_reference_price": "Q017_DECISION_OPEN",
+    "formal_lane_requires_schema5_immutable_0901_decision": true,
+    "hypothetical_lane_requires_explicit_HYPOTHETICAL_ONLY_ZERO_CAPITAL_AUTHORITY_receipt": true,
+    "hypothetical_capital_authority_twd": 0,
+    "hypothetical_to_formal_promotion_forbidden": true,
+    "cross_lane_merge_forbidden": true,
+    "D10_closure_is_mandatory": true,
+    "new_daily_selection_may_not_overwrite_existing_active_cohort": true,
+    "single_day_result_may_not_mutate_Q017": true
+  },
+  "immutable_selection_snapshot": [
+    "signal_date",
+    "ticker",
+    "name",
+    "rank",
+    "entry_reference",
+    "beta",
+    "residual",
+    "score",
+    "gap",
+    "expected_gap",
+    "source_sha256",
+    "observation_snapshot_sha256",
+    "decision_snapshot_sha256",
+    "authority_lane"
+  ],
+  "daily_metrics": [
+    "open",
+    "high",
+    "low",
+    "close",
+    "close_return_from_entry",
+    "intraday_mfe_from_entry",
+    "intraday_mae_from_entry",
+    "mfe_to_date",
+    "mae_to_date",
+    "close_path_max_drawdown",
+    "alpha_vs_taiex",
+    "alpha_vs_electronics"
+  ],
+  "benchmark_policy": {
+    "source": "TWSE official MI_INDEX",
+    "taiex": "發行量加權股價指數",
+    "electronics": "電子工業類指數",
+    "return_basis": "official close-to-close daily return",
+    "alpha_semantics": "diagnostic only because stock return begins at Q017 entry reference while benchmark is close-to-close"
+  },
+  "engine_review": [
+    "today Top1 return",
+    "today Top3 average return",
+    "today Top3 win rate",
+    "average alpha vs TAIEX",
+    "average alpha vs electronics",
+    "completed D10 mean return",
+    "completed D10 win rate",
+    "recent20 completed D10 mean/win rate",
+    "degradation NORMAL/WATCH/ALERT"
+  ],
+  "degradation_policy": "Evaluation only. No automatic model mutation. Downgrade requires sufficient completed D10 sample; otherwise status remains NORMAL with insufficient-sample flag.",
+  "inputs": {
+    "formal_decisions": "hengce/q017_radar/decision/YYYYMMDD_0901.json",
+    "hypothetical_receipts": "receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_YYYYMMDD.json",
+    "eod_prices": "eod/YYYYMMDD/price_*.csv",
+    "eod_completeness": "eod/YYYYMMDD/status.json",
+    "benchmarks": "TWSE official MI_INDEX or cached hengce/q017_review_10d/benchmarks/YYYYMMDD.json"
+  },
+  "outputs": {
+    "formal_lane": "hengce/q017_review_10d/ledger_latest.json + daily/",
+    "hypothetical_lane": "hengce/q017_review_10d/hypothetical_ledger_latest.json",
+    "diagnostics": "hengce/q017_review_10d/diagnostics_latest.json",
+    "daily_diagnostics": "hengce/q017_review_10d/diagnostics_YYYYMMDD.json"
+  },
+  "formal_implementation": "scripts/hengce_q017_10d_review.py",
+  "hypothetical_and_diagnostic_extension": "scripts/hengce_q017_10d_review_extension.py",
+  "authority_boundary": "Review statistics may diagnose model performance but may not modify Q017 ranking, gate, capital authority, historical frozen rules, or E2 state."
+}
