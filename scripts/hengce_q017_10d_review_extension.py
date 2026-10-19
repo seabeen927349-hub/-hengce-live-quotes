@@ -122,7 +122,8 @@ def seed_from_explicit_receipt(root,ledger):
  p=root/'receipts/HENGCE_Q017_10D_HYPOTHETICAL_D1_SEED_20261019.json'
  if not p.exists():return 0
  o=json.loads(p.read_text()); n=0
- if o.get('authority_lane')!='HYPOTHETICAL_ZERO_CAPITAL_ONLY' or int(o.get('capital_authority_twd') or -1)!=0:return 0
+ cap=o.get('capital_authority_twd')
+ if o.get('authority_lane')!='HYPOTHETICAL_ZERO_CAPITAL_ONLY' or int(cap if cap is not None else -1)!=0:return 0
  for x in o.get('members') or []:
   cid=f'HYP-{o["signal_date"].replace("-","")}-{x["ticker"]}';c=ledger['cohorts'].get(cid)
   if not c or c['sessions']:continue
@@ -163,7 +164,7 @@ def update(root,target,allow_network=True):
 def selftest():
  with tempfile.TemporaryDirectory() as td:
   r=Path(td);(r/'receipts').mkdir();o={'authority':HYP_AUTH,'formal_buy_count':0,'trade_date':'2026-10-20','causality_warning':{'must_not_be_promoted_to_formal_signal':True},'hypothetical_top3':[{'ticker':'1111','name':'X','open':100,'beta60':1,'residual':-.02,'score':1.5}]};atomic(r/'receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261020.json',o)
-  l=empty_hledger();assert len(seed_hypothetical(r,l))==1;c=l['cohorts']['HYP-20261020-1111'];append(c,'2026-10-20',{'open':100,'high':102,'low':99,'close':101});append(c,'2026-10-21',{'open':102,'high':103,'low':100,'close':102});assert c['current_day']==2 and c['status']=='ACTIVE';o['trade_date']='2026-10-21';atomic(r/'receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261021.json',o);assert len(seed_hypothetical(r,l))==1;assert len(l['cohorts'])==2;assert all(x['capital_authority_twd']==0 for x in l['cohorts'].values());
+  l=empty_hledger();assert len(seed_hypothetical(r,l))==1;c=l['cohorts']['HYP-20261020-1111'];seed={'signal_date':'2026-10-20','authority_lane':'HYPOTHETICAL_ZERO_CAPITAL_ONLY','capital_authority_twd':0,'members':[{'ticker':'1111','open':100,'high':102,'low':99,'close':101}]};atomic(r/'receipts/HENGCE_Q017_10D_HYPOTHETICAL_D1_SEED_20261019.json',seed);assert seed_from_explicit_receipt(r,l)==1;assert c['current_day']==1 and c['sessions'][0]['date']=='2026-10-20';append(c,'2026-10-21',{'open':102,'high':103,'low':100,'close':102});assert c['current_day']==2 and c['status']=='ACTIVE';o['trade_date']='2026-10-21';atomic(r/'receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261021.json',o);assert len(seed_hypothetical(r,l))==1;assert len(l['cohorts'])==2;assert all(x['capital_authority_twd']==0 for x in l['cohorts'].values());
  print('PASS Q017_10D_REVIEW_EXTENSION_SELFTEST')
 
 def main():
