@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "candidate_count": 152,
+  "missing_count": 0,
+  "mask_source": "../macro/macro_gate_mask_daily.csv",
+  "bits": {
+    "1": "SOX_1D<=0",
+    "2": "SOX_5D<=-0.03",
+    "4": "DXY_5D>=-0.005"
+  },
+  "thresholds_optimized": false,
+  "causal_source_required": true
+}
