@@ -14,6 +14,11 @@ RADAR = ROOT / 'hengce' / 'q017_radar'
 LATEST = RADAR / 'latest.json'
 DECISION_DIR = RADAR / 'decision'
 
+FORMAL_SCHEMA_MIN = 3
+SOX_1D_MAX = 0.0
+SOX_5D_MAX = -0.03
+DXY_5D_MIN = -0.005
+
 ALLOWED_MODULES = {
     'Q017_SOX_ELECTRONICS_DECISION_LOCK',
     'Q017_SOX_ELECTRONICS_RADAR_LOCKED',
@@ -49,6 +54,56 @@ def decision_path_for(trade_date: str) -> Path:
     return DECISION_DIR / f'{ymd}_0901.json'
 
 
+def _f(x):
+    try:
+        return float(x)
+    except Exception:
+        return None
+
+
+def _validate_frozen_gate(decision: dict) -> tuple[bool, str]:
+    if int(decision.get('schema_version') or 0) < FORMAL_SCHEMA_MIN:
+        return False, 'DECISION_REQUIRES_SCHEMA_V3'
+    if decision.get('module') != 'Q017_SOX_ELECTRONICS_DECISION_LOCK':
+        return False, 'DECISION_MODULE_NOT_FORMAL_LOCK'
+
+    rules = decision.get('rules') or {}
+    if _f(rules.get('sox_1d_max')) != SOX_1D_MAX:
+        return False, 'Q017_GATE_DRIFT_SOX1D'
+    if _f(rules.get('sox_5d_max')) != SOX_5D_MAX:
+        return False, 'Q017_GATE_DRIFT_SOX5D'
+    if _f(rules.get('dxy_5d_min')) != DXY_5D_MIN:
+        return False, 'Q017_GATE_DRIFT_DXY5D'
+    if rules.get('authority') != 'Q017_LOCK_20261018.json':
+        return False, 'Q017_GATE_AUTHORITY_LOCK_MISSING'
+
+    mg = decision.get('market_gate') or {}
+    s1 = _f(mg.get('sox_1d'))
+    s5 = _f(mg.get('sox_5d'))
+    d5 = _f(mg.get('dxy_5d'))
+    if s1 is None or s5 is None or d5 is None:
+        return False, 'Q017_GATE_VALUES_MISSING'
+    if mg.get('source_lock') != 'Q017_LOCK_20261018.json':
+        return False, 'Q017_MARKET_GATE_SOURCE_LOCK_MISSING'
+
+    expected = s1 <= SOX_1D_MAX and s5 <= SOX_5D_MAX and d5 >= DXY_5D_MIN
+    if mg.get('gate_go') is not expected:
+        return False, 'Q017_GATE_BOOLEAN_INCONSISTENT'
+    if (decision.get('market_state') == 'GO') is not expected:
+        return False, 'Q017_MARKET_STATE_INCONSISTENT_WITH_FROZEN_GATE'
+
+    dxy_status = ((decision.get('data_status') or {}).get('dxy') or {})
+    if dxy_status.get('status') != 'PASS':
+        return False, 'DXY_DATA_STATUS_NOT_PASS'
+    if _f(dxy_status.get('dxy_5d')) != d5:
+        return False, 'DXY_VALUE_MISMATCH'
+
+    for item in decision.get('top3') or []:
+        if bool(item.get('qualified')) is not expected:
+            return False, 'TOP3_QUALIFIED_FLAG_INCONSISTENT_WITH_FROZEN_GATE'
+    return True, 'FROZEN_Q017_GATE_VALID'
+
+
 def validate(payload: dict) -> tuple[bool, str]:
     module = payload.get('module')
     if module in FORBIDDEN_MODULES:
@@ -65,10 +120,12 @@ def validate(payload: dict) -> tuple[bool, str]:
             return False, 'GUARD_PLACEHOLDER_TOP3_MUST_BE_EMPTY'
         if payload.get('authority') != 'NO_FORMAL_SIGNAL':
             return False, 'GUARD_PLACEHOLDER_MUST_HAVE_ZERO_AUTHORITY'
+        if int(payload.get('formal_buy_count') or 0) != 0:
+            return False, 'GUARD_PLACEHOLDER_BUY_COUNT_MUST_BE_ZERO'
         return True, 'VALID_FAIL_CLOSED_PLACEHOLDER'
 
-    if int(payload.get('schema_version') or 0) < 2:
-        return False, 'FORMAL_Q017_REQUIRES_SCHEMA_V2'
+    if int(payload.get('schema_version') or 0) < FORMAL_SCHEMA_MIN:
+        return False, 'FORMAL_Q017_REQUIRES_SCHEMA_V3'
     trade_date = str(payload.get('trade_date') or '')
     if len(trade_date) != 10:
         return False, 'TRADE_DATE_MISSING'
@@ -77,9 +134,13 @@ def validate(payload: dict) -> tuple[bool, str]:
         return False, 'NO_IMMUTABLE_0901_DECISION_SNAPSHOT'
 
     decision = read_json(p)
+    gate_ok, gate_reason = _validate_frozen_gate(decision)
+    if not gate_ok:
+        return False, gate_reason
+
     decision_hash = decision.get('decision_snapshot_sha256')
-    expected = canonical_sha({k: v for k, v in decision.items() if k != 'decision_snapshot_sha256'})
-    if not decision_hash or decision_hash != expected:
+    expected_hash = canonical_sha({k: v for k, v in decision.items() if k != 'decision_snapshot_sha256'})
+    if not decision_hash or decision_hash != expected_hash:
         return False, 'DECISION_SNAPSHOT_HASH_INVALID'
     if payload.get('decision_snapshot_sha256') != decision_hash:
         return False, 'LATEST_NOT_BOUND_TO_DECISION_HASH'
@@ -96,7 +157,7 @@ def validate(payload: dict) -> tuple[bool, str]:
         if monitor.get('ranking_frozen') is not True:
             return False, 'MONITOR_RANKING_NOT_FROZEN'
 
-    return True, 'VALID_LOCKED_Q017_AUTHORITY'
+    return True, 'VALID_LOCKED_Q017_AUTHORITY_SCHEMA_V3_FROZEN_GATE'
 
 
 def quarantine_payload(rejected: dict, reason: str) -> dict:
@@ -108,7 +169,7 @@ def quarantine_payload(rejected: dict, reason: str) -> dict:
         elif isinstance(x, str):
             rejected_top.append(x)
     return {
-        'schema_version': 2,
+        'schema_version': 3,
         'system': 'HENGCE',
         'module': 'Q017_AUTHORITY_GUARD_FAIL_CLOSED',
         'generated_at_taipei': now_tw().isoformat(),
@@ -125,8 +186,14 @@ def quarantine_payload(rejected: dict, reason: str) -> dict:
             'generated_at_taipei': rejected.get('generated_at_taipei'),
             'top3': rejected_top,
         },
-        'policy': 'NO_VALID_0901_DECISION_LOCK_NO_FORMAL_Q017_SIGNAL',
-        'repair_note': 'Legacy/unlocked radar output was quarantined automatically. Historical evidence is retained separately; it has zero capital authority.',
+        'policy': 'NO_VALID_SCHEMA_V3_0901_DECISION_LOCK_NO_FORMAL_Q017_SIGNAL',
+        'required_gate': {
+            'sox_1d_max': SOX_1D_MAX,
+            'sox_5d_max': SOX_5D_MAX,
+            'dxy_5d_min': DXY_5D_MIN,
+            'authority': 'Q017_LOCK_20261018.json',
+        },
+        'repair_note': 'Legacy, unlocked, old-schema, or gate-drifted Q017 output was quarantined automatically. It has zero capital authority.',
     }
 
 
@@ -147,13 +214,16 @@ def check_and_repair() -> int:
 
 def self_test() -> int:
     good_guard = {
+        'schema_version': 3,
         'module': 'Q017_AUTHORITY_GUARD_FAIL_CLOSED',
         'binding_status': 'DATA_PENDING',
         'market_state': 'DATA_PENDING',
         'authority': 'NO_FORMAL_SIGNAL',
+        'formal_buy_count': 0,
         'top3': [],
     }
     assert validate(good_guard)[0] is True
+
     bad_legacy = {
         'schema_version': 1,
         'module': 'Q017_SOX_ELECTRONICS_RADAR',
@@ -163,11 +233,32 @@ def self_test() -> int:
     }
     ok, reason = validate(bad_legacy)
     assert ok is False and reason == 'LEGACY_RADAR_MODULE_FORBIDDEN'
+
+    bad_schema2 = {
+        'schema_version': 2,
+        'module': 'Q017_SOX_ELECTRONICS_DECISION_LOCK',
+        'binding_status': 'PASS',
+        'market_state': 'GO',
+        'trade_date': '2026-10-19',
+        'top3': [],
+    }
+    ok2, reason2 = validate(bad_schema2)
+    assert ok2 is False and reason2 == 'FORMAL_Q017_REQUIRES_SCHEMA_V3'
+
     repaired = quarantine_payload(bad_legacy, reason)
     assert repaired['formal_buy_count'] == 0
     assert repaired['top3'] == []
     assert repaired['authority'] == 'NO_FORMAL_SIGNAL'
-    print(json.dumps({'self_test': 'PASS', 'legacy_radar_rejected': True, 'fail_closed_buy_count': 0}))
+    assert repaired['required_gate']['sox_5d_max'] == -0.03
+    assert repaired['required_gate']['dxy_5d_min'] == -0.005
+
+    print(json.dumps({
+        'self_test': 'PASS',
+        'legacy_radar_rejected': True,
+        'schema_v2_formal_rejected': True,
+        'frozen_gate_enforced': {'sox_1d_max': 0.0, 'sox_5d_max': -0.03, 'dxy_5d_min': -0.005},
+        'fail_closed_buy_count': 0,
+    }))
     return 0
 
 
