@@ -11,6 +11,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/hengce_e2_live.py'
+      - 'scripts/hengce_dual_engine_display.py'
       - 'hengce/E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json'
       - '.github/workflows/hengce-e2-profit-max-live.yml'
   schedule:
@@ -88,13 +89,31 @@ jobs:
           print('PAPER_POSITION',x['paper_position'])
           PY
 
+      - name: Build unified Q017 plus E2 display
+        run: python scripts/hengce_dual_engine_display.py
+
+      - name: Validate dual-engine display
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('hengce/dual_engine/latest.json'))
+          assert x['architecture']=='DUAL_ENGINE'
+          assert x['rankings_separate'] is True
+          assert x['q017']['engine']=='Q017'
+          assert x['e2']['engine']=='E2_PROFIT_MAX'
+          assert x['e2']['research_capital_twd']==3000000
+          assert x['e2']['broker_order_execution'] is False
+          print('PASS HENGCE_DUAL_ENGINE_DISPLAY', x['q017']['status'], x['e2']['status'], x['e2']['action'])
+          PY
+
       - name: Commit E2 state and required causal data
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'hengce-e2-live-bot'
           git config user.email 'hengce-e2-live-bot@users.noreply.github.com'
-          git add -A hengce/e2_live/
+          git add -A hengce/e2_live/ hengce/dual_engine/
           for p in \
             hengce/q017_radar/data/twse_electronics_history_2026.csv \
             hengce/q017_radar/data/sox_2026.csv \
@@ -103,7 +122,7 @@ jobs:
             if [ -e "$p" ]; then git add "$p"; fi
           done
           if git diff --cached --quiet; then
-            echo 'E2 state already current.'
+            echo 'E2 and dual-engine display already current.'
             exit 0
           fi
           git commit -m "HENGCE E2 profit-max postclose ${{ steps.date.outputs.target_date }}"
