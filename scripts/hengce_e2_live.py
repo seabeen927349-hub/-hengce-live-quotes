@@ -1,79 +1,358 @@
 #!/usr/bin/env python3
-"""Legacy E2 tombstone.
+"""HENGCE E2_PROFIT_MAX live display / paper-state bridge.
 
-Effective 2026-10-19 the previous E2 is revoked because its research mother
-population was wrong (all TWSE stocks instead of TWSE-listed electronics).
-This file intentionally remains at the old workflow entrypoint so any stale
-caller fails safe without breaking Q017 orchestration.
-
-NO LEGACY E2 OUTPUT MAY AUTHORIZE CAPITAL, BUY, WATCH, PENDING ENTRY, OR STATE
-TRANSITION. New research lives under E2_PROFIT_MAX and is research-only until
-walk-forward out-of-sample validation is explicitly promoted by a new lock.
+Validated Candidate B is frozen. This module replaces the revoked legacy E2 at
+its compatibility entrypoint, but never submits broker orders. It publishes a
+formal research signal display and a causal paper state for HENGCE.
 """
 from __future__ import annotations
+
 import argparse
 import json
-from datetime import datetime, timezone, timedelta
+import math
+import os
+from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
+from statistics import median
 
-TZ = timezone(timedelta(hours=8))
-ROOT = Path(__file__).resolve().parents[1]
+import hengce_daily_command_center_core_legacy as core
+
+TZ = core.TZ
+ROOT = core.ROOT
 OUT = ROOT / "hengce" / "e2_live"
-REVOCATION = ROOT / "hengce" / "E2_LEGACY_REVOCATION_20261019.json"
+OUT.mkdir(parents=True, exist_ok=True)
+STATE = OUT / "state_latest.json"
+MORNING = OUT / "morning_latest.json"
+HISTORY = OUT / "history"
+HISTORY.mkdir(parents=True, exist_ok=True)
+LOCK = "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json"
+MODEL_LOCK = "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_PIT_VALIDATION_LOCK_20261019.json"
+LEGACY_REVOCATION = "E2_LEGACY_REVOCATION_20261019.json"
+SCHEMA = 2
+K = 25.0
+LOCAL_M1_MAX = 0.0
+LOCAL_M5_MAX = -0.02
+SOX1_MAX = 0.0
+SOX5_MAX = -0.03
+RESID_MAX = 0.04
+LIQ20_MIN = 20_000_000.0
+BETA_WINDOW = 60
+BETA_MIN = 30
+HOLD_INTERVALS = 20
 
 
 def atomic_json(path: Path, obj: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    tmp.replace(path)
+    core.atomic_json(path, obj)
 
 
-def result(mode: str, trade_date: str | None) -> dict:
-    return {
-        "schema_version": 1,
-        "system": "HENGCE",
-        "module": "E2_LEGACY_TOMBSTONE",
-        "mode": mode,
-        "trade_date": trade_date,
-        "generated_at_taipei": datetime.now(TZ).isoformat(),
-        "status": "REVOKED_ZERO_AUTHORITY",
-        "authority": "NO_E2_CAPITAL_ACTION",
-        "capital_authority_twd": 0,
-        "buy_count": 0,
-        "watch_count": 0,
-        "entry_due_count": 0,
-        "pending_entries": [],
-        "state_transition_allowed": False,
-        "legacy_model_execution_allowed": False,
-        "revocation_contract": str(REVOCATION.relative_to(ROOT)),
-        "successor": "E2_PROFIT_MAX_RESEARCH_ONLY",
-        "reason": "LEGACY_E2_WRONG_RESEARCH_POPULATION_ALL_TWSE_REVOKED_20261019",
-        "q017_effect": "NONE"
+def f(x):
+    try:
+        v = float(str(x).replace(",", "").strip())
+        return v if math.isfinite(v) else None
+    except Exception:
+        return None
+
+
+def iso_date(x):
+    if not x:
+        return None
+    return str(x)[:10]
+
+
+def load_old_state() -> dict:
+    if not STATE.exists():
+        return {"paper_position": {"state": "IDLE"}}
+    try:
+        x = json.loads(STATE.read_text(encoding="utf-8"))
+    except Exception:
+        return {"paper_position": {"state": "DATA_PENDING", "reason": "STATE_JSON_INVALID"}}
+    if x.get("module") != "E2_PROFIT_MAX_STATE":
+        return {"paper_position": {"state": "IDLE", "legacy_state_ignored": True}}
+    return x
+
+
+def tw_rows_through(target):
+    rows = core.load_tw_history()
+    z = []
+    for r in rows:
+        ds = iso_date(r.get("date"))
+        if not ds or ds > target.isoformat():
+            continue
+        c = f(r.get("close")); op = f(r.get("open")); turn = f(r.get("turnover_ntd"))
+        t = str(r.get("ticker") or "")
+        if len(t) != 4 or not t.isdigit() or c is None or c <= 0:
+            continue
+        z.append({"date": ds, "ticker": t, "name": r.get("name", ""), "open": op, "close": c, "turnover": turn})
+    if not z:
+        raise RuntimeError("E2_ELECTRONICS_HISTORY_EMPTY")
+    latest = max(r["date"] for r in z)
+    if latest != target.isoformat():
+        raise RuntimeError(f"E2_ELECTRONICS_HISTORY_NOT_CURRENT:{latest}:TARGET={target.isoformat()}")
+    return z
+
+
+def prepare_features(rows, target):
+    by_t = defaultdict(list)
+    for r in rows:
+        by_t[r["ticker"]].append(dict(r))
+    stock = {}
+    by_date_r1 = defaultdict(list)
+    for t, rs in by_t.items():
+        rs.sort(key=lambda x: x["date"])
+        prev = None
+        turns = []
+        for i, r in enumerate(rs):
+            r1 = (r["close"] / prev - 1.0) if prev not in (None, 0) else None
+            turns.append(r["turnover"] if r["turnover"] is not None else float("nan"))
+            vals = [v for v in turns[max(0, len(turns)-20):] if math.isfinite(v)]
+            liq = (sum(vals) / len(vals)) if len(vals) >= 10 else None
+            r["r1"] = r1; r["liq20"] = liq; r["idx"] = i
+            stock[(r["date"], t)] = r
+            if r1 is not None and math.isfinite(r1):
+                by_date_r1[r["date"]].append(r1)
+            prev = r["close"]
+    market = {}
+    dates = sorted(by_date_r1)
+    for i, ds in enumerate(dates):
+        vals = by_date_r1[ds]
+        m1 = median(vals) if vals else None
+        market[ds] = {"m1": m1, "m5": None}
+        if i >= 4:
+            xs = [market[d]["m1"] for d in dates[i-4:i+1]]
+            if all(v is not None for v in xs):
+                prod = 1.0
+                for v in xs: prod *= (1.0 + v)
+                market[ds]["m5"] = prod - 1.0
+    td = target.isoformat()
+    if td not in market or market[td]["m1"] is None or market[td]["m5"] is None:
+        raise RuntimeError("E2_LOCAL_MARKET_FEATURES_MISSING")
+    candidates = []
+    for t, rs in by_t.items():
+        rs.sort(key=lambda x: x["date"])
+        idx = next((i for i, r in enumerate(rs) if r["date"] == td), None)
+        if idx is None:
+            continue
+        cur = rs[idx]
+        if cur.get("r1") is None or cur.get("liq20") is None or cur["liq20"] < LIQ20_MIN:
+            continue
+        prior = rs[max(0, idx-BETA_WINDOW):idx]
+        obs = []
+        for p in prior:
+            mr = market.get(p["date"], {}).get("m1")
+            if p.get("r1") is not None and mr is not None:
+                obs.append((p["r1"], mr))
+        if len(obs) < BETA_MIN:
+            continue
+        sr = sum(a for a,b in obs); sm = sum(b for a,b in obs); n = len(obs)
+        cov = sum(a*b for a,b in obs)/n - (sr/n)*(sm/n)
+        var = sum(b*b for a,b in obs)/n - (sm/n)*(sm/n)
+        if abs(var) <= 1e-18:
+            continue
+        beta = cov / var
+        if not math.isfinite(beta) or beta <= 0:
+            continue
+        resid = cur["r1"] - beta * market[td]["m1"]
+        if not math.isfinite(resid) or resid > RESID_MAX:
+            continue
+        score = beta * (1.0 + K * max(-resid, 0.0))
+        candidates.append({
+            "ticker": t, "name": cur.get("name", ""), "beta60": beta,
+            "stock_r1": cur["r1"], "electronics_m1": market[td]["m1"],
+            "electronics_m5": market[td]["m5"], "residual": resid,
+            "score": score, "liq20_turnover_twd": cur["liq20"], "signal_close": cur["close"]
+        })
+    candidates.sort(key=lambda x: (-x["score"], x["ticker"]))
+    return market[td], candidates, sorted({r["date"] for r in rows})
+
+
+def macro_features(target):
+    core.refresh_sox(target)
+    return core.sox_features(target)
+
+
+def quote_open(ticker):
+    key = os.environ.get("FUGLE_API_KEY")
+    if not key:
+        return None, "FUGLE_API_KEY_MISSING"
+    q, err = core.fugle_quote(ticker, key)
+    if not q:
+        return None, err or "QUOTE_MISSING"
+    op = f(q.get("openPrice"))
+    return op, None if op is not None else "OPEN_NOT_OBSERVED_YET"
+
+
+def find_close(rows, ticker, ds):
+    for r in rows:
+        if r["ticker"] == ticker and r["date"] == ds:
+            return r["close"]
+    return None
+
+
+def position_progress(pos, market_dates, rows, target):
+    if pos.get("state") != "HOLDING":
+        return pos, False
+    ed = iso_date(pos.get("entry_date")); ticker = str(pos.get("ticker") or "")
+    if not ed or not ticker:
+        return {**pos, "state": "DATA_PENDING", "reason": "HOLDING_STATE_INCOMPLETE"}, False
+    after = [d for d in market_dates if d > ed]
+    completed = sum(1 for d in after if d <= target.isoformat())
+    pos = {**pos, "completed_hold_intervals": completed, "hold_target_intervals": HOLD_INTERVALS,
+           "display_progress": f"D{min(completed,HOLD_INTERVALS)}/{HOLD_INTERVALS}"}
+    if len(after) >= HOLD_INTERVALS:
+        due = after[HOLD_INTERVALS-1]
+        pos["scheduled_exit_date"] = due
+        if due <= target.isoformat():
+            close = find_close(rows, ticker, due)
+            if close is None:
+                return {**pos, "state": "DATA_PENDING", "reason": "EXIT_CLOSE_MISSING"}, False
+            pos.update({"state": "EXITED", "exit_date": due, "exit_reference_close": close,
+                        "display_progress": f"D{HOLD_INTERVALS}/{HOLD_INTERVALS}"})
+            ep = f(pos.get("entry_reference_open"))
+            if ep not in (None, 0):
+                pos["paper_gross_return"] = close/ep - 1.0
+                pos["paper_net_return_after_0_8pct_cost"] = close/ep - 1.0 - 0.008
+            return pos, True
+    return pos, False
+
+
+def compatibility_strict(engine_status, top1, action):
+    rows = []
+    if top1:
+        rows = [{"Ticker": int(top1["ticker"]), "Name": top1.get("name", ""),
+                 "E2Score": top1.get("score"), "E2Action": action, "E2Rank": 1}]
+    return {"authority": LOCK, "cohort_count": len(rows), "engine_status": engine_status,
+            "buy_count": 1 if action == "ENTRY_PENDING" else 0,
+            "watch_count": 1 if rows and action not in ("ENTRY_PENDING", "HOLDING", "EXIT") else 0,
+            "rows": rows}
+
+
+def build_postclose(target):
+    existing = core.load_tw_history()
+    latest = max((r.get("date", "") for r in existing), default="")
+    if latest < target.isoformat():
+        core.append_electronics_day(target)
+    rows = tw_rows_through(target)
+    local, candidates, market_dates = prepare_features(rows, target)
+    sf = macro_features(target)
+    local_checks = {"electronics_m1_lt_0": local["m1"] < LOCAL_M1_MAX,
+                    "electronics_m5_lte_minus_2pct": local["m5"] <= LOCAL_M5_MAX}
+    macro_checks = {"sox_1d_lte_0": sf["sox_1d"] <= SOX1_MAX,
+                    "sox_5d_lte_minus_3pct": sf["sox_5d"] <= SOX5_MAX}
+    gate_go = all(local_checks.values()) and all(macro_checks.values())
+    top1 = candidates[0] if candidates else None
+    old = load_old_state(); prior_pos = dict(old.get("paper_position") or {"state":"IDLE"})
+    prior_state = prior_pos.get("state", "IDLE")
+    pos, exited_today = position_progress(prior_pos, market_dates, rows, target)
+    can_accept = prior_state in ("IDLE", "EXITED") and not (
+        prior_state == "EXITED" and iso_date(prior_pos.get("exit_date")) == target.isoformat()
+    )
+    if prior_state == "EXITED" and iso_date(prior_pos.get("exit_date")) < target.isoformat():
+        pos = {"state": "IDLE"}; can_accept = True
+    if prior_state == "HOLDING" or prior_state == "ENTRY_PENDING" or exited_today:
+        can_accept = False
+    action = "OFF"
+    if pos.get("state") == "HOLDING":
+        action = "HOLDING"
+    elif pos.get("state") == "ENTRY_PENDING":
+        action = "ENTRY_PENDING"
+    elif pos.get("state") == "EXITED":
+        action = "EXIT"
+    elif gate_go and top1 and can_accept:
+        pos = {"state":"ENTRY_PENDING", "signal_date":target.isoformat(), "ticker":top1["ticker"],
+               "name":top1.get("name",""), "score":top1["score"], "beta60":top1["beta60"],
+               "residual":top1["residual"], "entry_due":"NEXT_TWSE_SESSION_OPEN",
+               "hold_target_intervals":HOLD_INTERVALS, "roundtrip_cost_model":0.008}
+        action = "ENTRY_PENDING"
+    elif gate_go and top1 and not can_accept:
+        action = "BLOCKED_NON_OVERLAP"
+    engine_status = "ON" if action == "ENTRY_PENDING" else "HOLDING" if pos.get("state") == "HOLDING" else "EXIT" if pos.get("state") == "EXITED" else "OFF"
+    strict = compatibility_strict(engine_status, top1, action)
+    out = {
+        "schema_version": SCHEMA, "system":"HENGCE", "module":"E2_PROFIT_MAX_STATE",
+        "generated_at_taipei":core.now_tw().isoformat(), "signal_asof":target.isoformat(),
+        "engine":"E2_PROFIT_MAX", "engine_status":engine_status,
+        "binding_status":"PASS", "authority":"VALIDATED_RESEARCH_SIGNAL_DISPLAY",
+        "capital_authority_twd":0, "broker_order_execution":False,
+        "market_regime":"PROFIT_MAX_GATE_GO" if gate_go else "PROFIT_MAX_GATE_OFF",
+        "local_gate":{"go":all(local_checks.values()), "checks":local_checks, "electronics_m1":local["m1"], "electronics_m5":local["m5"]},
+        "macro_gate":{"go":all(macro_checks.values()), "checks":macro_checks, "sox_session":sf["session"], "sox_1d":sf["sox_1d"], "sox_5d":sf["sox_5d"], "dxy_used":False},
+        "top1":top1, "action":action, "paper_position":pos,
+        "strict":strict,
+        "extension_shadow":{"engine_status":"DISABLED_LEGACY_REVOKED", "capital_authorized":False, "rows":[]},
+        "position_state":{"asof":target.isoformat(), "held":[pos] if pos.get("state")=="HOLDING" else [],
+                          "pending":[pos] if pos.get("state")=="ENTRY_PENDING" else [],
+                          "max_slots":1, "occupied_next_session":1 if pos.get("state") in ("ENTRY_PENDING","HOLDING") else 0,
+                          "free_slots_next_session":0 if pos.get("state") in ("ENTRY_PENDING","HOLDING") else 1},
+        "locks":{"model":MODEL_LOCK, "display_execution":LOCK, "legacy_revocation":LEGACY_REVOCATION},
+        "rules":{"K":K,"top_n":1,"hold_intervals":HOLD_INTERVALS,"cost_roundtrip":0.008,"overlap":"FORBIDDEN","dxy_used":False},
+        "q017_effect":"NONE"
     }
+    atomic_json(STATE, out)
+    atomic_json(HISTORY / f"{target.strftime('%Y%m%d')}_postclose.json", out)
+    return out
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--mode", choices=["morning", "postclose", "self-test"], required=True)
-    ap.add_argument("--date")
-    args = ap.parse_args()
-    out = result(args.mode, args.date)
-    if args.mode == "self-test":
-        out["self_test"] = "PASS"
-        out["assertions"] = {
-            "capital_zero": True,
-            "buy_zero": True,
-            "watch_zero": True,
-            "pending_zero": True,
-            "legacy_execution_disabled": True
-        }
-    else:
-        target = OUT / ("morning_latest.json" if args.mode == "morning" else "postclose_latest.json")
-        atomic_json(target, out)
-    print(json.dumps(out, ensure_ascii=False, indent=2))
-    return 0
+def build_morning(target):
+    state = load_old_state(); pos = dict(state.get("paper_position") or {"state":"IDLE"})
+    source_asof = state.get("signal_asof")
+    entry_due = []
+    if pos.get("state") == "ENTRY_PENDING" and iso_date(pos.get("signal_date")) < target.isoformat():
+        op, err = quote_open(str(pos.get("ticker")))
+        if op is not None:
+            pos.update({"state":"HOLDING", "entry_date":target.isoformat(), "entry_reference_open":op,
+                        "entry_reference_source":"FUGLE_OBSERVED_OPEN", "completed_hold_intervals":0,
+                        "hold_target_intervals":HOLD_INTERVALS, "display_progress":f"D0/{HOLD_INTERVALS}"})
+            state["paper_position"] = pos
+            state["engine_status"] = "HOLDING"
+            state["action"] = "HOLDING"
+            state["generated_at_taipei"] = core.now_tw().isoformat()
+            state["strict"] = compatibility_strict("HOLDING", state.get("top1"), "HOLDING")
+            state["position_state"] = {"asof":target.isoformat(),"held":[pos],"pending":[],"max_slots":1,"occupied_next_session":1,"free_slots_next_session":0}
+            atomic_json(STATE, state)
+        else:
+            entry_due = [{**pos, "entry_observation_status":err}]
+    out = {
+        "schema_version":SCHEMA,"system":"HENGCE","module":"E2_PROFIT_MAX_MORNING_BRIDGE",
+        "trade_date":target.isoformat(),"generated_at_taipei":core.now_tw().isoformat(),"binding_status":"PASS",
+        "source_signal_asof":source_asof,"engine_status":state.get("engine_status","OFF"),
+        "new_signal_buy_count":1 if pos.get("state")=="ENTRY_PENDING" else 0,
+        "entry_due_count":len(entry_due),"entry_due":entry_due,
+        "held_from_prior_close":[pos] if pos.get("state")=="HOLDING" else [],
+        "paper_position":pos,"top1":state.get("top1"),"local_gate":state.get("local_gate"),"macro_gate":state.get("macro_gate"),
+        "authority":"VALIDATED_RESEARCH_SIGNAL_DISPLAY","capital_authority_twd":0,"broker_order_execution":False,
+        "note":"Informational/paper state only; no automatic broker order submission."
+    }
+    atomic_json(MORNING, out)
+    return out
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+def self_test():
+    beta = 2.0; resid = -0.03
+    score = beta*(1+K*max(-resid,0))
+    assert abs(score-3.5) < 1e-12
+    assert LOCAL_M5_MAX == -0.02 and SOX5_MAX == -0.03 and HOLD_INTERVALS == 20
+    ds = [f"2026-01-{i:02d}" for i in range(1,23)]
+    p = {"state":"HOLDING","entry_date":ds[0],"ticker":"2330","entry_reference_open":100.0}
+    rows = [{"date":d,"ticker":"2330","close":110.0} for d in ds]
+    q, ex = position_progress(p, ds, rows, datetime.strptime(ds[20], "%Y-%m-%d").date())
+    assert ex and q["exit_date"] == ds[20] and q["display_progress"] == "D20/20"
+    print(json.dumps({"self_test":"PASS","engine":"E2_PROFIT_MAX","schema":SCHEMA,"K":K,"hold_intervals":HOLD_INTERVALS,"broker_order_execution":False}))
+
+
+def main():
+    ap=argparse.ArgumentParser();ap.add_argument("--mode",choices=["morning","postclose","self-test"],required=True);ap.add_argument("--date");a=ap.parse_args()
+    target=datetime.strptime(a.date,"%Y-%m-%d").date() if a.date else core.now_tw().date()
+    if a.mode=="self-test": self_test(); return 0
+    try:
+        out=build_morning(target) if a.mode=="morning" else build_postclose(target)
+        print(json.dumps(out,ensure_ascii=False,indent=2));return 0
+    except Exception as e:
+        fail={"schema_version":SCHEMA,"system":"HENGCE","module":"E2_PROFIT_MAX_STATE","mode":a.mode,"trade_date":target.isoformat(),
+              "generated_at_taipei":core.now_tw().isoformat(),"binding_status":"DATA_PENDING","engine_status":"DATA_PENDING",
+              "authority":"NO_E2_SIGNAL","capital_authority_twd":0,"broker_order_execution":False,"error":f"{type(e).__name__}:{e}",
+              "paper_position":{"state":"DATA_PENDING"},"strict":{"authority":LOCK,"engine_status":"DATA_PENDING","buy_count":0,"watch_count":0,"rows":[]},
+              "q017_effect":"NONE","policy":"FAIL_CLOSED_E2_ONLY_Q017_INDEPENDENT"}
+        atomic_json(STATE if a.mode=="postclose" else MORNING,fail);print(json.dumps(fail,ensure_ascii=False,indent=2));return 2
+
+if __name__=="__main__": raise SystemExit(main())
