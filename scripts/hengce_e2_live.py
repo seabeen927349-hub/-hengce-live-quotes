@@ -58,13 +58,20 @@ def latest_complete_eod_date():
   if all(o.get(k)=='COMPLETE' for k in ['price_status','institutional_status','margin_status']):return datetime.strptime(p.name,'%Y%m%d').date()
  return None
 def latest_market_session_hint(td):
- p=ROOT/'hengce'/'q017_radar'/'data_status.json'
- if not p.exists():return None
- try:o=read_json(p);x=((o.get('required') or {}).get('electronics_history_latest'))
- except Exception:return None
- try:d=datetime.strptime(str(x),'%Y-%m-%d').date()
- except Exception:return None
- return d if d<td else None
+ p=ROOT/'hengce'/'q017_radar'/'data_status.json';vals=[]
+ if p.exists():
+  try:
+   o=read_json(p)
+   req=o.get('required') or {};app=o.get('electronics_history_append') or {};eo=o.get('eod') or {}
+   vals.extend([req.get('electronics_history_latest'),app.get('date'),eo.get('target_date'),eo.get('price_date'),eo.get('institutional_date'),eo.get('margin_date')])
+  except Exception:pass
+ out=[]
+ for x in vals:
+  if not x:continue
+  try:d=datetime.strptime(str(x),'%Y-%m-%d').date()
+  except Exception:continue
+  if d<td:out.append(d)
+ return max(out) if out else None
 def morning(td):
  if not STATE.exists():raise RuntimeError('E2_STATE_MISSING')
  s=read_json(STATE);validate_locked_state(s);sd=datetime.strptime(s['signal_asof'],'%Y-%m-%d').date()

@@ -1,7 +1,7 @@
 {
   "system": "HENGCE",
   "module": "POSTCLOSE_DATA_GATE",
-  "generated_at_taipei": "2026-10-19T12:12:22.632376+08:00",
+  "generated_at_taipei": "2026-10-19T12:17:27.162786+08:00",
   "status": "PASS",
   "eod": {
     "system": "HENGCE",
@@ -17,7 +17,7 @@
     "margin_date": "2026-10-16",
     "margin_rows": 1061,
     "policy": "THREE_LEG_COMPLETE_REQUIRED",
-    "completed_at_taipei": "2026-10-19T12:12:20.535667+08:00"
+    "completed_at_taipei": "2026-10-19T12:17:25.223092+08:00"
   },
   "electronics_history_append": {
     "status": "PASS",
@@ -30,6 +30,6 @@
     "latest_session": "2026-10-16",
     "rows": 199,
     "stale_days": 0,
-    "refreshed_at_taipei": "2026-10-19T12:12:22.630951+08:00"
+    "refreshed_at_taipei": "2026-10-19T12:17:27.161643+08:00"
   }
 }
