@@ -1,0 +1,140 @@
+{
+  "contract_id": "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019",
+  "status": "FROZEN_LIVE_ROUTING_REPAIR",
+  "supersedes_live_routing": "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019",
+  "historical_model_locks_unchanged": true,
+  "architecture": "DUAL_ENGINE_Q017_PLUS_E2",
+  "q017": {
+    "formal_schema_minimum": 4,
+    "formal_decision_module": "Q017_SOX_ELECTRONICS_DECISION_LOCK",
+    "formal_monitor_module": "Q017_SOX_ELECTRONICS_RADAR_LOCKED",
+    "decision_cutoff_taipei": "09:01",
+    "decision_capture_window_taipei": "09:01:00-09:01:59.999999",
+    "immutable_commit_rule": "Only a PASS attempt inside the 09:01 minute may create the immutable formal decision snapshot.",
+    "failed_attempt_rule": "DATA_PENDING attempts are diagnostic staging only and MUST NOT create or poison the immutable decision file.",
+    "retry_rule": "Retry is permitted only inside the same 09:01 minute. No backfill or formal retry is permitted after 09:01:59.999999.",
+    "provider_coverage_required": 1.0,
+    "provider_row_semantics": "Every eligible positive-Beta60 ticker must have a provider row. A returned row with open=null is causal not-opened; a missing provider row is incomplete data.",
+    "critical_set": "Top 50 positive Beta60 plus previous locked Top3 must be complete; this is an additional diagnostic hard check, not a substitute for 100% provider coverage.",
+    "market_gate_authority": "Q017_LOCK_20261018.json",
+    "market_gate": {
+      "SOX_1D_lte": 0.0,
+      "SOX_5D_lte": -0.03,
+      "DXY_5D_gte": -0.005
+    },
+    "stock_rules_unchanged": {
+      "K": 25,
+      "beta": "Beta60",
+      "residual_max": 0.04,
+      "score": "beta*(1+25*max(-residual,0))",
+      "top_n": 3
+    },
+    "authority_guard": {
+      "script": "scripts/hengce_q017_authority_guard_v4.py",
+      "requires_binding_status": "PASS",
+      "requires_trade_date_match": true,
+      "requires_real_0901_timestamps": true,
+      "requires_window_valid": true,
+      "requires_immutable": true,
+      "requires_rerank_after_lock_false": true,
+      "requires_provider_coverage": 1.0,
+      "requires_critical_set_complete": true,
+      "requires_premarket_causal_coherence": true,
+      "recomputes_gate_consistency": true,
+      "recomputes_top3_math": true,
+      "requires_top3_observation_minute": "09:01",
+      "requires_snapshot_sha256_binding": true,
+      "rejects_freshly_rehashed_invalid_provenance": true
+    },
+    "premarket_coherence": {
+      "electronics_history_must_be_prior_to_trade_date": true,
+      "latest_complete_eod_must_be_prior_to_trade_date": true,
+      "electronics_history_cannot_lag_known_complete_eod": true,
+      "electronics_history_may_be_ahead_of_three_leg_repo_eod": true
+    },
+    "post_lock": {
+      "rerank_forbidden": true,
+      "monitor_may_update_marks_only": true
+    },
+    "legacy": {
+      "schema_v1_v2_v3_formal_authority": false,
+      "legacy_radar_module_formal_authority": false,
+      "legacy_public_radar_cli": "HARD_DISABLED_EXIT2_ZERO_AUTHORITY"
+    }
+  },
+  "e2": {
+    "formal_signal_timing": "after signal-date close using point-in-time daily data",
+    "morning_semantics": "09:01 uses only prior-close locked E2 state. It does not invent intraday D-Setup signals.",
+    "morning_bridge": "scripts/hengce_e2_live.py --mode morning",
+    "postclose_refresh": "scripts/hengce_e2_live.py --mode postclose",
+    "incremental_state": "hengce/e2_live/rolling_state.json",
+    "formal_state": "hengce/e2_live/state_latest.json",
+    "strict_population_lock": "E2_STRICT_RESEARCH_POPULATION_LOCK_20261018.json",
+    "extension_shadow_lock": "E2_EXTENSION_SHADOW_LOCK_20261018.json",
+    "capital_lock": "E2_EXECUTION_CAPITAL_LOCK_20261018.json",
+    "position_state_machine_lock": "E2_POSITION_STATE_MACHINE_LOCK_20261018.json",
+    "strict_min_same_day_cohort": 4,
+    "extension_shadow_capital_twd": 0,
+    "max_slots": 5,
+    "morning_outputs": [
+      "prior locked engine status",
+      "strict cohort and prior-close BUY signal count",
+      "PENDING_ENTRY due today",
+      "held positions",
+      "free slots",
+      "extension shadow with zero capital authority"
+    ],
+    "staleness_fail_closed": {
+      "state_must_be_prior_to_trade_date": true,
+      "max_calendar_stale_days": 7,
+      "if_repo_has_newer_complete_eod_than_e2_state": "DATA_PENDING_NO_E2_CAPITAL_ACTION"
+    },
+    "postclose_incremental_features": [
+      "ret1",
+      "ret5",
+      "leader15_pre5",
+      "tr_pct",
+      "atr10",
+      "tight_ratio",
+      "clv",
+      "ma20",
+      "ma60",
+      "prior20high",
+      "dist20high",
+      "low_retest_ratio",
+      "updn5",
+      "inst_ratio5",
+      "breadth",
+      "above20_above60_d5_d10_regime",
+      "D_leader_D_reset_D_contraction_D_regime_D_absorption_D_setup",
+      "same_day_median_comparator"
+    ],
+    "capital_state_machine_unchanged": "SIGNAL -> PENDING_ENTRY -> HELD_D1..D5 -> EXITED_EOD; D5 slot reusable next trading session only",
+    "live_bootstrap": "If rolling_state.json is absent, bootstrap at least 70 valid prior sessions from TWSE price and institutional data, then continue incrementally.",
+    "formal_2026_10_16_seed": {
+      "market_regime": "LATE_DISTRIBUTION",
+      "strict_cohort": 0,
+      "strict_status": "OFF",
+      "strict_buy": 0,
+      "shadow_count": 5,
+      "shadow_favorable": [4956, 1717, 3092],
+      "held": 0,
+      "pending": 0,
+      "free_slots": 5
+    }
+  },
+  "scan_once_contract": {
+    "must_show_q017": true,
+    "must_show_e2": true,
+    "mixed_ranking_forbidden": true,
+    "if_either_engine_data_is_invalid": "Report that engine fail-closed separately; never promote shadow or stale data to BUY."
+  },
+  "verification_required": [
+    "schema-v4 adversarial replay",
+    "GitHub Actions daily-command-center self-test",
+    "independent schema-v4 authority guard",
+    "DXY exact-symbol smoke test",
+    "E2 2026-10-16 incremental exact reproduction",
+    "package hard-lock regression and clean-extract verification"
+  ]
+}
