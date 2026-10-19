@@ -1,0 +1,34 @@
+{
+  "system": "HENGCE",
+  "repair_id": "HENGCE_Q017_LEGACY_RADAR_REVOCATION_20261019",
+  "detected_at_taipei": "2026-10-19T09:51:40+08:00",
+  "legacy_artifact": {
+    "path": "hengce/q017_radar/latest.json",
+    "module": "Q017_SOX_ELECTRONICS_RADAR",
+    "schema_version": 1,
+    "generated_at_taipei": "2026-10-19T09:40:14.138367+08:00",
+    "binding_status_claimed": "PASS",
+    "market_state_claimed": "GO",
+    "top3": ["7795", "2455", "2492"]
+  },
+  "finding": "Legacy radar reranked after the formal 09:01 cutoff and overwrote latest.json without an immutable 09:01 decision snapshot.",
+  "formal_disposition": {
+    "status": "REVOKED_ZERO_AUTHORITY",
+    "formal_buy_count": 0,
+    "top3_formal": [],
+    "capital_authorized": false
+  },
+  "repairs": [
+    "latest.json replaced with Q017_AUTHORITY_GUARD_FAIL_CLOSED placeholder",
+    "signal_ledger legacy event explicitly marked revoked and zero-authority",
+    "daily command-center workflow routes post-open runs only to hengce_q017_decision_lock.py --mode monitor",
+    "legacy workflow_dispatch value radar is only a backward-compatible alias to locked monitor",
+    "authority guard runs before every non-self-test command-center commit, including failed decision/monitor runs",
+    "independent push-triggered authority guard revalidates every q017 latest.json change",
+    "contract v1.2 requires schema v2, immutable decision hash binding, and rejects legacy Q017_SOX_ELECTRONICS_RADAR even when it claims PASS"
+  ],
+  "canonical_rule": "NO_VALID_0901_DECISION_LOCK_NO_FORMAL_Q017_SIGNAL",
+  "e2_changed": false,
+  "q017_model_formula_changed": false,
+  "incident_tickers_are_not_formal_buys": ["7795", "2455", "2492"]
+}
