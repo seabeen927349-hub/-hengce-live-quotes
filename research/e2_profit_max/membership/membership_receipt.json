@@ -1,0 +1,100 @@
+{
+  "system": "HENGCE",
+  "engine": "E2_PROFIT_MAX",
+  "artifact": "PIT_TWSE_ELECTRONICS_MEMBERSHIP_2023_2025_V2",
+  "status": "PASS",
+  "hard_gate": "PASS",
+  "source": "TWSE MI_INDEX type=13 official daily electronics table",
+  "policy": "POINT_IN_TIME_OBSERVED_ON_DATE_NO_CURRENT_CONSTITUENT_BACKFILL",
+  "years": [
+    2023,
+    2024,
+    2025
+  ],
+  "pass_days": 724,
+  "rows": 313749,
+  "files": {
+    "2023": {
+      "path": "research/e2_profit_max/membership/twse_electronics_membership_2023.csv",
+      "rows": 101024,
+      "dates": 239,
+      "sha256": "296f19c0c676e558007b22f12e08ba9f81045ad3706d9609b7a151974b6ece3e"
+    },
+    "2024": {
+      "path": "research/e2_profit_max/membership/twse_electronics_membership_2024.csv",
+      "rows": 105016,
+      "dates": 242,
+      "sha256": "13c8ffe2cb6cfaaa2516c90482d0aecda933cb33ae4eb1cffbbc90e49d77bd7d"
+    },
+    "2025": {
+      "path": "research/e2_profit_max/membership/twse_electronics_membership_2025.csv",
+      "rows": 107709,
+      "dates": 243,
+      "sha256": "da4a8c6deb7cad5d221d453b64e2685b771242db6ce8fc5128d11aa21cfe7e14"
+    }
+  },
+  "year_receipts": {
+    "2023": {
+      "system": "HENGCE",
+      "engine": "E2_PROFIT_MAX",
+      "artifact": "PIT_TWSE_ELECTRONICS_MEMBERSHIP_YEAR_V2",
+      "year": 2023,
+      "source": "TWSE MI_INDEX type=13 official daily electronics table",
+      "policy": "POINT_IN_TIME_OBSERVED_ON_DATE_NO_CURRENT_CONSTITUENT_BACKFILL",
+      "transport": "JSON_SINGLE_THREAD_RATE_LIMITED",
+      "holiday_policy": "EMPTY_TYPE13_MUST_BE_CONFIRMED_EMPTY_BY_ALLBUT0999",
+      "weekday_candidates": 260,
+      "pass_days": 239,
+      "no_data_days": 21,
+      "review_days": 0,
+      "error_days": 0,
+      "rows": 101024,
+      "dates": 239,
+      "membership_sha256": "296f19c0c676e558007b22f12e08ba9f81045ad3706d9609b7a151974b6ece3e",
+      "qa_sha256": "2a8d0a8166066f24f18a48f313d310f25d19bc45a61fd4400ffdc192f0788765",
+      "hard_gate": "PASS"
+    },
+    "2024": {
+      "system": "HENGCE",
+      "engine": "E2_PROFIT_MAX",
+      "artifact": "PIT_TWSE_ELECTRONICS_MEMBERSHIP_YEAR_V2",
+      "year": 2024,
+      "source": "TWSE MI_INDEX type=13 official daily electronics table",
+      "policy": "POINT_IN_TIME_OBSERVED_ON_DATE_NO_CURRENT_CONSTITUENT_BACKFILL",
+      "transport": "JSON_SINGLE_THREAD_RATE_LIMITED",
+      "holiday_policy": "EMPTY_TYPE13_MUST_BE_CONFIRMED_EMPTY_BY_ALLBUT0999",
+      "weekday_candidates": 262,
+      "pass_days": 242,
+      "no_data_days": 20,
+      "review_days": 0,
+      "error_days": 0,
+      "rows": 105016,
+      "dates": 242,
+      "membership_sha256": "13c8ffe2cb6cfaaa2516c90482d0aecda933cb33ae4eb1cffbbc90e49d77bd7d",
+      "qa_sha256": "ff953c1e4a10a87eb34e04209efe37762b72c7b27dde9e26c9f661bb91cb8a39",
+      "hard_gate": "PASS"
+    },
+    "2025": {
+      "system": "HENGCE",
+      "engine": "E2_PROFIT_MAX",
+      "artifact": "PIT_TWSE_ELECTRONICS_MEMBERSHIP_YEAR_V2",
+      "year": 2025,
+      "source": "TWSE MI_INDEX type=13 official daily electronics table",
+      "policy": "POINT_IN_TIME_OBSERVED_ON_DATE_NO_CURRENT_CONSTITUENT_BACKFILL",
+      "transport": "JSON_SINGLE_THREAD_RATE_LIMITED",
+      "holiday_policy": "EMPTY_TYPE13_MUST_BE_CONFIRMED_EMPTY_BY_ALLBUT0999",
+      "weekday_candidates": 261,
+      "pass_days": 243,
+      "no_data_days": 18,
+      "review_days": 0,
+      "error_days": 0,
+      "rows": 107709,
+      "dates": 243,
+      "membership_sha256": "da4a8c6deb7cad5d221d453b64e2685b771242db6ce8fc5128d11aa21cfe7e14",
+      "qa_sha256": "54858cf493387acdeda73bc6c626f2ed74806e30b740a3b0563e99db0c484ad7",
+      "hard_gate": "PASS"
+    }
+  },
+  "candidate_formula_mutated": false,
+  "purpose": "FINAL_VALIDATION_OF_FROZEN_E2_PROFIT_MAX_CANDIDATE_B"
+}

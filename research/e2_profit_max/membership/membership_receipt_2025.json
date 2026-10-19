@@ -1,0 +1,20 @@
+{
+  "system": "HENGCE",
+  "engine": "E2_PROFIT_MAX",
+  "artifact": "PIT_TWSE_ELECTRONICS_MEMBERSHIP_YEAR_V2",
+  "year": 2025,
+  "source": "TWSE MI_INDEX type=13 official daily electronics table",
+  "policy": "POINT_IN_TIME_OBSERVED_ON_DATE_NO_CURRENT_CONSTITUENT_BACKFILL",
+  "transport": "JSON_SINGLE_THREAD_RATE_LIMITED",
+  "holiday_policy": "EMPTY_TYPE13_MUST_BE_CONFIRMED_EMPTY_BY_ALLBUT0999",
+  "weekday_candidates": 261,
+  "pass_days": 243,
+  "no_data_days": 18,
+  "review_days": 0,
+  "error_days": 0,
+  "rows": 107709,
+  "dates": 243,
+  "membership_sha256": "da4a8c6deb7cad5d221d453b64e2685b771242db6ce8fc5128d11aa21cfe7e14",
+  "qa_sha256": "54858cf493387acdeda73bc6c626f2ed74806e30b740a3b0563e99db0c484ad7",
+  "hard_gate": "PASS"
+}
