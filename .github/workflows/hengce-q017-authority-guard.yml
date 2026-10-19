@@ -1,0 +1,58 @@
+name: HENGCE Q017 Authority Guard
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'hengce/q017_radar/latest.json'
+      - 'hengce/q017_radar/decision/**'
+      - 'scripts/hengce_q017_authority_guard.py'
+      - 'scripts/hengce_q017_decision_lock.py'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json'
+      - '.github/workflows/hengce-q017-authority-guard.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-q017-authority-guard
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Enforce formal Q017 authority
+        run: python scripts/hengce_q017_authority_guard.py --mode check-and-repair
+
+      - name: Commit fail-closed repair if needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-authority-guard-bot'
+          git config user.email 'hengce-authority-guard-bot@users.noreply.github.com'
+          git add hengce/q017_radar/latest.json
+          if git diff --cached --quiet; then
+            echo 'Q017 authority is already valid.'
+            exit 0
+          fi
+          git commit -m 'HENGCE Q017 authority guard: quarantine unauthorized latest output'
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            python scripts/hengce_q017_authority_guard.py --mode check-and-repair
+            git add hengce/q017_radar/latest.json
+            if ! git diff --cached --quiet; then
+              git commit --amend --no-edit
+            fi
+            git push origin HEAD:main
+          fi
