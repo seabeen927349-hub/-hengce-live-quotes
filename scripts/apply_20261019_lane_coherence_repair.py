@@ -69,4 +69,31 @@ def morning(td):
 """
 replace_once(Path('scripts/hengce_e2_live.py'),e2_old,e2_new)
 
+hint_old="""def latest_market_session_hint(td):
+ p=ROOT/'hengce'/'q017_radar'/'data_status.json'
+ if not p.exists():return None
+ try:o=read_json(p);x=((o.get('required') or {}).get('electronics_history_latest'))
+ except Exception:return None
+ try:d=datetime.strptime(str(x),'%Y-%m-%d').date()
+ except Exception:return None
+ return d if d<td else None
+"""
+hint_new="""def latest_market_session_hint(td):
+ p=ROOT/'hengce'/'q017_radar'/'data_status.json';vals=[]
+ if p.exists():
+  try:
+   o=read_json(p)
+   req=o.get('required') or {};app=o.get('electronics_history_append') or {};eo=o.get('eod') or {}
+   vals.extend([req.get('electronics_history_latest'),app.get('date'),eo.get('target_date'),eo.get('price_date'),eo.get('institutional_date'),eo.get('margin_date')])
+  except Exception:pass
+ out=[]
+ for x in vals:
+  if not x:continue
+  try:d=datetime.strptime(str(x),'%Y-%m-%d').date()
+  except Exception:continue
+  if d<td:out.append(d)
+ return max(out) if out else None
+"""
+replace_once(Path('scripts/hengce_e2_live.py'),hint_old,hint_new)
+
 print('PASS LANE_COHERENCE_REPAIR_APPLIED_NO_WORKFLOW_MUTATION')
