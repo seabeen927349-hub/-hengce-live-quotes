@@ -1,17 +1,15 @@
-name: HENGCE E2 Profit Max Macro Archive
-
+name: HENGCE E2 Profit Max Macro
 on:
   push:
     branches: [main]
     paths:
+      - 'research/e2_profit_max/acquire_macro_q017_sources.py'
       - '.github/workflows/hengce-e2-profit-max-macro.yml'
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
-  build-macro:
+  macro:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -22,90 +20,19 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --disable-pip-version-check requests openpyxl
-      - name: Build causal SOX and exact DXY archive
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import csv, io, json, time
-          from datetime import datetime, timezone
-          from pathlib import Path
-          import requests, openpyxl
-
-          START='2022-12-01'; END='2026-10-19'
-          OUT=Path('research/e2_profit_max/macro'); OUT.mkdir(parents=True,exist_ok=True)
-          UA={'User-Agent':'Mozilla/5.0 HENGCE-E2-PROFIT-MAX/1.0','Accept':'application/json,text/csv,*/*'}
-          NASDAQ='https://indexes.nasdaq.com/Index/ExportHistory/SOX'
-          DXY_ENDPOINTS=['https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB','https://query2.finance.yahoo.com/v8/finance/chart/DX-Y.NYB']
-
-          def num(x):
-              try:
-                  s=str(x).replace(',','').strip(); return float(s) if s not in ('','--','---','None') else None
-              except Exception:return None
-          def parse_date(x):
-              if isinstance(x,datetime): return x.date().isoformat()
-              for fmt in ('%m/%d/%Y','%Y-%m-%d','%m/%d/%Y %H:%M:%S'):
-                  try:return datetime.strptime(str(x).strip(),fmt).date().isoformat()
-                  except Exception:pass
-              return None
-
-          r=requests.get(NASDAQ,params={'startDate':START+'T00:00:00.000','endDate':END+'T00:00:00.000','timeOfDay':'EOD'},headers=UA,timeout=(10,60)); r.raise_for_status(); raw=r.content
-          if raw.startswith(b'PK'):
-              ws=openpyxl.load_workbook(io.BytesIO(raw),read_only=True,data_only=True).active; records=list(ws.iter_rows(values_only=True))
-          else:
-              records=list(csv.reader(io.StringIO(raw.decode('utf-8-sig',errors='replace'))))
-          sox={}
-          for rec in records:
-              if len(rec)<2:continue
-              ds=parse_date(rec[0]); c=num(rec[1])
-              if ds and START<=ds<=END and c and c>0:sox[ds]=c
-          if len(sox)<900: raise SystemExit(f'SOX_ROWS_TOO_FEW:{len(sox)}')
-
-          p1=int(datetime(2022,11,15,tzinfo=timezone.utc).timestamp()); p2=int(datetime(2026,10,21,tzinfo=timezone.utc).timestamp())
-          dxy={}; errors=[]; dxy_source=None
-          for ep in DXY_ENDPOINTS:
-              try:
-                  q=requests.get(ep,params={'period1':p1,'period2':p2,'interval':'1d','events':'history','includeAdjustedClose':'true'},headers=UA,timeout=(10,45)); q.raise_for_status(); obj=q.json(); res=((obj.get('chart') or {}).get('result') or [None])[0]
-                  if not res: raise RuntimeError('EMPTY_RESULT')
-                  ts=res.get('timestamp') or []; closes=(((res.get('indicators') or {}).get('quote') or [{}])[0].get('close') or [])
-                  for t,c in zip(ts,closes):
-                      if c is None:continue
-                      ds=datetime.fromtimestamp(int(t),tz=timezone.utc).date().isoformat()
-                      if START<=ds<=END:dxy[ds]=float(c)
-                  if len(dxy)<900:raise RuntimeError(f'ROWS_TOO_FEW:{len(dxy)}')
-                  dxy_source=ep; break
-              except Exception as e: errors.append(f'{ep}:{type(e).__name__}:{e}')
-          if not dxy_source: raise SystemExit('DXY_EXACT_DOWNLOAD_FAIL|'+'|'.join(errors))
-
-          def enrich(series):
-              dates=sorted(series); out=[]
-              for i,ds in enumerate(dates):
-                  c=series[ds]; r1=(c/series[dates[i-1]]-1) if i>=1 else None; r5=(c/series[dates[i-5]]-1) if i>=5 else None
-                  out.append((ds,c,r1,r5))
-              return out
-          sr=enrich(sox); dr=enrich(dxy)
-          with (OUT/'sox_daily_202212_202610.csv').open('w',encoding='utf-8',newline='') as f:
-              w=csv.writer(f);w.writerow(['date','close','ret1','ret5']);w.writerows(sr)
-          with (OUT/'dxy_exact_DX-Y.NYB_202212_202610.csv').open('w',encoding='utf-8',newline='') as f:
-              w=csv.writer(f);w.writerow(['date','close','ret1','ret5']);w.writerows(dr)
-          receipt={'system':'HENGCE','module':'E2_PROFIT_MAX_MACRO_ARCHIVE','status':'PASS','research_only':True,'start':START,'end':END,'sox_source':'Nasdaq ExportHistory/SOX','sox_rows':len(sr),'sox_latest':sr[-1][0],'dxy_symbol':'DX-Y.NYB','dxy_source':dxy_source,'dxy_rows':len(dr),'dxy_latest':dr[-1][0],'dxy_proxy_used':False,'causal_join_rule':'For Taiwan signal date D, use latest completed U.S. session with session_date < D. Never use same-calendar-day U.S. close that occurs after Taiwan decision time.','threshold_policy':'Reuse Q017 thresholds; do not optimize SOX/DXY cutoffs in E2 round 2.','q017_mutated':False}
-          (OUT/'macro_receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          print(json.dumps(receipt,ensure_ascii=False,indent=2))
-          PY
+      - run: python research/e2_profit_max/acquire_macro_q017_sources.py
       - uses: actions/upload-artifact@v4
         with:
-          name: e2-profit-max-macro-archive
+          name: e2-profit-max-macro
           path: research/e2_profit_max/macro/
           if-no-files-found: error
       - name: Commit macro archive
-        shell: bash
         run: |
-          set -euo pipefail
-          git config user.name 'hengce-e2-research-bot'
-          git config user.email 'hengce-e2-research-bot@users.noreply.github.com'
+          git config user.name hengce-e2-research-bot
+          git config user.email hengce-e2-research-bot@users.noreply.github.com
           git add research/e2_profit_max/macro/
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'HENGCE E2 profit-max causal SOX DXY macro archive'
+          git commit -m 'HENGCE E2 profit-max macro archive refresh'
           if ! git push origin HEAD:main; then
             git pull --rebase origin main
             git push origin HEAD:main
