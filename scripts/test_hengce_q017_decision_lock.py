@@ -41,6 +41,32 @@ def test_immutable_write(tmp: Path):
     expect_raises(lambda: lock.write_once(p, b), 'IMMUTABLE_DECISION_CONFLICT')
 
 
+def test_frozen_market_gate():
+    assert lock.SOX_1D_MAX == 0.0
+    assert lock.SOX_5D_MAX == -0.03
+    assert lock.DXY_5D_MIN == -0.005
+
+    go, checks = lock.evaluate_market_gate(
+        {'sox_1d': -0.01, 'sox_5d': -0.03},
+        {'dxy_5d': -0.004},
+    )
+    assert go and all(checks.values())
+
+    # Legacy command-center -2% threshold must NOT pass the frozen Q017 gate.
+    go, checks = lock.evaluate_market_gate(
+        {'sox_1d': -0.01, 'sox_5d': -0.025},
+        {'dxy_5d': -0.004},
+    )
+    assert not go and checks['sox_5d_lte_minus_3pct'] is False
+
+    # DXY is mandatory; strong SOX alone cannot produce GO.
+    go, checks = lock.evaluate_market_gate(
+        {'sox_1d': -0.01, 'sox_5d': -0.05},
+        {'dxy_5d': -0.006},
+    )
+    assert not go and checks['dxy_5d_gte_minus_0_5pct'] is False
+
+
 def test_capture_and_monitor_freeze(tmp: Path):
     orig_root = lock.ROOT
     install_temp_paths(tmp)
@@ -59,6 +85,14 @@ def test_capture_and_monitor_freeze(tmp: Path):
         lock.prepare_model = lambda _today: (
             {'status': 'PASS'},
             {'status': 'PASS'},
+            {
+                'status': 'PASS',
+                'latest_session': '2026-10-19',
+                'latest_close': 101.8,
+                'five_sessions_back': '2026-10-12',
+                'five_sessions_back_close': 102.2,
+                'dxy_5d': -0.004,
+            },
             {'status': 'PASS'},
             {'sox_1d': -0.01, 'sox_5d': -0.03},
             {'1111': 1.0, '2222': 2.0, '3333': 3.0, '4444': 4.0},
@@ -80,11 +114,16 @@ def test_capture_and_monitor_freeze(tmp: Path):
         lock.mis_batch = fake_mis
         snap = lock.capture_decision(today)
         assert snap['binding_status'] == 'PASS'
+        assert snap['market_state'] == 'GO'
+        assert snap['market_gate']['gate_go'] is True
+        assert snap['rules']['sox_5d_max'] == -0.03
+        assert snap['rules']['dxy_5d_min'] == -0.005
         assert snap['decision_lock']['immutable'] is True
         assert snap['decision_lock']['rerank_after_lock'] is False
         assert snap['data_status']['provider_coverage'] == 1.0
         assert snap['data_status']['opened_by_decision_count'] == 3
         assert '2222' not in [x['ticker'] for x in snap['top3']], 'missing-open ticker leaked into 09:01 candidates'
+        assert all(x['qualified'] is True for x in snap['top3'])
         locked_top3 = [x['ticker'] for x in snap['top3']]
 
         # Simulate 09:03 prices reversing violently. Monitor may mark, never rerank.
@@ -130,6 +169,7 @@ def test_no_snapshot_fail_closed(tmp: Path):
 
 
 def main():
+    test_frozen_market_gate()
     with tempfile.TemporaryDirectory() as td:
         root = Path(td)
         test_immutable_write(root / 'a')
@@ -140,6 +180,9 @@ def main():
     print(json.dumps({
         'deterministic_replay_test': 'PASS',
         'checks': [
+            'frozen_gate_sox1d_0_sox5d_minus3pct_dxy5d_minus0_5pct',
+            'legacy_minus2pct_gate_rejected',
+            'dxy_gate_mandatory',
             'immutable_snapshot_write',
             '09:01_missing_open_excluded_without_data_failure',
             '09:03_price_reversal_does_not_rerank',
