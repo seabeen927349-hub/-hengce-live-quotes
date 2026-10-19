@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'self-test | premarket | decision | radar | postclose'
+        description: 'self-test | premarket | decision | monitor | postclose'
         required: false
         default: 'self-test'
   push:
@@ -12,6 +12,7 @@ on:
     paths:
       - 'scripts/hengce_daily_command_center.py'
       - 'scripts/hengce_q017_decision_lock.py'
+      - 'scripts/hengce_q017_authority_guard.py'
       - 'scripts/test_hengce_q017_decision_lock.py'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json'
@@ -63,12 +64,15 @@ jobs:
           MODE='self-test'
           if [[ '${{ github.event_name }}' == 'workflow_dispatch' ]]; then
             MODE='${{ inputs.mode }}'
+            # Backward-compatible alias. It routes only to the locked monitor;
+            # the legacy radar implementation is never called by this workflow.
+            if [[ "$MODE" == 'radar' ]]; then MODE='monitor'; fi
           elif [[ '${{ github.event_name }}' == 'schedule' ]]; then
             H='${{ github.event.schedule }}'
             case "$H" in
               '30 22 * * 0-4') MODE='premarket' ;;
               '50 0 * * 1-5') MODE='decision' ;;
-              '3 1 * * 1-5'|'10 1 * * 1-5'|'20 1 * * 1-5') MODE='radar' ;;
+              '3 1 * * 1-5'|'10 1 * * 1-5'|'20 1 * * 1-5') MODE='monitor' ;;
               '0 7 * * 1-5') MODE='postclose' ;;
               *) MODE='self-test' ;;
             esac
@@ -81,6 +85,7 @@ jobs:
         run: |
           python scripts/hengce_daily_command_center.py --mode self-test
           python scripts/hengce_q017_decision_lock.py --mode self-test
+          python scripts/hengce_q017_authority_guard.py --mode self-test
           python scripts/test_hengce_q017_decision_lock.py
 
       - name: Run premarket data gate
@@ -92,15 +97,19 @@ jobs:
         run: python scripts/hengce_q017_decision_lock.py --mode decision
 
       - name: Run locked Q017 post-open monitor
-        if: steps.mode.outputs.mode == 'radar'
+        if: steps.mode.outputs.mode == 'monitor'
         run: python scripts/hengce_q017_decision_lock.py --mode monitor
 
       - name: Run post-close official ingest and history append
         if: steps.mode.outputs.mode == 'postclose'
         run: python scripts/hengce_daily_command_center.py --mode postclose
 
+      - name: Enforce Q017 authority guard
+        if: always() && steps.mode.outputs.mode != 'self-test'
+        run: python scripts/hengce_q017_authority_guard.py --mode check-and-repair
+
       - name: Commit command-center outputs
-        if: steps.mode.outputs.mode != 'self-test'
+        if: always() && steps.mode.outputs.mode != 'self-test'
         shell: bash
         run: |
           set -euo pipefail
