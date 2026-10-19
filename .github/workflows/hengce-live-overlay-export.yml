@@ -58,7 +58,11 @@ jobs:
           cp .github/workflows/hengce-q017-recovery.yml export/workflows/
           cp .github/workflows/hengce-q017-dxy-source-smoke.yml export/workflows/
           printf '%s\n' "$(git rev-parse HEAD)" > export/GITHUB_HEAD_SHA.txt
-          find export -type f -print0 | sort -z | xargs -0 sha256sum > export/LIVE_OVERLAY_SHA256SUMS.txt
+          (
+            cd export
+            find . -type f ! -name 'LIVE_OVERLAY_SHA256SUMS.txt' -print0 | sort -z | xargs -0 sha256sum > LIVE_OVERLAY_SHA256SUMS.txt
+            sha256sum -c LIVE_OVERLAY_SHA256SUMS.txt
+          )
           tar -czf hengce-live-overlay.tar.gz -C export .
           sha256sum hengce-live-overlay.tar.gz > hengce-live-overlay.tar.gz.sha256
       - uses: actions/upload-artifact@v4
