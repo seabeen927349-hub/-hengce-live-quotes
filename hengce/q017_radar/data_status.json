@@ -1,35 +1,11 @@
 {
   "system": "HENGCE",
-  "module": "POSTCLOSE_DATA_GATE",
-  "generated_at_taipei": "2026-10-19T12:17:27.162786+08:00",
-  "status": "PASS",
-  "eod": {
-    "system": "HENGCE",
-    "artifact": "EOD_COMPLETE_LEG_INGEST",
-    "target_date": "2026-10-16",
-    "price_status": "COMPLETE",
-    "price_date": "2026-10-16",
-    "price_rows": 1086,
-    "institutional_status": "COMPLETE",
-    "institutional_date": "2026-10-16",
-    "institutional_rows": 1071,
-    "margin_status": "COMPLETE",
-    "margin_date": "2026-10-16",
-    "margin_rows": 1061,
-    "policy": "THREE_LEG_COMPLETE_REQUIRED",
-    "completed_at_taipei": "2026-10-19T12:17:25.223092+08:00"
-  },
-  "electronics_history_append": {
-    "status": "PASS",
-    "date": "2026-10-16",
-    "rows": 457
-  },
-  "sox": {
-    "status": "PASS",
-    "source": "Nasdaq ExportHistory/SOX",
-    "latest_session": "2026-10-16",
-    "rows": 199,
-    "stale_days": 0,
-    "refreshed_at_taipei": "2026-10-19T12:17:27.161643+08:00"
-  }
+  "module": "DAILY_COMMAND_CENTER",
+  "mode": "postclose",
+  "generated_at_taipei": "2026-10-19T17:28:31.351873+08:00",
+  "status": "DATA_PENDING",
+  "authority": "NO_FORMAL_SIGNAL",
+  "formal_buy_count": 0,
+  "error": "RuntimeError('MARGIN_NOT_READY:很抱歉，沒有符合條件的資料:None')",
+  "policy": "FAIL_CLOSED_NO_FORMAL_SIGNAL"
 }
