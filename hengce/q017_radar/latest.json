@@ -1,15 +1,15 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "system": "HENGCE",
   "module": "Q017_AUTHORITY_GUARD_FAIL_CLOSED",
-  "generated_at_taipei": "2026-10-19T10:00:00+08:00",
+  "generated_at_taipei": "2026-10-19T10:18:00+08:00",
   "trade_date": "2026-10-19",
   "binding_status": "DATA_PENDING",
   "market_state": "DATA_PENDING",
   "authority": "NO_FORMAL_SIGNAL",
   "top3": [],
   "formal_buy_count": 0,
-  "reason": "LEGACY_RADAR_MODULE_FORBIDDEN_AND_NO_IMMUTABLE_0901_DECISION_SNAPSHOT",
+  "reason": "NO_VALID_SCHEMA_V3_IMMUTABLE_0901_DECISION_SNAPSHOT_FOR_2026_10_19",
   "rejected_artifact": {
     "module": "Q017_SOX_ELECTRONICS_RADAR",
     "schema_version": 1,
@@ -17,6 +17,12 @@
     "top3": ["7795", "2455", "2492"],
     "status": "REVOKED_ZERO_AUTHORITY"
   },
-  "policy": "NO_VALID_0901_DECISION_LOCK_NO_FORMAL_Q017_SIGNAL",
-  "repair_note": "The 09:40 legacy radar result was explicitly revoked. 7795/2455/2492 are not formal Q017 signals for 2026-10-19 and have zero capital authority. Only schema-v2 immutable 09:01 decision snapshots and their locked monitors may publish formal Q017 output."
+  "required_gate": {
+    "sox_1d_max": 0.0,
+    "sox_5d_max": -0.03,
+    "dxy_5d_min": -0.005,
+    "authority": "Q017_LOCK_20261018.json"
+  },
+  "policy": "NO_VALID_SCHEMA_V3_0901_DECISION_LOCK_NO_FORMAL_Q017_SIGNAL",
+  "repair_note": "The 09:40 legacy radar result is revoked. 7795/2455/2492 are not formal Q017 signals for 2026-10-19 and have zero capital authority. Formal live Q017 publication requires a schema-v3 immutable 09:01 decision snapshot bound to the frozen SOX1D<=0, SOX5D<=-3%, DXY5D>=-0.5% gate; later monitors may mark prices only and may not rerank."
 }
