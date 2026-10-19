@@ -39,6 +39,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests openpyxl
+
       - name: Self-test schema-v5 guard
         run: |
           python scripts/hengce_q017_observation_lock_v5.py --mode self-test
