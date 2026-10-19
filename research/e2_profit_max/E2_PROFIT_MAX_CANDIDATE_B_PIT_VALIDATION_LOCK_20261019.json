@@ -1,0 +1,56 @@
+{
+  "system": "HENGCE",
+  "engine": "E2_PROFIT_MAX",
+  "candidate": "B_FROZEN",
+  "status": "PASS_PIT_VALIDATED_RESEARCH",
+  "effective_date": "2026-10-19",
+  "formula_mutated_during_final_validation": false,
+  "population": "TWSE listed electronics, official TWSE MI_INDEX type=13 point-in-time daily membership",
+  "membership_coverage": {
+    "2023": {"mother_trading_days": 239, "pit_days": 239, "missing_trading_days": 0},
+    "2024": {"mother_trading_days": 242, "pit_days": 242, "missing_trading_days": 0},
+    "2025": {"mother_trading_days": 243, "pit_days": 243, "missing_trading_days": 0},
+    "review_dates_intersect_trading_calendar": 0
+  },
+  "signal": {
+    "family": "rev1 residual",
+    "beta_window": 60,
+    "beta_min_obs": 30,
+    "k": 25,
+    "top_n": 1,
+    "teacher_overlay": false,
+    "local_gate": "electronics_m1<0 AND electronics_m5<=-0.02",
+    "macro_gate": "latest completed US session before Taiwan signal date: SOX_1D<=0 AND SOX_5D<=-0.03",
+    "dxy": "EXCLUDED",
+    "entry": "next TWSE trading day open",
+    "exit": "fixed 20 trading observations after entry",
+    "roundtrip_cost": 0.008,
+    "overlap": "forbidden"
+  },
+  "pit_final_validation": {
+    "candidate_rows": 106,
+    "candidate_csv_sha256": "e7c9333d8dd129bd179d526c664885c75630079e755558f7d1f3206d9c873a4e",
+    "2023": {"nav": 1.1252421149566751, "return": 0.12524211495667514, "entries": 4, "wins": 2},
+    "2024": {"nav": 1.3183324917884003, "return": 0.3183324917884003, "entries": 5, "wins": 3},
+    "2025": {"nav": 1.0314540525052487, "return": 0.031454052505248686, "entries": 4, "wins": 3},
+    "2023_2025": {"nav": 1.530103542875737, "return": 0.530103542875737, "entries": 13, "wins": 8, "win_rate": 0.6153846153846154, "max_drawdown": -0.41633333333333333},
+    "hard_rule": "each 2023/2024/2025 NAV>1 and entries>=4",
+    "hard_rule_pass": true
+  },
+  "previous_2026_oos_already_pit": {
+    "through": "2026-10-16",
+    "nav": 1.749568124084571,
+    "return": 0.7495681240845711,
+    "entries": 6,
+    "max_drawdown": -0.10411945992507265
+  },
+  "authority": {
+    "research_model_validated": true,
+    "capital_authority_twd": 0,
+    "live_execution_authority": false,
+    "reason": "Live engine integration and execution-path validation are separate from model validation."
+  },
+  "q017_mutated": false,
+  "legacy_e2_remains_revoked": true,
+  "no_formula_rescue_after_failure": true
+}
