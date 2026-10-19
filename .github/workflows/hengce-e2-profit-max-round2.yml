@@ -96,3 +96,5 @@ jobs:
             research/e2_profit_max/round2/round2_result.json
             research/e2_profit_max/round2/winner_validation_events.csv
           if-no-files-found: error
+
+# manual trigger 2026-10-19: execute the already-frozen 80-combination round; no model changes.
