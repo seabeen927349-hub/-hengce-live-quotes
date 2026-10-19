@@ -25,12 +25,14 @@ on:
       - 'scripts/test_hengce_q017_decision_lock.py'
       - 'scripts/test_hengce_q017_adversarial_v4.py'
       - 'scripts/hengce_e2_live.py'
+      - 'scripts/apply_20261019_lane_coherence_repair.py'
       - 'hengce/e2_live/**'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json'
       - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.json'
+      - 'hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019.json'
       - '.github/workflows/hengce-daily-command-center.yml'
   schedule:
     # Asia/Taipei = UTC+8
@@ -42,7 +44,11 @@ on:
     - cron: '10 1 * * 1-5'
     - cron: '20 1 * * 1-5'
     # Post-close official three-leg ingest + E2 incremental state refresh.
+    # Retry because TWSE official legs may publish at different times.
     - cron: '0 7 * * 1-5'
+    - cron: '30 7 * * 1-5'
+    - cron: '0 8 * * 1-5'
+    - cron: '0 9 * * 1-5'
 
 permissions:
   contents: write
@@ -84,7 +90,7 @@ jobs:
               '30 22 * * 0-4') MODE='premarket' ;;
               '50 0 * * 1-5') MODE='decision' ;;
               '3 1 * * 1-5'|'10 1 * * 1-5'|'20 1 * * 1-5') MODE='monitor' ;;
-              '0 7 * * 1-5') MODE='postclose' ;;
+              '0 7 * * 1-5'|'30 7 * * 1-5'|'0 8 * * 1-5'|'0 9 * * 1-5') MODE='postclose' ;;
               *) MODE='self-test' ;;
             esac
           fi
