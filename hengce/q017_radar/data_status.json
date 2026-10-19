@@ -1,11 +1,35 @@
 {
   "system": "HENGCE",
-  "module": "DAILY_COMMAND_CENTER",
-  "mode": "postclose",
-  "generated_at_taipei": "2026-10-19T17:28:31.351873+08:00",
-  "status": "DATA_PENDING",
-  "authority": "NO_FORMAL_SIGNAL",
-  "formal_buy_count": 0,
-  "error": "RuntimeError('MARGIN_NOT_READY:很抱歉，沒有符合條件的資料:None')",
-  "policy": "FAIL_CLOSED_NO_FORMAL_SIGNAL"
+  "module": "DAILY_DATA_GATE",
+  "generated_at_taipei": "2026-10-20T06:54:55.599378+08:00",
+  "trade_date": "2026-10-20",
+  "status": "PASS",
+  "lane_status": {
+    "q017_inputs": "PASS",
+    "e2_eod_archive": "PASS"
+  },
+  "required": {
+    "sox": {
+      "status": "PASS",
+      "source": "Nasdaq ExportHistory/SOX",
+      "latest_session": "2026-10-19",
+      "rows": 200,
+      "stale_days": 1,
+      "refreshed_at_taipei": "2026-10-20T06:54:55.408573+08:00"
+    },
+    "latest_eod_date": "20261019",
+    "latest_eod_complete": true,
+    "electronics_history": {
+      "status": "PASS",
+      "source": "LOCAL_INCREMENTAL_HISTORY",
+      "seeded": false
+    },
+    "electronics_history_latest": "2026-10-19"
+  },
+  "sox": {
+    "session": "2026-10-19",
+    "sox_1d": 0.016077193344715024,
+    "sox_5d": -0.07521951939526039
+  },
+  "policy": "Q017_AND_E2_DATA_LANES_INDEPENDENT;E2_ARCHIVE_GAP_DOES_NOT_INVALIDATE_CAUSAL_Q017_INPUTS"
 }
