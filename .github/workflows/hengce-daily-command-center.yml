@@ -224,7 +224,7 @@ jobs:
         if: steps.mode.outputs.mode == 'postclose'
         run: python scripts/hengce_daily_command_center.py --mode postclose ${{ steps.target.outputs.date_arg }}
 
-      - name: Resolve post-close price readiness
+      - name: Resolve post-close mother-gated readiness
         id: postclose_ready
         if: always() && steps.mode.outputs.mode == 'postclose'
         shell: bash
@@ -238,14 +238,16 @@ jobs:
           x=json.loads(p.read_text()) if p.exists() else {}
           print('price_complete=' + ('true' if x.get('price_status')=='COMPLETE' else 'false'))
           print('three_leg_complete=' + ('true' if x.get('three_leg_complete') is True else 'false'))
+          print('mother_complete=' + ('true' if x.get('mother_status')=='COMPLETE' else 'false'))
+          print('downstream_ready=' + ('true' if x.get('downstream_ready') is True else 'false'))
           PY
 
       - name: Refresh E2 incremental post-close state
-        if: steps.mode.outputs.mode == 'postclose' && steps.postclose_ready.outputs.price_complete == 'true'
+        if: steps.mode.outputs.mode == 'postclose' && steps.postclose_ready.outputs.downstream_ready == 'true'
         run: python scripts/hengce_e2_live.py --mode postclose ${{ steps.target.outputs.date_arg }}
 
       - name: Update all active Q017 10-session review cohorts
-        if: steps.mode.outputs.mode == 'postclose' && steps.postclose_ready.outputs.price_complete == 'true'
+        if: steps.mode.outputs.mode == 'postclose' && steps.postclose_ready.outputs.downstream_ready == 'true'
         shell: bash
         run: |
           set -euo pipefail

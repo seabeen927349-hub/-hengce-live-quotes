@@ -65,6 +65,19 @@ def _write(out,leg,iso,rows):
  rec={'system':'HENGCE','artifact':'EOD_ORIGINAL_VESSEL_LEG_RECEIPT','target_date':iso,'leg':leg,'status':'COMPLETE','rows':info['rows'],'sha256':info['sha256'],'source':SRC[leg],'files':info['files'],'promoted_at_taipei':core.now_tw().isoformat(),'policy':'ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN','model_authority_created':False}
  core.atomic_json(out/'receipts'/f'{leg}.json',rec);return info
 
+def _mother_receipt(out,iso,st):
+ p=out/'receipts'/'mother.json'
+ if not p.exists():return None
+ try:r=json.loads(p.read_text(encoding='utf-8'))
+ except Exception:return None
+ if r.get('target_date')!=iso or str(r.get('status')).upper() not in ('PASS','COMPLETE'):return None
+ if r.get('second_mother') is not False:return None
+ hashes=r.get('promoted_leg_sha256') or {}
+ available=[x for x in LEGS if st.get(f'{x}_status')=='COMPLETE']
+ if any(hashes.get(x)!=st.get(f'{x}_sha256') for x in available):return None
+ if r.get('mother_latest_date')!=iso:return None
+ return r
+
 def _price(ds,iso):
  p=core.get_json(core.TWSE_PRICE,{'date':ds,'type':'ALLBUT0999','response':'json'})
  if str(p.get('stat')).upper()!='OK':raise NotReady(f'PRICE_NOT_READY:{p.get("stat")}')
@@ -134,22 +147,32 @@ def ingest(target=None):
  except Exception:st={}
  if st.get('target_date') not in (None,iso):raise RuntimeError('EOD_STATUS_DATE_MISMATCH')
  st.update({'system':'HENGCE','artifact':'EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST','target_date':iso,'policy':'ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN','mother_promotion_route':'EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE','parallel_eod_tree':False,'second_mother':False,'model_authority_created':False})
- results=[];fatal=[]
+ results=[];fatal=[];promoted=[]
  for leg in LEGS:
   try:
    old=_read(out,leg,iso)
    if old:info=old;result='ALREADY_COMPLETE'
-   else:info=_write(out,leg,iso,FETCH[leg](ds,iso));result='PROMOTED'
+   else:
+    info=_write(out,leg,iso,FETCH[leg](ds,iso));result='PROMOTED';promoted.append(leg)
    st.update({f'{leg}_status':'COMPLETE',f'{leg}_date':iso,f'{leg}_rows':info['rows'],f'{leg}_sha256':info['sha256'],f'{leg}_source':SRC[leg]});st.pop(f'{leg}_pending_reason',None);st.pop(f'{leg}_error',None);results.append({'leg':leg,'result':result,'rows':info['rows'],'sha256':info['sha256']})
   except NotReady as e:st[f'{leg}_status']='PENDING';st[f'{leg}_pending_reason']=str(e);results.append({'leg':leg,'result':'PENDING','reason':str(e)})
   except Exception as e:st[f'{leg}_status']='ERROR';st[f'{leg}_error']=f'{type(e).__name__}:{e}';fatal.append({'leg':leg,'error':st[f'{leg}_error']});results.append({'leg':leg,'result':'ERROR','error':st[f'{leg}_error']})
  done=[x for x in LEGS if st.get(f'{x}_status')=='COMPLETE'];pending=[x for x in LEGS if st.get(f'{x}_status')=='PENDING'];errs=[x for x in LEGS if st.get(f'{x}_status')=='ERROR']
- st.update({'available_legs':done,'pending_legs':pending,'error_legs':errs,'three_leg_complete':len(done)==3,'formal_complete_day':len(done)==3,'status':'ERROR' if errs else ('COMPLETE' if len(done)==3 else 'PARTIAL'),'last_run_results':results,'updated_at_taipei':core.now_tw().isoformat()});core.atomic_json(sp,st)
+ mr=_mother_receipt(out,iso,st)
+ if mr:
+  mother_status='COMPLETE';mother_pending=[];st.pop('mother_pending_reason',None)
+  st.update({'mother_receipt':'receipts/mother.json','mother_sha256':mr.get('mother_sha256'),'mother_latest_date':mr.get('mother_latest_date'),'mother_promoted_legs':mr.get('promoted_legs',done)})
+ else:
+  mother_status='PENDING' if done else 'NOT_READY';mother_pending=list(done)
+  if done:st['mother_pending_reason']='AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION'
+  for k in ('mother_receipt','mother_sha256','mother_latest_date','mother_promoted_legs'):st.pop(k,None)
+ downstream_ready=st.get('price_status')=='COMPLETE' and mother_status=='COMPLETE'
+ st.update({'available_legs':done,'pending_legs':pending,'error_legs':errs,'mother_status':mother_status,'mother_promotion_required':bool(done),'mother_pending_legs':mother_pending,'downstream_ready':downstream_ready,'three_leg_complete':len(done)==3,'formal_complete_day':len(done)==3,'status':'ERROR' if errs else ('COMPLETE' if len(done)==3 else 'PARTIAL'),'last_run_results':results,'updated_at_taipei':core.now_tw().isoformat()});core.atomic_json(sp,st)
  if fatal:raise RuntimeError('EOD_INTEGRITY_REJECTION:'+json.dumps(fatal,ensure_ascii=False))
  return st
 
 def self_test():
- print(json.dumps({'self_test':'PASS','original_eod_tree_only':True,'second_mother':False,'no_wait_for_margin':True,'q017_model_change':False,'e2_model_change':False},ensure_ascii=False))
+ print(json.dumps({'self_test':'PASS','original_eod_tree_only':True,'second_mother':False,'no_wait_for_margin':True,'mother_gate':True,'q017_model_change':False,'e2_model_change':False},ensure_ascii=False))
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--mode',choices=('ingest','self-test'),required=True);ap.add_argument('--date');a=ap.parse_args()
  if a.mode=='self-test':self_test();return 0

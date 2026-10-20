@@ -64,9 +64,14 @@ def main():
             if eod.get('status') == 'SKIP_WEEKEND':
                 result = eod
             else:
-                elec = append_electronics_day(today) if eod.get('price_status') == 'COMPLETE' else {'status':'PENDING','date':today.isoformat(),'reason':'PRICE_LEG_NOT_COMPLETE'}
-                sox = refresh_sox(today)
-                result = {'system':'HENGCE','module':'POSTCLOSE_DATA_GATE','generated_at_taipei':now_tw().isoformat(),'status':'PASS' if eod.get('three_leg_complete') else 'PARTIAL','eod':eod,'electronics_history_append':elec,'sox':sox,'policy':'ORIGINAL_VESSEL_INCREMENTAL_EOD_NO_WAIT_FOR_MARGIN'}
+                downstream_ready = eod.get('downstream_ready') is True
+                if downstream_ready:
+                    elec = append_electronics_day(today)
+                    sox = refresh_sox(today)
+                else:
+                    elec = {'status':'PENDING','date':today.isoformat(),'reason':'MOTHER_NOT_COMPLETE'}
+                    sox = {'status':'PENDING','date':today.isoformat(),'reason':'MOTHER_NOT_COMPLETE'}
+                result = {'system':'HENGCE','module':'POSTCLOSE_DATA_GATE','generated_at_taipei':now_tw().isoformat(),'status':'PASS' if eod.get('three_leg_complete') and downstream_ready else 'PARTIAL','downstream_ready':downstream_ready,'eod':eod,'electronics_history_append':elec,'sox':sox,'policy':'MOTHER_FIRST_ORIGINAL_VESSEL_INCREMENTAL_EOD_NO_WAIT_FOR_MARGIN'}
                 atomic_json(DATA_STATUS,result)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
