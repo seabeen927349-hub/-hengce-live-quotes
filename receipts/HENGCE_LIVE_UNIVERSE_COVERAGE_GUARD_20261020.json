@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "receipt": "LIVE_UNIVERSE_COVERAGE_GUARD",
+  "date": "2026-10-20",
+  "status": "PASS_GUARDED_REVIEW_REQUIRED",
+  "scope": "GENERIC_LIVE_TRANSPORT_COVERAGE_OBSERVABILITY_ONLY",
+  "observed_source": {
+    "universe_version": "HENGCE_LIVE_UNIVERSE_v1_4_AUS_MICRO_PROBE_LADDER_20261016",
+    "target_date": "2026-10-15",
+    "current_trade_date": "2026-10-20",
+    "source_age_calendar_days": 5,
+    "source_run_id": "HENGCE_V3_SCAN_20261015_ab5769b2",
+    "source_action_board_version": "HENGCE_DAILY_ACTION_BOARD_v1_9_AUS_RADAR_20261016",
+    "requested_count": 77,
+    "source_run_id_semantics": "LINEAGE_ONLY_NOT_AUTHORITY",
+    "source_action_board_version_semantics": "LINEAGE_ONLY_NOT_AUTHORITY"
+  },
+  "repository_findings": {
+    "live_universe_has_automatic_daily_producer_in_repo": false,
+    "authoritative_2026_10_20_action_board_committed_for_safe_symbol_rebuild": false,
+    "decision": "DO_NOT_GUESS_OR_AUTO_REBUILD_SYMBOL_SET",
+    "existing_bound_universe_retained_as_transport_fallback": true
+  },
+  "changes": {
+    "contract": {
+      "path": "hengce/HENGCE_LIVE_UNIVERSE_COVERAGE_CONTRACT_v1_0_20261020.json",
+      "initial_commit": "524fe55a4c25c05698211b5cd38a55c43219a9a2",
+      "health_scope_commit": "d6e3fc0636b1249a4ab3ddf19fa778dab9276b1b"
+    },
+    "guard": {
+      "path": "scripts/hengce_live_universe_guard.py",
+      "initial_commit": "6336bd5107ad2bdab037fbeaa979e7df26a1a599",
+      "health_scope_commit": "844f9f2eaff8af40cae23a80105b8e27693496ef"
+    },
+    "workflow": {
+      "path": ".github/workflows/fugle-live-quotes.yml",
+      "commit": "e507819530757ed1b5a0cd5de85300224a249168"
+    },
+    "validated_live_output_commit": "be49d125f2cc3ecbe64a22f8d4fe2ba814b09c51"
+  },
+  "hard_lock": {
+    "universe_coverage_role": "TRANSPORT_COVERAGE_OBSERVABILITY_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+    "ranking_authority": false,
+    "signal_authority": false,
+    "capital_authority": false,
+    "broker_order_execution": false,
+    "auto_rebuild_from_live_prices": false,
+    "auto_rebuild_from_full_market_shadow": false,
+    "auto_rebuild_from_legacy_v3_label": false,
+    "authoritative_handoff_required_for_symbol_changes": true,
+    "universe_auto_rebuilt": false
+  },
+  "real_session_validation": {
+    "workflow_run_id": 39372076071,
+    "workflow_conclusion": "success",
+    "snapshot_id": "20261020T125512+0800",
+    "requested_count": 77,
+    "success_count": 77,
+    "failure_count": 0,
+    "transport_health_status": "PASS",
+    "data_freshness_status": "PASS",
+    "trial_guard_status": "PASS",
+    "expected_active_count": 76,
+    "expected_inactive_symbols": ["1516"],
+    "expected_active_current_session_ratio": 1.0,
+    "unexpected_stale_count": 0,
+    "rate_limit_event_count": 0,
+    "terminal_429_count": 0,
+    "universe_coverage_status": "SOURCE_AGE_REVIEW_REQUIRED",
+    "universe_refresh_required": true,
+    "universe_source_age_calendar_days": 5,
+    "fully_healthy_legacy_value": true,
+    "fully_healthy_scope": "TRANSPORT_AND_DATA_FRESHNESS_ONLY",
+    "overall_observability_status": "REVIEW_REQUIRED_UNIVERSE_SOURCE_AGE"
+  },
+  "authority_isolation": {
+    "q017_schema5_core_git_blob_sha_before": "c2b44d56844fd496445220e6c55b9a031c547c4e",
+    "q017_schema5_core_git_blob_sha_after": "c2b44d56844fd496445220e6c55b9a031c547c4e",
+    "q017_unchanged": true,
+    "e2_core_git_blob_sha_before": "ced2331486ef93a15075aaef5c6f6405461c1be4",
+    "e2_core_git_blob_sha_after": "ced2331486ef93a15075aaef5c6f6405461c1be4",
+    "e2_unchanged": true
+  },
+  "remaining_dependency": {
+    "status": "OPEN_EXTERNAL_TO_GUARD",
+    "requirement": "Provide a current authoritative action-board/handoff if the 77-symbol transport coverage is to be changed or refreshed.",
+    "guard_behavior_until_then": "Continue existing bound coverage, expose source age and review-required state, never infer a replacement universe from prices, shadow scans, or legacy labels."
+  },
+  "conclusion": "The stale source age of live_universe.json is now explicit and machine-verifiable without fabricating a replacement universe. Connectivity and quote freshness remain healthy, while overall observability correctly remains review-required until an authoritative current coverage handoff exists."
+}
