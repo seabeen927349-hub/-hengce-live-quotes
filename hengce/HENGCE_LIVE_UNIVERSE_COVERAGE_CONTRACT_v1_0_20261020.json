@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_LIVE_UNIVERSE_COVERAGE",
+  "contract_version": "v1.0",
+  "effective_date": "2026-10-20",
+  "role": "TRANSPORT_COVERAGE_OBSERVABILITY_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "authority": {
+    "ranking": false,
+    "signal": false,
+    "capital": false,
+    "broker_execution": false
+  },
+  "source_semantics": {
+    "target_date": "PROVENANCE_DATE_OF_BOUND_COVERAGE_SOURCE",
+    "source_run_id": "LINEAGE_ONLY_NOT_AUTHORITY",
+    "source_action_board_version": "LINEAGE_ONLY_NOT_AUTHORITY"
+  },
+  "freshness_policy": {
+    "current_trade_date_match": "PASS",
+    "older_source_date": "SOURCE_AGE_REVIEW_REQUIRED",
+    "future_source_date": "FAIL_CLOSED_INVALID_SOURCE_DATE",
+    "missing_target_date": "FAIL_CLOSED_INVALID_SOURCE_DATE"
+  },
+  "refresh_policy": {
+    "auto_rebuild_from_live_prices": false,
+    "auto_rebuild_from_full_market_shadow": false,
+    "auto_rebuild_from_legacy_v3_label": false,
+    "authoritative_handoff_required_for_symbol_changes": true,
+    "existing_bound_universe_may_continue_as_transport_fallback": true
+  },
+  "compatibility": {
+    "do_not_change_transport_health_semantics": true,
+    "do_not_change_q017_authority": true,
+    "do_not_change_e2_authority": true,
+    "new_dimension": "universe_coverage_status"
+  }
+}
