@@ -26,6 +26,7 @@ STATE = OUT / "state_latest.json"
 MORNING = OUT / "morning_latest.json"
 HISTORY = OUT / "history"
 HISTORY.mkdir(parents=True, exist_ok=True)
+EXECUTION_OVERRIDE = OUT / "execution_override.json"
 LOCK = "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json"
 MODEL_LOCK = "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_PIT_VALIDATION_LOCK_20261019.json"
 LEGACY_REVOCATION = "E2_LEGACY_REVOCATION_20261019.json"
@@ -68,8 +69,84 @@ def load_old_state() -> dict:
     except Exception:
         return {"paper_position": {"state": "DATA_PENDING", "reason": "STATE_JSON_INVALID"}}
     if x.get("module") != "E2_PROFIT_MAX_STATE":
-        return {"paper_position": {"state": "IDLE", "legacy_state_ignored": True}}
+        return {"paper_position": {"state": "IDLE"}, "legacy_state_ignored": True}
     return x
+
+
+def load_execution_override() -> dict:
+    if not EXECUTION_OVERRIDE.exists():
+        return {}
+    try:
+        x = json.loads(EXECUTION_OVERRIDE.read_text(encoding="utf-8"))
+    except Exception:
+        return {"status": "INVALID", "reason": "EXECUTION_OVERRIDE_JSON_INVALID"}
+    if not isinstance(x, dict):
+        return {"status": "INVALID", "reason": "EXECUTION_OVERRIDE_NOT_OBJECT"}
+    return x
+
+
+def apply_execution_override(pos: dict, target) -> tuple[dict, dict]:
+    """Apply an explicit user execution fact without mutating Candidate B ranking/model.
+
+    Supported v1 override:
+      {"version":1,"status":"NO_FILL","ticker":"3026","signal_date":"2026-10-19",
+       "effective_date":"2026-10-20","reason":"USER_CONFIRMED_NOT_FILLED"}
+
+    A NO_FILL can only release a matching ENTRY_PENDING/HOLDING paper position and is
+    therefore fail-closed against stale or unrelated overrides.
+    """
+    ov = load_execution_override()
+    if not ov:
+        return pos, {"applied": False, "status": "NONE"}
+    if ov.get("status") == "INVALID":
+        return {**pos, "state": "DATA_PENDING", "reason": ov.get("reason")}, {
+            "applied": False, "status": "INVALID", "reason": ov.get("reason")
+        }
+    status = str(ov.get("status") or "").upper()
+    if status != "NO_FILL":
+        return {**pos, "state": "DATA_PENDING", "reason": "UNSUPPORTED_EXECUTION_OVERRIDE_STATUS"}, {
+            "applied": False, "status": status or "MISSING", "reason": "UNSUPPORTED_EXECUTION_OVERRIDE_STATUS"
+        }
+    if ov.get("version") != 1:
+        return {**pos, "state": "DATA_PENDING", "reason": "EXECUTION_OVERRIDE_VERSION_MISMATCH"}, {
+            "applied": False, "status": status, "reason": "EXECUTION_OVERRIDE_VERSION_MISMATCH"
+        }
+    eff = iso_date(ov.get("effective_date"))
+    if not eff or eff > target.isoformat():
+        return pos, {"applied": False, "status": status, "reason": "NOT_EFFECTIVE_YET"}
+    ticker = str(ov.get("ticker") or "")
+    signal_date = iso_date(ov.get("signal_date"))
+    pos_ticker = str(pos.get("ticker") or "")
+    pos_signal_date = iso_date(pos.get("signal_date"))
+    if pos.get("state") not in ("ENTRY_PENDING", "HOLDING"):
+        return pos, {"applied": False, "status": status, "reason": "NO_OPEN_PAPER_POSITION"}
+    if ticker != pos_ticker or signal_date != pos_signal_date:
+        return {**pos, "state": "DATA_PENDING", "reason": "EXECUTION_OVERRIDE_POSITION_MISMATCH"}, {
+            "applied": False, "status": status, "reason": "EXECUTION_OVERRIDE_POSITION_MISMATCH"
+        }
+    released = {
+        "state": "NO_FILL",
+        "signal_date": pos_signal_date,
+        "ticker": pos_ticker,
+        "name": pos.get("name", ""),
+        "score": pos.get("score"),
+        "beta60": pos.get("beta60"),
+        "residual": pos.get("residual"),
+        "entry_due": pos.get("entry_due"),
+        "execution_effective_date": eff,
+        "execution_reason": ov.get("reason") or "USER_CONFIRMED_NOT_FILLED",
+        "slot_released": True,
+        "model_signal_preserved": True,
+        "broker_order_execution": False,
+    }
+    return released, {
+        "applied": True,
+        "status": "NO_FILL",
+        "ticker": pos_ticker,
+        "signal_date": pos_signal_date,
+        "effective_date": eff,
+        "slot_released": True,
+    }
 
 
 def tw_rows_through(target):
@@ -242,15 +319,22 @@ def build_postclose(target):
     gate_go = all(local_checks.values()) and all(macro_checks.values())
     top1 = candidates[0] if candidates else None
     old = load_old_state(); prior_pos = dict(old.get("paper_position") or {"state":"IDLE"})
+    prior_pos, execution_override = apply_execution_override(prior_pos, target)
     prior_state = prior_pos.get("state", "IDLE")
-    pos, exited_today = position_progress(prior_pos, market_dates, rows, target)
-    can_accept = prior_state in ("IDLE", "EXITED") and not (
-        prior_state == "EXITED" and iso_date(prior_pos.get("exit_date")) == target.isoformat()
-    )
-    if prior_state == "EXITED" and iso_date(prior_pos.get("exit_date")) < target.isoformat():
-        pos = {"state": "IDLE"}; can_accept = True
-    if prior_state == "HOLDING" or prior_state == "ENTRY_PENDING" or exited_today:
+    no_fill_today = prior_state == "NO_FILL"
+    if no_fill_today:
+        pos = prior_pos
+        exited_today = False
         can_accept = False
+    else:
+        pos, exited_today = position_progress(prior_pos, market_dates, rows, target)
+        can_accept = prior_state in ("IDLE", "EXITED") and not (
+            prior_state == "EXITED" and iso_date(prior_pos.get("exit_date")) == target.isoformat()
+        )
+        if prior_state == "EXITED" and iso_date(prior_pos.get("exit_date")) < target.isoformat():
+            pos = {"state": "IDLE"}; can_accept = True
+        if prior_state == "HOLDING" or prior_state == "ENTRY_PENDING" or exited_today:
+            can_accept = False
     action = "OFF"
     if pos.get("state") == "HOLDING":
         action = "HOLDING"
@@ -258,6 +342,8 @@ def build_postclose(target):
         action = "ENTRY_PENDING"
     elif pos.get("state") == "EXITED":
         action = "EXIT"
+    elif pos.get("state") == "NO_FILL":
+        action = "NO_FILL"
     elif gate_go and top1 and can_accept:
         pos = {"state":"ENTRY_PENDING", "signal_date":target.isoformat(), "ticker":top1["ticker"],
                "name":top1.get("name",""), "score":top1["score"], "beta60":top1["beta60"],
@@ -266,8 +352,9 @@ def build_postclose(target):
         action = "ENTRY_PENDING"
     elif gate_go and top1 and not can_accept:
         action = "BLOCKED_NON_OVERLAP"
-    engine_status = "ON" if action == "ENTRY_PENDING" else "HOLDING" if pos.get("state") == "HOLDING" else "EXIT" if pos.get("state") == "EXITED" else "OFF"
+    engine_status = "ON" if action == "ENTRY_PENDING" else "HOLDING" if pos.get("state") == "HOLDING" else "EXIT" if pos.get("state") == "EXITED" else "NO_FILL" if pos.get("state") == "NO_FILL" else "OFF"
     strict = compatibility_strict(engine_status, top1, action)
+    occupied = 1 if pos.get("state") in ("ENTRY_PENDING", "HOLDING") else 0
     out = {
         "schema_version": SCHEMA, "system":"HENGCE", "module":"E2_PROFIT_MAX_STATE",
         "generated_at_taipei":core.now_tw().isoformat(), "signal_asof":target.isoformat(),
@@ -278,14 +365,16 @@ def build_postclose(target):
         "local_gate":{"go":all(local_checks.values()), "checks":local_checks, "electronics_m1":local["m1"], "electronics_m5":local["m5"]},
         "macro_gate":{"go":all(macro_checks.values()), "checks":macro_checks, "sox_session":sf["session"], "sox_1d":sf["sox_1d"], "sox_5d":sf["sox_5d"], "dxy_used":False},
         "top1":top1, "action":action, "paper_position":pos,
+        "execution_override": execution_override,
         "strict":strict,
-        "extension_shadow":{"engine_status":"DISABLED_LEGACY_REVOKED", "capital_authorized":False, "rows":[]},
+        "extension_shadow":{"engine_status":"DISABLED_LEGACY_REVOKED","capital_authorized":False,"rows":[]},
         "position_state":{"asof":target.isoformat(), "held":[pos] if pos.get("state")=="HOLDING" else [],
                           "pending":[pos] if pos.get("state")=="ENTRY_PENDING" else [],
-                          "max_slots":1, "occupied_next_session":1 if pos.get("state") in ("ENTRY_PENDING","HOLDING") else 0,
-                          "free_slots_next_session":0 if pos.get("state") in ("ENTRY_PENDING","HOLDING") else 1},
-        "locks":{"model":MODEL_LOCK, "display_execution":LOCK, "legacy_revocation":LEGACY_REVOCATION},
-        "rules":{"K":K,"top_n":1,"hold_intervals":HOLD_INTERVALS,"cost_roundtrip":0.008,"overlap":"FORBIDDEN","dxy_used":False},
+                          "no_fill":[pos] if pos.get("state")=="NO_FILL" else [],
+                          "max_slots":1,"occupied_next_session":occupied,"free_slots_next_session":1-occupied},
+        "locks":{"model":MODEL_LOCK,"display_execution":LOCK,"legacy_revocation":LEGACY_REVOCATION},
+        "rules":{"K":K,"top_n":1,"hold_intervals":HOLD_INTERVALS,"cost_roundtrip":0.008,"overlap":"FORBIDDEN","dxy_used":False,
+                 "no_fill_policy":"EXPLICIT_MATCHED_OVERRIDE_RELEASES_SLOT_WITHOUT_MODEL_MUTATION"},
         "q017_effect":"NONE"
     }
     atomic_json(STATE, out)
@@ -295,23 +384,34 @@ def build_postclose(target):
 
 def build_morning(target):
     state = load_old_state(); pos = dict(state.get("paper_position") or {"state":"IDLE"})
+    pos, execution_override = apply_execution_override(pos, target)
     source_asof = state.get("signal_asof")
     entry_due = []
     if pos.get("state") == "ENTRY_PENDING" and iso_date(pos.get("signal_date")) < target.isoformat():
         op, err = quote_open(str(pos.get("ticker")))
         if op is not None:
-            pos.update({"state":"HOLDING", "entry_date":target.isoformat(), "entry_reference_open":op,
-                        "entry_reference_source":"FUGLE_OBSERVED_OPEN", "completed_hold_intervals":0,
-                        "hold_target_intervals":HOLD_INTERVALS, "display_progress":f"D0/{HOLD_INTERVALS}"})
+            pos.update({"state":"HOLDING","entry_date":target.isoformat(),"entry_reference_open":op,
+                        "entry_reference_source":"FUGLE_OBSERVED_OPEN","completed_hold_intervals":0,
+                        "hold_target_intervals":HOLD_INTERVALS,"display_progress":f"D0/{HOLD_INTERVALS}"})
             state["paper_position"] = pos
             state["engine_status"] = "HOLDING"
             state["action"] = "HOLDING"
             state["generated_at_taipei"] = core.now_tw().isoformat()
             state["strict"] = compatibility_strict("HOLDING", state.get("top1"), "HOLDING")
-            state["position_state"] = {"asof":target.isoformat(),"held":[pos],"pending":[],"max_slots":1,"occupied_next_session":1,"free_slots_next_session":0}
+            state["execution_override"] = execution_override
+            state["position_state"] = {"asof":target.isoformat(),"held":[pos],"pending":[],"no_fill":[],"max_slots":1,"occupied_next_session":1,"free_slots_next_session":0}
             atomic_json(STATE, state)
         else:
             entry_due = [{**pos, "entry_observation_status":err}]
+    elif pos.get("state") == "NO_FILL":
+        state["paper_position"] = pos
+        state["engine_status"] = "NO_FILL"
+        state["action"] = "NO_FILL"
+        state["generated_at_taipei"] = core.now_tw().isoformat()
+        state["execution_override"] = execution_override
+        state["strict"] = compatibility_strict("NO_FILL", state.get("top1"), "NO_FILL")
+        state["position_state"] = {"asof":target.isoformat(),"held":[],"pending":[],"no_fill":[pos],"max_slots":1,"occupied_next_session":0,"free_slots_next_session":1}
+        atomic_json(STATE, state)
     out = {
         "schema_version":SCHEMA,"system":"HENGCE","module":"E2_PROFIT_MAX_MORNING_BRIDGE",
         "trade_date":target.isoformat(),"generated_at_taipei":core.now_tw().isoformat(),"binding_status":"PASS",
@@ -319,7 +419,9 @@ def build_morning(target):
         "new_signal_buy_count":1 if pos.get("state")=="ENTRY_PENDING" else 0,
         "entry_due_count":len(entry_due),"entry_due":entry_due,
         "held_from_prior_close":[pos] if pos.get("state")=="HOLDING" else [],
+        "no_fill_from_prior_signal":[pos] if pos.get("state")=="NO_FILL" else [],
         "paper_position":pos,"top1":state.get("top1"),"local_gate":state.get("local_gate"),"macro_gate":state.get("macro_gate"),
+        "execution_override":execution_override,
         "authority":"VALIDATED_RESEARCH_SIGNAL_DISPLAY","capital_authority_twd":0,"broker_order_execution":False,
         "note":"Informational/paper state only; no automatic broker order submission."
     }
@@ -336,8 +438,9 @@ def self_test():
     p = {"state":"HOLDING","entry_date":ds[0],"ticker":"2330","entry_reference_open":100.0}
     rows = [{"date":d,"ticker":"2330","close":110.0} for d in ds]
     q, ex = position_progress(p, ds, rows, datetime.strptime(ds[20], "%Y-%m-%d").date())
-    assert ex and q["exit_date"] == ds[20] and q["display_progress"] == "D20/20"
-    print(json.dumps({"self_test":"PASS","engine":"E2_PROFIT_MAX","schema":SCHEMA,"K":K,"hold_intervals":HOLD_INTERVALS,"broker_order_execution":False}))
+    assert ex and q["exit_date"] == ds[20] and q["display_progress"] == f"D{HOLD_INTERVALS}/{HOLD_INTERVALS}"
+    print(json.dumps({"self_test":"PASS","engine":"E2_PROFIT_MAX","schema":SCHEMA,"K":K,"hold_intervals":HOLD_INTERVALS,
+                      "no_fill_execution_state":True,"candidate_b_formula_mutated":False,"broker_order_execution":False}))
 
 
 def main():
