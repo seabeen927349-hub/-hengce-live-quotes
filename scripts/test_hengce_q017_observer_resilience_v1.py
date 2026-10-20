@@ -8,8 +8,11 @@ import inspect
 ROOT = Path(__file__).resolve().parents[1]
 PRIMARY = ROOT / '.github/workflows/hengce-q017-primary-observer.yml'
 BACKUP = ROOT / '.github/workflows/hengce-q017-backup-observer.yml'
+MACRO_WORKFLOW = ROOT / '.github/workflows/hengce-q017-macro-cache.yml'
 DAILY = ROOT / '.github/workflows/hengce-daily-command-center.yml'
-SUPERVISOR = ROOT / 'scripts/hengce_q017_observer_supervisor_v1.py'
+SUPERVISOR_V1 = ROOT / 'scripts/hengce_q017_observer_supervisor_v1.py'
+SUPERVISOR_V2 = ROOT / 'scripts/hengce_q017_observer_supervisor_v2.py'
+MACRO = ROOT / 'scripts/hengce_q017_macro_cache_v1.py'
 SNAPSHOT = ROOT / 'scripts/hengce_q017_premarket_snapshot_v1.py'
 
 
@@ -24,16 +27,36 @@ def must_not(text: str, needle: str, label: str):
 def main():
     p = PRIMARY.read_text(encoding='utf-8')
     b = BACKUP.read_text(encoding='utf-8')
+    mw = MACRO_WORKFLOW.read_text(encoding='utf-8')
     d = DAILY.read_text(encoding='utf-8')
-    s = SUPERVISOR.read_text(encoding='utf-8')
+    s1 = SUPERVISOR_V1.read_text(encoding='utf-8')
+    s2 = SUPERVISOR_V2.read_text(encoding='utf-8')
+    macro_text = MACRO.read_text(encoding='utf-8')
     snap_text = SNAPSHOT.read_text(encoding='utf-8')
 
-    # Three pre-open layers: persisted 06:30 snapshot + independent 07:45/08:15 observers.
+    # Early macro acquisition is independent of the 09:01 observation lane.
+    for cron, label in [
+        ("cron: '45 21 * * 0-4'", 'MACRO_0545_TAIPEI'),
+        ("cron: '15 22 * * 0-4'", 'MACRO_0615_TAIPEI'),
+        ("cron: '45 22 * * 0-4'", 'MACRO_0645_TAIPEI'),
+        ("cron: '15 23 * * 0-4'", 'MACRO_0715_TAIPEI'),
+        ("cron: '35 23 * * 0-4'", 'MACRO_0735_TAIPEI'),
+    ]:
+        must(mw, cron, label)
+    must(mw, 'group: hengce-q017-morning-macro-cache', 'MACRO_CONCURRENCY')
+    must(mw, 'hengce_q017_macro_cache_v1.py --mode refresh', 'MACRO_REFRESH_WIRED')
+    must(mw, 'hengce_q017_macro_cache_v1.py --mode validate', 'MACRO_VALIDATE_WIRED')
+    must(mw, 'hengce/q017_radar/data/macro_cache/', 'MACRO_CACHE_PERSISTED')
+
+    # Three pre-open layers: morning macro cache, persisted 06:30 model snapshot,
+    # then independent 07:45/08:15 observers.
     must(d, "cron: '30 22 * * 0-4'", 'SNAPSHOT_PRODUCER_0630_TAIPEI')
     must(d, 'hengce_q017_premarket_snapshot_v1.py --mode build', 'SNAPSHOT_BUILD_WIRED')
     must(d, 'hengce_q017_premarket_snapshot_v1.py --mode self-test', 'SNAPSHOT_SELFTEST_WIRED')
     must(p, "cron: '45 23 * * 0-4'", 'PRIMARY_0745_TAIPEI')
     must(b, "cron: '15 0 * * 1-5'", 'BACKUP_0815_TAIPEI')
+    must(p, "'scripts/hengce_q017_macro_cache_v1.py'", 'PRIMARY_TESTS_MACRO_CHANGES')
+    must(b, "'scripts/hengce_q017_macro_cache_v1.py'", 'BACKUP_TESTS_MACRO_CHANGES')
     must(p, "'scripts/hengce_q017_premarket_snapshot_v1.py'", 'PRIMARY_TESTS_SNAPSHOT_CHANGES')
     must(b, "'scripts/hengce_q017_premarket_snapshot_v1.py'", 'BACKUP_TESTS_SNAPSHOT_CHANGES')
 
@@ -42,11 +65,17 @@ def main():
     assert 'group: hengce-q017-backup-observer' not in p
     assert 'group: hengce-q017-primary-observer' not in b
 
-    # Both scheduled lanes must use the supervisor, never direct raw observation.
-    must(p, 'hengce_q017_observer_supervisor_v1.py --mode observe --lane primary', 'PRIMARY_SUPERVISOR')
-    must(b, 'hengce_q017_observer_supervisor_v1.py --mode observe --lane backup', 'BACKUP_SUPERVISOR')
+    # Production scheduled lanes must use v2 (macro-cache first), never raw observe.
+    must(p, 'hengce_q017_observer_supervisor_v2.py --mode observe --lane primary', 'PRIMARY_SUPERVISOR_V2')
+    must(b, 'hengce_q017_observer_supervisor_v2.py --mode observe --lane backup', 'BACKUP_SUPERVISOR_V2')
+    must_not(p, 'hengce_q017_observer_supervisor_v1.py --mode observe --lane primary', 'PRIMARY_V1_DIRECT_FORBIDDEN')
+    must_not(b, 'hengce_q017_observer_supervisor_v1.py --mode observe --lane backup', 'BACKUP_V1_DIRECT_FORBIDDEN')
     must_not(p, 'hengce_q017_observation_lock_v5.py --mode observe', 'PRIMARY_RAW_OBSERVE_FORBIDDEN')
     must_not(b, 'hengce_q017_backup_observer_v5.py --mode observe', 'BACKUP_RAW_OBSERVE_FORBIDDEN')
+
+    # Both observers refresh checkout before waiting so they see the latest persisted morning cache.
+    must(p, 'git pull --rebase origin main', 'PRIMARY_SYNC_MORNING_CACHE')
+    must(b, 'git pull --rebase origin main', 'BACKUP_SYNC_MORNING_CACHE')
 
     # Failure diagnostics must persist even when capture/snapshot generation fails.
     must(p, "if: always() && steps.mode.outputs.mode == 'observe'", 'PRIMARY_ALWAYS_PERSIST')
@@ -57,31 +86,47 @@ def main():
     must(p, 'observer_supervisor_attempts/', 'PRIMARY_ATTEMPTS')
     must(b, 'observer_supervisor_attempts/', 'BACKUP_ATTEMPTS')
 
-    # No extra 09:03 live-market capture. Daily 09:03 is monitor-only and not checked here.
-    for name, text in [('primary', p), ('backup', b), ('supervisor', s), ('snapshot', snap_text)]:
+    # No extra 09:03 live-market capture. Daily 09:03 can remain monitor-only.
+    for name, text in [
+        ('primary', p), ('backup', b), ('supervisor_v1', s1), ('supervisor_v2', s2),
+        ('macro', macro_text), ('snapshot', snap_text),
+    ]:
         must_not(text, '09:03', f'{name.upper()}_NO_0903_CAPTURE')
         must_not(text, '9, 3', f'{name.upper()}_NO_0903_CAPTURE_CODE')
 
-    # Prewarm/freeze protects legal 09:01 from slow SOX/DXY/history I/O.
-    must(s, 'PREWARM_START = dtime(8, 30, 0)', 'PREWARM_0830')
-    must(s, 'PREFERRED_REFRESH = dtime(8, 50, 0)', 'PREWARM_REFRESH_0850')
-    must(s, 'PREWARM_HARD_STOP = dtime(9, 0, 45)', 'PREWARM_HARD_STOP_090045')
-    must(s, 'premarket_snapshot.load_snapshot(trade_date)', 'PERSISTED_CACHE_CONSUMER')
-    must(s, 'PERSISTED_0630_SNAPSHOT', 'PERSISTED_CACHE_SOURCE')
-    must(s, 'LATE_RUNNER_NO_VALID_0630_PREWARM_SNAPSHOT', 'LATE_RUNNER_FAIL_CLOSED_WITHOUT_CACHE')
-    must(s, "mp.get_context('fork' if 'fork' in methods else methods[0])", 'KILLABLE_PREWARM_PROCESS')
-    must(s, 'proc.terminate()', 'PREWARM_TERMINATE')
-    must(s, 'v5.v4.prepare_model = frozen', 'FROZEN_PREPARE')
-    must(s, 'prepare_model_network_calls_during_0901=0', 'NO_PREPARE_NETWORK_0901')
+    # Normal v2 path must be hash-bound morning macro cache with zero macro network at 09:01.
+    must(s2, 'macro.load_valid_cache(trade_date, verify_files=True)', 'V2_MACRO_CACHE_VALIDATE')
+    must(s2, 'cache_first_prepared_model', 'V2_CACHE_FIRST')
+    must(s2, 'v1.prewarm_and_freeze', 'V2_BOUNDED_V1_FALLBACK')
+    must(s2, "'macro_network_calls_during_0901': 0", 'V2_NO_MACRO_NETWORK_0901')
+    must(s2, "'prepare_model_network_calls_during_0901': 0", 'V2_NO_PREPARE_NETWORK_0901')
 
-    # MIS transport is bounded tightly enough that one hung batch cannot consume the full minute.
-    must(s, 'CONNECT_TIMEOUT_SECONDS = 2.5', 'MIS_CONNECT_TIMEOUT')
-    must(s, 'READ_TIMEOUT_SECONDS = 6.0', 'MIS_READ_TIMEOUT')
+    # v1 fallback itself stays bounded and pre-09:01 only.
+    must(s1, 'PREWARM_START = dtime(8, 30, 0)', 'PREWARM_0830')
+    must(s1, 'PREFERRED_REFRESH = dtime(8, 50, 0)', 'PREWARM_REFRESH_0850')
+    must(s1, 'PREWARM_HARD_STOP = dtime(9, 0, 45)', 'PREWARM_HARD_STOP_090045')
+    must(s1, "mp.get_context('fork' if 'fork' in methods else methods[0])", 'KILLABLE_PREWARM_PROCESS')
+    must(s1, 'proc.terminate()', 'PREWARM_TERMINATE')
+    must(s1, 'v5.v4.prepare_model = frozen', 'FROZEN_PREPARE')
 
-    # Semantic checks use imported executable modules, not formatting-sensitive strings.
+    # MIS transport is tightly bounded so one hung batch cannot consume the minute.
+    must(s1, 'CONNECT_TIMEOUT_SECONDS = 2.5', 'MIS_CONNECT_TIMEOUT')
+    must(s1, 'READ_TIMEOUT_SECONDS = 6.0', 'MIS_READ_TIMEOUT')
+
+    # Macro cache is causal, hash-bound and cannot substitute for 09:01 observation.
+    must(macro_text, "'cannot_substitute_for_q017_0901_observation': True", 'MACRO_NOT_OBSERVATION')
+    must(macro_text, "'sox_csv_sha256'", 'SOX_SHA_BOUND')
+    must(macro_text, "'dxy_csv_sha256'", 'DXY_SHA_BOUND')
+    must(macro_text, "payload['cache_sha256']", 'MACRO_CACHE_SHA')
+    must(snap_text, 'prepare_from_macro_cache', 'SNAPSHOT_USES_MACRO_CACHE')
+    must(snap_text, "source = 'MORNING_MACRO_CACHE'", 'SNAPSHOT_CACHE_SOURCE_LABEL')
+
+    # Semantic checks use executable modules.
     v5 = importlib.import_module('hengce_q017_observation_lock_v5')
     v4 = importlib.import_module('hengce_q017_decision_lock_v4')
-    sup = importlib.import_module('hengce_q017_observer_supervisor_v1')
+    sup1 = importlib.import_module('hengce_q017_observer_supervisor_v1')
+    sup2 = importlib.import_module('hengce_q017_observer_supervisor_v2')
+    macro = importlib.import_module('hengce_q017_macro_cache_v1')
     snap = importlib.import_module('hengce_q017_premarket_snapshot_v1')
 
     assert v4.BATCH_SIZE == 40, 'BATCH_SIZE_DRIFT'
@@ -89,7 +134,7 @@ def main():
     assert v4.RETRY_SLEEP_SECONDS == 1.0, 'RETRY_SLEEP_DRIFT'
     assert v4.MIN_PROVIDER_COVERAGE == 1.0, 'V4_COVERAGE_DRIFT'
 
-    # Formal schema/universe/immutability are unchanged.
+    # Formal schema/universe/immutability remain unchanged.
     assert v5.SCHEMA == 5, 'SCHEMA5_DRIFT'
     assert v5.UNIVERSE_SCOPE == 'TWSE_LISTED_ELECTRONICS_ONLY', 'UNIVERSE_SCOPE_DRIFT'
     assert v5.UNIVERSE_SOURCE == 'TWSE_MI_INDEX_TYPE_13_ELECTRONICS_HISTORY', 'UNIVERSE_SOURCE_DRIFT'
@@ -107,7 +152,8 @@ def main():
     capture_source = inspect.getsource(v5.collect_observation).replace(' ', '')
     assert 'RETRY_SLEEP_SECONDS' in capture_source and 'end-core.now_tw()' in capture_source, 'SAME_MINUTE_RETRY_DRIFT'
 
-    # Snapshot is a causal cache only. It can never itself become a signal.
+    # Cache/snapshot can never themselves become a signal.
+    assert macro.SCHEMA_VERSION == 1, 'MACRO_SCHEMA_DRIFT'
     assert snap.SCHEMA == 1, 'SNAPSHOT_SCHEMA_DRIFT'
     assert snap.AUTHORITY == 'INFRASTRUCTURE_CACHE_ONLY_NO_SIGNAL_AUTHORITY', 'SNAPSHOT_AUTHORITY_DRIFT'
     assert snap.BUILD_CUTOFF.hour == 9 and snap.BUILD_CUTOFF.minute == 0 and snap.BUILD_CUTOFF.second == 45
@@ -118,16 +164,16 @@ def main():
     assert "'late_market_backfill_forbidden': True" in make_source
     assert 'model_fingerprint_sha256' in make_source and 'snapshot_sha256' in make_source
 
-    assert sup.PREWARM_START.hour == 8 and sup.PREWARM_START.minute == 30
-    assert sup.PREFERRED_REFRESH.hour == 8 and sup.PREFERRED_REFRESH.minute == 50
-    assert sup.PREWARM_HARD_STOP.hour == 9 and sup.PREWARM_HARD_STOP.minute == 0 and sup.PREWARM_HARD_STOP.second == 45
-    assert sup.CONNECT_TIMEOUT_SECONDS <= 2.5
-    assert sup.READ_TIMEOUT_SECONDS <= 6.0
+    assert sup1.PREWARM_START.hour == 8 and sup1.PREWARM_START.minute == 30
+    assert sup1.PREFERRED_REFRESH.hour == 8 and sup1.PREFERRED_REFRESH.minute == 50
+    assert sup1.PREWARM_HARD_STOP.hour == 9 and sup1.PREWARM_HARD_STOP.minute == 0 and sup1.PREWARM_HARD_STOP.second == 45
+    assert sup1.CONNECT_TIMEOUT_SECONDS <= 2.5
+    assert sup1.READ_TIMEOUT_SECONDS <= 6.0
 
-    print('HENGCE_Q017_OBSERVER_RESILIENCE_HARD_LOCK_V1=PASS')
-    print('SNAPSHOT=06:30_ZERO_AUTHORITY PRIMARY=07:45 BACKUP=08:15 LIVE_PREWARM=08:30 REFRESH=08:50 HARD_STOP=09:00:45')
-    print('Q017_CRITICAL_SECTION=09:01:05..09:01:59.999999 PREPARE_NETWORK_CALLS=0 MIS_BOUNDED=2.5/6.0')
-    print('NO_0903_LIVE_CAPTURE=True LATE_BACKFILL_FORBIDDEN=True FAILURE_DIAGNOSTICS_ALWAYS_PERSIST=True')
+    print('HENGCE_Q017_OBSERVER_RESILIENCE_HARD_LOCK_V2=PASS')
+    print('MACRO_CACHE=05:45/06:15/06:45/07:15/07:35 SNAPSHOT=06:30 PRIMARY=07:45 BACKUP=08:15')
+    print('NORMAL_0901_NETWORK=TWSE_MIS_ONLY MACRO_NETWORK_CALLS=0 MIS_BOUNDED=2.5/6.0')
+    print('SCHEMA5=True COVERAGE=100PCT NO_0903_CAPTURE=True LATE_BACKFILL_FORBIDDEN=True')
     return 0
 
 
