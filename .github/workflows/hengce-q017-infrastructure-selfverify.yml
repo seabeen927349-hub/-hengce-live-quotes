@@ -1,0 +1,147 @@
+name: HENGCE Q017 Infrastructure Self Verify
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_q017_observation_lock_v5.py'
+      - 'scripts/hengce_q017_backup_observer_v5.py'
+      - 'scripts/hengce_q017_macro_cache_v1.py'
+      - 'scripts/hengce_q017_premarket_snapshot_v1.py'
+      - 'scripts/hengce_q017_observer_supervisor_v1.py'
+      - 'scripts/hengce_q017_observer_supervisor_v2.py'
+      - 'scripts/hengce_q017_recovery_compute_v5.py'
+      - 'scripts/hengce_q017_authority_guard_v5.py'
+      - 'scripts/test_hengce_q017_observer_resilience_v1.py'
+      - '.github/workflows/hengce-q017-macro-cache.yml'
+      - '.github/workflows/hengce-q017-primary-observer.yml'
+      - '.github/workflows/hengce-q017-backup-observer.yml'
+      - '.github/workflows/hengce-q017-infrastructure-selfverify.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-q017-infrastructure-selfverify
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies with retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 1 2 3; do
+            python -m pip install --disable-pip-version-check requests openpyxl && exit 0
+            sleep $((n*5))
+          done
+          exit 2
+
+      - name: Run Q017 infrastructure contract tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/hengce-selfverify
+          python scripts/hengce_q017_observation_lock_v5.py --mode self-test | tee /tmp/hengce-selfverify/01_observation.txt
+          python scripts/hengce_q017_backup_observer_v5.py --mode self-test | tee /tmp/hengce-selfverify/02_backup.txt
+          python scripts/hengce_q017_macro_cache_v1.py --mode self-test | tee /tmp/hengce-selfverify/03_macro_cache.txt
+          python scripts/hengce_q017_premarket_snapshot_v1.py --mode self-test | tee /tmp/hengce-selfverify/04_snapshot.txt
+          python scripts/hengce_q017_observer_supervisor_v1.py --mode self-test | tee /tmp/hengce-selfverify/05_supervisor_v1.txt
+          python scripts/hengce_q017_observer_supervisor_v2.py --mode self-test | tee /tmp/hengce-selfverify/06_supervisor_v2.txt
+          python scripts/hengce_q017_recovery_compute_v5.py --mode self-test | tee /tmp/hengce-selfverify/07_recovery.txt
+          python scripts/hengce_q017_authority_guard_v5.py --mode self-test | tee /tmp/hengce-selfverify/08_authority.txt
+          python scripts/test_hengce_q017_observer_resilience_v1.py | tee /tmp/hengce-selfverify/09_resilience.txt
+
+      - name: Build durable PASS receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p hengce/q017_radar/selfverify
+          python3 <<'PY'
+          import hashlib, json, os
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          files = [
+              'scripts/hengce_q017_observation_lock_v5.py',
+              'scripts/hengce_q017_backup_observer_v5.py',
+              'scripts/hengce_q017_macro_cache_v1.py',
+              'scripts/hengce_q017_premarket_snapshot_v1.py',
+              'scripts/hengce_q017_observer_supervisor_v1.py',
+              'scripts/hengce_q017_observer_supervisor_v2.py',
+              'scripts/hengce_q017_recovery_compute_v5.py',
+              'scripts/hengce_q017_authority_guard_v5.py',
+              'scripts/test_hengce_q017_observer_resilience_v1.py',
+              '.github/workflows/hengce-q017-macro-cache.yml',
+              '.github/workflows/hengce-q017-primary-observer.yml',
+              '.github/workflows/hengce-q017-backup-observer.yml',
+              '.github/workflows/hengce-q017-infrastructure-selfverify.yml',
+          ]
+          def sha(path):
+              return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+          tests = {}
+          for p in sorted(Path('/tmp/hengce-selfverify').glob('*.txt')):
+              tests[p.stem] = {'status':'PASS','sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'tail':p.read_text(errors='replace')[-1000:]}
+          now = datetime.now(ZoneInfo('Asia/Taipei'))
+          receipt = {
+              'schema_version':1,
+              'system':'HENGCE',
+              'module':'Q017_INFRASTRUCTURE_SELFVERIFY',
+              'generated_at_taipei':now.isoformat(),
+              'status':'PASS',
+              'git_sha_tested':os.environ.get('GITHUB_SHA'),
+              'event_name':os.environ.get('GITHUB_EVENT_NAME'),
+              'contracts':{
+                  'q017_schema':5,
+                  'observation_window':'09:01:00-09:01:59.999999 Asia/Taipei',
+                  'provider_quote_row_coverage_required':1.0,
+                  'universe':'TWSE_LISTED_ELECTRONICS_ONLY',
+                  'late_market_backfill_forbidden':True,
+                  'normal_0901_macro_network_calls':0,
+                  'normal_macro_source':'MORNING_HASH_BOUND_SOX_DXY_CACHE',
+                  'primary_start_taipei':'07:45',
+                  'backup_start_taipei':'08:15',
+                  'mis_connect_timeout_seconds':2.5,
+                  'mis_read_timeout_seconds':6.0,
+              },
+              'tests':tests,
+              'file_sha256':{p:sha(p) for p in files},
+          }
+          raw = json.dumps(receipt,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()
+          receipt['receipt_sha256']=hashlib.sha256(raw).hexdigest()
+          text=json.dumps(receipt,ensure_ascii=False,indent=2)+'\n'
+          Path('hengce/q017_radar/selfverify/infrastructure_latest.json').write_text(text,encoding='utf-8')
+          Path(f"hengce/q017_radar/selfverify/infrastructure_{now.strftime('%Y%m%dT%H%M%S')}.json").write_text(text,encoding='utf-8')
+          print('HENGCE_Q017_INFRASTRUCTURE_SELFVERIFY=PASS', receipt['receipt_sha256'])
+          PY
+
+      - name: Persist PASS receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-infrastructure-selfverify-bot'
+          git config user.email 'hengce-infrastructure-selfverify-bot@users.noreply.github.com'
+          git add hengce/q017_radar/selfverify/
+          if git diff --cached --quiet; then
+            echo 'Receipt unchanged.'
+            exit 0
+          fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE Q017 infrastructure selfverify PASS ${TS}"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
