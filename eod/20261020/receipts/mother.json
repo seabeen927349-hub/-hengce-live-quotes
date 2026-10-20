@@ -1,0 +1,29 @@
+{
+  "system": "HENGCE",
+  "artifact": "CANONICAL_HIST_MOTHER_PROMOTION_RECEIPT",
+  "version": "v1_20261020_mother_first",
+  "target_date": "2026-10-20",
+  "status": "PASS",
+  "canonical_store": "ChatGPT Library:/HENGCE_CANONICAL",
+  "canonical_mother": "HENGCE_2026_HIST_MOTHER.csv",
+  "promoted_legs": [
+    "price"
+  ],
+  "promoted_leg_sha256": {
+    "price": "a373994c0bc1426c8059d61ad143edcf7f6dbefb82dc963e724c0fd9818f9f48"
+  },
+  "source_rows": {
+    "price": 1088
+  },
+  "pending_legs": [
+    "institutional",
+    "margin"
+  ],
+  "mother_target_rows": 1088,
+  "mother_latest_date": "2026-10-20",
+  "mother_rows": 206130,
+  "mother_sha256": "7b83003d2365245791948175f15c64d0ed3ca071e081aa4ed4b41a2323deaf1a",
+  "missing_evidence_is_null": true,
+  "second_mother": false,
+  "model_or_schema_mutated": false
+}
