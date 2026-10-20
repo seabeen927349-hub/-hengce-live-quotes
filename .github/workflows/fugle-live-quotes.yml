@@ -9,6 +9,7 @@ name: Hengce live quotes
       - 'hengce/HENGCE_LIVE_QUOTE_TRANSPORT_CONTRACT_v1_0_20261020.json'
       - 'hengce/live_market_lifecycle.json'
       - 'scripts/hengce_live_quote_transport.py'
+      - 'scripts/hengce_live_trial_guard.py'
       - '.github/workflows/fugle-live-quotes.yml'
   schedule:
     - cron: "*/5 1-4 * * 1-5"
@@ -37,11 +38,20 @@ jobs:
       - name: Self-test transport hard-lock
         run: python3 scripts/hengce_live_quote_transport.py --mode self-test
 
+      - name: Self-test trial-price guard
+        run: python3 scripts/hengce_live_trial_guard.py --mode self-test
+
       - name: Fetch lifecycle-bound Fugle quotes
         run: python3 scripts/hengce_live_quote_transport.py --mode fetch
 
+      - name: Apply trial-price non-execution guard
+        run: python3 scripts/hengce_live_trial_guard.py --mode apply
+
       - name: Validate transport provenance and resilience
         run: python3 scripts/hengce_live_quote_transport.py --mode validate
+
+      - name: Validate trial-price guard
+        run: python3 scripts/hengce_live_trial_guard.py --mode validate
 
       - name: Commit live snapshot
         shell: bash
