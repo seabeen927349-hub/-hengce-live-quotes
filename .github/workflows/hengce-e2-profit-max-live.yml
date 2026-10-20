@@ -13,6 +13,7 @@ on:
       - 'scripts/hengce_e2_live.py'
       - 'scripts/hengce_dual_engine_display.py'
       - 'scripts/test_hengce_e2_no_fill.py'
+      - 'scripts/test_hengce_e2_morning_release.py'
       - 'hengce/e2_live/execution_override.json'
       - 'hengce/E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json'
       - '.github/workflows/hengce-e2-profit-max-live.yml'
@@ -62,8 +63,10 @@ jobs:
       - name: E2 profit-max self-test
         run: python scripts/hengce_e2_live.py --mode self-test --date '${{ steps.date.outputs.target_date }}'
 
-      - name: E2 no-fill execution-state regression
-        run: PYTHONPATH=scripts python scripts/test_hengce_e2_no_fill.py
+      - name: E2 no-fill execution-state regressions
+        run: |
+          PYTHONPATH=scripts python scripts/test_hengce_e2_no_fill.py
+          PYTHONPATH=scripts python scripts/test_hengce_e2_morning_release.py
 
       - name: Refresh E2 profit-max postclose state
         run: python scripts/hengce_e2_live.py --mode postclose --date '${{ steps.date.outputs.target_date }}'
