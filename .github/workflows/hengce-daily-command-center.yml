@@ -21,6 +21,7 @@ on:
       - 'scripts/hengce_q017_decision_lock_v4.py'
       - 'scripts/hengce_q017_authority_guard_v4.py'
       - 'scripts/hengce_q017_observation_lock_v5.py'
+      - 'scripts/hengce_q017_premarket_snapshot_v1.py'
       - 'scripts/hengce_q017_authority_guard_v5.py'
       - 'scripts/hengce_q017_10d_review.py'
       - 'scripts/hengce_q017_10d_review_extension.py'
@@ -41,6 +42,7 @@ on:
       - '.github/workflows/hengce-daily-command-center.yml'
   schedule:
     # Asia/Taipei = UTC+8
+    # 06:30 Taipei: premarket data gate + zero-authority Q017 model snapshot.
     - cron: '30 22 * * 0-4'
     # 08:50 Taipei: E2 morning binding only. Q017 capture is owned by dedicated primary/backup observers.
     - cron: '50 0 * * 1-5'
@@ -76,8 +78,16 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install runtime dependencies
-        run: python -m pip install --disable-pip-version-check requests openpyxl
+      - name: Install runtime dependencies with retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 1 2 3; do
+            python -m pip install --disable-pip-version-check requests openpyxl && exit 0
+            echo "pip install attempt ${n} failed"
+            sleep $((n*5))
+          done
+          exit 2
 
       - name: Resolve mode
         id: mode
@@ -126,6 +136,7 @@ jobs:
           python scripts/hengce_q017_authority_guard_v4.py --mode self-test
           python scripts/test_hengce_q017_adversarial_v4.py
           python scripts/hengce_q017_observation_lock_v5.py --mode self-test
+          python scripts/hengce_q017_premarket_snapshot_v1.py --mode self-test
           python scripts/hengce_q017_authority_guard_v5.py --mode self-test
           python scripts/hengce_q017_10d_review.py --mode self-test
           python scripts/hengce_q017_10d_review_extension.py --mode self-test
@@ -142,8 +153,16 @@ jobs:
           echo 'PASS LEGACY_RADAR_KILL_SWITCH_EXIT2_ZERO_AUTHORITY'
 
       - name: Run premarket data gate
+        id: premarket_gate
         if: steps.mode.outputs.mode == 'premarket'
+        continue-on-error: true
         run: python scripts/hengce_daily_command_center.py --mode premarket
+
+      - name: Build zero-authority Q017 prewarm fallback snapshot
+        id: q017_snapshot
+        if: always() && steps.mode.outputs.mode == 'premarket'
+        continue-on-error: true
+        run: python scripts/hengce_q017_premarket_snapshot_v1.py --mode build
 
       # Manual emergency decision mode remains available, but no schedule maps to it.
       - name: Capture immutable 09:01 Q017 observation only
@@ -230,6 +249,18 @@ jobs:
               git push origin HEAD:main
             fi
           fi
+
+      - name: Premarket snapshot health
+        if: always() && steps.mode.outputs.mode == 'premarket'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "premarket_gate=${{ steps.premarket_gate.outcome }} q017_snapshot=${{ steps.q017_snapshot.outcome }}"
+          if [[ '${{ steps.premarket_gate.outcome }}' != 'success' || '${{ steps.q017_snapshot.outcome }}' != 'success' ]]; then
+            echo 'PREMARKET_OR_Q017_SNAPSHOT_FAIL_CLOSED; diagnostics were persisted; snapshot has zero signal authority.'
+            exit 2
+          fi
+          echo 'PREMARKET_AND_Q017_PREWARM_SNAPSHOT_PASS'
 
       - name: Final engine health status
         if: always() && (steps.mode.outputs.mode == 'e2-morning' || steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
