@@ -1,0 +1,87 @@
+name: HENGCE E2 Morning Release Retry Temp
+
+on:
+  push:
+    branches:
+      - chatgpt/e2-morning-no-fill-release-20261021
+    paths:
+      - .github/workflows/hengce-e2-morning-release-retry-temp.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install runtime dependency
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Patch only morning NO_FILL release persistence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/hengce_e2_live.py')
+          s=p.read_text(encoding='utf-8')
+          old='''    elif pos.get("state") == "NO_FILL":\n        state["paper_position"] = pos\n        state["engine_status"] = "NO_FILL"\n        state["action"] = "NO_FILL"\n        state["generated_at_taipei"] = core.now_tw().isoformat()\n        state["execution_override"] = execution_override\n        state["strict"] = compatibility_strict("NO_FILL", state.get("top1"), "NO_FILL")\n        state["position_state"] = {"asof":target.isoformat(),"held":[],"pending":[],"no_fill":[pos],"max_slots":1,"occupied_next_session":0,"free_slots_next_session":1}\n        atomic_json(STATE, state)\n    out = {\n'''
+          new='''    elif pos.get("state") == "NO_FILL":\n        state["paper_position"] = pos\n        state["engine_status"] = "NO_FILL"\n        state["action"] = "NO_FILL"\n        state["generated_at_taipei"] = core.now_tw().isoformat()\n        state["execution_override"] = execution_override\n        state["strict"] = compatibility_strict("NO_FILL", state.get("top1"), "NO_FILL")\n        state["position_state"] = {"asof":target.isoformat(),"held":[],"pending":[],"no_fill":[pos],"max_slots":1,"occupied_next_session":0,"free_slots_next_session":1}\n        atomic_json(STATE, state)\n    elif pos.get("state") == "IDLE" and execution_override.get("reason") == "PRIOR_NO_FILL_SLOT_RELEASED":\n        # Persist the next-session release. Without this write-back, morning_latest\n        # can say IDLE while state_latest incorrectly remains yesterday's NO_FILL.\n        state["paper_position"] = pos\n        state["engine_status"] = "OFF"\n        state["action"] = "OFF"\n        state["generated_at_taipei"] = core.now_tw().isoformat()\n        state["execution_override"] = execution_override\n        state["strict"] = compatibility_strict("OFF", state.get("top1"), "OFF")\n        state["position_state"] = {"asof":target.isoformat(),"held":[],"pending":[],"no_fill":[],"max_slots":1,"occupied_next_session":0,"free_slots_next_session":1}\n        atomic_json(STATE, state)\n    out = {\n'''
+          assert s.count(old)==1, s.count(old)
+          p.write_text(s.replace(old,new),encoding='utf-8')
+          PY
+      - name: Static and regression checks
+        run: |
+          python -m py_compile scripts/hengce_e2_live.py scripts/test_hengce_e2_no_fill.py scripts/test_hengce_e2_morning_release.py
+          PYTHONPATH=scripts python scripts/hengce_e2_live.py --mode self-test --date 2026-10-21
+          PYTHONPATH=scripts python scripts/test_hengce_e2_no_fill.py
+          PYTHONPATH=scripts python scripts/test_hengce_e2_morning_release.py
+      - name: Real repo-state 2026-10-21 morning dry-run
+        run: |
+          python scripts/hengce_e2_live.py --mode morning --date 2026-10-21 > /tmp/e2-morning-20261021.json
+          python - <<'PY'
+          import json
+          m=json.load(open('hengce/e2_live/morning_latest.json'))
+          s=json.load(open('hengce/e2_live/state_latest.json'))
+          assert m['trade_date']=='2026-10-21'
+          assert m['engine_status']=='OFF'
+          assert m['paper_position']=={'state':'IDLE'}
+          assert m['entry_due_count']==0 and m['new_signal_buy_count']==0
+          assert m['held_from_prior_close']==[] and m['no_fill_from_prior_signal']==[]
+          assert m['execution_override']['reason']=='PRIOR_NO_FILL_SLOT_RELEASED'
+          assert m['broker_order_execution'] is False
+          assert s['paper_position']=={'state':'IDLE'}
+          assert s['engine_status']=='OFF' and s['action']=='OFF'
+          assert s['position_state']['occupied_next_session']==0
+          assert s['position_state']['free_slots_next_session']==1
+          assert s['top1']['ticker']=='8021'
+          print('PASS REAL_20261021_MORNING_DRY_RUN')
+          print(json.dumps(m,ensure_ascii=False,indent=2))
+          PY
+          git restore hengce/e2_live/ || true
+          git clean -f hengce/e2_live/morning_latest.json || true
+      - name: Verify frozen authorities untouched
+        run: |
+          test "$(git rev-parse HEAD:scripts/hengce_q017_observation_lock_v5.py)" = c2b44d56844fd496445220e6c55b9a031c547c4e
+          test "$(git rev-parse HEAD:scripts/hengce_daily_command_center_core_legacy.py)" = 1c6194da0325162c72b56368b2cf5972bc56cc0a
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('scripts/hengce_e2_live.py').read_text()
+          assert 'K = 25.0' in s
+          assert 'HOLD_INTERVALS = 20' in s
+          assert 'roundtrip_cost_model":0.008' in s
+          assert 'RESID_MAX = 0.04' in s
+          print('PASS FROZEN_MODEL_CONSTANTS')
+          PY
+      - name: Commit tested execution-state patch to branch
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-test-bot'
+          git config user.email 'hengce-test-bot@users.noreply.github.com'
+          git add scripts/hengce_e2_live.py
+          git diff --cached --check
+          git commit -m 'HENGCE E2: persist next-session no-fill slot release'
+          git push origin HEAD:chatgpt/e2-morning-no-fill-release-20261021
