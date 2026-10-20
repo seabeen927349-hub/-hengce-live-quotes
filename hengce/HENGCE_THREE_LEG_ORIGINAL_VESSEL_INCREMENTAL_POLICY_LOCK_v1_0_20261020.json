@@ -1,0 +1,37 @@
+{
+  "system": "HENGCE",
+  "artifact": "THREE_LEG_ORIGINAL_VESSEL_INCREMENTAL_POLICY_LOCK",
+  "version": "1.0",
+  "lock_date": "2026-10-20",
+  "authority_scope": "DATA_INGEST_ORCHESTRATION_ONLY",
+  "model_authority_created": false,
+  "policy": {
+    "use_original_vessel_only": true,
+    "create_parallel_pipeline": false,
+    "legs": [
+      "price",
+      "institutional",
+      "margin"
+    ],
+    "publication_order_is_not_assumed": true,
+    "download_each_leg_when_available": true,
+    "validate_each_leg_independently": true,
+    "promote_each_valid_leg_immediately_through_existing_eod_and_mother_path": true,
+    "do_not_wait_for_margin_before_promoting_price_or_institutional": true,
+    "same_trade_date_late_leg_behavior": "PATCH_ONLY_OWN_FIELDS_IN_EXISTING_MOTHER_ROWS",
+    "missing_leg_behavior": "KEEP_NULL_OR_PENDING;DO_NOT_SYNTHESIZE;DO_NOT_BACKFILL_FROM_OTHER_SOURCE",
+    "complete_status_rule": "DAY_IS_THREE_LEG_COMPLETE_ONLY_AFTER_ALL_THREE_VALID_LEGS_ARE_PRESENT",
+    "existing_valid_leg_mutation": "FORBIDDEN_EXCEPT_IDEMPOTENT_SAME_LEG_REVALIDATION",
+    "provenance": "PRESERVE_PER_LEG_DATE_SOURCE_ROWCOUNT_HASH_AND_RECEIPT",
+    "q017_model_change": false,
+    "e2_model_change": false,
+    "legacy_v3_authority": false
+  },
+  "implementation_constraint": {
+    "must_modify_existing_postclose_vessel": true,
+    "must_not_add_second_eod_tree": true,
+    "must_not_add_second_mother": true,
+    "must_reuse_existing_historical_mother_builder_semantics": true,
+    "current_known_blocker": "write_eod_three_leg currently blocks if any later leg is unavailable"
+  }
+}
