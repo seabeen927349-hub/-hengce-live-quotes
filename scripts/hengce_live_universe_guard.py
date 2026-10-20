@@ -13,6 +13,7 @@ STATUS = Path("live/status.json")
 
 ROLE = "TRANSPORT_COVERAGE_OBSERVABILITY_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY"
 LINEAGE = "LINEAGE_ONLY_NOT_AUTHORITY"
+HEALTH_SCOPE = "TRANSPORT_AND_DATA_FRESHNESS_ONLY"
 
 
 def load(path):
@@ -59,6 +60,11 @@ def validate_contract(contract):
             raise SystemExit("UNIVERSE_AUTO_REBUILD_MUST_BE_FALSE:" + key)
     if refresh.get("authoritative_handoff_required_for_symbol_changes") is not True:
         raise SystemExit("UNIVERSE_AUTHORITATIVE_HANDOFF_REQUIRED")
+    compat = contract.get("compatibility") or {}
+    if compat.get("legacy_fully_healthy_scope") != HEALTH_SCOPE:
+        raise SystemExit("UNIVERSE_HEALTH_SCOPE_CONTRACT_MISMATCH")
+    if compat.get("overall_observability_must_include_universe_coverage") is not True:
+        raise SystemExit("UNIVERSE_OVERALL_OBSERVABILITY_CONTRACT_MISSING")
 
 
 def classify(target_date, current_date):
@@ -102,9 +108,25 @@ def load_inputs():
     return universe, contract, symbols
 
 
+def overall_observability(payload, coverage_status):
+    if coverage_status == "FAIL_CLOSED_INVALID_SOURCE_DATE":
+        return "FAIL_CLOSED_INVALID_UNIVERSE_SOURCE_DATE"
+    if str(payload.get("transport_health_status", "PASS")).upper() != "PASS":
+        return "DEGRADED_LIVE_PIPELINE"
+    if str(payload.get("data_freshness_status", "PASS")).upper() != "PASS":
+        return "DEGRADED_LIVE_PIPELINE"
+    trial = payload.get("trial_guard_status")
+    if trial not in (None, "PASS"):
+        return "DEGRADED_LIVE_PIPELINE"
+    if coverage_status == "SOURCE_AGE_REVIEW_REQUIRED":
+        return "REVIEW_REQUIRED_UNIVERSE_SOURCE_AGE"
+    return "PASS"
+
+
 def guard_fields(payload, universe, contract, symbols):
     current = generated_trade_date(payload)
     state = classify(universe.get("target_date"), current)
+    coverage_status = state["universe_coverage_status"]
     state.update({
         "universe_guard_role": ROLE,
         "universe_coverage_contract_version": contract.get("contract_version"),
@@ -124,10 +146,12 @@ def guard_fields(payload, universe, contract, symbols):
         "universe_authoritative_refresh_provided_to_guard": False,
         "universe_refresh_mode": "AUTHORITATIVE_HANDOFF_ONLY_NO_AUTO_DERIVATION",
         "universe_existing_bound_coverage_retained": True,
+        "fully_healthy_scope": HEALTH_SCOPE,
+        "overall_observability_status": overall_observability(payload, coverage_status),
     })
-    if state["universe_coverage_status"] == "PASS":
+    if coverage_status == "PASS":
         state["universe_observability_status"] = "PASS"
-    elif state["universe_coverage_status"] == "SOURCE_AGE_REVIEW_REQUIRED":
+    elif coverage_status == "SOURCE_AGE_REVIEW_REQUIRED":
         state["universe_observability_status"] = "REVIEW_REQUIRED_UNIVERSE_SOURCE_AGE"
     else:
         state["universe_observability_status"] = "FAIL_CLOSED_INVALID_UNIVERSE_SOURCE_DATE"
@@ -162,6 +186,7 @@ def apply_guard():
         "current", fields["universe_guard_current_trade_date"],
         "age_days", fields["universe_source_age_calendar_days"],
         "symbols", len(symbols),
+        "overall", fields["overall_observability_status"],
         "auto_rebuilt", False,
     )
 
@@ -199,6 +224,8 @@ def validate_latest():
         raise SystemExit("UNIVERSE_SOURCE_RUN_MUST_BE_LINEAGE_ONLY")
     if payload.get("universe_source_action_board_version_lineage_only") is not True:
         raise SystemExit("UNIVERSE_ACTION_BOARD_VERSION_MUST_BE_LINEAGE_ONLY")
+    if payload.get("fully_healthy_scope") != HEALTH_SCOPE:
+        raise SystemExit("UNIVERSE_FULLY_HEALTHY_SCOPE_MISSING")
 
     if payload.get("universe_coverage_status") == "FAIL_CLOSED_INVALID_SOURCE_DATE":
         raise SystemExit("UNIVERSE_INVALID_SOURCE_DATE_FAIL_CLOSED")
@@ -209,6 +236,7 @@ def validate_latest():
         "age_days", payload.get("universe_source_age_calendar_days"),
         "symbols", payload.get("universe_coverage_symbol_count"),
         "refresh_required", payload.get("universe_refresh_required"),
+        "overall", payload.get("overall_observability_status"),
     )
 
 
@@ -231,11 +259,19 @@ def self_test():
     missing = classify(None, date(2026, 10, 20))
     assert missing["universe_coverage_status"] == "FAIL_CLOSED_INVALID_SOURCE_DATE"
 
+    healthy = {"transport_health_status": "PASS", "data_freshness_status": "PASS", "trial_guard_status": "PASS"}
+    assert overall_observability(healthy, "PASS") == "PASS"
+    assert overall_observability(healthy, "SOURCE_AGE_REVIEW_REQUIRED") == "REVIEW_REQUIRED_UNIVERSE_SOURCE_AGE"
+    degraded = {"transport_health_status": "DEGRADED", "data_freshness_status": "PASS", "trial_guard_status": "PASS"}
+    assert overall_observability(degraded, "PASS") == "DEGRADED_LIVE_PIPELINE"
+
     print(json.dumps({
         "self_test": "PASS",
         "role": ROLE,
         "older_source_is_review_required_not_auto_rebuilt": True,
         "future_or_missing_source_date_fail_closed": True,
+        "fully_healthy_scope": HEALTH_SCOPE,
+        "overall_observability_includes_universe_coverage": True,
         "ranking_authority": False,
         "signal_authority": False,
         "capital_authority": False,
