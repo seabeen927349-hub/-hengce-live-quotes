@@ -31,6 +31,8 @@
   },
   "compatibility": {
     "do_not_change_transport_health_semantics": true,
+    "legacy_fully_healthy_scope": "TRANSPORT_AND_DATA_FRESHNESS_ONLY",
+    "overall_observability_must_include_universe_coverage": true,
     "do_not_change_q017_authority": true,
     "do_not_change_e2_authority": true,
     "new_dimension": "universe_coverage_status"
