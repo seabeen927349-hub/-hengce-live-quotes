@@ -1,7 +1,7 @@
 {
   "system": "HENGCE",
   "module": "POSTCLOSE_DATA_GATE",
-  "generated_at_taipei": "2026-10-20T15:34:49.694497+08:00",
+  "generated_at_taipei": "2026-10-20T16:04:23.996527+08:00",
   "status": "PARTIAL",
   "eod": {
     "system": "HENGCE",
@@ -50,7 +50,7 @@
         "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
       }
     ],
-    "updated_at_taipei": "2026-10-20T15:34:44.563442+08:00"
+    "updated_at_taipei": "2026-10-20T16:04:21.820577+08:00"
   },
   "electronics_history_append": {
     "status": "PASS",
@@ -63,7 +63,7 @@
     "latest_session": "2026-10-19",
     "rows": 200,
     "stale_days": 1,
-    "refreshed_at_taipei": "2026-10-20T15:34:49.693413+08:00"
+    "refreshed_at_taipei": "2026-10-20T16:04:23.995586+08:00"
   },
   "policy": "ORIGINAL_VESSEL_INCREMENTAL_EOD_NO_WAIT_FOR_MARGIN"
 }
