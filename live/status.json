@@ -1,29 +1,25 @@
 {
   "schema_version": 2,
   "service": "HENGCE LIVE QUOTES",
-  "snapshot_id": "20261019T135429+0800",
-  "generated_at_taipei": "2026-10-19T13:54:29.618945+08:00",
-  "cache_expires_at_taipei": "2026-10-19T14:04:29.618945+08:00",
+  "snapshot_id": "20261020T092919+0800",
+  "generated_at_taipei": "2026-10-20T09:29:19.948633+08:00",
+  "cache_expires_at_taipei": "2026-10-20T09:39:19.948633+08:00",
   "cache_ttl_seconds": 600,
-  "market_phase": "closed",
+  "market_phase": "open",
   "universe_policy": "DAILY_ACTION_BOARD_ROWS_HARD_BIND",
   "universe_version": "HENGCE_LIVE_UNIVERSE_v1_4_AUS_MICRO_PROBE_LADDER_20261016",
   "universe_target_date": "2026-10-15",
   "universe_source_run_id": "HENGCE_V3_SCAN_20261015_ab5769b2",
   "universe_sha256": "119cb829ddd2885314b53bc483de64f4000379ef9f010a853e07669889741e25",
   "requested_count": 77,
-  "success_count": 75,
-  "failure_count": 2,
-  "stale_count": 3,
+  "success_count": 76,
+  "failure_count": 1,
+  "stale_count": 2,
   "trial_count": 2,
   "halted_count": 0,
   "failures": [
     {
       "symbol": "6934",
-      "error": "RATE_LIMIT_HTTP_429"
-    },
-    {
-      "symbol": "2897",
       "error": "RATE_LIMIT_HTTP_429"
     }
   ],
