@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_LIVE_UNIVERSE_AUTHORITATIVE_HANDOFF",
+  "contract_version": "v1.0",
+  "effective_date": "2026-10-20",
+  "role": "LIVE_UNIVERSE_MEMBERSHIP_UPDATE_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "required_authority": {
+    "authority_id": "HENGCE_LIVE_UNIVERSE_MEMBERSHIP_AUTHORITY_V1",
+    "role": "LIVE_UNIVERSE_MEMBERSHIP_UPDATE_ONLY",
+    "membership": true,
+    "ranking": false,
+    "signal": false,
+    "capital": false,
+    "broker_execution": false
+  },
+  "handoff_schema": {
+    "artifact": "LIVE_UNIVERSE_AUTHORITATIVE_HANDOFF",
+    "trade_date_must_equal_expected_trade_date": true,
+    "requested_count_must_equal_unique_symbols": true,
+    "symbols_regex": "^[1-9][0-9]{3}$",
+    "symbol_order_semantics": "SET_ONLY_NOT_RANKING",
+    "membership_sha256": "SHA256_CANONICAL_JSON_OF_TRADE_DATE_AND_SORTED_SYMBOLS",
+    "binding_sha256": "SHA256_CANONICAL_JSON_OF_HANDOFF_BINDING_FIELDS"
+  },
+  "source_policy": {
+    "required_artifact_type": "EXPLICIT_AUTHORIZED_MEMBERSHIP_SOURCE",
+    "required_lineage_semantics": "LINEAGE_ONLY_NOT_AUTHORITY",
+    "forbidden_authority_markers": [
+      "HENGCE_V3",
+      "LEGACY_V3",
+      "FULL_MARKET_SHADOW",
+      "SHADOW",
+      "COMMAND_CENTER",
+      "TOPN",
+      "RANKING"
+    ],
+    "historical_lineage_may_reference_legacy_sources": true,
+    "historical_lineage_never_confers_authority": true
+  },
+  "consumer_policy": {
+    "automatic_rebuild": false,
+    "scheduled_apply": false,
+    "manual_workflow_only": true,
+    "missing_handoff_behavior": "PRESERVE_EXISTING_UNIVERSE_AND_KEEP_SOURCE_AGE_REVIEW_REQUIRED",
+    "reject_stale_handoff": true,
+    "reject_wrong_count": true,
+    "reject_duplicate_symbols": true,
+    "reject_unknown_authority": true,
+    "reject_shadow_or_v3_as_authority": true,
+    "no_live_price_derivation": true,
+    "no_full_market_shadow_derivation": true,
+    "no_command_center_topn_derivation": true,
+    "no_q017_or_e2_authority_change": true
+  },
+  "source_artifact_schema": {
+    "path_prefix": "handoff/authorized_sources/",
+    "artifact": "LIVE_UNIVERSE_MEMBERSHIP_SOURCE",
+    "system": "HENGCE",
+    "trade_date_must_match_handoff": true,
+    "authority_must_match_handoff": true,
+    "requested_count_must_match_handoff": true,
+    "symbols_must_match_handoff_as_set": true,
+    "source_id_must_match_handoff_source_artifact_id": true,
+    "file_sha256_must_match_handoff_source_artifact_sha256": true
+  }
+}
