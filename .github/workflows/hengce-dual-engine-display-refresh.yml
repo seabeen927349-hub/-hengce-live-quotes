@@ -1,0 +1,71 @@
+name: HENGCE Dual Engine Display Refresh
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["HENGCE Daily Command Center"]
+    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_dual_engine_display.py'
+      - 'scripts/test_hengce_dual_engine_display_hard_lock.py'
+      - '.github/workflows/hengce-dual-engine-display-refresh.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-dual-engine-display-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run dual-engine anti-drift regression
+        run: python scripts/test_hengce_dual_engine_display_hard_lock.py
+
+      - name: Refresh authoritative dual-engine display
+        run: python scripts/hengce_dual_engine_display.py
+
+      - name: Validate display contract
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('hengce/dual_engine/latest.json',encoding='utf-8'))
+          assert x['architecture']=='DUAL_ENGINE'
+          assert x['rankings_separate'] is True
+          assert x['mixed_ranking_forbidden'] is True
+          assert x['legacy_v3_display_authority'] is False
+          assert 'q017' in x and 'e2' in x
+          assert x['q017'].get('ranking_universe')=='TWSE_LISTED_ELECTRONICS_ONLY'
+          assert x['e2'].get('broker_order_execution') is False
+          print('PASS DUAL_ENGINE_DISPLAY_CONTRACT')
+          PY
+
+      - name: Commit refreshed display if changed
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-dual-engine-display-bot'
+          git config user.email 'hengce-dual-engine-display-bot@users.noreply.github.com'
+          git add hengce/dual_engine/latest.json
+          if git diff --cached --quiet; then
+            echo 'No dual-engine display changes.'
+          else
+            TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            git commit -m "HENGCE refresh dual-engine display ${TS}"
+            if ! git push origin HEAD:main; then
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
