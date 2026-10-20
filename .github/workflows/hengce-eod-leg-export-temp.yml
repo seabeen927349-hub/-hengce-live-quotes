@@ -1,0 +1,54 @@
+name: HENGCE Validated EOD Leg Export Temp
+
+on:
+  push:
+    branches:
+      - chatgpt/eod-leg-export-20261020
+    paths:
+      - .github/workflows/hengce-eod-leg-export-temp.yml
+
+permissions:
+  contents: read
+
+jobs:
+  export-validated-leg:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact original-vessel institutional receipt
+        run: |
+          python - <<'PY'
+          import csv, hashlib, json
+          from pathlib import Path
+          root=Path('eod/20261020')
+          receipt=json.loads((root/'receipts/institutional.json').read_text(encoding='utf-8'))
+          assert receipt['target_date']=='2026-10-20'
+          assert receipt['leg']=='institutional'
+          assert receipt['status']=='COMPLETE'
+          files=[root/f'institutional_{i}.csv' for i in range(1,10)]
+          assert all(p.exists() for p in files)
+          rows=[]
+          for p in files:
+              with p.open(encoding='utf-8-sig', newline='') as f:
+                  rows.extend(csv.DictReader(f))
+          assert len(rows)==receipt['rows']==1079
+          assert {r['Date'] for r in rows}=={'2026-10-20'}
+          keys=[(r['Date'],r['Ticker']) for r in rows]
+          assert len(keys)==len(set(keys))
+          assert all(r['Source']=='https://www.twse.com.tw/rwd/zh/fund/T86' for r in rows)
+          h=hashlib.sha256()
+          for p in files:
+              h.update(p.read_bytes())
+          assert h.hexdigest()==receipt['sha256'], (h.hexdigest(), receipt['sha256'])
+          print(json.dumps({'status':'PASS','rows':len(rows),'sha256':h.hexdigest()}, ensure_ascii=False))
+          PY
+      - name: Upload exact validated institutional split files
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-20261020-institutional-original-vessel
+          path: |
+            eod/20261020/institutional_*.csv
+            eod/20261020/receipts/institutional.json
+            eod/20261020/status.json
+          if-no-files-found: error
+          retention-days: 1
