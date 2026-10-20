@@ -2,7 +2,7 @@
   "schema_version": 2,
   "system": "HENGCE",
   "module": "E2_PROFIT_MAX_STATE",
-  "generated_at_taipei": "2026-10-20T17:27:45.071860+08:00",
+  "generated_at_taipei": "2026-10-20T17:53:13.717548+08:00",
   "signal_asof": "2026-10-20",
   "engine": "E2_PROFIT_MAX",
   "engine_status": "NO_FILL",
@@ -60,12 +60,9 @@
     "broker_order_execution": false
   },
   "execution_override": {
-    "applied": true,
+    "applied": false,
     "status": "NO_FILL",
-    "ticker": "3026",
-    "signal_date": "2026-10-19",
-    "effective_date": "2026-10-20",
-    "slot_released": true
+    "reason": "ALREADY_APPLIED_THIS_SESSION"
   },
   "strict": {
     "authority": "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
