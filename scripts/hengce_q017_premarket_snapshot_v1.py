@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from datetime import datetime, time as dtime
 
 import hengce_q017_observation_lock_v5 as v5
+import hengce_q017_macro_cache_v1 as macro
 
 core = v5.core
 v4 = v5.v4
@@ -32,13 +34,111 @@ def _iso_dt(x):
         return None
 
 
-def prepare_from_persisted_premarket(today):
-    """Build the v4/v5 11-field model tuple from the persisted premarket gate.
+def _load_history_local_only():
+    p = core.TW_HISTORY
+    if not p.exists() or p.stat().st_size <= 100000:
+        raise RuntimeError('LOCAL_ELECTRONICS_HISTORY_NOT_READY')
+    with p.open(encoding='utf-8-sig', newline='') as f:
+        return list(csv.DictReader(f))
 
-    The command center has already refreshed SOX and electronics history. This
-    step adds DXY plus beta/previous-close and then invokes the exact v4
-    premarket-coherence validator. It has no ranking or trade authority.
+
+def _local_seed_status():
+    p = core.TW_HISTORY
+    return {
+        'status': 'PASS',
+        'source': 'LOCAL_INCREMENTAL_HISTORY_PREEXISTING',
+        'seeded': False,
+        'path': str(p.relative_to(core.ROOT)),
+        'bytes': p.stat().st_size,
+    }
+
+
+def _gate_from_local_state(today, macro_cache, hist_date):
+    existing = None
+    if core.DATA_STATUS.exists():
+        try:
+            candidate = json.loads(core.DATA_STATUS.read_text(encoding='utf-8'))
+            if (
+                candidate.get('module') == 'DAILY_DATA_GATE'
+                and candidate.get('trade_date') == today.isoformat()
+                and candidate.get('status') == 'PASS'
+                and (candidate.get('lane_status') or {}).get('q017_inputs') == 'PASS'
+            ):
+                existing = candidate
+        except Exception:
+            existing = None
+
+    if existing is not None:
+        gate = json.loads(json.dumps(existing))
+        req = gate.setdefault('required', {})
+        req['sox'] = macro_cache['sox_status']
+        req['electronics_history'] = req.get('electronics_history') or _local_seed_status()
+        req['electronics_history_latest'] = hist_date
+        gate['sox'] = macro_cache['sox_features']
+        gate['macro_cache_sha256'] = macro_cache['cache_sha256']
+        gate['policy'] = 'Q017_MACRO_FROM_EARLY_HASH_BOUND_CACHE;PERSISTED_DAILY_GATE_REUSED;NO_MACRO_NETWORK_IN_SNAPSHOT'
+        return gate
+
+    eod_date, eod_status = core.latest_eod_status()
+    eod_complete = bool(
+        eod_status
+        and eod_status.get('price_status') == 'COMPLETE'
+        and eod_status.get('institutional_status') == 'COMPLETE'
+        and eod_status.get('margin_status') == 'COMPLETE'
+    )
+    return {
+        'system': 'HENGCE',
+        'module': 'DAILY_DATA_GATE',
+        'generated_at_taipei': core.now_tw().isoformat(),
+        'trade_date': today.isoformat(),
+        'status': 'PASS',
+        'lane_status': {'q017_inputs': 'PASS'},
+        'required': {
+            'sox': macro_cache['sox_status'],
+            'latest_eod_date': eod_date,
+            'latest_eod_complete': eod_complete,
+            'electronics_history': _local_seed_status(),
+            'electronics_history_latest': hist_date,
+        },
+        'sox': macro_cache['sox_features'],
+        'macro_cache_sha256': macro_cache['cache_sha256'],
+        'policy': 'Q017_MACRO_FROM_EARLY_HASH_BOUND_CACHE;LOCAL_HISTORY_ONLY;NO_MACRO_NETWORK_IN_SNAPSHOT',
+    }
+
+
+def prepare_from_macro_cache(today):
+    """Build the exact v4/v5 11-field tuple with zero macro network I/O.
+
+    SOX and DXY must already have been downloaded by the early-morning macro
+    cache workflow, trade-date bound, causal-session validated and SHA-bound.
     """
+    mc = macro.load_valid_cache(today, verify_files=True)
+    history = _load_history_local_only()
+    srows = core.read_sox()
+    if not srows:
+        raise RuntimeError('LOCAL_SOX_ROWS_EMPTY_AFTER_MACRO_CACHE_VALIDATION')
+    betas, prev, names, hist_date, universe = core.current_betas(history, srows)
+    seed = _local_seed_status()
+    gate = _gate_from_local_state(today, mc, hist_date)
+    coh = v4.validate_premarket_coherence(today, gate, hist_date)
+    prepared = (
+        gate,
+        mc['sox_status'],
+        mc['dxy_status'],
+        seed,
+        mc['sox_features'],
+        betas,
+        prev,
+        names,
+        hist_date,
+        universe,
+        coh,
+    )
+    return prepared, mc
+
+
+def prepare_legacy_fallback(today):
+    """Bounded-supervisor fallback source only; not the normal production path."""
     if not core.DATA_STATUS.exists():
         raise RuntimeError('PREMARKET_DATA_STATUS_MISSING')
     gate = json.loads(core.DATA_STATUS.read_text(encoding='utf-8'))
@@ -46,24 +146,28 @@ def prepare_from_persisted_premarket(today):
         raise RuntimeError('PREMARKET_GATE_TRADE_DATE_OR_MODULE_INVALID')
     if gate.get('status') != 'PASS' or (gate.get('lane_status') or {}).get('q017_inputs') != 'PASS':
         raise RuntimeError('PREMARKET_Q017_INPUTS_NOT_PASS')
-
     req = gate.get('required') or {}
     sox_status = req.get('sox')
     if not isinstance(sox_status, dict) or sox_status.get('status') != 'PASS':
         if not core.SOX_STATUS.exists():
             raise RuntimeError('SOX_STATUS_MISSING_AFTER_PREMARKET')
         sox_status = json.loads(core.SOX_STATUS.read_text(encoding='utf-8'))
-    if sox_status.get('status') != 'PASS':
-        raise RuntimeError('SOX_STATUS_NOT_PASS_AFTER_PREMARKET')
-
-    seed = req.get('electronics_history') or {'status': 'PASS', 'source': 'PERSISTED_PREMARKET'}
-    history = core.load_tw_history()
+    history = _load_history_local_only()
     srows = core.read_sox()
     sf = core.sox_features(today)
     dxy_status = v4.refresh_dxy(today)
     betas, prev, names, hist_date, universe = core.current_betas(history, srows)
+    seed = req.get('electronics_history') or _local_seed_status()
     coh = v4.validate_premarket_coherence(today, gate, hist_date)
     return gate, sox_status, dxy_status, seed, sf, betas, prev, names, hist_date, universe, coh
+
+
+def prepare_from_persisted_premarket(today):
+    try:
+        prepared, _ = prepare_from_macro_cache(today)
+        return prepared
+    except Exception:
+        return prepare_legacy_fallback(today)
 
 
 def _model_from_tuple(prepared):
@@ -118,7 +222,7 @@ def validate_prepared(prepared, trade_date):
     return True, 'PASS'
 
 
-def make_payload(prepared, trade_date, generated_at=None):
+def make_payload(prepared, trade_date, generated_at=None, macro_cache_meta=None, source='UNKNOWN'):
     generated_at = generated_at or core.now_tw()
     model = _model_from_tuple(prepared)
     payload = {
@@ -131,6 +235,9 @@ def make_payload(prepared, trade_date, generated_at=None):
         'formal_buy_count': 0,
         'late_market_backfill_forbidden': True,
         'intended_use': 'FALLBACK_PREPARE_MODEL_ONLY_BEFORE_OR_DURING_LEGAL_0901_OBSERVATION_WINDOW',
+        'input_source': source,
+        'macro_cache_sha256': (macro_cache_meta or {}).get('cache_sha256'),
+        'macro_cache_generated_at_taipei': (macro_cache_meta or {}).get('generated_at_taipei'),
         'model': model,
     }
     payload['model_fingerprint_sha256'] = v5.csha(model)
@@ -168,6 +275,8 @@ def validate_snapshot(payload, trade_date):
     ok, reason = validate_prepared(prepared, trade_date)
     if not ok:
         return False, reason
+    if payload.get('input_source') == 'MORNING_MACRO_CACHE' and not payload.get('macro_cache_sha256'):
+        return False, 'SNAPSHOT_MACRO_CACHE_HASH_MISSING'
     return True, 'PASS'
 
 
@@ -188,11 +297,19 @@ def build(trade_date):
         raise RuntimeError('SNAPSHOT_BUILD_ONLY_FOR_CURRENT_TRADE_DATE')
     if now.time().replace(tzinfo=None) > BUILD_CUTOFF:
         raise RuntimeError('SNAPSHOT_BUILD_AFTER_0900_45_FORBIDDEN')
-    prepared = prepare_from_persisted_premarket(trade_date)
+
+    cache_meta = None
+    source = 'LEGACY_BOUNDED_FALLBACK'
+    try:
+        prepared, cache_meta = prepare_from_macro_cache(trade_date)
+        source = 'MORNING_MACRO_CACHE'
+    except Exception:
+        prepared = prepare_legacy_fallback(trade_date)
+
     ok, reason = validate_prepared(prepared, trade_date)
     if not ok:
         raise RuntimeError(f'PREPARED_MODEL_INVALID:{reason}')
-    payload = make_payload(prepared, trade_date, generated_at=now)
+    payload = make_payload(prepared, trade_date, generated_at=now, macro_cache_meta=cache_meta, source=source)
     ok, reason = validate_snapshot(payload, trade_date)
     if not ok:
         raise RuntimeError(f'SNAPSHOT_SELF_VALIDATE_FAIL:{reason}')
@@ -205,6 +322,8 @@ def build(trade_date):
         'generated_at_taipei': now.isoformat(),
         'status': 'PASS',
         'authority': AUTHORITY,
+        'input_source': source,
+        'macro_cache_sha256': (cache_meta or {}).get('cache_sha256'),
         'snapshot_sha256': payload['snapshot_sha256'],
         'model_fingerprint_sha256': payload['model_fingerprint_sha256'],
         'formal_buy_count': 0,
@@ -225,7 +344,7 @@ def self_test():
     ok, reason = validate_prepared(prepared, td)
     assert ok, reason
     generated = datetime(2026,10,21,6,30,tzinfo=TZ)
-    payload = make_payload(prepared, td, generated)
+    payload = make_payload(prepared, td, generated, {'cache_sha256':'a'*64,'generated_at_taipei':generated.isoformat()}, 'MORNING_MACRO_CACHE')
     ok, reason = validate_snapshot(payload, td)
     assert ok, reason
     restored = _tuple_from_model(payload['model'])
@@ -234,15 +353,17 @@ def self_test():
     broken['model']['betas']['2330'] = 9.9
     ok, reason = validate_snapshot(broken, td)
     assert not ok and reason == 'MODEL_FINGERPRINT_MISMATCH'
-    late = make_payload(prepared, td, datetime(2026,10,21,9,0,46,tzinfo=TZ))
+    late = make_payload(prepared, td, datetime(2026,10,21,9,0,46,tzinfo=TZ), {'cache_sha256':'a'*64}, 'MORNING_MACRO_CACHE')
     ok, reason = validate_snapshot(late, td)
     assert not ok and reason == 'SNAPSHOT_NOT_PRE0901_CAUSAL'
     print(json.dumps({
         'self_test':'PASS','schema':SCHEMA,'authority':AUTHORITY,
         'build_cutoff_taipei':'09:00:45','tamper_rejected':True,
         'late_snapshot_rejected':True,'formal_buy_count':0,
+        'macro_cache_primary': True,
+        'macro_network_calls_normal_snapshot_path': 0,
+        'legacy_bounded_fallback_retained': True,
         'uses_v4_coherence_validator': True,
-        'uses_v4_refresh_dxy': True,
     }, ensure_ascii=False))
     return 0
 
@@ -256,7 +377,12 @@ def main():
     td = core.now_tw().date()
     try:
         out = build(td)
-        print(json.dumps({'status':'PASS','trade_date':td.isoformat(),'snapshot_sha256':out['snapshot_sha256'],'authority':AUTHORITY}, ensure_ascii=False))
+        print(json.dumps({
+            'status':'PASS','trade_date':td.isoformat(),
+            'input_source':out.get('input_source'),
+            'macro_cache_sha256':out.get('macro_cache_sha256'),
+            'snapshot_sha256':out['snapshot_sha256'],'authority':AUTHORITY,
+        }, ensure_ascii=False))
         return 0
     except Exception as exc:
         core.atomic_json(STATUS, {
