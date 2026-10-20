@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import json
 from datetime import datetime, time as dtime
-from pathlib import Path
 
 import hengce_q017_observation_lock_v5 as v5
 
@@ -33,34 +32,37 @@ def _iso_dt(x):
         return None
 
 
-def _coherence(today, hist_date, sf, dxy_status):
-    return v4._coherence_status(today, hist_date, sf, dxy_status)
-
-
 def prepare_from_persisted_premarket(today):
-    """Build the same 11-field prepare_model tuple without re-downloading SOX.
+    """Build the v4/v5 11-field model tuple from the persisted premarket gate.
 
-    The 06:30 command-center premarket gate has already refreshed SOX and the
-    electronics history. This step adds DXY and computes beta/previous-close so
-    a complete causal fallback model is persisted well before 09:01.
+    The command center has already refreshed SOX and electronics history. This
+    step adds DXY plus beta/previous-close and then invokes the exact v4
+    premarket-coherence validator. It has no ranking or trade authority.
     """
     if not core.DATA_STATUS.exists():
         raise RuntimeError('PREMARKET_DATA_STATUS_MISSING')
     gate = json.loads(core.DATA_STATUS.read_text(encoding='utf-8'))
     if gate.get('module') != 'DAILY_DATA_GATE' or gate.get('trade_date') != today.isoformat():
         raise RuntimeError('PREMARKET_GATE_TRADE_DATE_OR_MODULE_INVALID')
-    if (gate.get('lane_status') or {}).get('q017_inputs') != 'PASS':
+    if gate.get('status') != 'PASS' or (gate.get('lane_status') or {}).get('q017_inputs') != 'PASS':
         raise RuntimeError('PREMARKET_Q017_INPUTS_NOT_PASS')
-    if not core.SOX_STATUS.exists():
-        raise RuntimeError('SOX_STATUS_MISSING_AFTER_PREMARKET')
-    sox_status = json.loads(core.SOX_STATUS.read_text(encoding='utf-8'))
-    seed = ((gate.get('required') or {}).get('electronics_history') or {'status': 'PASS', 'source': 'PERSISTED_PREMARKET'})
+
+    req = gate.get('required') or {}
+    sox_status = req.get('sox')
+    if not isinstance(sox_status, dict) or sox_status.get('status') != 'PASS':
+        if not core.SOX_STATUS.exists():
+            raise RuntimeError('SOX_STATUS_MISSING_AFTER_PREMARKET')
+        sox_status = json.loads(core.SOX_STATUS.read_text(encoding='utf-8'))
+    if sox_status.get('status') != 'PASS':
+        raise RuntimeError('SOX_STATUS_NOT_PASS_AFTER_PREMARKET')
+
+    seed = req.get('electronics_history') or {'status': 'PASS', 'source': 'PERSISTED_PREMARKET'}
     history = core.load_tw_history()
     srows = core.read_sox()
     sf = core.sox_features(today)
-    dxy_status = v4.fetch_dxy_5d(today)
+    dxy_status = v4.refresh_dxy(today)
     betas, prev, names, hist_date, universe = core.current_betas(history, srows)
-    coh = _coherence(today, hist_date, sf, dxy_status)
+    coh = v4.validate_premarket_coherence(today, gate, hist_date)
     return gate, sox_status, dxy_status, seed, sf, betas, prev, names, hist_date, universe, coh
 
 
@@ -110,7 +112,8 @@ def validate_prepared(prepared, trade_date):
         return False, 'HISTORY_NOT_CAUSAL'
     if (coh or {}).get('status') != 'PASS':
         return False, 'COHERENCE_NOT_PASS'
-    if any(str(t) not in set(str(x) for x in universe) for t in betas):
+    members = {str(x) for x in universe}
+    if any(str(t) not in members for t in betas):
         return False, 'BETA_OUTSIDE_UNIVERSE'
     return True, 'PASS'
 
@@ -154,7 +157,8 @@ def validate_snapshot(payload, trade_date):
     model = payload.get('model') or {}
     if payload.get('model_fingerprint_sha256') != v5.csha(model):
         return False, 'MODEL_FINGERPRINT_MISMATCH'
-    base = dict(payload); claimed = base.pop('snapshot_sha256', None)
+    base = dict(payload)
+    claimed = base.pop('snapshot_sha256', None)
     if claimed != v5.csha(base):
         return False, 'SNAPSHOT_HASH_MISMATCH'
     try:
@@ -218,20 +222,27 @@ def self_test():
         {'sox_1d':-0.01,'sox_5d':-0.04,'latest_session':'2026-10-20'},
         {'2330':1.2}, {'2330':1000.0}, {'2330':'台積電'}, '2026-10-20', ['2330'], {'status':'PASS'},
     )
-    ok, reason = validate_prepared(prepared, td); assert ok, reason
+    ok, reason = validate_prepared(prepared, td)
+    assert ok, reason
     generated = datetime(2026,10,21,6,30,tzinfo=TZ)
     payload = make_payload(prepared, td, generated)
-    ok, reason = validate_snapshot(payload, td); assert ok, reason
+    ok, reason = validate_snapshot(payload, td)
+    assert ok, reason
     restored = _tuple_from_model(payload['model'])
     assert restored[4]['sox_5d'] == -0.04 and restored[5]['2330'] == 1.2
-    broken = json.loads(json.dumps(payload)); broken['model']['betas']['2330'] = 9.9
-    ok, reason = validate_snapshot(broken, td); assert not ok and reason == 'MODEL_FINGERPRINT_MISMATCH'
+    broken = json.loads(json.dumps(payload))
+    broken['model']['betas']['2330'] = 9.9
+    ok, reason = validate_snapshot(broken, td)
+    assert not ok and reason == 'MODEL_FINGERPRINT_MISMATCH'
     late = make_payload(prepared, td, datetime(2026,10,21,9,0,46,tzinfo=TZ))
-    ok, reason = validate_snapshot(late, td); assert not ok and reason == 'SNAPSHOT_NOT_PRE0901_CAUSAL'
+    ok, reason = validate_snapshot(late, td)
+    assert not ok and reason == 'SNAPSHOT_NOT_PRE0901_CAUSAL'
     print(json.dumps({
         'self_test':'PASS','schema':SCHEMA,'authority':AUTHORITY,
         'build_cutoff_taipei':'09:00:45','tamper_rejected':True,
         'late_snapshot_rejected':True,'formal_buy_count':0,
+        'uses_v4_coherence_validator': True,
+        'uses_v4_refresh_dxy': True,
     }, ensure_ascii=False))
     return 0
 
