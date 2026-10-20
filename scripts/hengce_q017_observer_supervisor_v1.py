@@ -13,6 +13,7 @@ import requests
 
 import hengce_q017_observation_lock_v5 as v5
 import hengce_q017_backup_observer_v5 as backup
+import hengce_q017_premarket_snapshot_v1 as premarket_snapshot
 
 TZ = v5.TZ
 RADAR = v5.RADAR
@@ -54,8 +55,8 @@ def _retry_sleep_seconds(now) -> float:
 
 
 def _prewarm_timeout_seconds(now) -> float:
-    # A late-started runner must never spend the entire 09:01 minute inside
-    # SOX/DXY/history preparation. Earlier runners can afford a longer try.
+    # A late-started runner must never spend the legal observation minute
+    # inside SOX/DXY/history preparation.
     minute_of_day = now.hour * 60 + now.minute
     if minute_of_day < 8 * 60 + 50:
         return 45.0
@@ -68,7 +69,7 @@ def _prewarm_timeout_seconds(now) -> float:
 
 def _write_status(lane: str, trade_date, state: str, attempts, **extra):
     payload = {
-        'schema_version': 2,
+        'schema_version': 3,
         'system': 'HENGCE',
         'module': 'Q017_OBSERVER_SUPERVISOR',
         'lane': lane,
@@ -79,11 +80,12 @@ def _write_status(lane: str, trade_date, state: str, attempts, **extra):
         'strict_observation_window': '09:01:00-09:01:59.999999 Asia/Taipei',
         'late_market_backfill_forbidden': True,
         'prewarm': {
-            'start_taipei': '08:30:00',
+            'persisted_fallback': '06:30 Q017 premarket snapshot, hash-validated, zero signal authority',
+            'live_start_taipei': '08:30:00',
             'preferred_refresh_taipei': '08:50:00',
             'hard_stop_taipei': '09:00:45',
             'purpose': 'freeze causal T-1 model/macro before the 09:01 quote critical section',
-            'network_prepare_during_0901_forbidden_when_prewarm_ready': True,
+            'network_prepare_during_0901_forbidden_when_candidate_ready': True,
         },
         'transport': {
             'provider': 'TWSE_MIS',
@@ -109,7 +111,7 @@ def install_resilient_transport():
         ex_ch = '|'.join(f'tse_{t}.tw' for t in tickers)
         params = {'ex_ch': ex_ch, 'json': '1', 'delay': '0'}
         headers = {
-            'User-Agent': 'Mozilla/5.0 HENGCE-Q017-OBS-SUPERVISOR/2.0',
+            'User-Agent': 'Mozilla/5.0 HENGCE-Q017-OBS-SUPERVISOR/3.0',
             'Accept': 'application/json',
             'Referer': 'https://mis.twse.com.tw/stock/index.jsp',
         }
@@ -157,11 +159,7 @@ def _prepare_worker(trade_date, outq):
 
 
 def _bounded_prepare_model(trade_date, timeout_seconds: float):
-    """Run slow premarket preparation in a killable subprocess.
-
-    This is deliberately outside the 09:01 market-observation critical path.
-    A stuck SOX/DXY endpoint cannot consume the legal observation minute.
-    """
+    """Run slow premarket preparation in a killable subprocess."""
     methods = mp.get_all_start_methods()
     ctx = mp.get_context('fork' if 'fork' in methods else methods[0])
     outq = ctx.Queue(maxsize=1)
@@ -177,8 +175,10 @@ def _bounded_prepare_model(trade_date, timeout_seconds: float):
             proc.kill(); proc.join(timeout=2)
         raise TimeoutError(f'PREWARM_TIMEOUT_AFTER_{timeout_seconds:.1f}S')
     finally:
-        try: outq.close()
-        except Exception: pass
+        try:
+            outq.close()
+        except Exception:
+            pass
     proc.join(timeout=2)
     if proc.is_alive():
         proc.terminate(); proc.join(timeout=2)
@@ -194,11 +194,13 @@ def _validate_prepared_model(prepared, trade_date):
     gate, sox_status, dxy_status, seed, sf, betas, prev, names, hist_date, universe, coh = prepared
     if (gate or {}).get('status') != 'PASS':
         raise RuntimeError('PREWARM_GATE_NOT_PASS')
+    if (sox_status or {}).get('status') != 'PASS':
+        raise RuntimeError('PREWARM_SOX_STATUS_NOT_PASS')
     if not universe or not betas or not prev:
         raise RuntimeError('PREWARM_MODEL_EMPTY')
     if sf.get('sox_1d') is None or sf.get('sox_5d') is None:
         raise RuntimeError('PREWARM_SOX_FEATURES_MISSING')
-    if (dxy_status or {}).get('dxy_5d') is None:
+    if (dxy_status or {}).get('status') != 'PASS' or (dxy_status or {}).get('dxy_5d') is None:
         raise RuntimeError('PREWARM_DXY_FEATURE_MISSING')
     hd = datetime.strptime(str(hist_date), '%Y-%m-%d').date()
     if hd >= trade_date:
@@ -246,17 +248,77 @@ def _wait_until(target, lane, trade_date, attempts, state):
         time.sleep(min(30.0, max(0.0, (target - now).total_seconds())))
 
 
+def _load_persisted_candidate(lane, trade_date, attempts):
+    started = v5.core.now_tw()
+    try:
+        prepared, meta = premarket_snapshot.load_snapshot(trade_date)
+        _validate_prepared_model(prepared, trade_date)
+        generated = datetime.fromisoformat(meta['generated_at_taipei']).astimezone(TZ)
+        attempts.append({
+            'phase': 'PREWARM_CACHE',
+            'attempt': len(attempts) + 1,
+            'started_at_taipei': started.isoformat(),
+            'finished_at_taipei': v5.core.now_tw().isoformat(),
+            'result': 'PASS',
+            'candidate_source': 'PERSISTED_0630_SNAPSHOT',
+            'snapshot_sha256': meta.get('snapshot_sha256'),
+            'snapshot_model_fingerprint_sha256': meta.get('model_fingerprint_sha256'),
+            'fingerprint_sha256': _prepared_fingerprint(prepared),
+        })
+        _write_status(
+            lane, trade_date, 'PREWARM_CACHE_READY', attempts,
+            candidate_source='PERSISTED_0630_SNAPSHOT',
+            prewarm_candidate_at_taipei=generated.isoformat(),
+            snapshot_sha256=meta.get('snapshot_sha256'),
+            prewarm_fingerprint_sha256=_prepared_fingerprint(prepared),
+        )
+        return prepared, generated, meta
+    except Exception as exc:
+        attempts.append({
+            'phase': 'PREWARM_CACHE',
+            'attempt': len(attempts) + 1,
+            'started_at_taipei': started.isoformat(),
+            'finished_at_taipei': v5.core.now_tw().isoformat(),
+            'result': 'MISS_OR_INVALID',
+            'error_type': type(exc).__name__,
+            'error': str(exc)[:2000],
+        })
+        _write_status(lane, trade_date, 'PREWARM_CACHE_UNAVAILABLE', attempts, last_error=repr(exc))
+        return None, None, None
+
+
 def prewarm_and_freeze(lane: str, trade_date, attempts):
     start = _at(trade_date, PREWARM_START)
     refresh = _at(trade_date, PREFERRED_REFRESH)
     hard_stop = _at(trade_date, PREWARM_HARD_STOP)
+
+    candidate, candidate_at, cache_meta = _load_persisted_candidate(lane, trade_date, attempts)
+    candidate_source = 'PERSISTED_0630_SNAPSHOT' if candidate is not None else None
+    valid_cache_retained = candidate is not None
+
     now = v5.core.now_tw()
     if now < start:
-        _wait_until(start, lane, trade_date, attempts, 'WAITING_FOR_0830_PREWARM')
+        _wait_until(start, lane, trade_date, attempts, 'WAITING_FOR_0830_LIVE_PREWARM')
 
-    candidate = None
-    candidate_at = None
-    first_success_before_refresh = False
+    # A very late GitHub runner can still use the validated 06:30 model cache.
+    # It must not start slow SOX/DXY/history I/O after 09:00:45.
+    if v5.core.now_tw() > hard_stop:
+        if candidate is None:
+            raise RuntimeError('LATE_RUNNER_NO_VALID_0630_PREWARM_SNAPSHOT')
+        fingerprint = _install_frozen_prepare(candidate, trade_date)
+        frozen_at = v5.core.now_tw()
+        _write_status(
+            lane, trade_date, 'PREWARM_FROZEN_FROM_PERSISTED_CACHE_LATE_RUNNER', attempts,
+            candidate_source=candidate_source,
+            prewarm_candidate_at_taipei=candidate_at.isoformat() if candidate_at else None,
+            prewarm_frozen_at_taipei=frozen_at.isoformat(),
+            prewarm_fingerprint_sha256=fingerprint,
+            snapshot_sha256=(cache_meta or {}).get('snapshot_sha256'),
+            prepare_model_network_calls_during_0901=0,
+        )
+        return candidate, fingerprint, candidate_source
+
+    live_success_before_refresh = False
     while v5.core.now_tw() <= hard_stop:
         now = v5.core.now_tw()
         timeout_seconds = min(_prewarm_timeout_seconds(now), max(1.0, (hard_stop - now).total_seconds()))
@@ -266,56 +328,69 @@ def prewarm_and_freeze(lane: str, trade_date, attempts):
             _validate_prepared_model(prepared, trade_date)
             candidate = prepared
             candidate_at = v5.core.now_tw()
+            candidate_source = 'LIVE_PREWARM'
             attempts.append({
-                'phase': 'PREWARM',
+                'phase': 'PREWARM_LIVE',
                 'attempt': len(attempts) + 1,
                 'started_at_taipei': started.isoformat(),
                 'finished_at_taipei': candidate_at.isoformat(),
                 'result': 'PASS',
                 'timeout_seconds': timeout_seconds,
+                'candidate_source': candidate_source,
                 'fingerprint_sha256': _prepared_fingerprint(candidate),
             })
-            _write_status(lane, trade_date, 'PREWARM_CANDIDATE_READY', attempts,
-                          prewarm_candidate_at_taipei=candidate_at.isoformat(),
-                          prewarm_fingerprint_sha256=_prepared_fingerprint(candidate))
+            _write_status(
+                lane, trade_date, 'PREWARM_LIVE_CANDIDATE_READY', attempts,
+                candidate_source=candidate_source,
+                valid_persisted_cache_also_available=valid_cache_retained,
+                prewarm_candidate_at_taipei=candidate_at.isoformat(),
+                prewarm_fingerprint_sha256=_prepared_fingerprint(candidate),
+            )
             if started < refresh:
-                first_success_before_refresh = True
-                _wait_until(refresh, lane, trade_date, attempts, 'PREWARM_CANDIDATE_READY_WAITING_PREFERRED_REFRESH')
-                # One preferred refresh is attempted. If it fails, the valid
-                # earlier candidate is retained and frozen; it is never erased.
+                live_success_before_refresh = True
+                _wait_until(refresh, lane, trade_date, attempts, 'PREWARM_LIVE_READY_WAITING_PREFERRED_REFRESH')
                 continue
             break
         except Exception as exc:
             finished = v5.core.now_tw()
             attempts.append({
-                'phase': 'PREWARM',
+                'phase': 'PREWARM_LIVE',
                 'attempt': len(attempts) + 1,
                 'started_at_taipei': started.isoformat(),
                 'finished_at_taipei': finished.isoformat(),
                 'result': 'RETRYABLE_FAIL' if finished <= hard_stop else 'FINAL_FAIL',
                 'timeout_seconds': timeout_seconds,
+                'valid_candidate_retained': candidate is not None,
+                'retained_candidate_source': candidate_source,
                 'error_type': type(exc).__name__,
                 'error': str(exc)[:2000],
             })
-            _write_status(lane, trade_date, 'PREWARM_RETRYING', attempts,
-                          valid_candidate_retained=candidate is not None,
-                          last_error=repr(exc))
-            if candidate is not None and first_success_before_refresh and finished >= refresh:
+            _write_status(
+                lane, trade_date, 'PREWARM_LIVE_RETRYING', attempts,
+                valid_candidate_retained=candidate is not None,
+                retained_candidate_source=candidate_source,
+                last_error=repr(exc),
+            )
+            if candidate is not None and live_success_before_refresh and finished >= refresh:
                 break
             if finished >= hard_stop:
                 break
             time.sleep(min(_retry_sleep_seconds(finished), max(0.0, (hard_stop - finished).total_seconds())))
 
     if candidate is None:
-        raise RuntimeError('NO_VALID_PREWARM_MODEL_BEFORE_0900_45')
+        raise RuntimeError('NO_VALID_PREWARM_MODEL_OR_0630_SNAPSHOT_BEFORE_0900_45')
     fingerprint = _install_frozen_prepare(candidate, trade_date)
     frozen_at = v5.core.now_tw()
-    _write_status(lane, trade_date, 'PREWARM_FROZEN_READY_FOR_0901', attempts,
-                  prewarm_candidate_at_taipei=candidate_at.isoformat() if candidate_at else None,
-                  prewarm_frozen_at_taipei=frozen_at.isoformat(),
-                  prewarm_fingerprint_sha256=fingerprint,
-                  prepare_model_network_calls_during_0901=0)
-    return candidate, fingerprint
+    _write_status(
+        lane, trade_date, 'PREWARM_FROZEN_READY_FOR_0901', attempts,
+        candidate_source=candidate_source,
+        prewarm_candidate_at_taipei=candidate_at.isoformat() if candidate_at else None,
+        prewarm_frozen_at_taipei=frozen_at.isoformat(),
+        prewarm_fingerprint_sha256=fingerprint,
+        snapshot_sha256=(cache_meta or {}).get('snapshot_sha256') if candidate_source == 'PERSISTED_0630_SNAPSHOT' else None,
+        prepare_model_network_calls_during_0901=0,
+    )
+    return candidate, fingerprint, candidate_source
 
 
 def _observe_once(lane: str, trade_date):
@@ -337,25 +412,30 @@ def run(lane: str) -> int:
         return 0
 
     try:
-        _, fingerprint = prewarm_and_freeze(lane, trade_date, attempts)
+        _, fingerprint, candidate_source = prewarm_and_freeze(lane, trade_date, attempts)
     except Exception as exc:
-        _write_status(lane, trade_date, 'PREWARM_FAIL_CLOSED', attempts,
-                      formal_buy_count=0, last_error=repr(exc),
-                      reason='NO_VALID_CAUSAL_MODEL_READY_BEFORE_0901_CRITICAL_SECTION')
+        _write_status(
+            lane, trade_date, 'PREWARM_FAIL_CLOSED', attempts,
+            formal_buy_count=0, last_error=repr(exc),
+            reason='NO_VALID_CAUSAL_MODEL_READY_BEFORE_0901_CRITICAL_SECTION',
+        )
         return 2
 
     end = _deadline(trade_date)
     if v5.core.now_tw() > end:
-        _write_status(lane, trade_date, 'FAIL_CLOSED_WINDOW_EXHAUSTED', attempts,
-                      formal_buy_count=0,
-                      prewarm_fingerprint_sha256=fingerprint,
-                      reason='NO_VALID_SCHEMA5_0901_OBSERVATION_BEFORE_WINDOW_END')
+        _write_status(
+            lane, trade_date, 'FAIL_CLOSED_WINDOW_EXHAUSTED', attempts,
+            formal_buy_count=0,
+            candidate_source=candidate_source,
+            prewarm_fingerprint_sha256=fingerprint,
+            reason='NO_VALID_SCHEMA5_0901_OBSERVATION_BEFORE_WINDOW_END',
+        )
         return 2
 
     started = v5.core.now_tw()
     try:
-        # collect_observation now sees a frozen prepare_model tuple. The only
-        # live market network dependency in the 09:01 critical section is MIS.
+        # prepare_model is frozen. Only the TWSE MIS quote transport remains
+        # live in the legal 09:01 critical section.
         out = _observe_once(lane, trade_date)
         ok, reason = v5.validate_observation(out)
         if not ok:
@@ -369,15 +449,19 @@ def run(lane: str) -> int:
         })
         _write_status(
             lane, trade_date, 'OBSERVATION_READY', attempts,
+            candidate_source=candidate_source,
             prewarm_fingerprint_sha256=fingerprint,
             prepare_model_network_calls_during_0901=0,
             observation_snapshot_sha256=out.get('observation_snapshot_sha256'),
             provider_coverage=(out.get('data_status') or {}).get('provider_coverage'),
             eligible_quote_row_coverage=(out.get('data_status') or {}).get('eligible_quote_row_coverage'),
         )
-        print(json.dumps({'supervisor': 'PASS', 'lane': lane, 'trade_date': trade_date.isoformat(),
-                          'prewarm_fingerprint_sha256': fingerprint,
-                          'prepare_model_network_calls_during_0901': 0}, ensure_ascii=False))
+        print(json.dumps({
+            'supervisor': 'PASS', 'lane': lane, 'trade_date': trade_date.isoformat(),
+            'candidate_source': candidate_source,
+            'prewarm_fingerprint_sha256': fingerprint,
+            'prepare_model_network_calls_during_0901': 0,
+        }, ensure_ascii=False))
         return 0
     except Exception as exc:
         finished = v5.core.now_tw()
@@ -390,11 +474,15 @@ def run(lane: str) -> int:
             'error_type': type(exc).__name__,
             'error': str(exc)[:2000],
         })
-        _write_status(lane, trade_date, 'FAIL_CLOSED_WINDOW_EXHAUSTED', attempts,
-                      formal_buy_count=0, prewarm_fingerprint_sha256=fingerprint,
-                      prepare_model_network_calls_during_0901=0,
-                      last_error=repr(exc),
-                      reason='NO_VALID_SCHEMA5_0901_OBSERVATION_BEFORE_WINDOW_END')
+        _write_status(
+            lane, trade_date, 'FAIL_CLOSED_WINDOW_EXHAUSTED', attempts,
+            formal_buy_count=0,
+            candidate_source=candidate_source,
+            prewarm_fingerprint_sha256=fingerprint,
+            prepare_model_network_calls_during_0901=0,
+            last_error=repr(exc),
+            reason='NO_VALID_SCHEMA5_0901_OBSERVATION_BEFORE_WINDOW_END',
+        )
         return 2
 
 
@@ -414,12 +502,13 @@ def self_test() -> int:
     assert _retry_sleep_seconds(datetime(2026, 10, 21, 7, 50, tzinfo=TZ)) == 60.0
     assert _retry_sleep_seconds(datetime(2026, 10, 21, 8, 50, tzinfo=TZ)) == 20.0
     assert _deadline(datetime(2026, 10, 21).date()).isoformat().startswith('2026-10-21T09:01:59.999999')
+    assert premarket_snapshot.AUTHORITY == 'INFRASTRUCTURE_CACHE_ONLY_NO_SIGNAL_AUTHORITY'
+    assert premarket_snapshot.BUILD_CUTOFF == dtime(9, 0, 45)
 
-    # Synthetic frozen-model check: no network prepare is called after freeze.
     trade_date = datetime(2026, 10, 21).date()
     synthetic = (
         {'status': 'PASS'}, {'status': 'PASS'},
-        {'dxy_5d': 0.0, 'latest_session': '2026-10-20', 'five_sessions_back': '2026-10-13'},
+        {'status': 'PASS', 'dxy_5d': 0.0, 'latest_session': '2026-10-20', 'five_sessions_back': '2026-10-13'},
         'seed', {'sox_1d': -0.01, 'sox_5d': -0.04},
         {'2330': 1.1}, {'2330': 1000.0}, {'2330': '台積電'},
         '2026-10-20', ['2330'], {'status': 'PASS'},
@@ -437,10 +526,13 @@ def self_test() -> int:
 
     print(json.dumps({
         'self_test': 'PASS',
+        'persisted_0630_snapshot_fallback': True,
+        'snapshot_authority': premarket_snapshot.AUTHORITY,
         'prewarm_start_taipei': '08:30:00',
         'preferred_refresh_taipei': '08:50:00',
         'prewarm_hard_stop_taipei': '09:00:45',
         'prewarm_subprocess_hard_timeout': True,
+        'late_runner_can_use_validated_snapshot': True,
         'frozen_prepare_during_0901': True,
         'prepare_model_network_calls_during_0901': 0,
         'late_backfill_forbidden': True,
