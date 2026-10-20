@@ -55,7 +55,19 @@ def main():
         return 2
 
     try:
-        result = premarket(target) if args.mode == 'premarket' else postclose(target)
+        if args.mode == 'premarket':
+            result = premarket(target)
+        else:
+            import hengce_eod_incremental_ingest as eod_inc
+            today = target or now_tw().date()
+            eod = eod_inc.ingest(today)
+            if eod.get('status') == 'SKIP_WEEKEND':
+                result = eod
+            else:
+                elec = append_electronics_day(today) if eod.get('price_status') == 'COMPLETE' else {'status':'PENDING','date':today.isoformat(),'reason':'PRICE_LEG_NOT_COMPLETE'}
+                sox = refresh_sox(today)
+                result = {'system':'HENGCE','module':'POSTCLOSE_DATA_GATE','generated_at_taipei':now_tw().isoformat(),'status':'PASS' if eod.get('three_leg_complete') else 'PARTIAL','eod':eod,'electronics_history_append':elec,'sox':sox,'policy':'ORIGINAL_VESSEL_INCREMENTAL_EOD_NO_WAIT_FOR_MARGIN'}
+                atomic_json(DATA_STATUS,result)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except Exception as e:
