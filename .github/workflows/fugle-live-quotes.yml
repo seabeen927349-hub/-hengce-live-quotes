@@ -6,6 +6,8 @@ name: Hengce live quotes
     branches: [main]
     paths:
       - 'hengce/live_universe.json'
+      - 'hengce/HENGCE_LIVE_QUOTE_TRANSPORT_CONTRACT_v1_0_20261020.json'
+      - 'scripts/hengce_live_quote_transport.py'
       - '.github/workflows/fugle-live-quotes.yml'
   schedule:
     - cron: "*/5 1-4 * * 1-5"
@@ -31,175 +33,26 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Self-test transport hard-lock
+        run: python3 scripts/hengce_live_quote_transport.py --mode self-test
+
       - name: Fetch lifecycle-bound Fugle quotes
-        shell: bash
-        run: |
-          python3 <<'PY'
-          import hashlib, json, os, random, re, time, urllib.error, urllib.request
-          from datetime import datetime, timedelta
-          from pathlib import Path
-          from zoneinfo import ZoneInfo
+        run: python3 scripts/hengce_live_quote_transport.py --mode fetch
 
-          API_KEY = os.environ.get('FUGLE_API_KEY')
-          if not API_KEY:
-              raise SystemExit('FUGLE_API_KEY missing')
-
-          TZ = ZoneInfo('Asia/Taipei')
-          CACHE_TTL_SECONDS = 600
-          TRADE_IDLE_SECONDS = 900
-          UNIVERSE_PATH = Path('hengce/live_universe.json')
-
-          if not UNIVERSE_PATH.exists():
-              raise SystemExit('LIVE_UNIVERSE_MISSING_FAIL_CLOSED')
-
-          raw = UNIVERSE_PATH.read_bytes()
-          universe = json.loads(raw.decode('utf-8'))
-          symbols = [str(x).strip() for x in universe.get('symbols', [])]
-          if not symbols:
-              raise SystemExit('LIVE_UNIVERSE_EMPTY_FAIL_CLOSED')
-          if len(symbols) != len(set(symbols)):
-              raise SystemExit('LIVE_UNIVERSE_DUPLICATE_SYMBOLS')
-          bad = [x for x in symbols if not re.fullmatch(r'[1-9]\d{3}', x)]
-          if bad:
-              raise SystemExit(f'LIVE_UNIVERSE_BAD_SYMBOLS:{bad[:10]}')
-          if int(universe.get('requested_count', len(symbols))) != len(symbols):
-              raise SystemExit('LIVE_UNIVERSE_COUNT_MISMATCH')
-
-          universe_sha = hashlib.sha256(raw).hexdigest()
-          universe_version = universe.get('version')
-          universe_target_date = universe.get('target_date')
-          universe_source_run_id = universe.get('source_run_id')
-          print('HENGCE LIVE UNIVERSE', len(symbols), universe_version, universe_source_run_id)
-
-          BASE = 'https://api.fugle.tw/marketdata/v1.0/stock/intraday/quote/'
-          quote_dir = Path('live/quotes')
-          quote_dir.mkdir(parents=True, exist_ok=True)
-
-          def now_tw(): return datetime.now(TZ)
-          def market_phase(dt):
-              if dt.weekday() >= 5: return 'closed'
-              minute = dt.hour * 60 + dt.minute
-              if minute < 540: return 'preopen'
-              if minute <= 810: return 'open'
-              return 'closed'
-          def parse_ts(v):
-              if v in (None, ''): return None
-              try:
-                  v=float(v)
-                  if v >= 1e14: v/=1_000_000
-                  elif v >= 1e11: v/=1_000
-                  return datetime.fromtimestamp(v, TZ)
-              except Exception: return None
-          def age(now, dt): return None if dt is None else max(0, int((now-dt).total_seconds()))
-          def level(v): return v[0] if isinstance(v,list) and v and isinstance(v[0],dict) else {}
-          def load_previous(symbol):
-              p=quote_dir/f'{symbol}.json'
-              if not p.exists(): return None
-              try: return json.loads(p.read_text(encoding='utf-8'))
-              except Exception: return None
-          def fetch(symbol):
-              req=urllib.request.Request(BASE+symbol,headers={
-                  'X-API-KEY':API_KEY,'Accept':'application/json','User-Agent':'HENGCE-LIVE/2.1-LIFECYCLE-UNION'})
-              for attempt in range(4):
-                  try:
-                      with urllib.request.urlopen(req,timeout=15) as r: return json.load(r)
-                  except urllib.error.HTTPError as e:
-                      if e.code in (401,403): raise RuntimeError(f'AUTH_OR_PLAN_HTTP_{e.code}')
-                      if e.code==429 and attempt==3: raise RuntimeError('RATE_LIMIT_HTTP_429')
-                      if 500<=e.code<=599 and attempt==3: raise RuntimeError(f'SERVER_HTTP_{e.code}')
-                      if e.code not in (429,) and not 500<=e.code<=599: raise
-                  except Exception:
-                      if attempt==3: raise
-                  time.sleep((2**attempt)+random.uniform(0.2,0.8))
-
-          snap=now_tw(); snapshot_id=snap.strftime('%Y%m%dT%H%M%S%z'); expires=snap+timedelta(seconds=CACHE_TTL_SECONDS)
-          records=[]; failures=[]; successful=0
-
-          for symbol in symbols:
-              try:
-                  row=fetch(symbol)
-                  if not isinstance(row,dict): raise RuntimeError('INVALID_RESPONSE')
-                  if str(row.get('symbol'))!=symbol: raise RuntimeError('SYMBOL_MISMATCH')
-                  name=row.get('name')
-                  if not name: raise RuntimeError('NAME_MISSING')
-                  total=row.get('total') or {}; last=row.get('lastTrade') or {}; trial=row.get('lastTrial') or {}; halt=row.get('tradingHalt') or {}
-                  bid=level(row.get('bids')); ask=level(row.get('asks'))
-                  qt=parse_ts(row.get('lastUpdated')); tt=parse_ts(last.get('time'))
-                  price=last.get('price'); prev=row.get('previousClose')
-                  chg=pct=None
-                  if price is not None and prev not in (None,0):
-                      chg=round(float(price)-float(prev),4); pct=round((float(price)/float(prev)-1)*100,4)
-                  qdate=row.get('date'); is_trial=bool(row.get('isTrial',False))
-                  rec={
-                      'schema_version':2,'snapshot_id':snapshot_id,'symbol':symbol,'company_name':name,
-                      'price':price,'previous_close':prev,'reference_price':row.get('referencePrice'),
-                      'open':row.get('openPrice'),'high':row.get('highPrice'),'low':row.get('lowPrice'),'avg_price':row.get('avgPrice'),
-                      'change':chg,'change_percent':pct,'volume':total.get('tradeVolume'),'trade_value':total.get('tradeValue'),
-                      'transactions':total.get('transaction'),'volume_at_bid':total.get('tradeVolumeAtBid'),'volume_at_ask':total.get('tradeVolumeAtAsk'),
-                      'best_bid':bid.get('price'),'best_bid_size':bid.get('size'),'best_ask':ask.get('price'),'best_ask_size':ask.get('size'),
-                      'last_trade_time':tt.isoformat() if tt else None,'trade_age_seconds':age(snap,tt),
-                      'trade_idle_warning': age(snap,tt) is not None and age(snap,tt)>TRADE_IDLE_SECONDS,
-                      'source_last_price':row.get('lastPrice'),'source_last_updated':qt.isoformat() if qt else None,'quote_age_seconds':age(snap,qt),
-                      'is_trial':is_trial,'trial_price':row.get('lastPrice') if is_trial else None,'last_trial_price':trial.get('price'),
-                      'is_halted':bool(halt.get('isHalted',False)),'is_limit_up_price':bool(row.get('isLimitUpPrice',False)),
-                      'is_limit_down_price':bool(row.get('isLimitDownPrice',False)),'is_delayed_open':bool(row.get('isDelayedOpen',False)),
-                      'is_delayed_close':bool(row.get('isDelayedClose',False)),'quote_date':qdate,
-                      'stale_at_publish':qdate!=snap.date().isoformat(),'fetch_ok':True,'fetched_at_taipei':snap.isoformat(),
-                      'cache_expires_at_taipei':expires.isoformat(),'market_phase':market_phase(snap),'source':'Fugle MarketData',
-                      'universe_version':universe_version,'universe_source_run_id':universe_source_run_id}
-                  records.append(rec); successful+=1
-                  (quote_dir/f'{symbol}.json').write_text(json.dumps(rec,ensure_ascii=False,indent=2),encoding='utf-8')
-                  print('OK',symbol,name,price)
-              except Exception as e:
-                  err=str(e); failures.append({'symbol':symbol,'error':err})
-                  old=load_previous(symbol)
-                  if old:
-                      old['fetch_ok']=False; old['stale_at_publish']=True; old['fetch_error']=err; old['last_fetch_attempt_taipei']=snap.isoformat(); records.append(old)
-                  print('FAIL',symbol,err)
-              time.sleep(0.45)
-
-          if successful==0: raise SystemExit('ALL_REQUESTS_FAILED')
-          payload={
-              'schema_version':2,'service':'HENGCE LIVE QUOTES','snapshot_id':snapshot_id,
-              'generated_at_taipei':snap.isoformat(),'cache_expires_at_taipei':expires.isoformat(),'cache_ttl_seconds':CACHE_TTL_SECONDS,
-              'market_phase':market_phase(snap),'universe_policy':'DAILY_ACTION_BOARD_ROWS_HARD_BIND','universe_version':universe_version,
-              'universe_target_date':universe_target_date,'universe_source_run_id':universe_source_run_id,'universe_sha256':universe_sha,
-              'requested_count':len(symbols),'success_count':successful,'failure_count':len(failures),
-              'stale_count':sum(bool(x.get('stale_at_publish')) for x in records),'trial_count':sum(bool(x.get('is_trial')) for x in records),
-              'halted_count':sum(bool(x.get('is_halted')) for x in records),'failures':failures,'data':records}
-          status={k:v for k,v in payload.items() if k!='data'}; status['healthy']=successful>0
-          Path('latest.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
-          Path('live/active.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
-          Path('live/status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
-          print('HENGCE SNAPSHOT OK',successful,'/',len(symbols))
-          PY
-
-      - name: Validate lifecycle hard-bind
-        shell: bash
-        run: |
-          python3 <<'PY'
-          import json
-          from pathlib import Path
-          latest=json.loads(Path('latest.json').read_text(encoding='utf-8'))
-          universe=json.loads(Path('hengce/live_universe.json').read_text(encoding='utf-8'))
-          expected=[str(x) for x in universe.get('symbols',[])]
-          actual=[str(x.get('symbol')) for x in latest.get('data',[])]
-          failed={str(x.get('symbol')) for x in latest.get('failures',[])}
-          if latest.get('requested_count')!=len(expected): raise SystemExit('requested_count mismatch')
-          if latest.get('universe_source_run_id')!=universe.get('source_run_id'): raise SystemExit('universe source run mismatch')
-          if '2033' not in expected or '6415' not in expected: raise SystemExit('continuity/reentry regression symbol absent')
-          silent=[x for x in expected if x not in actual and x not in failed]
-          if silent: raise SystemExit(f'silent missing symbols:{silent[:10]}')
-          print('HENGCE LIVE LIFECYCLE HARD-BIND VERIFIED',latest.get('requested_count'),latest.get('success_count'),latest.get('failure_count'))
-          PY
+      - name: Validate transport provenance and resilience
+        run: python3 scripts/hengce_live_quote_transport.py --mode validate
 
       - name: Commit live snapshot
         shell: bash
         run: |
+          set -euo pipefail
           git config user.name 'hengce-live-bot'
           git config user.email 'hengce-live-bot@users.noreply.github.com'
           git add latest.json live/
           if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "HENGCE live ${TS} lifecycle-union"
-          if ! git push origin HEAD:main; then git pull --rebase origin main; git push origin HEAD:main; fi
+          git commit -m "HENGCE live ${TS} transport-hard-lock"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
