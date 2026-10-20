@@ -3,12 +3,12 @@ from __future__ import annotations
 
 from pathlib import Path
 import importlib
+import inspect
 
 ROOT = Path(__file__).resolve().parents[1]
 PRIMARY = ROOT / '.github/workflows/hengce-q017-primary-observer.yml'
 BACKUP = ROOT / '.github/workflows/hengce-q017-backup-observer.yml'
 SUPERVISOR = ROOT / 'scripts/hengce_q017_observer_supervisor_v1.py'
-V5 = ROOT / 'scripts/hengce_q017_observation_lock_v5.py'
 V4 = ROOT / 'scripts/hengce_q017_decision_lock_v4.py'
 
 
@@ -24,8 +24,7 @@ def main():
     p = PRIMARY.read_text(encoding='utf-8')
     b = BACKUP.read_text(encoding='utf-8')
     s = SUPERVISOR.read_text(encoding='utf-8')
-    v5 = V5.read_text(encoding='utf-8')
-    v4 = V4.read_text(encoding='utf-8')
+    v4_text = V4.read_text(encoding='utf-8')
 
     # Independent early-start observers. UTC schedules map to Taipei 07:45/08:15.
     must(p, "cron: '45 23 * * 0-4'", 'PRIMARY_0745_TAIPEI')
@@ -67,21 +66,36 @@ def main():
     # MIS transport is bounded tightly enough that one hung batch cannot consume the full minute.
     must(s, 'CONNECT_TIMEOUT_SECONDS = 2.5', 'MIS_CONNECT_TIMEOUT')
     must(s, 'READ_TIMEOUT_SECONDS = 6.0', 'MIS_READ_TIMEOUT')
-    must(v4, 'BATCH_SIZE=40; WORKERS=10; RETRY_SLEEP_SECONDS=1.0', 'QUOTE_PARALLELISM_RETRY')
 
-    # Formal timing, 100% coverage and immutable-after-validation remain core schema-v5 policy.
-    must(v5, "OBSERVATION_SCHEMA_VERSION=5", 'SCHEMA5')
-    must(v5, "'provider_coverage_required':1.0", 'COVERAGE_REQUIRED_100PCT')
-    must(v5, 'validate_observation(out)', 'VALIDATE_BEFORE_CANONICAL')
-    must(v5, 'write_once(p,out)', 'WRITE_ONCE_CANONICAL')
-    assert v5.index('validate_observation(out)') < v5.index('write_once(p,out)'), 'WRITE_MUST_FOLLOW_VALIDATION'
-    must(v4, 'target=datetime.combine(today,dtime(9,1,5),tzinfo=TZ)', 'CAPTURE_TARGET_090105')
-    must(v4, 'end=datetime.combine(today,dtime(9,1,59,999999),tzinfo=TZ)', 'CAPTURE_END_090159999999')
-    must(v4, "coverage==1.0", 'QUOTE_100PCT_ACCEPTANCE')
-    must(v4, "time.sleep(min(RETRY_SLEEP_SECONDS,max(0,(end-core.now_tw()).total_seconds())))", 'SAME_MINUTE_RETRY')
-
-    # Import-time supervisor self-test validates executable constants/frozen-model behavior.
+    # Import executable modules for semantic checks instead of formatting-sensitive strings.
+    v5 = importlib.import_module('hengce_q017_observation_lock_v5')
+    v4 = importlib.import_module('hengce_q017_decision_lock_v4')
     sup = importlib.import_module('hengce_q017_observer_supervisor_v1')
+
+    assert v4.BATCH_SIZE == 40, 'BATCH_SIZE_DRIFT'
+    assert v4.WORKERS == 10, 'WORKERS_DRIFT'
+    assert v4.RETRY_SLEEP_SECONDS == 1.0, 'RETRY_SLEEP_DRIFT'
+    assert v4.MIN_PROVIDER_COVERAGE == 1.0, 'V4_COVERAGE_DRIFT'
+
+    # Formal schema, universe and immutable-after-validation remain core schema-v5 policy.
+    assert v5.SCHEMA == 5, 'SCHEMA5_DRIFT'
+    assert v5.UNIVERSE_SCOPE == 'TWSE_LISTED_ELECTRONICS_ONLY', 'UNIVERSE_SCOPE_DRIFT'
+    assert v5.UNIVERSE_SOURCE == 'TWSE_MI_INDEX_TYPE_13_ELECTRONICS_HISTORY', 'UNIVERSE_SOURCE_DRIFT'
+    collect_source = inspect.getsource(v5.collect_observation)
+    validate_pos = collect_source.find('validate_observation(out)')
+    write_pos = collect_source.find('write_once(')
+    assert validate_pos >= 0 and write_pos >= 0 and validate_pos < write_pos, 'CANONICAL_WRITE_MUST_FOLLOW_VALIDATION'
+    assert 'provider_coverage_required' in collect_source and '1.0' in collect_source, 'COVERAGE_REQUIRED_100PCT'
+
+    wait_source = inspect.getsource(v4.wait_for_decision_minute)
+    assert 'dtime(9,1,5)' in wait_source.replace(' ', ''), 'CAPTURE_TARGET_090105_DRIFT'
+    assert 'dtime(9,1,59,999999)' in wait_source.replace(' ', ''), 'CAPTURE_END_DRIFT'
+    attempt_source = inspect.getsource(v4.attempt_valid).replace(' ', '')
+    assert 'cov>=1.0' in attempt_source, 'QUOTE_100PCT_ACCEPTANCE_DRIFT'
+    capture_source = inspect.getsource(v4.capture_decision).replace(' ', '')
+    assert 'RETRY_SLEEP_SECONDS' in capture_source and 'end-core.now_tw()' in capture_source, 'SAME_MINUTE_RETRY_DRIFT'
+
+    # Executable supervisor constants/frozen-model behavior.
     assert sup.PREWARM_START.hour == 8 and sup.PREWARM_START.minute == 30
     assert sup.PREFERRED_REFRESH.hour == 8 and sup.PREFERRED_REFRESH.minute == 50
     assert sup.PREWARM_HARD_STOP.hour == 9 and sup.PREWARM_HARD_STOP.minute == 0 and sup.PREWARM_HARD_STOP.second == 45
