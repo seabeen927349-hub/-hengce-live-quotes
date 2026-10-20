@@ -98,6 +98,8 @@ def main():
     must(s2, 'macro.load_valid_cache(trade_date, verify_files=True)', 'V2_MACRO_CACHE_VALIDATE')
     must(s2, 'cache_first_prepared_model', 'V2_CACHE_FIRST')
     must(s2, 'v1.prewarm_and_freeze', 'V2_BOUNDED_V1_FALLBACK')
+    must_not(s2, 'prepared, fingerprint = v1.prewarm_and_freeze', 'V2_OLD_TWO_VALUE_FALLBACK_UNPACK_FORBIDDEN')
+    must(s2, 'prepared, fingerprint, _ = v1.prewarm_and_freeze', 'V2_THREE_VALUE_FALLBACK_CONTRACT')
     must(s2, "'macro_network_calls_during_0901': 0", 'V2_NO_MACRO_NETWORK_0901')
     must(s2, "'prepare_model_network_calls_during_0901': 0", 'V2_NO_PREPARE_NETWORK_0901')
 

@@ -132,7 +132,7 @@ def cache_first_prepared_model(lane, trade_date, attempts):
             macro_cache_fallback_used=True,
             last_error=repr(exc),
         )
-        prepared, fingerprint = v1.prewarm_and_freeze(lane, trade_date, attempts)
+        prepared, fingerprint, _ = v1.prewarm_and_freeze(lane, trade_date, attempts)
         return prepared, fingerprint, None
 
 

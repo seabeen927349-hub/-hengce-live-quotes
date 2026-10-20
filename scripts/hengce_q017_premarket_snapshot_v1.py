@@ -251,7 +251,11 @@ def validate_snapshot(payload, trade_date):
         return False, 'SNAPSHOT_SCHEMA_INVALID'
     if payload.get('module') != 'Q017_PREMARKET_MODEL_SNAPSHOT':
         return False, 'SNAPSHOT_MODULE_INVALID'
-    if payload.get('authority') != AUTHORITY or int(payload.get('formal_buy_count') or -1) != 0:
+    try:
+        formal_buy_count = int(payload['formal_buy_count'])
+    except (KeyError, TypeError, ValueError):
+        return False, 'SNAPSHOT_AUTHORITY_INVALID'
+    if payload.get('authority') != AUTHORITY or formal_buy_count != 0:
         return False, 'SNAPSHOT_AUTHORITY_INVALID'
     if payload.get('trade_date') != trade_date.isoformat():
         return False, 'SNAPSHOT_TRADE_DATE_MISMATCH'
