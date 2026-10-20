@@ -15,13 +15,14 @@ on:
       - 'scripts/hengce_q017_recovery_compute_v5.py'
       - '.github/workflows/hengce-q017-backup-observer.yml'
   schedule:
-    # Asia/Taipei 08:54. Start early and wait for the causal 09:01 minute.
-    - cron: '54 0 * * 1-5'
+    # Asia/Taipei 08:15. Start well before 09:01 and wait inside the observer.
+    # GitHub scheduled Actions can start late; this buffer is intentional.
+    - cron: '15 0 * * 1-5'
 
 permissions:
   contents: write
 
-# Deliberately independent from the main command-center concurrency group.
+# Deliberately independent from the primary and command-center concurrency groups.
 concurrency:
   group: hengce-q017-backup-observer
   cancel-in-progress: false
@@ -29,7 +30,7 @@ concurrency:
 jobs:
   backup-observer:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,24 +61,44 @@ jobs:
           python scripts/hengce_q017_recovery_compute_v5.py --mode self-test
 
       - name: Capture independent 09:01 backup observation
+        id: backup_observe
         if: steps.mode.outputs.mode == 'observe'
+        continue-on-error: true
         run: python scripts/hengce_q017_backup_observer_v5.py --mode observe
 
-      - name: Persist backup evidence only
-        if: steps.mode.outputs.mode == 'observe'
+      - name: Persist backup evidence or failure diagnostics
+        if: always() && steps.mode.outputs.mode == 'observe'
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'hengce-backup-observer-bot'
           git config user.email 'hengce-backup-observer-bot@users.noreply.github.com'
-          git add hengce/q017_radar/backup_observations/ hengce/q017_radar/backup_observation_history/ hengce/q017_radar/backup_observation_latest.json hengce/q017_radar/backup_observation_status.json hengce/q017_radar/backup_observation_attempts/ hengce/q017_radar/backup_observation_attempt_latest.json || true
+          git add \
+            hengce/q017_radar/backup_observations/ \
+            hengce/q017_radar/backup_observation_history/ \
+            hengce/q017_radar/backup_observation_latest.json \
+            hengce/q017_radar/backup_observation_status.json \
+            hengce/q017_radar/backup_observation_attempts/ \
+            hengce/q017_radar/backup_observation_attempt_latest.json || true
           if git diff --cached --quiet; then
-            echo 'Backup observation already persisted or no valid evidence.'
-            exit 0
+            echo 'No backup evidence/diagnostic changes to persist.'
+          else
+            TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            git commit -m "HENGCE Q017 backup 09:01 evidence/status ${TS}"
+            if ! git push origin HEAD:main; then
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
           fi
-          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "HENGCE Q017 backup 09:01 observation ${TS}"
-          if ! git push origin HEAD:main; then
-            git pull --rebase origin main
-            git push origin HEAD:main
+
+      - name: Backup observer health
+        if: always() && steps.mode.outputs.mode == 'observe'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "backup_observe_outcome=${{ steps.backup_observe.outcome }}"
+          if [[ '${{ steps.backup_observe.outcome }}' != 'success' ]]; then
+            echo 'BACKUP_0901_OBSERVATION_FAIL_CLOSED; diagnostics were persisted when available.'
+            exit 2
           fi
+          echo 'BACKUP_0901_OBSERVATION_PASS'
