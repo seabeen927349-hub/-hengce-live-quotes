@@ -1,0 +1,124 @@
+name: HENGCE Q017 Morning Macro Cache
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'refresh | validate | self-test'
+        required: false
+        default: 'self-test'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_q017_macro_cache_v1.py'
+      - 'scripts/hengce_q017_decision_lock.py'
+      - 'scripts/hengce_daily_command_center_core_legacy.py'
+      - '.github/workflows/hengce-q017-macro-cache.yml'
+  schedule:
+    # Asia/Taipei 05:45, 06:15, 06:45, 07:15, 07:35 on weekdays.
+    # Multiple early attempts absorb GitHub scheduler latency without touching 09:01.
+    - cron: '45 21 * * 0-4'
+    - cron: '15 22 * * 0-4'
+    - cron: '45 22 * * 0-4'
+    - cron: '15 23 * * 0-4'
+    - cron: '35 23 * * 0-4'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-q017-morning-macro-cache
+  cancel-in-progress: false
+
+jobs:
+  macro-cache:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime dependencies with retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 1 2 3; do
+            python -m pip install --disable-pip-version-check requests openpyxl && exit 0
+            echo "pip install attempt ${n} failed"
+            sleep $((n*5))
+          done
+          exit 2
+
+      - name: Resolve mode
+        id: mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          MODE='self-test'
+          if [[ '${{ github.event_name }}' == 'schedule' ]]; then MODE='refresh'; fi
+          if [[ '${{ github.event_name }}' == 'workflow_dispatch' ]]; then MODE='${{ inputs.mode }}'; fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Sync latest repository state before refresh
+        if: steps.mode.outputs.mode == 'refresh'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+
+      - name: Self-test macro cache contract
+        if: steps.mode.outputs.mode == 'self-test'
+        run: python scripts/hengce_q017_macro_cache_v1.py --mode self-test
+
+      - name: Refresh SOX and DXY morning cache
+        id: refresh
+        if: steps.mode.outputs.mode == 'refresh'
+        continue-on-error: true
+        run: python scripts/hengce_q017_macro_cache_v1.py --mode refresh
+
+      - name: Validate morning cache
+        id: validate
+        if: steps.mode.outputs.mode == 'validate' || (steps.mode.outputs.mode == 'refresh' && steps.refresh.outcome == 'success')
+        continue-on-error: true
+        run: python scripts/hengce_q017_macro_cache_v1.py --mode validate
+
+      - name: Persist macro cache and source files
+        if: always() && steps.mode.outputs.mode == 'refresh'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-macro-cache-bot'
+          git config user.email 'hengce-macro-cache-bot@users.noreply.github.com'
+          git add \
+            hengce/q017_radar/data/sox_2026.csv \
+            hengce/q017_radar/data/sox_status.json \
+            hengce/q017_radar/data/dxy_2026.csv \
+            hengce/q017_radar/data/dxy_status.json \
+            hengce/q017_radar/data/macro_cache/ || true
+          if git diff --cached --quiet; then
+            echo 'No macro cache changes to persist.'
+          else
+            TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            git commit -m "HENGCE Q017 morning macro cache ${TS}"
+            if ! git push origin HEAD:main; then
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
+
+      - name: Macro cache health
+        if: always() && steps.mode.outputs.mode == 'refresh'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "refresh=${{ steps.refresh.outcome }} validate=${{ steps.validate.outcome }}"
+          if [[ '${{ steps.refresh.outcome }}' != 'success' || '${{ steps.validate.outcome }}' != 'success' ]]; then
+            echo 'Q017_MORNING_MACRO_CACHE_FAIL; primary/backup may still use bounded fallback.'
+            exit 2
+          fi
+          echo 'Q017_MORNING_MACRO_CACHE_PASS'
