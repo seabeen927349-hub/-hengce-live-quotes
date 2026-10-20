@@ -7,6 +7,7 @@ name: Hengce live quotes
     paths:
       - 'hengce/live_universe.json'
       - 'hengce/HENGCE_LIVE_QUOTE_TRANSPORT_CONTRACT_v1_0_20261020.json'
+      - 'hengce/live_market_lifecycle.json'
       - 'scripts/hengce_live_quote_transport.py'
       - '.github/workflows/fugle-live-quotes.yml'
   schedule:
