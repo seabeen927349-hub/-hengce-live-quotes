@@ -2,7 +2,7 @@
   "schema_version": 2,
   "system": "HENGCE",
   "module": "HENGCE_DUAL_ENGINE_DISPLAY",
-  "generated_at_taipei": "2026-10-20T09:21:13.402673+08:00",
+  "generated_at_taipei": "2026-10-20T09:22:37.613909+08:00",
   "architecture": "DUAL_ENGINE",
   "rankings_separate": true,
   "mixed_ranking_forbidden": true,
@@ -24,7 +24,7 @@
   },
   "e2": {
     "engine": "E2_PROFIT_MAX",
-    "status": "ON",
+    "status": "HOLDING",
     "binding_status": "PASS",
     "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
     "signal_asof": "2026-10-19",
@@ -60,9 +60,9 @@
       "liq20_turnover_twd": 9255581992.3,
       "signal_close": 735.0
     },
-    "action": "ENTRY_PENDING",
+    "action": "HOLDING",
     "paper_position": {
-      "state": "ENTRY_PENDING",
+      "state": "HOLDING",
       "signal_date": "2026-10-19",
       "ticker": "3026",
       "name": "禾伸堂",
@@ -71,7 +71,12 @@
       "residual": -0.052159336205509395,
       "entry_due": "NEXT_TWSE_SESSION_OPEN",
       "hold_target_intervals": 20,
-      "roundtrip_cost_model": 0.008
+      "roundtrip_cost_model": 0.008,
+      "entry_date": "2026-10-20",
+      "entry_reference_open": 736.0,
+      "entry_reference_source": "FUGLE_OBSERVED_OPEN",
+      "completed_hold_intervals": 0,
+      "display_progress": "D0/20"
     },
     "research_capital_twd": 3000000,
     "capital_authority_twd": 0,
