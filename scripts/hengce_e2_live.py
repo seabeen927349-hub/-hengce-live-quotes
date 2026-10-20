@@ -422,6 +422,17 @@ def build_morning(target):
         state["strict"] = compatibility_strict("NO_FILL", state.get("top1"), "NO_FILL")
         state["position_state"] = {"asof":target.isoformat(),"held":[],"pending":[],"no_fill":[pos],"max_slots":1,"occupied_next_session":0,"free_slots_next_session":1}
         atomic_json(STATE, state)
+    elif pos.get("state") == "IDLE" and execution_override.get("reason") == "PRIOR_NO_FILL_SLOT_RELEASED":
+        # Persist the next-session release. Without this write-back, morning_latest
+        # can say IDLE while state_latest incorrectly remains yesterday's NO_FILL.
+        state["paper_position"] = pos
+        state["engine_status"] = "OFF"
+        state["action"] = "OFF"
+        state["generated_at_taipei"] = core.now_tw().isoformat()
+        state["execution_override"] = execution_override
+        state["strict"] = compatibility_strict("OFF", state.get("top1"), "OFF")
+        state["position_state"] = {"asof":target.isoformat(),"held":[],"pending":[],"no_fill":[],"max_slots":1,"occupied_next_session":0,"free_slots_next_session":1}
+        atomic_json(STATE, state)
     out = {
         "schema_version":SCHEMA,"system":"HENGCE","module":"E2_PROFIT_MAX_MORNING_BRIDGE",
         "trade_date":target.isoformat(),"generated_at_taipei":core.now_tw().isoformat(),"binding_status":"PASS",
