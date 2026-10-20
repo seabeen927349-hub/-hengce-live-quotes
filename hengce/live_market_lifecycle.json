@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_LIVE_MARKET_LIFECYCLE",
+  "role": "OBSERVABILITY_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "authority": {
+    "ranking": false,
+    "signal": false,
+    "capital": false,
+    "broker_execution": false
+  },
+  "policy": "EXPLICIT_OFFICIAL_MARKET_LIFECYCLE_EXCEPTIONS_ONLY; KEEP_HARD_BOUND_SYMBOL_IN_TRANSPORT; CLASSIFY_EXPECTED_INACTIVE_SEPARATELY_FROM_UNEXPECTED_STALE",
+  "entries": [
+    {
+      "symbol": "1516",
+      "name": "川飛",
+      "state": "SUSPENDED_CORPORATE_ACTION",
+      "reason": "CAPITAL_REDUCTION_SHARE_EXCHANGE",
+      "trading_suspended_from": "2026-10-15",
+      "trading_suspended_through": "2026-10-23",
+      "resume_date": "2026-10-27",
+      "source": "TWSE official announcement 11500196392, published 2026-09-30; TWSE capital-reduction resumption table",
+      "source_urls": [
+        "https://www.twse.com.tw/en/announcement/announcement/list.html",
+        "https://www.twse.com.tw/exchangeReport/TWTAUU?response=html"
+      ],
+      "transport_fetch_required": true,
+      "expected_current_session_quote": false,
+      "ranking_authority": false,
+      "signal_authority": false,
+      "capital_authority": false
+    }
+  ]
+}
