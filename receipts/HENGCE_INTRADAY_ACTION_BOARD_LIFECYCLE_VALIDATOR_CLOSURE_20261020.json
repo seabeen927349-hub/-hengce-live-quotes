@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "receipt": "INTRADAY_ACTION_BOARD_LIFECYCLE_VALIDATOR_CLOSURE",
+  "date": "2026-10-20",
+  "status": "PASS_CLOSED",
+  "scope": "INTRADAY_ACTION_BOARD_LIVE_BINDING_VALIDATOR_ONLY",
+  "problem": {
+    "old_behavior": "Any live stale_count > 0 or any quote_date different from trade_date failed the entire live binding.",
+    "conflict": "The repaired LIVE transport intentionally retains stale_count as a backward-compatible source-session-date-mismatch counter. Symbol 1516 is an officially expected inactive corporate-action case with expected_inactive_count=1 and unexpected_stale_count=0.",
+    "risk": "A legitimate expected-inactive symbol could fail the whole intraday action board and prevent safe downstream coverage refresh workflows."
+  },
+  "repair": {
+    "path": "scripts/hengce_intraday_action_board.py",
+    "commit": "cbfa155f8a29b68c970a56dfcc2fa8d363eae152",
+    "lifecycle_aware_validation": true,
+    "legacy_payload_fail_closed_retained": true,
+    "unexpected_stale_nonzero_fail_closed": true,
+    "data_freshness_not_pass_fail_closed": true,
+    "expected_inactive_quote_date_mismatch_allowed_only_when": {
+      "expected_inactive_at_publish": true,
+      "market_lifecycle_expected_inactive": true,
+      "unexpected_stale_at_publish": false,
+      "fetch_ok": true
+    },
+    "expected_inactive_without_executed_price": "LIVE_UNAVAILABLE -> ABSTAIN",
+    "can_upgrade_formal_entry_trigger": false
+  },
+  "workflow_validation": {
+    "workflow": ".github/workflows/hengce-intraday-action-board-test.yml",
+    "run_id": 39371748685,
+    "head_sha": "cbfa155f8a29b68c970a56dfcc2fa8d363eae152",
+    "job": "self-test",
+    "compile": "PASS",
+    "self_test": "PASS",
+    "conclusion": "success"
+  },
+  "authority_isolation": {
+    "changes_v1r": false,
+    "changes_composite": false,
+    "changes_hps": false,
+    "changes_entry_geometry": false,
+    "changes_40td_freeze": false,
+    "can_upgrade_formal_entry_trigger": false,
+    "q017_schema5_core_git_blob_sha": "c2b44d56844fd496445220e6c55b9a031c547c4e",
+    "q017_unchanged": true,
+    "e2_core_git_blob_sha": "ced2331486ef93a15075aaef5c6f6405461c1be4",
+    "e2_unchanged": true
+  },
+  "conclusion": "The stale validator is now compatible with lifecycle-aware LIVE semantics without weakening fail-closed behavior for unexpected stale data. Expected inactive rows no longer poison the entire action-board binding, while a row with no executed price remains individually non-actionable."
+}
