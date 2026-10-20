@@ -1,28 +1,32 @@
 {
   "system": "HENGCE",
   "artifact": "CANONICAL_HIST_MOTHER_PROMOTION_RECEIPT",
-  "version": "v1_20261020_mother_first",
+  "version": "v2_20261020_mother_first_price_institutional",
   "target_date": "2026-10-20",
   "status": "PASS",
   "canonical_store": "ChatGPT Library:/HENGCE_CANONICAL",
   "canonical_mother": "HENGCE_2026_HIST_MOTHER.csv",
   "promoted_legs": [
-    "price"
+    "price",
+    "institutional"
   ],
   "promoted_leg_sha256": {
-    "price": "a373994c0bc1426c8059d61ad143edcf7f6dbefb82dc963e724c0fd9818f9f48"
+    "price": "a373994c0bc1426c8059d61ad143edcf7f6dbefb82dc963e724c0fd9818f9f48",
+    "institutional": "4f0563cc79680f8a80d8f74e2feff5a70132fd5c1eebec3f8dddda3e0e1ac31e"
   },
   "source_rows": {
-    "price": 1088
+    "price": 1088,
+    "institutional": 1079
   },
   "pending_legs": [
-    "institutional",
     "margin"
   ],
   "mother_target_rows": 1088,
+  "mother_target_institutional_matched_rows": 1079,
+  "mother_target_missing_institutional_rows": 9,
   "mother_latest_date": "2026-10-20",
   "mother_rows": 206130,
-  "mother_sha256": "7b83003d2365245791948175f15c64d0ed3ca071e081aa4ed4b41a2323deaf1a",
+  "mother_sha256": "30deed93a3db1918f66b2bf29f90e1e9c5d8b29b59fe12db7d2c94c0a01d47ef",
   "missing_evidence_is_null": true,
   "second_mother": false,
   "model_or_schema_mutated": false
