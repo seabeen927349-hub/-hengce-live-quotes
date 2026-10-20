@@ -30,7 +30,7 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1088,
       "sha256": "a373994c0bc1426c8059d61ad143edcf7f6dbefb82dc963e724c0fd9818f9f48"
     },
@@ -45,5 +45,5 @@
       "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
     }
   ],
-  "updated_at_taipei": "2026-10-20T15:25:10.833807+08:00"
+  "updated_at_taipei": "2026-10-20T15:34:44.563442+08:00"
 }

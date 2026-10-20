@@ -2,46 +2,46 @@
   "schema_version": 2,
   "system": "HENGCE",
   "module": "E2_PROFIT_MAX_STATE",
-  "generated_at_taipei": "2026-10-20T09:22:24.023673+08:00",
-  "signal_asof": "2026-10-19",
+  "generated_at_taipei": "2026-10-20T15:34:51.058024+08:00",
+  "signal_asof": "2026-10-20",
   "engine": "E2_PROFIT_MAX",
   "engine_status": "HOLDING",
   "binding_status": "PASS",
   "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
   "capital_authority_twd": 0,
   "broker_order_execution": false,
-  "market_regime": "PROFIT_MAX_GATE_GO",
+  "market_regime": "PROFIT_MAX_GATE_OFF",
   "local_gate": {
     "go": true,
     "checks": {
       "electronics_m1_lt_0": true,
       "electronics_m5_lte_minus_2pct": true
     },
-    "electronics_m1": -0.017241379310344862,
-    "electronics_m5": -0.0453115343216981
+    "electronics_m1": -0.004273504273504147,
+    "electronics_m5": -0.032786882521379734
   },
   "macro_gate": {
-    "go": true,
+    "go": false,
     "checks": {
-      "sox_1d_lte_0": true,
+      "sox_1d_lte_0": false,
       "sox_5d_lte_minus_3pct": true
     },
-    "sox_session": "2026-10-16",
-    "sox_1d": -0.03833177716245828,
-    "sox_5d": -0.11414930877578389,
+    "sox_session": "2026-10-19",
+    "sox_1d": 0.016077193344715024,
+    "sox_5d": -0.07521951939526039,
     "dxy_used": false
   },
   "top1": {
-    "ticker": "3026",
-    "name": "禾伸堂",
-    "beta60": 2.083939641519657,
-    "stock_r1": -0.0880893300248139,
-    "electronics_m1": -0.017241379310344862,
-    "electronics_m5": -0.0453115343216981,
-    "residual": -0.052159336205509395,
-    "score": 4.801362351369969,
-    "liq20_turnover_twd": 9255581992.3,
-    "signal_close": 735.0
+    "ticker": "8021",
+    "name": "尖點",
+    "beta60": 2.123027219012247,
+    "stock_r1": -0.059615384615384626,
+    "electronics_m1": -0.004273504273504147,
+    "electronics_m5": -0.032786882521379734,
+    "residual": -0.05054261872217016,
+    "score": 4.805611100695378,
+    "liq20_turnover_twd": 3042360923.45,
+    "signal_close": 489.0
   },
   "action": "HOLDING",
   "paper_position": {
@@ -69,9 +69,9 @@
     "watch_count": 0,
     "rows": [
       {
-        "Ticker": 3026,
-        "Name": "禾伸堂",
-        "E2Score": 4.801362351369969,
+        "Ticker": 8021,
+        "Name": "尖點",
+        "E2Score": 4.805611100695378,
         "E2Action": "HOLDING",
         "E2Rank": 1
       }
