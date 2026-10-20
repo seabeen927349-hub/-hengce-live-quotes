@@ -12,6 +12,8 @@ on:
     paths:
       - 'scripts/hengce_e2_live.py'
       - 'scripts/hengce_dual_engine_display.py'
+      - 'scripts/test_hengce_e2_no_fill.py'
+      - 'hengce/e2_live/execution_override.json'
       - 'hengce/E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json'
       - '.github/workflows/hengce-e2-profit-max-live.yml'
   schedule:
@@ -60,6 +62,9 @@ jobs:
       - name: E2 profit-max self-test
         run: python scripts/hengce_e2_live.py --mode self-test --date '${{ steps.date.outputs.target_date }}'
 
+      - name: E2 no-fill execution-state regression
+        run: PYTHONPATH=scripts python scripts/test_hengce_e2_no_fill.py
+
       - name: Refresh E2 profit-max postclose state
         run: python scripts/hengce_e2_live.py --mode postclose --date '${{ steps.date.outputs.target_date }}'
 
@@ -74,19 +79,26 @@ jobs:
           assert x['module']=='E2_PROFIT_MAX_STATE', x
           assert x['engine']=='E2_PROFIT_MAX', x
           assert x['binding_status']=='PASS', x
-          assert x['engine_status'] in {'ON','OFF','HOLDING','EXIT'}, x
+          assert x['engine_status'] in {'ON','OFF','HOLDING','EXIT','NO_FILL'}, x
           assert x['authority']=='VALIDATED_RESEARCH_SIGNAL_DISPLAY', x
           assert x['capital_authority_twd']==0, x
           assert x['broker_order_execution'] is False, x
           assert x['rules']['K']==25.0 and x['rules']['top_n']==1, x
           assert x['rules']['hold_intervals']==20 and x['rules']['dxy_used'] is False, x
+          assert x['rules']['no_fill_policy']=='EXPLICIT_MATCHED_OVERRIDE_RELEASES_NEXT_SESSION_SLOT_NO_SAME_SESSION_HINDSIGHT', x
           assert 'local_gate' in x and 'macro_gate' in x and 'strict' in x and 'position_state' in x, x
+          if x['engine_status']=='NO_FILL':
+              assert x['paper_position']['state']=='NO_FILL', x
+              assert x['paper_position']['slot_released'] is True, x
+              assert x['position_state']['occupied_next_session']==0, x
+              assert x['position_state']['free_slots_next_session']==1, x
           print('PASS E2_PROFIT_MAX_LIVE_DISPLAY', x['signal_asof'], x['engine_status'], x['action'])
           if x.get('top1'):
               t=x['top1']; print('TOP1',t['ticker'],t.get('name',''),'score=',t['score'],'residual=',t['residual'])
           print('LOCAL_GATE',x['local_gate'])
           print('MACRO_GATE',x['macro_gate'])
           print('PAPER_POSITION',x['paper_position'])
+          print('EXECUTION_OVERRIDE',x.get('execution_override'))
           PY
 
       - name: Build unified Q017 plus E2 display
