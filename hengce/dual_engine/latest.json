@@ -1,22 +1,26 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "system": "HENGCE",
   "module": "HENGCE_DUAL_ENGINE_DISPLAY",
-  "generated_at_taipei": "2026-10-19T22:00:38.298028+08:00",
+  "generated_at_taipei": "2026-10-20T08:31:21.350529+08:00",
   "architecture": "DUAL_ENGINE",
   "rankings_separate": true,
+  "mixed_ranking_forbidden": true,
+  "legacy_v3_display_authority": false,
   "q017": {
     "engine": "Q017",
-    "status": "DATA_PENDING",
+    "status": "AWAITING_0901_OBSERVATION",
     "binding_status": "DATA_PENDING",
     "authority": "NO_FORMAL_SIGNAL",
     "formal_authority": false,
     "formal_buy_count": 0,
-    "trade_date": "2026-10-19",
+    "trade_date": "2026-10-20",
     "top3": [],
-    "reason": "FAIL_CLOSED_SCHEMA_TOO_OLD",
+    "reason": "AWAITING_IMMUTABLE_0901_OBSERVATION",
+    "source_trade_date": "2026-10-19",
     "source_module": "Q017_AUTHORITY_GUARD_FAIL_CLOSED",
-    "schema_version": 5
+    "schema_version": 5,
+    "ranking_universe": "TWSE_LISTED_ELECTRONICS_ONLY"
   },
   "e2": {
     "engine": "E2_PROFIT_MAX",
@@ -70,10 +74,11 @@
       "roundtrip_cost_model": 0.008
     },
     "research_capital_twd": 3000000,
+    "capital_authority_twd": 0,
     "broker_order_execution": false,
     "dxy_used": false,
     "source_module": "E2_PROFIT_MAX_STATE",
     "schema_version": 2
   },
-  "display_policy": "ALWAYS_SHOW_Q017_AND_E2_SEPARATELY; NEVER_MIX_RANKINGS"
+  "display_policy": "ALWAYS_SHOW_Q017_AND_E2_SEPARATELY; NEVER_MIX_RANKINGS; NEVER_PROMOTE_STALE_Q017_TO_TODAY"
 }
