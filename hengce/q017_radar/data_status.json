@@ -1,8 +1,9 @@
 {
   "system": "HENGCE",
   "module": "POSTCLOSE_DATA_GATE",
-  "generated_at_taipei": "2026-10-20T16:04:23.996527+08:00",
+  "generated_at_taipei": "2026-10-20T16:19:07.364714+08:00",
   "status": "PARTIAL",
+  "downstream_ready": true,
   "eod": {
     "system": "HENGCE",
     "artifact": "EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST",
@@ -29,6 +30,16 @@
       "margin"
     ],
     "error_legs": [],
+    "mother_status": "COMPLETE",
+    "mother_promotion_required": true,
+    "mother_pending_legs": [],
+    "mother_receipt": "receipts/mother.json",
+    "mother_sha256": "7b83003d2365245791948175f15c64d0ed3ca071e081aa4ed4b41a2323deaf1a",
+    "mother_latest_date": "2026-10-20",
+    "mother_promoted_legs": [
+      "price"
+    ],
+    "downstream_ready": true,
     "three_leg_complete": false,
     "formal_complete_day": false,
     "status": "PARTIAL",
@@ -50,7 +61,7 @@
         "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
       }
     ],
-    "updated_at_taipei": "2026-10-20T16:04:21.820577+08:00"
+    "updated_at_taipei": "2026-10-20T16:19:04.788378+08:00"
   },
   "electronics_history_append": {
     "status": "PASS",
@@ -63,7 +74,7 @@
     "latest_session": "2026-10-19",
     "rows": 200,
     "stale_days": 1,
-    "refreshed_at_taipei": "2026-10-20T16:04:23.995586+08:00"
+    "refreshed_at_taipei": "2026-10-20T16:19:07.363374+08:00"
   },
-  "policy": "ORIGINAL_VESSEL_INCREMENTAL_EOD_NO_WAIT_FOR_MARGIN"
+  "policy": "MOTHER_FIRST_ORIGINAL_VESSEL_INCREMENTAL_EOD_NO_WAIT_FOR_MARGIN"
 }

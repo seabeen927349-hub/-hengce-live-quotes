@@ -4,12 +4,12 @@
   "module": "Q017_DAILY_10D_REVIEW",
   "authority": "PERFORMANCE_REVIEW_ONLY_NO_CAPITAL_AUTHORITY",
   "review_date": "2026-10-19",
-  "generated_at_taipei": "2026-10-20T16:04:25.417320+08:00",
+  "generated_at_taipei": "2026-10-20T16:19:09.171472+08:00",
   "new_formal_selection_cohorts_today": [],
   "active_cohorts": [],
   "closed_d10_today": [],
   "all_active_continue_even_if_next_day_top3_changes": true,
   "same_ticker_reselected_creates_new_independent_cohort": true,
   "hypothetical_receipts_included": false,
-  "ledger_sha256": "44eaab755e022d5d61ee150f41d7da883f0d07a148d5ebc6d130eaa7cc043346"
+  "ledger_sha256": "ccb4417b9cb89bd501d3d61ff526af32d19f3902ac8e00364b8f58c64a755a84"
 }
