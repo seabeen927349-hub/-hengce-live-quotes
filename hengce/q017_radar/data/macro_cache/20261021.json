@@ -3,7 +3,7 @@
   "system": "HENGCE",
   "module": "Q017_MORNING_MACRO_CACHE",
   "trade_date": "2026-10-21",
-  "generated_at_taipei": "2026-10-21T06:39:12.529433+08:00",
+  "generated_at_taipei": "2026-10-21T07:08:58.937261+08:00",
   "status": "PASS",
   "authority": "Q017_PREMARKET_INPUT_CACHE_ONLY_NOT_MARKET_OBSERVATION",
   "causal_policy": "SOX_AND_DXY_COMPLETED_SESSIONS_STRICTLY_BEFORE_TAIWAN_TRADE_DATE",
@@ -13,7 +13,7 @@
     "latest_session": "2026-10-20",
     "rows": 201,
     "stale_days": 1,
-    "refreshed_at_taipei": "2026-10-21T06:39:12.454548+08:00"
+    "refreshed_at_taipei": "2026-10-21T07:08:58.856624+08:00"
   },
   "sox_features": {
     "session": "2026-10-20",
@@ -31,7 +31,7 @@
     "dxy_5d": -0.004403963073969508,
     "rows": 201,
     "stale_days": 1,
-    "refreshed_at_taipei": "2026-10-21T06:39:12.456006+08:00",
+    "refreshed_at_taipei": "2026-10-21T07:08:58.858532+08:00",
     "causal_rule": "completed weekday sessions strictly before Taiwan trade date; weekend/current pseudo-bars excluded"
   },
   "files": {
@@ -45,5 +45,5 @@
     "may_be_prepared_before_market_open": true,
     "cannot_substitute_for_q017_0901_observation": true
   },
-  "cache_sha256": "16ac823f2bf5bfabb76fc415466b8212030a19cbfae2ddab649fe348a9b2aede"
+  "cache_sha256": "0612ddd4ebf1e63af13b53f7189b00a86e50b3a4e844398bc8b37bb9c4328574"
 }
