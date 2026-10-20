@@ -1,64 +1,85 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "system": "HENGCE",
-  "module": "E2_MORNING_EXECUTION_BRIDGE",
-  "trade_date": "2026-10-19",
-  "generated_at_taipei": "2026-10-19T12:23:35.807711+08:00",
+  "module": "E2_PROFIT_MAX_MORNING_BRIDGE",
+  "trade_date": "2026-10-20",
+  "generated_at_taipei": "2026-10-20T09:22:24.024476+08:00",
   "binding_status": "PASS",
-  "source_signal_asof": "2026-10-16",
-  "expected_prior_market_session": "2026-10-16",
-  "latest_complete_eod_date": "2026-10-16",
-  "local_eod_archive_gap": false,
-  "engine_status": "OFF",
-  "strict_cohort_count": 0,
+  "source_signal_asof": "2026-10-19",
+  "engine_status": "HOLDING",
   "new_signal_buy_count": 0,
   "entry_due_count": 0,
   "entry_due": [],
-  "held_from_prior_close": [],
-  "free_slots_before_today_entries": 5,
-  "extension_shadow": {
-    "authority": "E2_EXTENSION_SHADOW_LOCK_20261018.json",
-    "cohort_count": 5,
-    "engine_status": "SHADOW_ONLY",
-    "capital_authorized": false,
-    "rows": [
-      {
-        "Ticker": 4956,
-        "Name": "光鋐",
-        "E2Score": 3,
-        "E2Action": "SHADOW_FAVORABLE",
-        "E2Rank": 1
-      },
-      {
-        "Ticker": 1717,
-        "Name": "長興",
-        "E2Score": 2,
-        "E2Action": "SHADOW_FAVORABLE",
-        "E2Rank": 2
-      },
-      {
-        "Ticker": 3092,
-        "Name": "鴻碩",
-        "E2Score": 2,
-        "E2Action": "SHADOW_FAVORABLE",
-        "E2Rank": 3
-      },
-      {
-        "Ticker": 3714,
-        "Name": "富采",
-        "E2Score": 1,
-        "E2Action": "SHADOW_PASS",
-        "E2Rank": 4
-      },
-      {
-        "Ticker": 3715,
-        "Name": "定穎投控",
-        "E2Score": 0,
-        "E2Action": "SHADOW_PASS",
-        "E2Rank": 5
-      }
-    ]
+  "held_from_prior_close": [
+    {
+      "state": "HOLDING",
+      "signal_date": "2026-10-19",
+      "ticker": "3026",
+      "name": "禾伸堂",
+      "score": 4.801362351369969,
+      "beta60": 2.083939641519657,
+      "residual": -0.052159336205509395,
+      "entry_due": "NEXT_TWSE_SESSION_OPEN",
+      "hold_target_intervals": 20,
+      "roundtrip_cost_model": 0.008,
+      "entry_date": "2026-10-20",
+      "entry_reference_open": 736.0,
+      "entry_reference_source": "FUGLE_OBSERVED_OPEN",
+      "completed_hold_intervals": 0,
+      "display_progress": "D0/20"
+    }
+  ],
+  "paper_position": {
+    "state": "HOLDING",
+    "signal_date": "2026-10-19",
+    "ticker": "3026",
+    "name": "禾伸堂",
+    "score": 4.801362351369969,
+    "beta60": 2.083939641519657,
+    "residual": -0.052159336205509395,
+    "entry_due": "NEXT_TWSE_SESSION_OPEN",
+    "hold_target_intervals": 20,
+    "roundtrip_cost_model": 0.008,
+    "entry_date": "2026-10-20",
+    "entry_reference_open": 736.0,
+    "entry_reference_source": "FUGLE_OBSERVED_OPEN",
+    "completed_hold_intervals": 0,
+    "display_progress": "D0/20"
   },
-  "capital_authority": "STRICT_PENDING_ENTRY_ONLY",
-  "note": "E2 state must match latest known prior market session. A lagging local EOD archive is repairable and has no authority over a separately hash-locked E2 state."
+  "top1": {
+    "ticker": "3026",
+    "name": "禾伸堂",
+    "beta60": 2.083939641519657,
+    "stock_r1": -0.0880893300248139,
+    "electronics_m1": -0.017241379310344862,
+    "electronics_m5": -0.0453115343216981,
+    "residual": -0.052159336205509395,
+    "score": 4.801362351369969,
+    "liq20_turnover_twd": 9255581992.3,
+    "signal_close": 735.0
+  },
+  "local_gate": {
+    "go": true,
+    "checks": {
+      "electronics_m1_lt_0": true,
+      "electronics_m5_lte_minus_2pct": true
+    },
+    "electronics_m1": -0.017241379310344862,
+    "electronics_m5": -0.0453115343216981
+  },
+  "macro_gate": {
+    "go": true,
+    "checks": {
+      "sox_1d_lte_0": true,
+      "sox_5d_lte_minus_3pct": true
+    },
+    "sox_session": "2026-10-16",
+    "sox_1d": -0.03833177716245828,
+    "sox_5d": -0.11414930877578389,
+    "dxy_used": false
+  },
+  "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "note": "Informational/paper state only; no automatic broker order submission."
 }
