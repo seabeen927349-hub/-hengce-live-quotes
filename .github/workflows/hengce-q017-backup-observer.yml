@@ -13,6 +13,7 @@ on:
       - 'scripts/hengce_q017_observation_lock_v5.py'
       - 'scripts/hengce_q017_backup_observer_v5.py'
       - 'scripts/hengce_q017_observer_supervisor_v1.py'
+      - 'scripts/test_hengce_q017_observer_resilience_v1.py'
       - 'scripts/hengce_q017_recovery_compute_v5.py'
       - '.github/workflows/hengce-q017-backup-observer.yml'
   schedule:
@@ -66,6 +67,7 @@ jobs:
           python scripts/hengce_q017_observation_lock_v5.py --mode self-test
           python scripts/hengce_q017_backup_observer_v5.py --mode self-test
           python scripts/hengce_q017_observer_supervisor_v1.py --mode self-test
+          python scripts/test_hengce_q017_observer_resilience_v1.py
           python scripts/hengce_q017_recovery_compute_v5.py --mode self-test
 
       - name: Capture independent 09:01 backup observation through resilient supervisor
