@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "receipt": "LIVE_LIFECYCLE_STALE_CLASSIFICATION_CLOSURE",
+  "date": "2026-10-20",
+  "status": "PASS_CLOSED",
+  "parent_receipt": "receipts/HENGCE_LIVE_TRANSPORT_PROVENANCE_429_REPAIR_20261020.json",
+  "closed_residual": "LIVE_STALE_COUNT_1",
+  "root_cause": {
+    "symbol": "1516",
+    "name": "川飛",
+    "provider_quote_date": "2026-10-15",
+    "observed_on": "2026-10-20",
+    "fetch_ok": true,
+    "price": null,
+    "open": null,
+    "high": null,
+    "low": null,
+    "volume": 0,
+    "classification": "EXPECTED_MARKET_INACTIVITY_NOT_TRANSPORT_FAILURE",
+    "official_reason": "CAPITAL_REDUCTION_SHARE_EXCHANGE",
+    "trading_suspended_from": "2026-10-15",
+    "trading_suspended_through": "2026-10-23",
+    "resume_date": "2026-10-27",
+    "twse_notice": "11500196392"
+  },
+  "official_sources": [
+    "https://www.twse.com.tw/en/announcement/announcement/list.html",
+    "https://www.twse.com.tw/exchangeReport/TWTAUU?response=html"
+  ],
+  "changes": {
+    "market_lifecycle_registry": {
+      "path": "hengce/live_market_lifecycle.json",
+      "commit": "9b343bd40828ba152a67f24b1b06f43dede7c35a",
+      "role": "OBSERVABILITY_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY"
+    },
+    "transport_classifier": {
+      "path": "scripts/hengce_live_quote_transport.py",
+      "commit": "fcad02432c03545d1d5e3d91c83527d2226269c5"
+    },
+    "workflow_trigger": {
+      "path": ".github/workflows/fugle-live-quotes.yml",
+      "commit": "17413f71c5ff4d6c62b37eda6e7bc618573957b6"
+    },
+    "real_session_output_commit": "76675c13e92da6a8952a7370afe8542707cbedac"
+  },
+  "compatibility": {
+    "legacy_stale_count_retained": true,
+    "legacy_stale_count_semantics": "SOURCE_SESSION_DATE_MISMATCH_ONLY_NOT_FETCH_FAILURE",
+    "new_expected_inactive_classification": true,
+    "new_unexpected_stale_classification": true
+  },
+  "real_session_validation": {
+    "snapshot_id": "20261020T123912+0800",
+    "requested_count": 77,
+    "success_count": 77,
+    "failure_count": 0,
+    "transport_health_status": "PASS",
+    "data_freshness_status": "PASS",
+    "fully_healthy": true,
+    "fresh_success_ratio": 1.0,
+    "current_session_quote_ratio": 0.987013,
+    "expected_active_count": 76,
+    "expected_inactive_symbols": ["1516"],
+    "expected_inactive_count": 1,
+    "expected_active_current_session_count": 76,
+    "expected_active_current_session_ratio": 1.0,
+    "source_session_date_mismatch_count": 1,
+    "stale_count": 1,
+    "unexpected_stale_count": 0,
+    "rate_limit_event_count": 0,
+    "terminal_429_count": 0
+  },
+  "workflow_validation": {
+    "run_id": 39370672439,
+    "job": "update",
+    "self_test_transport_hard_lock": "PASS",
+    "fetch_lifecycle_bound_quotes": "PASS",
+    "validate_transport_provenance_and_resilience": "PASS",
+    "commit_live_snapshot": "PASS",
+    "conclusion": "success"
+  },
+  "authority_isolation": {
+    "q017_schema5_core_git_blob_sha_before": "c2b44d56844fd496445220e6c55b9a031c547c4e",
+    "q017_schema5_core_git_blob_sha_after": "c2b44d56844fd496445220e6c55b9a031c547c4e",
+    "q017_unchanged": true,
+    "e2_core_git_blob_sha_before": "ced2331486ef93a15075aaef5c6f6405461c1be4",
+    "e2_core_git_blob_sha_after": "ced2331486ef93a15075aaef5c6f6405461c1be4",
+    "e2_unchanged": true,
+    "lifecycle_ranking_authority": false,
+    "lifecycle_signal_authority": false,
+    "lifecycle_capital_authority": false,
+    "transport_ranking_authority": false,
+    "transport_signal_authority": false,
+    "transport_capital_authority": false,
+    "transport_broker_order_execution": false
+  },
+  "conclusion": "The remaining stale_count=1 was a legitimate suspended corporate-action lifecycle for 1516 and is now explicitly separated from unexpected stale data. All expected-active symbols had current-session data, with Q017 schema5 and E2 frozen cores unchanged."
+}
