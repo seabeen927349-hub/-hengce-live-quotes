@@ -11,12 +11,13 @@ on:
     branches: [main]
     paths:
       - 'scripts/hengce_q017_observation_lock_v5.py'
+      - 'scripts/hengce_q017_observer_supervisor_v1.py'
       - 'scripts/hengce_q017_authority_guard_v5.py'
       - 'scripts/hengce_dual_engine_display.py'
       - '.github/workflows/hengce-q017-primary-observer.yml'
   schedule:
     # Asia/Taipei 07:45 Monday-Friday = UTC 23:45 Sunday-Thursday.
-    # Start far ahead of 09:01 so GitHub scheduler latency cannot normally miss the causal minute.
+    # Start far ahead of 09:01 and remain alive through transient preflight failures.
     - cron: '45 23 * * 0-4'
 
 permissions:
@@ -39,8 +40,16 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install runtime dependencies
-        run: python -m pip install --disable-pip-version-check requests openpyxl
+      - name: Install runtime dependencies with retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 1 2 3; do
+            python -m pip install --disable-pip-version-check requests openpyxl && exit 0
+            echo "pip install attempt ${n} failed"
+            sleep $((n*5))
+          done
+          exit 2
 
       - name: Resolve mode
         id: mode
@@ -52,20 +61,20 @@ jobs:
           if [[ '${{ github.event_name }}' == 'workflow_dispatch' ]]; then MODE='${{ inputs.mode }}'; fi
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"
 
-      - name: Self-test causal observation lane
+      - name: Self-test causal observation and supervisor lanes
         if: steps.mode.outputs.mode == 'self-test'
         run: |
           python scripts/hengce_q017_observation_lock_v5.py --mode self-test
+          python scripts/hengce_q017_observer_supervisor_v1.py --mode self-test
           python scripts/hengce_q017_authority_guard_v5.py --mode self-test
 
-      - name: Capture canonical immutable 09:01 observation
+      - name: Capture canonical immutable 09:01 observation through resilient supervisor
         id: primary_observe
         if: steps.mode.outputs.mode == 'observe'
         continue-on-error: true
-        run: python scripts/hengce_q017_observation_lock_v5.py --mode observe
+        run: python scripts/hengce_q017_observer_supervisor_v1.py --mode observe --lane primary
 
-      - name: Persist canonical evidence before any ranking computation
-        id: persist_observation
+      - name: Persist canonical evidence and supervisor diagnostics before computation
         if: always() && steps.mode.outputs.mode == 'observe'
         shell: bash
         run: |
@@ -78,7 +87,9 @@ jobs:
             hengce/q017_radar/history/ \
             hengce/q017_radar/decision_attempts/ \
             hengce/q017_radar/decision_attempt_latest.json \
-            hengce/q017_radar/latest.json || true
+            hengce/q017_radar/latest.json \
+            hengce/q017_radar/observer_supervisor_primary_status.json \
+            hengce/q017_radar/observer_supervisor_attempts/ || true
           if git diff --cached --quiet; then
             echo 'No primary evidence/diagnostic changes to persist.'
           else
