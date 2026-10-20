@@ -24,6 +24,16 @@
     "margin"
   ],
   "error_legs": [],
+  "mother_status": "COMPLETE",
+  "mother_promotion_required": true,
+  "mother_pending_legs": [],
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "7b83003d2365245791948175f15c64d0ed3ca071e081aa4ed4b41a2323deaf1a",
+  "mother_latest_date": "2026-10-20",
+  "mother_promoted_legs": [
+    "price"
+  ],
+  "downstream_ready": true,
   "three_leg_complete": false,
   "formal_complete_day": false,
   "status": "PARTIAL",
