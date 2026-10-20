@@ -118,6 +118,13 @@ def apply_execution_override(pos: dict, target) -> tuple[dict, dict]:
     signal_date = iso_date(ov.get("signal_date"))
     pos_ticker = str(pos.get("ticker") or "")
     pos_signal_date = iso_date(pos.get("signal_date"))
+    if pos.get("state") == "NO_FILL":
+        # Preserve the historical no-fill on its effective date only. On a later
+        # session the slot is genuinely free; do not let a persistent override
+        # become a permanent lock.
+        if iso_date(pos.get("execution_effective_date")) == target.isoformat():
+            return pos, {"applied": False, "status": status, "reason": "ALREADY_APPLIED_THIS_SESSION"}
+        return {"state": "IDLE"}, {"applied": False, "status": status, "reason": "PRIOR_NO_FILL_SLOT_RELEASED"}
     if pos.get("state") not in ("ENTRY_PENDING", "HOLDING"):
         return pos, {"applied": False, "status": status, "reason": "NO_OPEN_PAPER_POSITION"}
     if ticker != pos_ticker or signal_date != pos_signal_date:
@@ -321,8 +328,11 @@ def build_postclose(target):
     old = load_old_state(); prior_pos = dict(old.get("paper_position") or {"state":"IDLE"})
     prior_pos, execution_override = apply_execution_override(prior_pos, target)
     prior_state = prior_pos.get("state", "IDLE")
-    no_fill_today = prior_state == "NO_FILL"
+    no_fill_today = prior_state == "NO_FILL" and iso_date(prior_pos.get("execution_effective_date")) == target.isoformat()
     if no_fill_today:
+        # Do not permit same-session hindsight replacement. The user may report a
+        # missed fill after observing the session; next-session selection resumes
+        # normally, preserving causal validation.
         pos = prior_pos
         exited_today = False
         can_accept = False
@@ -374,7 +384,7 @@ def build_postclose(target):
                           "max_slots":1,"occupied_next_session":occupied,"free_slots_next_session":1-occupied},
         "locks":{"model":MODEL_LOCK,"display_execution":LOCK,"legacy_revocation":LEGACY_REVOCATION},
         "rules":{"K":K,"top_n":1,"hold_intervals":HOLD_INTERVALS,"cost_roundtrip":0.008,"overlap":"FORBIDDEN","dxy_used":False,
-                 "no_fill_policy":"EXPLICIT_MATCHED_OVERRIDE_RELEASES_SLOT_WITHOUT_MODEL_MUTATION"},
+                 "no_fill_policy":"EXPLICIT_MATCHED_OVERRIDE_RELEASES_NEXT_SESSION_SLOT_NO_SAME_SESSION_HINDSIGHT"},
         "q017_effect":"NONE"
     }
     atomic_json(STATE, out)
