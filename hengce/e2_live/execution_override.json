@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "system": "HENGCE",
+  "module": "E2_EXECUTION_OVERRIDE",
+  "status": "NO_FILL",
+  "ticker": "3026",
+  "name": "禾伸堂",
+  "signal_date": "2026-10-19",
+  "effective_date": "2026-10-20",
+  "reason": "USER_CONFIRMED_NOT_FILLED",
+  "slot_policy": "RELEASE_NEXT_SESSION_NO_SAME_SESSION_HINDSIGHT",
+  "model_signal_preserved": true,
+  "candidate_b_formula_mutated": false,
+  "broker_order_execution": false
+}
