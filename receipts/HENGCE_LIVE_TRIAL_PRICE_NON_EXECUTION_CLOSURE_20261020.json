@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "receipt": "LIVE_TRIAL_PRICE_NON_EXECUTION_CLOSURE",
+  "date": "2026-10-20",
+  "status": "PASS_CLOSED",
+  "scope": "GENERIC_LIVE_QUOTE_TRANSPORT_TRIAL_SEMANTICS_ONLY",
+  "parent_receipts": [
+    "receipts/HENGCE_LIVE_TRANSPORT_PROVENANCE_429_REPAIR_20261020.json",
+    "receipts/HENGCE_LIVE_LIFECYCLE_STALE_CLASSIFICATION_CLOSURE_20261020.json"
+  ],
+  "observed_case": {
+    "symbol": "4943",
+    "name": "康控-KY",
+    "snapshot_id": "20261020T124356+0800",
+    "is_trial": true,
+    "executed_price": 6.95,
+    "executed_last_trade_time": "2026-10-20T12:34:16.797255+08:00",
+    "provider_source_last_price": 6.02,
+    "trial_price": 6.02,
+    "last_trial_price": 6.02,
+    "classification": "TRIAL_PRICE_PRESENT_WITH_PRIOR_EXECUTED_TRADE",
+    "correct_price_source": "LAST_EXECUTED_TRADE_DURING_TRIAL",
+    "executed_price_available": true,
+    "trial_price_non_execution": true,
+    "stale_at_publish": false,
+    "fetch_ok": true
+  },
+  "provider_semantics": {
+    "source": "Fugle MarketData intraday quote semantics",
+    "rule": "Provider lastPrice may reflect trial matching while lastTrade represents the latest executed trade. Trial-only values must never be promoted to executed price.",
+    "guard_policy": "FUGLE_LASTPRICE_MAY_INCLUDE_TRIAL;TRIAL_ONLY_NEVER_PROMOTED_TO_EXECUTED_PRICE"
+  },
+  "changes": {
+    "trial_guard": {
+      "path": "scripts/hengce_live_trial_guard.py",
+      "commit": "ac8a0d2108fdf84e42b9b459f2bdb0adf372b691",
+      "role": "TRANSPORT_TRIAL_PRICE_SEMANTICS_GUARD_NO_AUTHORITY"
+    },
+    "workflow": {
+      "path": ".github/workflows/fugle-live-quotes.yml",
+      "commit": "172cc77008962e6b49b97da4412b347157add001"
+    },
+    "first_real_session_output_commit": "ed28d299ee61f31e3a695cb7dc451b7b908748b3"
+  },
+  "hard_lock": {
+    "trial_price_never_promoted_to_executed_price": true,
+    "trial_with_last_trade": "KEEP_LAST_EXECUTED_TRADE_AS_PRICE; STORE_TRIAL_PRICE_SEPARATELY",
+    "trial_without_last_trade": "PRICE_CHANGE_CHANGE_PERCENT_NULL; TRIAL_PRICE_SEPARATE; EXECUTED_PRICE_AVAILABLE_FALSE",
+    "ranking_authority": false,
+    "signal_authority": false,
+    "capital_authority": false,
+    "broker_order_execution": false,
+    "legacy_v3_rank_authority": false
+  },
+  "workflow_validation": {
+    "run_id": 39371109068,
+    "run_number": 143,
+    "event": "push",
+    "head_sha": "172cc77008962e6b49b97da4412b347157add001",
+    "status": "completed",
+    "conclusion": "success",
+    "job": "update",
+    "steps": {
+      "checkout": "PASS",
+      "self_test_transport_hard_lock": "PASS",
+      "self_test_trial_price_guard": "PASS",
+      "fetch_lifecycle_bound_fugle_quotes": "PASS",
+      "apply_trial_price_non_execution_guard": "PASS",
+      "validate_transport_provenance_and_resilience": "PASS",
+      "validate_trial_price_guard": "PASS",
+      "commit_live_snapshot": "PASS"
+    }
+  },
+  "real_session_validation": {
+    "snapshot_id": "20261020T124356+0800",
+    "requested_count": 77,
+    "success_count": 77,
+    "failure_count": 0,
+    "transport_health_status": "PASS",
+    "data_freshness_status": "PASS",
+    "fully_healthy": true,
+    "fresh_success_ratio": 1.0,
+    "expected_active_count": 76,
+    "expected_inactive_symbols": ["1516"],
+    "expected_active_current_session_ratio": 1.0,
+    "unexpected_stale_count": 0,
+    "trial_count": 1,
+    "trial_with_executed_trade_count": 1,
+    "trial_without_executed_trade_count": 0,
+    "trial_guard_status": "PASS",
+    "rate_limit_event_count": 3,
+    "rate_limit_symbols": ["6934"],
+    "rate_limit_recovered_count": 1,
+    "terminal_429_count": 0
+  },
+  "authority_isolation": {
+    "q017_schema5_core_path": "scripts/hengce_q017_observation_lock_v5.py",
+    "q017_schema5_core_git_blob_sha_before": "c2b44d56844fd496445220e6c55b9a031c547c4e",
+    "q017_schema5_core_git_blob_sha_after": "c2b44d56844fd496445220e6c55b9a031c547c4e",
+    "q017_unchanged": true,
+    "e2_core_path": "scripts/hengce_e2_live.py",
+    "e2_core_git_blob_sha_before": "ced2331486ef93a15075aaef5c6f6405461c1be4",
+    "e2_core_git_blob_sha_after": "ced2331486ef93a15075aaef5c6f6405461c1be4",
+    "e2_unchanged": true,
+    "dual_engine_rankings_separate": true,
+    "mixed_ranking_forbidden": true,
+    "legacy_v3_display_authority": false,
+    "q017_status": "DATA_PENDING",
+    "q017_formal_authority": false,
+    "q017_formal_buy_count": 0,
+    "e2_state": "HOLDING",
+    "e2_ticker": "3026",
+    "e2_entry_reference_open": 736.0,
+    "e2_capital_authority_twd": 0,
+    "e2_broker_order_execution": false
+  },
+  "conclusion": "Trial matching is now explicitly non-execution data at the generic LIVE transport layer. The real-session 4943 case preserved the executed trade price 6.95 while retaining 6.02 only as trial data. The workflow passed end to end, rate-limit recovery remained functional, and Q017 schema5 plus E2 frozen cores were unchanged."
+}
