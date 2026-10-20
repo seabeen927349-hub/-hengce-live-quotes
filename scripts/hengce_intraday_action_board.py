@@ -48,7 +48,6 @@ def _extract_rows(base):
         v = base.get(k)
         if isinstance(v, list):
             return v
-    # last resort: dict keyed by ticker
     out = []
     for k, v in base.items():
         if isinstance(v, dict) and (k.isdigit() or _ticker(v)):
@@ -83,6 +82,27 @@ def _parse_dt(s):
         return None
 
 
+def _has_lifecycle_freshness_contract(live):
+    return any(
+        key in live
+        for key in (
+            "data_freshness_status",
+            "unexpected_stale_count",
+            "expected_inactive_count",
+            "source_session_date_mismatch_count",
+        )
+    )
+
+
+def _row_expected_inactive(row):
+    return (
+        row.get("expected_inactive_at_publish") is True
+        and row.get("market_lifecycle_expected_inactive") is True
+        and row.get("unexpected_stale_at_publish") is False
+        and row.get("fetch_ok") is True
+    )
+
+
 def _validate_live(live, trade_date=None, max_age_seconds=480, now=None):
     if not isinstance(live, dict):
         return False, "LIVE_NOT_OBJECT"
@@ -93,12 +113,29 @@ def _validate_live(live, trade_date=None, max_age_seconds=480, now=None):
     rows = live.get("data")
     if not isinstance(rows, list) or not rows:
         return False, "LIVE_EMPTY"
-    if int(live.get("stale_count", 0) or 0) > 0:
+
+    lifecycle_aware = _has_lifecycle_freshness_contract(live)
+    if lifecycle_aware:
+        if str(live.get("data_freshness_status", "")).upper() not in {"", "PASS"}:
+            return False, "LIVE_DATA_FRESHNESS_NOT_PASS:" + str(live.get("data_freshness_status"))
+        if int(live.get("unexpected_stale_count", 0) or 0) > 0:
+            return False, "LIVE_UNEXPECTED_STALE_NONZERO"
+        declared_expected = int(live.get("expected_inactive_count", 0) or 0)
+        observed_expected = sum(1 for row in rows if row.get("expected_inactive_at_publish") is True)
+        if declared_expected != observed_expected:
+            return False, f"LIVE_EXPECTED_INACTIVE_COUNT_MISMATCH:{declared_expected}!={observed_expected}"
+    elif int(live.get("stale_count", 0) or 0) > 0:
         return False, "LIVE_STALE_COUNT_NONZERO"
+
     if trade_date:
-        qdates = {str(r.get("quote_date")) for r in rows if r.get("quote_date")}
-        if qdates and qdates != {trade_date}:
-            return False, f"LIVE_TRADE_DATE_MISMATCH:{sorted(qdates)}"
+        for row in rows:
+            qdate = row.get("quote_date")
+            if not qdate or str(qdate) == trade_date:
+                continue
+            if lifecycle_aware and _row_expected_inactive(row):
+                continue
+            return False, f"LIVE_TRADE_DATE_MISMATCH:{_ticker(row) or '?'}:{qdate}"
+
     now = now or datetime.now(generated.tzinfo or timezone.utc)
     if generated.tzinfo is None:
         generated = generated.replace(tzinfo=timezone.utc)
@@ -109,7 +146,7 @@ def _validate_live(live, trade_date=None, max_age_seconds=480, now=None):
         return False, "LIVE_FUTURE_TIMESTAMP"
     if age > max_age_seconds:
         return False, f"LIVE_TOO_OLD:{int(age)}s"
-    return True, "PASS"
+    return True, "PASS_LIFECYCLE_AWARE" if lifecycle_aware else "PASS"
 
 
 def _geometry(row):
@@ -148,7 +185,6 @@ def _decision(base_row, proof, policy):
     base_activation = str(_first(base_row, ["ActivationState", "activation_state", "BaseActivationState"], "UNKNOWN"))
     held = _to_bool(_first(base_row, ["PositionHeld", "position_held", "Held", "held"], False))
 
-    # Exit authority always survives context gating.
     if held and proof == "STRUCTURE_INVALIDATED":
         return formal, base_activation, "EXIT_TRIGGERED", "EXIT_ALLOWED", "EXIT_ALL"
 
@@ -161,7 +197,6 @@ def _decision(base_row, proof, policy):
     if proof in bad:
         return formal, base_activation, f"DOWNGRADED_{proof}", f"ABSTAIN_{proof}", "ABSTAIN"
 
-    # Critical invariant: live may never promote a false formal trigger.
     if not formal:
         return formal, base_activation, "NO_PROMOTED_ACTIVATION", "ABSTAIN_NO_PROMOTED_ACTIVATION", "ABSTAIN"
 
@@ -190,6 +225,8 @@ def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
             "LiveHigh": _to_float(lr.get("high")),
             "LiveLow": _to_float(lr.get("low")),
             "LiveAvgPrice": _to_float(lr.get("avg_price")),
+            "LiveExpectedInactive": bool(lr.get("expected_inactive_at_publish")),
+            "LiveLifecycleState": lr.get("market_lifecycle_state"),
             "PriceProof": proof,
             "FormalEntryTrigger": formal,
             "BaseActivationState": base_activation,
@@ -203,6 +240,11 @@ def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
         "ActionLayer": "INTRADAY_ACTION_BOARD",
         "binding_status": binding_status,
         "binding_reason": "PASS" if binding_status == "PASS" else f"{live_reason}|policy={policy}",
+        "LiveValidationReason": live_reason,
+        "LiveLifecycleAwareValidation": _has_lifecycle_freshness_contract(live) if isinstance(live, dict) else False,
+        "LiveDataFreshnessStatus": live.get("data_freshness_status") if isinstance(live, dict) else None,
+        "LiveExpectedInactiveCount": int(live.get("expected_inactive_count", 0) or 0) if isinstance(live, dict) else 0,
+        "LiveUnexpectedStaleCount": int(live.get("unexpected_stale_count", 0) or 0) if isinstance(live, dict) else 0,
         "BaseRunId": _first(base, ["run_id", "RunId", "scan_id", "ScanId"], None) if isinstance(base, dict) else None,
         "LiveSnapshotId": _first(live, ["snapshot_id", "SnapshotId"], None) if isinstance(live, dict) else None,
         "LiveGeneratedAt": _first(live, ["generated_at_taipei", "generated_at"], None) if isinstance(live, dict) else None,
@@ -259,7 +301,45 @@ def _self_test():
     assert m3["AAA"]["FinalAction"] == "ABSTAIN"
     assert m3["CCC"]["FinalAction"] == "EXIT_ALL"
 
-    print("SELF_TEST_PASS: 10 assertions")
+    lifecycle_live = {
+        "snapshot_id": "S2",
+        "generated_at_taipei": "2026-10-20T12:39:12+08:00",
+        "stale_count": 1,
+        "source_session_date_mismatch_count": 1,
+        "data_freshness_status": "PASS",
+        "expected_inactive_count": 1,
+        "unexpected_stale_count": 0,
+        "data": [
+            {"symbol": "AAA", "price": 103, "high": 104, "low": 99, "avg_price": 102, "quote_date": "2026-10-20", "fetch_ok": True, "expected_inactive_at_publish": False, "market_lifecycle_expected_inactive": False, "unexpected_stale_at_publish": False},
+            {"symbol": "1516", "price": None, "high": None, "low": None, "avg_price": None, "quote_date": "2026-10-15", "fetch_ok": True, "expected_inactive_at_publish": True, "market_lifecycle_expected_inactive": True, "unexpected_stale_at_publish": False, "market_lifecycle_state": "SUSPENDED_CORPORATE_ACTION"},
+        ],
+    }
+    lifecycle_now = datetime.fromisoformat("2026-10-20T12:40:00+08:00")
+    ok, reason = _validate_live(lifecycle_live, trade_date="2026-10-20", now=lifecycle_now)
+    assert ok is True and reason == "PASS_LIFECYCLE_AWARE"
+
+    base_lifecycle = {"run_id": "TEST_LIFECYCLE", "rows": [{"Ticker": "1516", "FormalEntryTrigger": True, "BreakoutLower": 10, "BreakoutUpper": 11, "NoChase": 12, "InvalidationPrice": 8}]}
+    o4 = build(base_lifecycle, lifecycle_live, {"MarketContextState": "NORMAL", "NewCapitalPolicy": "NORMAL"}, trade_date="2026-10-20", now=lifecycle_now)
+    assert o4["binding_status"] == "PASS"
+    assert o4["rows"][0]["LiveExpectedInactive"] is True
+    assert o4["rows"][0]["PriceProof"] == "LIVE_UNAVAILABLE" and o4["rows"][0]["FinalAction"] == "ABSTAIN"
+
+    bad_lifecycle = json.loads(json.dumps(lifecycle_live))
+    bad_lifecycle["expected_inactive_count"] = 0
+    ok, reason = _validate_live(bad_lifecycle, trade_date="2026-10-20", now=lifecycle_now)
+    assert ok is False and reason.startswith("LIVE_EXPECTED_INACTIVE_COUNT_MISMATCH")
+
+    bad_stale = json.loads(json.dumps(lifecycle_live))
+    bad_stale["expected_inactive_count"] = 0
+    bad_stale["unexpected_stale_count"] = 1
+    bad_stale["data_freshness_status"] = "DEGRADED"
+    bad_stale["data"][1]["expected_inactive_at_publish"] = False
+    bad_stale["data"][1]["market_lifecycle_expected_inactive"] = False
+    bad_stale["data"][1]["unexpected_stale_at_publish"] = True
+    ok, reason = _validate_live(bad_stale, trade_date="2026-10-20", now=lifecycle_now)
+    assert ok is False and reason.startswith("LIVE_DATA_FRESHNESS_NOT_PASS")
+
+    print("SELF_TEST_PASS: lifecycle-aware stale semantics and legacy fail-closed verified")
 
 
 def main():
@@ -273,7 +353,8 @@ def main():
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
     if args.self_test:
-        _self_test(); return 0
+        _self_test()
+        return 0
     for name in ["base", "live", "context", "output"]:
         if not getattr(args, name):
             ap.error(f"--{name.replace('_','-')} is required unless --self-test")
