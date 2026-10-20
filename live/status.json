@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
   "service": "HENGCE LIVE QUOTES",
-  "snapshot_id": "20261020T135107+0800",
-  "generated_at_taipei": "2026-10-20T13:51:07.159989+08:00",
-  "cache_expires_at_taipei": "2026-10-20T14:01:07.159989+08:00",
+  "snapshot_id": "20261020T145841+0800",
+  "generated_at_taipei": "2026-10-20T14:58:41.314227+08:00",
+  "cache_expires_at_taipei": "2026-10-20T15:08:41.314227+08:00",
   "cache_ttl_seconds": 600,
   "market_phase": "closed",
   "transport_role": "QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
@@ -51,7 +51,7 @@
   "terminal_429_count": 0,
   "server_retry_event_count": 0,
   "network_retry_event_count": 0,
-  "total_retry_wait_seconds": 9.552,
+  "total_retry_wait_seconds": 9.667,
   "universe_policy": "DAILY_ACTION_BOARD_ROWS_HARD_BIND",
   "universe_version": "HENGCE_LIVE_UNIVERSE_v1_4_AUS_MICRO_PROBE_LADDER_20261016",
   "universe_target_date": "2026-10-15",
@@ -95,6 +95,8 @@
   "universe_existing_bound_coverage_retained": true,
   "fully_healthy_scope": "TRANSPORT_AND_DATA_FRESHNESS_ONLY",
   "overall_observability_status": "REVIEW_REQUIRED_UNIVERSE_SOURCE_AGE",
+  "universe_authoritative_handoff_id": null,
+  "universe_authoritative_handoff_binding_sha256": null,
   "universe_observability_status": "REVIEW_REQUIRED_UNIVERSE_SOURCE_AGE",
   "healthy": true
 }
