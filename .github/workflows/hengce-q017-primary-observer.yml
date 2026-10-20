@@ -11,15 +11,17 @@ on:
     branches: [main]
     paths:
       - 'scripts/hengce_q017_observation_lock_v5.py'
+      - 'scripts/hengce_q017_macro_cache_v1.py'
       - 'scripts/hengce_q017_premarket_snapshot_v1.py'
       - 'scripts/hengce_q017_observer_supervisor_v1.py'
+      - 'scripts/hengce_q017_observer_supervisor_v2.py'
       - 'scripts/test_hengce_q017_observer_resilience_v1.py'
       - 'scripts/hengce_q017_authority_guard_v5.py'
       - 'scripts/hengce_dual_engine_display.py'
       - '.github/workflows/hengce-q017-primary-observer.yml'
   schedule:
     # Asia/Taipei 07:45 Monday-Friday = UTC 23:45 Sunday-Thursday.
-    # Start far ahead of 09:01 and remain alive through transient preflight failures.
+    # Starts far ahead of 09:01. Normal path reads the already-persisted morning macro cache.
     - cron: '45 23 * * 0-4'
 
 permissions:
@@ -63,20 +65,29 @@ jobs:
           if [[ '${{ github.event_name }}' == 'workflow_dispatch' ]]; then MODE='${{ inputs.mode }}'; fi
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"
 
-      - name: Self-test causal observation and supervisor lanes
+      - name: Self-test causal observation and cache-first supervisor lanes
         if: steps.mode.outputs.mode == 'self-test'
         run: |
           python scripts/hengce_q017_observation_lock_v5.py --mode self-test
+          python scripts/hengce_q017_macro_cache_v1.py --mode self-test
           python scripts/hengce_q017_premarket_snapshot_v1.py --mode self-test
           python scripts/hengce_q017_observer_supervisor_v1.py --mode self-test
+          python scripts/hengce_q017_observer_supervisor_v2.py --mode self-test
           python scripts/test_hengce_q017_observer_resilience_v1.py
           python scripts/hengce_q017_authority_guard_v5.py --mode self-test
 
-      - name: Capture canonical immutable 09:01 observation through resilient supervisor
+      - name: Sync latest persisted morning inputs before observer starts
+        if: steps.mode.outputs.mode == 'observe'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+
+      - name: Capture canonical immutable 09:01 observation through macro-cache-first supervisor
         id: primary_observe
         if: steps.mode.outputs.mode == 'observe'
         continue-on-error: true
-        run: python scripts/hengce_q017_observer_supervisor_v1.py --mode observe --lane primary
+        run: python scripts/hengce_q017_observer_supervisor_v2.py --mode observe --lane primary
 
       - name: Persist canonical evidence and supervisor diagnostics before computation
         if: always() && steps.mode.outputs.mode == 'observe'
