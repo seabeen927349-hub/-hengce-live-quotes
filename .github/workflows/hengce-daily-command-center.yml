@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'self-test | premarket | decision | compute | monitor | postclose'
+        description: 'self-test | premarket | e2-morning | decision | compute | monitor | postclose'
         required: false
         default: 'self-test'
       trade_date:
@@ -42,14 +42,13 @@ on:
   schedule:
     # Asia/Taipei = UTC+8
     - cron: '30 22 * * 0-4'
-    # Start early; collect and persist 09:01 observation first, then compute.
+    # 08:50 Taipei: E2 morning binding only. Q017 capture is owned by dedicated primary/backup observers.
     - cron: '50 0 * * 1-5'
     # Post-lock monitor snapshots; E2 remains bound to prior-close state.
     - cron: '3 1 * * 1-5'
     - cron: '10 1 * * 1-5'
     - cron: '20 1 * * 1-5'
     # Post-close official three-leg ingest + E2 incremental state refresh.
-    # Retry because TWSE official legs may publish at different times.
     - cron: '0 7 * * 1-5'
     - cron: '30 7 * * 1-5'
     - cron: '0 8 * * 1-5'
@@ -93,7 +92,7 @@ jobs:
             H='${{ github.event.schedule }}'
             case "$H" in
               '30 22 * * 0-4') MODE='premarket' ;;
-              '50 0 * * 1-5') MODE='decision' ;;
+              '50 0 * * 1-5') MODE='e2-morning' ;;
               '3 1 * * 1-5'|'10 1 * * 1-5'|'20 1 * * 1-5') MODE='monitor' ;;
               '0 7 * * 1-5'|'30 7 * * 1-5'|'0 8 * * 1-5'|'0 9 * * 1-5') MODE='postclose' ;;
               *) MODE='self-test' ;;
@@ -146,6 +145,7 @@ jobs:
         if: steps.mode.outputs.mode == 'premarket'
         run: python scripts/hengce_daily_command_center.py --mode premarket
 
+      # Manual emergency decision mode remains available, but no schedule maps to it.
       - name: Capture immutable 09:01 Q017 observation only
         id: q017_observe
         if: steps.mode.outputs.mode == 'decision'
@@ -181,7 +181,7 @@ jobs:
 
       - name: Bind E2 prior-close state for morning execution
         id: e2_morning
-        if: always() && (steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
+        if: always() && (steps.mode.outputs.mode == 'e2-morning' || steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
         continue-on-error: true
         run: python scripts/hengce_e2_live.py --mode morning
 
@@ -209,7 +209,7 @@ jobs:
           python scripts/hengce_q017_10d_review_extension.py --mode update
 
       - name: Enforce Q017 schema-v5 observation-bound authority guard
-        if: always() && steps.mode.outputs.mode != 'self-test'
+        if: always() && (steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
         run: python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
 
       - name: Commit command-center outputs
@@ -232,7 +232,7 @@ jobs:
           fi
 
       - name: Final engine health status
-        if: always() && (steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
+        if: always() && (steps.mode.outputs.mode == 'e2-morning' || steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
         shell: bash
         run: |
           set -euo pipefail
