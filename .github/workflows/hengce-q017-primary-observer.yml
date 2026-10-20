@@ -12,6 +12,7 @@ on:
     paths:
       - 'scripts/hengce_q017_observation_lock_v5.py'
       - 'scripts/hengce_q017_observer_supervisor_v1.py'
+      - 'scripts/test_hengce_q017_observer_resilience_v1.py'
       - 'scripts/hengce_q017_authority_guard_v5.py'
       - 'scripts/hengce_dual_engine_display.py'
       - '.github/workflows/hengce-q017-primary-observer.yml'
@@ -66,6 +67,7 @@ jobs:
         run: |
           python scripts/hengce_q017_observation_lock_v5.py --mode self-test
           python scripts/hengce_q017_observer_supervisor_v1.py --mode self-test
+          python scripts/test_hengce_q017_observer_resilience_v1.py
           python scripts/hengce_q017_authority_guard_v5.py --mode self-test
 
       - name: Capture canonical immutable 09:01 observation through resilient supervisor
