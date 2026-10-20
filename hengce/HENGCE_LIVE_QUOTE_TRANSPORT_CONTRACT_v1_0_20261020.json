@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_LIVE_QUOTE_TRANSPORT",
+  "contract_version": "v1.0",
+  "effective_date": "2026-10-20",
+  "role": "QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "authority": {
+    "ranking": false,
+    "signal": false,
+    "capital": false,
+    "broker_execution": false
+  },
+  "universe_source_run_id_semantics": "LINEAGE_ONLY_NOT_AUTHORITY",
+  "legacy_v3_source_label_confers_authority": false,
+  "legacy_v3_source_label_policy": "MAY_APPEAR_AS_HISTORICAL_LINEAGE_LABEL_ONLY",
+  "q017_authority": "UNCHANGED_SCHEMA5_OBSERVATION_BOUND_ONLY",
+  "e2_authority": "UNCHANGED_SEPARATE_ENGINE",
+  "rate_limit_policy": {
+    "max_attempts": 6,
+    "base_spacing_seconds": 0.65,
+    "respect_retry_after": true,
+    "backoff_cap_seconds": 20.0,
+    "terminal_429": "DEGRADED_WITH_STALE_FALLBACK_IF_AVAILABLE"
+  },
+  "compatibility": {
+    "live_payload_schema_version": 2,
+    "healthy_legacy_field_semantics": "TRUE_WHEN_AT_LEAST_ONE_FRESH_REQUEST_SUCCEEDS",
+    "new_health_field": "transport_health_status"
+  }
+}
