@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "receipt": "LIVE_TRANSPORT_PROVENANCE_429_REPAIR",
+  "repair_date": "2026-10-20",
+  "scope": "GENERIC_LIVE_QUOTE_TRANSPORT_ONLY",
+  "status": "PASS",
+  "problem": {
+    "historical_lineage_label": "HENGCE_V3_SCAN_20261015_ab5769b2",
+    "ambiguity": "LIVE transport exposed source_run_id without a machine-verifiable statement that lineage has no ranking, signal, capital, or broker authority.",
+    "observed_before": {
+      "requested_count": 77,
+      "success_count": 75,
+      "failure_count": 2,
+      "terminal_failures": [
+        {"symbol": "6934", "error": "RATE_LIMIT_HTTP_429"},
+        {"symbol": "2897", "error": "RATE_LIMIT_HTTP_429"}
+      ]
+    }
+  },
+  "changes": {
+    "contract": {
+      "path": "hengce/HENGCE_LIVE_QUOTE_TRANSPORT_CONTRACT_v1_0_20261020.json",
+      "commit": "785a7cddc5c746f01b331c43a1a85c75c9614d6e"
+    },
+    "runner": {
+      "path": "scripts/hengce_live_quote_transport.py",
+      "commit": "a7c0f2bd47db62d6d3d750386a1d4fc55e1bdd26"
+    },
+    "workflow": {
+      "path": ".github/workflows/fugle-live-quotes.yml",
+      "commit": "480fa5fa49cdf906d8cf1f9607cdb80c96edad6b"
+    },
+    "first_real_session_output_commit": "cb680c4199b1c66c8867b9d0511c6dc6475c0738"
+  },
+  "authority_hard_lock": {
+    "transport_role": "QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+    "source_run_id_semantics": "LINEAGE_ONLY_NOT_AUTHORITY",
+    "ranking_authority": false,
+    "signal_authority": false,
+    "capital_authority": false,
+    "broker_order_execution": false,
+    "legacy_v3_rank_authority": false
+  },
+  "rate_limit_resilience": {
+    "max_attempts": 6,
+    "base_spacing_seconds": 0.65,
+    "respect_retry_after": true,
+    "backoff_cap_seconds": 20.0,
+    "recovered_vs_terminal_429_telemetry": true,
+    "stale_fallback_on_terminal_failure_if_available": true
+  },
+  "real_session_validation": {
+    "snapshot_id": "20261020T123139+0800",
+    "requested_count": 77,
+    "success_count": 77,
+    "failure_count": 0,
+    "fresh_success_ratio": 1.0,
+    "transport_health_status": "PASS",
+    "rate_limit_event_count": 3,
+    "rate_limit_symbol_count": 1,
+    "rate_limit_symbols": ["6934"],
+    "rate_limit_recovered_count": 1,
+    "terminal_429_count": 0,
+    "request_attempt_count": 80,
+    "total_retry_wait_seconds": 9.532,
+    "stale_count": 1
+  },
+  "isolation_validation": {
+    "q017_schema5_core_path": "scripts/hengce_q017_observation_lock_v5.py",
+    "q017_schema5_core_git_blob_sha": "c2b44d56844fd496445220e6c55b9a031c547c4e",
+    "q017_schema5_core_unchanged": true,
+    "q017_infrastructure_selfverify_status": "PASS",
+    "q017_late_market_backfill_forbidden": true,
+    "q017_ranking_universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "e2_core_path": "scripts/hengce_e2_live.py",
+    "e2_core_git_blob_sha": "ced2331486ef93a15075aaef5c6f6405461c1be4",
+    "e2_core_unchanged": true,
+    "dual_engine_rankings_separate": true,
+    "mixed_ranking_forbidden": true,
+    "legacy_v3_display_authority": false,
+    "q017_formal_authority": false,
+    "q017_formal_buy_count": 0,
+    "e2_state": "HOLDING",
+    "e2_ticker": "3026",
+    "e2_entry_reference_open": 736.0,
+    "e2_capital_authority_twd": 0,
+    "e2_broker_order_execution": false
+  },
+  "residuals": [
+    {
+      "id": "LIVE_STALE_COUNT_1",
+      "severity": "NON_BLOCKING_OBSERVABILITY_REVIEW",
+      "description": "The first repaired live snapshot had 77/77 successful fetches but stale_count=1 because one provider quote_date did not equal the current trade date. This is distinct from an HTTP fetch failure and requires separate classification."
+    },
+    {
+      "id": "HISTORICAL_V3_LINEAGE_LABEL_RETAINED",
+      "severity": "INFORMATIONAL",
+      "description": "The historical HENGCE_V3 source_run_id is intentionally retained for provenance and is hard-locked as lineage-only, with no ranking/signal/capital/broker authority."
+    }
+  ],
+  "conclusion": "Generic LIVE transport provenance ambiguity and observed terminal HTTP 429 failures were repaired without modifying Q017 schema5 authority or the E2 engine. The first live validation recovered all rate-limited requests and completed 77/77 with zero terminal 429 failures."
+}
