@@ -16,6 +16,9 @@ on:
     paths:
       - 'scripts/hengce_daily_command_center.py'
       - 'scripts/hengce_daily_command_center_core_legacy.py'
+      - 'scripts/hengce_eod_incremental_ingest.py'
+      - 'scripts/test_hengce_eod_original_vessel_incremental.py'
+      - 'hengce/HENGCE_THREE_LEG_ORIGINAL_VESSEL_INCREMENTAL_POLICY_LOCK_v1_0_20261020.json'
       - 'scripts/hengce_q017_decision_lock.py'
       - 'scripts/hengce_q017_authority_guard.py'
       - 'scripts/hengce_q017_decision_lock_v4.py'
@@ -122,6 +125,9 @@ jobs:
             DATE_ARG='--date ${{ inputs.trade_date }}'
           fi
           echo "date_arg=$DATE_ARG" >> "$GITHUB_OUTPUT"
+          TARGET_DATE='${{ inputs.trade_date }}'
+          if [[ -z "$TARGET_DATE" ]]; then TARGET_DATE="$(TZ=Asia/Taipei date '+%Y-%m-%d')"; fi
+          echo "trade_date=$TARGET_DATE" >> "$GITHUB_OUTPUT"
 
       - name: Run self-test
         if: steps.mode.outputs.mode == 'self-test'
@@ -129,6 +135,8 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/hengce_daily_command_center.py --mode self-test
+          python scripts/hengce_eod_incremental_ingest.py --mode self-test
+          python scripts/test_hengce_eod_original_vessel_incremental.py
           python scripts/hengce_q017_decision_lock.py --mode self-test
           python scripts/hengce_q017_authority_guard.py --mode self-test
           python scripts/test_hengce_q017_decision_lock.py
@@ -212,15 +220,32 @@ jobs:
         run: python scripts/hengce_q017_observation_lock_v5.py --mode monitor ${{ steps.target.outputs.date_arg }}
 
       - name: Run post-close official ingest and history append
+        id: postclose_ingest
         if: steps.mode.outputs.mode == 'postclose'
-        run: python scripts/hengce_daily_command_center.py --mode postclose
+        run: python scripts/hengce_daily_command_center.py --mode postclose ${{ steps.target.outputs.date_arg }}
+
+      - name: Resolve post-close price readiness
+        id: postclose_ready
+        if: always() && steps.mode.outputs.mode == 'postclose'
+        shell: bash
+        run: |
+          set -euo pipefail
+          DS="$(echo '${{ steps.target.outputs.trade_date }}' | tr -d '-')"
+          FILE="eod/${DS}/status.json"
+          python - "$FILE" >> "$GITHUB_OUTPUT" <<'PY'
+          import json, pathlib, sys
+          p=pathlib.Path(sys.argv[1])
+          x=json.loads(p.read_text()) if p.exists() else {}
+          print('price_complete=' + ('true' if x.get('price_status')=='COMPLETE' else 'false'))
+          print('three_leg_complete=' + ('true' if x.get('three_leg_complete') is True else 'false'))
+          PY
 
       - name: Refresh E2 incremental post-close state
-        if: steps.mode.outputs.mode == 'postclose'
-        run: python scripts/hengce_e2_live.py --mode postclose
+        if: steps.mode.outputs.mode == 'postclose' && steps.postclose_ready.outputs.price_complete == 'true'
+        run: python scripts/hengce_e2_live.py --mode postclose ${{ steps.target.outputs.date_arg }}
 
       - name: Update all active Q017 10-session review cohorts
-        if: steps.mode.outputs.mode == 'postclose'
+        if: steps.mode.outputs.mode == 'postclose' && steps.postclose_ready.outputs.price_complete == 'true'
         shell: bash
         run: |
           set -euo pipefail
