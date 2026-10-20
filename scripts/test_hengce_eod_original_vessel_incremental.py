@@ -33,12 +33,24 @@ def run_case(root, p=PENDING, i=PENDING, m=PENDING):
     with patch.object(core,'ROOT',root),patch.object(core,'get_json',side_effect=fake):
         return inc.ingest(DAY)
 
+def write_mother_receipt(root,status):
+    p=root/'eod/20261020/receipts/mother.json'; p.parent.mkdir(parents=True,exist_ok=True)
+    promoted=list(status['available_legs'])
+    obj={'system':'HENGCE','artifact':'CANONICAL_HIST_MOTHER_PROMOTION_RECEIPT','target_date':ISO,'status':'PASS','promoted_legs':promoted,'promoted_leg_sha256':{x:status[f'{x}_sha256'] for x in promoted},'mother_latest_date':ISO,'mother_sha256':'test-mother-sha','second_mother':False}
+    p.write_text(json.dumps(obj),encoding='utf-8')
+
 def main():
     contract=Path(__file__).resolve().parents[1]/'hengce/HENGCE_THREE_LEG_ORIGINAL_VESSEL_INCREMENTAL_POLICY_LOCK_v1_0_20261020.json'
     c=json.loads(contract.read_text(encoding='utf-8')); assert c['policy']['create_parallel_pipeline'] is False and c['policy']['do_not_wait_for_margin_before_promoting_price_or_institutional'] is True
     with tempfile.TemporaryDirectory() as td:
         r=run_case(Path(td),price()); assert r['status']=='PARTIAL' and r['price_status']=='COMPLETE' and r['institutional_status']=='PENDING' and r['margin_status']=='PENDING'
         assert (Path(td)/'eod/20261020/receipts/price.json').exists()
+        assert r['mother_status']=='PENDING' and r['downstream_ready'] is False
+        root=Path(td); write_mother_receipt(root,r)
+        z=run_case(root,PENDING,PENDING,PENDING)
+        assert z['mother_status']=='COMPLETE' and z['downstream_ready'] is True
+        z=run_case(root,PENDING,inst(),PENDING)
+        assert z['institutional_status']=='COMPLETE' and z['mother_status']=='PENDING' and z['downstream_ready'] is False
     with tempfile.TemporaryDirectory() as td:
         r=run_case(Path(td),price(),inst()); assert set(r['available_legs'])=={'price','institutional'} and r['margin_status']=='PENDING'
     with tempfile.TemporaryDirectory() as td:
@@ -57,5 +69,5 @@ def main():
         try: run_case(Path(td),price(899))
         except RuntimeError as e: assert 'EOD_INTEGRITY_REJECTION' in str(e) and 'ROWS_TOO_SMALL' in str(e)
         else: raise AssertionError('corrupt row count must be rejected')
-    print(json.dumps({'status':'PASS','price_only':True,'price_plus_institutional':True,'price_plus_margin':True,'all_three':True,'idempotent_rerun':True,'wrong_date_rejected':True,'corrupt_row_count_rejected':True,'original_eod_tree_only':True,'second_mother':False,'q017_e2_model_change':False},ensure_ascii=False))
+    print(json.dumps({'status':'PASS','price_only':True,'price_plus_institutional':True,'price_plus_margin':True,'all_three':True,'idempotent_rerun':True,'wrong_date_rejected':True,'corrupt_row_count_rejected':True,'original_eod_tree_only':True,'second_mother':False,'mother_gate':True,'q017_e2_model_change':False},ensure_ascii=False))
 if __name__=='__main__': main()
