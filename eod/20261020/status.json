@@ -1,0 +1,49 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST",
+  "target_date": "2026-10-20",
+  "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
+  "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+  "parallel_eod_tree": false,
+  "second_mother": false,
+  "model_authority_created": false,
+  "price_status": "COMPLETE",
+  "price_date": "2026-10-20",
+  "price_rows": 1088,
+  "price_sha256": "a373994c0bc1426c8059d61ad143edcf7f6dbefb82dc963e724c0fd9818f9f48",
+  "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+  "institutional_status": "PENDING",
+  "institutional_pending_reason": "INST_NOT_READY:很抱歉，沒有符合條件的資料!",
+  "margin_status": "PENDING",
+  "margin_pending_reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
+  "available_legs": [
+    "price"
+  ],
+  "pending_legs": [
+    "institutional",
+    "margin"
+  ],
+  "error_legs": [],
+  "three_leg_complete": false,
+  "formal_complete_day": false,
+  "status": "PARTIAL",
+  "last_run_results": [
+    {
+      "leg": "price",
+      "result": "PROMOTED",
+      "rows": 1088,
+      "sha256": "a373994c0bc1426c8059d61ad143edcf7f6dbefb82dc963e724c0fd9818f9f48"
+    },
+    {
+      "leg": "institutional",
+      "result": "PENDING",
+      "reason": "INST_NOT_READY:很抱歉，沒有符合條件的資料!"
+    },
+    {
+      "leg": "margin",
+      "result": "PENDING",
+      "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
+    }
+  ],
+  "updated_at_taipei": "2026-10-20T15:25:10.833807+08:00"
+}
