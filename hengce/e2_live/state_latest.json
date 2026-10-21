@@ -2,8 +2,8 @@
   "schema_version": 2,
   "system": "HENGCE",
   "module": "E2_PROFIT_MAX_STATE",
-  "generated_at_taipei": "2026-10-21T09:23:54.903641+08:00",
-  "signal_asof": "2026-10-20",
+  "generated_at_taipei": "2026-10-21T15:47:09.861428+08:00",
+  "signal_asof": "2026-10-21",
   "engine": "E2_PROFIT_MAX",
   "engine_status": "OFF",
   "binding_status": "PASS",
@@ -12,36 +12,36 @@
   "broker_order_execution": false,
   "market_regime": "PROFIT_MAX_GATE_OFF",
   "local_gate": {
-    "go": true,
-    "checks": {
-      "electronics_m1_lt_0": true,
-      "electronics_m5_lte_minus_2pct": true
-    },
-    "electronics_m1": -0.004273504273504147,
-    "electronics_m5": -0.032786882521379734
-  },
-  "macro_gate": {
     "go": false,
     "checks": {
-      "sox_1d_lte_0": false,
+      "electronics_m1_lt_0": false,
+      "electronics_m5_lte_minus_2pct": true
+    },
+    "electronics_m1": 0.008605851979345935,
+    "electronics_m5": -0.03471401422754905
+  },
+  "macro_gate": {
+    "go": true,
+    "checks": {
+      "sox_1d_lte_0": true,
       "sox_5d_lte_minus_3pct": true
     },
-    "sox_session": "2026-10-19",
-    "sox_1d": 0.016077193344715024,
-    "sox_5d": -0.07521951939526039,
+    "sox_session": "2026-10-20",
+    "sox_1d": -0.0028746891968092214,
+    "sox_5d": -0.07576363330011182,
     "dxy_used": false
   },
   "top1": {
-    "ticker": "8021",
-    "name": "尖點",
-    "beta60": 2.123027219012247,
-    "stock_r1": -0.059615384615384626,
-    "electronics_m1": -0.004273504273504147,
-    "electronics_m5": -0.032786882521379734,
-    "residual": -0.05054261872217016,
-    "score": 4.805611100695378,
-    "liq20_turnover_twd": 3042360923.45,
-    "signal_close": 489.0
+    "ticker": "2345",
+    "name": "智邦",
+    "beta60": 1.5034362279357074,
+    "stock_r1": -0.07868020304568524,
+    "electronics_m1": 0.008605851979345935,
+    "electronics_m5": -0.03471401422754905,
+    "residual": -0.09161855268368613,
+    "score": 4.947002509327956,
+    "liq20_turnover_twd": 9394384216.25,
+    "signal_close": 1815.0
   },
   "action": "OFF",
   "paper_position": {
@@ -50,7 +50,7 @@
   "execution_override": {
     "applied": false,
     "status": "NO_FILL",
-    "reason": "PRIOR_NO_FILL_SLOT_RELEASED"
+    "reason": "NO_OPEN_PAPER_POSITION"
   },
   "strict": {
     "authority": "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
@@ -60,9 +60,9 @@
     "watch_count": 1,
     "rows": [
       {
-        "Ticker": 8021,
-        "Name": "尖點",
-        "E2Score": 4.805611100695378,
+        "Ticker": 2345,
+        "Name": "智邦",
+        "E2Score": 4.947002509327956,
         "E2Action": "OFF",
         "E2Rank": 1
       }
