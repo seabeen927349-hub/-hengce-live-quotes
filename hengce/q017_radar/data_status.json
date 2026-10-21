@@ -1,35 +1,74 @@
 {
   "system": "HENGCE",
-  "module": "DAILY_DATA_GATE",
-  "generated_at_taipei": "2026-10-21T06:55:30.054470+08:00",
-  "trade_date": "2026-10-21",
-  "status": "PASS",
-  "lane_status": {
-    "q017_inputs": "PASS",
-    "e2_eod_archive": "DATA_PENDING"
+  "module": "POSTCLOSE_DATA_GATE",
+  "generated_at_taipei": "2026-10-21T15:36:45.707911+08:00",
+  "status": "PARTIAL",
+  "downstream_ready": false,
+  "eod": {
+    "system": "HENGCE",
+    "artifact": "EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST",
+    "target_date": "2026-10-21",
+    "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
+    "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+    "parallel_eod_tree": false,
+    "second_mother": false,
+    "model_authority_created": false,
+    "price_status": "COMPLETE",
+    "price_date": "2026-10-21",
+    "price_rows": 1088,
+    "price_sha256": "3b6ff161b39682b988454ec243f277562fed4738a365568651c2f29524946cb9",
+    "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+    "institutional_status": "PENDING",
+    "institutional_pending_reason": "INST_NOT_READY:很抱歉，沒有符合條件的資料!",
+    "margin_status": "PENDING",
+    "margin_pending_reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
+    "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
+    "available_legs": [
+      "price"
+    ],
+    "pending_legs": [
+      "institutional",
+      "margin"
+    ],
+    "error_legs": [],
+    "mother_status": "PENDING",
+    "mother_promotion_required": true,
+    "mother_pending_legs": [
+      "price"
+    ],
+    "downstream_ready": false,
+    "three_leg_complete": false,
+    "formal_complete_day": false,
+    "status": "PARTIAL",
+    "last_run_results": [
+      {
+        "leg": "price",
+        "result": "PROMOTED",
+        "rows": 1088,
+        "sha256": "3b6ff161b39682b988454ec243f277562fed4738a365568651c2f29524946cb9"
+      },
+      {
+        "leg": "institutional",
+        "result": "PENDING",
+        "reason": "INST_NOT_READY:很抱歉，沒有符合條件的資料!"
+      },
+      {
+        "leg": "margin",
+        "result": "PENDING",
+        "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
+      }
+    ],
+    "updated_at_taipei": "2026-10-21T15:36:45.707418+08:00"
   },
-  "required": {
-    "sox": {
-      "status": "PASS",
-      "source": "Nasdaq ExportHistory/SOX",
-      "latest_session": "2026-10-20",
-      "rows": 201,
-      "stale_days": 1,
-      "refreshed_at_taipei": "2026-10-21T06:55:29.874576+08:00"
-    },
-    "latest_eod_date": "20261020",
-    "latest_eod_complete": false,
-    "electronics_history": {
-      "status": "PASS",
-      "source": "LOCAL_INCREMENTAL_HISTORY",
-      "seeded": false
-    },
-    "electronics_history_latest": "2026-10-20"
+  "electronics_history_append": {
+    "status": "PENDING",
+    "date": "2026-10-21",
+    "reason": "MOTHER_NOT_COMPLETE"
   },
   "sox": {
-    "session": "2026-10-20",
-    "sox_1d": -0.0028746891968092214,
-    "sox_5d": -0.07576363330011182
+    "status": "PENDING",
+    "date": "2026-10-21",
+    "reason": "MOTHER_NOT_COMPLETE"
   },
-  "policy": "Q017_AND_E2_DATA_LANES_INDEPENDENT;E2_ARCHIVE_GAP_DOES_NOT_INVALIDATE_CAUSAL_Q017_INPUTS"
+  "policy": "MOTHER_FIRST_ORIGINAL_VESSEL_INCREMENTAL_EOD_NO_WAIT_FOR_MARGIN"
 }
