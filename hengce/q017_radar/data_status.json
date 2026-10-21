@@ -1,89 +1,35 @@
 {
   "system": "HENGCE",
-  "module": "POSTCLOSE_DATA_GATE",
-  "generated_at_taipei": "2026-10-21T23:09:14.522079+08:00",
+  "module": "DAILY_DATA_GATE",
+  "generated_at_taipei": "2026-10-22T06:55:42.792562+08:00",
+  "trade_date": "2026-10-22",
   "status": "PASS",
-  "downstream_ready": true,
-  "eod": {
-    "system": "HENGCE",
-    "artifact": "EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST",
-    "target_date": "2026-10-21",
-    "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
-    "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
-    "parallel_eod_tree": false,
-    "second_mother": false,
-    "model_authority_created": false,
-    "price_status": "COMPLETE",
-    "price_date": "2026-10-21",
-    "price_rows": 1088,
-    "price_sha256": "3b6ff161b39682b988454ec243f277562fed4738a365568651c2f29524946cb9",
-    "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
-    "institutional_status": "COMPLETE",
-    "margin_status": "COMPLETE",
-    "available_legs": [
-      "price",
-      "institutional",
-      "margin"
-    ],
-    "pending_legs": [],
-    "error_legs": [],
-    "mother_status": "COMPLETE",
-    "mother_promotion_required": true,
-    "mother_pending_legs": [],
-    "mother_receipt": "receipts/mother.json",
-    "mother_sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
-    "mother_latest_date": "2026-10-21",
-    "mother_promoted_legs": [
-      "price",
-      "institutional",
-      "margin"
-    ],
-    "downstream_ready": true,
-    "three_leg_complete": true,
-    "formal_complete_day": true,
-    "status": "COMPLETE",
-    "last_run_results": [
-      {
-        "leg": "price",
-        "result": "ALREADY_COMPLETE",
-        "rows": 1088,
-        "sha256": "3b6ff161b39682b988454ec243f277562fed4738a365568651c2f29524946cb9"
-      },
-      {
-        "leg": "institutional",
-        "result": "ALREADY_COMPLETE",
-        "rows": 1079,
-        "sha256": "f15c9c14ad9e57f573395b3576a1863f664e42a85ae735dedc29cc420b5b96f4"
-      },
-      {
-        "leg": "margin",
-        "result": "ALREADY_COMPLETE",
-        "rows": 1061,
-        "sha256": "e2398e1afd55f9278897c8900d9b524ab6ae35d1f6c4fe87e730de1f182f7ab7"
-      }
-    ],
-    "updated_at_taipei": "2026-10-21T23:09:11.711918+08:00",
-    "institutional_date": "2026-10-21",
-    "institutional_rows": 1079,
-    "institutional_sha256": "f15c9c14ad9e57f573395b3576a1863f664e42a85ae735dedc29cc420b5b96f4",
-    "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86",
-    "margin_date": "2026-10-21",
-    "margin_rows": 1061,
-    "margin_sha256": "e2398e1afd55f9278897c8900d9b524ab6ae35d1f6c4fe87e730de1f182f7ab7",
-    "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN"
+  "lane_status": {
+    "q017_inputs": "PASS",
+    "e2_eod_archive": "PASS"
   },
-  "electronics_history_append": {
-    "status": "PASS",
-    "date": "2026-10-21",
-    "rows": 457
+  "required": {
+    "sox": {
+      "status": "PASS",
+      "source": "Nasdaq ExportHistory/SOX",
+      "latest_session": "2026-10-21",
+      "rows": 202,
+      "stale_days": 1,
+      "refreshed_at_taipei": "2026-10-22T06:55:42.503906+08:00"
+    },
+    "latest_eod_date": "20261021",
+    "latest_eod_complete": true,
+    "electronics_history": {
+      "status": "PASS",
+      "source": "LOCAL_INCREMENTAL_HISTORY",
+      "seeded": false
+    },
+    "electronics_history_latest": "2026-10-21"
   },
   "sox": {
-    "status": "PASS",
-    "source": "Nasdaq ExportHistory/SOX",
-    "latest_session": "2026-10-20",
-    "rows": 201,
-    "stale_days": 1,
-    "refreshed_at_taipei": "2026-10-21T23:09:14.521158+08:00"
+    "session": "2026-10-21",
+    "sox_1d": 0.019651470366216506,
+    "sox_5d": -0.015304782920177673
   },
-  "policy": "MOTHER_FIRST_ORIGINAL_VESSEL_INCREMENTAL_EOD_NO_WAIT_FOR_MARGIN"
+  "policy": "Q017_AND_E2_DATA_LANES_INDEPENDENT;E2_ARCHIVE_GAP_DOES_NOT_INVALIDATE_CAUSAL_Q017_INPUTS"
 }

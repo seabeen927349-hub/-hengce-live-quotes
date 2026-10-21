@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "module": "Q017_PREMARKET_SNAPSHOT_STATUS",
-  "trade_date": "2026-10-21",
-  "generated_at_taipei": "2026-10-21T06:55:30.518227+08:00",
+  "trade_date": "2026-10-22",
+  "generated_at_taipei": "2026-10-22T06:55:43.452588+08:00",
   "status": "DATA_PENDING",
   "authority": "INFRASTRUCTURE_CACHE_ONLY_NO_SIGNAL_AUTHORITY",
   "formal_buy_count": 0,
