@@ -13,27 +13,26 @@
   "price_sha256": "3b6ff161b39682b988454ec243f277562fed4738a365568651c2f29524946cb9",
   "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
   "institutional_status": "COMPLETE",
-  "margin_status": "PENDING",
-  "margin_pending_reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
+  "margin_status": "COMPLETE",
   "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
   "available_legs": [
     "price",
-    "institutional"
-  ],
-  "pending_legs": [
+    "institutional",
     "margin"
   ],
+  "pending_legs": [],
   "error_legs": [],
   "mother_status": "PENDING",
   "mother_promotion_required": true,
   "mother_pending_legs": [
     "price",
-    "institutional"
+    "institutional",
+    "margin"
   ],
   "downstream_ready": false,
-  "three_leg_complete": false,
-  "formal_complete_day": false,
-  "status": "PARTIAL",
+  "three_leg_complete": true,
+  "formal_complete_day": true,
+  "status": "COMPLETE",
   "last_run_results": [
     {
       "leg": "price",
@@ -49,13 +48,18 @@
     },
     {
       "leg": "margin",
-      "result": "PENDING",
-      "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
+      "result": "PROMOTED",
+      "rows": 1061,
+      "sha256": "e2398e1afd55f9278897c8900d9b524ab6ae35d1f6c4fe87e730de1f182f7ab7"
     }
   ],
-  "updated_at_taipei": "2026-10-21T17:25:42.520171+08:00",
+  "updated_at_taipei": "2026-10-21T23:00:05.009272+08:00",
   "institutional_date": "2026-10-21",
   "institutional_rows": 1079,
   "institutional_sha256": "f15c9c14ad9e57f573395b3576a1863f664e42a85ae735dedc29cc420b5b96f4",
-  "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86"
+  "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86",
+  "margin_date": "2026-10-21",
+  "margin_rows": 1061,
+  "margin_sha256": "e2398e1afd55f9278897c8900d9b524ab6ae35d1f6c4fe87e730de1f182f7ab7",
+  "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN"
 }
