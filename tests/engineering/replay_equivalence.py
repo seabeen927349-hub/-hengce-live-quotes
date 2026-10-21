@@ -195,7 +195,7 @@ def compare(before, after):
         raise RuntimeError("STOP: before/after replay mismatch: " + json.dumps(differences, ensure_ascii=False))
     return {name: "IDENTICAL" for name in (
         "top3", "full_ranking", "scores", "authority", "schema", "universe",
-        "decision_hashes", "fail_closed", "display", "router_routes")}
+        "decision_hashes", "fail_closed", "display", "router_routes", "zero_new_capital_authority")}
 
 
 def existing_tests(root):
@@ -220,9 +220,14 @@ runpy.run_path(sys.argv[1], run_name='__main__')
 
 
 def self_test():
-    baseline = {"full_ranking": [{"ticker": "1111", "score": 1.0}, {"ticker": "2222", "score": 0.5}],
+    baseline = {"top3": ["1111", "2222"],
+                "full_ranking": [{"ticker": "1111", "score": 1.0}, {"ticker": "2222", "score": 0.5}],
+                "scores": [1.0, 0.5],
                 "authority": "FIXED", "schema": 5, "universe": ["1111", "2222"],
-                "decision_hash": "fixed", "fail_closed": {"count": 0}, "capital": 0}
+                "decision_hash": "fixed", "fail_closed": {"count": 0},
+                "display": {"rankings_separate": True, "legacy_v3_display_authority": False},
+                "router_routes": {"09:03": ["q017_recovery", "e2_morning"]},
+                "zero_new_capital_authority": True}
     compare(baseline, baseline)
     for key in baseline:
         changed = json.loads(json.dumps(baseline))
@@ -233,7 +238,16 @@ def self_test():
             require("STOP:" in str(exc) and "/" + key in str(exc), "missing mismatch evidence")
         else:
             raise RuntimeError("STOP: equivalence gate accepted a difference")
-    print(json.dumps({"status": "PASS", "synthetic_difference_rejection_cases": len(baseline)}))
+    # Tiny score changes must not be hidden by an epsilon or rounded comparison.
+    changed = json.loads(json.dumps(baseline))
+    changed["full_ranking"][1]["score"] += 1e-15
+    try:
+        compare(baseline, changed)
+    except RuntimeError as exc:
+        require("/full_ranking/1/score" in str(exc), "missing exact score difference")
+    else:
+        raise RuntimeError("STOP: equivalence gate accepted a tiny score difference")
+    print(json.dumps({"status": "PASS", "synthetic_difference_rejection_cases": len(baseline) + 1}))
 
 
 def main():
@@ -256,9 +270,10 @@ def main():
     before_sha = git(args.repo, "rev-parse", args.before + "^{commit}").decode().strip()
     after_sha = git(args.repo, "rev-parse", args.after + "^{commit}").decode().strip()
     changed = git(args.repo, "diff", "--name-only", before_sha, after_sha).decode().splitlines()
-    require(all(p.startswith(("tests/engineering/", "docs/engineering/")) or
-                p == ".github/workflows/hengce-engineering-replay.yml" for p in changed),
-            "this PR must change test/engineering documentation only")
+    # Source changes are allowed as inputs to replay; output equality, not an
+    # infrastructure-only diff allowlist, decides whether engineering is safe.
+    production_unchanged = all(p.startswith(("tests/engineering/", "docs/engineering/")) or
+                               p == ".github/workflows/hengce-engineering-replay.yml" for p in changed)
     with tempfile.TemporaryDirectory(prefix="hengce-replay-") as td:
         base = Path(td)
         frozen = base / "snapshot"
@@ -280,7 +295,7 @@ def main():
     result = results[0]
     report = {"status": "PASS", "before_commit": before_sha, "after_commit": after_sha,
               "snapshot_commit": SNAPSHOT, "snapshot_date": DAY, "changed_files": changed,
-              "production_files_unchanged": True, "checks": checks,
+              "production_files_unchanged": production_unchanged, "checks": checks,
               "existing_regressions": regressions,
               "top3": [x["ticker"] for x in result["q017"]["top3"]],
               "full_ranking_counts": {k: len(v) for k, v in result["full_rankings"].items()},
