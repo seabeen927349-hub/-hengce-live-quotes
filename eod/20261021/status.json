@@ -43,7 +43,7 @@
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1079,
       "sha256": "f15c9c14ad9e57f573395b3576a1863f664e42a85ae735dedc29cc420b5b96f4"
     },
@@ -53,7 +53,7 @@
       "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
     }
   ],
-  "updated_at_taipei": "2026-10-21T16:07:45.900705+08:00",
+  "updated_at_taipei": "2026-10-21T16:21:51.674889+08:00",
   "institutional_date": "2026-10-21",
   "institutional_rows": 1079,
   "institutional_sha256": "f15c9c14ad9e57f573395b3576a1863f664e42a85ae735dedc29cc420b5b96f4",
