@@ -96,15 +96,29 @@ jobs:
           set -euo pipefail
           git config user.name 'hengce-primary-observer-bot'
           git config user.email 'hengce-primary-observer-bot@users.noreply.github.com'
-          git add \
-            hengce/q017_radar/observations/ \
-            hengce/q017_radar/observation_latest.json \
-            hengce/q017_radar/history/ \
-            hengce/q017_radar/decision_attempts/ \
-            hengce/q017_radar/decision_attempt_latest.json \
-            hengce/q017_radar/latest.json \
-            hengce/q017_radar/observer_supervisor_primary_status.json \
-            hengce/q017_radar/observer_supervisor_attempts/ || true
+
+          paths=(
+            hengce/q017_radar/observations/
+            hengce/q017_radar/observation_latest.json
+            hengce/q017_radar/history/
+            hengce/q017_radar/decision_attempts/
+            hengce/q017_radar/decision_attempt_latest.json
+            hengce/q017_radar/latest.json
+            hengce/q017_radar/observer_supervisor_primary_status.json
+            hengce/q017_radar/observer_supervisor_attempts/
+          )
+          for p in "${paths[@]}"; do
+            if [[ -e "$p" ]]; then
+              git add -A -- "$p"
+            fi
+          done
+
+          OBS="hengce/q017_radar/observations/$(TZ=Asia/Taipei date '+%Y%m%d')_0901_observation.json"
+          if [[ '${{ steps.primary_observe.outcome }}' == 'success' ]]; then
+            [[ -f "$OBS" ]] || { echo "PRIMARY_CANONICAL_OBSERVATION_MISSING_BEFORE_PERSIST:$OBS"; exit 2; }
+            git add -- "$OBS"
+          fi
+
           if git diff --cached --quiet; then
             echo 'No primary evidence/diagnostic changes to persist.'
           else
@@ -116,16 +130,37 @@ jobs:
             fi
           fi
 
-      - name: Refresh checkout after immutable evidence persistence
+      - name: Verify canonical observation is persisted in Git HEAD before computation
+        id: primary_evidence
         if: steps.mode.outputs.mode == 'observe' && steps.primary_observe.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
           git pull --rebase origin main
+          OBS="hengce/q017_radar/observations/$(TZ=Asia/Taipei date '+%Y%m%d')_0901_observation.json"
+          git cat-file -e "HEAD:$OBS"
+          git show "HEAD:$OBS" > /tmp/q017_canonical_observation.json
+          python - /tmp/q017_canonical_observation.json <<'PY'
+          import hashlib, json, pathlib, sys
+          p = pathlib.Path(sys.argv[1])
+          o = json.loads(p.read_text(encoding='utf-8'))
+          assert o.get('schema_version') == 5
+          assert o.get('module') == 'Q017_0901_OBSERVATION_LOCK'
+          assert o.get('binding_status') == 'PASS'
+          lock = o.get('observation_lock') or {}
+          assert lock.get('cutoff_label') == '09:01'
+          assert lock.get('window_valid') is True
+          assert lock.get('immutable') is True
+          h = o.get('observation_snapshot_sha256')
+          payload = {k: v for k, v in o.items() if k != 'observation_snapshot_sha256'}
+          exp = hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+          assert h and h == exp
+          print('PASS PRIMARY_CANONICAL_OBSERVATION_PERSISTED_AND_HASH_VALID')
+          PY
 
       - name: Compute only from persisted canonical 09:01 observation
         id: primary_compute
-        if: steps.mode.outputs.mode == 'observe' && steps.primary_observe.outcome == 'success'
+        if: steps.mode.outputs.mode == 'observe' && steps.primary_observe.outcome == 'success' && steps.primary_evidence.outcome == 'success'
         continue-on-error: true
         run: python scripts/hengce_q017_observation_lock_v5.py --mode compute
 
@@ -147,13 +182,19 @@ jobs:
           set -euo pipefail
           git config user.name 'hengce-primary-observer-bot'
           git config user.email 'hengce-primary-observer-bot@users.noreply.github.com'
-          git add \
-            hengce/q017_radar/decision/ \
-            hengce/q017_radar/decision_latest.json \
-            hengce/q017_radar/latest.json \
-            hengce/q017_radar/history/ \
-            hengce/q017_radar/signal_ledger.jsonl \
-            hengce/dual_engine/latest.json || true
+          paths=(
+            hengce/q017_radar/decision/
+            hengce/q017_radar/decision_latest.json
+            hengce/q017_radar/latest.json
+            hengce/q017_radar/history/
+            hengce/q017_radar/signal_ledger.jsonl
+            hengce/dual_engine/latest.json
+          )
+          for p in "${paths[@]}"; do
+            if [[ -e "$p" ]]; then
+              git add -A -- "$p"
+            fi
+          done
           if git diff --cached --quiet; then
             echo 'No primary decision/display changes to persist.'
           else
@@ -170,13 +211,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "observe=${{ steps.primary_observe.outcome }} compute=${{ steps.primary_compute.outcome }} guard=${{ steps.primary_guard.outcome }}"
+          echo "observe=${{ steps.primary_observe.outcome }} evidence=${{ steps.primary_evidence.outcome }} compute=${{ steps.primary_compute.outcome }} guard=${{ steps.primary_guard.outcome }}"
           if [[ '${{ steps.primary_observe.outcome }}' != 'success' ]]; then
             echo 'PRIMARY_0901_OBSERVATION_FAIL_CLOSED'
+            exit 2
+          fi
+          if [[ '${{ steps.primary_evidence.outcome }}' != 'success' ]]; then
+            echo 'PRIMARY_0901_OBSERVATION_NOT_PERSISTED_TO_GIT_HEAD_FAIL_CLOSED'
             exit 2
           fi
           if [[ '${{ steps.primary_compute.outcome }}' != 'success' || '${{ steps.primary_guard.outcome }}' != 'success' ]]; then
             echo 'PRIMARY_0901_EVIDENCE_EXISTS_BUT_DECISION_OR_GUARD_FAILED'
             exit 2
           fi
-          echo 'PRIMARY_0901_OBSERVATION_AND_DECISION_PASS'
+          echo 'PRIMARY_0901_OBSERVATION_PERSISTED_AND_DECISION_PASS'
