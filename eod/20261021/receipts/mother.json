@@ -1,0 +1,39 @@
+{
+  "system": "HENGCE",
+  "artifact": "CANONICAL_HIST_MOTHER_PROMOTION_RECEIPT",
+  "version": "v3_20261021_three_leg_completion",
+  "target_date": "2026-10-21",
+  "status": "PASS",
+  "canonical_store": "ChatGPT Library:/HENGCE_CANONICAL",
+  "canonical_mother": "HENGCE_2026_HIST_MOTHER.csv",
+  "promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "promoted_leg_sha256": {
+    "price": "3b6ff161b39682b988454ec243f277562fed4738a365568651c2f29524946cb9",
+    "institutional": "f15c9c14ad9e57f573395b3576a1863f664e42a85ae735dedc29cc420b5b96f4",
+    "margin": "e2398e1afd55f9278897c8900d9b524ab6ae35d1f6c4fe87e730de1f182f7ab7"
+  },
+  "source_rows": {
+    "price": 1088,
+    "institutional": 1079,
+    "margin": 1061
+  },
+  "pending_legs": [],
+  "mother_target_rows": 1088,
+  "mother_target_institutional_matched_rows": 1079,
+  "mother_target_missing_institutional_rows": 9,
+  "mother_target_margin_matched_rows": 1058,
+  "mother_target_missing_margin_rows": 30,
+  "mother_latest_date": "2026-10-21",
+  "mother_rows": 207218,
+  "mother_sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
+  "canonical_price_sha256": "d4abded760a685a7ebeb1d52bf9c68a62f0d46e4b65c0540e6b8625462cf076c",
+  "canonical_institutional_sha256": "482ca9eff3bf805916607704499ed07d582107f3a0dcc08f76b6f8685dda9e6b",
+  "canonical_margin_sha256": "51342c4f5cc05aa8c1b3d6da4bb3e384c17bc4226c000967eca83c3277b31676",
+  "missing_evidence_is_null": true,
+  "second_mother": false,
+  "model_or_schema_mutated": false
+}
