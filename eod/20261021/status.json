@@ -51,12 +51,12 @@
     },
     {
       "leg": "margin",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1061,
       "sha256": "e2398e1afd55f9278897c8900d9b524ab6ae35d1f6c4fe87e730de1f182f7ab7"
     }
   ],
-  "updated_at_taipei": "2026-10-21T23:07:42+08:00",
+  "updated_at_taipei": "2026-10-21T23:09:11.711918+08:00",
   "institutional_date": "2026-10-21",
   "institutional_rows": 1079,
   "institutional_sha256": "f15c9c14ad9e57f573395b3576a1863f664e42a85ae735dedc29cc420b5b96f4",
