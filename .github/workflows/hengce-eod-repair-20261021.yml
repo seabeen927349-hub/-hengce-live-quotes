@@ -1,0 +1,55 @@
+name: HENGCE EOD repair 20261021
+
+on:
+  push:
+    branches: [hengce/eod-repair-20261021]
+    paths:
+      - '.github/workflows/hengce-eod-repair-20261021.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch missing official EOD leg
+        run: python scripts/hengce_eod_incremental_ingest.py --mode ingest --date 2026-10-21
+      - name: Validate three-leg completion
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('eod/20261021/status.json',encoding='utf-8'))
+          assert x['price_status']=='COMPLETE'
+          assert x['institutional_status']=='COMPLETE'
+          assert x['margin_status']=='COMPLETE'
+          assert x['three_leg_complete'] is True
+          assert x['formal_complete_day'] is True
+          assert int(x['margin_rows']) >= 500
+          print('PASS', x['margin_rows'], x['margin_sha256'])
+          PY
+      - name: Upload repair artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-eod-repair-20261021
+          path: eod/20261021/
+          if-no-files-found: error
+      - name: Commit repaired EOD vessel to repair branch
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-eod-repair-bot'
+          git config user.email 'hengce-eod-repair-bot@users.noreply.github.com'
+          git add eod/20261021/
+          if git diff --cached --quiet; then
+            echo 'No EOD changes.'
+          else
+            git commit -m 'HENGCE EOD 2026-10-21 complete missing margin leg'
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
