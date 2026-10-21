@@ -1,0 +1,59 @@
+{
+  "lock_id": "HENGCE_ELECTRONICS_ONLY_UNIVERSE_LOCK_v1_0_20261021",
+  "status": "FORMAL_GOVERNANCE_LOCK",
+  "effective_date": "2026-10-21",
+  "authority": "USER_EXPLICIT_GOVERNANCE_INSTRUCTION",
+  "scope": "ALL_HENGCE_FORMAL_STOCK_SELECTION_ENGINES",
+  "core_rule": {
+    "model_research_universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "formal_ranking_universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "formal_selection_universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "non_electronics_formal_selection_allowed": false
+  },
+  "engines": {
+    "Q017": {
+      "required_universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+      "non_electronics_rejected_before_authority": true
+    },
+    "E2_PROFIT_MAX": {
+      "required_universe": "TWSE_LISTED_ELECTRONICS_PIT",
+      "non_electronics_rejected_before_authority": true
+    },
+    "M1": {
+      "required_universe": "TWSE_LISTED_ELECTRONICS_PIT",
+      "authority": "RESEARCH_SHADOW_ONLY",
+      "non_electronics_rejected_from_shadow_cohort": true
+    },
+    "future_formal_engines": {
+      "default_required_universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+      "exception_requires_new_explicit_user_authorization": true
+    }
+  },
+  "full_market_shadow": {
+    "allowed": true,
+    "purpose": [
+      "quote_transport",
+      "coverage_monitoring",
+      "market_context",
+      "infrastructure_diagnostics"
+    ],
+    "formal_ranking_authority": false,
+    "formal_selection_authority": false,
+    "capital_authority": false,
+    "must_not_expand_electronics_universe": true
+  },
+  "fail_closed_policy": {
+    "if_formal_candidate_not_in_electronics_universe": "REJECT_CANDIDATE_AND_FAIL_FORMAL_AUTHORITY_FOR_AFFECTED_OUTPUT",
+    "if_universe_membership_cannot_be_verified": "NO_FORMAL_NEW_SELECTION_AUTHORITY",
+    "synthetic_or_full_market_substitution_for_electronics_membership": false
+  },
+  "model_formula_effect": {
+    "q017_formula_changed": false,
+    "e2_formula_changed": false,
+    "m1_formula_changed": false,
+    "ranking_formula_changed": false,
+    "thresholds_changed": false,
+    "governance_scope_only": true
+  },
+  "interpretation": "HENGCE is researched and operated as a Taiwan listed electronics-stock selection system. Full-market shadow data can support transport and context, but it cannot enter formal ranking or formal stock selection."
+}
