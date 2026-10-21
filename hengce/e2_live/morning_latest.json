@@ -3,7 +3,7 @@
   "system": "HENGCE",
   "module": "E2_PROFIT_MAX_MORNING_BRIDGE",
   "trade_date": "2026-10-21",
-  "generated_at_taipei": "2026-10-21T09:23:54.903992+08:00",
+  "generated_at_taipei": "2026-10-21T09:33:27.923550+08:00",
   "binding_status": "PASS",
   "source_signal_asof": "2026-10-20",
   "engine_status": "OFF",
@@ -50,7 +50,7 @@
   "execution_override": {
     "applied": false,
     "status": "NO_FILL",
-    "reason": "PRIOR_NO_FILL_SLOT_RELEASED"
+    "reason": "NO_OPEN_PAPER_POSITION"
   },
   "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
   "capital_authority_twd": 0,
