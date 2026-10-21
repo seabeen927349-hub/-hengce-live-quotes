@@ -1,0 +1,45 @@
+name: HENGCE Engineering Replay
+
+on:
+  pull_request:
+    paths:
+      - 'tests/engineering/**'
+      - 'docs/engineering/**'
+      - '.github/workflows/hengce-engineering-replay.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install import dependencies
+        run: python -m pip install requests==2.32.5 openpyxl==3.1.5
+      - name: Offline historical before and after replay
+        env:
+          AFTER_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: >-
+          python -B tests/engineering/replay_equivalence.py
+          --before 900b0bc862e03a2b496129b0fc68d066c39542bf
+          --after "$AFTER_SHA"
+          --report "$RUNNER_TEMP/hengce-replay.json"
+      - name: Verify STOP-on-difference detector
+        run: python -B tests/engineering/replay_equivalence.py --self-test
+      - name: Upload replay evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-engineering-replay
+          path: ${{ runner.temp }}/hengce-replay.json
+          if-no-files-found: error
