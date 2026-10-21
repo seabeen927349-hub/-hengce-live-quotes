@@ -2,48 +2,48 @@
   "schema_version": 1,
   "system": "HENGCE",
   "module": "Q017_MORNING_MACRO_CACHE",
-  "trade_date": "2026-10-21",
-  "generated_at_taipei": "2026-10-21T07:55:14.228775+08:00",
+  "trade_date": "2026-10-22",
+  "generated_at_taipei": "2026-10-22T06:10:53.937955+08:00",
   "status": "PASS",
   "authority": "Q017_PREMARKET_INPUT_CACHE_ONLY_NOT_MARKET_OBSERVATION",
   "causal_policy": "SOX_AND_DXY_COMPLETED_SESSIONS_STRICTLY_BEFORE_TAIWAN_TRADE_DATE",
   "sox_status": {
     "status": "PASS",
     "source": "Nasdaq ExportHistory/SOX",
-    "latest_session": "2026-10-20",
-    "rows": 201,
+    "latest_session": "2026-10-21",
+    "rows": 202,
     "stale_days": 1,
-    "refreshed_at_taipei": "2026-10-21T07:55:14.069824+08:00"
+    "refreshed_at_taipei": "2026-10-22T06:10:53.853428+08:00"
   },
   "sox_features": {
-    "session": "2026-10-20",
-    "sox_1d": -0.0028746891968092214,
-    "sox_5d": -0.07576363330011182
+    "session": "2026-10-21",
+    "sox_1d": 0.019651470366216506,
+    "sox_5d": -0.015304782920177673
   },
   "dxy_status": {
     "status": "PASS",
     "source": "Yahoo Finance chart query1.finance.yahoo.com / DX-Y.NYB",
     "symbol": "DX-Y.NYB",
-    "latest_session": "2026-10-20",
-    "latest_close": 101.77999877929688,
-    "five_sessions_back": "2026-10-13",
-    "five_sessions_back_close": 102.18000030517578,
-    "dxy_5d": -0.00391467532476264,
-    "rows": 201,
+    "latest_session": "2026-10-21",
+    "latest_close": 101.69200134277344,
+    "five_sessions_back": "2026-10-14",
+    "five_sessions_back_close": 102.55000305175781,
+    "dxy_5d": -0.008366666830339708,
+    "rows": 202,
     "stale_days": 1,
-    "refreshed_at_taipei": "2026-10-21T07:55:14.071046+08:00",
+    "refreshed_at_taipei": "2026-10-22T06:10:53.855216+08:00",
     "causal_rule": "completed weekday sessions strictly before Taiwan trade date; weekend/current pseudo-bars excluded"
   },
   "files": {
     "sox_csv": "hengce/q017_radar/data/sox_2026.csv",
-    "sox_csv_sha256": "b733e187de87cba904ed96712868ab890383f4605cb7ae87075a2c5c11898213",
+    "sox_csv_sha256": "ac58b866699af32c5e58735f03be924628ecce90f4a09d885f47da566366c472",
     "dxy_csv": "hengce/q017_radar/data/dxy_2026.csv",
-    "dxy_csv_sha256": "3993f2cfb266ae587cc951c85c820a7c93e0811b208f6d37ece0a9b8eb318d2d"
+    "dxy_csv_sha256": "f59a4c9d3a59d6070d647b4939398b2fd2fe5831b87c3e3d8acfcd436b08769e"
   },
   "observation_policy": {
     "contains_0901_quotes": false,
     "may_be_prepared_before_market_open": true,
     "cannot_substitute_for_q017_0901_observation": true
   },
-  "cache_sha256": "e922063c92ee7f817bd4efd05666729a24a1614096d1bebf4ddce9ba11e146ab"
+  "cache_sha256": "3f2c52eb2abe68f0e6dd21e4a00f8e7382b73961825d03e4abe467e4844ae95f"
 }
