@@ -2,9 +2,9 @@
   "schema_version": 1,
   "system": "HENGCE",
   "module": "Q017_INFRASTRUCTURE_SELFVERIFY",
-  "generated_at_taipei": "2026-10-20T10:08:22.107737+08:00",
+  "generated_at_taipei": "2026-10-21T11:24:33.636579+08:00",
   "status": "PASS",
-  "git_sha_tested": "26a580d3098ba87c9206e3c3df3d8ce1e8d18a9c",
+  "git_sha_tested": "cda4eb47e7204e03b21b02c90a89816de6ab69f6",
   "event_name": "push",
   "contracts": {
     "q017_schema": 5,
@@ -77,9 +77,9 @@
     "scripts/hengce_q017_authority_guard_v5.py": "b517344151bda0268d4f5b0bad5a5da34d4187d57de4a4bfbf8aa36750ac9986",
     "scripts/test_hengce_q017_observer_resilience_v1.py": "ec0a96cd2fec739ee48236c7d515ca305fa1c5f7e11a2ec5753b2a900aa80457",
     ".github/workflows/hengce-q017-macro-cache.yml": "96da8d7d797bfd13002d0d5dd9224eaad408b26cb08985e062b97192bfe49188",
-    ".github/workflows/hengce-q017-primary-observer.yml": "6f7a32dfc82d06f088b0c8f69432a825781fbb42c2784de78011584607cf5fbe",
+    ".github/workflows/hengce-q017-primary-observer.yml": "7b023352302669325f06827af8194f1d968405d0a85cf571b866f55a092e0af4",
     ".github/workflows/hengce-q017-backup-observer.yml": "f9f5e393f2bdce3e52d32b8a00c55836c5bc19708f80ce10aca0fb510867705d",
     ".github/workflows/hengce-q017-infrastructure-selfverify.yml": "163b49d03f72b936ac79c7e25b7dc1eecaf93e2ce4cbea1a2c64e2ceef10a737"
   },
-  "receipt_sha256": "ee908c7091feec97bd2671903dce4f9a85aca663cdee539741ea1d15d3cfe862"
+  "receipt_sha256": "aab07fefda21c09eb56979590c61c7bbb5fed46c60a02c0b096308c6317a60aa"
 }

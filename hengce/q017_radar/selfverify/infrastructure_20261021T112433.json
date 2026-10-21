@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "Q017_INFRASTRUCTURE_SELFVERIFY",
+  "generated_at_taipei": "2026-10-21T11:24:33.636579+08:00",
+  "status": "PASS",
+  "git_sha_tested": "cda4eb47e7204e03b21b02c90a89816de6ab69f6",
+  "event_name": "push",
+  "contracts": {
+    "q017_schema": 5,
+    "observation_window": "09:01:00-09:01:59.999999 Asia/Taipei",
+    "provider_quote_row_coverage_required": 1.0,
+    "universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "late_market_backfill_forbidden": true,
+    "normal_0901_macro_network_calls": 0,
+    "normal_macro_source": "MORNING_HASH_BOUND_SOX_DXY_CACHE",
+    "primary_start_taipei": "07:45",
+    "backup_start_taipei": "08:15",
+    "mis_connect_timeout_seconds": 2.5,
+    "mis_read_timeout_seconds": 6.0
+  },
+  "tests": {
+    "01_observation": {
+      "status": "PASS",
+      "sha256": "e202a8d2706ada49420a1277ad20e3db03fd6e61ec6f68945d77f4b2a8e96f9b",
+      "tail": "{\"self_test\": \"PASS\", \"schema\": 5, \"observation_time_lock\": true, \"compute_after_0901_allowed\": true, \"electronics_universe_hard_lock\": true, \"non_electronics_injection_rejected\": true}\n"
+    },
+    "02_backup": {
+      "status": "PASS",
+      "sha256": "8b4a3873ea7e6f7f553b125b1c2d99b145921b301c946c0f3826a4b659ea5cd8",
+      "tail": "{\"self_test\": \"PASS\", \"schema\": 5, \"separate_backup_lane\": true, \"direct_capital_authority\": false, \"canonical_observation_untouched\": true}\n"
+    },
+    "03_macro_cache": {
+      "status": "PASS",
+      "sha256": "7b39e5f7a60c0836aca7631a38ccb1a36df39cdb9316aca3927780f595cbf4e8",
+      "tail": "{\"self_test\": \"PASS\", \"schema_version\": 1, \"trade_date_bound\": true, \"sox_dxy_completed_session_causality\": true, \"source_file_sha256_bound\": true, \"cannot_substitute_for_0901_observation\": true}\n"
+    },
+    "04_snapshot": {
+      "status": "PASS",
+      "sha256": "b72fb6a13222e5943a0bf6df68390b1071d3642bd7b791c3b43f1c79f19a1f0d",
+      "tail": "{\"self_test\": \"PASS\", \"schema\": 1, \"authority\": \"INFRASTRUCTURE_CACHE_ONLY_NO_SIGNAL_AUTHORITY\", \"build_cutoff_taipei\": \"09:00:45\", \"tamper_rejected\": true, \"late_snapshot_rejected\": true, \"formal_buy_count\": 0, \"macro_cache_primary\": true, \"macro_network_calls_normal_snapshot_path\": 0, \"legacy_bounded_fallback_retained\": true, \"uses_v4_coherence_validator\": true}\n"
+    },
+    "05_supervisor_v1": {
+      "status": "PASS",
+      "sha256": "9dee2743d3f44bb8370651380ea996dc0627e5680f0c7ccc9b70afa776c55128",
+      "tail": "{\"self_test\": \"PASS\", \"persisted_0630_snapshot_fallback\": true, \"snapshot_authority\": \"INFRASTRUCTURE_CACHE_ONLY_NO_SIGNAL_AUTHORITY\", \"prewarm_start_taipei\": \"08:30:00\", \"preferred_refresh_taipei\": \"08:50:00\", \"prewarm_hard_stop_taipei\": \"09:00:45\", \"prewarm_subprocess_hard_timeout\": true, \"late_runner_can_use_validated_snapshot\": true, \"frozen_prepare_during_0901\": true, \"prepare_model_network_calls_during_0901\": 0, \"late_backfill_forbidden\": true, \"transport_connect_timeout_seconds\": 2.5, \"transport_read_timeout_seconds\": 6.0, \"core_schema_v5_not_modified\": true}\n"
+    },
+    "06_supervisor_v2": {
+      "status": "PASS",
+      "sha256": "1e1f6f2ff93de4ebae53f31d8caae48cdb269bedd0a3166263863b697188377f",
+      "tail": "{\"self_test\": \"PASS\", \"supervisor_version\": 2, \"macro_cache_first\": true, \"macro_cache_trade_date_bound\": true, \"macro_cache_source_hash_bound\": true, \"bounded_v1_prewarm_fallback\": true, \"macro_network_calls_during_0901\": 0, \"late_backfill_forbidden\": true, \"schema_v5_unchanged\": true}\n"
+    },
+    "07_recovery": {
+      "status": "PASS",
+      "sha256": "94f779e64cb261b7e875af43f8bc5c9f1492a532b498f26705b82beb2d65a1c8",
+      "tail": "{\"self_test\": \"PASS\", \"schema\": 5, \"backup_promotion_only_when_canonical_missing\": true, \"existing_decision_idempotent\": true, \"no_market_refetch\": true, \"no_observation_blending\": true}\n"
+    },
+    "08_authority": {
+      "status": "PASS",
+      "sha256": "404a90aa1f59edce5b3f1aa353b360218b934e6992510ebdd7a6512a598df6e0",
+      "tail": "{\"self_test\": \"PASS\", \"schema\": 5, \"observation_hash_binding\": true, \"deterministic_recompute_from_observation\": true, \"electronics_universe_hard_lock\": true}\n"
+    },
+    "09_resilience": {
+      "status": "PASS",
+      "sha256": "e4e4920bd82a3e427b2e24635cdbc054b1b83eb93c15b6520452057fe168ef1f",
+      "tail": "HENGCE_Q017_OBSERVER_RESILIENCE_HARD_LOCK_V2=PASS\nMACRO_CACHE=05:45/06:15/06:45/07:15/07:35 SNAPSHOT=06:30 PRIMARY=07:45 BACKUP=08:15\nNORMAL_0901_NETWORK=TWSE_MIS_ONLY MACRO_NETWORK_CALLS=0 MIS_BOUNDED=2.5/6.0\nSCHEMA5=True COVERAGE=100PCT NO_0903_CAPTURE=True LATE_BACKFILL_FORBIDDEN=True\n"
+    }
+  },
+  "file_sha256": {
+    "scripts/hengce_q017_observation_lock_v5.py": "8a97ba1433df8df7efcfaa0711b22e2ef7d1af3329065ade9c485f0d9fbc0520",
+    "scripts/hengce_q017_backup_observer_v5.py": "b64ced762198edf090b0278b611381f4e543a6dc40be904d0b073d840cf85b54",
+    "scripts/hengce_q017_macro_cache_v1.py": "309b7bbd61f898d8ea2cddc42e6d684341d50e95ff642b1241fd7b789bba3920",
+    "scripts/hengce_q017_premarket_snapshot_v1.py": "c01be57b0237e2b97a1388783b221a56aa050d68b061b61b931a9bb19bb9c7a7",
+    "scripts/hengce_q017_observer_supervisor_v1.py": "1e29b631c6904ba32bc936afb78dbd0b09d6a9445155c9e4dca68d226d8eb3e7",
+    "scripts/hengce_q017_observer_supervisor_v2.py": "91daf292b4448f6b22d2bf32ae6dcfdef40f9f541493b6d38b47968d3ee261e2",
+    "scripts/hengce_q017_recovery_compute_v5.py": "4dfda2eda7c25a7a9f7b91d2cdde7528cc67e2302b07bd75b39b4b98b052ea11",
+    "scripts/hengce_q017_authority_guard_v5.py": "b517344151bda0268d4f5b0bad5a5da34d4187d57de4a4bfbf8aa36750ac9986",
+    "scripts/test_hengce_q017_observer_resilience_v1.py": "ec0a96cd2fec739ee48236c7d515ca305fa1c5f7e11a2ec5753b2a900aa80457",
+    ".github/workflows/hengce-q017-macro-cache.yml": "96da8d7d797bfd13002d0d5dd9224eaad408b26cb08985e062b97192bfe49188",
+    ".github/workflows/hengce-q017-primary-observer.yml": "7b023352302669325f06827af8194f1d968405d0a85cf571b866f55a092e0af4",
+    ".github/workflows/hengce-q017-backup-observer.yml": "f9f5e393f2bdce3e52d32b8a00c55836c5bc19708f80ce10aca0fb510867705d",
+    ".github/workflows/hengce-q017-infrastructure-selfverify.yml": "163b49d03f72b936ac79c7e25b7dc1eecaf93e2ce4cbea1a2c64e2ceef10a737"
+  },
+  "receipt_sha256": "aab07fefda21c09eb56979590c61c7bbb5fed46c60a02c0b096308c6317a60aa"
+}
