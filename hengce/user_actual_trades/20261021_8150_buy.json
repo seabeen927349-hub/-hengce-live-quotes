@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "record_type": "USER_CONFIRMED_ACTUAL_TRADE",
+  "trade_date": "2026-10-21",
+  "ticker": "8150",
+  "name": "南茂",
+  "side": "BUY",
+  "lots": 1,
+  "shares": 1000,
+  "fill_price_twd": 101.0,
+  "gross_consideration_twd": 101000,
+  "fees_included": false,
+  "source": "USER_CONFIRMED_IN_CHAT",
+  "linked_signal_context": {
+    "engine": "Q017",
+    "selected_today": true,
+    "selection_reference_price_twd": 102.5,
+    "context_only": true
+  },
+  "formal_model_state_modified": false,
+  "authority": "USER_EXECUTION_RECORD_ONLY_NO_MODEL_AUTHORITY",
+  "note": "Actual user-reported fill. This record must not mutate Q017, E2, or M1 formulas, rankings, thresholds, research capital, model positions, or broker execution authority."
+}
