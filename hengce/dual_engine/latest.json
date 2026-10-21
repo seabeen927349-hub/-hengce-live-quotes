@@ -2,7 +2,7 @@
   "schema_version": 2,
   "system": "HENGCE",
   "module": "HENGCE_DUAL_ENGINE_DISPLAY",
-  "generated_at_taipei": "2026-10-21T09:01:13.616111+08:00",
+  "generated_at_taipei": "2026-10-21T09:24:08.102137+08:00",
   "architecture": "DUAL_ENGINE",
   "rankings_separate": true,
   "mixed_ranking_forbidden": true,
@@ -67,7 +67,7 @@
   },
   "e2": {
     "engine": "E2_PROFIT_MAX",
-    "status": "NO_FILL",
+    "status": "OFF",
     "binding_status": "PASS",
     "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
     "signal_asof": "2026-10-20",
@@ -103,21 +103,9 @@
       "liq20_turnover_twd": 3042360923.45,
       "signal_close": 489.0
     },
-    "action": "NO_FILL",
+    "action": "OFF",
     "paper_position": {
-      "state": "NO_FILL",
-      "signal_date": "2026-10-19",
-      "ticker": "3026",
-      "name": "禾伸堂",
-      "score": 4.801362351369969,
-      "beta60": 2.083939641519657,
-      "residual": -0.052159336205509395,
-      "entry_due": "NEXT_TWSE_SESSION_OPEN",
-      "execution_effective_date": "2026-10-20",
-      "execution_reason": "USER_CONFIRMED_NOT_FILLED",
-      "slot_released": true,
-      "model_signal_preserved": true,
-      "broker_order_execution": false
+      "state": "IDLE"
     },
     "research_capital_twd": 3000000,
     "capital_authority_twd": 0,
