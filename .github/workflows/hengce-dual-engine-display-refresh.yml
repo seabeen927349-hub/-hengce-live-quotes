@@ -10,6 +10,8 @@ on:
     paths:
       - 'scripts/hengce_dual_engine_display.py'
       - 'scripts/test_hengce_dual_engine_display_hard_lock.py'
+      - 'hengce/q017_radar/latest.json'
+      - 'hengce/e2_live/state_latest.json'
       - '.github/workflows/hengce-dual-engine-display-refresh.yml'
 
 permissions:
