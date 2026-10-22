@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "purpose": "RESEARCH_GOVERNANCE_ONLY_NO_RUN_AUTHORIZATION",
+  "authoritative_base": "42f4d4edd4b327c693290416d54d1e7622733969",
+  "python": {
+    "implementation": "CPython",
+    "version": "3.12.14"
+  },
+  "platform": {
+    "system": "Linux",
+    "machine": "x86_64",
+    "wheel_platform": "manylinux2014_x86_64"
+  },
+  "requirements_sha256": "b23301f738552948369e68b513179996531444e2110a70b4c78f5297f13343d0",
+  "dependencies": [
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "wheel": "attrs-26.1.0-py3-none-any.whl",
+      "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309"
+    },
+    {
+      "name": "certifi",
+      "version": "2025.10.5",
+      "wheel": "certifi-2025.10.5-py3-none-any.whl",
+      "sha256": "0f212c2744a9bb6de0c56639a6f68afe01ecd92d91f14ae897c4fe7bbeeef0de"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.4.4",
+      "wheel": "charset_normalizer-3.4.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "11d694519d7f29d6cd09f6ac70028dba10f92f6cdd059096db198c283794ac86"
+    },
+    {
+      "name": "et_xmlfile",
+      "version": "2.0.0",
+      "wheel": "et_xmlfile-2.0.0-py3-none-any.whl",
+      "sha256": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa"
+    },
+    {
+      "name": "idna",
+      "version": "3.11",
+      "wheel": "idna-3.11-py3-none-any.whl",
+      "sha256": "771a87f49d9defaf64091e6e6fe9c18d4833f140bd19464795bc32d966ca37ea"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.25.1",
+      "wheel": "jsonschema-4.25.1-py3-none-any.whl",
+      "sha256": "3fba0169e345c7175110351d456342c364814cfcf3b964ba4587f22915230a63"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1",
+      "wheel": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+      "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe"
+    },
+    {
+      "name": "openpyxl",
+      "version": "3.1.5",
+      "wheel": "openpyxl-3.1.5-py2.py3-none-any.whl",
+      "sha256": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3",
+      "wheel": "pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc"
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0",
+      "wheel": "referencing-0.37.0-py3-none-any.whl",
+      "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231"
+    },
+    {
+      "name": "requests",
+      "version": "2.32.5",
+      "wheel": "requests-2.32.5-py3-none-any.whl",
+      "sha256": "2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.9.1",
+      "wheel": "rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "addeda51556dac7c1a2f14cda62db8b621cd12afba3091d03a96c72932387eab"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "wheel": "typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.5.0",
+      "wheel": "urllib3-2.5.0-py3-none-any.whl",
+      "sha256": "e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc"
+    }
+  ],
+  "frozen_sources_sha256": {
+    "research/phase1_audit/experiment.schema.json": "889a6d21090fda198fdf6bd41a77899355b20d203a49cc5e1e07e6189be991c4",
+    "research/phase1_audit/holdout.schema.json": "95d91d1d6044e431562e506d4761061fde965889aeadb097ee22b931f79f9ce2",
+    "research/phase1_audit/ledger.py": "db7f377a50205f5df827b1a9cff28fb4c78be60b8fe882336e01fd8ca7bf0161",
+    "scripts/hengce_e2_live.py": "bd05acb97180f514b52eb5c1f6c7fc3603927a3d9247d47007359a7f72c7c1cb",
+    "hengce/E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json": "eb82962532e017d00619b012eaf98a780a5f60a2dd34efade379decfeb7a14e7",
+    "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_PIT_VALIDATION_LOCK_20261019.json": "69fdf8ff2e48d7398ea7a93af56f9bc1e2729161569826f00399b297931825a9"
+  },
+  "isolation": "Separate research venv; never install into production runtime",
+  "limitations": [
+    "OS image/kernel and interpreter build digest are not hermetically locked; B01 remains PARTIAL",
+    "Single Linux x86_64 CPython 3.12 wheel target; other platforms require a separately reviewed lock"
+  ],
+  "phase2_authorized": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "PROMOTE_TO_PRODUCTION": "FORBIDDEN"
+}

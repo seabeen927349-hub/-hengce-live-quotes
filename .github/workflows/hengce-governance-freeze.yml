@@ -1,0 +1,55 @@
+name: HENGCE Research Governance Freeze
+
+on:
+  pull_request:
+    paths:
+      - 'research/phase2_governance/**'
+      - '.github/workflows/hengce-governance-freeze.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  governance-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      HENGCE_RESEARCH_VENV: ${{ runner.temp }}/hengce-research-governance-venv
+      HENGCE_GOVERNANCE_BASE: ${{ github.event.pull_request.base.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.14'
+      - name: Create isolated research environment from exact wheel hashes
+        run: |
+          set -euo pipefail
+          python -m venv "$HENGCE_RESEARCH_VENV"
+          "$HENGCE_RESEARCH_VENV/bin/python" -m pip download --require-hashes --only-binary=:all: \
+            --platform manylinux2014_x86_64 --implementation cp --abi cp312 --python-version 3.12 \
+            --dest "$RUNNER_TEMP/hengce-governance-wheels" -r research/phase2_governance/requirements.lock
+          "$HENGCE_RESEARCH_VENV/bin/python" -m pip install --no-index --require-hashes \
+            --find-links "$RUNNER_TEMP/hengce-governance-wheels" -r research/phase2_governance/requirements.lock
+      - name: Verify exact PR scope and independently retained base prefix
+        if: github.event_name == 'pull_request'
+        run: '"$HENGCE_RESEARCH_VENV/bin/python" -B research/phase2_governance/freeze.py --base "$HENGCE_GOVERNANCE_BASE"'
+      - name: Synthetic governance tests only - no optimizer or holdout access
+        run: |
+          set -euo pipefail
+          "$HENGCE_RESEARCH_VENV/bin/python" -B research/phase2_governance/test_governance.py 2>&1 | tee "$RUNNER_TEMP/hengce-governance-tests.txt"
+      - name: Retain governance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-research-governance-evidence
+          path: |
+            ${{ runner.temp }}/hengce-governance-tests.txt
+            research/phase2_governance/environment-lock.json
+            research/phase2_governance/ledger-contract.json
+            research/phase2_governance/phase2-policy.json
+          if-no-files-found: error
