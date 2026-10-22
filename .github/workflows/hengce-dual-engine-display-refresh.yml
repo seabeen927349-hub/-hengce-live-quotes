@@ -37,8 +37,16 @@ jobs:
       - name: Run dual-engine anti-drift regression
         run: python scripts/test_hengce_dual_engine_display_hard_lock.py
 
+      - name: Recovery admission from clean current remote
+        env:
+          HENGCE_REQUEST_DATE: ${{ inputs.trade_date || '' }}
+          HENGCE_REQUEST_MODE: refresh
+        run: python scripts/hengce_recovery_transaction.py prepare --lane display --mode "$HENGCE_REQUEST_MODE"
+
       - name: Refresh authoritative dual-engine display
-        run: python scripts/hengce_dual_engine_display.py
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope display
+          python scripts/hengce_dual_engine_display.py
 
       - name: Validate display contract
         run: |
@@ -65,8 +73,9 @@ jobs:
             echo 'No dual-engine display changes.'
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            python scripts/hengce_recovery_transaction.py stage
             git commit -m "HENGCE refresh dual-engine display ${TS}"
-            python scripts/hengce_publish.py --profile conservative-all
+            python scripts/hengce_publish.py --profile conservative-all --transaction-lane display
           fi
 
       - name: Preserve publication arbitration receipts and captured evidence

@@ -68,8 +68,16 @@ jobs:
           PYTHONPATH=scripts python scripts/test_hengce_e2_no_fill.py
           PYTHONPATH=scripts python scripts/test_hengce_e2_morning_release.py
 
+      - name: Recovery admission from clean current remote
+        env:
+          HENGCE_REQUEST_DATE: ${{ inputs.trade_date || '' }}
+          HENGCE_REQUEST_MODE: postclose
+        run: python scripts/hengce_recovery_transaction.py prepare --lane e2-postclose --mode "$HENGCE_REQUEST_MODE"
+
       - name: Refresh E2 profit-max postclose state
-        run: python scripts/hengce_e2_live.py --mode postclose --date '${{ steps.date.outputs.target_date }}'
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope e2-postclose
+          python scripts/hengce_e2_live.py --mode postclose --date '${{ steps.date.outputs.target_date }}'
 
       - name: Validate E2 display output
         shell: bash
@@ -105,7 +113,9 @@ jobs:
           PY
 
       - name: Build unified Q017 plus E2 display
-        run: python scripts/hengce_dual_engine_display.py
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope display
+          python scripts/hengce_dual_engine_display.py
 
       - name: Validate dual-engine display
         shell: bash
@@ -140,8 +150,9 @@ jobs:
             echo 'E2 and dual-engine display already current.'
             exit 0
           fi
+          python scripts/hengce_recovery_transaction.py stage
           git commit -m "HENGCE E2 profit-max postclose ${{ steps.date.outputs.target_date }}"
-          python scripts/hengce_publish.py --profile conservative-all
+          python scripts/hengce_publish.py --profile conservative-all --transaction-lane e2-postclose
 
       - name: Preserve publication arbitration receipts and captured evidence
         if: always()

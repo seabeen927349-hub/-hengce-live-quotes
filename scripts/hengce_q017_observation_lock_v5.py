@@ -6,6 +6,7 @@ from datetime import datetime
 from pathlib import Path
 
 import hengce_q017_decision_lock_v4 as v4
+from hengce_recovery_transaction import current_request
 
 core=v4.core; TZ=v4.TZ; ROOT=v4.ROOT; RADAR=v4.RADAR; HISTORY=v4.HISTORY; LATEST=v4.LATEST; SIGNAL_LEDGER=v4.SIGNAL_LEDGER
 OBS_DIR=RADAR/'observations'; OBS_LATEST=RADAR/'observation_latest.json'; DECISION_DIR=RADAR/'decision'; DECISION_LATEST=RADAR/'decision_latest.json'
@@ -147,7 +148,13 @@ def collect_observation(today=None):
 
 def compute_decision(today=None):
     today=today or core.now_tw().date();op=obs_path(today)
+    current_request('q017-recovery','compute',today.isoformat(),core.now_tw())
     if not op.exists():raise RuntimeError('NO_IMMUTABLE_0901_OBSERVATION')
+    p=decision_path(today)
+    if p.exists():
+        stored=json.loads(p.read_text(encoding='utf-8'))
+        validate_decision(stored,today)
+        return stored  # Existing validated immutable decision wins; no rerank or projection repair.
     obs=json.loads(op.read_text(encoding='utf-8'));out=build_decision_from_observation(obs);p=decision_path(today);stored,created=write_once(p,out,'decision_snapshot_sha256');core.atomic_json(DECISION_LATEST,stored);core.atomic_json(LATEST,stored)
     if created:
         core.atomic_json(HISTORY/f'{core.now_tw().strftime("%Y%m%dT%H%M%S")}_DECISION_FROM_OBSERVATION_V5.json',stored)

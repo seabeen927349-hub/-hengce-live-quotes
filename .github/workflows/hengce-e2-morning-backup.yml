@@ -51,6 +51,12 @@ jobs:
           echo "trade_date=$TARGET_DATE" >> "$GITHUB_OUTPUT"
           echo "TARGET_DATE=$TARGET_DATE"
 
+      - name: Recovery admission from clean current remote
+        env:
+          HENGCE_REQUEST_DATE: ${{ inputs.trade_date || '' }}
+          HENGCE_REQUEST_MODE: morning
+        run: python scripts/hengce_recovery_transaction.py prepare --lane e2-morning --mode "$HENGCE_REQUEST_MODE"
+
       - name: Check whether morning bridge is already current
         id: freshness
         shell: bash
@@ -87,7 +93,9 @@ jobs:
 
       - name: Build E2 morning bridge
         if: steps.freshness.outputs.current != 'true'
-        run: python scripts/hengce_e2_live.py --mode morning --date '${{ steps.date.outputs.trade_date }}'
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope e2-morning
+          python scripts/hengce_e2_live.py --mode morning --date '${{ steps.date.outputs.trade_date }}'
 
       - name: Validate E2 morning bridge
         if: steps.freshness.outputs.current != 'true'
@@ -110,7 +118,9 @@ jobs:
 
       - name: Refresh dual-engine display after E2 morning bind
         if: steps.freshness.outputs.current != 'true'
-        run: python scripts/hengce_dual_engine_display.py
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope display
+          python scripts/hengce_dual_engine_display.py
 
       - name: Validate display remains authority-safe
         if: steps.freshness.outputs.current != 'true'
@@ -142,8 +152,9 @@ jobs:
             exit 0
           fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          python scripts/hengce_recovery_transaction.py stage
           git commit -m "HENGCE E2 morning backup ${TS}"
-          python scripts/hengce_publish.py --profile conservative-all
+          python scripts/hengce_publish.py --profile conservative-all --transaction-lane e2-morning
 
       - name: Report idempotent skip
         if: steps.freshness.outputs.current == 'true'

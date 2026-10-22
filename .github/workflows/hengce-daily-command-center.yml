@@ -160,17 +160,28 @@ jobs:
           grep -q '"formal_buy_count": 0' /tmp/legacy-radar-kill-switch.json
           echo 'PASS LEGACY_RADAR_KILL_SWITCH_EXIT2_ZERO_AUTHORITY'
 
+      - name: Recovery admission from clean current remote
+        if: steps.mode.outputs.mode != 'self-test'
+        env:
+          HENGCE_REQUEST_DATE: ${{ inputs.trade_date || '' }}
+          HENGCE_REQUEST_MODE: ${{ steps.mode.outputs.mode }}
+        run: python scripts/hengce_recovery_transaction.py prepare --lane daily --mode "$HENGCE_REQUEST_MODE"
+
       - name: Run premarket data gate
         id: premarket_gate
         if: steps.mode.outputs.mode == 'premarket'
         continue-on-error: true
-        run: python scripts/hengce_daily_command_center.py --mode premarket
+        run: |
+          python scripts/hengce_recovery_transaction.py fence
+          python scripts/hengce_daily_command_center.py --mode premarket
 
       - name: Build zero-authority Q017 prewarm fallback snapshot
         id: q017_snapshot
         if: always() && steps.mode.outputs.mode == 'premarket'
         continue-on-error: true
-        run: python scripts/hengce_q017_premarket_snapshot_v1.py --mode build
+        run: |
+          python scripts/hengce_recovery_transaction.py fence
+          python scripts/hengce_q017_premarket_snapshot_v1.py --mode build
 
       # Manual emergency decision mode remains available, but no schedule maps to it.
       - name: Capture immutable 09:01 Q017 observation only
@@ -178,7 +189,9 @@ jobs:
         if: steps.mode.outputs.mode == 'decision'
         continue-on-error: true
         shell: bash
-        run: python scripts/hengce_q017_observation_lock_v5.py --mode observe ${{ steps.target.outputs.date_arg }}
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope q017-primary
+          python scripts/hengce_q017_observation_lock_v5.py --mode observe ${{ steps.target.outputs.date_arg }}
 
       - name: Persist 09:01 observation before any ranking computation
         if: always() && steps.mode.outputs.mode == 'decision' && steps.q017_observe.outcome == 'success'
@@ -192,8 +205,9 @@ jobs:
             echo '09:01 observation already persisted.'
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            python scripts/hengce_recovery_transaction.py stage
             git commit -m "HENGCE Q017 immutable 09:01 observation ${TS}"
-            python scripts/hengce_publish.py --profile conservative-all
+            python scripts/hengce_publish.py --profile conservative-all --transaction-lane daily
           fi
 
       - name: Compute Q017 only from locked 09:01 observation
@@ -201,31 +215,40 @@ jobs:
         if: steps.mode.outputs.mode == 'compute' || (steps.mode.outputs.mode == 'decision' && steps.q017_observe.outcome == 'success')
         continue-on-error: true
         shell: bash
-        run: python scripts/hengce_q017_observation_lock_v5.py --mode compute ${{ steps.target.outputs.date_arg }}
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope q017-recovery
+          python scripts/hengce_q017_observation_lock_v5.py --mode compute ${{ steps.target.outputs.date_arg }}
 
       - name: Bind E2 prior-close state for morning execution
         id: e2_morning
         if: always() && (steps.mode.outputs.mode == 'e2-morning' || steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
         continue-on-error: true
-        run: python scripts/hengce_e2_live.py --mode morning
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope e2-morning
+          python scripts/hengce_e2_live.py --mode morning
 
       - name: Run locked Q017 post-open monitor
         id: q017_monitor
         if: steps.mode.outputs.mode == 'monitor'
         continue-on-error: true
         shell: bash
-        run: python scripts/hengce_q017_observation_lock_v5.py --mode monitor ${{ steps.target.outputs.date_arg }}
+        run: |
+          python scripts/hengce_recovery_transaction.py fence
+          python scripts/hengce_q017_observation_lock_v5.py --mode monitor ${{ steps.target.outputs.date_arg }}
 
       - name: Run post-close official ingest and history append
         id: postclose_ingest
         if: steps.mode.outputs.mode == 'postclose'
-        run: python scripts/hengce_daily_command_center.py --mode postclose ${{ steps.target.outputs.date_arg }}
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope eod
+          python scripts/hengce_daily_command_center.py --mode postclose ${{ steps.target.outputs.date_arg }}
 
       - name: Resolve post-close mother-gated readiness
         id: postclose_ready
         if: always() && steps.mode.outputs.mode == 'postclose'
         shell: bash
         run: |
+          python scripts/hengce_recovery_transaction.py fence --scope eod-ready
           set -euo pipefail
           DS="$(echo '${{ steps.target.outputs.trade_date }}' | tr -d '-')"
           FILE="eod/${DS}/status.json"
@@ -241,19 +264,24 @@ jobs:
 
       - name: Refresh E2 incremental post-close state
         if: steps.mode.outputs.mode == 'postclose' && steps.postclose_ready.outputs.downstream_ready == 'true'
-        run: python scripts/hengce_e2_live.py --mode postclose ${{ steps.target.outputs.date_arg }}
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope e2-postclose
+          python scripts/hengce_e2_live.py --mode postclose ${{ steps.target.outputs.date_arg }}
 
       - name: Update all active Q017 10-session review cohorts
         if: steps.mode.outputs.mode == 'postclose' && steps.postclose_ready.outputs.downstream_ready == 'true'
         shell: bash
         run: |
+          python scripts/hengce_recovery_transaction.py fence --scope review
           set -euo pipefail
           python scripts/hengce_q017_10d_review.py --mode update
           python scripts/hengce_q017_10d_review_extension.py --mode update
 
       - name: Enforce Q017 schema-v5 observation-bound authority guard
         if: always() && (steps.mode.outputs.mode == 'decision' || steps.mode.outputs.mode == 'compute' || steps.mode.outputs.mode == 'monitor')
-        run: python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
+        run: |
+          python scripts/hengce_recovery_transaction.py fence
+          python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
 
       - name: Commit command-center outputs
         if: always() && steps.mode.outputs.mode != 'self-test'
@@ -267,8 +295,9 @@ jobs:
             echo 'No command-center output changes.'
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            python scripts/hengce_recovery_transaction.py stage
             git commit -m "HENGCE command center ${TS} ${{ steps.mode.outputs.mode }}"
-            python scripts/hengce_publish.py --profile conservative-all
+            python scripts/hengce_publish.py --profile conservative-all --transaction-lane daily
           fi
 
       - name: Premarket snapshot health

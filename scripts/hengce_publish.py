@@ -13,6 +13,7 @@ import subprocess
 import tempfile
 import time
 import uuid
+import hengce_recovery_transaction as recovery
 
 # Producer write_once contracts, not a filename-based authority inference.
 # E2 history is intentionally NOT listed: it is a mutable per-date snapshot.
@@ -117,7 +118,7 @@ class Reporter:
                                  'mode': 'ALL_PATHS_EXCEPT_PROVEN_UNRELATED',
                                  'excluded_patterns': list(PROFILES[profile]['unrelated']),
                                  'unknown_paths': 'READ_DEPENDENCY_FAIL_CLOSED'},
-                             capital_authority=0, signal_authority=False)
+                             capital_authority=0, **recovery.ZERO)
         if profile == 'health-only':
             self.identity.update(health_only=True,ranking_authority=False,
                                  capital_authority_twd=0,broker_order_execution=False)
@@ -163,8 +164,9 @@ def adopt_accepted_checkout(repo, proposed, accepted):
             raise Stop('ACCEPTED_PUBLICATION_LOCAL_SYNC_FAILED:' + accepted + ':' + str(exc)) from exc
 
 
-def publish(repo, report_dir, profile='conservative-all'):
+def publish(repo, report_dir, profile='conservative-all', transaction_lane=None, now=None):
     remote = None
+    transaction = None
     reporter = Reporter(report_dir, None, None, [])
     try:
         proposed = git(repo, 'rev-parse', 'HEAD').decode().strip()
@@ -175,6 +177,11 @@ def publish(repo, report_dir, profile='conservative-all'):
         original, wanted = tree(repo, base), tree(repo, proposed)
         paths = sorted(p for p in original.keys() | wanted.keys() if original.get(p) != wanted.get(p))
         reporter = Reporter(report_dir, base, proposed, paths, profile)
+        if transaction_lane:
+            transaction = recovery.committed(repo, transaction_lane, now,
+                immutable_paths=[p for p in paths if immutable(p)],unrelated=PROFILES[profile]['unrelated'])
+        elif recovery.location(repo).exists():
+            raise Stop('PREPARED_CHECKOUT_REQUIRES_EXPLICIT_TRANSACTION_LANE')
         outside = [p for p in paths if not matches(p, PROFILES[profile]['writes'])]
         if outside:
             raise Stop('WRITE_SET_OUTSIDE_DEPENDENCY_PROFILE:' + ','.join(outside))
@@ -197,9 +204,22 @@ def publish(repo, report_dir, profile='conservative-all'):
             conflicts = [p for p in paths if immutable(p) and p in current and current.get(p) != wanted.get(p)]
             if conflicts:
                 raise Stop('IMMUTABLE_REMOTE_CONFLICT:' + ','.join(conflicts))
+            # A recovery may recognize its already accepted writes, but never
+            # ignore independent input drift just because outputs happen to match.
+            if transaction and remote != base:
+                changed_inputs = [p for p in original.keys() | current.keys()
+                                  if original.get(p) != current.get(p) and p not in paths
+                                  and not matches(p, PROFILES[profile]['unrelated'])]
+                if changed_inputs:
+                    raise Stop('REMOTE_ADVANCED_READ_DEPENDENCY_CHANGED:' + ','.join(sorted(changed_inputs)))
             if all(current.get(p) == wanted.get(p) for p in paths):
+                if transaction:
+                    recovery.validate_closure(recovery.Snapshot(repo,remote),transaction_lane,transaction['mode'],
+                        transaction['trade_date'],set(paths),recovery.Snapshot(repo,base),recovery.clock(now))
+                    recovery.accepted(repo,transaction,remote,'IDEMPOTENT_REMOTE_BYTES_RECONCILED')
                 reporter.emit('IDEMPOTENT_NOOP', remote, attempt=attempt)
                 adopt_accepted_checkout(repo, proposed, remote)
+                if transaction:recovery.adopted(repo,transaction)
                 return 0
             candidate = proposed
             if remote != base:
@@ -219,20 +239,33 @@ def publish(repo, report_dir, profile='conservative-all'):
             # explicit lease rejects advancement/rewind between fetch and push.
             if git(repo, 'rev-parse', candidate + '^').decode().strip() != remote:
                 raise Stop('CANDIDATE_PARENT_IS_NOT_OBSERVED_REMOTE')
-            run = subprocess.run(['git', '-C', str(repo), 'push',
+            if transaction:
+                recovery.validate_closure(recovery.Snapshot(repo,candidate),transaction_lane,transaction['mode'],
+                    transaction['trade_date'],set(paths),recovery.Snapshot(repo,base),recovery.clock(now))
+                recovery.intent(repo,transaction,candidate)
+            try:
+                run = subprocess.run(['git', '-C', str(repo), 'push',
                                   '--force-with-lease=refs/heads/main:' + remote,
                                   'origin', candidate + ':refs/heads/main'], capture_output=True, timeout=60)
+            except subprocess.TimeoutExpired:
+                reporter.emit('CONFLICT_FAIL_CLOSED',remote,reason='PUSH_ACK_UNKNOWN_REFETCH_REQUIRED',attempt=attempt)
+                continue
             if run.returncode == 0:
+                if transaction:recovery.accepted(repo,transaction,candidate,'EXACT_LEASE_REMOTE_ACK_ACCEPTED')
                 reporter.emit('PUBLISHED', remote, attempt=attempt, published_sha=candidate)
                 adopt_accepted_checkout(repo, proposed, candidate)
+                if transaction:recovery.adopted(repo,transaction)
                 return 0
             # A rejected lease is re-fetched and revalidated from ORIGINAL bytes,
             # never from a rebased or conflict-resolved proposal.
             reporter.emit('CONFLICT_FAIL_CLOSED', remote, reason='PUSH_REJECTED_OR_ACK_UNKNOWN_REFETCH_REQUIRED',
                           attempt=attempt)
         raise Stop('PUBLISH_LEASE_RETRY_LIMIT')
-    except (Stop, subprocess.TimeoutExpired, OSError) as exc:
-        reason = str(exc) if isinstance(exc, Stop) else type(exc).__name__
+    except (Stop, recovery.Blocked, subprocess.TimeoutExpired, OSError) as exc:
+        reason = str(exc) if isinstance(exc, (Stop,recovery.Blocked)) else type(exc).__name__
+        if transaction_lane and recovery.location(repo).exists():
+            try:recovery.blocked(repo,reason)
+            except (recovery.Blocked,OSError):pass  # Existing durable intent remains fenced.
         reporter.emit('CONFLICT_FAIL_CLOSED', remote, reason)
         return 2
 
@@ -241,9 +274,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo', type=Path, default=Path.cwd())
     parser.add_argument('--profile', choices=sorted(PROFILES), default='conservative-all')
+    parser.add_argument('--transaction-lane',choices=sorted(recovery.LANES))
     parser.add_argument('--report-dir', type=Path, default=Path(os.environ.get('RUNNER_TEMP', tempfile.gettempdir())) / 'hengce-publication')
     args = parser.parse_args()
-    return publish(args.repo, args.report_dir, args.profile)
+    return publish(args.repo, args.report_dir, args.profile, transaction_lane=args.transaction_lane)
 
 
 if __name__ == '__main__':

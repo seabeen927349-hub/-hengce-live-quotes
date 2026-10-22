@@ -59,14 +59,25 @@ jobs:
             ARG='--date ${{ inputs.trade_date }}'
           fi
           echo "arg=$ARG" >> "$GITHUB_OUTPUT"
+      - name: Recovery admission from clean current remote
+        if: github.event_name != 'push'
+        env:
+          HENGCE_REQUEST_DATE: ${{ inputs.trade_date || '' }}
+          HENGCE_REQUEST_MODE: compute
+        run: python scripts/hengce_recovery_transaction.py prepare --lane q017-recovery --mode "$HENGCE_REQUEST_MODE"
+
       - name: Recover decision only from persisted 09:01 evidence
         id: recover
         if: github.event_name != 'push'
         continue-on-error: true
-        run: python scripts/hengce_q017_recovery_compute_v5.py --mode compute ${{ steps.target.outputs.arg }}
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope q017-recovery
+          python scripts/hengce_q017_recovery_compute_v5.py --mode compute ${{ steps.target.outputs.arg }}
       - name: Enforce schema-v5 authority after recovery
         if: github.event_name != 'push' && steps.recover.outcome == 'success'
-        run: python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
+        run: |
+          python scripts/hengce_recovery_transaction.py fence
+          python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
       - name: Persist promoted observation, decision, and recovery receipt
         if: github.event_name != 'push' && steps.recover.outcome == 'success'
         shell: bash
@@ -77,8 +88,9 @@ jobs:
           git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/decision/ hengce/q017_radar/decision_latest.json hengce/q017_radar/latest.json hengce/q017_radar/history/ hengce/q017_radar/recovery_receipts/ hengce/q017_radar/signal_ledger.jsonl || true
           if git diff --cached --quiet; then echo 'Recovery already persisted; no rerank performed.'; exit 0; fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          python scripts/hengce_recovery_transaction.py stage
           git commit -m "HENGCE Q017 observation recovery ${TS}"
-          python scripts/hengce_publish.py --profile conservative-all
+          python scripts/hengce_publish.py --profile conservative-all --transaction-lane q017-recovery
       - name: Report fail-closed without suppressing other engines
         if: github.event_name != 'push' && steps.recover.outcome != 'success'
         run: |

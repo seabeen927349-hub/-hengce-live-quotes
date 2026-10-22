@@ -6,6 +6,7 @@ from datetime import datetime
 from pathlib import Path
 
 import hengce_q017_observation_lock_v5 as v5
+from hengce_recovery_transaction import ZERO
 
 ROOT=v5.ROOT
 RADAR=v5.RADAR
@@ -49,6 +50,7 @@ def observe(today=None):
         'coverage_semantics':(out.get('data_status') or {}).get('coverage_semantics'),
         'policy':'May be promoted only if canonical 09:01 observation is absent and this artifact passes schema-v5 validation.'
     }
+    receipt.update(ZERO)
     v5.core.atomic_json(BACKUP_STATUS,receipt)
     return out
 
@@ -72,6 +74,7 @@ def main():
     except Exception as e:
         activate_backup_lane()
         fail={'schema_version':5,'system':'HENGCE','module':'Q017_0901_BACKUP_OBSERVER','generated_at_taipei':v5.core.now_tw().isoformat(),'status':'DATA_PENDING','authority':'NO_FORMAL_SIGNAL','formal_buy_count':0,'error':repr(e)}
+        fail.update(ZERO)
         v5.core.atomic_json(BACKUP_STATUS,fail);print(json.dumps(fail,ensure_ascii=False,indent=2));return 2
 
 if __name__=='__main__':raise SystemExit(main())
