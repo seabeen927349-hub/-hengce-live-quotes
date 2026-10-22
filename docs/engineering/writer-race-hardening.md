@@ -57,7 +57,8 @@ Compatible additions use `read-tree`/`update-index`/`commit-tree` on an isolated
 temporary index, retaining remote bytes and producer bytes exactly. The original
 proposal/index/worktree remains untouched. No historical outputs are regenerated.
 
-Pre-capture/pre-refresh syncs use FF-only and still happen before computation.
+Existing pre-capture/pre-refresh syncs remain unchanged, before any computation
+or generated commit; these are not post-computation publication retries.
 Post-capture evidence verification reads the exact locally accepted proposal;
 it no longer imports/rebases a competing writer's outputs. No producer calculation
 or validator is moved or edited. Existing always-run diagnostic publication may

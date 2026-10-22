@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git pull --ff-only origin main
+          git pull --rebase origin main
 
       - name: Self-test macro cache contract
         if: steps.mode.outputs.mode == 'self-test'

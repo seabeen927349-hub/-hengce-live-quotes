@@ -57,18 +57,28 @@ class WriterWorkflowTests(unittest.TestCase):
                     continue
                 expected = dict(step)
                 run = expected.get('run', '')
-                if 'git pull --rebase origin main' in run:
-                    replacement = '# Verify the exact accepted proposal; no post-computation pull/rebase.' if step.get('name', '').startswith('Verify ') else 'git pull --ff-only origin main'
-                    expected['run'] = run.replace('git pull --rebase origin main', replacement)
+                if 'git pull --rebase origin main' in run and step.get('name', '').startswith('Verify '):
+                    expected['run'] = run.replace('git pull --rebase origin main', '# Verify the exact accepted proposal; no post-computation pull/rebase.')
                 actual = after['jobs'][writer['job']]['steps'][index]
                 self.assertEqual(expected, actual, (writer['workflow'], step.get('name')))
 
     def test_no_unguarded_main_push_or_blind_rebase_remains(self):
+        safe_precompute_syncs = {
+            ('hengce-q017-primary-observer.yml', 'Sync latest persisted morning inputs before observer starts'),
+            ('hengce-q017-backup-observer.yml', 'Sync latest persisted morning inputs before observer starts'),
+            ('hengce-q017-macro-cache.yml', 'Sync latest repository state before refresh')}
         for path in (ROOT / '.github/workflows').glob('*.yml'):
             text = path.read_text()
             self.assertNotIn('git push origin HEAD:main', text, path)
-            self.assertNotIn('git pull --rebase', text, path)
-            self.assertNotIn('git rebase ', text, path)
+            config = yaml.load(text, Loader=yaml.BaseLoader)
+            for job in config['jobs'].values():
+                for step in job.get('steps', []):
+                    run = step.get('run', '')
+                    if 'git pull --rebase' in run:
+                        self.assertIn((path.name, step.get('name')), safe_precompute_syncs)
+                        self.assertNotIn('git commit', run)
+                        self.assertNotIn('hengce_publish.py', run)
+                    self.assertNotIn('git rebase ', run, path)
 
     def test_q017_observers_have_independent_capture_lanes(self):
         groups = []

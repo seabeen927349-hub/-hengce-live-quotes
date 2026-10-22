@@ -81,7 +81,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git pull --ff-only origin main
+          git pull --rebase origin main
 
       - name: Capture canonical immutable 09:01 observation through macro-cache-first supervisor
         id: primary_observe

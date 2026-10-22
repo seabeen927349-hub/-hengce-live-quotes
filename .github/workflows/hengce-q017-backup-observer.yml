@@ -81,7 +81,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git pull --ff-only origin main
+          git pull --rebase origin main
 
       - name: Capture independent 09:01 backup observation through macro-cache-first supervisor
         id: backup_observe
