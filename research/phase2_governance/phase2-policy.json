@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "issue": 22,
+  "status": "NOT_READY_FOR_PHASE2_RUNS_YET",
+  "phase2_authorized": false,
+  "authorization_event": null,
+  "engine_scope": {
+    "E2": "CANDIDATE_FOR_FIRST_PHASE2_OPTIMIZATION_RESEARCH",
+    "Q017": "PROSPECTIVE_CHARACTERIZATION_ONLY",
+    "M1": "RESEARCH_SHADOW_ONLY_NO_OPTIMIZATION"
+  },
+  "human_approvals": {
+    "phase2_research_scope": {
+      "status": "PENDING_HUMAN_APPROVAL",
+      "approved_value": null,
+      "authorization_id": null,
+      "proposal_status": "PROPOSED",
+      "proposed_value": {
+        "E2": "CANDIDATE_FOR_FIRST_PHASE2_OPTIMIZATION_RESEARCH",
+        "Q017": "PROSPECTIVE_CHARACTERIZATION_ONLY",
+        "M1": "RESEARCH_SHADOW_ONLY_NO_OPTIMIZATION"
+      }
+    },
+    "chronological_walk_forward": {
+      "status": "PENDING_HUMAN_APPROVAL",
+      "approved_value": null,
+      "authorization_id": null,
+      "proposal_status": "PROPOSED",
+      "proposed_value": {
+        "method": "PRE_REGISTERED_EXPANDING_WALK_FORWARD",
+        "chronological_only": true,
+        "random_split": false,
+        "fold_dates": null,
+        "step_sessions": null
+      }
+    },
+    "purge_embargo": {
+      "status": "PENDING_HUMAN_APPROVAL",
+      "approved_value": null,
+      "authorization_id": null,
+      "proposal_status": "PROPOSED",
+      "proposed_value": {
+        "purge_min_twse_sessions": 20,
+        "embargo_min_twse_sessions": 20,
+        "overlapping_fixed20_outcomes_must_be_covered": true
+      }
+    },
+    "trial_budget_multiple_testing": {
+      "status": "PENDING_HUMAN_APPROVAL",
+      "approved_value": null,
+      "authorization_id": null,
+      "proposal_status": "PROPOSED",
+      "proposed_value": {
+        "initial_family_max_challenger_variants": 24,
+        "failed_rejected_aborted_count": true,
+        "family_correction_rule": null,
+        "reset_requires_new_governance": true
+      }
+    },
+    "cost_baseline_stress": {
+      "status": "PENDING_HUMAN_APPROVAL",
+      "approved_value": null,
+      "authorization_id": null,
+      "proposal_status": "PROPOSED",
+      "proposed_value": {
+        "baseline_aggregate_roundtrip_cost": 0.008,
+        "stress_aggregate_multipliers": [
+          1.0,
+          1.5,
+          2.0
+        ],
+        "decomposition": "FORBIDDEN_WITHOUT_SEPARATE_EVIDENCE_AND_APPROVAL",
+        "component_add_on": "FORBIDDEN_DOUBLE_COUNT"
+      }
+    },
+    "minimum_observations_trades": {
+      "status": "PENDING_HUMAN_APPROVAL",
+      "approved_value": null,
+      "authorization_id": null,
+      "proposal_status": "PROPOSED",
+      "proposed_value": {
+        "minimum_observations": null,
+        "minimum_trades": null
+      }
+    },
+    "drawdown_tail_cost_turnover_gates": {
+      "status": "PENDING_HUMAN_APPROVAL",
+      "approved_value": null,
+      "authorization_id": null,
+      "proposal_status": "PROPOSED",
+      "proposed_value": {
+        "drawdown_limit": null,
+        "tail_loss_limit": null,
+        "turnover_limit": null,
+        "cost_stress_acceptance": null,
+        "required_checks": [
+          "walk_forward",
+          "parameter_perturbation",
+          "cost_stress",
+          "leave_best_trades_out",
+          "regime",
+          "future_prospective_shadow"
+        ]
+      }
+    },
+    "prospective_holdout_custody_access": {
+      "status": "PENDING_HUMAN_APPROVAL",
+      "approved_value": null,
+      "authorization_id": null,
+      "proposal_status": "PROPOSED",
+      "proposed_value": {
+        "allocation": "AFTER_CANDIDATE_FREEZE_AND_EXPLICIT_APPROVAL_ONLY",
+        "custodian": null,
+        "access_identity": null,
+        "one_time_token_policy": null,
+        "retention": null
+      }
+    }
+  },
+  "historical_exposure": {
+    "years": [
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "status": "EXPOSED_DEVELOPMENT_VALIDATION_ELIGIBLE_ONLY",
+    "pristine_holdout": false,
+    "usable_only_with_proven_lineage": true
+  },
+  "prospective_holdout": {
+    "state": "UNALLOCATED",
+    "allocation_authorized": false,
+    "access_authorized": false,
+    "candidate_freeze_id": null
+  },
+  "existing_e2_baseline": {
+    "roundtrip_cost": 0.008,
+    "meaning": "EXISTING_AGGREGATE_ROUNDTRIP_ASSUMPTION",
+    "component_costs": null,
+    "double_count_forbidden": true,
+    "max_slots": 1,
+    "overlap": "FORBIDDEN",
+    "entry": "NEXT_TWSE_OPEN",
+    "exit": "FIXED20"
+  },
+  "gates": {
+    "B01": "PARTIAL",
+    "B02": "PARTIAL",
+    "B03": "PARTIAL",
+    "B04": "PARTIAL",
+    "B05": "PARTIAL",
+    "B06": "PARTIAL",
+    "B07": "PARTIAL",
+    "B08": "PARTIAL",
+    "B09": "PARTIAL",
+    "B10": "BLOCKED_PENDING_EXPLICIT_HUMAN_AUTHORIZATION"
+  },
+  "actual_user_trades_are_model_evidence": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "PROMOTE_TO_PRODUCTION": "FORBIDDEN"
+}

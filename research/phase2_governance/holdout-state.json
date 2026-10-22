@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "holdout_id": "PROSPECTIVE_UNALLOCATED",
+  "state": "UNALLOCATED",
+  "custodian": null,
+  "artifact_commitment_sha256": null,
+  "policy_authorization_id": null,
+  "access_policy_sha256": null,
+  "sealed_at": null,
+  "opened_at": null,
+  "consumed_at": null,
+  "open_count": 0,
+  "exposed": false,
+  "audit_head_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "capital_authority": 0
+}

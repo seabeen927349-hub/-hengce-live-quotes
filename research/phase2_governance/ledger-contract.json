@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "ledger_id": "HENGCE_RESEARCH_GOVERNANCE_V1",
+  "record_schema": "../phase1_audit/experiment.schema.json",
+  "record_schema_sha256": "889a6d21090fda198fdf6bd41a77899355b20d203a49cc5e1e07e6189be991c4",
+  "record_capital_authority": 0,
+  "record_phase2_authorized": false,
+  "append_only": true,
+  "checkpoint_custodian_status": "PENDING_HUMAN_APPROVAL_NOT_DEPLOYED",
+  "anchor_required": true,
+  "phase2_authorized": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "PROMOTE_TO_PRODUCTION": "FORBIDDEN"
+}
