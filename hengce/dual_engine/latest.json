@@ -2,7 +2,7 @@
   "schema_version": 2,
   "system": "HENGCE",
   "module": "HENGCE_DUAL_ENGINE_DISPLAY",
-  "generated_at_taipei": "2026-10-22T09:22:14.399916+08:00",
+  "generated_at_taipei": "2026-10-22T09:32:32.339336+08:00",
   "architecture": "DUAL_ENGINE",
   "rankings_separate": true,
   "mixed_ranking_forbidden": true,
@@ -60,7 +60,7 @@
       }
     ],
     "reason": null,
-    "source_module": "Q017_SOX_ELECTRONICS_DECISION_LOCK",
+    "source_module": "Q017_SOX_ELECTRONICS_RADAR_LOCKED",
     "schema_version": 5,
     "universe_membership_date": "2026-10-21",
     "ranking_universe": "TWSE_LISTED_ELECTRONICS_ONLY"
