@@ -57,6 +57,15 @@ def _formal_q017(x: dict):
     return schema >= 5 and x.get('authority') not in ('NO_FORMAL_SIGNAL', None)
 
 
+def _formal_buy_count(x: dict, top: list[dict], formal: bool):
+    # Fail closed: a formal schema-v5 decision may still be CASH and retain
+    # diagnostic Top3 rows. Only a GO decision with explicitly qualified rows
+    # represents formal Q017 buy candidates.
+    if not formal or x.get('market_state') != 'GO':
+        return 0
+    return sum(1 for row in top if row.get('qualified') is True)
+
+
 def q017_view(x: dict, now: datetime):
     today = now.date().isoformat()
     schema = int(x.get('schema_version') or 0)
@@ -103,7 +112,7 @@ def q017_view(x: dict, now: datetime):
         'binding_status': x.get('binding_status'),
         'authority': x.get('authority') if formal else 'NO_FORMAL_SIGNAL',
         'formal_authority': bool(formal),
-        'formal_buy_count': int(x.get('formal_buy_count') or (len(top) if formal else 0)) if formal else 0,
+        'formal_buy_count': _formal_buy_count(x, top, formal),
         'trade_date': source_trade_date,
         'top3': top if formal else [],
         'reason': reason,

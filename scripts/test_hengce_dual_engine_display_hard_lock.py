@@ -13,7 +13,7 @@ TZ=ZoneInfo('Asia/Taipei')
 def dt(s): return datetime.fromisoformat(s).astimezone(TZ)
 
 def run_tests():
-    stale={'schema_version':5,'module':'Q017_OLD','trade_date':'2026-10-19','binding_status':'PASS','market_state':'GO','authority':'FORMAL_Q017_DECISION_INPUT_NOT_BROKER_ORDER','formal_buy_count':1,'top3':[{'ticker':'2330'}]}
+    stale={'schema_version':5,'module':'Q017_OLD','trade_date':'2026-10-19','binding_status':'PASS','market_state':'GO','authority':'FORMAL_Q017_DECISION_INPUT_NOT_BROKER_ORDER','formal_buy_count':1,'top3':[{'ticker':'2330','qualified':True}]}
     x=d.q017_view(stale,dt('2026-10-20T07:53:00+08:00'))
     assert x['status']=='AWAITING_0901_OBSERVATION' and not x['formal_authority'] and x['top3']==[]
     x=d.q017_view(stale,dt('2026-10-20T09:03:00+08:00'))
@@ -24,12 +24,19 @@ def run_tests():
             w=csv.DictWriter(f,fieldnames=['date','ticker']);w.writeheader();w.writerow({'date':'2026-10-19','ticker':'2330'})
         old=d.ELECTRONICS_HISTORY; d.ELECTRONICS_HISTORY=h
         try:
-            bad={**stale,'trade_date':'2026-10-20','top3':[{'ticker':'1709'}]}
+            bad={**stale,'trade_date':'2026-10-20','top3':[{'ticker':'1709','qualified':True}]}
             y=d.q017_view(bad,dt('2026-10-20T09:03:00+08:00'))
             assert not y['formal_authority'] and y['formal_buy_count']==0 and y['top3']==[] and 'OUTSIDE_TWSE_ELECTRONICS' in y['reason']
-            good={**stale,'trade_date':'2026-10-20','top3':[{'ticker':'2330'}]}
+            good={**stale,'trade_date':'2026-10-20','top3':[{'ticker':'2330','qualified':True}]}
             y=d.q017_view(good,dt('2026-10-20T09:03:00+08:00'))
-            assert y['formal_authority'] and y['top3'][0]['ticker']=='2330'
+            assert y['formal_authority'] and y['top3'][0]['ticker']=='2330' and y['formal_buy_count']==1
+            cash={**stale,'trade_date':'2026-10-20','market_state':'CASH','top3':[
+                {'ticker':'2330','qualified':False},
+                {'ticker':'2330','qualified':False},
+                {'ticker':'2330','qualified':False},
+            ]}
+            y=d.q017_view(cash,dt('2026-10-20T09:03:00+08:00'))
+            assert y['formal_authority'] and y['status']=='CASH' and y['formal_buy_count']==0 and len(y['top3'])==3
         finally: d.ELECTRONICS_HISTORY=old
     e={'schema_version':2,'module':'E2_PROFIT_MAX_STATE','engine_status':'ON','binding_status':'PASS','authority':'VALIDATED_RESEARCH_SIGNAL_DISPLAY','signal_asof':'2026-10-19','top1':{'ticker':'3026'},'action':'ENTRY_PENDING'}
     ev=d.e2_view(e); assert ev['top1']['ticker']=='3026' and ev['broker_order_execution'] is False and ev['capital_authority_twd']==0
@@ -37,4 +44,4 @@ def run_tests():
     return True
 
 if __name__=='__main__':
-    run_tests(); print(json.dumps({'status':'PASS','tests':6,'legacy_v3_display_authority':False,'mixed_ranking_forbidden':True}))
+    run_tests(); print(json.dumps({'status':'PASS','tests':7,'legacy_v3_display_authority':False,'mixed_ranking_forbidden':True}))

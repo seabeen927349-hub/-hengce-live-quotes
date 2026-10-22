@@ -1,0 +1,157 @@
+name: HENGCE E2 Morning Backup
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Asia/Taipei = UTC+8. Independent backups for the 08:50 command-center bind.
+    - cron: '55 0 * * 1-5'
+    - cron: '5 1 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-e2-morning-backup
+  cancel-in-progress: false
+
+jobs:
+  e2-morning-backup:
+    if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime dependencies with retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 1 2 3; do
+            python -m pip install --disable-pip-version-check requests openpyxl && exit 0
+            echo "pip install attempt ${n} failed"
+            sleep $((n*5))
+          done
+          exit 2
+
+      - name: Resolve Taipei trade date
+        id: date
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARGET_DATE="$(TZ=Asia/Taipei date '+%Y-%m-%d')"
+          echo "trade_date=$TARGET_DATE" >> "$GITHUB_OUTPUT"
+          echo "TARGET_DATE=$TARGET_DATE"
+
+      - name: Check whether morning bridge is already current
+        id: freshness
+        shell: bash
+        env:
+          TARGET_DATE: ${{ steps.date.outputs.trade_date }}
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib
+          p = pathlib.Path('hengce/e2_live/morning_latest.json')
+          x = json.loads(p.read_text(encoding='utf-8')) if p.exists() else {}
+          current = (
+              x.get('module') == 'E2_PROFIT_MAX_MORNING_BRIDGE'
+              and x.get('trade_date') == os.environ['TARGET_DATE']
+              and x.get('binding_status') == 'PASS'
+              and x.get('authority') == 'VALIDATED_RESEARCH_SIGNAL_DISPLAY'
+              and x.get('capital_authority_twd') == 0
+              and x.get('broker_order_execution') is False
+          )
+          print('current=' + ('true' if current else 'false'))
+          PY
+
+      - name: E2 frozen self-test
+        if: steps.freshness.outputs.current != 'true'
+        run: python scripts/hengce_e2_live.py --mode self-test --date '${{ steps.date.outputs.trade_date }}'
+
+      - name: E2 morning execution-state regressions
+        if: steps.freshness.outputs.current != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python scripts/test_hengce_e2_no_fill.py
+          PYTHONPATH=scripts python scripts/test_hengce_e2_morning_release.py
+
+      - name: Build E2 morning bridge
+        if: steps.freshness.outputs.current != 'true'
+        run: python scripts/hengce_e2_live.py --mode morning --date '${{ steps.date.outputs.trade_date }}'
+
+      - name: Validate E2 morning bridge
+        if: steps.freshness.outputs.current != 'true'
+        shell: bash
+        env:
+          TARGET_DATE: ${{ steps.date.outputs.trade_date }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          x = json.load(open('hengce/e2_live/morning_latest.json', encoding='utf-8'))
+          assert x['module'] == 'E2_PROFIT_MAX_MORNING_BRIDGE', x
+          assert x['trade_date'] == os.environ['TARGET_DATE'], x
+          assert x['binding_status'] == 'PASS', x
+          assert x['authority'] == 'VALIDATED_RESEARCH_SIGNAL_DISPLAY', x
+          assert x['capital_authority_twd'] == 0, x
+          assert x['broker_order_execution'] is False, x
+          print('PASS E2_MORNING_BACKUP', x['trade_date'], x['engine_status'])
+          PY
+
+      - name: Refresh dual-engine display after E2 morning bind
+        if: steps.freshness.outputs.current != 'true'
+        run: python scripts/hengce_dual_engine_display.py
+
+      - name: Validate display remains authority-safe
+        if: steps.freshness.outputs.current != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/test_hengce_dual_engine_display_hard_lock.py
+          python - <<'PY'
+          import json
+          x = json.load(open('hengce/dual_engine/latest.json', encoding='utf-8'))
+          q = x['q017']; e = x['e2']
+          assert x['rankings_separate'] is True and x['mixed_ranking_forbidden'] is True, x
+          assert e['capital_authority_twd'] == 0 and e['broker_order_execution'] is False, e
+          if q.get('status') == 'CASH':
+              assert q.get('formal_buy_count') == 0, q
+          print('PASS DUAL_ENGINE_AUTHORITY_SAFETY', q.get('status'), q.get('formal_buy_count'), e.get('status'))
+          PY
+
+      - name: Commit recovered morning state
+        if: steps.freshness.outputs.current != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-e2-morning-backup-bot'
+          git config user.email 'hengce-e2-morning-backup-bot@users.noreply.github.com'
+          git add hengce/e2_live/ hengce/dual_engine/
+          if git diff --cached --quiet; then
+            echo 'E2 morning state already current after validation.'
+            exit 0
+          fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE E2 morning backup ${TS}"
+          for n in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "push attempt ${n} failed; rebasing on current main"
+            git pull --rebase origin main
+          done
+          exit 2
+
+      - name: Report idempotent skip
+        if: steps.freshness.outputs.current == 'true'
+        run: echo 'E2 morning bridge already current; backup made no changes.'
