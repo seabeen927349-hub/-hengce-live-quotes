@@ -7,10 +7,16 @@ or grant capital/broker/production authority.
 """
 from __future__ import annotations
 
+import base64
+import binascii
+import gzip
+import hashlib
 import importlib.util
 import json
 import math
+import struct
 import sys
+import zlib
 from datetime import date
 from pathlib import Path
 from statistics import mean, median
@@ -20,18 +26,17 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 OUT = ROOT / "research" / "phase2_e2_p2a" / "p2a_result.json"
 
-# Load governance gate first.
 from research.phase2_governance import governance as gov
 
 POLICY = gov.metadata(ROOT / "research/phase2_governance/phase2-policy.json")
 STAGE = "P2A_BASELINE_DESTRUCTION"
 
+
 def permit(op: str, cost_multiplier=None):
     return gov.require_phase2_run(POLICY, engine="E2", stage=STAGE,
                                   operation=op, cost_multiplier=cost_multiplier)
 
-# Reuse the historical finite-search loader/simulator byte-for-byte rather than
-# reimplementing signal reconstruction.
+
 R2_PATH = ROOT / "research/e2_profit_max/round2/run_round2_finite.py"
 spec = importlib.util.spec_from_file_location("hengce_round2", R2_PATH)
 if spec is None or spec.loader is None:
@@ -41,12 +46,103 @@ sys.modules[spec.name] = r2
 spec.loader.exec_module(r2)
 
 BASELINE_COST = 0.008
-BASELINE_GATE = "TW_SOX1_SOX5"  # SOX1 + SOX5; DXY excluded in frozen Candidate B.
+BASELINE_GATE = "TW_SOX1_SOX5"
 BASELINE_EXIT = "fixed20"
 TRAIN_START = date(2023, 1, 1)
 TRAIN_END = date(2025, 12, 31)
 VAL_START = date(2026, 1, 1)
 VAL_END = date(2026, 10, 16)
+
+
+def _gzip_raw_offset(blob: bytes) -> int:
+    if len(blob) < 18 or blob[:2] != b"\x1f\x8b" or blob[2] != 8:
+        raise RuntimeError("ROUND2_GZIP_HEADER_INVALID")
+    flg = blob[3]
+    pos = 10
+    if flg & 4:
+        if pos + 2 > len(blob):
+            raise RuntimeError("ROUND2_GZIP_FEXTRA_TRUNCATED")
+        xlen = struct.unpack("<H", blob[pos:pos+2])[0]
+        pos += 2 + xlen
+    for bit in (8, 16):
+        if flg & bit:
+            end = blob.find(b"\x00", pos)
+            if end < 0:
+                raise RuntimeError("ROUND2_GZIP_HEADER_STRING_TRUNCATED")
+            pos = end + 1
+    if flg & 2:
+        pos += 2
+    if pos >= len(blob) - 8:
+        raise RuntimeError("ROUND2_GZIP_HEADER_OVERRUN")
+    return pos
+
+
+def load_payload_with_integrity_recovery():
+    """Load exact existing shock chunks.
+
+    Normal gzip path is preferred. If only the stored gzip trailer CRC/ISIZE is
+    invalid, recover the deflate stream without trusting that trailer, then force
+    schema/core/pre-gate/row-count/prefilter checks and an exact frozen baseline
+    replay before any diagnostic result is accepted.
+    """
+    chunks = sorted(r2.INPUT.glob("r2shock_*.txt"))
+    if len(chunks) != 3:
+        raise RuntimeError(f"ROUND2_INPUT_CHUNK_COUNT:{len(chunks)}")
+    b64_text = "".join(p.read_text(encoding="utf-8").strip() for p in chunks)
+    compressed = base64.b64decode(b64_text, validate=True)
+    recovery = {
+        "chunk_count": len(chunks),
+        "base64_sha256": hashlib.sha256(b64_text.encode()).hexdigest(),
+        "compressed_sha256": hashlib.sha256(compressed).hexdigest(),
+        "gzip_crc_status": "VALID",
+    }
+    try:
+        raw = gzip.decompress(compressed)
+    except gzip.BadGzipFile as exc:
+        if "CRC check failed" not in str(exc) and "Incorrect length" not in str(exc):
+            raise
+        start = _gzip_raw_offset(compressed)
+        objz = zlib.decompressobj(-zlib.MAX_WBITS)
+        raw = objz.decompress(compressed[start:]) + objz.flush()
+        if not objz.eof or len(objz.unused_data) < 8:
+            raise RuntimeError("ROUND2_RAW_DEFLATE_RECOVERY_INCOMPLETE")
+        trailer = objz.unused_data[:8]
+        stored_crc, stored_isize = struct.unpack("<II", trailer)
+        actual_crc = binascii.crc32(raw) & 0xffffffff
+        actual_isize = len(raw) & 0xffffffff
+        recovery.update({
+            "gzip_crc_status": "TRAILER_MISMATCH_RECOVERED_SEMANTIC_VALIDATION_REQUIRED",
+            "stored_crc32": f"{stored_crc:08x}",
+            "actual_crc32": f"{actual_crc:08x}",
+            "stored_isize": stored_isize,
+            "actual_isize": actual_isize,
+            "raw_sha256": hashlib.sha256(raw).hexdigest(),
+        })
+    obj = json.loads(raw)
+    if obj.get("schema") != 1 or obj.get("core") != "rev1_no_teacher_K25_Top1":
+        raise RuntimeError("ROUND2_INPUT_CORE_MISMATCH")
+    if obj.get("pre_gate") != "TW_SHOCK_m1_lt_0_m5_lte_-0.02":
+        raise RuntimeError("ROUND2_INPUT_GATE_MISMATCH")
+    cols = obj["c"]
+    rows = [dict(zip(cols, x)) for x in obj["r"]]
+    if len(rows) != 152:
+        raise RuntimeError(f"ROUND2_INPUT_ROW_COUNT:{len(rows)}")
+    for row in rows:
+        row["signal_date"] = r2.d(row["signal_date"])
+        row["ticker"] = str(row["ticker"]).zfill(4)
+        row["tw_m1"] = r2.f(row["tw_m1"])
+        row["tw_m5"] = r2.f(row["tw_m5"])
+        if not (row["tw_m1"] is not None and row["tw_m1"] < 0 and
+                row["tw_m5"] is not None and row["tw_m5"] <= -0.02):
+            raise RuntimeError("ROUND2_PREFILTER_DRIFT")
+        for ex in r2.EXITS:
+            row[f"{ex}_exit_date"] = r2.d(row.get(f"{ex}_exit_date"))
+            row[f"{ex}_net_ret"] = r2.f(row.get(f"{ex}_net_ret"))
+    recovery["schema"] = obj["schema"]
+    recovery["core"] = obj["core"]
+    recovery["pre_gate"] = obj["pre_gate"]
+    recovery["row_count"] = len(rows)
+    return rows, recovery
 
 
 def path_metrics(events, extra_cost=0.0):
@@ -95,17 +191,16 @@ def group_metrics(events, keyfunc):
 
 def main():
     permit("BASELINE_REPLAY")
-    rows = r2.attach_macro(r2.load_payload())
+    raw_rows, payload_integrity = load_payload_with_integrity_recovery()
+    rows = r2.attach_macro(raw_rows)
     row_lookup = {(x["signal_date"], x["ticker"]): x for x in rows}
 
     baseline = r2.simulate(rows, BASELINE_GATE, BASELINE_EXIT, TRAIN_START, TRAIN_END)
-    # Exact frozen Candidate B reproduction is a hard prerequisite.
     if baseline["trades"] != 13 or not math.isclose(baseline["nav"], 1.530103542875737, rel_tol=0, abs_tol=1e-12):
         raise RuntimeError(f"FROZEN_BASELINE_REPLAY_MISMATCH:{baseline['trades']}:{baseline['nav']}")
+    payload_integrity["frozen_baseline_replay"] = "EXACT_MATCH_13_TRADES_NAV_1.530103542875737"
     events = baseline["events"]
 
-    # Cost stress is exact because Round-2 source explicitly embeds 0.008 in each
-    # net return; stress only subtracts the incremental aggregate cost.
     cost_stress = {}
     for mult in (1.0, 1.5, 2.0):
         permit("COST_STRESS", mult)
@@ -115,9 +210,6 @@ def main():
             **path_metrics(events, extra_cost=target - BASELINE_COST),
         }
 
-    # Leave-best-trades-out: remove realized best return(s) with NO BACKFILL of
-    # previously blocked overlapping candidates. This deliberately tests reliance
-    # on exceptional winners rather than constructing a new strategy.
     permit("LEAVE_BEST_TRADES_OUT")
     ranked = sorted(events, key=lambda e: float(e["net_ret"]), reverse=True)
     leave_best = {}
@@ -139,7 +231,6 @@ def main():
 
     permit("REGIME_CHARACTERIZATION")
     sox5_median = median([float(e["sox5"]) for e in events if e.get("sox5") is not None])
-    # Descriptive only: median split is reported, never used to select a candidate.
     regime = {
         "by_signal_year": group_metrics(events, lambda e: e["signal_date"].year),
         "sox5_descriptive_median": sox5_median,
@@ -150,10 +241,6 @@ def main():
         "warning": "DESCRIPTIVE_ONLY_NOT_A_SELECTION_GATE",
     }
 
-    # The exposed payload is already core=rev1_no_teacher_K25_Top1. It lacks the
-    # preselection cross-section required to causally re-rank K/beta alternatives.
-    # The authorization explicitly forbids historical signal regeneration, so we
-    # fail closed instead of fabricating parameter-perturbation evidence.
     permit("PARAMETER_PERTURBATION_ROBUSTNESS")
     perturbation = {
         "status": "NOT_RUN_FAIL_CLOSED",
@@ -169,9 +256,11 @@ def main():
         "phase": "P2A_BASELINE_DESTRUCTION",
         "authorization_id": gov.AUTHORIZATION_ID,
         "status": "COMPLETED_WITH_PARAMETER_PERTURBATION_BLOCKED_BY_DATA_BOUNDARY",
+        "evidence_class": "DIAGNOSTIC_COMPUTATION_EVIDENCE_NOT_CANDIDATE_ACCEPTANCE",
+        "payload_integrity": payload_integrity,
         "source": {
-            "payload": "research/e2_profit_max/round2/input_shock/payload.json.gz.b64",
-            "loader": "research/e2_profit_max/round2/run_round2_finite.py",
+            "payload_chunks": "research/e2_profit_max/round2/input_shock/r2shock_01..03.txt",
+            "loader_reference": "research/e2_profit_max/round2/run_round2_finite.py",
             "baseline_gate": BASELINE_GATE,
             "baseline_exit": BASELINE_EXIT,
             "baseline_cost": BASELINE_COST,
@@ -185,7 +274,7 @@ def main():
         "regime_characterization": regime,
         "parameter_perturbation": perturbation,
         "exposed_2026_validation_completed_only": {k:v for k,v in validation_2026.items() if k != "events"},
-        "diagnostic_variant_count": 1 + 3 + 2 + 3 + 2,
+        "diagnostic_variant_count": 11,
         "candidate_creation_authorized": False,
         "candidate_acceptance_authorized": False,
         "prospective_holdout_access": False,
