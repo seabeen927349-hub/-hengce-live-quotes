@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "engine": "E2_PROFIT_MAX",
+  "phase": "P2A_BASELINE_DESTRUCTION",
+  "authorization_id": "HENGCE-P2-AUTH-20261023-001",
+  "status": "PARTIAL_RESULT_FAIL_CLOSED_ON_MISSING_EVENT_LEVEL_EVIDENCE",
+  "authoritative_baseline": {
+    "source": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_FINAL_VALIDATION_20261019.json",
+    "pit_2023_2025_nav": 1.530103542875737,
+    "entries": 13,
+    "wins": 8,
+    "year_nav": {
+      "2023": 1.1252421149566751,
+      "2024": 1.3183324917884003,
+      "2025": 1.0314540525052487
+    }
+  },
+  "completed_diagnostics": {
+    "annual_nav_product_reproduces_frozen_total": {
+      "nav": 1.5301035428757375,
+      "expected_nav": 1.530103542875737,
+      "status": "MATCH_WITHIN_FLOAT_PRECISION"
+    },
+    "leave_one_year_out": {
+      "remove_2023": {"remaining_nav": 1.359799391204488, "remaining_return": 0.3597993912044879},
+      "remove_2024": {"remaining_nav": 1.1606355395216394, "remaining_return": 0.16063553952163945},
+      "remove_2025": {"remaining_nav": 1.4834432412760832, "remaining_return": 0.4834432412760832}
+    },
+    "interpretation": "All three leave-one-year-out combinations remain positive. Historical performance is not uniform: 2024 is the strongest annual contributor and 2025 is weak on return despite 3/4 wins."
+  },
+  "blocked_diagnostics": {
+    "cost_stress": "BLOCKED_NO_VALID_EVENT_LEVEL_RETURN_PAYLOAD",
+    "leave_best_trades_out": "BLOCKED_NO_VALID_EVENT_LEVEL_RETURN_PAYLOAD",
+    "trade_level_regime_characterization": "BLOCKED_NO_VALID_EVENT_LEVEL_RETURN_PAYLOAD",
+    "parameter_perturbation": "BLOCKED_FROZEN_ROUND2_DATA_IS_K25_TOP1_AND_PRESELECTION_CROSS_SECTION_IS_NOT_PRESERVED; HISTORICAL_SIGNAL_REGENERATION_FORBIDDEN"
+  },
+  "evidence_defect": {
+    "shock_payload": "CORRUPT_OR_TRUNCATED: gzip CRC failure followed by invalid/truncated JSON body",
+    "mother_payload": "CORRUPT_OR_TRUNCATED: gzip EOF before end-of-stream marker",
+    "final_validation_commit": "Contains aggregate final validation summary but no committed per-trade event/return output sufficient for exact P2-A trade-level replay",
+    "historical_round2_workflow_note": "The inspected early finite-search workflows on staged Round-2 payload commits were failures; no successful retained event artifact was established from them."
+  },
+  "research_decision": "DO_NOT_FABRICATE_EVENT_LEVEL_DIAGNOSTICS. Preserve partial annual robustness result and fail closed on missing evidence.",
+  "candidate_creation_authorized": false,
+  "candidate_acceptance_authorized": false,
+  "prospective_holdout_access": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "PROMOTE_TO_PRODUCTION": "FORBIDDEN"
+}
