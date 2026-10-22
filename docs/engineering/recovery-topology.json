@@ -1,0 +1,1198 @@
+{
+  "source_commit": "6bb5cb46a8477f2d7edf0310980791c2fb140415",
+  "scope": "OPERATIONAL_SOURCE_INVENTORY_ONLY",
+  "signal_authority": false,
+  "ranking_authority": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "publisher_sha256": "4a6c69c45d166ae5e0b5ec6ca5f3c3327bb1ae85d3605cc8c1cd808b729d429c",
+  "lanes": [
+    {
+      "lane": "q017-primary",
+      "workflow": ".github/workflows/hengce-q017-primary-observer.yml",
+      "workflow_sha256": "b3ccf955a87246eb14c4abd5fdd34501a6be26e28e3e38193111f79438a47b5c",
+      "source_sha256": {
+        "scripts/hengce_q017_observation_lock_v5.py": "8a97ba1433df8df7efcfaa0711b22e2ef7d1af3329065ade9c485f0d9fbc0520",
+        "scripts/hengce_q017_observer_supervisor_v2.py": "91daf292b4448f6b22d2bf32ae6dcfdef40f9f541493b6d38b47968d3ee261e2"
+      },
+      "schedules_utc": [
+        {
+          "cron": "45 23 * * 0-4"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "self-test | observe",
+              "required": "false",
+              "default": "self-test"
+            }
+          }
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_macro_cache_v1.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v2.py",
+            "scripts/test_hengce_q017_observer_resilience_v1.py",
+            "scripts/hengce_q017_authority_guard_v5.py",
+            "scripts/hengce_dual_engine_display.py",
+            ".github/workflows/hengce-q017-primary-observer.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "45 23 * * 0-4"
+          }
+        ]
+      },
+      "write_set": "observations, observation_latest, history, attempts, supervisor; then decision, decision_latest, latest, ledger, display",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "latest.json",
+            "live/**",
+            "shadow/**",
+            "hengce/electronics_live/**",
+            "hengce/health/**",
+            "hengce/q017_radar/backup_observations/**",
+            "hengce/q017_radar/backup_observation_history/**",
+            "hengce/q017_radar/backup_observation_latest.json",
+            "hengce/q017_radar/backup_observation_status.json",
+            "hengce/q017_radar/backup_observation_attempts/**",
+            "hengce/q017_radar/backup_observation_attempt_latest.json",
+            "hengce/q017_radar/observer_supervisor_backup_status.json",
+            "hengce/q017_radar/observer_supervisor_attempts/*_backup.json",
+            "hengce/e2_live/**",
+            "hengce/dual_engine/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        },
+        {
+          "excluded_patterns": [
+            "latest.json",
+            "live/**",
+            "shadow/**",
+            "hengce/electronics_live/**",
+            "hengce/health/**",
+            "hengce/q017_radar/backup_observations/**",
+            "hengce/q017_radar/backup_observation_history/**",
+            "hengce/q017_radar/backup_observation_latest.json",
+            "hengce/q017_radar/backup_observation_status.json",
+            "hengce/q017_radar/backup_observation_attempts/**",
+            "hengce/q017_radar/backup_observation_attempt_latest.json",
+            "hengce/q017_radar/observer_supervisor_backup_status.json",
+            "hengce/q017_radar/observer_supervisor_attempts/*_backup.json"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "09:01:00–09:01:59.999999 capture only; persisted evidence may be computed later on current date",
+      "existing_validators": "validate_observation / validate_decision / authority guard",
+      "required_closure": "canonical=observation_latest, capture history; decision=decision_latest, hash-bound latest, decision history and exactly one ledger event",
+      "retry_idempotence": "write_once hash conflict STOP; canonical may survive missing later projections; independent lane",
+      "manual_semantics": "self-test default; explicit observe; no historical date input",
+      "publication_exits": [
+        {
+          "job": "primary-observer",
+          "step": "Persist canonical evidence and supervisor diagnostics before computation",
+          "profile": "q017-primary-capture",
+          "staging": [
+            "git add -A -- \"$p\"",
+            "git add -- \"$OBS\""
+          ]
+        },
+        {
+          "job": "primary-observer",
+          "step": "Persist decision, authority and display",
+          "profile": "q017-decision-display",
+          "staging": [
+            "git add -A -- \"$p\""
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "q017-backup",
+      "workflow": ".github/workflows/hengce-q017-backup-observer.yml",
+      "workflow_sha256": "c9cc8926ea0dcc58ae0c41f280ae2ae60a5c6739bcc392a36c2dbbb24d39f35a",
+      "source_sha256": {
+        "scripts/hengce_q017_backup_observer_v5.py": "b64ced762198edf090b0278b611381f4e543a6dc40be904d0b073d840cf85b54",
+        "scripts/hengce_q017_observation_lock_v5.py": "8a97ba1433df8df7efcfaa0711b22e2ef7d1af3329065ade9c485f0d9fbc0520"
+      },
+      "schedules_utc": [
+        {
+          "cron": "15 0 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "self-test | observe",
+              "required": "false",
+              "default": "self-test"
+            }
+          }
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_backup_observer_v5.py",
+            "scripts/hengce_q017_macro_cache_v1.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v2.py",
+            "scripts/test_hengce_q017_observer_resilience_v1.py",
+            "scripts/hengce_q017_recovery_compute_v5.py",
+            ".github/workflows/hengce-q017-backup-observer.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "15 0 * * 1-5"
+          }
+        ]
+      },
+      "write_set": "backup_observations, backup_latest, backup_history, backup_status, attempts, supervisor",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "latest.json",
+            "live/**",
+            "shadow/**",
+            "hengce/electronics_live/**",
+            "hengce/health/**",
+            "hengce/e2_live/**",
+            "hengce/dual_engine/**",
+            "hengce/q017_radar/observations/**",
+            "hengce/q017_radar/observation_latest.json",
+            "hengce/q017_radar/history/**",
+            "hengce/q017_radar/observer_supervisor_primary_status.json",
+            "hengce/q017_radar/observer_supervisor_attempts/*_primary.json"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "same strict independent 09:01 window",
+      "existing_validators": "validate_observation",
+      "required_closure": "backup canonical=backup_latest, backup history and status binding",
+      "retry_idempotence": "write_once; separate namespace, no direct decision authority",
+      "manual_semantics": "self-test default; explicit observe",
+      "publication_exits": [
+        {
+          "job": "backup-observer",
+          "step": "Persist backup evidence or failure diagnostics",
+          "profile": "q017-backup-capture",
+          "staging": [
+            "git add -A -- \"$p\"",
+            "git add -- \"$OBS\""
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "q017-recovery",
+      "workflow": ".github/workflows/hengce-q017-recovery.yml",
+      "workflow_sha256": "f2394ca05f73c9698692479fdf4392438323fd96e34eec867d95df8ddabdc27c",
+      "source_sha256": {
+        "scripts/hengce_q017_recovery_compute_v5.py": "4dfda2eda7c25a7a9f7b91d2cdde7528cc67e2302b07bd75b39b4b98b052ea11",
+        "scripts/hengce_q017_observation_lock_v5.py": "8a97ba1433df8df7efcfaa0711b22e2ef7d1af3329065ade9c485f0d9fbc0520"
+      },
+      "schedules_utc": [
+        {
+          "cron": "2,4,6 1 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "trade_date": {
+              "description": "Optional YYYY-MM-DD; default today Taipei",
+              "required": "false",
+              "default": ""
+            }
+          }
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_recovery_compute_v5.py",
+            "scripts/hengce_q017_backup_observer_v5.py",
+            "scripts/test_hengce_q017_resilience_v5.py",
+            ".github/workflows/hengce-q017-recovery.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "2,4,6 1 * * 1-5"
+          }
+        ]
+      },
+      "write_set": "canonical observation only if absent; observation_latest, decision, decision_latest, latest, history, signal_ledger, recovery_receipt",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "current date; existing valid immutable 09:01 evidence only, never late capture",
+      "existing_validators": "existing_decision / validate_decision / promote_if_needed / authority guard",
+      "required_closure": "canonical-first; never blend; complete observation/decision projections and evidence before publication",
+      "retry_idempotence": "valid decision wins without recompute, but early return does not prove ledger/history closure; mutable daily receipt overwrites",
+      "manual_semantics": "optional trade_date currently permits historical dates; new guard must BLOCK",
+      "publication_exits": [
+        {
+          "job": "recover",
+          "step": "Persist promoted observation, decision, and recovery receipt",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/decision/ hengce/q017_radar/decision_latest.json hengce/q017_radar/latest.json hengce/q017_radar/history/ hengce/q017_radar/recovery_receipts/ hengce/q017_radar/signal_ledger.jsonl || true"
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "daily",
+      "workflow": ".github/workflows/hengce-daily-command-center.yml",
+      "workflow_sha256": "d3b071f5e8583d6419f89a6158ae10f91a4a48af6c94c57822f2fa017153ea1e",
+      "source_sha256": {
+        "scripts/hengce_daily_command_center.py": "566b9847707e97ddda9bfa85ccb3d67004de3bfe92382a15bdd705a3e8be9ebc",
+        "scripts/hengce_eod_incremental_ingest.py": "a3e27eb343f5fe9c321f482163ce11c09b208fc81dcfebb031648ba0f7efd101",
+        "scripts/hengce_e2_live.py": "bd05acb97180f514b52eb5c1f6c7fc3603927a3d9247d47007359a7f72c7c1cb",
+        "scripts/hengce_q017_10d_review.py": "68ebbd87dfd988cd151e4a62374b69b5184c216c1d6ce256a93b61c51aee8219",
+        "scripts/hengce_q017_10d_review_extension.py": "b9378b1ae13507b3b86d63df78da6f37d7a95c9784c4e866f5eb2599d164228e"
+      },
+      "schedules_utc": [
+        {
+          "cron": "30 22 * * 0-4"
+        },
+        {
+          "cron": "50 0 * * 1-5"
+        },
+        {
+          "cron": "3 1 * * 1-5"
+        },
+        {
+          "cron": "10 1 * * 1-5"
+        },
+        {
+          "cron": "20 1 * * 1-5"
+        },
+        {
+          "cron": "0 7 * * 1-5"
+        },
+        {
+          "cron": "30 7 * * 1-5"
+        },
+        {
+          "cron": "0 8 * * 1-5"
+        },
+        {
+          "cron": "0 9 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "self-test | premarket | e2-morning | decision | compute | monitor | postclose",
+              "required": "false",
+              "default": "self-test"
+            },
+            "trade_date": {
+              "description": "Optional YYYY-MM-DD for manual compute/recovery",
+              "required": "false",
+              "default": ""
+            }
+          }
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_daily_command_center.py",
+            "scripts/hengce_daily_command_center_core_legacy.py",
+            "scripts/hengce_eod_incremental_ingest.py",
+            "scripts/test_hengce_eod_original_vessel_incremental.py",
+            "hengce/HENGCE_THREE_LEG_ORIGINAL_VESSEL_INCREMENTAL_POLICY_LOCK_v1_0_20261020.json",
+            "scripts/hengce_q017_decision_lock.py",
+            "scripts/hengce_q017_authority_guard.py",
+            "scripts/hengce_q017_decision_lock_v4.py",
+            "scripts/hengce_q017_authority_guard_v4.py",
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_authority_guard_v5.py",
+            "scripts/hengce_q017_10d_review.py",
+            "scripts/hengce_q017_10d_review_extension.py",
+            "scripts/test_hengce_q017_decision_lock.py",
+            "scripts/test_hengce_q017_adversarial_v4.py",
+            "scripts/hengce_e2_live.py",
+            "scripts/apply_20261019_lane_coherence_repair.py",
+            "hengce/e2_live/**",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019.json",
+            "hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019.json",
+            "hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_1_20261019.json",
+            ".github/workflows/hengce-daily-command-center.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "30 22 * * 0-4"
+          },
+          {
+            "cron": "50 0 * * 1-5"
+          },
+          {
+            "cron": "3 1 * * 1-5"
+          },
+          {
+            "cron": "10 1 * * 1-5"
+          },
+          {
+            "cron": "20 1 * * 1-5"
+          },
+          {
+            "cron": "0 7 * * 1-5"
+          },
+          {
+            "cron": "30 7 * * 1-5"
+          },
+          {
+            "cron": "0 8 * * 1-5"
+          },
+          {
+            "cron": "0 9 * * 1-5"
+          }
+        ]
+      },
+      "write_set": "q017_radar/**, q017_review_10d/**, e2_live/**, eod/**; two publication exits",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        },
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "current operational date; mode-specific premarket/morning/closed-observation/monitor/postclose",
+      "existing_validators": "public router / mode resolver / original-vessel readiness / authority guard",
+      "required_closure": "mode-specific full closure; continue-on-error/always paths cannot make partial outputs complete",
+      "retry_idempotence": "per-file atomic writes, date-dedup review; not a multi-file transaction",
+      "manual_semantics": "self-test default; mode/date inputs; historical date currently syntactically accepted",
+      "publication_exits": [
+        {
+          "job": "run",
+          "step": "Persist 09:01 observation before any ranking computation",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/history/ || true"
+          ]
+        },
+        {
+          "job": "run",
+          "step": "Commit command-center outputs",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/q017_radar/ hengce/q017_review_10d/ hengce/e2_live/ eod/ || true"
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "e2-morning",
+      "workflow": ".github/workflows/hengce-e2-morning-backup.yml",
+      "workflow_sha256": "7d218c092a5295c8a944847bd317551b7e24325bb0458a5f45f74e2a8c2d0772",
+      "source_sha256": {
+        "scripts/hengce_e2_live.py": "bd05acb97180f514b52eb5c1f6c7fc3603927a3d9247d47007359a7f72c7c1cb",
+        "scripts/hengce_dual_engine_display.py": "53183d11f7c701292bf544946e92f79013359461b19168bd011f2a60a8828895"
+      },
+      "schedules_utc": [
+        {
+          "cron": "55 0 * * 1-5"
+        },
+        {
+          "cron": "5 1 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": "",
+        "schedule": [
+          {
+            "cron": "55 0 * * 1-5"
+          },
+          {
+            "cron": "5 1 * * 1-5"
+          }
+        ]
+      },
+      "write_set": "e2_live/**, dual_engine/**",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "current date morning/current-day late recovery; generation remains late when late",
+      "existing_validators": "freshness/module/zero-capital/broker checks, no-fill/morning regressions",
+      "required_closure": "state/morning position and source-date binding; display source lineage",
+      "retry_idempotence": "date/status skip; state can be written before morning/display, generated timestamps differ on retry",
+      "manual_semantics": "manual current-day route, no date input",
+      "publication_exits": [
+        {
+          "job": "e2-morning-backup",
+          "step": "Commit recovered morning state",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/e2_live/ hengce/dual_engine/"
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "e2-postclose",
+      "workflow": ".github/workflows/hengce-e2-profit-max-live.yml",
+      "workflow_sha256": "28486b86bf402e363f706a656f53cca8d2b48d74de925aa601c67daefc55d1f5",
+      "source_sha256": {
+        "scripts/hengce_e2_live.py": "bd05acb97180f514b52eb5c1f6c7fc3603927a3d9247d47007359a7f72c7c1cb",
+        "scripts/hengce_dual_engine_display.py": "53183d11f7c701292bf544946e92f79013359461b19168bd011f2a60a8828895"
+      },
+      "schedules_utc": [
+        {
+          "cron": "10 7 * * 1-5"
+        },
+        {
+          "cron": "40 7 * * 1-5"
+        },
+        {
+          "cron": "10 8 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "trade_date": {
+              "description": "Optional Taipei trade date YYYY-MM-DD; blank = current Taipei date",
+              "required": "false",
+              "type": "string"
+            }
+          }
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_e2_live.py",
+            "scripts/hengce_dual_engine_display.py",
+            "scripts/test_hengce_e2_no_fill.py",
+            "scripts/test_hengce_e2_morning_release.py",
+            "hengce/e2_live/execution_override.json",
+            "hengce/E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
+            ".github/workflows/hengce-e2-profit-max-live.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "10 7 * * 1-5"
+          },
+          {
+            "cron": "40 7 * * 1-5"
+          },
+          {
+            "cron": "10 8 * * 1-5"
+          }
+        ]
+      },
+      "write_set": "e2_live/**, dual_engine/**, current causal history/macro data",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "current date postclose",
+      "existing_validators": "frozen E2/no-fill and display checks",
+      "required_closure": "state=current dated postclose history; display same state/position/source",
+      "retry_idempotence": "position/override consulted each run; E2 history mutable per existing contract, not write-once",
+      "manual_semantics": "optional trade_date currently unbounded; historical requests must BLOCK",
+      "publication_exits": [
+        {
+          "job": "e2-postclose",
+          "step": "Commit E2 state and required causal data",
+          "profile": "conservative-all",
+          "staging": [
+            "git add -A hengce/e2_live/ hengce/dual_engine/",
+            "if [ -e \"$p\" ]; then git add \"$p\"; fi"
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "macro",
+      "workflow": ".github/workflows/hengce-q017-macro-cache.yml",
+      "workflow_sha256": "887cb094b0efc7bc39f89ac01ac9fedf364a1fa8bd9d05e7e434fa8c64a21282",
+      "source_sha256": {
+        "scripts/hengce_q017_macro_cache_v1.py": "309b7bbd61f898d8ea2cddc42e6d684341d50e95ff642b1241fd7b789bba3920"
+      },
+      "schedules_utc": [
+        {
+          "cron": "45 21 * * 0-4"
+        },
+        {
+          "cron": "15 22 * * 0-4"
+        },
+        {
+          "cron": "45 22 * * 0-4"
+        },
+        {
+          "cron": "15 23 * * 0-4"
+        },
+        {
+          "cron": "35 23 * * 0-4"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "refresh | validate | self-test",
+              "required": "false",
+              "default": "self-test"
+            }
+          }
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_macro_cache_v1.py",
+            "scripts/hengce_q017_decision_lock.py",
+            "scripts/hengce_daily_command_center_core_legacy.py",
+            ".github/workflows/hengce-q017-macro-cache.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "45 21 * * 0-4"
+          },
+          {
+            "cron": "15 22 * * 0-4"
+          },
+          {
+            "cron": "45 22 * * 0-4"
+          },
+          {
+            "cron": "15 23 * * 0-4"
+          },
+          {
+            "cron": "35 23 * * 0-4"
+          }
+        ]
+      },
+      "write_set": "sox/dxy CSV/status, macro_cache dated/latest/history",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "current date premarket refresh; completed macro sessions strictly before trade date",
+      "existing_validators": "validate_cache(verify_files=True)",
+      "required_closure": "dated=latest/history with cache hash and exact CSV hashes",
+      "retry_idempotence": "mutable refresh, per-file atomic, no atomic bundle guarantee",
+      "manual_semantics": "self-test default; refresh/validate explicit",
+      "publication_exits": [
+        {
+          "job": "macro-cache",
+          "step": "Persist macro cache and source files",
+          "profile": "conservative-all",
+          "staging": [
+            "git add \\"
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "display",
+      "workflow": ".github/workflows/hengce-dual-engine-display-refresh.yml",
+      "workflow_sha256": "eb54252ff323b3e5b10aba524d8709612fdc5200810011d61f535dbab4b9d868",
+      "source_sha256": {
+        "scripts/hengce_dual_engine_display.py": "53183d11f7c701292bf544946e92f79013359461b19168bd011f2a60a8828895"
+      },
+      "schedules_utc": [],
+      "triggers": {
+        "workflow_dispatch": "",
+        "workflow_run": {
+          "workflows": [
+            "HENGCE Daily Command Center"
+          ],
+          "types": [
+            "completed"
+          ]
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_dual_engine_display.py",
+            "scripts/test_hengce_dual_engine_display_hard_lock.py",
+            "hengce/q017_radar/latest.json",
+            "hengce/e2_live/state_latest.json",
+            ".github/workflows/hengce-dual-engine-display-refresh.yml"
+          ]
+        }
+      },
+      "write_set": "dual_engine/latest.json",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "current observation, no source-time laundering",
+      "existing_validators": "display hard-lock test and contract checks",
+      "required_closure": "display source dates/status/position agree; source canonical state valid or explicitly pending",
+      "retry_idempotence": "regeneration overwrites latest with new timestamp; workflow_run includes failed completions",
+      "manual_semantics": "manual refresh, workflow_run or selected push",
+      "publication_exits": [
+        {
+          "job": "refresh",
+          "step": "Commit refreshed display if changed",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/dual_engine/latest.json"
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "eod",
+      "workflow": ".github/workflows/hengce-daily-command-center.yml",
+      "workflow_sha256": "d3b071f5e8583d6419f89a6158ae10f91a4a48af6c94c57822f2fa017153ea1e",
+      "source_sha256": {
+        "scripts/hengce_eod_incremental_ingest.py": "a3e27eb343f5fe9c321f482163ce11c09b208fc81dcfebb031648ba0f7efd101"
+      },
+      "schedules_utc": [
+        {
+          "cron": "30 22 * * 0-4"
+        },
+        {
+          "cron": "50 0 * * 1-5"
+        },
+        {
+          "cron": "3 1 * * 1-5"
+        },
+        {
+          "cron": "10 1 * * 1-5"
+        },
+        {
+          "cron": "20 1 * * 1-5"
+        },
+        {
+          "cron": "0 7 * * 1-5"
+        },
+        {
+          "cron": "30 7 * * 1-5"
+        },
+        {
+          "cron": "0 8 * * 1-5"
+        },
+        {
+          "cron": "0 9 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "self-test | premarket | e2-morning | decision | compute | monitor | postclose",
+              "required": "false",
+              "default": "self-test"
+            },
+            "trade_date": {
+              "description": "Optional YYYY-MM-DD for manual compute/recovery",
+              "required": "false",
+              "default": ""
+            }
+          }
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_daily_command_center.py",
+            "scripts/hengce_daily_command_center_core_legacy.py",
+            "scripts/hengce_eod_incremental_ingest.py",
+            "scripts/test_hengce_eod_original_vessel_incremental.py",
+            "hengce/HENGCE_THREE_LEG_ORIGINAL_VESSEL_INCREMENTAL_POLICY_LOCK_v1_0_20261020.json",
+            "scripts/hengce_q017_decision_lock.py",
+            "scripts/hengce_q017_authority_guard.py",
+            "scripts/hengce_q017_decision_lock_v4.py",
+            "scripts/hengce_q017_authority_guard_v4.py",
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_authority_guard_v5.py",
+            "scripts/hengce_q017_10d_review.py",
+            "scripts/hengce_q017_10d_review_extension.py",
+            "scripts/test_hengce_q017_decision_lock.py",
+            "scripts/test_hengce_q017_adversarial_v4.py",
+            "scripts/hengce_e2_live.py",
+            "scripts/apply_20261019_lane_coherence_repair.py",
+            "hengce/e2_live/**",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019.json",
+            "hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019.json",
+            "hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_1_20261019.json",
+            ".github/workflows/hengce-daily-command-center.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "30 22 * * 0-4"
+          },
+          {
+            "cron": "50 0 * * 1-5"
+          },
+          {
+            "cron": "3 1 * * 1-5"
+          },
+          {
+            "cron": "10 1 * * 1-5"
+          },
+          {
+            "cron": "20 1 * * 1-5"
+          },
+          {
+            "cron": "0 7 * * 1-5"
+          },
+          {
+            "cron": "30 7 * * 1-5"
+          },
+          {
+            "cron": "0 8 * * 1-5"
+          },
+          {
+            "cron": "0 9 * * 1-5"
+          }
+        ]
+      },
+      "write_set": "eod/current-date leg shards, per-leg receipts, status; external existing mother receipt consumed",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        },
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "current date postclose, legitimate PENDING permitted",
+      "existing_validators": "_read / _write / _mother_receipt / ingest",
+      "required_closure": "expected shard file set/count/hash/date/keys + receipt; mother promoted-leg bindings; downstream cannot infer readiness from shards alone",
+      "retry_idempotence": "_read reuses complete-looking CSV without requiring receipt; interrupted multi-shard writes can pass minimum rows; mother authority remains existing receipt contract",
+      "manual_semantics": "daily current route; dated one-off ingest utilities remain inventory-only",
+      "publication_exits": [
+        {
+          "job": "run",
+          "step": "Persist 09:01 observation before any ranking computation",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/history/ || true"
+          ]
+        },
+        {
+          "job": "run",
+          "step": "Commit command-center outputs",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/q017_radar/ hengce/q017_review_10d/ hengce/e2_live/ eod/ || true"
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "review",
+      "workflow": ".github/workflows/hengce-daily-command-center.yml",
+      "workflow_sha256": "d3b071f5e8583d6419f89a6158ae10f91a4a48af6c94c57822f2fa017153ea1e",
+      "source_sha256": {
+        "scripts/hengce_q017_10d_review.py": "68ebbd87dfd988cd151e4a62374b69b5184c216c1d6ce256a93b61c51aee8219",
+        "scripts/hengce_q017_10d_review_extension.py": "b9378b1ae13507b3b86d63df78da6f37d7a95c9784c4e866f5eb2599d164228e"
+      },
+      "schedules_utc": [
+        {
+          "cron": "30 22 * * 0-4"
+        },
+        {
+          "cron": "50 0 * * 1-5"
+        },
+        {
+          "cron": "3 1 * * 1-5"
+        },
+        {
+          "cron": "10 1 * * 1-5"
+        },
+        {
+          "cron": "20 1 * * 1-5"
+        },
+        {
+          "cron": "0 7 * * 1-5"
+        },
+        {
+          "cron": "30 7 * * 1-5"
+        },
+        {
+          "cron": "0 8 * * 1-5"
+        },
+        {
+          "cron": "0 9 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "description": "self-test | premarket | e2-morning | decision | compute | monitor | postclose",
+              "required": "false",
+              "default": "self-test"
+            },
+            "trade_date": {
+              "description": "Optional YYYY-MM-DD for manual compute/recovery",
+              "required": "false",
+              "default": ""
+            }
+          }
+        },
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_daily_command_center.py",
+            "scripts/hengce_daily_command_center_core_legacy.py",
+            "scripts/hengce_eod_incremental_ingest.py",
+            "scripts/test_hengce_eod_original_vessel_incremental.py",
+            "hengce/HENGCE_THREE_LEG_ORIGINAL_VESSEL_INCREMENTAL_POLICY_LOCK_v1_0_20261020.json",
+            "scripts/hengce_q017_decision_lock.py",
+            "scripts/hengce_q017_authority_guard.py",
+            "scripts/hengce_q017_decision_lock_v4.py",
+            "scripts/hengce_q017_authority_guard_v4.py",
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_authority_guard_v5.py",
+            "scripts/hengce_q017_10d_review.py",
+            "scripts/hengce_q017_10d_review_extension.py",
+            "scripts/test_hengce_q017_decision_lock.py",
+            "scripts/test_hengce_q017_adversarial_v4.py",
+            "scripts/hengce_e2_live.py",
+            "scripts/apply_20261019_lane_coherence_repair.py",
+            "hengce/e2_live/**",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019.json",
+            "hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019.json",
+            "hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_1_20261019.json",
+            ".github/workflows/hengce-daily-command-center.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "30 22 * * 0-4"
+          },
+          {
+            "cron": "50 0 * * 1-5"
+          },
+          {
+            "cron": "3 1 * * 1-5"
+          },
+          {
+            "cron": "10 1 * * 1-5"
+          },
+          {
+            "cron": "20 1 * * 1-5"
+          },
+          {
+            "cron": "0 7 * * 1-5"
+          },
+          {
+            "cron": "30 7 * * 1-5"
+          },
+          {
+            "cron": "0 8 * * 1-5"
+          },
+          {
+            "cron": "0 9 * * 1-5"
+          }
+        ]
+      },
+      "write_set": "review ledger/latest/daily, hypothetical ledger and diagnostics (separate zero-capital lane)",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": [
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        },
+        {
+          "excluded_patterns": [
+            "hengce/health/**"
+          ],
+          "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+          "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+        }
+      ],
+      "legal_date_window": "current operational review only; no historical signal/seed regeneration",
+      "existing_validators": "load_ledger / immutable cohort fields / append_session / extension load_hledger",
+      "required_closure": "ledger hash, daily/latest report binding, unique session dates and immutable cohort identity; reject torn CSV/history",
+      "retry_idempotence": "session date deduplicated; per-file JSON/markdown writes; new/changed historical cohort creation is not authorized recovery",
+      "manual_semantics": "daily postclose consumer; no new standalone recovery route",
+      "publication_exits": [
+        {
+          "job": "run",
+          "step": "Persist 09:01 observation before any ranking computation",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/history/ || true"
+          ]
+        },
+        {
+          "job": "run",
+          "step": "Commit command-center outputs",
+          "profile": "conservative-all",
+          "staging": [
+            "git add hengce/q017_radar/ hengce/q017_review_10d/ hengce/e2_live/ eod/ || true"
+          ]
+        }
+      ]
+    },
+    {
+      "lane": "health",
+      "workflow": ".github/workflows/hengce-system-health.yml",
+      "workflow_sha256": "3a94f8d502af9cc255ea2e62a9440041f36eff93406051aa4d91e694373d667e",
+      "source_sha256": {
+        "scripts/hengce_system_health.py": "229e227cfac0c5108a5b007e3cd440249ba0b4e125fdb1e4899a346548189adb",
+        "scripts/hengce_health_collect_runs.py": "01ef65adc235d36e43463615ac03deda66673aa2890e0e13396589e0fb581e83"
+      },
+      "schedules_utc": [
+        {
+          "cron": "5 0 * * 1-5"
+        },
+        {
+          "cron": "40 0 * * 1-5"
+        },
+        {
+          "cron": "20 1 * * 1-5"
+        },
+        {
+          "cron": "50 7 * * 1-5"
+        },
+        {
+          "cron": "20 9 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "pull_request": {
+          "paths": [
+            "config/hengce_health_v1.json",
+            "scripts/hengce_system_health.py",
+            "scripts/hengce_health_collect_runs.py",
+            "scripts/hengce_publish.py",
+            "tests/engineering/**",
+            "docs/engineering/health-*",
+            ".github/workflows/**"
+          ]
+        },
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "type": "choice",
+              "options": [
+                "self-test",
+                "current-health"
+              ],
+              "default": "self-test",
+              "description": "Offline self-test or observe current main health; never repair producers"
+            }
+          }
+        },
+        "schedule": [
+          {
+            "cron": "5 0 * * 1-5"
+          },
+          {
+            "cron": "40 0 * * 1-5"
+          },
+          {
+            "cron": "20 1 * * 1-5"
+          },
+          {
+            "cron": "50 7 * * 1-5"
+          },
+          {
+            "cron": "20 9 * * 1-5"
+          }
+        ]
+      },
+      "write_set": "observability output only; never producer outputs",
+      "immutable_subset": [
+        "hengce/q017_radar/observations/",
+        "hengce/q017_radar/backup_observations/",
+        "hengce/q017_radar/decision/",
+        "hengce/q017_radar/history/",
+        "hengce/q017_radar/backup_observation_history/"
+      ],
+      "authoritative_read_dependencies": "health-only: all producer inputs; own observability output excluded",
+      "legal_date_window": "weekday milestones; manual self-test/current-health",
+      "existing_validators": "strict health policy and four-axis evaluator",
+      "required_closure": "zero-authority diagnostics, no recovery dispatch",
+      "retry_idempotence": "health-only exact lease; stale producer inputs reject health snapshot",
+      "manual_semantics": "self-test default; current-health restricted main",
+      "publication_exits": [
+        {
+          "job": "current-health",
+          "step": "Publish health namespace with existing exact-lease publisher",
+          "profile": "health-only",
+          "staging": [
+            "git add -- hengce/health/latest.json"
+          ]
+        }
+      ]
+    }
+  ],
+  "excluded": "Historical/research retry utilities are inventory-only; no dispatch, optimizer, backtest, holdout or historical signal regeneration."
+}
