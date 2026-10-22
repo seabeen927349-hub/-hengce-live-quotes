@@ -143,7 +143,7 @@ jobs:
           fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE E2 morning backup ${TS}"
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
 
       - name: Report idempotent skip
         if: steps.freshness.outputs.current == 'true'

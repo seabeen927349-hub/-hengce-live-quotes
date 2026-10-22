@@ -12,6 +12,7 @@ PUBLISH = ROOT / 'scripts/hengce_publish.py'
 LATEST = 'hengce/e2_live/morning_latest.json'
 PRIMARY = 'hengce/q017_radar/observations/synthetic_0901_observation.json'
 BACKUP = 'hengce/q017_radar/backup_observations/synthetic_0901_observation.json'
+MACRO = 'hengce/q017_radar/data/macro_cache/latest.json'
 
 
 def git(root, *args):
@@ -26,7 +27,8 @@ class WriterRaceTests(unittest.TestCase):
         self.remote = self.root / 'remote.git'
         subprocess.run(['git', 'init', '--bare', '--initial-branch=main', str(self.remote)], check=True, capture_output=True)
         self.a = self.clone('primary')
-        self.commit(self.a, {'README': 'SYNTHETIC ONLY\n', LATEST: '{"synthetic_version":0}\n'})
+        self.commit(self.a, {'README': 'SYNTHETIC ONLY\n', LATEST: '{"synthetic_version":0}\n',
+                             MACRO: 'synthetic frozen macro at B\n'})
         git(self.a, 'push', 'origin', 'HEAD:main')
         self.base = git(self.a, 'rev-parse', 'HEAD')
         self.b = self.clone('backup')
@@ -82,13 +84,17 @@ class WriterRaceTests(unittest.TestCase):
             self.assertEqual(result['result'], 'PUBLISHED')
             self.assertIn('RETRY_REVALIDATED', [x['result'] for x in attempts])
             self.assertEqual(result['initial_base_sha'], self.base)
-            self.assertIn(r, [x['remote_sha'] for x in attempts] if root == self.a else [r])
+            if root == self.a:
+                self.assertEqual(result['remote_sha'], r)
+            self.assertEqual(result['dependency_profile'], profile)
+            self.assertTrue(result['write_set'])
+            self.assertIn('authoritative_read_dependency_set', result)
         self.assertEqual(self.read_remote(LATEST), '08:50 synthetic E2 bind')
         self.assertEqual(self.read_remote(PRIMARY), '09:01 synthetic primary capture')
         self.assertEqual(self.read_remote(BACKUP), '09:01 synthetic backup capture')
 
     def test_q017_macro_dependency_change_fails_closed(self):
-        self.commit(self.a, {'hengce/q017_radar/data/macro_cache/latest.json': 'changed macro\n'})
+        self.commit(self.a, {MACRO: 'changed macro\n'})
         git(self.a, 'push', 'origin', 'HEAD:main')
         self.commit(self.b, {BACKUP: 'capture using old macro\n'})
         rc, result, _ = self.publish(self.b, 'q017-backup-capture')
@@ -154,15 +160,16 @@ class WriterRaceTests(unittest.TestCase):
         self.assertEqual(sorted(x[0] for x in results), [0, 2])
         self.assertIn(self.read_remote(LATEST), ('primary', 'backup'))
 
-    def test_mixed_q017_status_conflict_retains_backup_capture_in_ci_artifact(self):
+    def test_independent_q017_status_transactions_both_publish(self):
         self.commit(self.a, {PRIMARY: 'primary capture\n', 'hengce/q017_radar/observer_supervisor_primary_status.json': 'primary status\n'})
         self.commit(self.b, {BACKUP: 'backup capture\n', 'hengce/q017_radar/observer_supervisor_backup_status.json': 'backup status\n'})
-        self.assertEqual(self.publish(self.a)[0], 0)
-        self.assertEqual(self.publish(self.b)[0], 2)
+        self.assertEqual(self.publish(self.a, 'q017-primary-capture')[0], 0)
+        self.assertEqual(self.publish(self.b, 'q017-backup-capture')[0], 0)
         retained = list((self.root / 'reports-backup/retained-evidence').glob('*/' + BACKUP))
         self.assertEqual(len(retained), 1)
         self.assertEqual(retained[0].read_text(), 'backup capture\n')
         self.assertEqual(self.read_remote(PRIMARY), 'primary capture')
+        self.assertEqual(self.read_remote(BACKUP), 'backup capture')
 
     def test_revalidation_does_not_reset_dirty_or_untracked_worktree(self):
         self.commit(self.a, {PRIMARY: 'primary\n'})
@@ -170,17 +177,18 @@ class WriterRaceTests(unittest.TestCase):
         (self.b / 'README').write_text('UNSTAGED SYNTHETIC DIAGNOSTIC\n')
         (self.b / 'untracked').write_text('UNTRACKED\n')
         head = git(self.b, 'rev-parse', 'HEAD')
-        self.assertEqual(self.publish(self.a)[0], 0)
-        self.assertEqual(self.publish(self.b)[0], 0)
+        self.assertEqual(self.publish(self.a, 'q017-primary-capture')[0], 0)
+        self.assertEqual(self.publish(self.b, 'q017-backup-capture')[0], 0)
         self.assertEqual((self.b / 'README').read_text(), 'UNSTAGED SYNTHETIC DIAGNOSTIC\n')
         self.assertEqual((self.b / 'untracked').read_text(), 'UNTRACKED\n')
-        self.assertEqual(git(self.b, 'rev-parse', 'HEAD'), head)
+        self.assertNotEqual(git(self.b, 'rev-parse', 'HEAD'), head)
+        self.assertEqual(git(self.b, 'rev-parse', 'HEAD'), git(self.remote, 'rev-parse', 'main'))
 
     def test_append_only_primary_backup_evidence_retained(self):
         self.commit(self.a, {PRIMARY: 'synthetic-primary\n'})
         self.commit(self.b, {BACKUP: 'synthetic-backup\n'})
-        self.assertEqual(self.publish(self.a)[0], 0)
-        rc, result, attempts = self.publish(self.b)
+        self.assertEqual(self.publish(self.a, 'q017-primary-capture')[0], 0)
+        rc, result, attempts = self.publish(self.b, 'q017-backup-capture')
         self.assertEqual(rc, 0)
         self.assertEqual(result['result'], 'PUBLISHED')
         self.assertIn('RETRY_REVALIDATED', [x['result'] for x in attempts])
@@ -189,10 +197,15 @@ class WriterRaceTests(unittest.TestCase):
 
     def test_independent_simultaneous_q017_capture_publication(self):
         # Both captures finish locally before either publisher runs; no capture lock.
-        self.commit(self.a, {PRIMARY: 'primary independent capture\n'})
-        self.commit(self.b, {BACKUP: 'backup independent capture\n'})
+        self.commit(self.a, {PRIMARY: 'primary independent capture\n',
+                            'hengce/q017_radar/observer_supervisor_primary_status.json': 'primary\n',
+                            'hengce/q017_radar/observer_supervisor_attempts/synthetic_primary.json': 'primary attempts\n'})
+        self.commit(self.b, {BACKUP: 'backup independent capture\n',
+                            'hengce/q017_radar/observer_supervisor_backup_status.json': 'backup\n',
+                            'hengce/q017_radar/observer_supervisor_attempts/synthetic_backup.json': 'backup attempts\n'})
         with ThreadPoolExecutor(max_workers=2) as pool:
-            results = list(pool.map(self.publish, (self.a, self.b)))
+            results = list(pool.map(lambda pair: self.publish(*pair),
+                ((self.a, 'q017-primary-capture'), (self.b, 'q017-backup-capture'))))
         self.assertTrue(all(x[0] == 0 for x in results), results)
         self.assertEqual(self.read_remote(PRIMARY), 'primary independent capture')
         self.assertEqual(self.read_remote(BACKUP), 'backup independent capture')
@@ -257,6 +270,68 @@ class WriterRaceTests(unittest.TestCase):
             self.assertIn(key, result)
         self.assertEqual(result['capital_authority'], 0)
         self.assertEqual(result['changed_paths'], [LATEST])
+
+    def test_overlapping_q017_latest_change_fails_closed(self):
+        path = 'hengce/q017_radar/observation_latest.json'
+        self.commit(self.a, {path: 'winner\n'})
+        self.commit(self.b, {path: 'stale pointer\n'})
+        self.assertEqual(self.publish(self.a, 'q017-primary-capture')[0], 0)
+        rc, result, _ = self.publish(self.b, 'q017-primary-capture')
+        self.assertEqual(rc, 2)
+        self.assertIn('WRITE_SET_CONFLICT', result['conflict_reason'])
+        self.assertEqual(self.read_remote(path), 'winner')
+
+    def test_decision_display_retains_e2_read_dependency(self):
+        self.commit(self.a, {'hengce/e2_live/state_latest.json': 'new E2 state\n'})
+        self.assertEqual(self.publish(self.a)[0], 0)
+        self.commit(self.b, {'hengce/dual_engine/latest.json': 'display of old E2\n'})
+        rc, result, _ = self.publish(self.b, 'q017-decision-display')
+        self.assertEqual(rc, 2)
+        self.assertIn('READ_DEPENDENCY', result['conflict_reason'])
+
+    def test_unrelated_update_between_fetch_and_lease_is_revalidated(self):
+        self.commit(self.a, {PRIMARY: '09:01 capture\n'})
+        self.commit(self.b, {LATEST: 'E2 update while publication in flight\n'})
+        hook = self.a / '.git/hooks/pre-push'
+        hook.write_text('#!/bin/sh\ngit -C ' + str(self.b) + ' push origin HEAD:main >/dev/null 2>&1\n')
+        hook.chmod(0o755)
+        rc, result, _ = self.publish(self.a, 'q017-primary-capture')
+        self.assertEqual(rc, 0, result)
+        self.assertEqual(self.read_remote(PRIMARY), '09:01 capture')
+        self.assertEqual(self.read_remote(LATEST), 'E2 update while publication in flight')
+
+    def test_unknown_new_input_path_remains_a_dependency(self):
+        self.commit(self.a, {'new_authoritative_input.json': 'new input\n'})
+        git(self.a, 'push', 'origin', 'HEAD:main')
+        self.commit(self.b, {BACKUP: 'capture\n'})
+        rc, result, _ = self.publish(self.b, 'q017-backup-capture')
+        self.assertEqual(rc, 2)
+        self.assertIn('READ_DEPENDENCY', result['conflict_reason'])
+
+    def test_decision_can_follow_unrelated_backup_publication(self):
+        self.commit(self.a, {BACKUP: 'independent backup\n',
+                            'hengce/q017_radar/observer_supervisor_backup_status.json': 'backup status\n'})
+        self.assertEqual(self.publish(self.a, 'q017-backup-capture')[0], 0)
+        decision = 'hengce/q017_radar/decision/synthetic_0901.json'
+        self.commit(self.b, {decision: 'synthetic decision\n'})
+        self.assertEqual(self.publish(self.b, 'q017-decision-display')[0], 0)
+        self.assertEqual(self.read_remote(decision), 'synthetic decision')
+        self.assertEqual(self.read_remote(BACKUP), 'independent backup')
+
+    def test_checkout_adoption_refuses_to_destroy_untracked_collision(self):
+        path = 'hengce/e2_live/new_state.json'
+        self.commit(self.a, {path: 'remote E2 state\n'})
+        self.assertEqual(self.publish(self.a)[0], 0)
+        self.commit(self.b, {PRIMARY: 'valid capture\n'})
+        collision = self.b / path
+        collision.parent.mkdir(parents=True, exist_ok=True)
+        collision.write_text('UNTRACKED LOCAL FILE\n')
+        rc, result, attempts = self.publish(self.b, 'q017-primary-capture')
+        self.assertEqual(rc, 2)
+        self.assertIn('ACCEPTED_PUBLICATION_LOCAL_SYNC_FAILED', result['conflict_reason'])
+        self.assertIn('PUBLISHED', [x['result'] for x in attempts])
+        self.assertEqual(self.read_remote(PRIMARY), 'valid capture')
+        self.assertEqual(collision.read_text(), 'UNTRACKED LOCAL FILE\n')
 
 
 if __name__ == '__main__':

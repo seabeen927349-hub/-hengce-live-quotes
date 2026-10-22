@@ -14,7 +14,18 @@ ROOT = Path(__file__).resolve().parents[2]
 PIN = 'd38f2c44a6f4efb254cc126ed2b9e162121589e3'
 OUT = ROOT / 'docs/engineering/writer-topology.json'
 sys.path.insert(0, str(ROOT / 'scripts'))
-from hengce_publish import IMMUTABLE_PREFIXES
+from hengce_publish import IMMUTABLE_PREFIXES, PROFILES
+
+
+def publication_profile(workflow, step):
+    return {
+        ('.github/workflows/hengce-q017-primary-observer.yml',
+         'Persist canonical evidence and supervisor diagnostics before computation'): 'q017-primary-capture',
+        ('.github/workflows/hengce-q017-primary-observer.yml',
+         'Persist decision, authority and display'): 'q017-decision-display',
+        ('.github/workflows/hengce-q017-backup-observer.yml',
+         'Persist backup evidence or failure diagnostics'): 'q017-backup-capture',
+    }.get((workflow, step), 'conservative-all')
 
 # Explicit producer/consumer references identify paths; names confer no authority.
 PATH_ROLES = {
@@ -80,17 +91,25 @@ def build():
                 if 'git push origin HEAD:main' not in run:
                     continue
                 prefixes = staged_paths(run)
+                profile = publication_profile(path, step.get('name'))
                 roles = [{'producer_reference': source, 'paths': [p for p in outputs if any(covers(prefix, p) for prefix in prefixes)]}
                          for source, outputs in PATH_ROLES.items()]
                 publications.append({
                     'step': step.get('name'), 'step_condition': step.get('if'),
+                    'dependency_profile': profile,
+                    'allowed_write_patterns': list(PROFILES[profile]['writes']),
+                    'authoritative_read_dependency_set': {
+                        'mode': 'ALL_PATHS_EXCEPT_PROVEN_UNRELATED',
+                        'excluded_patterns': list(PROFILES[profile]['unrelated']),
+                        'unknown_paths': 'READ_DEPENDENCY_FAIL_CLOSED'},
+                    'runtime_write_set': 'Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.',
                     'writable_path_prefixes_or_globs': prefixes,
                     'staging_statements': [line.strip() for line in run.replace('\\\n', ' ').splitlines() if 'git add' in line],
                     'immutable_paths': [p for p in IMMUTABLE_PREFIXES if any(covers(prefix, p) for prefix in prefixes)],
                     'canonical_latest_status_paths': [r for r in roles if r['paths']],
                     'other_staged_paths': 'Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.',
                     'before_arbitration': 'DIRECT_PUSH_WITH_BLIND_REBASE_RETRY' if '--rebase' in run or 'git rebase' in run else 'DIRECT_PUSH_REJECTS_NON_FAST_FORWARD',
-                    'after_arbitration': 'EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY'
+                    'after_arbitration': 'EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT'
                 })
             if publications:
                 rows.append({'workflow': path, 'job': job_id,

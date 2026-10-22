@@ -135,7 +135,7 @@ jobs:
           }
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE authoritative live-universe handoff ${TS}"
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
 
       - name: Preserve publication arbitration receipts and captured evidence
         if: always()

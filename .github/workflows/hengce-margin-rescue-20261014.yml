@@ -74,7 +74,7 @@ jobs:
           git add eod/20261014/
           if git diff --cached --quiet; then echo 'Margin artifacts already current.'; exit 0; fi
           git commit -m 'HENGCE EOD 2026-10-14 margin complete'
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
 
       - name: Preserve publication arbitration receipts and captured evidence
         if: always()

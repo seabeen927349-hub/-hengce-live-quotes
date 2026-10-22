@@ -115,7 +115,7 @@ jobs:
           fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE full-market + electronics live ${TS}"
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
 
       - name: Preserve publication arbitration receipts and captured evidence
         if: always()

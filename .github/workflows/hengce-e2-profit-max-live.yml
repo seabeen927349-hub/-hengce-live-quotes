@@ -141,7 +141,7 @@ jobs:
             exit 0
           fi
           git commit -m "HENGCE E2 profit-max postclose ${{ steps.date.outputs.target_date }}"
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
 
       - name: Preserve publication arbitration receipts and captured evidence
         if: always()

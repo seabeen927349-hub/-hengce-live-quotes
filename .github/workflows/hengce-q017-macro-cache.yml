@@ -105,7 +105,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE Q017 morning macro cache ${TS}"
-            python scripts/hengce_publish.py
+            python scripts/hengce_publish.py --profile conservative-all
           fi
 
       - name: Macro cache health

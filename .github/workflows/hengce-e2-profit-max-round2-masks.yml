@@ -26,7 +26,7 @@ jobs:
           git add research/e2_profit_max/round2/candidate_macro_masks.csv research/e2_profit_max/round2/candidate_macro_masks_receipt.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'HENGCE E2 round2 candidate macro masks'
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
 
       - name: Preserve publication arbitration receipts and captured evidence
         if: always()

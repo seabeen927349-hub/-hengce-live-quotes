@@ -78,7 +78,7 @@ jobs:
           if git diff --cached --quiet; then echo 'Recovery already persisted; no rerank performed.'; exit 0; fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE Q017 observation recovery ${TS}"
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
       - name: Report fail-closed without suppressing other engines
         if: github.event_name != 'push' && steps.recover.outcome != 'success'
         run: |

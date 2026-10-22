@@ -124,7 +124,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE Q017 primary 09:01 evidence/status ${TS}"
-            python scripts/hengce_publish.py
+            python scripts/hengce_publish.py --profile q017-primary-capture
           fi
 
       - name: Verify canonical observation is persisted in Git HEAD before computation
@@ -197,7 +197,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE Q017 primary decision/display ${TS}"
-            python scripts/hengce_publish.py
+            python scripts/hengce_publish.py --profile q017-decision-display
           fi
 
       - name: Primary observer health

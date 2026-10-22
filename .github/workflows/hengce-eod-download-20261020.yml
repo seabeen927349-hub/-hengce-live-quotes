@@ -60,7 +60,7 @@ jobs:
             exit 0
           fi
           git commit -m 'HENGCE EOD 2026-10-20 original-vessel incremental ingest'
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
 
       - name: Preserve publication arbitration receipts and captured evidence
         if: always()

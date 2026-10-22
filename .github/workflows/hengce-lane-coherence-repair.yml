@@ -47,7 +47,7 @@ jobs:
             echo 'No repair changes to commit.'
           else
             git commit -m 'HENGCE separate Q017/E2 data lanes and retry EOD archive'
-            python scripts/hengce_publish.py
+            python scripts/hengce_publish.py --profile conservative-all
           fi
       - name: Report repair state
         if: always()

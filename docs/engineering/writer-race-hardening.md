@@ -16,8 +16,9 @@ The synthetic legacy reproduction demonstrates this with text fixtures only.
 `writer-topology.json` inventories all 29 existing main-writing workflow jobs
 and their 31 publication steps at the authoritative pin. It includes existing
 triggers/schedules, workflow/job concurrency, literal staging prefixes/globs,
-producer-referenced canonical/latest/status paths, immutable paths and before/
-after arbitration. `writer_topology.py --check` reproduces it from Git without
+producer-referenced canonical/latest/status paths, immutable paths, explicit
+dependency profiles/read barriers/write contracts and before/after arbitration.
+`writer_topology.py --check` reproduces it from Git without
 executing any workflow. Names confer no authority: explicit producer references
 and their write-once contracts determine roles. E2 per-date history and Q017
 supervisor/attempt/recovery diagnostics are mutable, not falsely called immutable.
@@ -35,13 +36,13 @@ silently treated as a main writer.
 | Situation | Before | After |
 | --- | --- | --- |
 | E2 primary/backup use the same base | Separate groups permit overlap; retry may rebase stale output | One proposal can win; different mutable state from the stale proposal stops with exit 2 |
-| Remote changes after computation | Rebase may apply stale data, even without a textual conflict | Fetch and compare exact Git trees; any mutable/input/code advancement stops |
+| Remote changes after computation | Blind rebase may apply stale data; initial PR rejected even unrelated E2 writes | Compare exact trees against declared reads/writes; incompatible write or input change stops; proven unrelated updates may be transplanted |
 | Remote changes between fetch and push | Non-FF rejection followed by blind retry in many writers | Exact SHA lease rejects; next attempt refetches and revalidates original proposal bytes |
 | Identical state already published | Extra retries/commits possible | Raw bytes and modes identical at every proposed path: `IDEMPOTENT_NOOP`, no commit/push |
-| Compatible immutable additions only | Rebase semantics depend on Git conflict detection | Validate both entire deltas are new regular files in explicit immutable prefixes; union only those bytes in an isolated index |
+| Compatible independent evidence/status | Rebase semantics depend on Git conflict detection | Check both read and write sets, then transplant only original proposed bytes in an isolated index |
 | Existing immutable evidence differs or is deleted | Some writers can rebase or replace evidence | Stop, including on a fresh remote base; conflicting observation never replaces existing bytes |
 | Primary/backup 09:01 observation | Independent capture lanes | Same independent capture commands and concurrency groups; arbitration starts only after capture |
-| Mixed evidence/status publication conflicts | Push/rebase may blend mutable output | Whole publication stops; newly captured immutable bytes are retained in a CI artifact with the receipts |
+| Mixed evidence/status publication conflicts | Push/rebase may blend mutable output | Unrelated lane status may coexist; actual write/input conflicts stop the whole transaction and retain capture bytes in CI artifacts |
 
 The helper publishes exactly one generated commit against its parent, the
 producer's computation base. It never pulls, rebases, resolves conflicts, resets
@@ -50,12 +51,56 @@ or stashes the checkout. A candidate always has the observed remote as parent.
 the parent check forbids history rewrites. No repository settings or branch
 protection are changed. Normal uncontended artifact bytes are unchanged.
 
-Retry is deliberately narrow: **both** full deltas must consist solely of new
-regular immutable files. Modifying any code, input, status or other opaque file
-blocks automatic retry even when the proposed output paths do not overlap.
-Compatible additions use `read-tree`/`update-index`/`commit-tree` on an isolated
-temporary index, retaining remote bytes and producer bytes exactly. The original
-proposal/index/worktree remains untouched. No historical outputs are regenerated.
+## Dependency contracts and the real schedule regression
+
+The initial PR incorrectly treated every mutable remote change as a global
+barrier. The real schedule is Primary startup/sync at 07:45 Taipei and Backup
+startup/sync at 08:15, followed by the 08:50 E2 morning bind and the observers'
+09:01 capture publication. E2 legitimately advances main from B to R while both
+observers still use B. This must not invalidate an independent Q017 capture.
+
+`test_real_0745_0815_0850_0901_interleaving_publishes_both_captures` models exactly
+that sequence with synthetic local Git fixtures. Original head `9346983` fails
+with `REMOTE_ADVANCED_REQUIRES_FRESH_COMPUTATION_OR_HUMAN_REVIEW`; the corrected
+publisher passes, retaining both captures/statuses and E2's exact bytes.
+
+Every invocation explicitly selects a profile. Every receipt includes the exact
+generated-commit write set, immutable subset, allowed write patterns, and a
+conservative authoritative read barrier: **all paths, except explicitly proven
+unrelated patterns**. This is a superset of actual reads, not a claim that a
+producer consumes every tracked file. New or unknown paths remain dependencies.
+
+| Profile | Allowed transaction writes | Proven unrelated remote changes |
+| --- | --- | --- |
+| `q017-primary-capture` | Primary observation/history/pointers, attempt/status outputs in the existing staging contract | E2 and dual-engine state, transport-only context, backup observation/status/attempt outputs |
+| `q017-backup-capture` | Backup observation/history/pointers, backup attempt/status outputs | E2 and dual-engine state, transport context, primary observation/history/pointer and lane-specific supervisor status/attempts |
+| `q017-decision-display` | Existing decision/history/ledger/latest and dual-engine latest outputs | Backup observation/status/attempt outputs and transport context; E2 state remains a read dependency |
+| `conservative-all` | Actual generated-commit delta; existing staging paths remain in the inventory | None proven: full-tree read barrier until the producer's narrower dependencies are audited |
+
+All 31 publication sites declare their profile. Primary/backup capture profiles
+follow `hengce_q017_observer_supervisor_v2`, its v1 prewarm fallback,
+`hengce_q017_observation_lock_v5`, the separate backup activation, macro cache,
+premarket snapshot and v4 previous-decision readers. Their normal/fallback paths
+read Q017 history, prior decisions, macro/premarket inputs and EOD readiness, not
+E2 or rolling transport outputs. Source/workflow/contract changes are themselves
+dependencies. `q017-decision-display` additionally follows the actual display
+reader: E2 `state_latest.json` cannot be excluded. Future reader changes require
+re-auditing these contracts; no blanket engine-namespace independence is claimed.
+
+On each remote advance, reject incompatible overlap with any proposed write,
+then reject every changed read-dependency path. Only after both checks pass may
+`read-tree`/`update-index`/`commit-tree` on an isolated index overlay the original
+proposed bytes onto the exact observed remote tree. No textual merge, recompute,
+last-writer-wins rule or historical signal regeneration occurs. Exact lease
+publication still arbitrates every attempt, including advancement during push.
+
+After acceptance (including idempotent acceptance), a non-destructive two-tree
+checkout update plus conditional local HEAD update adopts the accepted commit.
+This lets subsequent decision computation start from the correct accepted base
+instead of an unpublished sibling. Dirty paths unchanged between trees are
+preserved; dirty/untracked collisions cause an explicit local-sync failure and
+stop subsequent steps. No reset/stash or blind pull/rebase is used. Receipts
+distinguish already-published valid remote state from a failed local adoption.
 
 Existing pre-capture/pre-refresh syncs remain unchanged, before any computation
 or generated commit; these are not post-computation publication retries.
@@ -70,7 +115,8 @@ ancestor, preventing it from smuggling a rejected prior commit into main.
 Every helper attempt emits a uniquely named JSON receipt to the GitHub log and
 `$RUNNER_TEMP/hengce-publication/`, including workflow/job/run/attempt identity,
 initial parent SHA, observed remote SHA, proposed/changed paths, publication
-result and explicit conflict reason. Results are `PUBLISHED`, `IDEMPOTENT_NOOP`,
+result, dependency profile, exact write/immutable sets, declared read barrier,
+remote delta on revalidation and explicit conflict reason. Results are `PUBLISHED`, `IDEMPOTENT_NOOP`,
 `RETRY_REVALIDATED`, or `CONFLICT_FAIL_CLOSED`. A rejected push is reported as a
 failed closed attempt; it is never labeled revalidated before the next fetch.
 Network/initial-validation failures can have an unavailable/null remote SHA.
@@ -87,12 +133,16 @@ had 11 failing publication contracts and one successful reproduction of the old
 blind-rebase failure. Tests use disposable local bare Git remotes, clones and
 synthetic strings only. No live market outcomes or historical expected outputs.
 
-- 15 race tests cover stale E2 bases, simultaneous E2 writers, remote advancement
+- 25 race tests cover the real 07:45/08:15/08:50/09:01 schedule, stale E2 bases,
+  simultaneous E2 writers, unrelated E2 and changed Q017 macro/input dependencies,
+  following decision publication after transplant, independent status transactions,
+  E2-dependent display rejection, unknown inputs, out-of-contract profile writes,
+  collision-safe checkout adoption, remote advancement
   during the actual push, immutable conflicts, input changes, idempotence with
   distinct commit metadata, retries, compatible append-only union, independent
-  concurrent Q017 publication, mixed-status rejection with capture retention,
-  untouched dirty/untracked worktrees, and receipt fields.
-- 7 workflow tests reproduce the 29-writer topology, verify all publication exits
+  concurrent Q017 publication, capture retention,
+  preserved dirty/untracked worktrees, and receipt fields.
+- 8 workflow tests reproduce the 29-writer topology, verify all publication exits
   use the helper, preserve all nonpublication compute/validation steps, check
   every existing trigger/schedule/group/permission/job configuration, and confirm
   independent primary/backup capture ordering.
@@ -111,15 +161,14 @@ python -B tests/engineering/replay_equivalence.py --before d38f2c44a6f4efb254cc1
 
 ## Unresolved risks and scope limits
 
-- Conservative fail-close trades availability for safety. Frequent transport or
-  other main updates can reject a long-lived observer even when its capture was
-  valid. Mixed status/evidence transactions do not automatically cherry-pick
-  evidence into main: captured bytes remain in the CI artifact, requiring review
-  or an existing authorized recovery path. This limitation is explicit, not a
-  claim that all concurrent captures reach canonical main.
-- After compatible-addition publication or idempotence on a different commit,
-  the helper leaves the local checkout untouched. A later mutable publication
-  from that stale checkout fails closed; it needs a fresh validated computation.
+- Legitimate unrelated E2/transport/other-lane updates no longer block scoped Q017
+  publication. Real read/input changes, incompatible writes and unclassified paths
+  still fail closed. Other unaudited writer transactions explicitly retain the
+  conservative full-tree read barrier; their throughput is not claimed improved.
+- A valid remote publication can precede local checkout adoption failure. That
+  failure is explicit, preserves collisions and stops later computation; it does
+  not roll back or rewrite an already accepted remote artifact. Rejected captures
+  remain non-authoritative CI artifacts without automatic promotion.
 - No remote advancement is ordered by wall-clock timestamps, and no last-writer-
   wins policy is introduced. Uncontended producer bugs remain producer bugs.
 - External human/API writers and pre-merge in-flight jobs running old workflow

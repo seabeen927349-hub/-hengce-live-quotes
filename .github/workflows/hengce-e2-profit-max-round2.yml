@@ -84,7 +84,7 @@ jobs:
           if [ -f research/e2_profit_max/round2/winner_validation_events.csv ]; then git add research/e2_profit_max/round2/winner_validation_events.csv; fi
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'HENGCE E2 profit-max round2 finite 80-combination result'
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
       - uses: actions/upload-artifact@v4
         with:
           name: e2-profit-max-round2-finite-results

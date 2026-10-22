@@ -80,7 +80,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -91,8 +99,10 @@
               "producer_reference": "scripts/hengce_live_quote_transport.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add latest.json live/"
           ],
@@ -154,7 +164,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -165,11 +183,13 @@
               "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [
             "hengce/q017_radar/observations/",
             "hengce/q017_radar/history/"
           ],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/history/ || true"
           ],
@@ -182,7 +202,15 @@
           ]
         },
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -255,6 +283,7 @@
               "producer_reference": ".github/workflows/hengce-q017-infrastructure-selfverify.yml"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [
             "hengce/q017_radar/observations/",
             "hengce/q017_radar/backup_observations/",
@@ -263,6 +292,7 @@
             "hengce/q017_radar/backup_observation_history/"
           ],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add hengce/q017_radar/ hengce/q017_review_10d/ hengce/e2_live/ eod/ || true"
           ],
@@ -399,7 +429,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -409,8 +447,10 @@
               "producer_reference": "scripts/hengce_dual_engine_display.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add hengce/dual_engine/latest.json"
           ],
@@ -458,7 +498,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -476,8 +524,10 @@
               "producer_reference": "scripts/hengce_dual_engine_display.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add hengce/e2_live/ hengce/dual_engine/"
           ],
@@ -521,11 +571,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_REJECTS_NON_FAST_FORWARD",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add research/e2_profit_max/membership_debug.json"
           ],
@@ -558,7 +618,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -582,8 +650,10 @@
               "producer_reference": "scripts/hengce_q017_macro_cache_v1.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add -A hengce/e2_live/ hengce/dual_engine/",
             "if [ -e \"$p\" ]; then git add \"$p\"; fi"
@@ -660,11 +730,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add research/e2_profit_max/macro/"
           ],
@@ -698,11 +778,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add research/e2_profit_max/membership/"
           ],
@@ -736,11 +826,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add research/e2_profit_max/membership/"
           ],
@@ -774,11 +874,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add research/e2_profit_max/round2/candidate_macro_masks.csv research/e2_profit_max/round2/candidate_macro_masks_receipt.json"
           ],
@@ -814,11 +924,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_REJECTS_NON_FAST_FORWARD",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add research/e2_profit_max/round2/train_grid_80.csv research/e2_profit_max/round2/round2_result.json",
             "if [ -f research/e2_profit_max/round2/winner_validation_events.csv ]; then git add research/e2_profit_max/round2/winner_validation_events.csv; fi"
@@ -854,11 +974,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add research/e2_profit_max/round2/train_grid_80.csv research/e2_profit_max/round2/round2_result.json",
             "if [ -f research/e2_profit_max/round2/winner_validation_events.csv ]; then git add research/e2_profit_max/round2/winner_validation_events.csv; fi"
@@ -897,11 +1027,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add eod/20261015/"
           ],
@@ -933,11 +1073,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add eod/20261019/"
           ],
@@ -969,11 +1119,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add eod/20261020/ || true"
           ],
@@ -1006,11 +1166,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_REJECTS_NON_FAST_FORWARD",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add eod/20261014/"
           ],
@@ -1042,7 +1212,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1060,8 +1238,10 @@
               "producer_reference": "scripts/hengce_full_market_shadow.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add shadow/ hengce/electronics_live/"
           ],
@@ -1132,7 +1312,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1158,8 +1346,10 @@
               "producer_reference": "scripts/hengce_eod_incremental_ingest.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add scripts/hengce_daily_command_center_core_legacy.py scripts/hengce_e2_live.py .github/workflows/hengce-daily-command-center.yml eod/ hengce/q017_radar/data/ hengce/q017_radar/data_status.json hengce/e2_live/ || true"
           ],
@@ -1199,7 +1389,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1209,8 +1407,10 @@
               "producer_reference": ".github/workflows/hengce-live-universe-authoritative-handoff.yml"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add hengce/live_universe.json receipts/HENGCE_LIVE_UNIVERSE_AUTHORITATIVE_HANDOFF_APPLY_*.json"
           ],
@@ -1251,11 +1451,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add eod/20261014/margin_balance_compact.csv eod/20261014/margin_balance_map*.json"
           ],
@@ -1288,11 +1498,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add eod/20261014/"
           ],
@@ -1324,7 +1544,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1334,8 +1562,10 @@
               "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add hengce/q017_radar/latest.json",
             "git add hengce/q017_radar/latest.json"
@@ -1384,7 +1614,34 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "hengce/q017_radar/backup_observations/**",
+            "hengce/q017_radar/backup_observation_history/**",
+            "hengce/q017_radar/backup_observation_latest.json",
+            "hengce/q017_radar/backup_observation_status.json",
+            "hengce/q017_radar/backup_observation_attempts/**",
+            "hengce/q017_radar/backup_observation_attempt_latest.json",
+            "hengce/q017_radar/observer_supervisor_backup_status.json",
+            "hengce/q017_radar/observer_supervisor_attempts/*_backup.json"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [
+              "latest.json",
+              "live/**",
+              "shadow/**",
+              "hengce/electronics_live/**",
+              "hengce/e2_live/**",
+              "hengce/dual_engine/**",
+              "hengce/q017_radar/observations/**",
+              "hengce/q017_radar/observation_latest.json",
+              "hengce/q017_radar/history/**",
+              "hengce/q017_radar/observer_supervisor_primary_status.json",
+              "hengce/q017_radar/observer_supervisor_attempts/*_primary.json"
+            ],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1404,11 +1661,13 @@
               "producer_reference": "scripts/hengce_q017_observer_supervisor_v1.py"
             }
           ],
+          "dependency_profile": "q017-backup-capture",
           "immutable_paths": [
             "hengce/q017_radar/backup_observations/",
             "hengce/q017_radar/backup_observation_history/"
           ],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add -A -- \"$p\"",
             "git add -- \"$OBS\""
@@ -1477,7 +1736,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1487,8 +1754,10 @@
               "producer_reference": "scripts/hengce_e2_live.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add scripts/hengce_q017_observation_lock_v5.py scripts/hengce_q017_backup_observer_v5.py scripts/test_hengce_q017_resilience_v5.py hengce/e2_live/morning_latest.json"
           ],
@@ -1525,11 +1794,21 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261019.json"
           ],
@@ -1563,7 +1842,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1573,8 +1860,10 @@
               "producer_reference": ".github/workflows/hengce-q017-infrastructure-selfverify.yml"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add hengce/q017_radar/selfverify/"
           ],
@@ -1622,7 +1911,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1634,8 +1931,10 @@
               "producer_reference": "scripts/hengce_q017_macro_cache_v1.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add    hengce/q017_radar/data/sox_2026.csv    hengce/q017_radar/data/sox_status.json    hengce/q017_radar/data/dxy_2026.csv    hengce/q017_radar/data/dxy_status.json    hengce/q017_radar/data/macro_cache/ || true"
           ],
@@ -1719,7 +2018,37 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "hengce/q017_radar/observations/**",
+            "hengce/q017_radar/observation_latest.json",
+            "hengce/q017_radar/history/**",
+            "hengce/q017_radar/decision_attempts/**",
+            "hengce/q017_radar/decision_attempt_latest.json",
+            "hengce/q017_radar/latest.json",
+            "hengce/q017_radar/observer_supervisor_primary_status.json",
+            "hengce/q017_radar/observer_supervisor_attempts/*_primary.json"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [
+              "latest.json",
+              "live/**",
+              "shadow/**",
+              "hengce/electronics_live/**",
+              "hengce/q017_radar/backup_observations/**",
+              "hengce/q017_radar/backup_observation_history/**",
+              "hengce/q017_radar/backup_observation_latest.json",
+              "hengce/q017_radar/backup_observation_status.json",
+              "hengce/q017_radar/backup_observation_attempts/**",
+              "hengce/q017_radar/backup_observation_attempt_latest.json",
+              "hengce/q017_radar/observer_supervisor_backup_status.json",
+              "hengce/q017_radar/observer_supervisor_attempts/*_backup.json",
+              "hengce/e2_live/**",
+              "hengce/dual_engine/**"
+            ],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1745,11 +2074,13 @@
               "producer_reference": "scripts/hengce_q017_decision_lock_v4.py"
             }
           ],
+          "dependency_profile": "q017-primary-capture",
           "immutable_paths": [
             "hengce/q017_radar/observations/",
             "hengce/q017_radar/history/"
           ],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add -A -- \"$p\"",
             "git add -- \"$OBS\""
@@ -1768,7 +2099,33 @@
           ]
         },
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "hengce/q017_radar/decision/**",
+            "hengce/q017_radar/decision_latest.json",
+            "hengce/q017_radar/latest.json",
+            "hengce/q017_radar/history/**",
+            "hengce/q017_radar/signal_ledger.jsonl",
+            "hengce/dual_engine/latest.json"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [
+              "latest.json",
+              "live/**",
+              "shadow/**",
+              "hengce/electronics_live/**",
+              "hengce/q017_radar/backup_observations/**",
+              "hengce/q017_radar/backup_observation_history/**",
+              "hengce/q017_radar/backup_observation_latest.json",
+              "hengce/q017_radar/backup_observation_status.json",
+              "hengce/q017_radar/backup_observation_attempts/**",
+              "hengce/q017_radar/backup_observation_attempt_latest.json",
+              "hengce/q017_radar/observer_supervisor_backup_status.json",
+              "hengce/q017_radar/observer_supervisor_attempts/*_backup.json"
+            ],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1786,11 +2143,13 @@
               "producer_reference": "scripts/hengce_dual_engine_display.py"
             }
           ],
+          "dependency_profile": "q017-decision-display",
           "immutable_paths": [
             "hengce/q017_radar/decision/",
             "hengce/q017_radar/history/"
           ],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add -A -- \"$p\""
           ],
@@ -1856,7 +2215,15 @@
       "job_concurrency": null,
       "publications": [
         {
-          "after_arbitration": "EXACT_REMOTE_LEASE; MUTABLE_STALE_STOP; ONLY_PROVEN_IMMUTABLE_ADDITIONS_MAY_RETRY",
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
           "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
           "canonical_latest_status_paths": [
             {
@@ -1870,12 +2237,14 @@
               "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
             }
           ],
+          "dependency_profile": "conservative-all",
           "immutable_paths": [
             "hengce/q017_radar/observations/",
             "hengce/q017_radar/decision/",
             "hengce/q017_radar/history/"
           ],
           "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
           "staging_statements": [
             "git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/decision/ hengce/q017_radar/decision_latest.json hengce/q017_radar/latest.json hengce/q017_radar/history/ hengce/q017_radar/recovery_receipts/ hengce/q017_radar/signal_ledger.jsonl || true"
           ],

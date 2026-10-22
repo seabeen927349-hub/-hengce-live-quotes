@@ -62,7 +62,7 @@ jobs:
             exit 0
           fi
           git commit -m 'HENGCE Q017 schema-v5 authority guard: quarantine unauthorized latest output'
-          python scripts/hengce_publish.py
+          python scripts/hengce_publish.py --profile conservative-all
 
       - name: Preserve publication arbitration receipts and captured evidence
         if: always()

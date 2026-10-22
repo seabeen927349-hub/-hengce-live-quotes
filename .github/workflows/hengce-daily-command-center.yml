@@ -193,7 +193,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE Q017 immutable 09:01 observation ${TS}"
-            python scripts/hengce_publish.py
+            python scripts/hengce_publish.py --profile conservative-all
           fi
 
       - name: Compute Q017 only from locked 09:01 observation
@@ -268,7 +268,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE command center ${TS} ${{ steps.mode.outputs.mode }}"
-            python scripts/hengce_publish.py
+            python scripts/hengce_publish.py --profile conservative-all
           fi
 
       - name: Premarket snapshot health

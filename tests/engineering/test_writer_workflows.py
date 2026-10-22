@@ -30,6 +30,7 @@ class WriterWorkflowTests(unittest.TestCase):
                 step = next(s for s in steps if s.get('name') == publication['step'])
                 with self.subTest(workflow=writer['workflow'], step=publication['step']):
                     self.assertIn('python scripts/hengce_publish.py', step['run'])
+                    self.assertIn('--profile ' + publication['dependency_profile'], step['run'])
                     for unsafe in ('git push', 'git pull', 'git rebase', 'git reset'):
                         self.assertNotIn(unsafe, step['run'])
             upload = next(s for s in steps if s.get('name') == 'Preserve publication arbitration receipts and captured evidence')
@@ -103,7 +104,19 @@ class WriterWorkflowTests(unittest.TestCase):
                 modules.update(alias.name.split('.')[0] for alias in node.names)
             elif isinstance(node, ast.ImportFrom):
                 modules.add(node.module.split('.')[0])
-        self.assertEqual(modules, {'argparse', 'json', 'os', 'pathlib', 'subprocess', 'tempfile', 'time', 'uuid'})
+        self.assertEqual(modules, {'argparse', 'fnmatch', 'json', 'os', 'pathlib', 'subprocess', 'tempfile', 'time', 'uuid'})
+
+    def test_capture_profiles_protect_macros_code_and_unknown_inputs(self):
+        import hengce_publish as publisher
+        for profile in ('q017-primary-capture', 'q017-backup-capture'):
+            contract = publisher.PROFILES[profile]
+            self.assertTrue(publisher.matches('hengce/e2_live/morning_latest.json', contract['unrelated']))
+            for path in ('hengce/q017_radar/data/macro_cache/latest.json',
+                         'hengce/q017_radar/data/twse_electronics_history_2026.csv',
+                         'hengce/q017_radar/decision/previous_0901.json',
+                         'scripts/hengce_q017_observation_lock_v5.py',
+                         'eod/20261021/status.json', 'future_unknown_input.json'):
+                self.assertFalse(publisher.matches(path, contract['unrelated']), (profile, path))
 
 
 if __name__ == '__main__':

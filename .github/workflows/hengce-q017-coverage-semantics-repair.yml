@@ -47,7 +47,7 @@ jobs:
             echo 'No repair changes to commit.'
           else
             git commit -m 'HENGCE harden Q017 quote versus opened coverage semantics'
-            python scripts/hengce_publish.py
+            python scripts/hengce_publish.py --profile conservative-all
           fi
 
       - name: Preserve publication arbitration receipts and captured evidence

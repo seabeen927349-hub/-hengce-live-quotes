@@ -51,7 +51,7 @@ jobs:
             echo 'Receipt unchanged.'
           else
             git commit -m 'HENGCE Q017 hypothetical 2026-10-19 open reconstruction zero authority'
-            python scripts/hengce_publish.py
+            python scripts/hengce_publish.py --profile conservative-all
           fi
 
       - name: Preserve publication arbitration receipts and captured evidence
