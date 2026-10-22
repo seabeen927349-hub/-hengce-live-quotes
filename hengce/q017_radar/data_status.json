@@ -1,7 +1,7 @@
 {
   "system": "HENGCE",
   "module": "POSTCLOSE_DATA_GATE",
-  "generated_at_taipei": "2026-10-22T16:08:35.937646+08:00",
+  "generated_at_taipei": "2026-10-22T16:24:40.601933+08:00",
   "status": "PARTIAL",
   "downstream_ready": false,
   "eod": {
@@ -18,23 +18,23 @@
     "price_rows": 1088,
     "price_sha256": "9a25e7982f665eea6d6128c216ae21c673467ea86eb95d30676b36223ce78df2",
     "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
-    "institutional_status": "PENDING",
-    "institutional_pending_reason": "INST_NOT_READY:很抱歉，沒有符合條件的資料!",
+    "institutional_status": "COMPLETE",
     "margin_status": "PENDING",
     "margin_pending_reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
     "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
     "available_legs": [
-      "price"
+      "price",
+      "institutional"
     ],
     "pending_legs": [
-      "institutional",
       "margin"
     ],
     "error_legs": [],
     "mother_status": "PENDING",
     "mother_promotion_required": true,
     "mother_pending_legs": [
-      "price"
+      "price",
+      "institutional"
     ],
     "downstream_ready": false,
     "three_leg_complete": false,
@@ -49,8 +49,9 @@
       },
       {
         "leg": "institutional",
-        "result": "PENDING",
-        "reason": "INST_NOT_READY:很抱歉，沒有符合條件的資料!"
+        "result": "PROMOTED",
+        "rows": 1072,
+        "sha256": "5d25789eabf024faf5bf825d09891bf8e3d0529e1147d960fd4d24057113cb7e"
       },
       {
         "leg": "margin",
@@ -58,7 +59,11 @@
         "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
       }
     ],
-    "updated_at_taipei": "2026-10-22T16:08:35.937030+08:00"
+    "updated_at_taipei": "2026-10-22T16:24:40.601337+08:00",
+    "institutional_date": "2026-10-22",
+    "institutional_rows": 1072,
+    "institutional_sha256": "5d25789eabf024faf5bf825d09891bf8e3d0529e1147d960fd4d24057113cb7e",
+    "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86"
   },
   "electronics_history_append": {
     "status": "PENDING",
