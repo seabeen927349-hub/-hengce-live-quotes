@@ -2,7 +2,7 @@
   "schema_version": 2,
   "system": "HENGCE",
   "module": "HENGCE_DUAL_ENGINE_DISPLAY",
-  "generated_at_taipei": "2026-10-22T09:32:32.339336+08:00",
+  "generated_at_taipei": "2026-10-22T09:37:18.817337+08:00",
   "architecture": "DUAL_ENGINE",
   "rankings_separate": true,
   "mixed_ranking_forbidden": true,
@@ -13,7 +13,7 @@
     "binding_status": "PASS",
     "authority": "FORMAL_Q017_DECISION_INPUT_NOT_BROKER_ORDER",
     "formal_authority": true,
-    "formal_buy_count": 3,
+    "formal_buy_count": 0,
     "trade_date": "2026-10-22",
     "top3": [
       {
