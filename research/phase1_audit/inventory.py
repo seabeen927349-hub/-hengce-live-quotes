@@ -128,6 +128,22 @@ def build(root=ROOT):
                                  'revision_history': 'GIT_ARTIFACT_HISTORY_NOT_PROVIDER_REVISION_HISTORY'})
 
     universe, lock, display, context = (ev.obj(p) for p in (UNIVERSE, E2_LOCK, E2_DISPLAY, CONTEXT))
+    rolling_path = 'shadow/full_market_latest.json'
+    rolling = ev.obj(rolling_path)
+    quote_rows = rolling['quotes']
+    current_quote_evidence = {
+        'path': rolling_path, 'classification': 'PRESENT_CURRENT_CONTEXT_ONLY',
+        'generated_at_taipei': rolling['generated_at_taipei'], 'authority': rolling['authority'],
+        'row_count': len(quote_rows),
+        'fields_with_nonnull_row_counts': {k: sum(q.get(k) is not None for q in quote_rows)
+            for k in ('best_bid', 'best_ask', 'volume_lots', 'trade_time', 'fetched_at_taipei')},
+        'quote_fresh_count': rolling['quote_fresh_count'], 'trade_fresh_count': rolling['trade_fresh_count'],
+        'executable_volume': 'NOT_PROVEN_BY_CUMULATIVE_VOLUME',
+        'historical_depth_queue_latency_fill_panel': 'NOT_PRESENT_IN_THIS_SNAPSHOT'}
+    smoke_path = 'receipts/HENGCE_FULL_MARKET_INTRADAY_SHADOW_SMOKE_RECEIPT_20261010.json'
+    smoke = ev.obj(smoke_path)
+    q012_path = 'research/q012/HENGCE_Q012_FEATURE_INTEGRITY_CONTRACT_20261017.json'
+    q012 = ev.obj(q012_path)
     # EOD flags are copied, never inferred from a date, row count or other legs.
     eod = []
     for p in ev.paths:
@@ -216,6 +232,11 @@ def build(root=ROOT):
                     'bid_ask_depth_queue_latency_fill_volume_panel': 'NOT_PROVEN',
                     'daily_ohlc_substitution': 'FORBIDDEN'},
                 'current_quote_context_contract': {'path': CONTEXT, 'authority': context['authority']},
+                'current_quote_snapshot': current_quote_evidence,
+                'existing_transport_smoke': {'path': smoke_path, 'market_state': smoke['market_state'],
+                    'result': smoke['result'], 'historical_fill_evidence': False},
+                'existing_microstructure_contract': {'path': q012_path, 'rules': q012['rules'],
+                    'limitations': q012['limitations'], 'raw_event_panel_proven_by_contract': False},
                 'current_quotes_are_historical_executability': False},
         'B06': {'classification': 'PARTIAL', 'Q017_observations': qobs, 'Q017_decisions': qdec,
                 'E2_states': e2, 'M1': 'NUMERICAL_LINEAGE_ABSENT_IN_REVIEWED_EVIDENCE',

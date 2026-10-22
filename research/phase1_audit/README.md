@@ -60,6 +60,12 @@ still unauthorized and must meet its own coverage/PIT/cost/execution/governance
 gates. Live quote transport/context is not historical executable-volume or fill
 evidence. Daily OHLC cannot replace intraday observations.
 
+The existing rolling context snapshot is also inventoried: it contains bid/ask,
+cumulative volume and fetch/trade timestamps, but its trade-fresh count is zero
+at this pin. It does not establish a historical fill or executable-volume panel.
+The weekend transport smoke receipt and Q012 book-integrity contract are retained
+as infrastructure/specification evidence, not proof of available raw depth data.
+
 ## Governance and approval requirements
 
 `governance.json` freezes no new calibration. E2's existing roundtrip 0.008,

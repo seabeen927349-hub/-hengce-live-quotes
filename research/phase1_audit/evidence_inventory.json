@@ -5674,7 +5674,50 @@
       },
       "path": "hengce/HENGCE_ELECTRONICS_LIVE_COVERAGE_CONTRACT_v1_0_20261022.json"
     },
-    "current_quotes_are_historical_executability": false
+    "current_quote_snapshot": {
+      "authority": "SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
+      "classification": "PRESENT_CURRENT_CONTEXT_ONLY",
+      "executable_volume": "NOT_PROVEN_BY_CUMULATIVE_VOLUME",
+      "fields_with_nonnull_row_counts": {
+        "best_ask": 1085,
+        "best_bid": 1083,
+        "fetched_at_taipei": 1088,
+        "trade_time": 1088,
+        "volume_lots": 1088
+      },
+      "generated_at_taipei": "2026-10-22T13:56:25.128016+08:00",
+      "historical_depth_queue_latency_fill_panel": "NOT_PRESENT_IN_THIS_SNAPSHOT",
+      "path": "shadow/full_market_latest.json",
+      "quote_fresh_count": 1088,
+      "row_count": 1088,
+      "trade_fresh_count": 0
+    },
+    "current_quotes_are_historical_executability": false,
+    "existing_microstructure_contract": {
+      "limitations": [
+        "Book age is recorded without a tuned cutoff; any age-based exclusion must be specified before outcome analysis.",
+        "Matching best-bid/ask prices does not guarantee unchanged displayed depth; the measured age remains explicit for later prespecified sensitivity analysis."
+      ],
+      "path": "research/q012/HENGCE_Q012_FEATURE_INTEGRITY_CONTRACT_20261017.json",
+      "raw_event_panel_proven_by_contract": false,
+      "rules": {
+        "all_valid_trade_events_retained": true,
+        "ambiguous_same_symbol_same_timestamp_book_updates_suppressed": true,
+        "book_timestamp_and_age_ms_emitted": true,
+        "depth_features_require_trade_best_bid_ask_match": true,
+        "deterministic_ordering_independent_of_file_enumeration": true,
+        "json_output_disallows_nan": true,
+        "no_predictive_or_alpha_threshold_added": true,
+        "quality_summary_written_even_when_aligned_row_requirement_fails": true,
+        "trades_without_prior_book_not_dropped": true
+      }
+    },
+    "existing_transport_smoke": {
+      "historical_fill_evidence": false,
+      "market_state": "WEEKEND_CLOSED",
+      "path": "receipts/HENGCE_FULL_MARKET_INTRADAY_SHADOW_SMOKE_RECEIPT_20261010.json",
+      "result": "PASS_WEEKEND_FAILSAFE_SMOKE"
+    }
   },
   "B06": {
     "E2_states": [
@@ -8132,6 +8175,10 @@
       "git_blob_sha": "2fc25f58c895c94110ae601de4797853106cefca",
       "sha256": "df7d0c03b4030eed96bebefb0b037e26c0496c165bf503e8ae84890dcb6e0563"
     },
+    "receipts/HENGCE_FULL_MARKET_INTRADAY_SHADOW_SMOKE_RECEIPT_20261010.json": {
+      "git_blob_sha": "3bf2fe88ee4c4ac0e615e6eb13f260f5ea35b30d",
+      "sha256": "5c69064a4c5d53a2630eaab3946ea27269a908a291ef020dd0e68c7b32f362ba"
+    },
     "research/e2_profit_max/acquire_macro_q017_sources.py": {
       "git_blob_sha": "9235bb4a176b13b4a730d7932ac515e4590838a8",
       "sha256": "541e29b8124e176f1370ff8a1a94e1a489a3814e4d95ee1c57c2bd769325a47a"
@@ -8171,6 +8218,10 @@
     "research/q012/HENGCE_MICROSTRUCTURE_FEATURES_v0_2.py": {
       "git_blob_sha": "aa443d0ba02f0d84a61da1b014b50b5d3a18c205",
       "sha256": "0c742f3926cd3c0fb7e6cd88e6f489aa7998b6d4f8b3cfc022ca63e52386a4f0"
+    },
+    "research/q012/HENGCE_Q012_FEATURE_INTEGRITY_CONTRACT_20261017.json": {
+      "git_blob_sha": "127038540f143c9aa30dc8577157c4fcfdb066b4",
+      "sha256": "23e61e89061aace5d598ea69e268957c8f52e73d1beb03109eaa5d86bc26c7be"
     },
     "research/q012/test_microstructure_features.py": {
       "git_blob_sha": "8273e9b0d901e0661a4b3f87f4821db653650a56",
@@ -8335,6 +8386,10 @@
     "scripts/test_hengce_q017_resilience_v5.py": {
       "git_blob_sha": "3c7d39ac1fce3ec66efe4e32b3389c1829e1a6e2",
       "sha256": "3c1a568df9bbef12bf55ea762f1c08538d16144e015b3f7734f9313dcd25e16a"
+    },
+    "shadow/full_market_latest.json": {
+      "git_blob_sha": "14bfda7a73a69cb71475b1be40aaf6b030c2ebbe",
+      "sha256": "e09995d28ba2322cbb9ff581c7d2af89d3d3860005627674550ab220c85341a5"
     },
     "tests/engineering/replay_equivalence.py": {
       "git_blob_sha": "10088fb3cdf9278f9ff4eb77ba589207628a4e2f",

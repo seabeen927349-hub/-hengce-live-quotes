@@ -55,6 +55,9 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(evidence['DAILY_NEXT_OPEN_RESEARCH']['status'], 'NOT_AUTHORIZED')
         self.assertEqual(evidence['INTRADAY_TIMING_RESEARCH']['daily_ohlc_substitution'], 'FORBIDDEN')
         self.assertFalse(any(evidence['current_quote_context_contract']['authority'].values()))
+        self.assertGreater(evidence['current_quote_snapshot']['fields_with_nonnull_row_counts']['best_bid'], 0)
+        self.assertEqual(evidence['current_quote_snapshot']['trade_fresh_count'], 0)
+        self.assertFalse(evidence['existing_microstructure_contract']['raw_event_panel_proven_by_contract'])
         self.assertTrue(all(x['first_seen_time'] == 'NOT_PROVEN' for x in self.data['B04']['artifacts']))
 
     def test_protected_paths_are_never_read(self):
