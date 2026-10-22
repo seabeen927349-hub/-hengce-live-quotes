@@ -1,0 +1,17 @@
+{
+  "schema_version": 5,
+  "system": "HENGCE",
+  "module": "Q017_0901_BACKUP_OBSERVER",
+  "trade_date": "2026-10-22",
+  "generated_at_taipei": "2026-10-22T09:01:15.050784+08:00",
+  "status": "BACKUP_OBSERVATION_READY",
+  "authority": "RECOVERY_EVIDENCE_ONLY_NO_DIRECT_RANKING_AUTHORITY",
+  "observation_snapshot_sha256": "e5dfd43f723ded881562cebb2426f88010822513c37663aca6349b0c25703eb0",
+  "universe_sha256": "7bf610f435bb0e655e02f7ff92b9c76add008373eecec8d5324eba3b713ff783",
+  "provider_coverage": 1.0,
+  "eligible_quote_row_coverage": 1.0,
+  "opened_coverage": 0.5090497737556561,
+  "quote_present_but_no_open_count": 217,
+  "coverage_semantics": "QUOTE_ROW_COVERAGE_IS_DATA_COMPLETENESS;OPENED_COVERAGE_IS_CAUSAL_MARKET_STATE",
+  "policy": "May be promoted only if canonical 09:01 observation is absent and this artifact passes schema-v5 validation."
+}
