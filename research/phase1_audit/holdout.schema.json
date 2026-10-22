@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prospective custody design only; not allocated or opened in Phase 1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "holdout_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "UNALLOCATED",
+        "SEALED",
+        "OPENED",
+        "CONSUMED"
+      ]
+    },
+    "custodian": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifact_commitment_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "policy_authorization_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "access_policy_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sealed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "opened_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "consumed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "open_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "exposed": {
+      "type": "boolean"
+    },
+    "audit_head_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "capital_authority": {
+      "const": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "holdout_id",
+    "state",
+    "custodian",
+    "artifact_commitment_sha256",
+    "policy_authorization_id",
+    "access_policy_sha256",
+    "sealed_at",
+    "opened_at",
+    "consumed_at",
+    "open_count",
+    "exposed",
+    "audit_head_sha256",
+    "capital_authority"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "UNALLOCATED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "custodian": {
+            "type": "null"
+          },
+          "artifact_commitment_sha256": {
+            "type": "null"
+          },
+          "policy_authorization_id": {
+            "type": "null"
+          },
+          "access_policy_sha256": {
+            "type": "null"
+          },
+          "sealed_at": {
+            "type": "null"
+          },
+          "opened_at": {
+            "type": "null"
+          },
+          "consumed_at": {
+            "type": "null"
+          },
+          "open_count": {
+            "const": 0
+          },
+          "exposed": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "SEALED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "custodian": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_commitment_sha256": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policy_authorization_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "access_policy_sha256": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sealed_at": {
+            "type": "string",
+            "minLength": 1
+          },
+          "open_count": {
+            "const": 0
+          },
+          "exposed": {
+            "const": false
+          },
+          "opened_at": {
+            "type": "null"
+          },
+          "consumed_at": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "OPENED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "custodian": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_commitment_sha256": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policy_authorization_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "access_policy_sha256": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sealed_at": {
+            "type": "string",
+            "minLength": 1
+          },
+          "open_count": {
+            "const": 1
+          },
+          "exposed": {
+            "const": true
+          },
+          "opened_at": {
+            "type": "string"
+          },
+          "consumed_at": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "CONSUMED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "custodian": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_commitment_sha256": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policy_authorization_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "access_policy_sha256": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sealed_at": {
+            "type": "string",
+            "minLength": 1
+          },
+          "open_count": {
+            "const": 1
+          },
+          "exposed": {
+            "const": true
+          },
+          "opened_at": {
+            "type": "string"
+          },
+          "consumed_at": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research experiment audit record; no experiment authority",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "type": "integer"
+    },
+    "experiment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "hypothesis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine": {
+      "enum": [
+        "Q017",
+        "E2",
+        "M1"
+      ]
+    },
+    "code_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "data_cutoff": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "metrics": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "result": {
+      "enum": [
+        "PROPOSED",
+        "FAILED",
+        "COMPLETED",
+        "ABORTED"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "PENDING",
+        "ACCEPT",
+        "REJECT"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "previous_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "record_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "capital_authority": {
+      "type": "integer",
+      "const": 0
+    },
+    "phase2_authorized": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "parent_id",
+    "hypothesis",
+    "engine",
+    "code_commit",
+    "data_cutoff",
+    "parameters",
+    "metrics",
+    "result",
+    "decision",
+    "reason",
+    "recorded_at",
+    "previous_sha256",
+    "record_sha256",
+    "capital_authority",
+    "phase2_authorized"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "enum": [
+              "FAILED",
+              "ABORTED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "const": "REJECT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "PROPOSED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "const": "PENDING"
+          }
+        }
+      }
+    }
+  ]
+}

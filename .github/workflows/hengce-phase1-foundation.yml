@@ -1,0 +1,33 @@
+name: HENGCE Phase 1 Foundation Evidence
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install research-only pinned replay dependencies
+        run: python -m pip install -r research/phase1_audit/requirements-replay.txt
+      - name: Verify dependency closure
+        run: python -m pip check
+      - name: Reject production and out-of-scope changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || 'b975f1443d8c3b4360cddaf1d25d65054ab1d4ed' }}
+        run: python -B research/phase1_audit/scope_guard.py --base "$BASE_SHA"
+      - name: Verify frozen evidence inventory
+        run: python -B research/phase1_audit/inventory.py --check
+      - name: Synthetic governance and audit regressions
+        run: python -B research/phase1_audit/test_foundation.py

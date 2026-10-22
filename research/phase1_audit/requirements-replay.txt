@@ -1,0 +1,10 @@
+# Research/replay only; does not change production installations.
+# CPython 3.12, Linux x86_64. OS, Python patch, tzdata and wheel hashes remain PARTIAL.
+requests==2.32.5
+openpyxl==3.1.5
+PyYAML==6.0.3
+certifi==2025.10.5
+charset-normalizer==3.4.4
+idna==3.11
+urllib3==2.5.0
+et-xmlfile==2.0.0
