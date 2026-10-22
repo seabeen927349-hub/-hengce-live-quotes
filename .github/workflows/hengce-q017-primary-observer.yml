@@ -124,10 +124,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE Q017 primary 09:01 evidence/status ${TS}"
-            if ! git push origin HEAD:main; then
-              git pull --rebase origin main
-              git push origin HEAD:main
-            fi
+            python scripts/hengce_publish.py --profile q017-primary-capture
           fi
 
       - name: Verify canonical observation is persisted in Git HEAD before computation
@@ -136,7 +133,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git pull --rebase origin main
+          # Verify the exact accepted proposal; no post-computation pull/rebase.
           OBS="hengce/q017_radar/observations/$(TZ=Asia/Taipei date '+%Y%m%d')_0901_observation.json"
           git cat-file -e "HEAD:$OBS"
           git show "HEAD:$OBS" > /tmp/q017_canonical_observation.json
@@ -200,10 +197,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE Q017 primary decision/display ${TS}"
-            if ! git push origin HEAD:main; then
-              git pull --rebase origin main
-              git push origin HEAD:main
-            fi
+            python scripts/hengce_publish.py --profile q017-decision-display
           fi
 
       - name: Primary observer health
@@ -225,3 +219,11 @@ jobs:
             exit 2
           fi
           echo 'PRIMARY_0901_OBSERVATION_PERSISTED_AND_DECISION_PASS'
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

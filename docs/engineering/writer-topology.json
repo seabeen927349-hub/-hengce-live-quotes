@@ -1,0 +1,2305 @@
+{
+  "authority": "INVENTORY_ONLY_NO_SIGNAL_RANKING_OR_CAPITAL_AUTHORITY",
+  "immutable_prefixes": [
+    "hengce/q017_radar/observations/",
+    "hengce/q017_radar/backup_observations/",
+    "hengce/q017_radar/decision/",
+    "hengce/q017_radar/history/",
+    "hengce/q017_radar/backup_observation_history/"
+  ],
+  "producer_references": {
+    ".github/workflows/hengce-live-universe-authoritative-handoff.yml": [
+      "hengce/live_universe.json"
+    ],
+    ".github/workflows/hengce-q017-infrastructure-selfverify.yml": [
+      "hengce/q017_radar/selfverify/infrastructure_latest.json"
+    ],
+    "scripts/hengce_dual_engine_display.py": [
+      "hengce/dual_engine/latest.json"
+    ],
+    "scripts/hengce_e2_live.py": [
+      "hengce/e2_live/state_latest.json",
+      "hengce/e2_live/morning_latest.json",
+      "hengce/e2_live/history/"
+    ],
+    "scripts/hengce_electronics_live_coverage.py": [
+      "hengce/electronics_live/latest.json",
+      "hengce/electronics_live/status.json"
+    ],
+    "scripts/hengce_eod_incremental_ingest.py": [
+      "eod/*/status.json"
+    ],
+    "scripts/hengce_full_market_shadow.py": [
+      "shadow/full_market_latest.json",
+      "shadow/deployment_status.json"
+    ],
+    "scripts/hengce_live_quote_transport.py": [
+      "latest.json",
+      "live/quotes/"
+    ],
+    "scripts/hengce_q017_10d_review.py": [
+      "hengce/q017_review_10d/ledger_latest.json",
+      "hengce/q017_review_10d/review_latest.json"
+    ],
+    "scripts/hengce_q017_backup_observer_v5.py": [
+      "hengce/q017_radar/backup_observations/",
+      "hengce/q017_radar/backup_observation_latest.json",
+      "hengce/q017_radar/backup_observation_status.json",
+      "hengce/q017_radar/backup_observation_attempt_latest.json"
+    ],
+    "scripts/hengce_q017_decision_lock_v4.py": [
+      "hengce/q017_radar/decision_attempt_latest.json",
+      "hengce/q017_radar/decision_attempts/"
+    ],
+    "scripts/hengce_q017_macro_cache_v1.py": [
+      "hengce/q017_radar/data/macro_cache/latest.json",
+      "hengce/q017_radar/data/sox_status.json",
+      "hengce/q017_radar/data/dxy_status.json"
+    ],
+    "scripts/hengce_q017_observation_lock_v5.py": [
+      "hengce/q017_radar/observations/",
+      "hengce/q017_radar/decision/",
+      "hengce/q017_radar/observation_latest.json",
+      "hengce/q017_radar/decision_latest.json",
+      "hengce/q017_radar/latest.json"
+    ],
+    "scripts/hengce_q017_observer_supervisor_v1.py": [
+      "hengce/q017_radar/observer_supervisor_primary_status.json",
+      "hengce/q017_radar/observer_supervisor_backup_status.json",
+      "hengce/q017_radar/observer_supervisor_attempts/"
+    ]
+  },
+  "purpose": "EXISTING_WRITER_TOPOLOGY_PLUS_PUBLICATION_ARBITRATION_MAP",
+  "scope": "All existing workflow job steps containing a literal git push origin HEAD:main. Non-main branch writer q017-2026-sox-electronics-research is excluded. External human/API writers cannot be inventoried from repository YAML.",
+  "source_commit": "d38f2c44a6f4efb254cc126ed2b9e162121589e3",
+  "writers": [
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "update",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "latest.json",
+                "live/quotes/"
+              ],
+              "producer_reference": "scripts/hengce_live_quote_transport.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add latest.json live/"
+          ],
+          "step": "Commit live snapshot",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "latest.json",
+            "live/"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "*/5 1-4 * * 1-5"
+        },
+        {
+          "cron": "0-30/5 5 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "hengce/live_universe.json",
+            "hengce/HENGCE_LIVE_QUOTE_TRANSPORT_CONTRACT_v1_0_20261020.json",
+            "hengce/HENGCE_LIVE_UNIVERSE_COVERAGE_CONTRACT_v1_0_20261020.json",
+            "hengce/HENGCE_LIVE_UNIVERSE_AUTHORITATIVE_HANDOFF_CONTRACT_v1_0_20261020.json",
+            "hengce/live_market_lifecycle.json",
+            "scripts/hengce_live_quote_transport.py",
+            "scripts/hengce_live_trial_guard.py",
+            "scripts/hengce_live_universe_guard.py",
+            "scripts/hengce_live_universe_handoff.py",
+            ".github/workflows/fugle-live-quotes.yml",
+            ".github/workflows/hengce-live-universe-authoritative-handoff.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "*/5 1-4 * * 1-5"
+          },
+          {
+            "cron": "0-30/5 5 * * 1-5"
+          }
+        ],
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/fugle-live-quotes.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "true",
+        "group": "hengce-live-quotes"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "run",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/observations/",
+                "hengce/q017_radar/observation_latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [
+            "hengce/q017_radar/observations/",
+            "hengce/q017_radar/history/"
+          ],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/history/ || true"
+          ],
+          "step": "Persist 09:01 observation before any ranking computation",
+          "step_condition": "always() && steps.mode.outputs.mode == 'decision' && steps.q017_observe.outcome == 'success'",
+          "writable_path_prefixes_or_globs": [
+            "hengce/q017_radar/history/",
+            "hengce/q017_radar/observation_latest.json",
+            "hengce/q017_radar/observations/"
+          ]
+        },
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/observations/",
+                "hengce/q017_radar/decision/",
+                "hengce/q017_radar/observation_latest.json",
+                "hengce/q017_radar/decision_latest.json",
+                "hengce/q017_radar/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/backup_observations/",
+                "hengce/q017_radar/backup_observation_latest.json",
+                "hengce/q017_radar/backup_observation_status.json",
+                "hengce/q017_radar/backup_observation_attempt_latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_backup_observer_v5.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/observer_supervisor_primary_status.json",
+                "hengce/q017_radar/observer_supervisor_backup_status.json",
+                "hengce/q017_radar/observer_supervisor_attempts/"
+              ],
+              "producer_reference": "scripts/hengce_q017_observer_supervisor_v1.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/decision_attempt_latest.json",
+                "hengce/q017_radar/decision_attempts/"
+              ],
+              "producer_reference": "scripts/hengce_q017_decision_lock_v4.py"
+            },
+            {
+              "paths": [
+                "hengce/e2_live/state_latest.json",
+                "hengce/e2_live/morning_latest.json",
+                "hengce/e2_live/history/"
+              ],
+              "producer_reference": "scripts/hengce_e2_live.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_review_10d/ledger_latest.json",
+                "hengce/q017_review_10d/review_latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_10d_review.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/data/macro_cache/latest.json",
+                "hengce/q017_radar/data/sox_status.json",
+                "hengce/q017_radar/data/dxy_status.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_macro_cache_v1.py"
+            },
+            {
+              "paths": [
+                "eod/*/status.json"
+              ],
+              "producer_reference": "scripts/hengce_eod_incremental_ingest.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/selfverify/infrastructure_latest.json"
+              ],
+              "producer_reference": ".github/workflows/hengce-q017-infrastructure-selfverify.yml"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [
+            "hengce/q017_radar/observations/",
+            "hengce/q017_radar/backup_observations/",
+            "hengce/q017_radar/decision/",
+            "hengce/q017_radar/history/",
+            "hengce/q017_radar/backup_observation_history/"
+          ],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add hengce/q017_radar/ hengce/q017_review_10d/ hengce/e2_live/ eod/ || true"
+          ],
+          "step": "Commit command-center outputs",
+          "step_condition": "always() && steps.mode.outputs.mode != 'self-test'",
+          "writable_path_prefixes_or_globs": [
+            "eod/",
+            "hengce/e2_live/",
+            "hengce/q017_radar/",
+            "hengce/q017_review_10d/"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "30 22 * * 0-4"
+        },
+        {
+          "cron": "50 0 * * 1-5"
+        },
+        {
+          "cron": "3 1 * * 1-5"
+        },
+        {
+          "cron": "10 1 * * 1-5"
+        },
+        {
+          "cron": "20 1 * * 1-5"
+        },
+        {
+          "cron": "0 7 * * 1-5"
+        },
+        {
+          "cron": "30 7 * * 1-5"
+        },
+        {
+          "cron": "0 8 * * 1-5"
+        },
+        {
+          "cron": "0 9 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_daily_command_center.py",
+            "scripts/hengce_daily_command_center_core_legacy.py",
+            "scripts/hengce_eod_incremental_ingest.py",
+            "scripts/test_hengce_eod_original_vessel_incremental.py",
+            "hengce/HENGCE_THREE_LEG_ORIGINAL_VESSEL_INCREMENTAL_POLICY_LOCK_v1_0_20261020.json",
+            "scripts/hengce_q017_decision_lock.py",
+            "scripts/hengce_q017_authority_guard.py",
+            "scripts/hengce_q017_decision_lock_v4.py",
+            "scripts/hengce_q017_authority_guard_v4.py",
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_authority_guard_v5.py",
+            "scripts/hengce_q017_10d_review.py",
+            "scripts/hengce_q017_10d_review_extension.py",
+            "scripts/test_hengce_q017_decision_lock.py",
+            "scripts/test_hengce_q017_adversarial_v4.py",
+            "scripts/hengce_e2_live.py",
+            "scripts/apply_20261019_lane_coherence_repair.py",
+            "hengce/e2_live/**",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_0_20261017.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_1_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_2_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_5_20261019.json",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019.json",
+            "hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_0_20261019.json",
+            "hengce/HENGCE_Q017_10D_REVIEW_CONTRACT_v1_1_20261019.json",
+            ".github/workflows/hengce-daily-command-center.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "30 22 * * 0-4"
+          },
+          {
+            "cron": "50 0 * * 1-5"
+          },
+          {
+            "cron": "3 1 * * 1-5"
+          },
+          {
+            "cron": "10 1 * * 1-5"
+          },
+          {
+            "cron": "20 1 * * 1-5"
+          },
+          {
+            "cron": "0 7 * * 1-5"
+          },
+          {
+            "cron": "30 7 * * 1-5"
+          },
+          {
+            "cron": "0 8 * * 1-5"
+          },
+          {
+            "cron": "0 9 * * 1-5"
+          }
+        ],
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "default": "self-test",
+              "description": "self-test | premarket | e2-morning | decision | compute | monitor | postclose",
+              "required": "false"
+            },
+            "trade_date": {
+              "default": "",
+              "description": "Optional YYYY-MM-DD for manual compute/recovery",
+              "required": "false"
+            }
+          }
+        }
+      },
+      "workflow": ".github/workflows/hengce-daily-command-center.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-daily-command-center"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "refresh",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/dual_engine/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_dual_engine_display.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add hengce/dual_engine/latest.json"
+          ],
+          "step": "Commit refreshed display if changed",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "hengce/dual_engine/latest.json"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_dual_engine_display.py",
+            "scripts/test_hengce_dual_engine_display_hard_lock.py",
+            "hengce/q017_radar/latest.json",
+            "hengce/e2_live/state_latest.json",
+            ".github/workflows/hengce-dual-engine-display-refresh.yml"
+          ]
+        },
+        "workflow_dispatch": "",
+        "workflow_run": {
+          "types": [
+            "completed"
+          ],
+          "workflows": [
+            "HENGCE Daily Command Center"
+          ]
+        }
+      },
+      "workflow": ".github/workflows/hengce-dual-engine-display-refresh.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-dual-engine-display-refresh"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "e2-morning-backup",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/e2_live/state_latest.json",
+                "hengce/e2_live/morning_latest.json",
+                "hengce/e2_live/history/"
+              ],
+              "producer_reference": "scripts/hengce_e2_live.py"
+            },
+            {
+              "paths": [
+                "hengce/dual_engine/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_dual_engine_display.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add hengce/e2_live/ hengce/dual_engine/"
+          ],
+          "step": "Commit recovered morning state",
+          "step_condition": "steps.freshness.outputs.current != 'true'",
+          "writable_path_prefixes_or_globs": [
+            "hengce/dual_engine/",
+            "hengce/e2_live/"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "55 0 * * 1-5"
+        },
+        {
+          "cron": "5 1 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "schedule": [
+          {
+            "cron": "55 0 * * 1-5"
+          },
+          {
+            "cron": "5 1 * * 1-5"
+          }
+        ],
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-e2-morning-backup.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-e2-morning-backup"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "diagnose",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_REJECTS_NON_FAST_FORWARD",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add research/e2_profit_max/membership_debug.json"
+          ],
+          "step": "Commit diagnostic",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "research/e2_profit_max/membership_debug.json"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-e2-pit-diagnose.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-e2-pit-diagnose.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "e2-postclose",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/e2_live/state_latest.json",
+                "hengce/e2_live/morning_latest.json",
+                "hengce/e2_live/history/"
+              ],
+              "producer_reference": "scripts/hengce_e2_live.py"
+            },
+            {
+              "paths": [
+                "hengce/dual_engine/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_dual_engine_display.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/data/sox_status.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_macro_cache_v1.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add -A hengce/e2_live/ hengce/dual_engine/",
+            "if [ -e \"$p\" ]; then git add \"$p\"; fi"
+          ],
+          "step": "Commit E2 state and required causal data",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "hengce/dual_engine/",
+            "hengce/e2_live/",
+            "hengce/q017_radar/data/data_status.json",
+            "hengce/q017_radar/data/sox_2026.csv",
+            "hengce/q017_radar/data/sox_status.json",
+            "hengce/q017_radar/data/twse_electronics_history_2026.csv"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "10 7 * * 1-5"
+        },
+        {
+          "cron": "40 7 * * 1-5"
+        },
+        {
+          "cron": "10 8 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_e2_live.py",
+            "scripts/hengce_dual_engine_display.py",
+            "scripts/test_hengce_e2_no_fill.py",
+            "scripts/test_hengce_e2_morning_release.py",
+            "hengce/e2_live/execution_override.json",
+            "hengce/E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
+            ".github/workflows/hengce-e2-profit-max-live.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "10 7 * * 1-5"
+          },
+          {
+            "cron": "40 7 * * 1-5"
+          },
+          {
+            "cron": "10 8 * * 1-5"
+          }
+        ],
+        "workflow_dispatch": {
+          "inputs": {
+            "trade_date": {
+              "description": "Optional Taipei trade date YYYY-MM-DD; blank = current Taipei date",
+              "required": "false",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "workflow": ".github/workflows/hengce-e2-profit-max-live.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-e2-profit-max-live"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "macro",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add research/e2_profit_max/macro/"
+          ],
+          "step": "Commit macro archive",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "research/e2_profit_max/macro/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "research/e2_profit_max/acquire_macro_q017_sources.py",
+            ".github/workflows/hengce-e2-profit-max-macro.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-e2-profit-max-macro.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "merge",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add research/e2_profit_max/membership/"
+          ],
+          "step": "Commit final PIT membership archive",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "research/e2_profit_max/membership/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "research/e2_profit_max/acquire_pit_electronics_membership_v2.py",
+            ".github/workflows/hengce-e2-profit-max-membership-v2.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-e2-profit-max-membership-v2.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "build-membership",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add research/e2_profit_max/membership/"
+          ],
+          "step": "Commit membership archive",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "research/e2_profit_max/membership/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "research/e2_profit_max/acquire_pit_electronics_membership.py",
+            ".github/workflows/hengce-e2-profit-max-membership.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-e2-profit-max-membership.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "build",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add research/e2_profit_max/round2/candidate_macro_masks.csv research/e2_profit_max/round2/candidate_macro_masks_receipt.json"
+          ],
+          "step": "Commit joined candidate masks",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "research/e2_profit_max/round2/candidate_macro_masks.csv",
+            "research/e2_profit_max/round2/candidate_macro_masks_receipt.json"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "research/e2_profit_max/round2/candidate_dates_localshock.csv",
+            "research/e2_profit_max/round2/build_candidate_macro_masks.py",
+            ".github/workflows/hengce-e2-profit-max-round2-masks.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-e2-profit-max-round2-masks.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "finite-search",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_REJECTS_NON_FAST_FORWARD",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add research/e2_profit_max/round2/train_grid_80.csv research/e2_profit_max/round2/round2_result.json",
+            "if [ -f research/e2_profit_max/round2/winner_validation_events.csv ]; then git add research/e2_profit_max/round2/winner_validation_events.csv; fi"
+          ],
+          "step": "Commit research outputs only",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "research/e2_profit_max/round2/round2_result.json",
+            "research/e2_profit_max/round2/train_grid_80.csv",
+            "research/e2_profit_max/round2/winner_validation_events.csv"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-e2-profit-max-round2-retry.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-e2-profit-max-round2-retry.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "finite-search",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add research/e2_profit_max/round2/train_grid_80.csv research/e2_profit_max/round2/round2_result.json",
+            "if [ -f research/e2_profit_max/round2/winner_validation_events.csv ]; then git add research/e2_profit_max/round2/winner_validation_events.csv; fi"
+          ],
+          "step": "Commit immutable research outputs",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "research/e2_profit_max/round2/round2_result.json",
+            "research/e2_profit_max/round2/train_grid_80.csv",
+            "research/e2_profit_max/round2/winner_validation_events.csv"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "research/e2_profit_max/round2/run_round2_finite.py",
+            "research/e2_profit_max/round2/input_shock/**",
+            "research/e2_profit_max/macro/**",
+            ".github/workflows/hengce-e2-profit-max-round2.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-e2-profit-max-round2.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "fetch-eod",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add eod/20261015/"
+          ],
+          "step": "Commit EOD artifacts",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "eod/20261015/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-eod-complete-ingest-20261015.yml"
+          ]
+        }
+      },
+      "workflow": ".github/workflows/hengce-eod-complete-ingest-20261015.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "fetch-eod",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add eod/20261019/"
+          ],
+          "step": "Commit EOD artifacts",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "eod/20261019/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-eod-complete-ingest-20261019.yml"
+          ]
+        }
+      },
+      "workflow": ".github/workflows/hengce-eod-complete-ingest-20261019.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "download-eod",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add eod/20261020/ || true"
+          ],
+          "step": "Commit original-vessel EOD data",
+          "step_condition": "always()",
+          "writable_path_prefixes_or_globs": [
+            "eod/20261020/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-eod-download-20261020.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-eod-download-20261020.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "fetch-eod",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_REJECTS_NON_FAST_FORWARD",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add eod/20261014/"
+          ],
+          "step": "Commit EOD artifacts",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "eod/20261014/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-eod-partial-ingest-20261014.yml"
+          ]
+        }
+      },
+      "workflow": ".github/workflows/hengce-eod-partial-ingest-20261014.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "shadow",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/electronics_live/latest.json",
+                "hengce/electronics_live/status.json"
+              ],
+              "producer_reference": "scripts/hengce_electronics_live_coverage.py"
+            },
+            {
+              "paths": [
+                "shadow/full_market_latest.json",
+                "shadow/deployment_status.json"
+              ],
+              "producer_reference": "scripts/hengce_full_market_shadow.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add shadow/ hengce/electronics_live/"
+          ],
+          "step": "Commit shadow and all-electronics live artifacts",
+          "step_condition": "always()",
+          "writable_path_prefixes_or_globs": [
+            "hengce/electronics_live/",
+            "shadow/"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "45,50,55 0 * * 1-5"
+        },
+        {
+          "cron": "*/5 1-4 * * 1-5"
+        },
+        {
+          "cron": "0-30/5 5 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-full-market-shadow.yml",
+            "scripts/hengce_full_market_shadow.py",
+            "scripts/hengce_electronics_live_coverage.py",
+            "hengce/HENGCE_ELECTRONICS_LIVE_COVERAGE_CONTRACT_v1_0_20261022.json",
+            "hengce/HENGCE_LIVE_COVERAGE_ROUTING_v1_0_20261022.json",
+            "shadow/priority_tickers.json"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "45,50,55 0 * * 1-5"
+          },
+          {
+            "cron": "*/5 1-4 * * 1-5"
+          },
+          {
+            "cron": "0-30/5 5 * * 1-5"
+          }
+        ],
+        "workflow_dispatch": "",
+        "workflow_run": {
+          "types": [
+            "completed"
+          ],
+          "workflows": [
+            "HENGCE Q012 microstructure shadow"
+          ]
+        }
+      },
+      "workflow": ".github/workflows/hengce-full-market-shadow.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "true",
+        "group": "hengce-full-market-shadow-${{ github.event_name }}"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "repair",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/e2_live/state_latest.json",
+                "hengce/e2_live/morning_latest.json",
+                "hengce/e2_live/history/"
+              ],
+              "producer_reference": "scripts/hengce_e2_live.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/data/macro_cache/latest.json",
+                "hengce/q017_radar/data/sox_status.json",
+                "hengce/q017_radar/data/dxy_status.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_macro_cache_v1.py"
+            },
+            {
+              "paths": [
+                "eod/*/status.json"
+              ],
+              "producer_reference": "scripts/hengce_eod_incremental_ingest.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add scripts/hengce_daily_command_center_core_legacy.py scripts/hengce_e2_live.py .github/workflows/hengce-daily-command-center.yml eod/ hengce/q017_radar/data/ hengce/q017_radar/data_status.json hengce/e2_live/ || true"
+          ],
+          "step": "Commit repair and any successful backfill outputs",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            ".github/workflows/hengce-daily-command-center.yml",
+            "eod/",
+            "hengce/e2_live/",
+            "hengce/q017_radar/data/",
+            "hengce/q017_radar/data_status.json",
+            "scripts/hengce_daily_command_center_core_legacy.py",
+            "scripts/hengce_e2_live.py"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/apply_20261019_lane_coherence_repair.py",
+            ".github/workflows/hengce-lane-coherence-repair.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-lane-coherence-repair.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "apply",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/live_universe.json"
+              ],
+              "producer_reference": ".github/workflows/hengce-live-universe-authoritative-handoff.yml"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add hengce/live_universe.json receipts/HENGCE_LIVE_UNIVERSE_AUTHORITATIVE_HANDOFF_APPLY_*.json"
+          ],
+          "step": "Commit validated universe and receipt",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "hengce/live_universe.json",
+            "receipts/HENGCE_LIVE_UNIVERSE_AUTHORITATIVE_HANDOFF_APPLY_*.json"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "workflow_dispatch": {
+          "inputs": {
+            "expected_trade_date": {
+              "description": "Exact target trade date YYYY-MM-DD",
+              "required": "true"
+            },
+            "handoff_path": {
+              "default": "handoff/live_universe_authoritative_handoff.json",
+              "description": "Repo-relative path to authoritative handoff JSON",
+              "required": "true"
+            }
+          }
+        }
+      },
+      "workflow": ".github/workflows/hengce-live-universe-authoritative-handoff.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-live-universe-authoritative-handoff"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "compact-margin",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add eod/20261014/margin_balance_compact.csv eod/20261014/margin_balance_map*.json"
+          ],
+          "step": "Commit compact rescue artifacts",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "eod/20261014/margin_balance_compact.csv",
+            "eod/20261014/margin_balance_map*.json"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-margin-compact-rescue-20261014.yml"
+          ]
+        }
+      },
+      "workflow": ".github/workflows/hengce-margin-compact-rescue-20261014.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "fetch-margin",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add eod/20261014/"
+          ],
+          "step": "Commit recovered margin leg",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "eod/20261014/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            ".github/workflows/hengce-margin-rescue-20261014.yml"
+          ]
+        }
+      },
+      "workflow": ".github/workflows/hengce-margin-rescue-20261014.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "guard",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add hengce/q017_radar/latest.json",
+            "git add hengce/q017_radar/latest.json"
+          ],
+          "step": "Commit fail-closed repair if needed",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "hengce/q017_radar/latest.json"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "hengce/q017_radar/latest.json",
+            "hengce/q017_radar/decision/**",
+            "hengce/q017_radar/observations/**",
+            "hengce/q017_radar/observation_latest.json",
+            "scripts/hengce_q017_authority_guard.py",
+            "scripts/hengce_q017_decision_lock.py",
+            "scripts/hengce_q017_authority_guard_v4.py",
+            "scripts/hengce_q017_decision_lock_v4.py",
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_authority_guard_v5.py",
+            "scripts/test_hengce_q017_adversarial_v4.py",
+            "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.json",
+            ".github/workflows/hengce-q017-authority-guard.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-q017-authority-guard.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-q017-authority-guard"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "backup-observer",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "hengce/q017_radar/backup_observations/**",
+            "hengce/q017_radar/backup_observation_history/**",
+            "hengce/q017_radar/backup_observation_latest.json",
+            "hengce/q017_radar/backup_observation_status.json",
+            "hengce/q017_radar/backup_observation_attempts/**",
+            "hengce/q017_radar/backup_observation_attempt_latest.json",
+            "hengce/q017_radar/observer_supervisor_backup_status.json",
+            "hengce/q017_radar/observer_supervisor_attempts/*_backup.json"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [
+              "latest.json",
+              "live/**",
+              "shadow/**",
+              "hengce/electronics_live/**",
+              "hengce/e2_live/**",
+              "hengce/dual_engine/**",
+              "hengce/q017_radar/observations/**",
+              "hengce/q017_radar/observation_latest.json",
+              "hengce/q017_radar/history/**",
+              "hengce/q017_radar/observer_supervisor_primary_status.json",
+              "hengce/q017_radar/observer_supervisor_attempts/*_primary.json"
+            ],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/backup_observations/",
+                "hengce/q017_radar/backup_observation_latest.json",
+                "hengce/q017_radar/backup_observation_status.json",
+                "hengce/q017_radar/backup_observation_attempt_latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_backup_observer_v5.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/observer_supervisor_backup_status.json",
+                "hengce/q017_radar/observer_supervisor_attempts/"
+              ],
+              "producer_reference": "scripts/hengce_q017_observer_supervisor_v1.py"
+            }
+          ],
+          "dependency_profile": "q017-backup-capture",
+          "immutable_paths": [
+            "hengce/q017_radar/backup_observations/",
+            "hengce/q017_radar/backup_observation_history/"
+          ],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add -A -- \"$p\"",
+            "git add -- \"$OBS\""
+          ],
+          "step": "Persist backup evidence or failure diagnostics",
+          "step_condition": "always() && steps.mode.outputs.mode == 'observe'",
+          "writable_path_prefixes_or_globs": [
+            "hengce/q017_radar/backup_observation_attempt_latest.json",
+            "hengce/q017_radar/backup_observation_attempts/",
+            "hengce/q017_radar/backup_observation_history/",
+            "hengce/q017_radar/backup_observation_latest.json",
+            "hengce/q017_radar/backup_observation_status.json",
+            "hengce/q017_radar/backup_observations/",
+            "hengce/q017_radar/observer_supervisor_attempts/",
+            "hengce/q017_radar/observer_supervisor_backup_status.json"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "15 0 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_backup_observer_v5.py",
+            "scripts/hengce_q017_macro_cache_v1.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v2.py",
+            "scripts/test_hengce_q017_observer_resilience_v1.py",
+            "scripts/hengce_q017_recovery_compute_v5.py",
+            ".github/workflows/hengce-q017-backup-observer.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "15 0 * * 1-5"
+          }
+        ],
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "default": "self-test",
+              "description": "self-test | observe",
+              "required": "false"
+            }
+          }
+        }
+      },
+      "workflow": ".github/workflows/hengce-q017-backup-observer.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-q017-backup-observer"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "repair",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/e2_live/morning_latest.json"
+              ],
+              "producer_reference": "scripts/hengce_e2_live.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add scripts/hengce_q017_observation_lock_v5.py scripts/hengce_q017_backup_observer_v5.py scripts/test_hengce_q017_resilience_v5.py hengce/e2_live/morning_latest.json"
+          ],
+          "step": "Commit repaired production files",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "hengce/e2_live/morning_latest.json",
+            "scripts/hengce_q017_backup_observer_v5.py",
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/test_hengce_q017_resilience_v5.py"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/apply_20261019_q017_coverage_semantics_repair.py",
+            ".github/workflows/hengce-q017-coverage-semantics-repair.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-q017-coverage-semantics-repair.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "reconstruct",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261019.json"
+          ],
+          "step": "Commit hypothetical receipt only",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "receipts/HENGCE_Q017_HYPOTHETICAL_OPEN_RECONSTRUCTION_20261019.json"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_hypothetical_open_reconstruction.py",
+            ".github/workflows/hengce-q017-hypothetical-open-reconstruction.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-q017-hypothetical-open-reconstruction.yml",
+      "workflow_concurrency": null
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "verify",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/selfverify/infrastructure_latest.json"
+              ],
+              "producer_reference": ".github/workflows/hengce-q017-infrastructure-selfverify.yml"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add hengce/q017_radar/selfverify/"
+          ],
+          "step": "Persist PASS receipt",
+          "step_condition": null,
+          "writable_path_prefixes_or_globs": [
+            "hengce/q017_radar/selfverify/"
+          ]
+        }
+      ],
+      "schedules": [],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_backup_observer_v5.py",
+            "scripts/hengce_q017_macro_cache_v1.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v2.py",
+            "scripts/hengce_q017_recovery_compute_v5.py",
+            "scripts/hengce_q017_authority_guard_v5.py",
+            "scripts/test_hengce_q017_observer_resilience_v1.py",
+            ".github/workflows/hengce-q017-macro-cache.yml",
+            ".github/workflows/hengce-q017-primary-observer.yml",
+            ".github/workflows/hengce-q017-backup-observer.yml",
+            ".github/workflows/hengce-q017-infrastructure-selfverify.yml"
+          ]
+        },
+        "workflow_dispatch": ""
+      },
+      "workflow": ".github/workflows/hengce-q017-infrastructure-selfverify.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "true",
+        "group": "hengce-q017-infrastructure-selfverify"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "macro-cache",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/data/macro_cache/latest.json",
+                "hengce/q017_radar/data/sox_status.json",
+                "hengce/q017_radar/data/dxy_status.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_macro_cache_v1.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add    hengce/q017_radar/data/sox_2026.csv    hengce/q017_radar/data/sox_status.json    hengce/q017_radar/data/dxy_2026.csv    hengce/q017_radar/data/dxy_status.json    hengce/q017_radar/data/macro_cache/ || true"
+          ],
+          "step": "Persist macro cache and source files",
+          "step_condition": "always() && steps.mode.outputs.mode == 'refresh'",
+          "writable_path_prefixes_or_globs": [
+            "hengce/q017_radar/data/dxy_2026.csv",
+            "hengce/q017_radar/data/dxy_status.json",
+            "hengce/q017_radar/data/macro_cache/",
+            "hengce/q017_radar/data/sox_2026.csv",
+            "hengce/q017_radar/data/sox_status.json"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "45 21 * * 0-4"
+        },
+        {
+          "cron": "15 22 * * 0-4"
+        },
+        {
+          "cron": "45 22 * * 0-4"
+        },
+        {
+          "cron": "15 23 * * 0-4"
+        },
+        {
+          "cron": "35 23 * * 0-4"
+        }
+      ],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_macro_cache_v1.py",
+            "scripts/hengce_q017_decision_lock.py",
+            "scripts/hengce_daily_command_center_core_legacy.py",
+            ".github/workflows/hengce-q017-macro-cache.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "45 21 * * 0-4"
+          },
+          {
+            "cron": "15 22 * * 0-4"
+          },
+          {
+            "cron": "45 22 * * 0-4"
+          },
+          {
+            "cron": "15 23 * * 0-4"
+          },
+          {
+            "cron": "35 23 * * 0-4"
+          }
+        ],
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "default": "self-test",
+              "description": "refresh | validate | self-test",
+              "required": "false"
+            }
+          }
+        }
+      },
+      "workflow": ".github/workflows/hengce-q017-macro-cache.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-q017-morning-macro-cache"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "primary-observer",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "hengce/q017_radar/observations/**",
+            "hengce/q017_radar/observation_latest.json",
+            "hengce/q017_radar/history/**",
+            "hengce/q017_radar/decision_attempts/**",
+            "hengce/q017_radar/decision_attempt_latest.json",
+            "hengce/q017_radar/latest.json",
+            "hengce/q017_radar/observer_supervisor_primary_status.json",
+            "hengce/q017_radar/observer_supervisor_attempts/*_primary.json"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [
+              "latest.json",
+              "live/**",
+              "shadow/**",
+              "hengce/electronics_live/**",
+              "hengce/q017_radar/backup_observations/**",
+              "hengce/q017_radar/backup_observation_history/**",
+              "hengce/q017_radar/backup_observation_latest.json",
+              "hengce/q017_radar/backup_observation_status.json",
+              "hengce/q017_radar/backup_observation_attempts/**",
+              "hengce/q017_radar/backup_observation_attempt_latest.json",
+              "hengce/q017_radar/observer_supervisor_backup_status.json",
+              "hengce/q017_radar/observer_supervisor_attempts/*_backup.json",
+              "hengce/e2_live/**",
+              "hengce/dual_engine/**"
+            ],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/observations/",
+                "hengce/q017_radar/observation_latest.json",
+                "hengce/q017_radar/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/observer_supervisor_primary_status.json",
+                "hengce/q017_radar/observer_supervisor_attempts/"
+              ],
+              "producer_reference": "scripts/hengce_q017_observer_supervisor_v1.py"
+            },
+            {
+              "paths": [
+                "hengce/q017_radar/decision_attempt_latest.json",
+                "hengce/q017_radar/decision_attempts/"
+              ],
+              "producer_reference": "scripts/hengce_q017_decision_lock_v4.py"
+            }
+          ],
+          "dependency_profile": "q017-primary-capture",
+          "immutable_paths": [
+            "hengce/q017_radar/observations/",
+            "hengce/q017_radar/history/"
+          ],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add -A -- \"$p\"",
+            "git add -- \"$OBS\""
+          ],
+          "step": "Persist canonical evidence and supervisor diagnostics before computation",
+          "step_condition": "always() && steps.mode.outputs.mode == 'observe'",
+          "writable_path_prefixes_or_globs": [
+            "hengce/q017_radar/decision_attempt_latest.json",
+            "hengce/q017_radar/decision_attempts/",
+            "hengce/q017_radar/history/",
+            "hengce/q017_radar/latest.json",
+            "hengce/q017_radar/observation_latest.json",
+            "hengce/q017_radar/observations/",
+            "hengce/q017_radar/observer_supervisor_attempts/",
+            "hengce/q017_radar/observer_supervisor_primary_status.json"
+          ]
+        },
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "hengce/q017_radar/decision/**",
+            "hengce/q017_radar/decision_latest.json",
+            "hengce/q017_radar/latest.json",
+            "hengce/q017_radar/history/**",
+            "hengce/q017_radar/signal_ledger.jsonl",
+            "hengce/dual_engine/latest.json"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [
+              "latest.json",
+              "live/**",
+              "shadow/**",
+              "hengce/electronics_live/**",
+              "hengce/q017_radar/backup_observations/**",
+              "hengce/q017_radar/backup_observation_history/**",
+              "hengce/q017_radar/backup_observation_latest.json",
+              "hengce/q017_radar/backup_observation_status.json",
+              "hengce/q017_radar/backup_observation_attempts/**",
+              "hengce/q017_radar/backup_observation_attempt_latest.json",
+              "hengce/q017_radar/observer_supervisor_backup_status.json",
+              "hengce/q017_radar/observer_supervisor_attempts/*_backup.json"
+            ],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/decision/",
+                "hengce/q017_radar/decision_latest.json",
+                "hengce/q017_radar/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
+            },
+            {
+              "paths": [
+                "hengce/dual_engine/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_dual_engine_display.py"
+            }
+          ],
+          "dependency_profile": "q017-decision-display",
+          "immutable_paths": [
+            "hengce/q017_radar/decision/",
+            "hengce/q017_radar/history/"
+          ],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add -A -- \"$p\""
+          ],
+          "step": "Persist decision, authority and display",
+          "step_condition": "always() && steps.mode.outputs.mode == 'observe'",
+          "writable_path_prefixes_or_globs": [
+            "hengce/dual_engine/latest.json",
+            "hengce/q017_radar/decision/",
+            "hengce/q017_radar/decision_latest.json",
+            "hengce/q017_radar/history/",
+            "hengce/q017_radar/latest.json",
+            "hengce/q017_radar/signal_ledger.jsonl"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "45 23 * * 0-4"
+        }
+      ],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_macro_cache_v1.py",
+            "scripts/hengce_q017_premarket_snapshot_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v1.py",
+            "scripts/hengce_q017_observer_supervisor_v2.py",
+            "scripts/test_hengce_q017_observer_resilience_v1.py",
+            "scripts/hengce_q017_authority_guard_v5.py",
+            "scripts/hengce_dual_engine_display.py",
+            ".github/workflows/hengce-q017-primary-observer.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "45 23 * * 0-4"
+          }
+        ],
+        "workflow_dispatch": {
+          "inputs": {
+            "mode": {
+              "default": "self-test",
+              "description": "self-test | observe",
+              "required": "false"
+            }
+          }
+        }
+      },
+      "workflow": ".github/workflows/hengce-q017-primary-observer.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-q017-primary-observer"
+      }
+    },
+    {
+      "concurrency_meaning": "Existing groups are preserved; no cross-workflow capture serialization.",
+      "concurrent_with_other_workflows_allowed": true,
+      "job": "recover",
+      "job_concurrency": null,
+      "publications": [
+        {
+          "after_arbitration": "EXACT_REMOTE_LEASE; WRITE_CONFLICT_OR_READ_DEPENDENCY_CHANGE_STOP; PROVEN_UNRELATED_DELTA_TRANSPLANT",
+          "allowed_write_patterns": [
+            "**"
+          ],
+          "authoritative_read_dependency_set": {
+            "excluded_patterns": [],
+            "mode": "ALL_PATHS_EXCEPT_PROVEN_UNRELATED",
+            "unknown_paths": "READ_DEPENDENCY_FAIL_CLOSED"
+          },
+          "before_arbitration": "DIRECT_PUSH_WITH_BLIND_REBASE_RETRY",
+          "canonical_latest_status_paths": [
+            {
+              "paths": [
+                "hengce/q017_radar/observations/",
+                "hengce/q017_radar/decision/",
+                "hengce/q017_radar/observation_latest.json",
+                "hengce/q017_radar/decision_latest.json",
+                "hengce/q017_radar/latest.json"
+              ],
+              "producer_reference": "scripts/hengce_q017_observation_lock_v5.py"
+            }
+          ],
+          "dependency_profile": "conservative-all",
+          "immutable_paths": [
+            "hengce/q017_radar/observations/",
+            "hengce/q017_radar/decision/",
+            "hengce/q017_radar/history/"
+          ],
+          "other_staged_paths": "Opaque mutable outputs unless the producer contract explicitly freezes them; no authority inferred.",
+          "runtime_write_set": "Exact mode/type/blob delta of generated commit against its computation parent; emitted in receipts.",
+          "staging_statements": [
+            "git add hengce/q017_radar/observations/ hengce/q017_radar/observation_latest.json hengce/q017_radar/decision/ hengce/q017_radar/decision_latest.json hengce/q017_radar/latest.json hengce/q017_radar/history/ hengce/q017_radar/recovery_receipts/ hengce/q017_radar/signal_ledger.jsonl || true"
+          ],
+          "step": "Persist promoted observation, decision, and recovery receipt",
+          "step_condition": "github.event_name != 'push' && steps.recover.outcome == 'success'",
+          "writable_path_prefixes_or_globs": [
+            "hengce/q017_radar/decision/",
+            "hengce/q017_radar/decision_latest.json",
+            "hengce/q017_radar/history/",
+            "hengce/q017_radar/latest.json",
+            "hengce/q017_radar/observation_latest.json",
+            "hengce/q017_radar/observations/",
+            "hengce/q017_radar/recovery_receipts/",
+            "hengce/q017_radar/signal_ledger.jsonl"
+          ]
+        }
+      ],
+      "schedules": [
+        {
+          "cron": "2,4,6 1 * * 1-5"
+        }
+      ],
+      "triggers": {
+        "push": {
+          "branches": [
+            "main"
+          ],
+          "paths": [
+            "scripts/hengce_q017_observation_lock_v5.py",
+            "scripts/hengce_q017_recovery_compute_v5.py",
+            "scripts/hengce_q017_backup_observer_v5.py",
+            "scripts/test_hengce_q017_resilience_v5.py",
+            ".github/workflows/hengce-q017-recovery.yml"
+          ]
+        },
+        "schedule": [
+          {
+            "cron": "2,4,6 1 * * 1-5"
+          }
+        ],
+        "workflow_dispatch": {
+          "inputs": {
+            "trade_date": {
+              "default": "",
+              "description": "Optional YYYY-MM-DD; default today Taipei",
+              "required": "false"
+            }
+          }
+        }
+      },
+      "workflow": ".github/workflows/hengce-q017-recovery.yml",
+      "workflow_concurrency": {
+        "cancel-in-progress": "false",
+        "group": "hengce-q017-recovery"
+      }
+    }
+  ]
+}

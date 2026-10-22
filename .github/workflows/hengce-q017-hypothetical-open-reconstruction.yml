@@ -51,6 +51,13 @@ jobs:
             echo 'Receipt unchanged.'
           else
             git commit -m 'HENGCE Q017 hypothetical 2026-10-19 open reconstruction zero authority'
-            git pull --rebase origin main
-            git push origin HEAD:main
+            python scripts/hengce_publish.py --profile conservative-all
           fi
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

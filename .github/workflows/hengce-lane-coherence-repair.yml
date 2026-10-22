@@ -47,8 +47,7 @@ jobs:
             echo 'No repair changes to commit.'
           else
             git commit -m 'HENGCE separate Q017/E2 data lanes and retry EOD archive'
-            git pull --rebase origin main
-            git push origin HEAD:main
+            python scripts/hengce_publish.py --profile conservative-all
           fi
       - name: Report repair state
         if: always()
@@ -62,3 +61,11 @@ jobs:
               print('\n###',p)
               print(q.read_text()[:4000] if q.exists() else 'MISSING')
           PY
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

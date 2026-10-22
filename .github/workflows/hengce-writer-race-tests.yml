@@ -1,0 +1,31 @@
+name: HENGCE Writer Race Safety
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/hengce_publish.py'
+      - 'tests/engineering/**'
+      - 'docs/engineering/writer-*'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-races:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install PyYAML==6.0.3
+      - name: Verify pinned topology and unchanged capture and schedule contracts
+        run: python -B tests/engineering/test_writer_workflows.py
+      - name: Exercise synthetic local Git writer races
+        run: python -B tests/engineering/test_writer_races.py

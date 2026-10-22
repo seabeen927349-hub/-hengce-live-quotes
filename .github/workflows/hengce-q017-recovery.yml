@@ -78,9 +78,17 @@ jobs:
           if git diff --cached --quiet; then echo 'Recovery already persisted; no rerank performed.'; exit 0; fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE Q017 observation recovery ${TS}"
-          if ! git push origin HEAD:main; then git pull --rebase origin main; git push origin HEAD:main; fi
+          python scripts/hengce_publish.py --profile conservative-all
       - name: Report fail-closed without suppressing other engines
         if: github.event_name != 'push' && steps.recover.outcome != 'success'
         run: |
           echo 'No valid persisted 09:01 observation available yet. Q017 new-entry authority remains 0; E2 and existing-position management are unaffected.'
           exit 0
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore
