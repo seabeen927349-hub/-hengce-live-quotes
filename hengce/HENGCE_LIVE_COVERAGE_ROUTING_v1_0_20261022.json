@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_LIVE_COVERAGE_ROUTING",
+  "effective_date": "2026-10-22",
+  "canonical_all_electronics_live_artifact": "hengce/electronics_live/latest.json",
+  "canonical_all_electronics_status_artifact": "hengce/electronics_live/status.json",
+  "all_electronics_scope": "TWSE_LISTED_ELECTRONICS_ONLY",
+  "legacy_priority_watchlist_artifacts": ["latest.json", "live/active.json", "live/status.json", "hengce/live_universe.json"],
+  "legacy_priority_watchlist_is_all_electronics": false,
+  "legacy_priority_watchlist_role": "COMPATIBILITY_PRIORITY_WATCHLIST_ONLY",
+  "full_market_transport_artifact": "shadow/full_market_latest.json",
+  "full_market_transport_authority": "SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
+  "q017_formal_ranking_authority_unchanged": true,
+  "intraday_electronics_coverage_ranking_authority": false,
+  "intraday_electronics_coverage_signal_authority": false,
+  "intraday_electronics_coverage_capital_authority": false,
+  "intraday_electronics_coverage_broker_execution": false
+}
