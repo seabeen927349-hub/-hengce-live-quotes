@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_LIVE_QUOTE_REQUIRED_COVERAGE",
+  "contract_version": "v1.0",
+  "effective_date": "2026-10-22",
+  "role": "QUOTE_TRANSPORT_REQUIRED_COVERAGE_ONLY_NO_MEMBERSHIP_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "authority": {
+    "membership": false,
+    "ranking": false,
+    "signal": false,
+    "capital": false,
+    "broker_execution": false
+  },
+  "sources": {
+    "manual_or_user_required_quote_coverage": true,
+    "q017_formal_actionable_today": true
+  },
+  "locks": {
+    "must_not_modify_live_universe": true,
+    "must_dedupe_with_base_universe": true,
+    "fully_healthy_requires_required_coverage": true,
+    "q017_must_match_trade_date": true,
+    "q017_market_state_must_be_go": true,
+    "q017_candidate_qualified_true": true,
+    "quote_coverage_never_confers_membership_authority": true,
+    "quote_coverage_never_confers_ranking_authority": true,
+    "quote_coverage_never_confers_signal_authority": true,
+    "quote_coverage_never_confers_capital_authority": true,
+    "quote_coverage_never_confers_broker_execution": true
+  },
+  "compatibility": {
+    "legacy_requested_count_remains_base_live_universe_count": true,
+    "transport_requested_count_reports_deduped_fetch_scope": true,
+    "base_universe_sha256_remains_bound_to_live_universe_json": true
+  }
+}
