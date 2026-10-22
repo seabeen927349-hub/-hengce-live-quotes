@@ -1,14 +1,14 @@
 {
   "system": "HENGCE",
   "artifact": "FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS",
-  "generated_at_taipei": "2026-10-22T13:11:16.715290+08:00",
-  "snapshot_id": "20261022T131116+0800",
+  "generated_at_taipei": "2026-10-22T13:22:30.205475+08:00",
+  "snapshot_id": "20261022T132229+0800",
   "status": "SHADOW_FULL_MARKET_READY",
   "authority": "SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
   "universe_count": 1088,
   "universe_sha256": "2e282a7495c5dcc0b82f45f289e5e526a9375e0a4eb4811631914b85b5df16c6",
   "coverage_ratio": 1.0,
-  "price_coverage_ratio": 0.13143382352941177,
+  "price_coverage_ratio": 0.16176470588235295,
   "fresh_ratio_of_covered": 1.0,
   "full_market_gate": {
     "coverage_required": 0.98,
@@ -21,7 +21,7 @@
     "FUGLE": 25,
     "NONE": 0
   },
-  "payload_sha256": "2650caae014f59da112c7620a07824144d5a08837a17131369fe3cbed5951209",
+  "payload_sha256": "7246ff979031a18bff906d990af604a629352bc5daf6b0fb47833cc6ca7640b3",
   "electronics_live_status": "PASS_FULL_ELECTRONICS_LIVE_COVERAGE",
   "electronics_member_count": 457,
   "electronics_provider_coverage_ratio": 1.0,
