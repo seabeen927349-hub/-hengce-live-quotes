@@ -53,6 +53,9 @@ class HealthDependencyAuditTests(unittest.TestCase):
             sources = {'scripts/producer.py': source,
                        'tests/helpers/hidden.py': 'INPUT = "hengce/health/latest.json"'}
             self.assertTrue(any(e.startswith('tests/helpers/hidden.py:') for e in audit(sources)[0]))
+        sources = {'scripts/producer.py': 'import tests.health_helper',
+                   'tests/health_helper/__init__.py': 'INPUT = "hengce/health/latest.json"'}
+        self.assertTrue(any(e.startswith('tests/health_helper/__init__.py:') for e in audit(sources)[0]))
 
     def test_producer_workflow_cannot_hide_dependency_in_test_command(self):
         p = '.github/workflows/producer.yml'

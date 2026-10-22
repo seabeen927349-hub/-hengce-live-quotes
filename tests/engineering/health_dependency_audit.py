@@ -57,6 +57,8 @@ def audit(sources, inventoried_workflows=()):
     for path in sources:
         if path.endswith('.py'):
             modules.setdefault(Path(path).stem, set()).add(path)
+            if Path(path).name == '__init__.py':
+                modules.setdefault(Path(path).parent.name, set()).add(path)
     pending = [p for p in sources if source_path(p) and not test_or_document(p)]
     visited = set()
     while pending:
