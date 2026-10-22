@@ -10,11 +10,14 @@ from __future__ import annotations
 import importlib.util
 import json
 import math
+import sys
 from datetime import date
 from pathlib import Path
 from statistics import mean, median
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 OUT = ROOT / "research" / "phase2_e2_p2a" / "p2a_result.json"
 
 # Load governance gate first.
@@ -31,7 +34,10 @@ def permit(op: str, cost_multiplier=None):
 # reimplementing signal reconstruction.
 R2_PATH = ROOT / "research/e2_profit_max/round2/run_round2_finite.py"
 spec = importlib.util.spec_from_file_location("hengce_round2", R2_PATH)
+if spec is None or spec.loader is None:
+    raise RuntimeError("ROUND2_MODULE_LOAD_FAILED")
 r2 = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = r2
 spec.loader.exec_module(r2)
 
 BASELINE_COST = 0.008
