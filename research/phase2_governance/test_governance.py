@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import yaml
 from unittest.mock import patch
 from jsonschema.exceptions import ValidationError
 
@@ -210,6 +211,15 @@ class GovernanceTests(unittest.TestCase):
         out=subprocess.run([sys.executable,'-B',str(g.HERE/'ledger_store.py'),'check-run'],capture_output=True,text=True)
         self.assertEqual(out.returncode,2);self.assertIn('B10_BLOCKED',out.stdout)
         self.assertEqual((g.HERE/'ledger/experiments.jsonl').read_bytes(),before)
+
+    def test_governance_ci_scope_and_supported_job_env_contexts(self):
+        cfg=yaml.load((g.ROOT/freeze.WORKFLOW).read_text(),Loader=yaml.BaseLoader)
+        self.assertEqual(cfg['on']['pull_request']['paths'],['research/phase2_governance/**',freeze.WORKFLOW])
+        self.assertEqual(cfg['permissions'],{'contents':'read'})
+        job=cfg['jobs']['governance-only']
+        # runner context is available in step inputs/env, but not job-level env.
+        self.assertNotIn('${{ runner.',json.dumps(job.get('env',{})))
+        self.assertNotIn('schedule',cfg['on'])
 
 
 if __name__=='__main__':unittest.main(verbosity=2)
