@@ -1,0 +1,65 @@
+name: HENGCE E2 P2-A Diagnostics
+
+on:
+  pull_request:
+    paths:
+      - 'research/phase2_e2_p2a/**'
+      - '.github/workflows/hengce-e2-p2a-diagnostics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  p2a-diagnostics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.14'
+      - name: Install frozen research governance dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r research/phase2_governance/requirements.lock
+      - name: Verify scoped E2 P2-A permission
+        run: |
+          set -euo pipefail
+          python -B research/phase2_governance/ledger_store.py check-run \
+            --engine E2 --stage P2A_BASELINE_DESTRUCTION --operation BASELINE_REPLAY
+      - name: Run actual P2-A diagnostic computation
+        run: |
+          set -euo pipefail
+          python -B research/phase2_e2_p2a/run_p2a_baseline_destruction.py | tee "$RUNNER_TEMP/e2-p2a-stdout.json"
+      - name: Verify hard locks and result file
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/phase2_e2_p2a/p2a_result.json')
+          x=json.loads(p.read_text())
+          assert x['capital_authority_twd']==0
+          assert x['broker_order_execution'] is False
+          assert x['PROMOTE_TO_PRODUCTION']=='FORBIDDEN'
+          assert x['candidate_creation_authorized'] is False
+          assert x['candidate_acceptance_authorized'] is False
+          assert x['prospective_holdout_access'] is False
+          assert x['baseline_2023_2025']['trades']==13
+          assert abs(x['baseline_2023_2025']['nav']-1.530103542875737)<1e-12
+          print(json.dumps({'status':'PASS','baseline_nav':x['baseline_2023_2025']['nav'],'trades':13,'result_status':x['status']}))
+          PY
+      - name: Retain P2-A computation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-e2-p2a-diagnostic-evidence
+          path: |
+            research/phase2_e2_p2a/p2a_result.json
+            ${{ runner.temp }}/e2-p2a-stdout.json
+          if-no-files-found: error
