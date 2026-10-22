@@ -136,6 +136,31 @@ lease is revalidated. Mixed health + changed macro/unknown input, canonical
 conflicts and immutable conflicts still STOP; identical output remains a no-op.
 The existing writer-topology inventory records this dependency exclusion.
 
+`tests/engineering/health_dependency_audit.py` enforces the other half of this
+contract: producer computation must not consume or write the excluded health
+namespace. Writer Race Safety runs on **every PR**, so a future helper/source-only
+change cannot bypass the guard through a path filter. Both Writer Race Safety and
+Health Observability run its offline static/mutation regressions.
+
+The audit covers all inventoried producer workflows and a conservative superset
+of current/future tracked repository code and operational config/contracts. It
+rejects direct health path references (including staging/writing/dependency lists),
+health evaluator/collector imports, split path components and constant string
+concatenations. Local imports, including constant dynamic imports, are followed;
+test helpers invoked/imported by a producer lose their test exemption. Missing
+inventoried workflows or unparseable Python/contracts fail closed. Exceptions are
+exact observability workflow/evaluator/collector/policy/publisher paths, plus
+uninvoked tests and documentation; there is no production scripts wildcard.
+
+Nine synthetic/static tests include injecting a health read into the actual E2
+producer source map and rejecting it, future producer writes/staging/declarations,
+imports, split paths and hidden test helpers. They modify no repository producer
+bytes. A new genuine health dependency requires explicit profile/dependency and
+guard re-audit; changing only a profile cannot silently exempt a producer read.
+This is a static source guard, not a proof about arbitrary runtime-generated or
+obfuscated paths, remote code or external writers. Such new mechanisms need human
+dependency review; this task adds no runtime sandbox or model behavior.
+
 ## Synthetic validation
 
 Tests use synthetic strings, in-memory artifacts, normalized runs, stubbed API

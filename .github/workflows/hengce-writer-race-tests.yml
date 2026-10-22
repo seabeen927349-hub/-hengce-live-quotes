@@ -2,11 +2,6 @@ name: HENGCE Writer Race Safety
 
 on:
   pull_request:
-    paths:
-      - 'scripts/hengce_publish.py'
-      - 'tests/engineering/**'
-      - 'docs/engineering/writer-*'
-      - '.github/workflows/**'
   workflow_dispatch:
 
 permissions:
@@ -25,6 +20,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install PyYAML==6.0.3
+      - name: Audit producer dependencies and reject synthetic health consumers
+        run: python -B tests/engineering/test_health_dependency_audit.py
       - name: Verify pinned topology and unchanged capture and schedule contracts
         run: python -B tests/engineering/test_writer_workflows.py
       - name: Exercise synthetic local Git writer races

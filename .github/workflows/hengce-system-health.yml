@@ -7,7 +7,7 @@ on:
       - 'scripts/hengce_system_health.py'
       - 'scripts/hengce_health_collect_runs.py'
       - 'scripts/hengce_publish.py'
-      - 'tests/engineering/test_system_health.py'
+      - 'tests/engineering/**'
       - 'docs/engineering/health-*'
       - '.github/workflows/**'
   workflow_dispatch:
@@ -43,6 +43,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install PyYAML==6.0.3
+      - name: Audit producer dependencies and reject synthetic health consumers
+        run: python -B tests/engineering/test_health_dependency_audit.py
       - name: Synthetic offline health, collector, namespace and interference tests
         run: python -B tests/engineering/test_system_health.py
 
