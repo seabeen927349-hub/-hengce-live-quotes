@@ -13,6 +13,7 @@ LATEST = 'hengce/e2_live/morning_latest.json'
 PRIMARY = 'hengce/q017_radar/observations/synthetic_0901_observation.json'
 BACKUP = 'hengce/q017_radar/backup_observations/synthetic_0901_observation.json'
 MACRO = 'hengce/q017_radar/data/macro_cache/latest.json'
+HEALTH = 'hengce/health/latest.json'
 
 
 def git(root, *args):
@@ -64,6 +65,82 @@ class WriterRaceTests(unittest.TestCase):
 
     def read_remote(self, path):
         return git(self.remote, 'show', 'main:' + path)
+
+    def test_health_only_advancement_does_not_block_default_producers(self):
+        # Default profile is used by E2, daily/EOD, macro and display writers.
+        # Each computation starts at B before the independent health publication.
+        outputs = (LATEST, MACRO, 'eod/20990101/status.json',
+                   'hengce/dual_engine/latest.json')
+        writers = [self.clone('producer-' + str(i)) for i in range(len(outputs))]
+        self.commit(self.a, {HEALTH: 'zero-authority health observation\n'})
+        self.assertEqual(self.publish(self.a, 'health-only')[0], 0)
+        health_sha = git(self.remote, 'rev-parse', 'main')
+        for writer, path in zip(writers, outputs):
+            with self.subTest(path=path):
+                self.commit(writer, {path: 'computed at B\n'})
+                rc, entry, attempts = self.publish(writer)
+                self.assertEqual(rc, 0, entry)
+                self.assertEqual(entry['result'], 'PUBLISHED')
+                self.assertEqual(entry['remote_sha'], health_sha)
+                self.assertIn('RETRY_REVALIDATED', [x['result'] for x in attempts])
+                self.assertEqual(self.read_remote(HEALTH), 'zero-authority health observation')
+                self.assertEqual(self.read_remote(path), 'computed at B')
+                # Each independent scenario restarts at the same health-only R.
+                git(self.remote, 'update-ref', 'refs/heads/main', health_sha)
+
+    def test_health_advancement_between_fetch_and_lease_is_revalidated(self):
+        self.commit(self.a, {LATEST: 'E2 computed before health\n'})
+        self.commit(self.b, {HEALTH: 'health arrived during lease\n'})
+        hook = self.a / '.git/hooks/pre-push'
+        hook.write_text('#!/bin/sh\ngit -C ' + str(self.b) + ' push origin HEAD:main >/dev/null 2>&1\n')
+        hook.chmod(0o755)
+        rc, entry, attempts = self.publish(self.a)
+        self.assertEqual(rc, 0, entry)
+        self.assertIn('CONFLICT_FAIL_CLOSED', [x['result'] for x in attempts])
+        self.assertIn('RETRY_REVALIDATED', [x['result'] for x in attempts])
+        self.assertEqual(self.read_remote(LATEST), 'E2 computed before health')
+        self.assertEqual(self.read_remote(HEALTH), 'health arrived during lease')
+
+    def test_health_mixed_with_changed_inputs_still_fails_closed(self):
+        for i, dependency in enumerate((MACRO, 'unknown_new_authoritative_input.json')):
+            with self.subTest(dependency=dependency):
+                writer = self.clone('stale-' + str(i))
+                self.commit(self.a, {HEALTH: 'health ' + str(i), dependency: 'changed input\n'})
+                git(self.a, 'push', 'origin', 'HEAD:main')
+                self.commit(writer, {LATEST: 'computed before changed input\n'})
+                rc, entry, _ = self.publish(writer)
+                self.assertEqual(rc, 2)
+                self.assertIn('READ_DEPENDENCY_CHANGED:' + dependency, entry['conflict_reason'])
+                self.assertEqual(self.read_remote(LATEST), '{"synthetic_version":0}')
+
+    def test_health_mixed_with_canonical_conflict_still_fails_closed(self):
+        self.commit(self.a, {HEALTH: 'health\n', LATEST: 'new canonical\n'})
+        git(self.a, 'push', 'origin', 'HEAD:main')
+        self.commit(self.b, {LATEST: 'stale canonical\n'})
+        rc, entry, _ = self.publish(self.b)
+        self.assertEqual(rc, 2)
+        self.assertIn('WRITE_SET_CONFLICT', entry['conflict_reason'])
+        self.assertEqual(self.read_remote(LATEST), 'new canonical')
+
+    def test_health_mixed_with_immutable_conflict_still_fails_closed(self):
+        self.commit(self.a, {HEALTH: 'health\n', PRIMARY: 'first immutable\n'})
+        git(self.a, 'push', 'origin', 'HEAD:main')
+        self.commit(self.b, {PRIMARY: 'conflicting immutable\n'})
+        rc, entry, _ = self.publish(self.b)
+        self.assertEqual(rc, 2)
+        self.assertIn('IMMUTABLE_REMOTE_CONFLICT', entry['conflict_reason'])
+        self.assertEqual(self.read_remote(PRIMARY), 'first immutable')
+
+    def test_identical_producer_state_with_health_advancement_is_noop(self):
+        self.commit(self.a, {LATEST: 'identical canonical\n', HEALTH: 'health\n'})
+        git(self.a, 'push', 'origin', 'HEAD:main')
+        accepted = git(self.remote, 'rev-parse', 'main')
+        self.commit(self.b, {LATEST: 'identical canonical\n'})
+        rc, entry, _ = self.publish(self.b)
+        self.assertEqual(rc, 0, entry)
+        self.assertEqual(entry['result'], 'IDEMPOTENT_NOOP')
+        self.assertEqual(git(self.remote, 'rev-parse', 'main'), accepted)
+        self.assertEqual(git(self.b, 'rev-parse', 'HEAD'), accepted)
 
     def test_real_0745_0815_0850_0901_interleaving_publishes_both_captures(self):
         # 07:45 primary and 08:15 backup both start from B; no clock sleeps,

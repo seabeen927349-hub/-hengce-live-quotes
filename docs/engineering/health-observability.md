@@ -120,12 +120,21 @@ write contract allows only `hengce/health/latest.json`. A changed producer input
 rejects stale health publication; no blind pull/rebase is reintroduced. Snapshot,
 metadata and publication receipts are retained as run artifacts even on failure.
 
-Scoped Q017 capture/decision profiles explicitly exclude `hengce/health/**` from
-their read barriers because no existing producer consumes health. This prevents
+All existing publication profiles, including the default `conservative-all`
+used by E2, macro, daily/EOD, recovery and display, explicitly exclude only
+`hengce/health/**` from their read barriers because no existing producer consumes
+health. The producer-source/workflow reference audit found health consumers only
+in the new health collector/evaluator/workflow and the publication contract.
+Health policy/code paths remain dependencies, as do all unknown inputs. This prevents
 the new 08:05/08:40 health writes from recreating the long-running-observer
 availability defect. Synthetic local Git tests prove both this noninterference
-and rejection of health writes to model paths. The existing writer-topology
-inventory is regenerated only to record this zero-authority dependency exclusion.
+and rejection of health writes to model paths. The pinned topology's 29 writers /
+31 publication exits all declare this exclusion. Default-profile synthetic tests
+cover E2, macro, EOD and display computed at B, health-only R, then successful
+exact-lease transplant preserving health bytes; health arriving between fetch and
+lease is revalidated. Mixed health + changed macro/unknown input, canonical
+conflicts and immutable conflicts still STOP; identical output remains a no-op.
+The existing writer-topology inventory records this dependency exclusion.
 
 ## Synthetic validation
 

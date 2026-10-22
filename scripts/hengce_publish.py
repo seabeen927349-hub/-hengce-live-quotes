@@ -47,7 +47,9 @@ PRIMARY_CAPTURE_WRITES = (
     'hengce/q017_radar/observer_supervisor_attempts/*_primary.json',
 )
 PROFILES = {
-    'conservative-all': {'writes': ('**',), 'unrelated': ()},
+    # No producer consumes health output. Exempt only that namespace, including
+    # for default-profile writers; real/unknown inputs remain dependencies.
+    'conservative-all': {'writes': ('**',), 'unrelated': OBSERVABILITY_ONLY},
     'health-only': {'writes': ('hengce/health/latest.json',), 'unrelated': OBSERVABILITY_ONLY},
     'q017-primary-capture': {
         'writes': PRIMARY_CAPTURE_WRITES,
