@@ -1,7 +1,7 @@
 {
   "system": "HENGCE",
   "module": "POSTCLOSE_DATA_GATE",
-  "generated_at_taipei": "2026-10-22T16:24:40.601933+08:00",
+  "generated_at_taipei": "2026-10-22T17:26:48.223033+08:00",
   "status": "PARTIAL",
   "downstream_ready": false,
   "eod": {
@@ -49,7 +49,7 @@
       },
       {
         "leg": "institutional",
-        "result": "PROMOTED",
+        "result": "ALREADY_COMPLETE",
         "rows": 1072,
         "sha256": "5d25789eabf024faf5bf825d09891bf8e3d0529e1147d960fd4d24057113cb7e"
       },
@@ -59,7 +59,7 @@
         "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
       }
     ],
-    "updated_at_taipei": "2026-10-22T16:24:40.601337+08:00",
+    "updated_at_taipei": "2026-10-22T17:26:48.222233+08:00",
     "institutional_date": "2026-10-22",
     "institutional_rows": 1072,
     "institutional_sha256": "5d25789eabf024faf5bf825d09891bf8e3d0529e1147d960fd4d24057113cb7e",
