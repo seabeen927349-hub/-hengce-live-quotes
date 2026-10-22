@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "artifact": "LIVE_QUOTE_REQUIRED_COVERAGE",
+  "asof_date": "2026-10-22",
+  "role": "QUOTE_TRANSPORT_REQUIRED_COVERAGE_ONLY_NO_MEMBERSHIP_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "authority": {
+    "membership": false,
+    "ranking": false,
+    "signal": false,
+    "capital": false,
+    "broker_execution": false
+  },
+  "required_count": 2,
+  "required_symbols": [
+    "3042",
+    "8150"
+  ],
+  "symbol_order_semantics": "SET_ONLY_NOT_RANKING",
+  "entries": [
+    {
+      "ticker": "3042",
+      "name": "晶技",
+      "reason": "USER_OPEN_POSITION",
+      "source_semantics": "USER_EXECUTION_RECORD_ONLY_NO_MODEL_AUTHORITY",
+      "quote_transport_required": true,
+      "membership_authority": false,
+      "ranking_authority": false,
+      "signal_authority": false,
+      "capital_authority": false,
+      "broker_order_execution": false
+    },
+    {
+      "ticker": "8150",
+      "name": "南茂",
+      "reason": "USER_OPEN_POSITION",
+      "source_semantics": "USER_EXECUTION_RECORD_ONLY_NO_MODEL_AUTHORITY",
+      "quote_transport_required": true,
+      "membership_authority": false,
+      "ranking_authority": false,
+      "signal_authority": false,
+      "capital_authority": false,
+      "broker_order_execution": false
+    }
+  ],
+  "note": "Required live quote coverage for user-held positions only. This artifact does not change HENGCE model membership, ranking, signals, capital authority, or broker execution."
+}
