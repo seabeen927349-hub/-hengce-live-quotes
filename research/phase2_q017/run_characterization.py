@@ -62,7 +62,9 @@ def rank_variant(obs, spec, market_go):
             "score": score,
             "qualified": bool(market_go),
         })
-    rows.sort(key=lambda x: (-x["score"], x["ticker"]))
+    # Match production exactly: Python's stable sort by score only preserves the
+    # eligible-model insertion order for ties.
+    rows.sort(key=lambda x: x["score"], reverse=True)
     top = rows[: int(spec["top_n"])]
     return {"admitted_count": len(rows), "top3": top}
 
