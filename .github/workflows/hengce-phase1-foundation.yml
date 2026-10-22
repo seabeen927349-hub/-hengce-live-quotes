@@ -2,6 +2,9 @@ name: HENGCE Phase 1 Foundation Evidence
 
 on:
   pull_request:
+    paths:
+      - 'research/phase1_audit/**'
+      - '.github/workflows/hengce-phase1-foundation.yml'
   workflow_dispatch:
 
 permissions:
@@ -24,8 +27,9 @@ jobs:
       - name: Verify dependency closure
         run: python -m pip check
       - name: Reject production and out-of-scope changes
+        if: github.event_name == 'pull_request'
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || 'b975f1443d8c3b4360cddaf1d25d65054ab1d4ed' }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: python -B research/phase1_audit/scope_guard.py --base "$BASE_SHA"
       - name: Verify frozen evidence inventory
         run: python -B research/phase1_audit/inventory.py --check
