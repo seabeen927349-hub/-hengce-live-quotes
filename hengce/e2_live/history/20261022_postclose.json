@@ -1,0 +1,100 @@
+{
+  "schema_version": 2,
+  "system": "HENGCE",
+  "module": "E2_PROFIT_MAX_STATE",
+  "generated_at_taipei": "2026-10-22T15:48:36.343810+08:00",
+  "signal_asof": "2026-10-22",
+  "engine": "E2_PROFIT_MAX",
+  "engine_status": "OFF",
+  "binding_status": "PASS",
+  "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "market_regime": "PROFIT_MAX_GATE_OFF",
+  "local_gate": {
+    "go": true,
+    "checks": {
+      "electronics_m1_lt_0": true,
+      "electronics_m5_lte_minus_2pct": true
+    },
+    "electronics_m1": -0.02294455066921597,
+    "electronics_m5": -0.02865780187720879
+  },
+  "macro_gate": {
+    "go": false,
+    "checks": {
+      "sox_1d_lte_0": false,
+      "sox_5d_lte_minus_3pct": false
+    },
+    "sox_session": "2026-10-21",
+    "sox_1d": 0.019651470366216506,
+    "sox_5d": -0.015304782920177673,
+    "dxy_used": false
+  },
+  "top1": {
+    "ticker": "2492",
+    "name": "華新科",
+    "beta60": 2.2578269485617772,
+    "stock_r1": -0.09247842170160292,
+    "electronics_m1": -0.02294455066921597,
+    "electronics_m5": -0.02865780187720879,
+    "residual": -0.040673596878005945,
+    "score": 4.553675526714278,
+    "liq20_turnover_twd": 12597843248.4,
+    "signal_close": 368.0
+  },
+  "action": "OFF",
+  "paper_position": {
+    "state": "IDLE"
+  },
+  "execution_override": {
+    "applied": false,
+    "status": "NO_FILL",
+    "reason": "NO_OPEN_PAPER_POSITION"
+  },
+  "strict": {
+    "authority": "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
+    "cohort_count": 1,
+    "engine_status": "OFF",
+    "buy_count": 0,
+    "watch_count": 1,
+    "rows": [
+      {
+        "Ticker": 2492,
+        "Name": "華新科",
+        "E2Score": 4.553675526714278,
+        "E2Action": "OFF",
+        "E2Rank": 1
+      }
+    ]
+  },
+  "extension_shadow": {
+    "engine_status": "DISABLED_LEGACY_REVOKED",
+    "capital_authorized": false,
+    "rows": []
+  },
+  "position_state": {
+    "asof": "2026-10-22",
+    "held": [],
+    "pending": [],
+    "no_fill": [],
+    "max_slots": 1,
+    "occupied_next_session": 0,
+    "free_slots_next_session": 1
+  },
+  "locks": {
+    "model": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_PIT_VALIDATION_LOCK_20261019.json",
+    "display_execution": "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
+    "legacy_revocation": "E2_LEGACY_REVOCATION_20261019.json"
+  },
+  "rules": {
+    "K": 25.0,
+    "top_n": 1,
+    "hold_intervals": 20,
+    "cost_roundtrip": 0.008,
+    "overlap": "FORBIDDEN",
+    "dxy_used": false,
+    "no_fill_policy": "EXPLICIT_MATCHED_OVERRIDE_RELEASES_NEXT_SESSION_SLOT_NO_SAME_SESSION_HINDSIGHT"
+  },
+  "q017_effect": "NONE"
+}

@@ -2,7 +2,7 @@
   "schema_version": 2,
   "system": "HENGCE",
   "module": "HENGCE_DUAL_ENGINE_DISPLAY",
-  "generated_at_taipei": "2026-10-22T15:38:26.225896+08:00",
+  "generated_at_taipei": "2026-10-22T15:48:36.478239+08:00",
   "architecture": "DUAL_ENGINE",
   "rankings_separate": true,
   "mixed_ranking_forbidden": true,
@@ -62,7 +62,7 @@
     "reason": null,
     "source_module": "Q017_SOX_ELECTRONICS_RADAR_LOCKED",
     "schema_version": 5,
-    "universe_membership_date": "2026-10-21",
+    "universe_membership_date": "2026-10-22",
     "ranking_universe": "TWSE_LISTED_ELECTRONICS_ONLY"
   },
   "e2": {
@@ -70,38 +70,38 @@
     "status": "OFF",
     "binding_status": "PASS",
     "authority": "VALIDATED_RESEARCH_SIGNAL_DISPLAY",
-    "signal_asof": "2026-10-21",
+    "signal_asof": "2026-10-22",
     "local_gate": {
-      "go": false,
-      "checks": {
-        "electronics_m1_lt_0": false,
-        "electronics_m5_lte_minus_2pct": true
-      },
-      "electronics_m1": 0.008605851979345935,
-      "electronics_m5": -0.03471401422754905
-    },
-    "macro_gate": {
       "go": true,
       "checks": {
-        "sox_1d_lte_0": true,
-        "sox_5d_lte_minus_3pct": true
+        "electronics_m1_lt_0": true,
+        "electronics_m5_lte_minus_2pct": true
       },
-      "sox_session": "2026-10-20",
-      "sox_1d": -0.0028746891968092214,
-      "sox_5d": -0.07576363330011182,
+      "electronics_m1": -0.02294455066921597,
+      "electronics_m5": -0.02865780187720879
+    },
+    "macro_gate": {
+      "go": false,
+      "checks": {
+        "sox_1d_lte_0": false,
+        "sox_5d_lte_minus_3pct": false
+      },
+      "sox_session": "2026-10-21",
+      "sox_1d": 0.019651470366216506,
+      "sox_5d": -0.015304782920177673,
       "dxy_used": false
     },
     "top1": {
-      "ticker": "2345",
-      "name": "智邦",
-      "beta60": 1.5034362279357074,
-      "stock_r1": -0.07868020304568524,
-      "electronics_m1": 0.008605851979345935,
-      "electronics_m5": -0.03471401422754905,
-      "residual": -0.09161855268368613,
-      "score": 4.947002509327956,
-      "liq20_turnover_twd": 9394384216.25,
-      "signal_close": 1815.0
+      "ticker": "2492",
+      "name": "華新科",
+      "beta60": 2.2578269485617772,
+      "stock_r1": -0.09247842170160292,
+      "electronics_m1": -0.02294455066921597,
+      "electronics_m5": -0.02865780187720879,
+      "residual": -0.040673596878005945,
+      "score": 4.553675526714278,
+      "liq20_turnover_twd": 12597843248.4,
+      "signal_close": 368.0
     },
     "action": "OFF",
     "paper_position": {
