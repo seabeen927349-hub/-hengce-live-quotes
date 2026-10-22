@@ -1,0 +1,14 @@
+{
+  "schema_version": 5,
+  "system": "HENGCE",
+  "module": "Q017_RECOVERY_COMPUTE_V5",
+  "trade_date": "2026-10-22",
+  "generated_at_taipei": "2026-10-22T09:32:15.145861+08:00",
+  "status": "PASS",
+  "observation_source": "DECISION_ALREADY_LOCKED",
+  "observation_snapshot_sha256": "b02e7a7a3d9a272458daf365c0dd28b54d97b57858635c6c0bb01bae8b9319c1",
+  "decision_snapshot_sha256": "e9e836d40008a89d92b0036c605d7792e62cec74c7ad6ad101f5cf77c8a424d3",
+  "late_market_refetch_used": false,
+  "idempotent_no_recompute": true,
+  "policy": "Existing valid immutable decision wins; recovery never recomputes or reranks it."
+}
