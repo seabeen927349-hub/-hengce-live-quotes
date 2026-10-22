@@ -53,6 +53,8 @@ class WriterWorkflowTests(unittest.TestCase):
             before = yaml.load(topology.show(writer['workflow']), Loader=yaml.BaseLoader)
             after = yaml.load((ROOT / writer['workflow']).read_text(), Loader=yaml.BaseLoader)
             publications = {p['step'] for p in writer['publications']}
+            actual_steps=[s for s in after['jobs'][writer['job']]['steps']
+                          if s.get('name') != 'Recovery admission from clean current remote']
             for index, step in enumerate(before['jobs'][writer['job']]['steps']):
                 if step.get('name') in publications:
                     continue
@@ -60,7 +62,13 @@ class WriterWorkflowTests(unittest.TestCase):
                 run = expected.get('run', '')
                 if 'git pull --rebase origin main' in run and step.get('name', '').startswith('Verify '):
                     expected['run'] = run.replace('git pull --rebase origin main', '# Verify the exact accepted proposal; no post-computation pull/rebase.')
-                actual = after['jobs'][writer['job']]['steps'][index]
+                actual = dict(actual_steps[index])
+                run=actual.get('run','')
+                if run.startswith('python scripts/hengce_recovery_transaction.py fence'):
+                    first,_,rest=run.partition('\n')
+                    self.assertRegex(first,r'^python scripts/hengce_recovery_transaction.py fence(?: --scope [a-z0-9-]+)?$')
+                    actual['run']=rest
+                    if not expected.get('run','').endswith('\n'):actual['run']=rest.rstrip('\n')
                 self.assertEqual(expected, actual, (writer['workflow'], step.get('name')))
 
     def test_no_unguarded_main_push_or_blind_rebase_remains(self):
@@ -93,7 +101,11 @@ class WriterWorkflowTests(unittest.TestCase):
             capture = next(i for i,s in enumerate(steps) if s.get('id') == lane + '_observe')
             publish = next(i for i,s in enumerate(steps) if 'hengce_publish.py' in s.get('run', ''))
             self.assertLess(capture, publish)
-            self.assertEqual(steps[capture]['run'], f'python scripts/hengce_q017_observer_supervisor_v2.py --mode observe --lane {lane}')
+            run=steps[capture]['run']
+            if run.startswith('python scripts/hengce_recovery_transaction.py fence'):
+                self.assertEqual(run.splitlines()[0],f'python scripts/hengce_recovery_transaction.py fence --scope q017-{lane}')
+                run='\n'.join(run.splitlines()[1:])
+            self.assertEqual(run, f'python scripts/hengce_q017_observer_supervisor_v2.py --mode observe --lane {lane}')
         self.assertNotEqual(*groups)
 
     def test_publisher_imports_only_infrastructure_modules(self):
@@ -104,7 +116,12 @@ class WriterWorkflowTests(unittest.TestCase):
                 modules.update(alias.name.split('.')[0] for alias in node.names)
             elif isinstance(node, ast.ImportFrom):
                 modules.add(node.module.split('.')[0])
-        self.assertEqual(modules, {'argparse', 'fnmatch', 'json', 'os', 'pathlib', 'subprocess', 'tempfile', 'time', 'uuid'})
+        self.assertEqual(modules, {'argparse', 'fnmatch', 'json', 'os', 'pathlib', 'subprocess', 'tempfile', 'time', 'uuid','hengce_recovery_transaction'})
+        helper=ast.parse((ROOT/'scripts/hengce_recovery_transaction.py').read_text())
+        allowed={'argparse','collections','csv','datetime','fnmatch','hashlib','io','json','os','pathlib','re','subprocess','tempfile','uuid','zoneinfo','hengce_publish'}
+        for node in ast.walk(helper):
+            if isinstance(node,ast.Import):self.assertTrue({a.name.split('.')[0] for a in node.names}<=allowed)
+            if isinstance(node,ast.ImportFrom):self.assertIn(node.module.split('.')[0],allowed)
 
     def test_capture_profiles_protect_macros_code_and_unknown_inputs(self):
         import hengce_publish as publisher

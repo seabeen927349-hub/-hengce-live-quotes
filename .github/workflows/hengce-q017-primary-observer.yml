@@ -83,11 +83,20 @@ jobs:
           set -euo pipefail
           git pull --rebase origin main
 
+      - name: Recovery admission from clean current remote
+        if: steps.mode.outputs.mode == 'observe'
+        env:
+          HENGCE_REQUEST_DATE: ${{ inputs.trade_date || '' }}
+          HENGCE_REQUEST_MODE: ${{ steps.mode.outputs.mode }}
+        run: python scripts/hengce_recovery_transaction.py prepare --lane q017-primary --mode "$HENGCE_REQUEST_MODE"
+
       - name: Capture canonical immutable 09:01 observation through macro-cache-first supervisor
         id: primary_observe
         if: steps.mode.outputs.mode == 'observe'
         continue-on-error: true
-        run: python scripts/hengce_q017_observer_supervisor_v2.py --mode observe --lane primary
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope q017-primary
+          python scripts/hengce_q017_observer_supervisor_v2.py --mode observe --lane primary
 
       - name: Persist canonical evidence and supervisor diagnostics before computation
         if: always() && steps.mode.outputs.mode == 'observe'
@@ -123,8 +132,9 @@ jobs:
             echo 'No primary evidence/diagnostic changes to persist.'
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            python scripts/hengce_recovery_transaction.py stage
             git commit -m "HENGCE Q017 primary 09:01 evidence/status ${TS}"
-            python scripts/hengce_publish.py --profile q017-primary-capture
+            python scripts/hengce_publish.py --profile q017-primary-capture --transaction-lane q017-primary
           fi
 
       - name: Verify canonical observation is persisted in Git HEAD before computation
@@ -159,18 +169,24 @@ jobs:
         id: primary_compute
         if: steps.mode.outputs.mode == 'observe' && steps.primary_observe.outcome == 'success' && steps.primary_evidence.outcome == 'success'
         continue-on-error: true
-        run: python scripts/hengce_q017_observation_lock_v5.py --mode compute
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope q017-recovery
+          python scripts/hengce_q017_observation_lock_v5.py --mode compute
 
       - name: Enforce schema-v5 authority
         id: primary_guard
         if: steps.mode.outputs.mode == 'observe' && steps.primary_compute.outcome == 'success'
         continue-on-error: true
-        run: python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
+        run: |
+          python scripts/hengce_recovery_transaction.py fence
+          python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
 
       - name: Refresh dual-engine display
         if: always() && steps.mode.outputs.mode == 'observe'
         continue-on-error: true
-        run: python scripts/hengce_dual_engine_display.py
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope display
+          python scripts/hengce_dual_engine_display.py
 
       - name: Persist decision, authority and display
         if: always() && steps.mode.outputs.mode == 'observe'
@@ -196,8 +212,9 @@ jobs:
             echo 'No primary decision/display changes to persist.'
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            python scripts/hengce_recovery_transaction.py stage
             git commit -m "HENGCE Q017 primary decision/display ${TS}"
-            python scripts/hengce_publish.py --profile q017-decision-display
+            python scripts/hengce_publish.py --profile q017-decision-display --transaction-lane q017-primary
           fi
 
       - name: Primary observer health

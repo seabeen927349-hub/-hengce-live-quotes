@@ -83,11 +83,20 @@ jobs:
           set -euo pipefail
           git pull --rebase origin main
 
+      - name: Recovery admission from clean current remote
+        if: steps.mode.outputs.mode == 'observe'
+        env:
+          HENGCE_REQUEST_DATE: ${{ inputs.trade_date || '' }}
+          HENGCE_REQUEST_MODE: ${{ steps.mode.outputs.mode }}
+        run: python scripts/hengce_recovery_transaction.py prepare --lane q017-backup --mode "$HENGCE_REQUEST_MODE"
+
       - name: Capture independent 09:01 backup observation through macro-cache-first supervisor
         id: backup_observe
         if: steps.mode.outputs.mode == 'observe'
         continue-on-error: true
-        run: python scripts/hengce_q017_observer_supervisor_v2.py --mode observe --lane backup
+        run: |
+          python scripts/hengce_recovery_transaction.py fence --scope q017-backup
+          python scripts/hengce_q017_observer_supervisor_v2.py --mode observe --lane backup
 
       - name: Persist backup evidence or failure diagnostics
         if: always() && steps.mode.outputs.mode == 'observe'
@@ -123,8 +132,9 @@ jobs:
             echo 'No backup evidence/diagnostic changes to persist.'
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+            python scripts/hengce_recovery_transaction.py stage
             git commit -m "HENGCE Q017 backup 09:01 evidence/status ${TS}"
-            python scripts/hengce_publish.py --profile q017-backup-capture
+            python scripts/hengce_publish.py --profile q017-backup-capture --transaction-lane q017-backup
           fi
 
       - name: Verify backup observation is persisted in Git HEAD

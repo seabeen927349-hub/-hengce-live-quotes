@@ -6,6 +6,7 @@ from datetime import datetime
 from pathlib import Path
 
 import hengce_q017_observation_lock_v5 as v5
+from hengce_recovery_transaction import ZERO, current_request
 
 RADAR=v5.RADAR
 BACKUP_DIR=RADAR/'backup_observations'
@@ -48,14 +49,17 @@ def existing_decision(today):
 
 def compute(today=None):
     today=today or v5.core.now_tw().date()
+    current_request('q017-recovery','compute',today.isoformat(),v5.core.now_tw())
     locked=existing_decision(today)
     if locked is not None:
         receipt={'schema_version':5,'system':'HENGCE','module':'Q017_RECOVERY_COMPUTE_V5','trade_date':today.isoformat(),'generated_at_taipei':v5.core.now_tw().isoformat(),'status':'PASS','observation_source':'DECISION_ALREADY_LOCKED','observation_snapshot_sha256':locked['observation_snapshot_sha256'],'decision_snapshot_sha256':locked['decision_snapshot_sha256'],'late_market_refetch_used':False,'idempotent_no_recompute':True,'policy':'Existing valid immutable decision wins; recovery never recomputes or reranks it.'}
+        receipt.update(ZERO)
         v5.core.atomic_json(RECOVERY_DIR/f'{today.strftime("%Y%m%d")}_recovery_compute.json',receipt)
         return locked,receipt
     o,source=promote_if_needed(today)
     out=v5.compute_decision(today)
     receipt={'schema_version':5,'system':'HENGCE','module':'Q017_RECOVERY_COMPUTE_V5','trade_date':today.isoformat(),'generated_at_taipei':v5.core.now_tw().isoformat(),'status':'PASS','observation_source':source,'observation_snapshot_sha256':o['observation_snapshot_sha256'],'decision_snapshot_sha256':out['decision_snapshot_sha256'],'late_market_refetch_used':False,'idempotent_no_recompute':False,'policy':'Recovery computation may occur later, but market inputs remain the immutable 09:01 observation.'}
+    receipt.update(ZERO)
     v5.core.atomic_json(RECOVERY_DIR/f'{today.strftime("%Y%m%d")}_recovery_compute.json',receipt)
     return out,receipt
 
@@ -65,7 +69,9 @@ def self_test():
         root=Path(td);cp=root/'canonical.json';bp=root/'backup.json'
         payload={'observation_snapshot_sha256':'abc'};bp.write_text(json.dumps(payload),encoding='utf-8')
         original=v5.validate_observation
+        original_latest=v5.OBS_LATEST
         try:
+            v5.OBS_LATEST=root/'selftest_observation_latest.json'
             v5.validate_observation=lambda o:(o.get('observation_snapshot_sha256')=='abc','TEST')
             o,s=promote_if_needed(datetime(2026,10,20).date(),cp,bp)
             assert s=='BACKUP_PROMOTED_TO_CANONICAL' and cp.exists() and o['observation_snapshot_sha256']=='abc'
@@ -75,7 +81,9 @@ def self_test():
             v5.validate_observation=lambda o:(True,'TEST')
             o3,s3=promote_if_needed(datetime(2026,10,20).date(),cp,bp)
             assert s3=='CANONICAL_ALREADY_PRESENT' and o3['observation_snapshot_sha256']=='different'
-        finally:v5.validate_observation=original
+        finally:
+            v5.validate_observation=original
+            v5.OBS_LATEST=original_latest
     print(json.dumps({'self_test':'PASS','schema':5,'backup_promotion_only_when_canonical_missing':True,'existing_decision_idempotent':True,'no_market_refetch':True,'no_observation_blending':True}))
 
 
@@ -86,6 +94,6 @@ def main():
     try:
         out,receipt=compute(target);print(json.dumps({'decision':out,'recovery':receipt},ensure_ascii=False,indent=2));return 0
     except Exception as e:
-        fail={'schema_version':5,'system':'HENGCE','module':'Q017_RECOVERY_COMPUTE_V5','generated_at_taipei':v5.core.now_tw().isoformat(),'status':'DATA_PENDING','authority':'NO_FORMAL_SIGNAL','formal_buy_count':0,'error':repr(e),'late_market_refetch_used':False};print(json.dumps(fail,ensure_ascii=False,indent=2));return 2
+        fail={'schema_version':5,'system':'HENGCE','module':'Q017_RECOVERY_COMPUTE_V5','generated_at_taipei':v5.core.now_tw().isoformat(),'status':'DATA_PENDING','authority':'NO_FORMAL_SIGNAL','formal_buy_count':0,'error':repr(e),'late_market_refetch_used':False,**ZERO};print(json.dumps(fail,ensure_ascii=False,indent=2));return 2
 
 if __name__=='__main__':raise SystemExit(main())
