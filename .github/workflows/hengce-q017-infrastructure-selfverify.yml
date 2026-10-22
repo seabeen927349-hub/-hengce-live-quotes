@@ -142,18 +142,12 @@ jobs:
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE Q017 infrastructure selfverify PASS ${TS}"
 
-          # Self-tests may leave tracked working-tree diagnostics changed. They must never
-          # block rebasing a receipt commit when another bot advances main concurrently.
-          for n in 1 2 3; do
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-            echo "Receipt push attempt ${n} raced with main; refresh and rebase."
-            git fetch origin main
-            git reset --hard HEAD
-            git clean -fd
-            git rebase origin/main
-            sleep $((n*2))
-          done
-          echo 'Q017_SELFVERIFY_RECEIPT_PERSIST_FAILED_AFTER_RETRIES'
-          exit 2
+          python scripts/hengce_publish.py
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

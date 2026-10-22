@@ -115,7 +115,12 @@ jobs:
           fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE full-market + electronics live ${TS}"
-          if ! git push origin HEAD:main; then
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
+          python scripts/hengce_publish.py
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

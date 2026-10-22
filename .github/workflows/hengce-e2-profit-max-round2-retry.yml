@@ -79,6 +79,14 @@ jobs:
           if [ -f research/e2_profit_max/round2/winner_validation_events.csv ]; then git add research/e2_profit_max/round2/winner_validation_events.csv; fi
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'HENGCE E2 profit-max round2 finite result'
-          git push origin HEAD:main
+          python scripts/hengce_publish.py
 
 # manual trigger: tracked chunks are the canonical runner input; broken convenience envelope is ignored.
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

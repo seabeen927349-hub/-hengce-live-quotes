@@ -80,7 +80,12 @@ jobs:
           if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE live ${TS} transport-hard-lock"
-          if ! git push origin HEAD:main; then
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
+          python scripts/hengce_publish.py
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

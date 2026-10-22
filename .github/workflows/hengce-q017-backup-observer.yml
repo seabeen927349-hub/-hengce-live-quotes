@@ -81,7 +81,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git pull --rebase origin main
+          git pull --ff-only origin main
 
       - name: Capture independent 09:01 backup observation through macro-cache-first supervisor
         id: backup_observe
@@ -124,10 +124,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE Q017 backup 09:01 evidence/status ${TS}"
-            if ! git push origin HEAD:main; then
-              git pull --rebase origin main
-              git push origin HEAD:main
-            fi
+            python scripts/hengce_publish.py
           fi
 
       - name: Verify backup observation is persisted in Git HEAD
@@ -136,7 +133,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git pull --rebase origin main
+          # Verify the exact accepted proposal; no post-computation pull/rebase.
           OBS="hengce/q017_radar/backup_observations/$(TZ=Asia/Taipei date '+%Y%m%d')_0901_observation.json"
           git cat-file -e "HEAD:$OBS"
           git show "HEAD:$OBS" > /tmp/q017_backup_observation.json
@@ -172,3 +169,11 @@ jobs:
             exit 2
           fi
           echo 'BACKUP_0901_OBSERVATION_PERSISTED_PASS'
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

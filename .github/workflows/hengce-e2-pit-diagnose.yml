@@ -55,4 +55,12 @@ jobs:
           git config user.email hengce-e2-research-bot@users.noreply.github.com
           git add research/e2_profit_max/membership_debug.json
           git commit -m 'HENGCE E2 PIT membership diagnostic' || exit 0
-          git push origin HEAD:main
+          python scripts/hengce_publish.py
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

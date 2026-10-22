@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git pull --rebase origin main
+          git pull --ff-only origin main
 
       - name: Self-test macro cache contract
         if: steps.mode.outputs.mode == 'self-test'
@@ -105,10 +105,7 @@ jobs:
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
             git commit -m "HENGCE Q017 morning macro cache ${TS}"
-            if ! git push origin HEAD:main; then
-              git pull --rebase origin main
-              git push origin HEAD:main
-            fi
+            python scripts/hengce_publish.py
           fi
 
       - name: Macro cache health
@@ -122,3 +119,11 @@ jobs:
             exit 2
           fi
           echo 'Q017_MORNING_MACRO_CACHE_PASS'
+
+      - name: Preserve publication arbitration receipts and captured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore

@@ -1,0 +1,96 @@
+"""Verify every inventoried main publisher and preserve capture/schedule contracts."""
+import json
+from pathlib import Path
+import subprocess
+import unittest
+
+import yaml
+import writer_topology as topology
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+class WriterWorkflowTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.inventory = json.loads(topology.OUT.read_text())
+
+    def test_inventory_is_exactly_reproducible_from_authoritative_base(self):
+        self.assertEqual(self.inventory, topology.build())
+        self.assertEqual(len(self.inventory['writers']), 29)
+        for writer in self.inventory['writers']:
+            for publication in writer['publications']:
+                self.assertTrue(publication['writable_path_prefixes_or_globs'])
+
+    def test_every_main_publisher_is_guarded_with_durable_reports(self):
+        for writer in self.inventory['writers']:
+            current = yaml.load((ROOT / writer['workflow']).read_text(), Loader=yaml.BaseLoader)
+            steps = current['jobs'][writer['job']]['steps']
+            for publication in writer['publications']:
+                step = next(s for s in steps if s.get('name') == publication['step'])
+                with self.subTest(workflow=writer['workflow'], step=publication['step']):
+                    self.assertIn('python scripts/hengce_publish.py', step['run'])
+                    for unsafe in ('git push', 'git pull', 'git rebase', 'git reset'):
+                        self.assertNotIn(unsafe, step['run'])
+            upload = next(s for s in steps if s.get('name') == 'Preserve publication arbitration receipts and captured evidence')
+            self.assertEqual(upload['if'], 'always()')
+            self.assertEqual(upload['with']['path'], '${{ runner.temp }}/hengce-publication')
+
+    def test_schedules_groups_permissions_and_job_configuration_unchanged(self):
+        for writer in self.inventory['writers']:
+            before = yaml.load(topology.show(writer['workflow']), Loader=yaml.BaseLoader)
+            after = yaml.load((ROOT / writer['workflow']).read_text(), Loader=yaml.BaseLoader)
+            with self.subTest(workflow=writer['workflow']):
+                for key in ('on', 'concurrency', 'permissions'):
+                    self.assertEqual(before.get(key), after.get(key))
+                for job in before['jobs']:
+                    self.assertEqual({k:v for k,v in before['jobs'][job].items() if k != 'steps'},
+                                     {k:v for k,v in after['jobs'][job].items() if k != 'steps'})
+
+    def test_model_compute_and_validation_steps_unchanged(self):
+        for writer in self.inventory['writers']:
+            before = yaml.load(topology.show(writer['workflow']), Loader=yaml.BaseLoader)
+            after = yaml.load((ROOT / writer['workflow']).read_text(), Loader=yaml.BaseLoader)
+            publications = {p['step'] for p in writer['publications']}
+            for index, step in enumerate(before['jobs'][writer['job']]['steps']):
+                if step.get('name') in publications:
+                    continue
+                expected = dict(step)
+                run = expected.get('run', '')
+                if 'git pull --rebase origin main' in run:
+                    replacement = '# Verify the exact accepted proposal; no post-computation pull/rebase.' if step.get('name', '').startswith('Verify ') else 'git pull --ff-only origin main'
+                    expected['run'] = run.replace('git pull --rebase origin main', replacement)
+                actual = after['jobs'][writer['job']]['steps'][index]
+                self.assertEqual(expected, actual, (writer['workflow'], step.get('name')))
+
+    def test_no_unguarded_main_push_or_blind_rebase_remains(self):
+        for path in (ROOT / '.github/workflows').glob('*.yml'):
+            text = path.read_text()
+            self.assertNotIn('git push origin HEAD:main', text, path)
+            self.assertNotIn('git pull --rebase', text, path)
+            self.assertNotIn('git rebase ', text, path)
+
+    def test_q017_observers_have_independent_capture_lanes(self):
+        groups = []
+        for lane in ('primary', 'backup'):
+            path = ROOT / f'.github/workflows/hengce-q017-{lane}-observer.yml'
+            config = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+            groups.append(config['concurrency']['group'])
+            job = config['jobs'][lane + '-observer']
+            self.assertNotIn('concurrency', job)
+            steps = job['steps']
+            capture = next(i for i,s in enumerate(steps) if s.get('id') == lane + '_observe')
+            publish = next(i for i,s in enumerate(steps) if 'hengce_publish.py' in s.get('run', ''))
+            self.assertLess(capture, publish)
+            self.assertEqual(steps[capture]['run'], f'python scripts/hengce_q017_observer_supervisor_v2.py --mode observe --lane {lane}')
+        self.assertNotEqual(*groups)
+
+    def test_only_publication_infrastructure_changed(self):
+        paths = subprocess.check_output(['git', '-C', str(ROOT), 'diff', '--name-only', topology.PIN], text=True).splitlines()
+        for path in paths:
+            self.assertTrue(path.startswith(('.github/workflows/', 'tests/engineering/', 'docs/engineering/')) or
+                            path == 'scripts/hengce_publish.py', path)
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

@@ -89,10 +89,41 @@ class WriterRaceTests(unittest.TestCase):
     def test_duplicate_identical_publication_is_noop(self):
         for root in (self.a, self.b):
             self.commit(root, {LATEST: '{"synthetic_version":1}\n'})
+        git(self.b, 'commit', '--amend', '--no-edit', '--date=2020-01-01T00:00:00Z')
         self.assertEqual(self.publish(self.a)[0], 0)
         before = git(self.remote, 'rev-parse', 'main')
         self.assertEqual(self.publish(self.b)[1]['result'], 'IDEMPOTENT_NOOP')
         self.assertEqual(git(self.remote, 'rev-parse', 'main'), before)
+
+    def test_simultaneous_e2_writers_have_exactly_one_winner(self):
+        self.commit(self.a, {LATEST: 'primary\n'})
+        self.commit(self.b, {LATEST: 'backup\n'})
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(self.publish, (self.a, self.b)))
+        self.assertEqual(sorted(x[0] for x in results), [0, 2])
+        self.assertIn(self.read_remote(LATEST), ('primary', 'backup'))
+
+    def test_mixed_q017_status_conflict_retains_backup_capture_in_ci_artifact(self):
+        self.commit(self.a, {PRIMARY: 'primary capture\n', 'hengce/q017_radar/observer_supervisor_primary_status.json': 'primary status\n'})
+        self.commit(self.b, {BACKUP: 'backup capture\n', 'hengce/q017_radar/observer_supervisor_backup_status.json': 'backup status\n'})
+        self.assertEqual(self.publish(self.a)[0], 0)
+        self.assertEqual(self.publish(self.b)[0], 2)
+        retained = list((self.root / 'reports-backup/retained-evidence').glob('*/' + BACKUP))
+        self.assertEqual(len(retained), 1)
+        self.assertEqual(retained[0].read_text(), 'backup capture\n')
+        self.assertEqual(self.read_remote(PRIMARY), 'primary capture')
+
+    def test_revalidation_does_not_reset_dirty_or_untracked_worktree(self):
+        self.commit(self.a, {PRIMARY: 'primary\n'})
+        self.commit(self.b, {BACKUP: 'backup\n'})
+        (self.b / 'README').write_text('UNSTAGED SYNTHETIC DIAGNOSTIC\n')
+        (self.b / 'untracked').write_text('UNTRACKED\n')
+        head = git(self.b, 'rev-parse', 'HEAD')
+        self.assertEqual(self.publish(self.a)[0], 0)
+        self.assertEqual(self.publish(self.b)[0], 0)
+        self.assertEqual((self.b / 'README').read_text(), 'UNSTAGED SYNTHETIC DIAGNOSTIC\n')
+        self.assertEqual((self.b / 'untracked').read_text(), 'UNTRACKED\n')
+        self.assertEqual(git(self.b, 'rev-parse', 'HEAD'), head)
 
     def test_append_only_primary_backup_evidence_retained(self):
         self.commit(self.a, {PRIMARY: 'synthetic-primary\n'})
