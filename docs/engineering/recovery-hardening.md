@@ -146,6 +146,16 @@ successful workflow with eleven IDENTICAL checks; its eight existing producer
 regressions and STOP-on-difference self-test remain unchanged. CI run IDs and
 final-head results are recorded in the PR after completion, not predeclared here.
 
+E2 No-Fill CI originally rejected any Q017 source byte change, including the
+Issue #20 admission and existing-decision I/O insertion. It now runs a strict
+byte-comparison guard that permits only those exact seven inserted lines. Every
+original byte remains frozen, including the original compute body and all model
+functions. Negative synthetic mutations to formulas, thresholds, the compute
+body, date admission and existing-decision validation are rejected. The legacy
+core and E2 validation lock retain their original whole-file diff guard. Recovery
+CI also runs this guard unfiltered, so future Q017 edits cannot evade it via E2
+CI path filters. No broad file/function exception is introduced.
+
 ## Limitations and explicitly blocked work
 
 This is not universal exactly-once execution. The Git-dir fence is local to a

@@ -43,9 +43,11 @@ jobs:
           set -euo pipefail
           BASE='${{ github.event.pull_request.base.sha }}'
           git diff --exit-code "$BASE"...HEAD -- \
-            scripts/hengce_q017_observation_lock_v5.py \
             scripts/hengce_daily_command_center_core_legacy.py \
             research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_PIT_VALIDATION_LOCK_20261019.json
+          # Only Issue #20's exact seven-line I/O insertion is permitted;
+          # every original Q017 byte, including compute/scoring, stays frozen.
+          python -B tests/engineering/test_q017_operational_boundary.py
           python - <<'PY'
           from pathlib import Path
           s=Path('scripts/hengce_e2_live.py').read_text(encoding='utf-8')
