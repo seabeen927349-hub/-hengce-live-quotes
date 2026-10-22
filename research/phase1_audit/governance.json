@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "authority": "RESEARCH_GOVERNANCE_SPECIFICATION_ONLY",
+  "phase2_authorized": false,
+  "B10": "BLOCKED_PENDING_EXPLICIT_HUMAN_AUTHORIZATION",
+  "PROMOTE_TO_PRODUCTION": "FORBIDDEN",
+  "B07": {
+    "classification": "PARTIAL",
+    "existing_frozen_assumptions": {
+      "E2": {
+        "source": "hengce/E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019.json",
+        "cost_roundtrip": 0.008,
+        "max_slots": 1,
+        "overlap": "FORBIDDEN",
+        "entry": "next TWSE session open when observable",
+        "exit": "H20 close after 20 completed TWSE trading intervals following entry",
+        "meaning": "Existing aggregate paper assumption; not a calibrated broker cost model. Do not add components on top without a separately approved specification."
+      },
+      "Q017": {"complete_cost_model": null},
+      "M1": {"authority": "RESEARCH_SHADOW_ONLY", "capital_authority": 0, "complete_cost_model": null}
+    },
+    "component_specification": [
+      {"component": "brokerage", "value": null, "effective_date": null, "evidence": null, "status": "REQUIRES_EXPLICIT_HUMAN_POLICY_APPROVAL", "needed": "Broker schedule, discount and minimum fee; buy/sell and rounding."},
+      {"component": "transaction_tax", "value": null, "effective_date": null, "evidence": null, "status": "REQUIRES_EVIDENCE_AND_POLICY_APPROVAL", "needed": "Official effective-dated rate, security type, side and day-trading eligibility."},
+      {"component": "spread", "value": null, "status": "REQUIRES_EVIDENCE_AND_POLICY_APPROVAL", "needed": "Timestamped executable bid/ask; daily OHLC is insufficient."},
+      {"component": "slippage", "value": null, "status": "REQUIRES_EVIDENCE_AND_POLICY_APPROVAL", "needed": "Order type, market impact, stressed calibration and effective dates."},
+      {"component": "liquidity_participation", "value": null, "status": "REQUIRES_EVIDENCE_AND_POLICY_APPROVAL", "needed": "Causal executable volume, participation ceiling and partial-fill rules."},
+      {"component": "lot_tick", "value": null, "status": "REQUIRES_EVIDENCE_AND_POLICY_APPROVAL", "needed": "Effective-dated exchange lot/tick tables, odd-lot policy and price rounding."},
+      {"component": "latency_fill", "value": null, "status": "REQUIRES_EVIDENCE_AND_POLICY_APPROVAL", "needed": "Submission/acknowledgment/queue/fill timestamps, no-fill/partial-fill and suspension/limit rules."},
+      {"component": "research_notional_sizing", "value": null, "status": "REQUIRES_EXPLICIT_HUMAN_POLICY_APPROVAL", "needed": "Research notional, allocation, cash, concentration and rounding; no real capital authority."}
+    ],
+    "observed_exchange_broker_rule_status": "NO_COMPLETE_EFFECTIVE_DATED_RULESET_VERIFIED_IN_REVIEWED_EVIDENCE",
+    "unapproved_values_must_remain_null": true
+  },
+  "B08": {
+    "classification": "PARTIAL",
+    "status": "PROPOSAL_REQUIRES_EXPLICIT_HUMAN_POLICY_APPROVAL",
+    "runs_authorized": false,
+    "options": {
+      "split": ["chronological fixed development/validation with prospective custody", "pre-registered expanding walk-forward with prospective custody"],
+      "horizon": ["engine-native horizons assessed separately", "pre-registered economic horizon with a separately approved execution design"],
+      "risk_gates": ["drawdown and tail-loss ceilings", "cost-stress survival and turnover limits", "concentration and liquidity limits"]
+    },
+    "policy_values": {
+      "train_start": null, "train_end": null, "validation_start": null, "validation_end": null,
+      "holdout_start": null, "holdout_end": null, "walk_forward_step": null,
+      "purge_sessions": null, "embargo_sessions": null, "evaluation_horizons": null,
+      "minimum_observations": null, "minimum_trades": null, "trial_budget": null,
+      "drawdown_limit": null, "tail_risk_limit": null, "cost_stress": null, "turnover_limit": null
+    },
+    "approval_evidence_needed": [
+      "Freeze actual coverage, vintages and outcome availability before setting boundaries.",
+      "Disclose all prior inspection; exposed dates cannot become pristine holdout.",
+      "Purge overlapping outcome intervals; embargo must account for horizon, publication lag and overlap.",
+      "Freeze minimum observations/trades, trial budget including failed variants and family-level multiple-testing correction.",
+      "Freeze risk/cost/turnover acceptance gates before outcome inspection; no threshold rescue."
+    ]
+  },
+  "B09": {
+    "classification": "PARTIAL",
+    "status": "SPECIFICATION_AND_OFFLINE_VALIDATOR_ONLY",
+    "ledger_schema": "experiment.schema.json",
+    "holdout_schema": "holdout.schema.json",
+    "ledger_populated": false,
+    "holdout_allocated": false,
+    "holdout_opened": false,
+    "immutability": {
+      "record_hash": "SHA256 of UTF-8 canonical JSON: sorted keys, compact separators, ensure_ascii=false, allow_nan=false; exclude record_sha256 only",
+      "genesis_previous_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "append_rule": "Existing records must be an exact prefix; validate previous_sha256 chain, unique experiment IDs and earlier parent IDs.",
+      "external_anchor_required": true,
+      "anchor": "An independently retained trusted head and record count must anchor each append; a self-contained hash chain cannot detect complete rewriting or truncation.",
+      "deployment": "Future approved custody service must use atomic conditional append, single-writer serialization, WORM/versioned storage, independent checkpoints and access audit. No deployed storage is claimed here.",
+      "failed_experiments": "Retain FAILED/REJECTED/ABORTED, metrics unavailable as null, and reason; never delete a failed trial."
+    },
+    "custody_rules": [
+      "UNALLOCATED -> SEALED -> OPENED -> CONSUMED; no reverse transition or second open.",
+      "SEALED requires independent custodian, artifact commitment, explicit human authorization and predeclared access policy.",
+      "Opening requires authorized identity, one-time token, immutable audit event and conditional state update before data release.",
+      "OPENED is already exposed; failure or interrupted evaluation does not restore pristine state.",
+      "Do not allocate, populate or open a holdout in Phase 1; local validation is not access authorization."
+    ]
+  },
+  "prospective_lineage": {
+    "status": "CONTRACT_ONLY_NOT_CONNECTED_TO_PRODUCTION",
+    "capital_authority": 0,
+    "broker_execution": false,
+    "engines_must_remain_separate": ["Q017", "E2", "M1"],
+    "required_fields": [
+      "engine", "model_version", "code_commit", "run_id", "candidate_population_hash", "universe_membership_hash",
+      "event_timestamp", "publication_timestamp_or_null", "first_seen_timestamp_or_null", "fetched_timestamp",
+      "generated_timestamp", "revision_id_or_null", "raw_input_hashes", "feature_values", "feature_schema",
+      "gates", "regimes", "score", "rank", "tie_order", "selected", "rejection_reason_or_null",
+      "no_selection_reason_or_null", "no_fill_reason_or_null", "output_hash", "authority"
+    ],
+    "rules": [
+      "Capture full eligible population and rejection/no-selection/no-fill events prospectively before outcomes.",
+      "Null publication/first-seen/revision fields must stay unknown; generated time is not a substitute.",
+      "Do not recompute historical candidate lists; no mixed engine ranking; actual user trades are not model evidence."
+    ]
+  }
+}
