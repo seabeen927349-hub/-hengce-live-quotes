@@ -30,7 +30,8 @@
     "quote_coverage_never_confers_broker_execution": true
   },
   "compatibility": {
-    "legacy_requested_count_remains_base_live_universe_count": true,
+    "requested_count_reports_actual_transport_fetch_scope": true,
+    "base_universe_requested_count_reports_authoritative_live_universe_count": true,
     "transport_requested_count_reports_deduped_fetch_scope": true,
     "base_universe_sha256_remains_bound_to_live_universe_json": true
   }
