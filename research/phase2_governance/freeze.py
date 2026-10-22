@@ -25,7 +25,7 @@ def prefix(old,new):
     g.need(new.startswith(old),'APPEND_PREFIX_BYTES_CHANGED')
 
 
-def verify(base=g.BASE):
+def verify(base=g.AUTHORIZATION_BASE):
     # The default is the issue's exact base. CI additionally passes GitHub's
     # trusted PR base SHA, never a checkpoint supplied by the proposed ledger.
     # Production may legitimately advance main while this exact-base branch is
@@ -43,14 +43,19 @@ def verify(base=g.BASE):
     current=(g.ROOT/LEDGER).read_bytes();prefix(old,current)
     # Readiness CI must not invent even one genuine trial at this bootstrap.
     if not exists:g.need(current==b'','NO_REAL_TRIALS_IN_GOVERNANCE_BOOTSTRAP')
+    if exists:
+        trusted_policy=g.parse(git('show',base+':research/phase2_governance/phase2-policy.json'))
+        if trusted_policy.get('authorization_id')!=g.AUTHORIZATION_ID:
+            g.need(current==old==b'','AUTHORIZATION_PR_MUST_APPEND_ZERO_EXPERIMENTS')
     g.verify_environment(runtime=False)
     g.validate_policy(g.metadata(g.HERE/'phase2-policy.json'))
     h=g.metadata(g.HERE/'holdout-state.json');g.holdout_metadata(h)
     g.need(h['state']=='UNALLOCATED' and h['open_count']==0 and h['exposed'] is False,'HOLDOUT_MUST_REMAIN_UNALLOCATED')
     return dict(status='PASS',trusted_base=base,ledger_record_count=len(store.decode(current)),
-        NO_OPTIMIZER_WAS_RUN=True,phase2_authorized=False,**g.ZERO)
+        NO_OPTIMIZER_WAS_RUN=True,phase2_authorized=True,authorization_id=g.AUTHORIZATION_ID,
+        authorized_stage='P2A_BASELINE_DESTRUCTION',**g.ZERO)
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--base',default=g.BASE);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--base',default=g.AUTHORIZATION_BASE);a=p.parse_args()
     print(g.canonical(verify(a.base)).decode())

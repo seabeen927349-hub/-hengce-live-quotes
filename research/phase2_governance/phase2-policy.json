@@ -1,20 +1,28 @@
 {
   "schema_version": 1,
-  "issue": 22,
-  "status": "NOT_READY_FOR_PHASE2_RUNS_YET",
-  "phase2_authorized": false,
-  "authorization_event": null,
+  "issue": 24,
+  "status": "AUTHORIZED_E2_P2A_DIAGNOSTICS_ONLY",
+  "phase2_authorized": true,
+  "authorization_event": {
+    "receipt": "authorization-event-20261023.json",
+    "receipt_commit": "71ef7d3dbc83715c6bff23ac809c4e21dee48a3b",
+    "source": "explicit_human_authorization"
+  },
   "engine_scope": {
-    "E2": "CANDIDATE_FOR_FIRST_PHASE2_OPTIMIZATION_RESEARCH",
+    "E2": "P2A_BASELINE_DESTRUCTION_ONLY",
     "Q017": "PROSPECTIVE_CHARACTERIZATION_ONLY",
     "M1": "RESEARCH_SHADOW_ONLY_NO_OPTIMIZATION"
   },
   "human_approvals": {
     "phase2_research_scope": {
-      "status": "PENDING_HUMAN_APPROVAL",
-      "approved_value": null,
-      "authorization_id": null,
-      "proposal_status": "PROPOSED",
+      "status": "APPROVED_SCOPED",
+      "approved_value": {
+        "E2": "P2A_BASELINE_DESTRUCTION_ONLY",
+        "Q017": "PROSPECTIVE_CHARACTERIZATION_ONLY",
+        "M1": "RESEARCH_SHADOW_ONLY_NO_OPTIMIZATION"
+      },
+      "authorization_id": "HENGCE-P2-AUTH-20261023-001",
+      "proposal_status": "SUPERSEDED_BY_SCOPED_APPROVAL",
       "proposed_value": {
         "E2": "CANDIDATE_FOR_FIRST_PHASE2_OPTIMIZATION_RESEARCH",
         "Q017": "PROSPECTIVE_CHARACTERIZATION_ONLY",
@@ -22,10 +30,16 @@
       }
     },
     "chronological_walk_forward": {
-      "status": "PENDING_HUMAN_APPROVAL",
-      "approved_value": null,
-      "authorization_id": null,
-      "proposal_status": "PROPOSED",
+      "status": "APPROVED_SCOPED",
+      "approved_value": {
+        "method": "PRE_REGISTERED_EXPANDING_WALK_FORWARD",
+        "chronological_only": true,
+        "random_split": false,
+        "fold_dates": null,
+        "step_sessions": null
+      },
+      "authorization_id": "HENGCE-P2-AUTH-20261023-001",
+      "proposal_status": "SUPERSEDED_BY_SCOPED_APPROVAL",
       "proposed_value": {
         "method": "PRE_REGISTERED_EXPANDING_WALK_FORWARD",
         "chronological_only": true,
@@ -35,10 +49,14 @@
       }
     },
     "purge_embargo": {
-      "status": "PENDING_HUMAN_APPROVAL",
-      "approved_value": null,
-      "authorization_id": null,
-      "proposal_status": "PROPOSED",
+      "status": "APPROVED_SCOPED",
+      "approved_value": {
+        "purge_min_twse_sessions": 20,
+        "embargo_min_twse_sessions": 20,
+        "overlapping_fixed20_outcomes_must_be_covered": true
+      },
+      "authorization_id": "HENGCE-P2-AUTH-20261023-001",
+      "proposal_status": "SUPERSEDED_BY_SCOPED_APPROVAL",
       "proposed_value": {
         "purge_min_twse_sessions": 20,
         "embargo_min_twse_sessions": 20,
@@ -46,10 +64,15 @@
       }
     },
     "trial_budget_multiple_testing": {
-      "status": "PENDING_HUMAN_APPROVAL",
-      "approved_value": null,
-      "authorization_id": null,
-      "proposal_status": "PROPOSED",
+      "status": "APPROVED_SCOPED",
+      "approved_value": {
+        "initial_family_max_challenger_variants": 24,
+        "failed_rejected_aborted_count": true,
+        "family_correction_rule": null,
+        "reset_requires_new_governance": true
+      },
+      "authorization_id": "HENGCE-P2-AUTH-20261023-001",
+      "proposal_status": "SUPERSEDED_BY_SCOPED_APPROVAL",
       "proposed_value": {
         "initial_family_max_challenger_variants": 24,
         "failed_rejected_aborted_count": true,
@@ -58,10 +81,19 @@
       }
     },
     "cost_baseline_stress": {
-      "status": "PENDING_HUMAN_APPROVAL",
-      "approved_value": null,
-      "authorization_id": null,
-      "proposal_status": "PROPOSED",
+      "status": "APPROVED_SCOPED",
+      "approved_value": {
+        "baseline_aggregate_roundtrip_cost": 0.008,
+        "stress_aggregate_multipliers": [
+          1.0,
+          1.5,
+          2.0
+        ],
+        "decomposition": "FORBIDDEN_WITHOUT_SEPARATE_EVIDENCE_AND_APPROVAL",
+        "component_add_on": "FORBIDDEN_DOUBLE_COUNT"
+      },
+      "authorization_id": "HENGCE-P2-AUTH-20261023-001",
+      "proposal_status": "SUPERSEDED_BY_SCOPED_APPROVAL",
       "proposed_value": {
         "baseline_aggregate_roundtrip_cost": 0.008,
         "stress_aggregate_multipliers": [
@@ -154,10 +186,42 @@
     "B07": "PARTIAL",
     "B08": "PARTIAL",
     "B09": "PARTIAL",
-    "B10": "BLOCKED_PENDING_EXPLICIT_HUMAN_AUTHORIZATION"
+    "B10": "SCOPED_AUTHORIZED_E2_P2A_ONLY"
   },
   "actual_user_trades_are_model_evidence": false,
   "capital_authority_twd": 0,
   "broker_order_execution": false,
-  "PROMOTE_TO_PRODUCTION": "FORBIDDEN"
+  "PROMOTE_TO_PRODUCTION": "FORBIDDEN",
+  "phase2_research_authorized": true,
+  "authorization_id": "HENGCE-P2-AUTH-20261023-001",
+  "authorized_stage": "P2A_BASELINE_DESTRUCTION",
+  "authorized_operations": [
+    "BASELINE_REPLAY",
+    "COST_STRESS",
+    "LEAVE_BEST_TRADES_OUT",
+    "LEAVE_ONE_YEAR_OUT",
+    "REGIME_CHARACTERIZATION",
+    "PARAMETER_PERTURBATION_ROBUSTNESS"
+  ],
+  "candidate_creation_authorized": false,
+  "candidate_acceptance_authorized": false,
+  "automated_search_authorized": false,
+  "unrestricted_feature_mining_authorized": false,
+  "historical_signal_regeneration_authorized": false,
+  "holdout_access_authorized": false,
+  "pending_p2b_folds": {
+    "status": "PENDING_HUMAN_APPROVAL",
+    "fold_dates": null,
+    "step_sessions": null
+  },
+  "pending_family_correction_rule": {
+    "status": "PENDING_HUMAN_APPROVAL",
+    "value": null
+  },
+  "actual_research_execution": {
+    "requires_merged_authorization_pr": 25,
+    "requires_proven_lineage": true,
+    "requires_ledger_and_independent_checkpoint": true,
+    "authorization_pr_experiment_records": 0
+  }
 }

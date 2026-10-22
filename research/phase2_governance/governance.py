@@ -12,6 +12,12 @@ from jsonschema import Draft202012Validator, FormatChecker
 ROOT=Path(__file__).resolve().parents[2]
 HERE=Path(__file__).resolve().parent
 BASE='42f4d4edd4b327c693290416d54d1e7622733969'
+AUTHORIZATION_BASE='f10463b07a25d647c0ce6762be2661005eebfeef'
+AUTHORIZATION_ID='HENGCE-P2-AUTH-20261023-001'
+RECEIPT_SHA256='a4ca71b122c6f1887b2fc8172546301473750250a0eb7981d7afad3b6310edec'
+POLICY_SHA256='3792626bc777991a67991f5c97b06371a9f8de33984e99adad78c6b4c4b4477a'
+P2A_OPERATIONS=('BASELINE_REPLAY','COST_STRESS','LEAVE_BEST_TRADES_OUT','LEAVE_ONE_YEAR_OUT',
+ 'REGIME_CHARACTERIZATION','PARAMETER_PERTURBATION_ROBUSTNESS')
 ZERO=dict(capital_authority_twd=0,broker_order_execution=False,PROMOTE_TO_PRODUCTION='FORBIDDEN')
 APPROVALS={'phase2_research_scope','chronological_walk_forward','purge_embargo',
  'trial_budget_multiple_testing','cost_baseline_stress','minimum_observations_trades',
@@ -48,21 +54,36 @@ def zero(value):
     need(all(type(value.get(k)) is type(v) and value[k]==v for k,v in ZERO.items()),'RESEARCH_AUTHORITY_FORBIDDEN')
 
 
+def validate_authorization_receipt(raw=None):
+    if raw is None:raw=(HERE/'authorization-event-20261023.json').read_bytes()
+    need(sha(raw)==RECEIPT_SHA256,'ORIGINAL_HUMAN_AUTHORIZATION_RECEIPT_CHANGED')
+    receipt=parse(raw);zero(receipt)
+    need(receipt['authorization_id']==AUTHORIZATION_ID and receipt['authorized_engine']=='E2' and
+         receipt['authorized_stage']=='E2_P2A_BASELINE_DESTRUCTION_ONLY' and
+         receipt['authorized_operations']==list(P2A_OPERATIONS),'SCOPED_RECEIPT_MISMATCH')
+    return receipt
+
+
 def validate_policy(policy):
     zero(policy)
-    need(policy.get('phase2_authorized') is False and policy.get('authorization_event') is None and
-         policy.get('status')=='NOT_READY_FOR_PHASE2_RUNS_YET','PHASE2_NOT_AUTHORIZED')
+    validate_authorization_receipt()
+    # Exact reviewed contract, including all pending/null values and unknown-key
+    # rejection. A JSON toggle or edited receipt cannot self-grant more scope.
+    need(sha(canonical(policy))==POLICY_SHA256,'POLICY_TAMPERING_OR_UNREVIEWED_SPECIFICATION')
+    need(policy.get('phase2_authorized') is True and policy.get('phase2_research_authorized') is True and
+         policy.get('authorization_id')==AUTHORIZATION_ID and
+         policy.get('status')=='AUTHORIZED_E2_P2A_DIAGNOSTICS_ONLY','PHASE2_NOT_SCOPED_AUTHORIZED')
     need(policy.get('gates')=={**{f'B{i:02d}':'PARTIAL' for i in range(1,10)},
-         'B10':'BLOCKED_PENDING_EXPLICIT_HUMAN_AUTHORIZATION'},'GATES_MUST_REMAIN_BLOCKED_OR_PARTIAL')
-    scope={'E2':'CANDIDATE_FOR_FIRST_PHASE2_OPTIMIZATION_RESEARCH','Q017':'PROSPECTIVE_CHARACTERIZATION_ONLY',
+         'B10':'SCOPED_AUTHORIZED_E2_P2A_ONLY'},'GATES_CANNOT_GRANT_BROAD_AUTHORITY')
+    scope={'E2':'P2A_BASELINE_DESTRUCTION_ONLY','Q017':'PROSPECTIVE_CHARACTERIZATION_ONLY',
            'M1':'RESEARCH_SHADOW_ONLY_NO_OPTIMIZATION'}
     need(policy.get('engine_scope')==scope,'ENGINE_SCOPE_FORBIDDEN')
     approvals=policy.get('human_approvals',{})
     need(set(approvals)==APPROVALS,'UNKNOWN_APPROVAL_CONTRACT')
-    for value in approvals.values():
-        need(set(value)=={'status','approved_value','authorization_id','proposal_status','proposed_value'} and
-             value['status']=='PENDING_HUMAN_APPROVAL' and value['approved_value'] is None and
-             value['authorization_id'] is None and value['proposal_status']=='PROPOSED','HUMAN_APPROVAL_NOT_GRANTED')
+    for key in ('minimum_observations_trades','drawdown_tail_cost_turnover_gates','prospective_holdout_custody_access'):
+        value=approvals[key]
+        need(value['status']=='PENDING_HUMAN_APPROVAL' and value['approved_value'] is None and
+             value['authorization_id'] is None,'ACCEPTANCE_AND_CUSTODY_APPROVAL_NOT_GRANTED')
     exposure=policy.get('historical_exposure',{})
     need(exposure==dict(years=[2023,2024,2025,2026],status='EXPOSED_DEVELOPMENT_VALIDATION_ELIGIBLE_ONLY',
          pristine_holdout=False,usable_only_with_proven_lineage=True),'EXPOSED_HISTORY_IS_NOT_PRISTINE')
@@ -76,10 +97,32 @@ def validate_policy(policy):
     return policy
 
 
-def require_phase2_run(policy):
+def require_phase2_run(policy,engine=None,stage=None,operation=None,cost_multiplier=None,**flags):
+    """Check scoped permission only. Never execute/append/access any model/data.
+
+    Pending candidate gates do not veto P2-A diagnostics. Actual experiments
+    require a merged authorization PR and independently checkpointed ledger.
+    """
     validate_policy(policy)
-    # No runner or approval-toggle shortcut exists in this readiness package.
-    raise Blocked('B10_BLOCKED_PENDING_EXPLICIT_HUMAN_AUTHORIZATION_NO_PHASE2_RUN')
+    need(engine=='E2' and stage=='P2A_BASELINE_DESTRUCTION' and
+         isinstance(operation,str) and operation in P2A_OPERATIONS,'SCOPED_ROUTE_NOT_AUTHORIZED')
+    locked={**ZERO,'candidate_creation':False,'candidate_acceptance':False,'holdout_access':False,
+            'historical_signal_regeneration':False,'automated_search':False,'unrestricted_feature_mining':False}
+    need(set(flags)<=set(locked),'UNKNOWN_OR_FORBIDDEN_REQUEST_FIELD')
+    requested={**locked,**flags};zero(requested)
+    need(all(requested[k] is False for k in locked if k not in ZERO),'REQUEST_EXCEEDS_P2A_AUTHORIZATION')
+    aggregate=policy['existing_e2_baseline']['roundtrip_cost']
+    if operation=='COST_STRESS':
+        need(type(cost_multiplier) in (int,float) and cost_multiplier in (1.0,1.5,2.0),
+             'ONLY_APPROVED_AGGREGATE_COST_MULTIPLIERS_ALLOWED')
+        aggregate*=cost_multiplier
+    else:need(cost_multiplier is None,'COST_MULTIPLIER_ONLY_FOR_COST_STRESS')
+    return dict(status='SCOPED_GATE_ALLOWED_NO_EXECUTION',authorization_id=AUTHORIZATION_ID,
+        phase2_authorized=True,engine=engine,stage=stage,operation=operation,aggregate_roundtrip_cost=aggregate,
+        candidate_creation_authorized=False,candidate_acceptance_authorized=False,holdout_access_authorized=False,
+        initial_family_trial_budget_max=24,failed_rejected_aborted_count=True,
+        requires_merged_authorization_pr=25,requires_proven_lineage=True,
+        requires_ledger_and_independent_checkpoint=True,**ZERO)
 
 
 def require_holdout_access(policy):

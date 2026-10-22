@@ -149,25 +149,26 @@ class GovernanceTests(unittest.TestCase):
         network.start();self.addCleanup(network.stop)
 
     def test_production_bytes_and_model_runtime_scope_unchanged(self):
-        self.assertEqual(freeze.verify(os.environ.get('HENGCE_GOVERNANCE_BASE',g.BASE))['ledger_record_count'],0)
+        self.assertEqual(freeze.verify(os.environ.get('HENGCE_GOVERNANCE_BASE',g.AUTHORIZATION_BASE))['status'],'PASS')
         for path in ('scripts/hengce_e2_live.py','.github/workflows/hengce-daily-command-center.yml',
                      'hengce/live_universe.json','research/e2_profit_max/results.json'):
             with self.assertRaisesRegex(ValueError,'OUT_OF_SCOPE'):freeze.check_paths([path])
 
     def test_unrelated_main_advancement_is_not_mistaken_for_branch_mutation(self):
-        advanced='f'*40;calls=[];actual=freeze.git;run=subprocess.run
+        advanced='f'*40;calls=[];actual=freeze.git;run=subprocess.run;read=Path.read_bytes
         def fake(*args):
             calls.append(args)
-            if args==('merge-base',advanced,'HEAD'):return (g.BASE+'\n').encode()
+            if args==('merge-base',advanced,'HEAD'):return (g.AUTHORIZATION_BASE+'\n').encode()
             if args==('diff','--name-only',advanced):return b'hengce/q017_radar/selfverify/infrastructure_latest.json\n'
             return actual(*args)
         def remote(args,*a,**kw):
             if args[-3:]==['cat-file','-e',advanced+':'+freeze.LEDGER]:return subprocess.CompletedProcess(args,1)
             if args[-4:]==['merge-base','--is-ancestor',g.BASE,advanced]:return subprocess.CompletedProcess(args,0)
             return run(args,*a,**kw)
-        with patch.object(freeze,'git',side_effect=fake),patch.object(freeze.subprocess,'run',side_effect=remote):
+        with patch.object(freeze,'git',side_effect=fake),patch.object(freeze.subprocess,'run',side_effect=remote), \
+             patch.object(Path,'read_bytes',lambda p:b'' if p==g.HERE/'ledger/experiments.jsonl' else read(p)):
             self.assertEqual(freeze.verify(advanced)['status'],'PASS')
-        self.assertIn(('diff','--name-only',g.BASE),calls)
+        self.assertIn(('diff','--name-only',g.AUTHORIZATION_BASE),calls)
         self.assertNotIn(('diff','--name-only',advanced),calls)
 
     def test_research_environment_and_all_transitive_hash_pins_match(self):
@@ -175,10 +176,11 @@ class GovernanceTests(unittest.TestCase):
         text=(g.HERE/'requirements.lock').read_text()
         for dep in lock['dependencies']:self.assertIn(dep['name']+'=='+dep['version']+' --hash=sha256:'+dep['sha256'],text)
 
-    def test_every_human_approval_is_pending_and_no_run_can_be_authorized_by_toggle(self):
+    def test_scoped_human_approval_cannot_be_extended_by_toggle(self):
         p=g.metadata(g.HERE/'phase2-policy.json');g.validate_policy(p)
-        with self.assertRaisesRegex(ValueError,'B10_BLOCKED'):g.require_phase2_run(p)
-        for key,change in [('phase2_authorized',True),('authorization_event','self-approved')]:
+        self.assertEqual(p['human_approvals']['phase2_research_scope']['status'],'APPROVED_SCOPED')
+        with self.assertRaisesRegex(ValueError,'SCOPED_ROUTE'):g.require_phase2_run(p)
+        for key,change in [('phase2_authorized',False),('authorization_event','self-approved')]:
             q=copy.deepcopy(p);q[key]=change
             with self.assertRaises(ValueError):g.require_phase2_run(q)
         q=copy.deepcopy(p);q['human_approvals']['trial_budget_multiple_testing']['approved_value']=24
@@ -209,7 +211,7 @@ class GovernanceTests(unittest.TestCase):
     def test_unauthorized_run_cli_is_rejected_without_creating_records(self):
         before=(g.HERE/'ledger/experiments.jsonl').read_bytes()
         out=subprocess.run([sys.executable,'-B',str(g.HERE/'ledger_store.py'),'check-run'],capture_output=True,text=True)
-        self.assertEqual(out.returncode,2);self.assertIn('B10_BLOCKED',out.stdout)
+        self.assertEqual(out.returncode,2);self.assertIn('SCOPED_ROUTE',out.stdout)
         self.assertEqual((g.HERE/'ledger/experiments.jsonl').read_bytes(),before)
 
     def test_governance_ci_scope_and_supported_job_env_contexts(self):

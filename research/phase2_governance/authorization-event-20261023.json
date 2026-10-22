@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "authorization_id": "HENGCE-P2-AUTH-20261023-001",
+  "recorded_date_taipei": "2026-10-23",
+  "authorization_source": "explicit_human_authorization",
+  "phase2_research_authorized": true,
+  "authorized_engine": "E2",
+  "authorized_stage": "E2_P2A_BASELINE_DESTRUCTION_ONLY",
+  "authorized_operations": [
+    "BASELINE_REPLAY",
+    "COST_STRESS",
+    "LEAVE_BEST_TRADES_OUT",
+    "LEAVE_ONE_YEAR_OUT",
+    "REGIME_CHARACTERIZATION",
+    "PARAMETER_PERTURBATION_ROBUSTNESS"
+  ],
+  "q017_scope": "PROSPECTIVE_CHARACTERIZATION_ONLY",
+  "m1_scope": "RESEARCH_SHADOW_ONLY_NO_OPTIMIZATION",
+  "candidate_creation_authorized": false,
+  "candidate_acceptance_authorized": false,
+  "automated_search_authorized": false,
+  "holdout_access_authorized": false,
+  "historical_signal_regeneration_authorized": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "PROMOTE_TO_PRODUCTION": "FORBIDDEN",
+  "notes": [
+    "Research diagnostics only; no candidate acceptance or production promotion.",
+    "Numeric minimum-observation/trade and drawdown/tail/turnover acceptance gates remain pending and must be pre-registered before candidate acceptance.",
+    "Prospective holdout remains UNALLOCATED and cannot be opened by this authorization."
+  ]
+}
