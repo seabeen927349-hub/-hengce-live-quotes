@@ -1,14 +1,14 @@
 {
   "system": "HENGCE",
   "artifact": "FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS",
-  "generated_at_taipei": "2026-10-22T11:21:34.296695+08:00",
-  "snapshot_id": "20261022T112133+0800",
+  "generated_at_taipei": "2026-10-22T11:57:52.826451+08:00",
+  "snapshot_id": "20261022T115752+0800",
   "status": "SHADOW_FULL_MARKET_READY",
   "authority": "SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
   "universe_count": 1088,
   "universe_sha256": "2e282a7495c5dcc0b82f45f289e5e526a9375e0a4eb4811631914b85b5df16c6",
   "coverage_ratio": 1.0,
-  "price_coverage_ratio": 0.08731617647058823,
+  "price_coverage_ratio": 0.12867647058823528,
   "fresh_ratio_of_covered": 1.0,
   "full_market_gate": {
     "coverage_required": 0.98,
@@ -21,7 +21,7 @@
     "FUGLE": 24,
     "NONE": 0
   },
-  "payload_sha256": "e416d9a4c7b589379354701a020728e83c1c55557d0a654931dd7d7e452e3d81",
+  "payload_sha256": "30464ccc1266a819c272f53ee81b3e09ca0b4d00389a86dcaff66054c1f27682",
   "production_core_effect": "NONE",
   "capital_authority": false
 }
