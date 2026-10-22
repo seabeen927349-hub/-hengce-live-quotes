@@ -49,10 +49,12 @@ class WriterRaceTests(unittest.TestCase):
         git(root, 'add', '-A')
         git(root, 'commit', '-m', 'synthetic proposal')
 
-    def publish(self, root):
+    def publish(self, root, profile=None):
         report = self.root / ('reports-' + root.name)
-        run = subprocess.run([sys.executable, '-B', str(PUBLISH), '--repo', str(root),
-                              '--report-dir', str(report)], text=True, capture_output=True, timeout=20)
+        command = [sys.executable, '-B', str(PUBLISH), '--repo', str(root), '--report-dir', str(report)]
+        if profile:
+            command += ['--profile', profile]
+        run = subprocess.run(command, text=True, capture_output=True, timeout=20)
         reports = sorted(report.glob('*.json')) if report.exists() else []
         self.assertTrue(reports, run.stdout + run.stderr)
         entries = [json.loads(p.read_text()) for p in reports]
@@ -60,6 +62,55 @@ class WriterRaceTests(unittest.TestCase):
 
     def read_remote(self, path):
         return git(self.remote, 'show', 'main:' + path)
+
+    def test_real_0745_0815_0850_0901_interleaving_publishes_both_captures(self):
+        # 07:45 primary and 08:15 backup both start from B; no clock sleeps,
+        # market values or outcomes. 08:50 E2 publishes R before either capture.
+        e2 = self.clone('e2-0850')
+        self.commit(e2, {LATEST: '08:50 synthetic E2 bind\n',
+                         'hengce/dual_engine/latest.json': '08:50 synthetic display\n'})
+        self.assertEqual(self.publish(e2)[0], 0)
+        r = git(self.remote, 'rev-parse', 'main')
+        self.commit(self.a, {PRIMARY: '09:01 synthetic primary capture\n',
+                            'hengce/q017_radar/observation_latest.json': 'primary pointer\n',
+                            'hengce/q017_radar/observer_supervisor_primary_status.json': 'primary status\n'})
+        self.commit(self.b, {BACKUP: '09:01 synthetic backup capture\n',
+                            'hengce/q017_radar/backup_observation_status.json': 'backup status\n'})
+        for root, profile in ((self.a, 'q017-primary-capture'), (self.b, 'q017-backup-capture')):
+            rc, result, attempts = self.publish(root, profile)
+            self.assertEqual(rc, 0, result)
+            self.assertEqual(result['result'], 'PUBLISHED')
+            self.assertIn('RETRY_REVALIDATED', [x['result'] for x in attempts])
+            self.assertEqual(result['initial_base_sha'], self.base)
+            self.assertIn(r, [x['remote_sha'] for x in attempts] if root == self.a else [r])
+        self.assertEqual(self.read_remote(LATEST), '08:50 synthetic E2 bind')
+        self.assertEqual(self.read_remote(PRIMARY), '09:01 synthetic primary capture')
+        self.assertEqual(self.read_remote(BACKUP), '09:01 synthetic backup capture')
+
+    def test_q017_macro_dependency_change_fails_closed(self):
+        self.commit(self.a, {'hengce/q017_radar/data/macro_cache/latest.json': 'changed macro\n'})
+        git(self.a, 'push', 'origin', 'HEAD:main')
+        self.commit(self.b, {BACKUP: 'capture using old macro\n'})
+        rc, result, _ = self.publish(self.b, 'q017-backup-capture')
+        self.assertEqual(rc, 2)
+        self.assertIn('READ_DEPENDENCY', result['conflict_reason'])
+
+    def test_transplanted_capture_can_publish_following_decision(self):
+        self.commit(self.a, {LATEST: '08:50 E2 update\n'})
+        self.assertEqual(self.publish(self.a)[0], 0)
+        self.commit(self.b, {PRIMARY: '09:01 capture\n'})
+        self.assertEqual(self.publish(self.b, 'q017-primary-capture')[0], 0)
+        accepted = git(self.remote, 'rev-parse', 'main')
+        self.assertEqual(git(self.b, 'rev-parse', 'HEAD'), accepted)
+        self.assertEqual((self.b / LATEST).read_text(), '08:50 E2 update\n')
+        self.commit(self.b, {'hengce/q017_radar/decision/synthetic_0901.json': 'synthetic decision\n'})
+        self.assertEqual(self.publish(self.b, 'q017-decision-display')[0], 0)
+
+    def test_capture_profile_cannot_publish_out_of_contract_writes(self):
+        self.commit(self.a, {LATEST: 'E2 cannot masquerade as Q017 capture\n'})
+        rc, result, _ = self.publish(self.a, 'q017-primary-capture')
+        self.assertEqual(rc, 2)
+        self.assertIn('WRITE_SET', result['conflict_reason'])
 
     def test_e2_primary_backup_stale_base_fail_closed(self):
         self.commit(self.a, {LATEST: '{"synthetic_version":1}\n'})
