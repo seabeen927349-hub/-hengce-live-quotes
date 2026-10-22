@@ -74,16 +74,17 @@ class WriterRaceTests(unittest.TestCase):
         self.assertEqual(self.read_remote(LATEST), '{"synthetic_version":1}')
 
     def test_legacy_blind_rebase_can_publish_mixed_canonical_state(self):
-        self.commit(self.a, {LATEST: 'version=0\nbinding=old\n'})
+        middle = '\n'.join('unchanged-' + str(i) for i in range(12)) + '\n'
+        self.commit(self.a, {LATEST: 'version=0\n' + middle + 'binding=old\n'})
         git(self.a, 'push', 'origin', 'HEAD:main')
         git(self.b, 'fetch', 'origin', 'main')
         git(self.b, 'reset', '--hard', 'origin/main')
-        self.commit(self.a, {LATEST: 'version=1\nbinding=old\n'})
-        self.commit(self.b, {LATEST: 'version=0\nbinding=stale\n'})
+        self.commit(self.a, {LATEST: 'version=1\n' + middle + 'binding=old\n'})
+        self.commit(self.b, {LATEST: 'version=0\n' + middle + 'binding=stale\n'})
         git(self.a, 'push', 'origin', 'HEAD:main')
         git(self.b, 'pull', '--rebase', 'origin', 'main')
         git(self.b, 'push', 'origin', 'HEAD:main')
-        self.assertEqual(self.read_remote(LATEST), 'version=1\nbinding=stale')
+        self.assertEqual(self.read_remote(LATEST), 'version=1\n' + middle + 'binding=stale')
 
     def test_duplicate_identical_publication_is_noop(self):
         for root in (self.a, self.b):
