@@ -46,6 +46,7 @@ def validate_contract(c, routing):
         'missing_member_degrades_health',
         'bid_ask_never_promoted_to_executed_trade',
         'intraday_rerank_forbidden',
+        'preopen_stale_q017_must_be_data_pending',
     )
     for k in required_true:
         if locks.get(k) is not True:
@@ -75,9 +76,8 @@ def shadow_map(s):
         raise SystemExit('FULL_MARKET_SHADOW_IDENTITY_MISMATCH')
     if s.get('authority') != 'SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY':
         raise SystemExit('FULL_MARKET_SHADOW_AUTHORITY_MISMATCH')
-    rows = s.get('quotes') or []
     out = {}
-    for row in rows:
+    for row in s.get('quotes') or []:
         t = str(row.get('ticker') or '')
         if not t:
             continue
@@ -88,20 +88,15 @@ def shadow_map(s):
 
 
 def display_fields(row):
-    last = row.get('last_price')
-    bid = row.get('best_bid')
-    ask = row.get('best_ask')
-    indicative = None
-    basis = None
+    last, bid, ask = row.get('last_price'), row.get('best_bid'), row.get('best_ask')
+    indicative = basis = None
     if bid is not None and ask is not None:
         indicative = (float(bid) + float(ask)) / 2.0
         basis = 'BID_ASK_MIDPOINT_NON_EXECUTION'
     elif bid is not None:
-        indicative = float(bid)
-        basis = 'BEST_BID_NON_EXECUTION'
+        indicative, basis = float(bid), 'BEST_BID_NON_EXECUTION'
     elif ask is not None:
-        indicative = float(ask)
-        basis = 'BEST_ASK_NON_EXECUTION'
+        indicative, basis = float(ask), 'BEST_ASK_NON_EXECUTION'
     if last is not None:
         return float(last), 'LAST_EXECUTED_TRADE', True, indicative, basis
     if indicative is not None:
@@ -109,18 +104,57 @@ def display_fields(row):
     return None, 'NO_CURRENT_PRICE_AVAILABLE', False, None, None
 
 
+def snapshot_date(s):
+    raw = str(s.get('generated_at_taipei') or '')
+    return raw[:10] if len(raw) >= 10 else None
+
+
+def pending_payload(q, s):
+    payload = {
+        'schema_version': 1,
+        'system': 'HENGCE',
+        'artifact': 'ELECTRONICS_LIVE_COVERAGE',
+        'authority': ROLE,
+        'scope': SCOPE,
+        'generated_at_taipei': s.get('generated_at_taipei'),
+        'snapshot_id': s.get('snapshot_id'),
+        'source_q017_trade_date': q.get('trade_date'),
+        'source_full_market_payload_sha256': s.get('payload_sha256'),
+        'member_count': 0,
+        'provider_covered_count': 0,
+        'quote_fresh_count': 0,
+        'executed_price_available_count': 0,
+        'indicative_price_available_count': 0,
+        'display_price_available_count': 0,
+        'provider_coverage_ratio': 0.0,
+        'quote_fresh_ratio': 0.0,
+        'missing_member_count': 0,
+        'missing_members': [],
+        'full_market_gate_pass': bool((s.get('full_market_gate') or {}).get('pass')),
+        'status': 'DATA_PENDING_CURRENT_Q017_UNIVERSE',
+        'fully_healthy': False,
+        'cash_state_does_not_reduce_coverage': True,
+        'intraday_rerank_performed': False,
+        'formal_q017_decision_immutable': True,
+        'legacy_77_watchlist_is_not_coverage_authority': True,
+        **false_authority(),
+        'rows': [],
+    }
+    payload['payload_sha256'] = sha_obj({k: v for k, v in payload.items() if k != 'payload_sha256'})
+    return payload
+
+
 def derive(q, s):
     members, u = q017_members(q)
     smap = shadow_map(s)
-    rows = []
-    missing = []
+    rows, missing = [], []
     for t in members:
         src = smap.get(t)
         if src is None:
             missing.append(t)
             src = {'ticker': t, 'name': None, 'fetch_ok': False, 'quote_fresh': False, 'trade_fresh': False, 'source': 'NONE'}
         display_price, semantics, executed, indicative, indicative_basis = display_fields(src)
-        row = {
+        rows.append({
             'ticker': t,
             'name': src.get('name'),
             'display_price': display_price,
@@ -145,8 +179,7 @@ def derive(q, s):
             'source': src.get('source'),
             'transport_tier': src.get('tier'),
             **false_authority(),
-        }
-        rows.append(row)
+        })
     count = len(members)
     provider = sum(r['fetch_ok'] for r in rows)
     qfresh = sum(r['fetch_ok'] and r['quote_fresh'] for r in rows)
@@ -156,7 +189,7 @@ def derive(q, s):
     coverage = provider / count if count else 0.0
     fresh_ratio = qfresh / count if count else 0.0
     shadow_gate = bool((s.get('full_market_gate') or {}).get('pass'))
-    healthy = (not missing and provider == count and fresh_ratio >= 0.98 and shadow_gate)
+    healthy = not missing and provider == count and fresh_ratio >= 0.98 and shadow_gate
     payload = {
         'schema_version': 1,
         'system': 'HENGCE',
@@ -196,13 +229,21 @@ def derive(q, s):
     return payload
 
 
-def validate_payload(p, q):
+def validate_payload(p, q, s=None):
+    if p.get('status') == 'DATA_PENDING_CURRENT_Q017_UNIVERSE':
+        if p.get('fully_healthy') is not False or (p.get('rows') or []):
+            raise SystemExit('PENDING_ELECTRONICS_LIVE_FALSE_HEALTH')
+        for k in ('ranking_authority', 'signal_authority', 'capital_authority', 'broker_order_execution'):
+            if p.get(k) is not False:
+                raise SystemExit('PENDING_ELECTRONICS_LIVE_AUTHORITY_VIOLATION:' + k)
+        if s is not None and q.get('trade_date') == snapshot_date(s):
+            raise SystemExit('CURRENT_Q017_CANNOT_REMAIN_PENDING')
+        return True
     members, _ = q017_members(q)
     if p.get('authority') != ROLE or p.get('scope') != SCOPE:
         raise SystemExit('ELECTRONICS_LIVE_OUTPUT_IDENTITY_MISMATCH')
     rows = p.get('rows') or []
-    tickers = [str(r.get('ticker')) for r in rows]
-    if tickers != members:
+    if [str(r.get('ticker')) for r in rows] != members:
         raise SystemExit('ELECTRONICS_LIVE_OUTPUT_MEMBER_SET_MISMATCH')
     if int(p.get('member_count') or -1) != len(members):
         raise SystemExit('ELECTRONICS_LIVE_OUTPUT_COUNT_MISMATCH')
@@ -226,71 +267,62 @@ def validate_payload(p, q):
 
 
 def build():
-    c = load(CONTRACT)
-    routing = load(ROUTING)
+    c, routing = load(CONTRACT), load(ROUTING)
     validate_contract(c, routing)
-    q = load(Q017)
-    s = load(SHADOW)
-    p = derive(q, s)
-    validate_payload(p, q)
+    q, s = load(Q017), load(SHADOW)
+    p = pending_payload(q, s) if q.get('trade_date') != snapshot_date(s) else derive(q, s)
+    validate_payload(p, q, s)
     dump(OUT, p)
-    st = {k: v for k, v in p.items() if k != 'rows'}
-    dump(STATUS, st)
+    dump(STATUS, {k: v for k, v in p.items() if k != 'rows'})
     print(json.dumps({k: p[k] for k in ('snapshot_id', 'member_count', 'provider_covered_count', 'quote_fresh_count', 'executed_price_available_count', 'indicative_price_available_count', 'missing_member_count', 'status', 'fully_healthy')}, ensure_ascii=False, indent=2))
 
 
 def validate():
-    c = load(CONTRACT)
-    routing = load(ROUTING)
+    c, routing = load(CONTRACT), load(ROUTING)
     validate_contract(c, routing)
-    q = load(Q017)
-    p = load(OUT)
-    validate_payload(p, q)
-    print(json.dumps({'validate': 'PASS', 'member_count': p.get('member_count'), 'status': p.get('status'), 'fully_healthy': p.get('fully_healthy'), 'ranking_authority': False, 'signal_authority': False, 'capital_authority': False, 'broker_order_execution': False}, ensure_ascii=False))
+    q, s, p = load(Q017), load(SHADOW), load(OUT)
+    validate_payload(p, q, s)
+    print(json.dumps({'validate': 'PASS', 'member_count': p.get('member_count'), 'status': p.get('status'), 'fully_healthy': p.get('fully_healthy'), **false_authority()}, ensure_ascii=False))
 
 
 def self_test():
     q = {'binding_status': 'PASS', 'trade_date': '2026-10-22', 'market_state': 'CASH', 'universe_lock': {'scope': SCOPE, 'membership_date': '2026-10-21', 'member_count': 3, 'universe_sha256': 'u', 'members': ['3042', '8150', '3055']}}
-    baseq = lambda t, **kw: {'ticker': t, 'name': t, 'last_price': kw.get('last_price', 100.0), 'best_bid': kw.get('best_bid', 99.9), 'best_ask': kw.get('best_ask', 100.1), 'reference_close': 99.0, 'open': 100.0, 'high': 101.0, 'low': 98.0, 'volume_lots': 1000, 'trade_time': '2026-10-22T12:00:00+08:00', 'trade_freshness_seconds': 1, 'quote_freshness_seconds': 1, 'quote_fresh': True, 'trade_fresh': True, 'fetch_ok': True, 'source': 'TWSE_MIS', 'tier': 'TIER_3_MARKET'}
-    s = {'service': 'HENGCE_FULL_MARKET_ROLLING_SHADOW', 'authority': 'SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY', 'generated_at_taipei': '2026-10-22T12:00:00+08:00', 'snapshot_id': 'S', 'payload_sha256': 'p', 'status': 'SHADOW_FULL_MARKET_READY', 'full_market_gate': {'pass': True}, 'quotes': [baseq('3042'), baseq('8150', last_price=None, best_bid=99.0, best_ask=99.1), baseq('3055'), baseq('2330')]}
-    s['quotes'][1]['last_price'] = None
+    def baseq(t):
+        return {'ticker': t, 'name': t, 'last_price': 100.0, 'best_bid': 99.9, 'best_ask': 100.1, 'reference_close': 99.0, 'open': 100.0, 'high': 101.0, 'low': 98.0, 'volume_lots': 1000, 'trade_time': '2026-10-22T12:00:00+08:00', 'trade_freshness_seconds': 1, 'quote_freshness_seconds': 1, 'quote_fresh': True, 'trade_fresh': True, 'fetch_ok': True, 'source': 'TWSE_MIS', 'tier': 'TIER_3_MARKET'}
+    r8150 = baseq('8150')
+    r8150.update({'last_price': None, 'best_bid': 99.0, 'best_ask': 99.1})
+    s = {'service': 'HENGCE_FULL_MARKET_ROLLING_SHADOW', 'authority': 'SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY', 'generated_at_taipei': '2026-10-22T12:00:00+08:00', 'snapshot_id': 'S', 'payload_sha256': 'p', 'status': 'SHADOW_FULL_MARKET_READY', 'full_market_gate': {'pass': True}, 'quotes': [baseq('3042'), r8150, baseq('3055'), baseq('2330')]}
     p = derive(q, s)
-    validate_payload(p, q)
-    assert p['member_count'] == 3 and len(p['rows']) == 3
-    assert p['source_q017_market_state'] == 'CASH' and p['cash_state_does_not_reduce_coverage'] is True
+    validate_payload(p, q, s)
+    assert p['member_count'] == 3 and len(p['rows']) == 3 and p['source_q017_market_state'] == 'CASH'
     r = [x for x in p['rows'] if x['ticker'] == '8150'][0]
-    assert r['executed_price_available'] is False and r['display_price'] == 99.05
-    assert 'NON_EXECUTION' in r['display_price_semantics']
-    assert all(x['ticker'] != '2330' for x in p['rows'])
-    assert p['fully_healthy'] is True
-    s2 = json.loads(json.dumps(s))
-    s2['quotes'] = [x for x in s2['quotes'] if x['ticker'] != '8150']
-    p2 = derive(q, s2)
-    validate_payload(p2, q)
+    assert r['executed_price_available'] is False and r['display_price'] == 99.05 and 'NON_EXECUTION' in r['display_price_semantics']
+    assert all(x['ticker'] != '2330' for x in p['rows']) and p['fully_healthy'] is True
+    s2 = json.loads(json.dumps(s)); s2['quotes'] = [x for x in s2['quotes'] if x['ticker'] != '8150']
+    p2 = derive(q, s2); validate_payload(p2, q, s2)
     assert p2['fully_healthy'] is False and p2['missing_members'] == ['8150']
-    s3 = json.loads(json.dumps(s))
-    s3['quotes'].append(json.loads(json.dumps(s3['quotes'][0])))
+    s3 = json.loads(json.dumps(s)); s3['quotes'].append(json.loads(json.dumps(s3['quotes'][0])))
     try:
-        derive(q, s3)
-        raise AssertionError('duplicate not rejected')
+        derive(q, s3); raise AssertionError('duplicate not rejected')
     except SystemExit as e:
         assert 'DUPLICATE_TICKER' in str(e)
-    qbad = json.loads(json.dumps(q))
-    qbad['universe_lock']['member_count'] = 4
+    qbad = json.loads(json.dumps(q)); qbad['universe_lock']['member_count'] = 4
     try:
-        derive(qbad, s)
-        raise AssertionError('bad count not rejected')
+        derive(qbad, s); raise AssertionError('bad count not rejected')
     except SystemExit as e:
         assert 'MEMBER_COUNT_MISMATCH' in str(e)
+    oldq = json.loads(json.dumps(q)); oldq['trade_date'] = '2026-10-21'
+    pending = pending_payload(oldq, s); validate_payload(pending, oldq, s)
+    assert pending['status'] == 'DATA_PENDING_CURRENT_Q017_UNIVERSE' and pending['rows'] == []
     assert all(p[k] is False for k in ('ranking_authority', 'signal_authority', 'capital_authority', 'broker_order_execution'))
-    print(json.dumps({'self_test': 'PASS', 'three_member_cash_full_coverage': True, '8150_bid_ask_not_promoted_to_trade': True, 'non_electronics_ignored': True, 'missing_member_degrades_health': True, 'duplicate_quote_rejected': True, 'membership_count_mismatch_rejected': True, 'intraday_rerank_forbidden': True, 'zero_authority': True}, ensure_ascii=False))
+    print(json.dumps({'self_test': 'PASS', 'stale_preopen_q017_is_data_pending': True, 'cash_full_coverage': True, '8150_bid_ask_not_promoted_to_trade': True, 'non_electronics_ignored': True, 'missing_member_degrades_health': True, 'duplicate_quote_rejected': True, 'membership_count_mismatch_rejected': True, 'intraday_rerank_forbidden': True, 'zero_authority': True}, ensure_ascii=False))
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--mode', choices=('build', 'validate', 'self-test'), default='build')
-    a = ap.parse_args()
-    {'build': build, 'validate': validate, 'self-test': self_test}[a.mode]()
+    args = ap.parse_args()
+    {'build': build, 'validate': validate, 'self-test': self_test}[args.mode]()
 
 
 if __name__ == '__main__':
