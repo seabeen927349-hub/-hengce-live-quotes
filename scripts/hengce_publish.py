@@ -28,6 +28,7 @@ IMMUTABLE_PREFIXES = (
 # supersets: every path (including newly introduced paths) is a dependency unless
 # explicitly proven unrelated by the producer sources named in the inventory.
 TRANSPORT_ONLY = ('latest.json', 'live/**', 'shadow/**', 'hengce/electronics_live/**')
+OBSERVABILITY_ONLY = ('hengce/health/**',)
 BACKUP_WRITES = (
     'hengce/q017_radar/backup_observations/**',
     'hengce/q017_radar/backup_observation_history/**',
@@ -47,13 +48,14 @@ PRIMARY_CAPTURE_WRITES = (
 )
 PROFILES = {
     'conservative-all': {'writes': ('**',), 'unrelated': ()},
+    'health-only': {'writes': ('hengce/health/latest.json',), 'unrelated': OBSERVABILITY_ONLY},
     'q017-primary-capture': {
         'writes': PRIMARY_CAPTURE_WRITES,
-        'unrelated': TRANSPORT_ONLY + BACKUP_WRITES + ('hengce/e2_live/**', 'hengce/dual_engine/**'),
+        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + BACKUP_WRITES + ('hengce/e2_live/**', 'hengce/dual_engine/**'),
     },
     'q017-backup-capture': {
         'writes': BACKUP_WRITES,
-        'unrelated': TRANSPORT_ONLY + (
+        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + (
             'hengce/e2_live/**', 'hengce/dual_engine/**',
             'hengce/q017_radar/observations/**', 'hengce/q017_radar/observation_latest.json',
             'hengce/q017_radar/history/**', 'hengce/q017_radar/observer_supervisor_primary_status.json',
@@ -64,7 +66,7 @@ PROFILES = {
                    'hengce/q017_radar/latest.json', 'hengce/q017_radar/history/**',
                    'hengce/q017_radar/signal_ledger.jsonl', 'hengce/dual_engine/latest.json'),
         # Display reads E2 state: E2 is deliberately NOT excluded here.
-        'unrelated': TRANSPORT_ONLY + BACKUP_WRITES,
+        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + BACKUP_WRITES,
     },
 }
 
@@ -114,6 +116,9 @@ class Reporter:
                                  'excluded_patterns': list(PROFILES[profile]['unrelated']),
                                  'unknown_paths': 'READ_DEPENDENCY_FAIL_CLOSED'},
                              capital_authority=0, signal_authority=False)
+        if profile == 'health-only':
+            self.identity.update(health_only=True,ranking_authority=False,
+                                 capital_authority_twd=0,broker_order_execution=False)
 
     def emit(self, result, remote=None, reason='', **extra):
         entry = {**self.identity, 'remote_sha': remote, 'result': result,

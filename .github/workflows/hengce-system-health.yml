@@ -1,0 +1,91 @@
+name: HENGCE Health Observability
+
+on:
+  pull_request:
+    paths:
+      - 'config/hengce_health_v1.json'
+      - 'scripts/hengce_system_health.py'
+      - 'scripts/hengce_health_collect_runs.py'
+      - 'scripts/hengce_publish.py'
+      - 'tests/engineering/test_system_health.py'
+      - 'docs/engineering/health-*'
+      - '.github/workflows/**'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [self-test, current-health]
+        default: self-test
+        description: 'Offline self-test or observe current main health; never repair producers'
+  schedule:
+    # Taipei 08:05 primary/macro; 08:40 backup; 09:20 capture/E2;
+    # 15:50 EOD retries; 17:20 final EOD retry. Producer crons are unchanged.
+    - cron: '5 0 * * 1-5'
+    - cron: '40 0 * * 1-5'
+    - cron: '20 1 * * 1-5'
+    - cron: '50 7 * * 1-5'
+    - cron: '20 9 * * 1-5'
+
+permissions:
+  contents: read
+
+jobs:
+  self-test:
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'self-test')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install PyYAML==6.0.3
+      - name: Synthetic offline health, collector, namespace and interference tests
+        run: python -B tests/engineering/test_system_health.py
+
+  current-health:
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'current-health' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: hengce-health-observability-only
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect read-only GitHub Actions metadata
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -B scripts/hengce_health_collect_runs.py --out "$RUNNER_TEMP/hengce-health-runs.json"
+      - name: Evaluate local main snapshot without producer execution
+        run: python -B scripts/hengce_system_health.py --runs "$RUNNER_TEMP/hengce-health-runs.json" --write
+      - name: Publish health namespace with existing exact-lease publisher
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-health-observability-bot'
+          git config user.email 'hengce-health-observability-bot@users.noreply.github.com'
+          git add -- hengce/health/latest.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'HENGCE zero-authority health observation'
+          python -B scripts/hengce_publish.py --profile health-only
+      - name: Preserve zero-authority health and publication evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-health-${{ github.run_attempt }}
+          path: |
+            hengce/health/latest.json
+            ${{ runner.temp }}/hengce-health-runs.json
+            ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore
