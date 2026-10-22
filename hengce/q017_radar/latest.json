@@ -3,7 +3,7 @@
   "system": "HENGCE",
   "module": "Q017_SOX_ELECTRONICS_RADAR_LOCKED",
   "trade_date": "2026-10-22",
-  "generated_at_taipei": "2026-10-22T09:32:16.612948+08:00",
+  "generated_at_taipei": "2026-10-22T09:37:05.643204+08:00",
   "binding_status": "PASS",
   "market_state": "CASH",
   "authority": "FORMAL_Q017_DECISION_INPUT_NOT_BROKER_ORDER",
@@ -659,15 +659,15 @@
     "marks": [
       {
         "ticker": "3055",
-        "price": 149.0,
-        "return_from_locked_open": -0.02614379084967322,
+        "price": 148.0,
+        "return_from_locked_open": -0.0326797385620915,
         "source": "FUGLE",
         "quote_time_taipei": null
       },
       {
         "ticker": "7795",
-        "price": 433.5,
-        "return_from_locked_open": 0.011668611435239118,
+        "price": 434.5,
+        "return_from_locked_open": 0.014002333722286986,
         "source": "FUGLE",
         "quote_time_taipei": null
       },
