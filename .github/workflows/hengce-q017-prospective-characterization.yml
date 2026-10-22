@@ -1,0 +1,106 @@
+name: HENGCE Q017 Prospective Characterization
+
+on:
+  pull_request:
+    paths:
+      - 'research/phase2_q017/**'
+      - '.github/workflows/hengce-q017-prospective-characterization.yml'
+  workflow_dispatch:
+  schedule:
+    # Asia/Taipei 09:20 Monday-Friday = UTC 01:20 Monday-Friday.
+    - cron: '20 1 * * 1-5'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+
+jobs:
+  q017-characterization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.14'
+          check-latest: false
+
+      - name: Install frozen research dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r research/phase2_governance/requirements.lock
+
+      - name: Smoke replay authentic pre-activation locks on PR
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/q017-characterization"
+          for day in 20261021 20261022; do
+            python -B research/phase2_q017/run_characterization.py \
+              --mode smoke \
+              --observation "hengce/q017_radar/observations/${day}_0901_observation.json" \
+              --output "$RUNNER_TEMP/q017-characterization/${day}_smoke.json"
+          done
+          python - "$RUNNER_TEMP/q017-characterization" <<'PY'
+          import json, pathlib, sys
+          root=pathlib.Path(sys.argv[1])
+          rows=[json.loads(p.read_text()) for p in sorted(root.glob('*_smoke.json'))]
+          assert len(rows)==2
+          for x in rows:
+              assert x['evidence_class']=='SMOKE_ONLY_NOT_RESEARCH_EVIDENCE'
+              assert x['champion_exact_reproduction'] is True
+              assert x['variant_count']==7
+              assert x['selection_or_acceptance_performed'] is False
+              assert x['historical_backfill'] is False
+              assert x['historical_signal_regeneration'] is False
+              assert x['candidate_acceptance_authorized'] is False
+              assert x['holdout_access_authorized'] is False
+              assert x['capital_authority_twd']==0
+              assert x['broker_order_execution'] is False
+              assert x['PROMOTE_TO_PRODUCTION']=='FORBIDDEN'
+          print(json.dumps({'status':'PASS','smoke_locks':len(rows),'variant_count':7,'research_evidence':False}))
+          PY
+
+      - name: Run today's prospective characterization
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          TODAY="$(TZ=Asia/Taipei date '+%Y%m%d')"
+          OBS="hengce/q017_radar/observations/${TODAY}_0901_observation.json"
+          [[ -f "$OBS" ]] || { echo "Q017_TODAY_0901_LOCK_MISSING_FAIL_CLOSED:$OBS"; exit 2; }
+          mkdir -p "$RUNNER_TEMP/q017-characterization"
+          python -B research/phase2_q017/run_characterization.py \
+            --mode prospective \
+            --observation "$OBS" \
+            --output "$RUNNER_TEMP/q017-characterization/${TODAY}_prospective.json"
+          python - "$RUNNER_TEMP/q017-characterization/${TODAY}_prospective.json" "$TODAY" <<'PY'
+          import json,sys
+          x=json.load(open(sys.argv[1]))
+          today=sys.argv[2]
+          assert x['trade_date'].replace('-','')==today
+          assert x['evidence_class']=='PROSPECTIVE_CHARACTERIZATION_EVIDENCE'
+          assert x['champion_exact_reproduction'] is True
+          assert x['variant_count']==7
+          assert x['selection_or_acceptance_performed'] is False
+          assert x['capital_authority_twd']==0
+          assert x['broker_order_execution'] is False
+          assert x['PROMOTE_TO_PRODUCTION']=='FORBIDDEN'
+          print(json.dumps({'status':'PASS','trade_date':x['trade_date'],'variant_count':7,'result_sha256':x['result_sha256']}))
+          PY
+
+      - name: Retain characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-q017-characterization-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/q017-characterization
+          if-no-files-found: warn
+          retention-days: 90
