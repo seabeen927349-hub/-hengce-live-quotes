@@ -115,10 +115,15 @@ def main():
     parser.add_argument('mode',choices=('verify','append','check-run'))
     parser.add_argument('--ledger',type=Path,default=g.HERE/'ledger')
     parser.add_argument('--custody-root',type=Path);parser.add_argument('--expected-checkpoint');parser.add_argument('--record',type=Path)
+    parser.add_argument('--engine');parser.add_argument('--stage');parser.add_argument('--operation')
+    parser.add_argument('--cost-multiplier',type=float)
     args=parser.parse_args()
     try:
         g.validate_policy(g.metadata(g.HERE/'phase2-policy.json'))
-        if args.mode=='check-run':g.require_phase2_run(g.metadata(g.HERE/'phase2-policy.json'))
+        if args.mode=='check-run':
+            permission=g.require_phase2_run(g.metadata(g.HERE/'phase2-policy.json'),engine=args.engine,
+                stage=args.stage,operation=args.operation,cost_multiplier=args.cost_multiplier)
+            print(g.canonical(permission).decode());return 0
         g.need(args.custody_root is not None and bool(args.expected_checkpoint),'INDEPENDENT_CUSTODY_CHECKPOINT_REQUIRED')
         if args.mode=='verify':verified(args.ledger,args.custody_root,args.expected_checkpoint)
         else:

@@ -1,163 +1,151 @@
-# Phase 2 readiness governance freeze — Issue #22
+# Scoped E2 P2-A authorization — Issue #24 / PR #25
 
-**NOT_READY_FOR_PHASE2_RUNS_YET. NO OPTIMIZER WAS RUN.**
+Human authorization: **HENGCE-P2-AUTH-20261023-001**.
+Authoritative base: `main@f10463b07a25d647c0ce6762be2661005eebfeef`.
+Original receipt commit: `71ef7d3dbc83715c6bff23ac809c4e21dee48a3b`.
 
-Authoritative base: `main@42f4d4edd4b327c693290416d54d1e7622733969`.
-This package implements research governance infrastructure only. It grants no
-Phase 2, profitability search, challenger, holdout, capital, broker or production
-authority. Every production file and existing workflow remains unchanged.
+This supersedes Issue #22's blanket run denial only for the scoped permission
+below. **This authorization PR runs no optimizer, model trial or actual P2-A
+diagnostic, appends zero experiment records and opens/accesses no holdout.**
+Engineering Replay remains the required frozen-baseline equivalence check.
 
-## Environment and dependency lock
+## Scope and permission gate
 
-`environment-lock.json` freezes CPython **3.12.14**, Linux x86_64, the target wheel
-platform, fourteen direct/transitive package versions, exact wheel filenames and
-SHA256 hashes. `requirements.lock` installs those artifacts with
-`--require-hashes`. The original experiment/holdout schemas, audit validator, E2
-source and baseline model/execution locks are hash-bound to the exact base.
-Existing Phase 1 pins are preserved, with the schema validator's dependencies
-added in a separate research environment. Nothing installs into production.
+`phase2-policy.json` records phase2_authorized=true with the explicit human
+authorization ID. This Boolean grants no unscoped route. The engine scopes are:
 
-The CI job creates its own venv, downloads only the locked manylinux2014/cp312
-wheels and installs offline from that directory. This avoids platform-dependent
-wheel selection drifting to an unlisted artifact. Runtime checks verify Python,
-platform, all versions and source hashes. This is not a hermetic OS/container
-build: kernel/OS image, interpreter binary digest and bootstrap pip are not fully
-frozen. B01 remains PARTIAL. Other platforms require a separately reviewed lock.
+- E2: P2A_BASELINE_DESTRUCTION_ONLY.
+- Q017: PROSPECTIVE_CHARACTERIZATION_ONLY; no historical tuning.
+- M1: RESEARCH_SHADOW_ONLY_NO_OPTIMIZATION, capital 0.
 
-## Experiment ledger
+`require_phase2_run(policy, engine, stage, operation)` admits only **E2 /
+P2A_BASELINE_DESTRUCTION** and these six operations:
 
-`ledger/experiments.jsonl` is initially **empty**. No real trial, hypothesis test
-or profitability result is inserted by this PR. `ledger_store.py` reuses the
-unchanged `research/phase1_audit/experiment.schema.json` with Draft 2020-12
-validation, plus the existing hash-chain/append validator. The record schema's
-`capital_authority=0` and `phase2_authorized=false` remain mandatory.
-`ledger-contract.json`, the policy and all checkpoint/output envelopes enforce
-`capital_authority_twd=0`, `broker_order_execution=false`,
-`PROMOTE_TO_PRODUCTION=FORBIDDEN`; adding fields to the old record schema would
-violate its additionalProperties=false contract, so it is not silently extended.
+1. BASELINE_REPLAY on already exposed development/validation data with proven lineage.
+2. COST_STRESS at 1.0x / 1.5x / 2.0x on the existing aggregate 0.008.
+3. LEAVE_BEST_TRADES_OUT.
+4. LEAVE_ONE_YEAR_OUT.
+5. REGIME_CHARACTERIZATION.
+6. PARAMETER_PERTURBATION_ROBUSTNESS locally around the frozen baseline.
 
-Records are canonical UTF-8 JSON lines, with exactly one final newline per row.
-Append validates unique experiment IDs, earlier same-engine parents, hashes,
-timestamps and the exact old byte prefix before writing. It uses a process-safe
-file lock, O_APPEND/O_NOFOLLOW and fsync. It never updates/deletes a previous row.
-FAILED and ABORTED must have decision REJECT. The schema encodes **REJECTED as
-decision=REJECT**, not as an invented result enum. COMPLETED/REJECT and failed
-records remain retained; unavailable metrics remain null. Audit logging itself
-never authorizes or executes a recorded trial. All records count toward the
-retained audit count; there is no success-only filter or failure deletion.
+These are robustness diagnostics, without new candidate creation/acceptance.
+P2-B/P2-C, grid/random/Bayesian search, unrestricted feature mining, historical
+signal regeneration, Q017 tuning, M1 optimization, holdout access and production
+routes are denied. Unknown request fields/operations and missing scope fail closed.
+The original receipt bytes are pinned to their SHA256; the complete reviewed
+policy is pinned separately, including pending/null values and unknown-key rejection.
+Editing a JSON Boolean, authority field, receipt or pending acceptance value
+cannot silently authorize a broader route.
 
-An immutable PROPOSED row cannot be updated in place. A later audit event needs
-its own unique ID and an earlier parent ID, retaining the original proposal.
-The pending family/multiple-testing policy must account for every attempted
-variant and all failed/rejected/aborted attempts; this package does not activate
-a trial budget, run experiments or claim automated runner registration.
+The gate returns **SCOPED_GATE_ALLOWED_NO_EXECUTION**, authorization ID, operation,
+zero execution authority, budget/cost metadata and execution prerequisites.
+It imports no model or market provider, dispatches no workflow and reads no data
+panel. It is a permission validator, not a research runner or trial allocator.
 
-## Independent checkpoint mechanism
-
-A self-contained chain cannot prove that its whole history was not rewritten.
-Two additional boundaries are implemented:
-
-1. **External custody actor:** `checkpoint.py` retains write-once, numbered
-   checkpoint files outside both repository and ledger trees. Each contains a
-   ledger ID, count, head, exact prefix SHA256, generation, prior checkpoint hash,
-   custody identity and timestamp. Initialization accepts only an empty ledger.
-   Checkpoint advance requires an exact expected checkpoint token and exactly
-   one schema-valid appended row; the old independently retained prefix must
-   still match. Checkpoint publication uses atomic create-if-absent plus fsync;
-   previous checkpoints are never replaced by the API.
-2. **Independent Git base anchor:** CI obtains the PR base SHA from GitHub and
-   checks that the proposed ledger preserves its exact bytes. A rewritten local
-   ledger plus rewritten in-tree metadata cannot redefine that trusted prefix.
-   The initial Issue #22 base has no ledger, so its only accepted genesis is the
-   explicitly empty ledger. This bootstrap cannot insert genuine trial rows.
-
-The **appender only reads external custody**, and must receive its trusted
-expected checkpoint token. It cannot checkpoint its own append. After one
-append, another append STOPs until the independent custodian validates and
-checkpoints it. Stale tokens, root overlap, symlinks, schema/hash/identity/prefix
-conflicts, partial lines and uncheckpointed tails fail closed. A crash keeps any
-partial tail visible; neither actor truncates it or discards failed records.
-Ambiguous operations require independent inspection, not blind retry/rewrite.
-
-Deployment is still **PENDING_HUMAN_APPROVAL_NOT_DEPLOYED**. An external path and
-custodian name are not authentication. The selected service must enforce a
-separate identity and ACL/WORM/versioned retention inaccessible to the ledger
-writer, plus trusted checkpoint delivery and access audit. No independent
-account, secret, custody service, retention policy or approval is provisioned in
-this PR. Tests use sibling temporary directories and a plainly synthetic actor.
-If one adversary controls ledger, external custody and trusted Git history,
-this mechanism cannot establish authenticity. It does not claim a signature
-service or independently operated custody simply because an API exists.
-
-CLI entry points are metadata-only:
+A metadata-only CLI check is:
 
 ```text
-ledger_store.py verify --ledger ... --custody-root ... --expected-checkpoint ...
-ledger_store.py append --ledger ... --custody-root ... --expected-checkpoint ... --record ...
-checkpoint.py initialize-empty --ledger ... --custody-root ... --expected-checkpoint 000...000 --custodian-id ...
-checkpoint.py checkpoint --ledger ... --custody-root ... --expected-checkpoint ... --custodian-id ...
-ledger_store.py check-run  # always BLOCKED in this readiness package
+python -B research/phase2_governance/ledger_store.py check-run --engine E2 --stage P2A_BASELINE_DESTRUCTION --operation BASELINE_REPLAY
 ```
 
-The checkpoint CLI belongs to the separate approved custody actor, not the
-research writer. These examples do not configure or authorize that deployment.
+COST_STRESS additionally requires `--cost-multiplier 1.0`, `1.5` or `2.0`.
+The check returns before append/custody code; it cannot run an experiment.
+Unscoped `check-run`, other engines/stages and unauthorized requests return BLOCKED.
 
-## Policy, human approvals and holdout
+**Actual diagnostic experiments require authorization PR #25 to be merged,
+proven input lineage, and the existing append-only ledger plus independent
+checkpoint process.** This PR does not execute or integrate a model runner.
+A permission response alone is not evidence of a completed trial, checkpoint,
+lineage validation or merge. No production authority is derived from it.
 
-`phase2-policy.json` fixes the requested readiness scope: E2 is the **candidate**
-for first optimization research, Q017 is prospective/characterization only, and
-M1 is RESEARCH_SHADOW_ONLY with no optimization. Engines remain separate.
+## Approved rules versus still-pending acceptance
 
-All eight required approval categories are PENDING_HUMAN_APPROVAL, with
-approved_value=null and authorization_id=null. Recommendations are separately
-PROPOSED: chronological expanding walk-forward, purge and embargo at least 20
-TWSE sessions, at most 24 initial family challenger variants, aggregate cost
-stress 1.0/1.5/2.0x, and preregistered robustness/risk checks. Fold boundaries,
-minimum observations/trades, numeric drawdown/tail/turnover acceptance, correction
-rule and custody/access details remain null pending evidence and human policy.
-Recommendations have no execution authority. The run guard always rejects;
-changing a Boolean or supplying a made-up approval ID cannot unlock it.
+Scoped human approval now covers chronological-only/no random split, expanding
+walk-forward method, purge >=20 TWSE sessions, embargo >=20 TWSE sessions, initial
+family budget max 24 evaluated variants, retention/counting of FAILED / REJECTED /
+ABORTED trials, the frozen aggregate roundtrip cost 0.008 and 1.0/1.5/2.0x cost stress.
+Approving the walk-forward method does not authorize P2-B or invent fold boundaries.
 
-E2's existing **aggregate roundtrip_cost=0.008** remains unchanged. It is not
-decomposed into fees/tax/spread/slippage or added on top of component costs.
-Baseline execution remains max_slots=1, overlap forbidden, next-open entry,
-fixed20 exit. The proposed stress panel scales the aggregate once; it is not run.
+Minimum observations, minimum trades, drawdown/tail-loss/turnover and cost-stress
+acceptance thresholds, exact P2-B fold dates/steps, prospective custody/access
+and a family correction-rule specification remain **PENDING_HUMAN_APPROVAL**,
+with no invented numeric values. They block candidate ACCEPT and later stages;
+they do not veto the six allowed P2-A diagnostics. Candidate creation/acceptance
+and holdout access remain explicitly false.
 
-All currently exposed 2023–2026 historical data are development/validation
-eligible only where lineage is proven, **never pristine holdout**. Q017 daily
-OHLC cannot substitute for missing 09:01 executability evidence; no historical
-observation reconstruction or signal regeneration occurs.
+Cost stress scales the **single aggregate** assumption: 0.008, 0.012 and 0.016.
+It does not decompose fees/tax/spread/slippage or add components on top. Baseline
+max_slots=1, overlap forbidden, next-open entry and fixed20 exit are unchanged.
+Every currently exposed 2023–2026 date remains development/validation eligible
+only where lineage is proven, never pristine holdout. Daily OHLC is not
+substitute evidence for historical Q017 09:01 executability.
 
-`holdout-state.json` remains UNALLOCATED, with no custodian, artifact commitment,
-date allocation or access. Pure metadata validation enforces
-UNALLOCATED→SEALED→OPENED→CONSUMED; OPENED is permanently exposed, including
-interrupted/failed evaluation. No reverse/reseal/second open is valid. Tests use
-invented 2099 metadata in memory only. There is no holdout data reader, release
-API, real transition writer or opened dataset in this package. Actual allocation,
-custody and one-time access need explicit later approval after candidate freeze.
+B01–B09 remain PARTIAL. B10 becomes **SCOPED_AUTHORIZED_E2_P2A_ONLY**, not broad
+Phase 2 clearance. P2-B/P2-C/candidate acceptance/holdout/production remain blocked.
+Actual user trades are not model evidence.
 
-One explicit human authorization event is still required for research scope,
-walk-forward, purge/embargo, trial budget/multiple-testing, aggregate cost/stress,
-minimum observations/trades, risk/turnover gates and prospective custody/access.
-Separate promotion authorization would still be required after any future
-successful research/holdout. This package cannot issue either authorization.
+## Existing environment, ledger and independent custody remain intact
 
-## B01–B10 and merge gates
+The research-only environment stays pinned to CPython 3.12.14 / Linux x86_64,
+fourteen dependency versions and exact manylinux2014/cp312 wheel hashes. CI uses
+a separate venv and hash-required offline installation from downloaded wheels.
+No production dependency/runtime/schedule/model/ranking/universe file changes.
+The environment lock retains its original Issue #22 baseline and no-authority
+flag; an environment manifest cannot grant or veto a later scoped human grant.
 
-B01–B09 remain **PARTIAL**, including the improved environment/ledger mechanisms;
-infrastructure completion is not lab-wide dataset/executability/custody evidence.
-B10 remains **BLOCKED_PENDING_EXPLICIT_HUMAN_AUTHORIZATION**.
-M1 stays RESEARCH_SHADOW_ONLY / capital 0. No actual user trades are model evidence.
+The unchanged experiment.schema.json and existing chain validator still govern
+canonical JSONL, unique IDs, earlier same-engine parents, exact byte prefix,
+process-safe append/O_APPEND/O_NOFOLLOW/fsync and retention of failed/rejected/
+aborted records with null unavailable metrics. REJECTED remains decision=REJECT
+under the existing schema. Immutable PROPOSED rows are never edited in place;
+a subsequent audit event requires its own ID and earlier parent lineage.
 
-The new workflow is paths-filtered to this governance package and itself, with
-read-only permissions and no producer schedule or publication. Tests demonstrate
-production bytes/scope unchanged, failed-trial retention, exact append prefix,
-chain integrity, independently anchored rewrite/truncation detection, duplicate
-IDs, stale/concurrent appenders, partial writes, pure holdout irreversibility,
-pending approvals, aggregate cost integrity and unauthorized-run refusal.
+The original record-level capital_authority=0 and phase2_authorized=false mean
+audit records cannot self-grant authority. They are not a replacement for the
+new policy's scoped authorization. Ledger contract/checkpoint flags likewise
+grant no execution authority. All research permission/checkpoint envelopes enforce
+capital_authority_twd=0, broker_order_execution=false,
+PROMOTE_TO_PRODUCTION=FORBIDDEN.
 
-Final-head Engineering Replay must be a completed successful workflow with all
-11 checks IDENTICAL; Writer Race Safety, Health Observability, Recovery Fault
-Safety, existing producer regressions and governance tests must pass. CI IDs,
-exact file inventory and unresolved limitations belong in the PR. Human review
-is required. **Do not merge automatically. NO OPTIMIZER WAS RUN.**
+The appender reads an independent external checkpoint and cannot checkpoint its
+own write. A separate custody actor conditionally retains write-once numbered
+checkpoints outside repository/ledger trees, binding count/head/exact prefix,
+generation, prior checkpoint, identity and timestamp. An uncheckpointed or
+partial tail stops further operations without truncation. CI also verifies
+the independently retained GitHub PR-base ledger prefix; this authorization
+transition specifically requires the ledger to remain empty. No second publisher
+or automatic repair/reset is introduced.
+
+Independent custody deployment remains PENDING_HUMAN_APPROVAL_NOT_DEPLOYED.
+An external directory/custodian label is not authentication; separate identities,
+ACL/WORM/versioned retention, checkpoint delivery and access audit must be
+configured before actual experiments rely on it. No independent account, secret,
+storage service or retention approval is provisioned here. An adversary controlling
+ledger, custody and trusted Git history is outside the mechanism's protection.
+No signature service or universal tamper-proof storage is claimed.
+
+## Holdout, tests and limitations
+
+The real holdout metadata remains **UNALLOCATED**, with no custodian, commitment,
+allocation or access. Pure in-memory synthetic metadata tests preserve irreversible
+UNALLOCATED→SEALED→OPENED→CONSUMED, permanent exposure and no second open.
+There is no holdout data reader, release API or real transition writer here.
+
+The new tests check six allowed E2/P2-A operations, denied Q017/M1/P2-B/P2-C,
+holdout/candidate/capital/broker/promotion/search routes, cost stress, pending
+acceptance semantics, policy/receipt tampering and zero authorization-PR records.
+Existing ledger/anchor/failed-trial/holdout tests remain required. CI never invokes
+a diagnostic runner: only synthetic permission tests and Engineering Replay.
+
+Limitations remain: non-hermetic OS/kernel/interpreter-build/bootstrap provenance;
+single wheel target; custody deployment/identity approval outstanding; sparse
+E2 and incomplete Q017/M1 evidence; no automatic live trial registration or
+ledger-derived budget allocation implemented in this permission-only package.
+A later actual runner must enforce family-wide max 24, count failed/rejected/
+aborted evaluated variants, preserve causal lineage and checkpoint every trial.
+These limitations do not turn pending acceptance values into a P2-A veto.
+
+Final-head Engineering Replay must complete successfully with 11/11 IDENTICAL,
+alongside Governance, Writer Race, Health, Recovery and existing producer
+regressions. CI IDs and exact inventory belong in PR #25. **NO OPTIMIZER WAS RUN.
+NO MODEL TRIAL WAS RUN. Keep PR OPEN / DRAFT; do not merge automatically.**
