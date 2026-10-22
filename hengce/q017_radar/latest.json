@@ -1,9 +1,9 @@
 {
   "schema_version": 5,
   "system": "HENGCE",
-  "module": "Q017_SOX_ELECTRONICS_DECISION_LOCK",
+  "module": "Q017_SOX_ELECTRONICS_RADAR_LOCKED",
   "trade_date": "2026-10-22",
-  "generated_at_taipei": "2026-10-22T09:01:43.423387+08:00",
+  "generated_at_taipei": "2026-10-22T09:32:16.612948+08:00",
   "binding_status": "PASS",
   "market_state": "CASH",
   "authority": "FORMAL_Q017_DECISION_INPUT_NOT_BROKER_ORDER",
@@ -651,5 +651,33 @@
     "8150"
   ],
   "note": "Schema-v5 separates 09:01 immutable market observation from later deterministic computation. Ranking universe is hard-locked to TWSE listed electronics only.",
-  "decision_snapshot_sha256": "e9e836d40008a89d92b0036c605d7792e62cec74c7ad6ad101f5cf77c8a424d3"
+  "decision_snapshot_sha256": "e9e836d40008a89d92b0036c605d7792e62cec74c7ad6ad101f5cf77c8a424d3",
+  "monitor": {
+    "status": "PASS",
+    "rerank_performed": false,
+    "ranking_frozen": true,
+    "marks": [
+      {
+        "ticker": "3055",
+        "price": 149.0,
+        "return_from_locked_open": -0.02614379084967322,
+        "source": "FUGLE",
+        "quote_time_taipei": null
+      },
+      {
+        "ticker": "7795",
+        "price": 433.5,
+        "return_from_locked_open": 0.011668611435239118,
+        "source": "FUGLE",
+        "quote_time_taipei": null
+      },
+      {
+        "ticker": "3016",
+        "price": 152.0,
+        "return_from_locked_open": -0.028753993610223683,
+        "source": "FUGLE",
+        "quote_time_taipei": null
+      }
+    ]
+  }
 }
