@@ -6,7 +6,7 @@
   "effective_date": "2026-10-22",
   "role": "ELECTRONICS_QUOTE_CONTEXT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
   "universe_scope": "TWSE_LISTED_ELECTRONICS_ONLY",
-  "universe_membership_source": "Q017_UNIVERSE_LOCK_MEMBERSHIP_ONLY",
+  "universe_membership_source": "CURRENT_FORMAL_Q017_UNIVERSE_LOCK_ONLY",
   "transport_source": "HENGCE_FULL_MARKET_ROLLING_SHADOW",
   "authority": {
     "membership": false,
@@ -22,6 +22,8 @@
     "bid_ask_never_promoted_to_executed_trade": true,
     "intraday_rerank_forbidden": true,
     "q017_formal_decision_immutable": true,
+    "current_trade_date_formal_q017_required_for_full_status": true,
+    "preopen_stale_q017_must_be_data_pending": true,
     "legacy_77_watchlist_not_coverage_authority": true,
     "no_model_formula_change": true,
     "no_weight_change": true,
