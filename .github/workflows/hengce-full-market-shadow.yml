@@ -10,19 +10,18 @@ name: HENGCE full-market rolling shadow
     paths:
       - '.github/workflows/hengce-full-market-shadow.yml'
       - 'scripts/hengce_full_market_shadow.py'
+      - 'scripts/hengce_electronics_live_coverage.py'
+      - 'hengce/HENGCE_ELECTRONICS_LIVE_COVERAGE_CONTRACT_v1_0_20261022.json'
+      - 'hengce/HENGCE_LIVE_COVERAGE_ROUTING_v1_0_20261022.json'
       - 'shadow/priority_tickers.json'
   schedule:
-    # Asia/Taipei pre-open warmup 08:45/08:50/08:55 (UTC 00:45/00:50/00:55)
     - cron: "45,50,55 0 * * 1-5"
-    # Asia/Taipei 09:00-13:30, Mon-Fri (UTC 01:00-05:30), every 5 minutes
     - cron: "*/5 1-4 * * 1-5"
     - cron: "0-30/5 5 * * 1-5"
 
 permissions:
   contents: write
 
-# Keep duplicate protection inside each trigger class, but never allow a
-# workflow_run or push event to cancel the scheduled 5-minute rolling vessel.
 concurrency:
   group: hengce-full-market-shadow-${{ github.event_name }}
   cancel-in-progress: true
@@ -40,6 +39,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Self-test all-electronics coverage hard locks
+        run: python3 scripts/hengce_electronics_live_coverage.py --mode self-test
+
       - name: Collect full-market shadow snapshot
         shell: bash
         run: |
@@ -48,6 +50,9 @@ jobs:
           python3 scripts/hengce_full_market_shadow.py \
             --out shadow/full_market_latest.json \
             --priority-file shadow/priority_tickers.json
+
+      - name: Build canonical all-electronics live coverage
+        run: python3 scripts/hengce_electronics_live_coverage.py --mode build
 
       - name: Validate authority and market gates
         shell: bash
@@ -70,16 +75,11 @@ jobs:
           gate=x.get('full_market_gate') or {}
           if x.get('status')=='SHADOW_FULL_MARKET_READY' and not gate.get('pass'):
               raise SystemExit('FALSE_FULL_MARKET_LABEL')
-          print(json.dumps({
-              'snapshot_id':x.get('snapshot_id'),
-              'universe_count':x.get('universe_count'),
-              'coverage_ratio':cov,
-              'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),
-              'status':x.get('status'),
-              'provider_mix':x.get('provider_mix'),
-              'payload_sha256':x.get('payload_sha256')
-          }, ensure_ascii=False, indent=2))
+          print(json.dumps({'snapshot_id':x.get('snapshot_id'),'universe_count':x.get('universe_count'),'coverage_ratio':cov,'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),'status':x.get('status'),'provider_mix':x.get('provider_mix'),'payload_sha256':x.get('payload_sha256')}, ensure_ascii=False, indent=2))
           PY
+
+      - name: Validate canonical all-electronics live coverage
+        run: python3 scripts/hengce_electronics_live_coverage.py --mode validate
 
       - name: Build shadow status receipt
         if: always()
@@ -91,52 +91,30 @@ jobs:
           from pathlib import Path
           TZ=timezone(timedelta(hours=8))
           p=Path('shadow/full_market_latest.json')
+          ep=Path('hengce/electronics_live/status.json')
+          electronics=json.loads(ep.read_text(encoding='utf-8')) if ep.exists() else None
           if p.exists():
               x=json.loads(p.read_text(encoding='utf-8'))
-              r={
-                  'system':'HENGCE',
-                  'artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS',
-                  'generated_at_taipei':datetime.now(TZ).isoformat(),
-                  'snapshot_id':x.get('snapshot_id'),
-                  'status':x.get('status'),
-                  'authority':x.get('authority'),
-                  'universe_count':x.get('universe_count'),
-                  'universe_sha256':x.get('universe_sha256'),
-                  'coverage_ratio':x.get('coverage_ratio'),
-                  'price_coverage_ratio':x.get('price_coverage_ratio'),
-                  'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),
-                  'full_market_gate':x.get('full_market_gate'),
-                  'provider_mix':x.get('provider_mix'),
-                  'payload_sha256':x.get('payload_sha256'),
-                  'production_core_effect':'NONE',
-                  'capital_authority':False
-              }
+              r={'system':'HENGCE','artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS','generated_at_taipei':datetime.now(TZ).isoformat(),'snapshot_id':x.get('snapshot_id'),'status':x.get('status'),'authority':x.get('authority'),'universe_count':x.get('universe_count'),'universe_sha256':x.get('universe_sha256'),'coverage_ratio':x.get('coverage_ratio'),'price_coverage_ratio':x.get('price_coverage_ratio'),'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),'full_market_gate':x.get('full_market_gate'),'provider_mix':x.get('provider_mix'),'payload_sha256':x.get('payload_sha256'),'electronics_live_status':(electronics or {}).get('status'),'electronics_member_count':(electronics or {}).get('member_count'),'electronics_provider_coverage_ratio':(electronics or {}).get('provider_coverage_ratio'),'electronics_quote_fresh_ratio':(electronics or {}).get('quote_fresh_ratio'),'electronics_legacy_77_watchlist_is_not_coverage_authority':True,'production_core_effect':'NONE','capital_authority':False}
           else:
-              r={
-                  'system':'HENGCE',
-                  'artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS',
-                  'generated_at_taipei':datetime.now(TZ).isoformat(),
-                  'status':'SHADOW_RUN_FAILED_BEFORE_SNAPSHOT',
-                  'production_core_effect':'NONE',
-                  'capital_authority':False
-              }
+              r={'system':'HENGCE','artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS','generated_at_taipei':datetime.now(TZ).isoformat(),'status':'SHADOW_RUN_FAILED_BEFORE_SNAPSHOT','production_core_effect':'NONE','capital_authority':False}
           Path('shadow/deployment_status.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           PY
 
-      - name: Commit shadow artifacts
+      - name: Commit shadow and all-electronics live artifacts
         if: always()
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "hengce-shadow-bot"
           git config user.email "hengce-shadow-bot@users.noreply.github.com"
-          git add shadow/
+          git add shadow/ hengce/electronics_live/
           if git diff --cached --quiet; then
-            echo "No shadow changes."
+            echo "No shadow/electronics-live changes."
             exit 0
           fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "HENGCE full-market shadow ${TS}"
+          git commit -m "HENGCE full-market + electronics live ${TS}"
           if ! git push origin HEAD:main; then
             git pull --rebase origin main
             git push origin HEAD:main

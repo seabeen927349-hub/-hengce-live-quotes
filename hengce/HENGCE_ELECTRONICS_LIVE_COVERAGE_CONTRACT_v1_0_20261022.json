@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_ELECTRONICS_LIVE_COVERAGE",
+  "contract_version": "v1.0",
+  "effective_date": "2026-10-22",
+  "role": "ELECTRONICS_QUOTE_CONTEXT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "universe_scope": "TWSE_LISTED_ELECTRONICS_ONLY",
+  "universe_membership_source": "CURRENT_FORMAL_Q017_UNIVERSE_LOCK_ONLY",
+  "transport_source": "HENGCE_FULL_MARKET_ROLLING_SHADOW",
+  "authority": {
+    "membership": false,
+    "ranking": false,
+    "signal": false,
+    "capital": false,
+    "broker_execution": false
+  },
+  "locks": {
+    "cover_all_q017_electronics_members": true,
+    "cash_state_does_not_reduce_coverage": true,
+    "missing_member_degrades_health": true,
+    "bid_ask_never_promoted_to_executed_trade": true,
+    "intraday_rerank_forbidden": true,
+    "q017_formal_decision_immutable": true,
+    "current_trade_date_formal_q017_required_for_full_status": true,
+    "preopen_stale_q017_must_be_data_pending": true,
+    "legacy_77_watchlist_not_coverage_authority": true,
+    "no_model_formula_change": true,
+    "no_weight_change": true,
+    "no_threshold_change": true
+  },
+  "health": {
+    "provider_coverage_required": 1.0,
+    "quote_fresh_ratio_required": 0.98,
+    "full_market_gate_must_pass": true
+  }
+}

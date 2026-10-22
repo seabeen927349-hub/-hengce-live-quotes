@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "artifact": "FULL_MARKET_SHADOW_FUGLE_PRIORITY",
+  "role": "QUOTE_QUALITY_PRIORITY_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "tickers": [
+    "3042", "8150", "2344", "2357", "2451", "3006", "2351", "2368", "3413", "3013",
+    "3016", "3189", "3037", "4566", "3550", "4968", "6409", "6271", "8031", "8103",
+    "4961", "6415", "3605", "6191", "1477", "3041"
+  ],
+  "ranking_authority": false,
+  "signal_authority": false,
+  "capital_authority": false,
+  "broker_order_execution": false
+}
