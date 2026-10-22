@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "authoritative_base": "9c904d1d8514138b1ca7b760063d71f637a3f5ec",
+  "calendar": {
+    "authoritative_exchange_calendar": false,
+    "weekend_not_due": true,
+    "limitation": "Weekday cron expectations only. Exchange holidays/session dates are not independently proven; source PENDING is not scheduler failure."
+  },
+  "workflows": [
+    {
+      "id": "q017_primary",
+      "name": "HENGCE Q017 Primary Observer",
+      "file": "hengce-q017-primary-observer.yml",
+      "crons_utc": [
+        "45 23 * * 0-4"
+      ],
+      "taipei_interpretation": "07:45 Taipei start; observes 09:01 independently",
+      "start_grace_minutes": 10,
+      "max_runtime_minutes": 90,
+      "missing_state": "FAIL_CLOSED",
+      "expected_artifacts": [
+        "q017"
+      ],
+      "artifact_authority": "PRODUCER_CONTRACT_ONLY; HEALTH_CONFERS_NO_AUTHORITY"
+    },
+    {
+      "id": "q017_backup",
+      "name": "HENGCE Q017 Backup Observer",
+      "file": "hengce-q017-backup-observer.yml",
+      "crons_utc": [
+        "15 0 * * 1-5"
+      ],
+      "taipei_interpretation": "08:15 Taipei start; independent 09:01 backup",
+      "start_grace_minutes": 10,
+      "max_runtime_minutes": 90,
+      "missing_state": "DEGRADED",
+      "expected_artifacts": [
+        "q017"
+      ],
+      "artifact_authority": "PRODUCER_CONTRACT_ONLY; HEALTH_CONFERS_NO_AUTHORITY"
+    },
+    {
+      "id": "daily",
+      "name": "HENGCE Daily Command Center",
+      "file": "hengce-daily-command-center.yml",
+      "crons_utc": [
+        "30 22 * * 0-4",
+        "50 0 * * 1-5",
+        "3 1 * * 1-5",
+        "10 1 * * 1-5",
+        "20 1 * * 1-5",
+        "0 7 * * 1-5",
+        "30 7 * * 1-5",
+        "0 8 * * 1-5",
+        "0 9 * * 1-5"
+      ],
+      "taipei_interpretation": "06:30 premarket; 08:50 E2; 09:03/09:10/09:20 monitor; 15:00/15:30/16:00/17:00 EOD",
+      "start_grace_minutes": 15,
+      "max_runtime_minutes": 60,
+      "missing_state": "FAIL_CLOSED",
+      "expected_artifacts": [
+        "e2_morning",
+        "eod"
+      ],
+      "artifact_authority": "PRODUCER_CONTRACT_ONLY; HEALTH_CONFERS_NO_AUTHORITY"
+    },
+    {
+      "id": "e2_backup",
+      "name": "HENGCE E2 Morning Backup",
+      "file": "hengce-e2-morning-backup.yml",
+      "crons_utc": [
+        "55 0 * * 1-5",
+        "5 1 * * 1-5"
+      ],
+      "taipei_interpretation": "08:55 and 09:05 Taipei E2 recovery",
+      "start_grace_minutes": 10,
+      "max_runtime_minutes": 20,
+      "missing_state": "DEGRADED",
+      "expected_artifacts": [
+        "e2_morning"
+      ],
+      "artifact_authority": "PRODUCER_CONTRACT_ONLY; HEALTH_CONFERS_NO_AUTHORITY"
+    },
+    {
+      "id": "q017_recovery",
+      "name": "HENGCE Q017 Observation Recovery",
+      "file": "hengce-q017-recovery.yml",
+      "crons_utc": [
+        "2,4,6 1 * * 1-5"
+      ],
+      "taipei_interpretation": "09:02/09:04/09:06 Taipei evidence-only recovery",
+      "start_grace_minutes": 10,
+      "max_runtime_minutes": 10,
+      "missing_state": "DEGRADED",
+      "expected_artifacts": [
+        "q017"
+      ],
+      "artifact_authority": "PRODUCER_CONTRACT_ONLY; HEALTH_CONFERS_NO_AUTHORITY"
+    },
+    {
+      "id": "macro",
+      "name": "HENGCE Q017 Morning Macro Cache",
+      "file": "hengce-q017-macro-cache.yml",
+      "crons_utc": [
+        "45 21 * * 0-4",
+        "15 22 * * 0-4",
+        "45 22 * * 0-4",
+        "15 23 * * 0-4",
+        "35 23 * * 0-4"
+      ],
+      "taipei_interpretation": "05:45/06:15/06:45/07:15/07:35 Taipei macro refresh",
+      "start_grace_minutes": 10,
+      "max_runtime_minutes": 20,
+      "missing_state": "DEGRADED",
+      "expected_artifacts": [
+        "q017"
+      ],
+      "artifact_authority": "PRODUCER_CONTRACT_ONLY; HEALTH_CONFERS_NO_AUTHORITY"
+    },
+    {
+      "id": "e2_postclose",
+      "name": "HENGCE E2 Profit Max Live",
+      "file": "hengce-e2-profit-max-live.yml",
+      "crons_utc": [
+        "10 7 * * 1-5",
+        "40 7 * * 1-5",
+        "10 8 * * 1-5"
+      ],
+      "taipei_interpretation": "15:10/15:40/16:10 Taipei postclose",
+      "start_grace_minutes": 15,
+      "max_runtime_minutes": 20,
+      "missing_state": "DEGRADED",
+      "expected_artifacts": [
+        "display"
+      ],
+      "artifact_authority": "PRODUCER_CONTRACT_ONLY; HEALTH_CONFERS_NO_AUTHORITY"
+    },
+    {
+      "id": "display",
+      "name": "HENGCE Dual Engine Display Refresh",
+      "file": "hengce-dual-engine-display-refresh.yml",
+      "crons_utc": [],
+      "taipei_interpretation": "Event-driven; no independent scheduled heartbeat",
+      "start_grace_minutes": 15,
+      "max_runtime_minutes": 10,
+      "missing_state": "DEGRADED",
+      "expected_artifacts": [
+        "display"
+      ],
+      "artifact_authority": "PRODUCER_CONTRACT_ONLY; HEALTH_CONFERS_NO_AUTHORITY"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "q017",
+      "kind": "q017",
+      "path": "hengce/q017_radar/observation_latest.json",
+      "date_field": "trade_date",
+      "timestamp_field": "generated_at_taipei",
+      "due_taipei": "09:02",
+      "grace_minutes": 10,
+      "on_time_start": null,
+      "on_time_end": null,
+      "recovery_deadline": null,
+      "late_state": "FAIL_CLOSED",
+      "semantic_pass": {
+        "schema_version": 5,
+        "module": "Q017_0901_OBSERVATION_LOCK",
+        "binding_status": "PASS",
+        "authority": "CAUSAL_MARKET_OBSERVATION_ONLY"
+      },
+      "semantic_pending": {},
+      "source_authority": "CAUSAL_OBSERVATION_NOT_ORDER"
+    },
+    {
+      "id": "e2_morning",
+      "kind": "e2_morning",
+      "path": "hengce/e2_live/morning_latest.json",
+      "date_field": "trade_date",
+      "timestamp_field": "generated_at_taipei",
+      "due_taipei": "08:50",
+      "grace_minutes": 25,
+      "on_time_start": "08:50",
+      "on_time_end": "09:00",
+      "recovery_deadline": "09:15",
+      "late_state": "DEGRADED",
+      "semantic_pass": {
+        "module": "E2_PROFIT_MAX_MORNING_BRIDGE",
+        "binding_status": "PASS",
+        "capital_authority_twd": 0,
+        "broker_order_execution": false
+      },
+      "semantic_pending": {},
+      "source_authority": "RESEARCH_DISPLAY_ZERO_CAPITAL"
+    },
+    {
+      "id": "eod",
+      "kind": "eod",
+      "path": "eod/{date}/status.json",
+      "date_field": "target_date",
+      "timestamp_field": "updated_at_taipei",
+      "due_taipei": "15:00",
+      "grace_minutes": 20,
+      "on_time_start": null,
+      "on_time_end": null,
+      "recovery_deadline": null,
+      "late_state": "DEGRADED",
+      "semantic_pass": {
+        "price_status": "COMPLETE",
+        "institutional_status": "COMPLETE",
+        "margin_status": "COMPLETE",
+        "mother_status": "COMPLETE",
+        "downstream_ready": true,
+        "three_leg_complete": true,
+        "formal_complete_day": true
+      },
+      "semantic_pending": {
+        "price_status": [
+          "PENDING"
+        ],
+        "institutional_status": [
+          "PENDING"
+        ],
+        "margin_status": [
+          "PENDING"
+        ],
+        "mother_status": [
+          "PENDING"
+        ]
+      },
+      "source_authority": "DATA_READINESS_ONLY"
+    },
+    {
+      "id": "display",
+      "kind": "display",
+      "path": "hengce/dual_engine/latest.json",
+      "date_field": null,
+      "timestamp_field": "generated_at_taipei",
+      "due_taipei": "09:02",
+      "grace_minutes": 10,
+      "on_time_start": null,
+      "on_time_end": null,
+      "recovery_deadline": null,
+      "late_state": "DEGRADED",
+      "semantic_pass": {
+        "architecture": "DUAL_ENGINE",
+        "rankings_separate": true,
+        "mixed_ranking_forbidden": true,
+        "legacy_v3_display_authority": false
+      },
+      "semantic_pending": {},
+      "source_authority": "SEPARATE_ENGINE_DISPLAY_ZERO_CAPITAL"
+    }
+  ],
+  "health_only": true,
+  "signal_authority": false,
+  "ranking_authority": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false
+}

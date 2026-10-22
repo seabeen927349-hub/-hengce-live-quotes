@@ -118,6 +118,25 @@ class WriterWorkflowTests(unittest.TestCase):
                          'eod/20261021/status.json', 'future_unknown_input.json'):
                 self.assertFalse(publisher.matches(path, contract['unrelated']), (profile, path))
 
+    def test_every_inventoried_publication_excludes_health_only_outputs(self):
+        import hengce_publish as publisher
+        exits = []
+        for writer in self.inventory['writers']:
+            for publication in writer['publications']:
+                profile = publication['dependency_profile']
+                contract = publisher.PROFILES[profile]
+                with self.subTest(workflow=writer['workflow'], step=publication['step']):
+                    for path in ('hengce/health/latest.json', 'hengce/health/history/synthetic.json'):
+                        self.assertTrue(publisher.matches(path, contract['unrelated']))
+                    self.assertEqual(publication['authoritative_read_dependency_set']['excluded_patterns'],
+                                     list(contract['unrelated']))
+                exits.append(publication)
+        self.assertEqual(len(exits), 31)
+        self.assertEqual(publisher.PROFILES['conservative-all']['unrelated'], ('hengce/health/**',))
+        for path in ('hengce/health_inputs.json', 'config/hengce_health_v1.json',
+                     'scripts/hengce_system_health.py', 'new_authoritative_input.json'):
+            self.assertFalse(publisher.matches(path, publisher.PROFILES['conservative-all']['unrelated']))
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
