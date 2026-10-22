@@ -1,0 +1,47 @@
+name: HENGCE electronics live coverage CI
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/hengce_electronics_live_coverage.py'
+      - 'hengce/HENGCE_ELECTRONICS_LIVE_COVERAGE_CONTRACT_v1_0_20261022.json'
+      - 'hengce/HENGCE_LIVE_COVERAGE_ROUTING_v1_0_20261022.json'
+      - 'shadow/priority_tickers.json'
+      - '.github/workflows/hengce-full-market-shadow.yml'
+      - '.github/workflows/hengce-electronics-live-coverage-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Synthetic hard-lock self-test
+        run: python3 scripts/hengce_electronics_live_coverage.py --mode self-test
+      - name: Build from checked-in formal Q017 and full-market snapshot
+        run: python3 scripts/hengce_electronics_live_coverage.py --mode build
+      - name: Validate built artifact
+        run: python3 scripts/hengce_electronics_live_coverage.py --mode validate
+      - name: Assert full electronics membership and 8150 coverage
+        run: |
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('hengce/q017_radar/latest.json').read_text(encoding='utf-8'))
+          x=json.loads(Path('hengce/electronics_live/latest.json').read_text(encoding='utf-8'))
+          members=(q.get('universe_lock') or {}).get('members') or []
+          rows=x.get('rows') or []
+          assert x.get('member_count') == len(members) == 457, (x.get('member_count'),len(members))
+          assert [r.get('ticker') for r in rows] == [str(t) for t in members]
+          r=next(r for r in rows if r.get('ticker')=='8150')
+          assert r.get('fetch_ok') is True
+          assert all(x.get(k) is False for k in ('ranking_authority','signal_authority','capital_authority','broker_order_execution'))
+          assert x.get('legacy_77_watchlist_is_not_coverage_authority') is True
+          print(json.dumps({'status':'PASS','electronics_members':len(members),'ticker_8150_present':True,'ticker_8150_source':r.get('source'),'ticker_8150_display_price_semantics':r.get('display_price_semantics'),'zero_authority':True},ensure_ascii=False,indent=2))
+          PY
