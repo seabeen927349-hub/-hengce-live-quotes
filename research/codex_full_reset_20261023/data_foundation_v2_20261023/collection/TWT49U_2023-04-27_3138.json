@@ -1,0 +1,27 @@
+{
+  "archive_sha256": "042edd9086aab8c84e2c870714d0bf48dae98c36300d155335a37058663991de",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 481,
+  "effective_date": "2023-04-27",
+  "event_id": "TWT49U:2023-04-27:3138",
+  "fetch_completed_at_utc": "2026-10-23T12:22:41.361008+00:00",
+  "fetch_started_at_utc": "2026-10-23T12:22:39.854268+00:00",
+  "http_status": 200,
+  "id": "TWT49U_2023-04-27_3138",
+  "kind": "DETAIL",
+  "original_first_seen_at": null,
+  "raw_path": "TWT49U_2023-04-27_3138.gz",
+  "response_sha256": "047da52f6a6acc3a42c0ec8a26fe99c1a48916c5f3de46c6cf7263c003cd7985",
+  "ticker": "3138",
+  "transport": "RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/rwd/zh/exRight/TWT49UDetail?response=json&STK_NO=3138&T1=20230427",
+  "validation": "RAW_ONLY_NOT_ENTITLEMENT_AUTHORITY"
+}

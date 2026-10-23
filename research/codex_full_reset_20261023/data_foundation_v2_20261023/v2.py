@@ -2,7 +2,7 @@
 from __future__ import annotations
 import argparse
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from decimal import Decimal
 import csv
 import gzip
@@ -133,6 +133,15 @@ def intersects(event,window):
     return None
 
 
+def suspension_overlap(event,window):
+    if not event.get('suspension_start') or event['suspension_start']>window['exit_date']:return False
+    if event.get('suspension_end'):return event['suspension_end']>=window['entry_date']
+    # A next observed trade is an exclusive bound, not an official halt-end
+    # timestamp and not proof of allocation at that day's opening auction.
+    if event.get('observed_next_trade_date'):return event['observed_next_trade_date']>window['entry_date']
+    return False
+
+
 def collection_tasks(events,trials):
     used=set()
     index=defaultdict(list)
@@ -242,7 +251,22 @@ def identity_proof(old_id,new_id,source_kind):
 def diagnose(terms,on_date,identity_status='UNKNOWN',suspended=False):
     """Obligation diagnostics ONLY: no prices, positions, NAV or PnL produced."""
     states=[];reasons=[]
+    date.fromisoformat(on_date)
+    if terms.get('status') not in ('PROVEN','CONFLICT'):reasons.append('ASSERTION_NOT_PROVEN')
     if terms.get('status')=='CONFLICT':reasons.append('CONFLICTING_OFFICIAL_TERMS')
+    for field in ('cash_per_old_share','free_shares_per_old_share','paid_subscription_per_old_share','subscription_price'):
+        if terms.get(field) is not None:
+            try:
+                value=Decimal(terms[field]);require(value.is_finite() and value>=0,'INVALID_TERM')
+            except Exception:reasons.append('INVALID_ENTITLEMENT_TERM:'+field)
+    for field in ('cash_payment_date','new_share_saleable_date','subscription_deadline'):
+        if terms.get(field) is not None:
+            try:date.fromisoformat(terms[field])
+            except Exception:reasons.append('INVALID_ENTITLEMENT_DATE:'+field)
+    if any(r.startswith('INVALID_') for r in reasons):
+        return {'states':['UNRESOLVED_ACTION_BLOCK_OBSERVATION'],'block_reasons':reasons,
+                'cash_reinvestment_allowed':False,'undelivered_share_sale_allowed':False,
+                'adjusted_pnl_computed':False,'authority':AUTHORITY}
     if identity_status!='PROVEN':reasons.append('IDENTITY_CONTINUITY_UNKNOWN')
     if suspended:states.append('SUSPENSION_NO_TRADABLE_PRICE');reasons.append('SUSPENDED')
     if terms.get('conversion'):
@@ -267,7 +291,7 @@ def diagnose(terms,on_date,identity_status='UNKNOWN',suspended=False):
     if reasons:states.append('UNRESOLVED_ACTION_BLOCK_OBSERVATION')
     if not states:states=['ORDINARY_PRICE_RETURN_ELIGIBLE_DIAGNOSTIC_ONLY']
     return {'states':states,'block_reasons':reasons,'cash_reinvestment_allowed':not reasons and 'CASH_RECEIVABLE_NOT_PAID' not in states and 'SUBSCRIPTION_REQUIRES_CASH_AND_DEADLINE' not in states,
-            'undelivered_share_sale_allowed':not reasons and 'STOCK_ENTITLEMENT_NOT_SALEABLE' not in states,
+            'undelivered_share_sale_allowed':not reasons and 'STOCK_ENTITLEMENT_NOT_SALEABLE' not in states and 'SUBSCRIPTION_REQUIRES_CASH_AND_DEADLINE' not in states,
             'adjusted_pnl_computed':False,'authority':AUTHORITY}
 
 
@@ -280,23 +304,46 @@ def fill_evidence(direction,one_price,at_lower_limit,volume):
             'opening_auction_matched_volume':None,'order_allocation':None,'queue_position':None,'authority':AUTHORITY}
 
 
+def missing_for_intersection(event,terms,phase):
+    if event.get('category')=='SUSPENSION':
+        return ['OFFICIAL_RESUMPTION_AND_TRADABILITY_AT_'+phase]
+    if phase=='ENTRY':
+        # Buying on ex-date does not earn the preceding owner's dividend/shares.
+        keys=['old_security_id','new_security_id']
+    else:
+        category=classify(event.get('event_type_reported',''),event.get('source_report',''))
+        keys=['old_security_id','new_security_id']
+        if category=='CASH_DIVIDEND':keys+=['cash_per_old_share','cash_payment_date']
+        elif category.startswith('CAPITAL_REDUCTION'):
+            keys+=['cash_per_old_share','new_shares_per_old_share','resumption_date']
+            if category=='CAPITAL_REDUCTION_CASH_RETURN':keys+=['cash_payment_date']
+        else:keys+=['cash_per_old_share','free_shares_per_old_share','new_share_saleable_date',
+                    'paid_subscription_per_old_share','subscription_deadline','fractional_share_treatment']
+    return [k for k in keys if terms.get(k) is None]
+
+
 def build():
     verify_parent();OUT.mkdir(exist_ok=False)
     events=original_events();byid={e['event_id']:e for e in events};trials=trials_and_windows()
     baseline=RESET/'data_foundation_20261023/results'
     normalized=read(baseline/'NORMALIZED_ADDITIONAL_EVIDENCE.json')
     assertions=[];latest={};classes=[]
+    v1_receipts={r['id']:r for r in read(baseline/'MANIFEST.json')['records']}
     for event in events:
-        terms={k:None for k in TERM_FIELDS}
+        terms={k:None for k in TERM_FIELDS};term_sources=[]
         for known in normalized['specific_action_terms']:
             if (known['ticker'],known['effective_date'])==(event['ticker'],event['effective_date']):
                 terms.update(cash_per_old_share=known['cash_per_old_share_reported'],
                              free_shares_per_old_share=str(Decimal(known['free_shares_per_1000_old_shares_reported'])/1000),
                              paid_subscription_per_old_share='0') # explicit zero company-paid issue in V1 detail
+                receipt=v1_receipts['DETAIL_'+event['ticker']+'_'+event['effective_date'].replace('-','')]
+                term_sources.append({'source_sha256':known['raw_sha256'],'source_url':receipt['url'],
+                                     'scope':'V1_VALIDATED_DETAIL_NUMERIC_TERMS_ONLY'})
         assertion={'record_id':event['event_id']+':INITIAL','event_id':event['event_id'],'status':'PARTIAL',
                    'ticker':event['ticker'],'effective_date':event['effective_date'],'terms':terms,
                    'supersedes_record_hash':None,'source_sha256':event['source_sha256'],
-                   'source_url':event['source_url'],'source_printed_date':None,'first_seen_at':None,'revision_lineage':None}
+                   'source_url':event['source_url'],'term_sources':term_sources,
+                   'source_printed_date':None,'first_seen_at':None,'revision_lineage':None}
         assertions.append(assertion)
         latest[event['event_id']]=assertion
     requests=read(HERE/'collection/REQUESTS.json')['tasks']
@@ -315,6 +362,8 @@ def build():
                 assertion={'record_id':event['event_id']+':DETAIL:'+receipt['response_sha256'],
                     'event_id':event['event_id'],'status':'PARTIAL','ticker':event['ticker'],'effective_date':event['effective_date'],
                     'terms':newterms,'source_sha256':receipt['response_sha256'],'source_url':receipt['url'],
+                    'term_sources':[{'source_sha256':receipt['response_sha256'],'source_url':receipt['url'],
+                                     'scope':'DETAIL_NUMERIC_TERMS_ONLY_NO_TIMING'}],
                     'supersedes_record_hash':None,'source_printed_date':None,'first_seen_at':None,'revision_lineage':None,
                     'detail_category':parsed['category_from_detail'],'date_binding':parsed['date_binding']}
                 assertions.append(assertion);latest[event['event_id']]=assertion;record['status']='DETAIL_NUMERIC_TERMS_PROVEN_TIMING_PARTIAL'
@@ -353,9 +402,22 @@ def build():
                   'observed_next_trade_date':'2025-07-16',
                   'source_sha256':read(baseline/'CASE_FINDINGS.json')['document_review'][0]['response_sha256'],'authority':AUTHORITY}]
     for event in supplemental:
+        terms={k:None for k in TERM_FIELDS}
+        if event['ticker']=='2327':terms.update(last_trading_date=event['last_trading_date'],
+            resumption_date=event['resumption_date'],new_share_saleable_date=event['resumption_date'],
+            new_shares_per_old_share='4',conversion=True)
+        assertion={'record_id':event['event_id']+':SUPPLEMENTAL','event_id':event['event_id'],
+            'ticker':event['ticker'],'effective_date':event['effective_date'],'status':'PARTIAL','terms':terms,
+            'source_sha256':event['source_sha256'],'source_printed_date':'2025-08-06' if event['ticker']=='2327' else '2025-07-14',
+            'source_url':v1_receipts['SPLIT_2327_20250825' if event['ticker']=='2327' else 'SUSPENSION_3090_20250714']['url'],
+            'first_seen_at':None,'revision_lineage':None,'supersedes_record_hash':None}
+        assertions.append(assertion)
         identities.append({**event,'old_ticker':event['ticker'],'new_ticker':None,'old_security_id':None,'new_security_id':None,
                            'status':'UNKNOWN','economic_continuity_status':'PROVEN_RATIO_ONLY' if event['ticker']=='2327' else 'NOT_APPLICABLE',
                            'listed_instrument_continuity_status':'UNKNOWN','current_security_master_used':False})
+    # Retain the initial ledger prefix and append separately sourced transitions.
+    with TrialLedger(OUT/'ENTITLEMENT_LEDGER.jsonl',{'study':'V2_EVIDENCE_ASSERTIONS_NOT_MODEL_TRIALS','plan_sha256':sha(HERE/'PLAN_V2.json')}) as ledger:
+        for assertion in assertions[-len(supplemental):]:ledger.append(assertion)
     write_lines(OUT/'EVENT_CLASSIFICATION.jsonl',classes)
     write_lines(OUT/'IDENTITY_TRANSITIONS.jsonl',identities)
     write_lines(OUT/'SUPPLEMENTAL_EVENTS.jsonl',supplemental)
@@ -373,12 +435,10 @@ def build():
             for ticker in tickers(window):
                 for event in by_ticker[ticker]:
                     phase=intersects(event,window)
-                    if phase is None and event.get('suspension_start'):
-                        end=event.get('suspension_end') or event.get('observed_next_trade_date')
-                        if end and event['suspension_start']<=window['exit_date'] and end>=window['entry_date']:phase='SUSPENSION_WINDOW'
+                    if phase is None and suspension_overlap(event,window):phase='SUSPENSION_WINDOW'
                     if phase:
                         terms=latest.get(event['event_id'],{}).get('terms',{})
-                        missing=[k for k in TERM_FIELDS if terms.get(k) is None]
+                        missing=missing_for_intersection(event,terms,phase)
                         hits.append({'event_id':event['event_id'],'ticker':ticker,'phase':phase,'missing_fields':missing,
                                      'entitlement_from_pre_ex_ownership':window['entry_date']<event['effective_date']<=window['exit_date'],
                                      'observation_status':'BLOCKED_MISSING_TERMS_OR_IDENTITY'})
@@ -390,6 +450,8 @@ def build():
                 'execution_validity':'UNKNOWN','authority':AUTHORITY})
             counts['retained_observations']+=1
             if hits:counts['observations_with_action_intersections']+=1
+            for phase in ('ENTRY','HOLDING','EXIT','SUSPENSION_WINDOW'):
+                if any(h['phase']==phase for h in hits):counts['observations_blocked_terms_'+phase]+=1
             for h in hits:counts['intersections_'+h['phase']]+=1
             for side,day,pricekey in (('BUY',window['entry_date'],'open'),('SELL',window['exit_date'],'close')):
                 for ticker in tickers(window):

@@ -1,0 +1,24 @@
+{
+  "archive_sha256": "b390679fc0a71af12716b8bcd9b63eb258a7d27376a5024382b585e26e2171e2",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 12568,
+  "fetch_completed_at_utc": "2026-10-23T12:23:10.565422+00:00",
+  "fetch_started_at_utc": "2026-10-23T12:23:09.255284+00:00",
+  "http_status": 200,
+  "id": "SOURCE_DOC_1",
+  "kind": "DOCUMENT",
+  "original_first_seen_at": null,
+  "raw_path": "SOURCE_DOC_1.gz",
+  "response_sha256": "9d532aee39edaeb76e841cf033e56442f20a372ae55ebcad7e92c70ec9e697ec",
+  "transport": "RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/zh/products/dataeshop.html",
+  "validation": "RAW_ONLY_NOT_ENTITLEMENT_AUTHORITY"
+}

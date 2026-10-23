@@ -22,6 +22,8 @@ class V2Contracts(unittest.TestCase):
     def test_paid_subscription_requires_cash_deadline(self):
         r=v.diagnose(self.terms(paid_subscription_per_old_share='.1'),'2025-01-01','PROVEN')
         self.assertIn('SUBSCRIPTION_TERMS_INCOMPLETE',r['block_reasons']);self.assertFalse(r['cash_reinvestment_allowed'])
+        known=v.diagnose(self.terms(paid_subscription_per_old_share='.1',subscription_price='30',subscription_deadline='2025-02-01'),'2025-01-01','PROVEN')
+        self.assertFalse(known['undelivered_share_sale_allowed'])
     def test_cash_reduction_class_and_receivable(self):
         self.assertEqual(v.classify('退還股款','TWTAUU'),'CAPITAL_REDUCTION_CASH_RETURN')
         self.assertIn('PAYMENT_DATE_UNKNOWN',v.diagnose(self.terms(cash_per_old_share='5'),'2025-01-01','PROVEN')['block_reasons'])
@@ -67,6 +69,7 @@ class V2Contracts(unittest.TestCase):
     def test_entry_action_is_not_prior_share_entitlement(self):
         event={'ticker':'2330','effective_date':'2025-01-02'};w={'tickers':['2330'],'entry_date':'2025-01-02','exit_date':'2025-01-10'}
         self.assertEqual(v.intersects(event,w),'ENTRY')
+        self.assertNotIn('cash_payment_date',v.missing_for_intersection(event,{},'ENTRY'))
         event['effective_date']='2025-01-10';self.assertEqual(v.intersects(event,w),'EXIT')
         event['effective_date']='2025-01-11';self.assertIsNone(v.intersects(event,w))
     def test_duplicate_evidence_assertion_rejected_prefix_retained(self):
@@ -77,6 +80,37 @@ class V2Contracts(unittest.TestCase):
             with v.TrialLedger(p,{'synthetic':True}) as l:
                 with self.assertRaises(ValueError):l.append({'record_id':'assertion','status':'PROVEN'})
             self.assertEqual(prefix,p.read_bytes())
+    def test_nonfinite_negative_and_invalid_dates_block(self):
+        for value in ('NaN','Infinity','-1','not-a-number'):
+            r=v.diagnose(self.terms(cash_per_old_share=value),'2025-01-01','PROVEN')
+            self.assertFalse(r['cash_reinvestment_allowed']);self.assertFalse(r['undelivered_share_sale_allowed'])
+        r=v.diagnose(self.terms(cash_per_old_share='4',cash_payment_date='2025-02-30'),'2025-01-01','PROVEN')
+        self.assertFalse(r['cash_reinvestment_allowed'])
+    def test_http200_security_refusal_stops_next_family_request(self):
+        import discover
+        from unittest.mock import patch
+        calls=[]
+        class Response:
+            status=200
+            def __enter__(self):return self
+            def __exit__(self,*args):pass
+            def read(self,*args):return b'FOR SECURITY REASONS, THIS PAGE CAN NOT BE ACCESSED.'
+        def fake(url,**kw):calls.append(url);return Response()
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            (root/'DISCOVERY_PLAN_V2.json').write_text(json.dumps({'sources':[
+                {'id':'first','url':'https://example.invalid/a','family':'MOPS'},
+                {'id':'second','url':'https://example.invalid/b','family':'MOPS'}]}))
+            with patch.object(discover,'HERE',root),patch.object(discover.urllib.request,'urlopen',fake),patch.object(discover.time,'sleep'):
+                discover.main()
+            self.assertEqual(len(calls),1)
+            records=json.loads((root/'discovery/MANIFEST.json').read_text())['records']
+            self.assertEqual(records[1]['status'],'NOT_ATTEMPTED_AFTER_FAMILY_STOP')
+    def test_observed_next_trade_not_an_inclusive_halt_day(self):
+        e={'category':'SUSPENSION','suspension_start':'2025-07-15','observed_next_trade_date':'2025-07-16'}
+        self.assertTrue(v.suspension_overlap(e,{'entry_date':'2025-07-14','exit_date':'2025-07-15'}))
+        self.assertFalse(v.suspension_overlap(e,{'entry_date':'2025-07-16','exit_date':'2025-07-20'}))
+        self.assertIn('TRADABILITY_AT_ENTRY',v.missing_for_intersection(e,{},'ENTRY')[0])
 
 
 if __name__=='__main__':unittest.main()

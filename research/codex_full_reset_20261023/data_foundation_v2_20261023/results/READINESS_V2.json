@@ -1,0 +1,83 @@
+{
+  "adjusted_return_engine": "BLOCKED_NOT_IMPLEMENTED",
+  "admissible_adjusted_pnl_scope": [],
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "block_reasons": [
+    "UNRETAINED_HISTORICAL_TRADE_WINDOWS",
+    "ENTITLEMENT_PAYMENT_DELIVERY_INCOMPLETE",
+    "LISTED_SECURITY_IDENTITIES_UNKNOWN",
+    "AUCTION_ORDER_ALLOCATION_UNKNOWN",
+    "FIRST_SEEN_REVISION_UNKNOWN"
+  ],
+  "coverage": {
+    "authority": {
+      "broker_order_execution": false,
+      "capital_authority_twd": 0,
+      "merge_authorized": false,
+      "production_promotion": false,
+      "ranking_authority": false,
+      "research_only": true,
+      "signal_authority": false
+    },
+    "classification_counts": {
+      "CAPITAL_REDUCTION_CASH_RETURN": 19,
+      "CAPITAL_REDUCTION_LOSS_ABSORPTION": 13,
+      "CASH_DIVIDEND": 1021,
+      "MIXED_ACTION": 2,
+      "MIXED_CASH_AND_UNSPECIFIED_RIGHTS": 31,
+      "RIGHTS_PAID_SUBSCRIPTION": 1,
+      "RIGHTS_TERMS_UNKNOWN": 63,
+      "STOCK_DIVIDEND_FREE_SHARES": 1
+    },
+    "classification_records": 1151,
+    "delivery_dates_known": 0,
+    "economic_conversion_ratios_proven_supplemental": 1,
+    "entitlement_assertions": 1165,
+    "execution_records": 1331,
+    "fill_status_counts": {
+      "UNKNOWN": 1331
+    },
+    "global_event_denominator": 1151,
+    "historical_impact_coverage": {
+      "RETAINED_WINDOWS_EXACT_FILE": 24,
+      "RETAINED_WINDOWS_METADATA_BOUND": 45,
+      "UNKNOWN_WINDOWS_NOT_RETAINED": 8460,
+      "all_trials": 8529,
+      "intended_constituent_order_legs": 341446,
+      "intersections_ENTRY": 698,
+      "intersections_EXIT": 765,
+      "intersections_HOLDING": 6149,
+      "intersections_SUSPENSION_WINDOW": 11,
+      "observations_blocked_terms_ENTRY": 314,
+      "observations_blocked_terms_EXIT": 293,
+      "observations_blocked_terms_HOLDING": 707,
+      "observations_blocked_terms_SUSPENSION_WINDOW": 11,
+      "observations_with_action_intersections": 793,
+      "retained_observations": 1906
+    },
+    "latest_entitlement_status_counts": {
+      "PARTIAL": 1151
+    },
+    "listed_security_id_transitions_proven": 0,
+    "new_model_evaluations": 0,
+    "numeric_cash_terms_known": 14,
+    "original_first_seen_proven": 0,
+    "payment_dates_known": 0,
+    "prior_model_evaluations": 8529,
+    "revision_lineage_proven": 0
+  },
+  "diagnostic_obligation_states_only": true,
+  "narrower_future_scope": "Retrospective source-field and corporate-action forensics only; no adjusted-PnL or model study is authorized.",
+  "new_model_evaluations": 0,
+  "next_action": "STOP_FOR_HUMAN_REVIEW; no model run even if a future scope is made ready",
+  "partial_scope_ready": false,
+  "status": "BLOCKED_DATA_READINESS"
+}
