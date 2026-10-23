@@ -1,0 +1,49 @@
+name: HENGCE Candidate C research
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'research/e2_profit_max/candidate_c/**'
+      - '.github/workflows/hengce-candidate-c-research.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  candidate-c:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and unit test
+        run: |
+          python -m py_compile research/e2_profit_max/candidate_c/run_candidate_c_finite.py
+          python research/e2_profit_max/candidate_c/test_candidate_c_finite.py
+      - name: Run locked finite research screen
+        run: |
+          set -euo pipefail
+          python research/e2_profit_max/candidate_c/run_candidate_c_finite.py | tee /tmp/candidate_c_summary.json
+          echo '--- candidate_c_result.json ---'
+          cat research/e2_profit_max/candidate_c/candidate_c_result.json
+      - name: Enforce zero authority
+        run: |
+          python - <<'PY'
+          import json
+          p='research/e2_profit_max/candidate_c/candidate_c_result.json'
+          x=json.load(open(p))
+          assert x['authority']=='RESEARCH_ONLY_ZERO_CAPITAL_AUTHORITY'
+          assert x['capital_authority_twd']==0
+          assert x['production_mutation'] is False
+          assert x['q017_mutated'] is False
+          assert x['candidate_b_mutated'] is False
+          assert x['promotion']=='FORBIDDEN_BY_THIS_ARTIFACT'
+          assert x['search_space']['count']==40
+          assert x['search_space']['dxy']=='EXCLUDED'
+          assert x['search_space']['threshold_optimization'] is False
+          print('CANDIDATE_C_ZERO_AUTHORITY_PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hengce-candidate-c-research-result
+          path: research/e2_profit_max/candidate_c/candidate_c_result.json
