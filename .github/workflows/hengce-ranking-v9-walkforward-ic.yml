@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Fix V9 indentation typo
+        run: sed -i 's/^ics=/ ics=/' research/codex_full_reset_20261023/ranking_v9_walkforward_ic.py
       - name: Run V9 walkforward IC learner
         run: python -u research/codex_full_reset_20261023/ranking_v9_walkforward_ic.py
       - name: Print result
