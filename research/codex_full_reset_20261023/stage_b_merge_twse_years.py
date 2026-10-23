@@ -7,8 +7,10 @@ import csv
 import gzip
 import hashlib
 import json
+import shutil
 from pathlib import Path
 from typing import Any
+from stage_b_build_twse_year import CORPUS_BASE, load_expected, validate_daily
 
 YEARS = (2023, 2024, 2025)
 FIELDS = ["date", "ticker", "name", "open", "high", "low", "close", "volume_shares", "turnover_ntd"]
@@ -35,6 +37,10 @@ def main() -> int:
     out = Path(args.output_dir)
     out.mkdir(parents=True, exist_ok=True)
 
+    expected={};expected_names={}
+    for year in YEARS:
+        daily,names,_=load_expected(year);expected.update(daily);expected_names.update(names)
+    raw_records={}
     receipts = []
     total_expected_dates = 0
     total_pass_dates = 0
@@ -56,6 +62,27 @@ def main() -> int:
             raise RuntimeError(f"YEAR_MOTHER_SHA_MISMATCH:{year}")
         if r.get("qa_sha256") != sha256_file(qp):
             raise RuntimeError(f"YEAR_QA_SHA_MISMATCH:{year}")
+        if r.get('frozen_corpus_base') != CORPUS_BASE or r.get('year') != year:
+            raise RuntimeError('YEAR_CORPUS_BINDING_MISMATCH')
+        seen_qa=set()
+        for line in qp.read_text().splitlines():
+            q=json.loads(line);d=q['date']
+            if d in seen_qa or d not in expected or not d.startswith(str(year)) or q.get('status')!='PASS':
+                raise RuntimeError('INVALID_YEAR_QA:'+str(d))
+            seen_qa.add(d)
+            raw_path=(inp/q['raw_source_path']).resolve()
+            if not raw_path.is_relative_to(inp.resolve()) or sha256_file(raw_path)!=q['raw_archive_sha256']:
+                raise RuntimeError('RAW_ARCHIVE_BINDING_MISMATCH')
+            raw=gzip.decompress(raw_path.read_bytes())
+            if hashlib.sha256(raw).hexdigest()!=q['response_sha256']:
+                raise RuntimeError('RAW_RESPONSE_HASH_MISMATCH')
+            from stage_b_build_twse_year import decode
+            parsed,verified=validate_daily(decode(raw),d,expected[d])
+            if verified['status']!='PASS':raise RuntimeError('RAW_REVALIDATION_FAILED:'+d)
+            for row in parsed:raw_records[(d,row['ticker'])]=row
+            dest=out/q['raw_source_path'];dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(raw_path,dest)
+        if seen_qa!={d for d in expected if d.startswith(str(year))}:
+            raise RuntimeError('YEAR_QA_DATE_SET_INCOMPLETE')
         receipts.append(r)
         total_expected_dates += int(r["expected_trading_dates"])
         total_pass_dates += int(r["pass_dates"])
@@ -84,6 +111,11 @@ def main() -> int:
                     key = (d, ticker)
                     if key in seen_keys:
                         raise RuntimeError(f"DUPLICATE_KEY:{d}:{ticker}")
+                    original=raw_records.get(key)
+                    if original is None or any(row[k]!=original[k] for k in FIELDS if k not in {'date','name'}):
+                        raise RuntimeError('MOTHER_RAW_VALUE_MISMATCH:'+str(key))
+                    if row['name']!=expected_names[key]:
+                        raise RuntimeError('MOTHER_PIT_NAME_MISMATCH:'+str(key))
                     seen_keys.add(key)
                     seen_dates.add(d)
                     writer.writerow({k: row.get(k, "") for k in FIELDS})
@@ -97,6 +129,8 @@ def main() -> int:
             if text and not text.endswith("\n"):
                 fout.write("\n")
 
+    if seen_keys != {(d,t) for d,tickers in expected.items() for t in tickers}:
+        raise RuntimeError('MERGED_EXACT_MEMBERSHIP_MISMATCH')
     if rows_written != expected_rows:
         raise RuntimeError(f"ROW_COUNT_MISMATCH:{rows_written}:{expected_rows}")
     if len(seen_dates) != total_expected_dates or total_pass_dates != total_expected_dates or total_failed_dates != 0:
@@ -104,6 +138,8 @@ def main() -> int:
 
     receipt = {
         "schema_version": 2,
+        "frozen_corpus_base":CORPUS_BASE,
+        "raw_responses_revalidated":len(seen_dates),
         "stage": "B_OFFICIAL_MOTHER_REBUILD",
         "mode": "PARALLEL_YEAR_SHARDS_THEN_HASH_VERIFIED_MERGE",
         "source": "TWSE MI_INDEX type=13 historical daily CSV",
