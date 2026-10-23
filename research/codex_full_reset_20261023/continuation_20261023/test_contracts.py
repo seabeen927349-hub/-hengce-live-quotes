@@ -125,6 +125,28 @@ class Contracts(unittest.TestCase):
         self.assertEqual(plan['total_evaluation_budget'], 24)
         self.assertEqual(plan['model_configs'], len(s.KINDS)*2)
 
+    def test_checkpoint_rejects_replacement_missing_and_extra_evidence(self):
+        from audit_checkpoint import verify
+        import hashlib
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root/'results').mkdir()
+            p = root/'results/result.json'
+            p.write_text('original')
+            (root/'EVIDENCE_CHECKPOINT.json').write_text(json.dumps({
+                'sha256': {'results/result.json': hashlib.sha256(p.read_bytes()).hexdigest()}}))
+            self.assertEqual(verify(root)['files'], 1)
+            p.write_text('replaced')
+            with self.assertRaisesRegex(ValueError, 'HASH_MISMATCH'):
+                verify(root)
+            p.unlink()
+            with self.assertRaisesRegex(ValueError, 'HASH_MISMATCH'):
+                verify(root)
+            p.write_text('original')
+            (root/'results/unregistered.json').write_text('{}')
+            with self.assertRaisesRegex(ValueError, 'HASH_MISMATCH'):
+                verify(root)
+
 
 if __name__ == '__main__':
     unittest.main()

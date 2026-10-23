@@ -34,4 +34,5 @@ jobs:
           fi
           if [ -f research/codex_full_reset_20261023/continuation_20261023/results/SUMMARY.json ]; then
             python -B research/codex_full_reset_20261023/continuation_20261023/search.py --audit
+            python -B research/codex_full_reset_20261023/continuation_20261023/audit_checkpoint.py
           fi
