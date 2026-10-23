@@ -52,8 +52,12 @@ def default_manifest_path() -> Path:
         root / "governance" / MANIFEST_NAME,
     ]
     found = [p for p in candidates if p.is_file()]
-    if len(found) != 1:
-        raise ValueError("TWSE_CALENDAR_NOT_FOUND_OR_AMBIGUOUS")
+    if not found:
+        raise ValueError("TWSE_CALENDAR_NOT_FOUND")
+    if len(found) > 1:
+        payloads = [p.read_bytes() for p in found]
+        if any(blob != payloads[0] for blob in payloads[1:]):
+            raise ValueError("TWSE_CALENDAR_DUPLICATE_MISMATCH")
     return found[0]
 
 
