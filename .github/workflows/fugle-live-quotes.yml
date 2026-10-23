@@ -10,10 +10,6 @@ name: Hengce live quotes
       - 'hengce/HENGCE_LIVE_UNIVERSE_COVERAGE_CONTRACT_v1_0_20261020.json'
       - 'hengce/HENGCE_LIVE_UNIVERSE_AUTHORITATIVE_HANDOFF_CONTRACT_v1_0_20261020.json'
       - 'hengce/live_market_lifecycle.json'
-      - 'hengce/calendar/TWSE_TRADING_CALENDAR_2026_v1.json'
-      - 'hengce/calendar/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json'
-      - 'scripts/hengce_twse_calendar.py'
-      - 'scripts/hengce_market_session_guard.py'
       - 'scripts/hengce_live_quote_transport.py'
       - 'scripts/hengce_live_trial_guard.py'
       - 'scripts/hengce_live_universe_guard.py'
@@ -73,13 +69,6 @@ jobs:
 
       - name: Validate universe coverage guard
         run: python3 scripts/hengce_live_universe_guard.py --mode validate
-
-      - name: Apply effective TWSE session guard
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 scripts/hengce_market_session_guard.py --self-test
-          python3 scripts/hengce_market_session_guard.py --mode live --artifact latest.json
 
       - name: Commit live snapshot
         shell: bash
