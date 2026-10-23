@@ -24,7 +24,7 @@ class Boundaries(unittest.TestCase):
         self.assertEqual(ticker({'Ticker': '2330.TW', 'symbol': 'TWSE:2330'}), '2330')
         with self.assertRaises(ValueError): ticker({'Ticker': '2330', 'symbol': '2454'})
     def test_strict_json(self):
-        for data in ['{"a":1,"a":2}', '{"a":NaN}', '{"a":Infinity}']:
+        for data in ['{"a":1,"a":2}', '{"a":NaN}', '{"a":Infinity}', '{"a":1e999}']:
             with self.assertRaises(ValueError): strict_loads(data)
     def test_no_geometry_no_entry(self):
         legacy, live, ctx = fixtures()
@@ -42,6 +42,23 @@ class Boundaries(unittest.TestCase):
         other = copy.deepcopy(legacy['rows'][0]); other['AlphaScore'] = .1
         legacy['rows'].append(other)
         with self.assertRaises(ValueError): adapter.build(legacy)
+    def test_ambiguous_context_and_quote_fail_closed(self):
+        for target, key, value in [('context','state','RISK_OFF'), ('live','last',89), ('live','fetch_ok',False), ('live','unexpected_stale_at_publish',True)]:
+            legacy, live, ctx = fixtures()
+            if target == 'context': ctx[key] = value
+            else: live['data'][0][key] = value
+            out = board.build(adapter.build(legacy), live, ctx, trade_date='2026-10-23', now=NOW)
+            self.assertEqual(out['binding_status'], 'FAIL_CLOSED')
+            self.assertEqual(out['rows'][0]['FinalAction'], 'ABSTAIN')
+    def test_inactive_quote_cannot_create_entry(self):
+        legacy, live, ctx = fixtures()
+        live['data'][0]['expected_inactive_at_publish'] = True
+        out = board.build(adapter.build(legacy), live, ctx, trade_date='2026-10-23', now=NOW)
+        self.assertEqual(out['rows'][0]['FinalAction'], 'ABSTAIN')
+    def test_activation_flags_and_legacy_ranks_are_not_coerced(self):
+        for key,value in [('FormalEntryTrigger','true'),('PositionHeld',1),('rank',1.5),('rank',True)]:
+            legacy, _, _ = fixtures();legacy['rows'][0][key]=value
+            with self.assertRaises(ValueError): adapter.build(legacy)
     def test_invalid_geometry(self):
         legacy, _, _ = fixtures()
         row = legacy['rows'][0]
@@ -63,4 +80,4 @@ class Boundaries(unittest.TestCase):
         result = board.build(adapter.build(legacy), live, ctx, trade_date='2026-10-23', now=NOW)
         self.assertEqual(result['binding_status'], 'FAIL_CLOSED')
 
-if __name__ == '__main__': unittest.main()
+if __name__ == '__main__': unittest.main(argv=[__file__])

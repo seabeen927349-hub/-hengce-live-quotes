@@ -63,6 +63,7 @@ def cases():
 
     cash = canonical_q017("3008")
     cash["market_state"] = "CASH"
+    cash["candidates"] = []
     out4 = adapter.build(legacy, cash)
     assert out4["q017_contract_status"] == "PASS"
     assert out4["candidate_count"] == 2

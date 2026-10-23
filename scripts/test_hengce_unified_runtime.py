@@ -159,4 +159,4 @@ class Runtime(unittest.TestCase):
         q=canonical_q017();q['candidates'].append(copy.deepcopy(q['candidates'][0]))
         self.assertNotEqual(adapter.build(self.legacy,q)['q017_contract_status'],'PASS')
 
-if __name__=='__main__':unittest.main()
+if __name__=='__main__':unittest.main(argv=[__file__])

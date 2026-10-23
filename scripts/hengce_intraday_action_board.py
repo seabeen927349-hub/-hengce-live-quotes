@@ -53,6 +53,11 @@ def _extract_rows(base):
 
 
 def _extract_context(ctx):
+    for keys in [("MarketContextState", "market_context_state", "state", "State"),
+                 ("NewCapitalPolicy", "new_capital_policy", "policy", "Policy")]:
+        values = [str(ctx[k]).upper() for k in keys if ctx.get(k) is not None]
+        if len(set(values)) > 1:
+            return "CONTEXT_AMBIGUOUS", "CONTEXT_UNAVAILABLE"
     state = _first(ctx, ["MarketContextState", "market_context_state", "state", "State"], "CONTEXT_UNAVAILABLE")
     policy = _first(ctx, ["NewCapitalPolicy", "new_capital_policy", "policy", "Policy"], None)
     if policy is None:
@@ -121,6 +126,15 @@ def _validate_live(live, trade_date=None, max_age_seconds=480, now=None):
         tickers = [_ticker(row) for row in rows if isinstance(row, dict)]
         if len(tickers) != len(rows) or not all(tickers) or len(set(tickers)) != len(tickers):
             return False, "LIVE_MALFORMED_OR_DUPLICATE_TICKER"
+        for keys in [("generated_at_taipei", "generated_at", "timestamp"), ("snapshot_id", "SnapshotId")]:
+            values = [live[k] for k in keys if live.get(k) is not None]
+            if any(v != values[0] for v in values):
+                return False, "LIVE_CONFLICTING_METADATA_ALIASES"
+        for row in rows:
+            for keys in [('price', 'last', 'last_price'), ('high', 'day_high')]:
+                values = [finite(row[k]) for k in keys if row.get(k) is not None]
+                if values and (None in values or len(set(values)) > 1):
+                    return False, "LIVE_INVALID_OR_CONFLICTING_PRICE"
         for key in ("unexpected_stale_count", "expected_inactive_count", "stale_count"):
             if key in live and (type(live[key]) is not int or live[key] < 0):
                 return False, "LIVE_INVALID_FRESHNESS_COUNT"
@@ -141,6 +155,8 @@ def _validate_live(live, trade_date=None, max_age_seconds=480, now=None):
     elif int(live.get("stale_count", 0) or 0) > 0:
         return False, "LIVE_STALE_COUNT_NONZERO"
 
+    if any(row.get('fetch_ok') is False or row.get('unexpected_stale_at_publish') is True for row in rows):
+        return False, "LIVE_ROW_NOT_READY"
     if trade_date:
         for row in rows:
             qdate = row.get("quote_date")
@@ -172,6 +188,8 @@ def _geometry(row):
 
 
 def _price_proof(base_row, live_row):
+    if live_row.get('expected_inactive_at_publish') is True or live_row.get('market_lifecycle_expected_inactive') is True:
+        return "LIVE_UNAVAILABLE"
     p = _to_float(_first(live_row, ["price", "last", "last_price"]))
     hi = _to_float(_first(live_row, ["high", "day_high"]))
     if p is None or p <= 0:

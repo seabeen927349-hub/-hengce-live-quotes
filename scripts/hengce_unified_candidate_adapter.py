@@ -159,6 +159,8 @@ def _q017_candidates(q017: dict[str, Any]) -> list[dict[str, Any]]:
         return []
     state = str(q017.get("market_state") or q017.get("state") or "UNAVAILABLE").upper()
     if state not in {"GO", "ELIGIBLE", "ACTIVE"}:
+        if q017.get('candidates'):
+            raise ValueError('Q017_CASH_WITH_CANDIDATES')
         return []
     rows = q017.get("candidates")
     if not isinstance(rows, list):
@@ -167,7 +169,7 @@ def _q017_candidates(q017: dict[str, Any]) -> list[dict[str, Any]]:
             rows = [rows]
         elif not isinstance(rows, list):
             rows = []
-    if len(rows) > 1:
+    if len(rows) != 1:
         raise ValueError("Q017_TOP1_CARDINALITY")
     selected = []
     for row in rows:
@@ -200,6 +202,8 @@ def _q017_candidates(q017: dict[str, Any]) -> list[dict[str, Any]]:
 def build(legacy_base: Any, q017: Any | None = None) -> dict[str, Any]:
     if not isinstance(legacy_base, dict):
         raise ValueError("LEGACY_BASE_NOT_OBJECT")
+    if 'schema_version' in legacy_base and (type(legacy_base['schema_version']) is not int or legacy_base['schema_version'] not in {1, 2}):
+        raise ValueError('UNSUPPORTED_LEGACY_SCHEMA')
     # strict JSON round trip also rejects non-finite in-memory input.
     strict_loads(json.dumps(legacy_base, allow_nan=False))
     collections = [legacy_base[k] for k in ["rows", "data", "rankings", "candidates", "results", "table", "stocks"] if k in legacy_base]
@@ -395,6 +399,7 @@ def _self_test_cases() -> None:
 
     q_cash = copy.deepcopy(q)
     q_cash["market_state"] = "CASH"
+    q_cash["candidates"] = []
     out4 = build(legacy, q_cash)
     assert out4["q017_contract_status"] == "PASS"
     assert out4["q017_added_count"] == 0 and out4["q017_merged_existing_count"] == 0
