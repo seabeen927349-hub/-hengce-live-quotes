@@ -2,8 +2,14 @@
 set -euo pipefail
 
 ROOT="${HENGCE_ROOT:-$(pwd)}"
-ADAPTER="${HENGCE_UNIFIED_ADAPTER:-$ROOT/scripts/hengce_unified_candidate_adapter.py}"
-PY="${HENGCE_INTRADAY_BRIDGE:-$ROOT/scripts/hengce_unified_action_board.py}"
+ADAPTER="${HENGCE_UNIFIED_ADAPTER:-$ROOT/work/hengce_unified_candidate_adapter.py}"
+PY="${HENGCE_INTRADAY_BRIDGE:-$ROOT/work/hengce_unified_action_board.py}"
+if [[ ! -f "$ADAPTER" && -f "$ROOT/scripts/hengce_unified_candidate_adapter.py" ]]; then
+  ADAPTER="$ROOT/scripts/hengce_unified_candidate_adapter.py"
+fi
+if [[ ! -f "$PY" && -f "$ROOT/scripts/hengce_unified_action_board.py" ]]; then
+  PY="$ROOT/scripts/hengce_unified_action_board.py"
+fi
 OUT_DIR="${HENGCE_INTRADAY_OUT_DIR:-$ROOT/work_output/intraday_action_board}"
 OUT="$OUT_DIR/HENGCE_INTRADAY_ACTION_BOARD.json"
 UNIFIED_BASE="$OUT_DIR/HENGCE_UNIFIED_CANDIDATE_BASE.json"
