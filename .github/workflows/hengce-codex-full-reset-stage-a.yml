@@ -5,7 +5,10 @@ on:
     branches:
       - research/codex-full-reset-run-20261023
     paths:
-      - 'research/codex_full_reset_20261023/**'
+      - 'research/codex_full_reset_20261023/stage_a_data_audit.py'
+      - 'research/codex_full_reset_20261023/stage_a_round2_reconstruction.py'
+      - 'research/codex_full_reset_20261023/RESET_AUTHORIZATION.json'
+      - 'research/codex_full_reset_20261023/CORPUS_MANIFEST.json'
       - '.github/workflows/hengce-codex-full-reset-stage-a.yml'
   workflow_dispatch:
 
@@ -40,7 +43,27 @@ jobs:
         run: python research/codex_full_reset_20261023/stage_a_data_audit.py
 
       - name: Reconstruct Round-2 payload using original semantics
+        id: round2
+        continue-on-error: true
         run: python research/codex_full_reset_20261023/stage_a_round2_reconstruction.py
+
+      - name: Require explicit Round-2 evidence record
+        if: always()
+        run: |
+          test -s research/codex_full_reset_20261023/results/ROUND2_RECONSTRUCTION.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/codex_full_reset_20261023/results/ROUND2_RECONSTRUCTION.json')
+          d=json.loads(p.read_text())
+          assert d['authority']['capital_authority_twd'] == 0
+          assert d['authority']['broker_order_execution'] is False
+          assert d['research_interpretation'] in {
+              'ROUND2_SHOCK_PAYLOAD_RECOVERED_AND_USABLE_AS_EXPOSED_HISTORY',
+              'ROUND2_SHOCK_PAYLOAD_NOT_PROVEN_USABLE',
+          }
+          print('ROUND2_EVIDENCE_RETAINED', d['research_interpretation'])
+          PY
 
       - name: Print Stage A evidence
         if: always()
