@@ -25,6 +25,15 @@ def _day(value):
     return date.fromisoformat(str(value or "")[:10])
 
 
+def _ordinary_next_session(signal_date, trade_date):
+    gap = (trade_date - signal_date).days
+    if gap == 1 and signal_date.weekday() < 4 and trade_date.weekday() == signal_date.weekday() + 1:
+        return
+    if gap == 3 and signal_date.weekday() == 4 and trade_date.weekday() == 0:
+        return
+    raise ValueError("Q017_OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP")
+
+
 def validate(q017):
     if q017 is None:
         return
@@ -44,6 +53,7 @@ def validate(q017):
     signal_date = _day(q017.get("signal_date"))
     if signal_date >= trade_date:
         raise ValueError("Q017_SIGNAL_DATE_NOT_PRIOR")
+    _ordinary_next_session(signal_date, trade_date)
     state = q017.get("market_state")
     rows = q017.get("candidates")
     if not isinstance(rows, list):
