@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
-"""Reviewed producer admission for optional canonical Q017 evidence.
-
-This module grants no capital or geometry authority. It pins the reviewed producer
-commit and performs lineage/session checks before the existing unified adapter is
-allowed to consider Q017. Invalid reviewed-producer artifacts are isolated as an
-unavailable optional source so valid legacy HENGCE can continue.
-"""
+"""Reviewed producer admission for optional canonical Q017 evidence."""
 from __future__ import annotations
 
 from datetime import date
 
+import hengce_twse_calendar as twse_calendar
+
 VERIFIED_PRODUCER_NAME = "hengce_q017_canonical_producer"
-VERIFIED_PRODUCER_COMMIT = "a60265f29cc57e79873f4fc9e99fa8996e15558c"
+VERIFIED_PRODUCER_COMMIT = "ba003ca8989efa524c5505e28e206a3cc2d27327"
 EXPECTED_EVIDENCE_COMMIT = "f5abef555d9174e3919a9dca52e9bfb07351e02e"
 
 AUTHORITY_KEYS = {
@@ -23,15 +19,6 @@ AUTHORITY_KEYS = {
 
 def _day(value):
     return date.fromisoformat(str(value or "")[:10])
-
-
-def _ordinary_next_session(signal_date, trade_date):
-    gap = (trade_date - signal_date).days
-    if gap == 1 and signal_date.weekday() < 4 and trade_date.weekday() == signal_date.weekday() + 1:
-        return
-    if gap == 3 and signal_date.weekday() == 4 and trade_date.weekday() == 0:
-        return
-    raise ValueError("Q017_OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP")
 
 
 def validate(q017):
@@ -49,11 +36,30 @@ def validate(q017):
     evidence = producer.get("evidence")
     if not isinstance(evidence, dict) or evidence.get("frozen_validation_commit") != EXPECTED_EVIDENCE_COMMIT:
         raise ValueError("Q017_FROZEN_EVIDENCE_LINEAGE_MISMATCH")
+
     trade_date = _day(q017.get("trade_date"))
     signal_date = _day(q017.get("signal_date"))
     if signal_date >= trade_date:
         raise ValueError("Q017_SIGNAL_DATE_NOT_PRIOR")
-    _ordinary_next_session(signal_date, trade_date)
+
+    calendar, _, calendar_sha = twse_calendar.load_manifest()
+    calendar_evidence = q017.get("session_calendar")
+    if not isinstance(calendar_evidence, dict):
+        raise ValueError("Q017_SESSION_CALENDAR_MISSING")
+    expected_calendar = {
+        "market": "TWSE",
+        "calendar_year": twse_calendar.CALENDAR_YEAR,
+        "authority": "TWSE_OFFICIAL_HOLIDAY_SCHEDULE",
+        "fingerprint_sha256": twse_calendar.EXPECTED_CALENDAR_FINGERPRINT_SHA256,
+        "manifest_sha256": calendar_sha,
+    }
+    if calendar_evidence != expected_calendar:
+        raise ValueError("Q017_SESSION_CALENDAR_LINEAGE_MISMATCH")
+    hashes = producer.get("input_hashes")
+    if not isinstance(hashes, dict) or hashes.get("twse_calendar_manifest") != calendar_sha:
+        raise ValueError("Q017_SESSION_CALENDAR_INPUT_HASH_MISMATCH")
+    twse_calendar.validate_next_session(signal_date, trade_date, calendar)
+
     state = q017.get("market_state")
     rows = q017.get("candidates")
     if not isinstance(rows, list):
@@ -89,5 +95,5 @@ def admit(adapter, q017):
     try:
         validate(q017)
         return q017
-    except (ValueError, TypeError, OverflowError) as exc:
+    except (ValueError, TypeError, OverflowError, OSError) as exc:
         return {"input_error": str(exc)}
