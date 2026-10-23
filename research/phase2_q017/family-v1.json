@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "program": "HENGCE_Q017_PHASE2_PROSPECTIVE_V1",
+  "activation_date": "2026-10-23",
+  "champion": {
+    "id": "CHAMPION_K25_R004",
+    "k": 25,
+    "residual_max": 0.04,
+    "top_n": 3,
+    "score": "beta*(1+k*max(-residual,0))"
+  },
+  "challengers": [
+    {
+      "id": "K15_R004",
+      "k": 15,
+      "residual_max": 0.04,
+      "top_n": 3,
+      "hypothesis": "lower residual amplification improves rank stability"
+    },
+    {
+      "id": "K20_R004",
+      "k": 20,
+      "residual_max": 0.04,
+      "top_n": 3,
+      "hypothesis": "mildly lower residual amplification improves rank stability"
+    },
+    {
+      "id": "K30_R004",
+      "k": 30,
+      "residual_max": 0.04,
+      "top_n": 3,
+      "hypothesis": "mildly higher residual amplification improves selection separation"
+    },
+    {
+      "id": "K35_R004",
+      "k": 35,
+      "residual_max": 0.04,
+      "top_n": 3,
+      "hypothesis": "higher residual amplification improves selection separation"
+    },
+    {
+      "id": "K25_R003",
+      "k": 25,
+      "residual_max": 0.03,
+      "top_n": 3,
+      "hypothesis": "tighter residual admission improves candidate quality"
+    },
+    {
+      "id": "K25_R005",
+      "k": 25,
+      "residual_max": 0.05,
+      "top_n": 3,
+      "hypothesis": "slightly wider residual admission improves opportunity breadth"
+    }
+  ],
+  "rules": {
+    "same_immutable_0901_observation_only": true,
+    "historical_backfill": false,
+    "historical_signal_regeneration": false,
+    "past_locks_smoke_only": true,
+    "prospective_candidate_selection": false,
+    "automated_optimizer": false,
+    "grid_search": false,
+    "random_search": false,
+    "bayesian_search": false,
+    "unrestricted_feature_mining": false,
+    "max_challenger_variants": 6,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "PROMOTE_TO_PRODUCTION": "FORBIDDEN"
+  }
+}
