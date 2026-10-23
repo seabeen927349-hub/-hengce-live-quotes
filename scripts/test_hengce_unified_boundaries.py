@@ -59,6 +59,15 @@ class Boundaries(unittest.TestCase):
         for key,value in [('FormalEntryTrigger','true'),('PositionHeld',1),('rank',1.5),('rank',True)]:
             legacy, _, _ = fixtures();legacy['rows'][0][key]=value
             with self.assertRaises(ValueError): adapter.build(legacy)
+    def test_malformed_geometry_cannot_create_exit(self):
+        legacy, live, ctx = fixtures()
+        legacy['rows'][0].update(PositionHeld=True, Invalidation=110)
+        out = board.build(adapter.build(legacy), live, ctx, trade_date='2026-10-23', now=NOW)
+        self.assertEqual(out['rows'][0]['FinalAction'], 'ABSTAIN')
+    def test_explicit_nonformal_candidate_cannot_enter(self):
+        legacy, live, ctx = fixtures();legacy['rows'][0]['FormalCandidate']=False
+        out = board.build(adapter.build(legacy), live, ctx, trade_date='2026-10-23', now=NOW)
+        self.assertEqual(out['rows'][0]['FinalAction'], 'ABSTAIN')
     def test_invalid_geometry(self):
         legacy, _, _ = fixtures()
         row = legacy['rows'][0]

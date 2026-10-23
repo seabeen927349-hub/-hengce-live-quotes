@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from hengce_unified_contracts import atomic, strict_loads, digest, aware, ZERO_AUTHORITY
+from hengce_unified_contracts import atomic, strict_loads, digest, aware, geometry, ZERO_AUTHORITY
 from hengce_unified_runner import locations, NAMES
 
 TZ = ZoneInfo('Asia/Taipei')
@@ -73,12 +73,14 @@ def build(now, action=None, base=None, receipt=None):
             if name in seen or src is None:
                 raise ValueError('INCONSISTENT_TICKER')
             seen.add(name)
-            for key in ('SourceProvenance', 'LegacyScore', 'Q017Score', 'Q017Rank', 'LegacyEvidence', 'Q017Evidence'):
+            for key in ('SourceProvenance', 'LegacyScore', 'Q017Score', 'Q017Rank', 'LegacyEvidence', 'Q017Evidence', 'FormalCandidate'):
                 if row.get(key) != src.get(key):
                     raise ValueError('SOURCE_EVIDENCE_MISMATCH')
             if row.get('FinalAction') not in {'ABSTAIN', 'REVIEW_ENTRY', 'REVIEW_PROBE', 'EXIT_ALL'}:
                 raise ValueError('UNKNOWN_ACTION')
-            if row.get('FinalAction') in {'REVIEW_ENTRY', 'REVIEW_PROBE'} and (row.get('GeometryStatus') != 'AVAILABLE' or src.get('SourceProvenance') == 'Q017'):
+            if src.get('SourceProvenance') == 'Q017' and row.get('FinalAction') != 'ABSTAIN':
+                raise ValueError('Q017_ONLY_ACTION_AUTHORITY_VIOLATION')
+            if row.get('FinalAction') in {'REVIEW_ENTRY', 'REVIEW_PROBE'} and (row.get('GeometryStatus') != 'AVAILABLE' or geometry(src) is None or src.get('FormalCandidate') is not True or src.get('SourceProvenance') == 'Q017'):
                 raise ValueError('GEOMETRY_AUTHORITY_VIOLATION')
         common.update(status='PASS', binding_status='PASS', authority='UNIFIED_HENGCE_ACTION_BOARD',
                       transaction_id=transaction, candidate_count=len(rows), rows=rows,

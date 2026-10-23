@@ -301,7 +301,7 @@ def build(legacy_base: Any, q017: Any | None = None) -> dict[str, Any]:
                     row["Q017Rank"] = 1
                     row["Q017Beta60"] = beta
                     row["Q017Residual1"] = residual
-                    row["FormalCandidate"] = True
+                    # Source union cannot upgrade an existing formal admission.
                     row["Q017Evidence"] = copy.deepcopy(candidate)
                     q017_merged += 1
                 else:

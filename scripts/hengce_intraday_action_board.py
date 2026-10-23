@@ -194,13 +194,14 @@ def _price_proof(base_row, live_row):
     hi = _to_float(_first(live_row, ["high", "day_high"]))
     if p is None or p <= 0:
         return "LIVE_UNAVAILABLE"
-    blo, bhi, nochase, invalid = _geometry(base_row)
+    legal = geometry(base_row)
+    if legal is None:
+        return "LIVE_BOUND_NO_GEOMETRY"
+    blo, bhi, nochase, invalid = legal
     if invalid is not None and p < invalid:
         return "STRUCTURE_INVALIDATED"
     if nochase is not None and p > nochase:
         return "EXTENSION_NO_CHASE"
-    if geometry(base_row) is None:
-        return "LIVE_BOUND_NO_GEOMETRY"
     if p < blo:
         if hi is not None and hi >= blo:
             return "FAILED_BREAKOUT"

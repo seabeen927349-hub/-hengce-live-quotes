@@ -37,7 +37,7 @@ def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
         row["GeometryStatus"] = "AVAILABLE" if geometry(src) is not None and src.get("SourceProvenance") != "Q017" else "UNAVAILABLE"
         row["LegacyEvidence"] = src.get("LegacyEvidence")
         row["Q017Evidence"] = src.get("Q017Evidence")
-        if row["GeometryStatus"] != "AVAILABLE" and row["FinalAction"] != "EXIT_ALL":
+        if (row["GeometryStatus"] != "AVAILABLE" or not row["FormalCandidate"]) and row["FinalAction"] != "EXIT_ALL":
             row.update(FinalAction="ABSTAIN", ExecutionEligibility="ABSTAIN_GEOMETRY_UNAVAILABLE")
     out["schema_version"] = max(2, int(out.get("schema_version") or 0))
     out["system"] = "HENGCE"

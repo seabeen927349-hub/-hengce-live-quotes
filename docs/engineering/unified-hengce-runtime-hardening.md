@@ -116,8 +116,20 @@ router migration has an exact six-clock route contract and actual main() behavio
 checks. Baseline regressions cannot disappear. Report labels router migration
 explicitly; it does not falsely label changed routing IDENTICAL.
 
-Final verification IDs/results and second adversarial-review findings will be
-recorded in PR #28 after testing the final head.
+Adversarial review added rejection of conflicting context/quote metadata aliases,
+failed/unexpected-stale/inactive quotes, conflicting geometry aliases even for held
+positions, and entry review of explicitly nonformal candidates. These corrections
+have targeted regression cases. Valid held-position exits with valid geometry
+retain priority over capital-blocking context. A final targeted review follows
+those substantive changes. CI run IDs/results are recorded in PR #28 for its final
+head; CI success does not imply canonical producer readiness.
+
+Optional standalone Phase 2 governance scope suites were also attempted. Their
+branch-specific freeze assertions reject this production/runtime PR as outside a
+governance-only package (2 scope errors in each suite). That scope guard is
+intentionally unchanged; these are not authorization or model trials and do not
+create experiment records. This PR relies on its runtime/replay/producer safety
+gates, not a bypass of the prior governance package's changed-file allowlist.
 
 ## Remaining risks and debt
 
