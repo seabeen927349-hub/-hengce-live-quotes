@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "study": "HENGCE_CODEX_FULL_RESET",
+  "parent_plan": "SEARCH_PLAN_V1.json",
+  "status": "FROZEN_BEFORE_SEARCH_RESULTS",
+  "purpose": "Make the parameter-neighborhood eligibility check deterministic before any search result is observed.",
+  "neighbor_definition": {
+    "same_family": true,
+    "same_score": true,
+    "same_market_regime": true,
+    "change_exactly_one_parameter": true,
+    "parameters": {
+      "minimum_avg_turnover20_twd": {
+        "ordered_grid": [0, 20000000, 50000000],
+        "neighbor": "immediately adjacent grid value"
+      },
+      "top_n": {
+        "ordered_grid": [1, 3],
+        "neighbor": "the other grid value"
+      },
+      "holding_sessions": {
+        "ordered_grid": [1, 3, 5, 10, 20],
+        "neighbor": "immediately adjacent grid value"
+      }
+    },
+    "score_changes_are_not_neighbors": true,
+    "regime_changes_are_not_neighbors": true
+  },
+  "evaluation_period": "THE_SAME_LOCKED_VALIDATION_FOLD_AS_THE_SELECTED_CONFIG",
+  "cost": 0.012,
+  "pass_rule": {
+    "minimum_valid_neighbors": 2,
+    "minimum_fraction_positive_return": 0.6,
+    "median_neighbor_return_must_be_positive": true
+  },
+  "insufficient_neighbors": "FAIL_ROBUSTNESS_ELIGIBILITY",
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false
+  }
+}
