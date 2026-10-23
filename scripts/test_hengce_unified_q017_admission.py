@@ -69,14 +69,27 @@ def main():
     calendar_tamper["session_calendar"]["manifest_sha256"] = "f" * 64
     assert admission.admit(adapter, calendar_tamper).get("input_error") == "Q017_SESSION_CALENDAR_LINEAGE_MISMATCH"
 
-    holiday = copy.deepcopy(q)
-    holiday["signal_date"] = "2026-10-23"
-    holiday["trade_date"] = "2026-10-27"
-    holiday["candidates"][0]["signal_date"] = holiday["signal_date"]
-    holiday["candidates"][0]["entry_trade_date"] = holiday["trade_date"]
-    assert admission.admit(adapter, holiday) is holiday
+    # The extraordinary 2026-10-23 typhoon closure must not be signal or entry authority.
+    typhoon_signal = copy.deepcopy(q)
+    typhoon_signal["signal_date"] = "2026-10-23"
+    typhoon_signal["trade_date"] = "2026-10-27"
+    typhoon_signal["candidates"][0]["signal_date"] = typhoon_signal["signal_date"]
+    typhoon_signal["candidates"][0]["entry_trade_date"] = typhoon_signal["trade_date"]
+    assert "Q017_SIGNAL_DATE_NOT_TWSE_TRADING_DAY" in admission.admit(adapter, typhoon_signal).get("input_error", "")
 
-    holiday_bad = copy.deepcopy(holiday)
+    post_typhoon = copy.deepcopy(q)
+    post_typhoon["signal_date"] = "2026-10-22"
+    post_typhoon["trade_date"] = "2026-10-27"
+    post_typhoon["candidates"][0]["signal_date"] = post_typhoon["signal_date"]
+    post_typhoon["candidates"][0]["entry_trade_date"] = post_typhoon["trade_date"]
+    assert admission.admit(adapter, post_typhoon) is post_typhoon
+
+    typhoon_trade = copy.deepcopy(post_typhoon)
+    typhoon_trade["trade_date"] = "2026-10-23"
+    typhoon_trade["candidates"][0]["entry_trade_date"] = typhoon_trade["trade_date"]
+    assert "Q017_TRADE_DATE_NOT_TWSE_TRADING_DAY" in admission.admit(adapter, typhoon_trade).get("input_error", "")
+
+    holiday_bad = copy.deepcopy(post_typhoon)
     holiday_bad["trade_date"] = "2026-10-26"
     holiday_bad["candidates"][0]["entry_trade_date"] = holiday_bad["trade_date"]
     assert "Q017_TRADE_DATE_NOT_TWSE_TRADING_DAY" in admission.admit(adapter, holiday_bad).get("input_error", "")
