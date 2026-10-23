@@ -2,9 +2,11 @@
 set -euo pipefail
 
 ROOT="${HENGCE_ROOT:-$(pwd)}"
-PY="${HENGCE_INTRADAY_BRIDGE:-$ROOT/work/hengce_intraday_action_board.py}"
+ADAPTER="${HENGCE_UNIFIED_ADAPTER:-$ROOT/scripts/hengce_unified_candidate_adapter.py}"
+PY="${HENGCE_INTRADAY_BRIDGE:-$ROOT/scripts/hengce_unified_action_board.py}"
 OUT_DIR="${HENGCE_INTRADAY_OUT_DIR:-$ROOT/work_output/intraday_action_board}"
 OUT="$OUT_DIR/HENGCE_INTRADAY_ACTION_BOARD.json"
+UNIFIED_BASE="$OUT_DIR/HENGCE_UNIFIED_CANDIDATE_BASE.json"
 RECEIPT="$OUT_DIR/HENGCE_INTRADAY_BINDING_RECEIPT.json"
 LIVE_LOCAL="$OUT_DIR/live_active.json"
 RAW_LIVE_URL="${HENGCE_LIVE_RAW_URL:-https://raw.githubusercontent.com/seabeen927349-hub/-hengce-live-quotes/main/live/active.json}"
@@ -17,7 +19,8 @@ import json,sys
 from datetime import datetime, timezone
 p,reason=sys.argv[1:]
 obj={
-  "schema_version":1,
+  "schema_version":2,
+  "system":"HENGCE",
   "ActionLayer":"INTRADAY_ACTION_BOARD",
   "binding_status":"FAIL_CLOSED",
   "reason":reason,
@@ -29,9 +32,10 @@ PY
   exit 2
 }
 
-[[ -f "$PY" ]] || fail_closed "BRIDGE_NOT_FOUND:$PY"
+[[ -f "$ADAPTER" ]] || fail_closed "UNIFIED_CANDIDATE_ADAPTER_NOT_FOUND:$ADAPTER"
+[[ -f "$PY" ]] || fail_closed "UNIFIED_ACTION_BOARD_BRIDGE_NOT_FOUND:$PY"
 
-# 1) Formal base: explicit override first, then deterministic preferred paths,
+# 1) Formal legacy base: explicit override first, then deterministic preferred paths,
 # then newest formal v2/v3 artifact. Never use arbitrary chat-side data.
 BASE="${HENGCE_FORMAL_BASE_JSON:-}"
 if [[ -z "$BASE" ]]; then
@@ -48,7 +52,6 @@ if [[ -z "$BASE" ]]; then
 fi
 [[ -n "$BASE" && -f "$BASE" ]] || fail_closed "FORMAL_BASE_NOT_FOUND"
 
-# Reject a base that explicitly says formal scan is disallowed.
 if ! python3 - "$BASE" <<'PY'
 import json,sys
 x=json.load(open(sys.argv[1],encoding='utf-8'))
@@ -59,7 +62,24 @@ then
   fail_closed "FORMAL_BASE_DISALLOWED"
 fi
 
-# 2) Market Context: explicit override first. Otherwise newest JSON containing
+# 2) Q017 is now an internal HENGCE candidate source. Prefer an explicit canonical
+# artifact. The old q017_radar file is only a compatibility probe; the adapter
+# rejects obsolete Top3/DXY semantics and leaves legacy HENGCE operational.
+Q017="${HENGCE_Q017_CANONICAL_JSON:-}"
+if [[ -z "$Q017" && -f "$ROOT/hengce/q017_canonical/latest.json" ]]; then
+  Q017="$ROOT/hengce/q017_canonical/latest.json"
+elif [[ -z "$Q017" && -f "$ROOT/hengce/q017_radar/latest.json" ]]; then
+  Q017="$ROOT/hengce/q017_radar/latest.json"
+fi
+
+ADAPTER_ARGS=(--legacy-base "$BASE" --output "$UNIFIED_BASE")
+if [[ -n "$Q017" && -f "$Q017" ]]; then
+  ADAPTER_ARGS+=(--q017 "$Q017")
+fi
+python3 "$ADAPTER" "${ADAPTER_ARGS[@]}" || fail_closed "UNIFIED_CANDIDATE_ADAPTER_FAILED"
+[[ -s "$UNIFIED_BASE" ]] || fail_closed "UNIFIED_CANDIDATE_BASE_NOT_WRITTEN"
+
+# 3) Market Context: explicit override first. Otherwise newest JSON containing
 # MarketContextState/NewCapitalPolicy. Missing context is never neutral.
 CTX="${HENGCE_MARKET_CONTEXT_JSON:-}"
 if [[ -z "$CTX" ]]; then
@@ -75,7 +95,7 @@ PY
 fi
 [[ -n "$CTX" && -f "$CTX" ]] || fail_closed "MARKET_CONTEXT_NOT_FOUND"
 
-# 3) Fresh live snapshot: explicit local override or public GitHub transport.
+# 4) Fresh live snapshot: explicit local override or public GitHub transport.
 if [[ -n "${HENGCE_LIVE_JSON:-}" ]]; then
   [[ -f "$HENGCE_LIVE_JSON" ]] || fail_closed "LIVE_OVERRIDE_NOT_FOUND:$HENGCE_LIVE_JSON"
   cp "$HENGCE_LIVE_JSON" "$LIVE_LOCAL"
@@ -102,7 +122,7 @@ PY
 
 set +e
 python3 "$PY" \
-  --base "$BASE" \
+  --base "$UNIFIED_BASE" \
   --live "$LIVE_LOCAL" \
   --context "$CTX" \
   --output "$OUT" \
@@ -112,23 +132,33 @@ rc=$?
 set -e
 [[ $rc -eq 0 ]] || fail_closed "INTRADAY_BRIDGE_FAIL_CLOSED_RC_$rc"
 
-python3 - "$OUT" "$RECEIPT" "$BASE" "$CTX" "$LIVE_LOCAL" <<'PY'
-import json,sys,hashlib
+python3 - "$OUT" "$RECEIPT" "$BASE" "$Q017" "$UNIFIED_BASE" "$CTX" "$LIVE_LOCAL" <<'PY'
+import json,sys,hashlib,os
 from datetime import datetime, timezone
-outp,receipt,base,ctx,live=sys.argv[1:]
+outp,receipt,legacy,q017,unified,ctx,live=sys.argv[1:]
 x=json.load(open(outp,encoding='utf-8'))
+u=json.load(open(unified,encoding='utf-8'))
 if x.get('ActionLayer')!='INTRADAY_ACTION_BOARD' or x.get('binding_status')!='PASS':
     raise SystemExit(2)
 def sha(p):
+    if not p or not os.path.isfile(p): return None
     h=hashlib.sha256()
     with open(p,'rb') as f:
         for b in iter(lambda:f.read(1024*1024),b''): h.update(b)
     return h.hexdigest()
 obj={
-  "schema_version":1,
+  "schema_version":2,
+  "system":"HENGCE",
   "ActionLayer":"INTRADAY_ACTION_BOARD",
   "binding_status":"PASS",
-  "base":base,
+  "legacy_base":legacy,
+  "q017_source":q017 or None,
+  "q017_contract_status":u.get('q017_contract_status'),
+  "q017_contract_errors":u.get('q017_contract_errors'),
+  "unified_base":unified,
+  "candidate_count":u.get('candidate_count'),
+  "source_provenance_counts":u.get('source_provenance_counts'),
+  "score_fusion":False,
   "context":ctx,
   "live":live,
   "output":outp,
@@ -136,11 +166,11 @@ obj={
   "MarketContextState":x.get('MarketContextState'),
   "NewCapitalPolicy":x.get('NewCapitalPolicy'),
   "row_count":len(x.get('rows',[])),
-  "sha256":{"base":sha(base),"context":sha(ctx),"live":sha(live),"output":sha(outp)},
+  "sha256":{"legacy_base":sha(legacy),"q017_source":sha(q017),"unified_base":sha(unified),"context":sha(ctx),"live":sha(live),"output":sha(outp)},
   "generated_at_utc":datetime.now(timezone.utc).isoformat(),
 }
-open(receipt,'w',encoding='utf-8').write(json.dumps(obj,ensure_ascii=False,indent=2))
+open(receipt,"w",encoding="utf-8").write(json.dumps(obj,ensure_ascii=False,indent=2))
 print(json.dumps(obj,ensure_ascii=False))
 PY
 
-echo "INTRADAY_ACTION_BOARD_PASS: $OUT"
+echo "HENGCE_UNIFIED_INTRADAY_ACTION_BOARD_PASS: $OUT"
