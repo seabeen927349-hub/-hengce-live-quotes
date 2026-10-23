@@ -7,7 +7,7 @@ name: HENGCE data vessel health
       - 'scripts/hengce_twse_calendar.py'
       - 'scripts/hengce_live_universe_guard.py'
       - 'scripts/hengce_full_market_shadow.py'
-      - 'scripts/hengce_eod_incremental_ingest.py'
+      - 'scripts/hengce_eod_guarded_ingest.py'
       - 'scripts/hengce_daily_command_center.py'
       - '.github/workflows/hengce-data-vessel-health.yml'
       - 'hengce/calendar/**'
@@ -40,6 +40,7 @@ jobs:
             scripts/hengce_live_universe_guard.py \
             scripts/hengce_full_market_shadow.py \
             scripts/hengce_eod_incremental_ingest.py \
+            scripts/hengce_eod_guarded_ingest.py \
             scripts/hengce_daily_command_center.py
 
       - name: Effective-calendar regression
@@ -49,26 +50,27 @@ jobs:
         run: python scripts/hengce_live_universe_guard.py --mode self-test
 
       - name: EOD three-leg closure no-network regression
-        run: python scripts/hengce_eod_incremental_ingest.py --mode self-test
+        run: python scripts/hengce_eod_guarded_ingest.py --mode self-test
 
       - name: Command-center closure regression
         run: python scripts/hengce_daily_command_center.py --mode self-test
 
-      - name: Assert runtime wiring and no hidden weekday-only bypass
+      - name: Assert runtime wiring and pinned-ingest boundary
         shell: bash
         run: |
           set -euo pipefail
           grep -Fq 'import hengce_twse_calendar as twse_calendar' scripts/hengce_live_universe_guard.py
           grep -Fq 'session_guard.guard_shadow(payload, finished.date().isoformat())' scripts/hengce_full_market_shadow.py
-          grep -Fq 'twse_calendar.is_trading_day(target, manifest)' scripts/hengce_eod_incremental_ingest.py
-          grep -Fq 'network_access_attempted": False' scripts/hengce_eod_incremental_ingest.py
+          grep -Fq 'twse_calendar.is_trading_day(target, manifest)' scripts/hengce_eod_guarded_ingest.py
+          grep -Fq 'network_access_attempted": False' scripts/hengce_eod_guarded_ingest.py
+          grep -Fq 'import hengce_eod_guarded_ingest as eod_inc' scripts/hengce_daily_command_center.py
           grep -Fq 'TWSE_EFFECTIVE_CALENDAR_CLOSED' scripts/hengce_daily_command_center.py
 
       - name: Verify 2026-10-23 cannot become download-ready
         shell: bash
         run: |
           set -euo pipefail
-          OUT="$(python scripts/hengce_eod_incremental_ingest.py --mode ingest --date 2026-10-23)"
+          OUT="$(python scripts/hengce_eod_guarded_ingest.py --mode ingest --date 2026-10-23)"
           printf '%s\n' "$OUT"
           python - "$OUT" <<'PY'
           import json, sys
@@ -76,6 +78,7 @@ jobs:
           assert x['status']=='SKIP_NONTRADING'
           assert x['market_calendar_trading_day'] is False
           assert x['network_access_attempted'] is False
+          assert x['delegated_to_pinned_ingest'] is False
           assert x['three_leg_complete'] is False
           assert x['formal_complete_day'] is False
           assert x['downstream_ready'] is False
