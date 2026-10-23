@@ -5,10 +5,10 @@ name: HENGCE data vessel health
     paths:
       - 'scripts/hengce_market_session_guard.py'
       - 'scripts/hengce_twse_calendar.py'
+      - 'scripts/hengce_live_universe_guard.py'
+      - 'scripts/hengce_full_market_shadow.py'
       - 'scripts/hengce_eod_incremental_ingest.py'
       - 'scripts/hengce_daily_command_center.py'
-      - '.github/workflows/fugle-live-quotes.yml'
-      - '.github/workflows/hengce-full-market-shadow.yml'
       - '.github/workflows/hengce-data-vessel-health.yml'
       - 'hengce/calendar/**'
   workflow_dispatch:
@@ -37,11 +37,16 @@ jobs:
           python -m py_compile \
             scripts/hengce_twse_calendar.py \
             scripts/hengce_market_session_guard.py \
+            scripts/hengce_live_universe_guard.py \
+            scripts/hengce_full_market_shadow.py \
             scripts/hengce_eod_incremental_ingest.py \
             scripts/hengce_daily_command_center.py
 
       - name: Effective-calendar regression
         run: python scripts/hengce_market_session_guard.py --self-test
+
+      - name: Live quote session regression
+        run: python scripts/hengce_live_universe_guard.py --mode self-test
 
       - name: EOD three-leg closure no-network regression
         run: python scripts/hengce_eod_incremental_ingest.py --mode self-test
@@ -53,8 +58,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -Fq 'hengce_market_session_guard.py --mode live --artifact latest.json' .github/workflows/fugle-live-quotes.yml
-          grep -Fq 'hengce_market_session_guard.py --mode shadow --artifact shadow/full_market_latest.json' .github/workflows/hengce-full-market-shadow.yml
+          grep -Fq 'import hengce_twse_calendar as twse_calendar' scripts/hengce_live_universe_guard.py
+          grep -Fq 'session_guard.guard_shadow(payload, finished.date().isoformat())' scripts/hengce_full_market_shadow.py
           grep -Fq 'twse_calendar.is_trading_day(target, manifest)' scripts/hengce_eod_incremental_ingest.py
           grep -Fq 'network_access_attempted": False' scripts/hengce_eod_incremental_ingest.py
           grep -Fq 'TWSE_EFFECTIVE_CALENDAR_CLOSED' scripts/hengce_daily_command_center.py
