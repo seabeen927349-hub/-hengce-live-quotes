@@ -52,8 +52,8 @@ def main():
     artifact = build(rows, sox, trade)
     assert artifact["binding_status"] == "PASS" and artifact["market_state"] == "GO"
     assert artifact["signal_date"] == dates[-1]
-    assert artifact["session_calendar"]["authority"] == "TWSE_OFFICIAL_HOLIDAY_SCHEDULE"
-    assert artifact["session_calendar"]["fingerprint_sha256"] == q.twse_calendar.EXPECTED_CALENDAR_FINGERPRINT_SHA256
+    assert artifact["session_calendar"]["authority"] == q.twse_calendar.EFFECTIVE_AUTHORITY
+    assert artifact["session_calendar"]["fingerprint_sha256"] == q.twse_calendar.EXPECTED_EFFECTIVE_CALENDAR_FINGERPRINT_SHA256
     assert artifact["producer"]["input_hashes"]["twse_calendar_manifest"] == artifact["session_calendar"]["manifest_sha256"]
     assert artifact["macro_gate"]["dxy_used"] is False
     assert artifact["canonical_q017_contract"]["top_n"] == 1
