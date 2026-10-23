@@ -92,9 +92,17 @@ def main():
     try:
         build(rows, sox, trade, signal=dates[-2])
     except ValueError as exc:
-        assert "SIGNAL_DATE_NOT_LATEST_ELECTRONICS_SESSION" in str(exc)
+        assert "OFFICIAL_TRADING_CALENDAR_REQUIRED" in str(exc) or "SIGNAL_DATE_NOT_LATEST_ELECTRONICS_SESSION" in str(exc)
     else:
         raise AssertionError("stale explicit signal date was accepted")
+
+    gap_trade = (date.fromisoformat(dates[-1]) + timedelta(days=2)).isoformat()
+    try:
+        build(rows, sox, gap_trade, signal=dates[-1])
+    except ValueError as exc:
+        assert "OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP" in str(exc)
+    else:
+        raise AssertionError("ambiguous session gap was accepted")
 
     print("CANONICAL_Q017_PRODUCER_TEST_PASS")
 
