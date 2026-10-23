@@ -31,11 +31,16 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Compile Stage A audit
-        run: python -m py_compile research/codex_full_reset_20261023/stage_a_data_audit.py
+      - name: Compile Stage A audits
+        run: |
+          python -m py_compile research/codex_full_reset_20261023/stage_a_data_audit.py
+          python -m py_compile research/codex_full_reset_20261023/stage_a_round2_reconstruction.py
 
-      - name: Run Stage A data audit
+      - name: Run Stage A corpus audit
         run: python research/codex_full_reset_20261023/stage_a_data_audit.py
+
+      - name: Reconstruct Round-2 payload using original semantics
+        run: python research/codex_full_reset_20261023/stage_a_round2_reconstruction.py
 
       - name: Print Stage A evidence
         if: always()
@@ -44,6 +49,8 @@ jobs:
           cat research/codex_full_reset_20261023/results/STAGE_A_SUMMARY.md 2>/dev/null || true
           echo '--- DATA_QUALITY_FAILURES.json ---'
           cat research/codex_full_reset_20261023/results/DATA_QUALITY_FAILURES.json 2>/dev/null || true
+          echo '--- ROUND2_RECONSTRUCTION.json ---'
+          cat research/codex_full_reset_20261023/results/ROUND2_RECONSTRUCTION.json 2>/dev/null || true
 
       - name: Upload Stage A evidence
         if: always()
