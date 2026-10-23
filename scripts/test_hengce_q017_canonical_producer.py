@@ -34,11 +34,14 @@ def synthetic():
 
 
 def build(rows, sox, trade, signal=None):
+    calendar, _, calendar_sha = q.twse_calendar.load_manifest()
     return q.build_artifact(
         rows, sox, trade_date=trade, signal_date=signal or rows[-1]["date"],
         generated_at=datetime.fromisoformat(trade + "T08:30:00+08:00"),
         code_commit="1" * 40,
-        input_hashes={"electronics_history": "2" * 64, "sox_history": "3" * 64},
+        input_hashes={"electronics_history": "2" * 64, "sox_history": "3" * 64,
+                      "twse_calendar_manifest": calendar_sha},
+        calendar_manifest=calendar, calendar_raw_sha=calendar_sha,
         min_daily_members=3,
     )
 
@@ -49,6 +52,9 @@ def main():
     artifact = build(rows, sox, trade)
     assert artifact["binding_status"] == "PASS" and artifact["market_state"] == "GO"
     assert artifact["signal_date"] == dates[-1]
+    assert artifact["session_calendar"]["authority"] == "TWSE_OFFICIAL_HOLIDAY_SCHEDULE"
+    assert artifact["session_calendar"]["fingerprint_sha256"] == q.twse_calendar.EXPECTED_CALENDAR_FINGERPRINT_SHA256
+    assert artifact["producer"]["input_hashes"]["twse_calendar_manifest"] == artifact["session_calendar"]["manifest_sha256"]
     assert artifact["macro_gate"]["dxy_used"] is False
     assert artifact["canonical_q017_contract"]["top_n"] == 1
     assert artifact["canonical_q017_contract"]["signal_day_excluded_from_beta"] is True
@@ -92,17 +98,28 @@ def main():
     try:
         build(rows, sox, trade, signal=dates[-2])
     except ValueError as exc:
-        assert "OFFICIAL_TRADING_CALENDAR_REQUIRED" in str(exc) or "SIGNAL_DATE_NOT_LATEST_ELECTRONICS_SESSION" in str(exc)
+        assert "Q017_NOT_NEXT_TWSE_OPEN" in str(exc)
     else:
         raise AssertionError("stale explicit signal date was accepted")
 
-    gap_trade = (date.fromisoformat(dates[-1]) + timedelta(days=2)).isoformat()
+    weekend = (date.fromisoformat(dates[-1]) + timedelta(days=2)).isoformat()
     try:
-        build(rows, sox, gap_trade, signal=dates[-1])
+        build(rows, sox, weekend, signal=dates[-1])
     except ValueError as exc:
-        assert "OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP" in str(exc)
+        assert "Q017_TRADE_DATE_NOT_TWSE_TRADING_DAY" in str(exc)
     else:
-        raise AssertionError("ambiguous session gap was accepted")
+        raise AssertionError("non-trading entry date was accepted")
+
+    calendar, _, calendar_sha = q.twse_calendar.load_manifest()
+    try:
+        q.build_artifact(rows, sox, trade_date=trade, signal_date=dates[-1],
+            generated_at=datetime.fromisoformat(trade + "T08:30:00+08:00"), code_commit="1"*40,
+            input_hashes={"electronics_history":"2"*64,"sox_history":"3"*64,"twse_calendar_manifest":"4"*64},
+            calendar_manifest=calendar, calendar_raw_sha=calendar_sha, min_daily_members=3)
+    except ValueError as exc:
+        assert "TWSE_CALENDAR_INPUT_HASH_MISMATCH" in str(exc)
+    else:
+        raise AssertionError("mismatched calendar lineage was accepted")
 
     print("CANONICAL_Q017_PRODUCER_TEST_PASS")
 
