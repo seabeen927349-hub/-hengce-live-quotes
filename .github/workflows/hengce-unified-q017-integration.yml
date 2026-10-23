@@ -1,0 +1,34 @@
+name: HENGCE unified Q017 integration
+
+on:
+  push:
+    branches: ['feature/unified-hengce-q017-20261023']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and behavioral safety contracts
+        run: |
+          python -m compileall -q scripts/hengce_unified* scripts/hengce_q017_canonical_producer.py scripts/hengce_twse_calendar.py scripts/hengce_intraday_action_board.py scripts/hengce_scan_once_router.py
+          bash -n scripts/RUN_INTRADAY_ACTION_BOARD.sh
+          python scripts/hengce_q017_canonical_producer.py --help >/dev/null
+          python scripts/test_hengce_twse_calendar.py
+          python scripts/test_hengce_q017_canonical_producer.py
+          python scripts/test_hengce_unified_q017_admission.py
+          python scripts/hengce_unified_candidate_adapter.py --self-test
+          python scripts/hengce_intraday_action_board.py --self-test
+          python scripts/hengce_unified_scan_display.py --self-test
+          python scripts/test_hengce_unified_q017.py
+          python scripts/test_hengce_unified_boundaries.py
+          python scripts/test_hengce_unified_runtime.py

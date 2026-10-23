@@ -6,6 +6,8 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
 
+import hengce_market_session_guard as session_guard
+
 TAIPEI = timezone(timedelta(hours=8))
 UNIVERSE_URL = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
 MIS_URL = "https://mis.twse.com.tw/stock/api/getStockInfo.jsp"
@@ -198,7 +200,6 @@ def main():
         q["quote_fresh"]=bool(q.get("fetch_ok") and quote_age is not None and quote_age<=QUOTE_FRESH_SECONDS)
         trade_age=q.get("trade_freshness_seconds")
         q["trade_fresh"]=bool(q.get("fetch_ok") and trade_age is not None and trade_age<=TRADE_FRESH_SECONDS)
-        # Backward compatibility: legacy `fresh` now explicitly means transport/quote freshness.
         q["fresh"]=q["quote_fresh"]
         q["freshness_seconds"]=quote_age
         normalized.append(q)
@@ -226,9 +227,10 @@ def main():
         "provider_mix":{"TWSE_MIS":sum(q.get("source")=="TWSE_MIS" for q in normalized),"FUGLE":sum(q.get("source")=="FUGLE" for q in normalized),"NONE":sum(q.get("source")=="NONE" for q in normalized)},
         "priority_tickers":priority,"fugle_priority_success":fugle_success,"batch_failures":batch_failures,"quotes":normalized
     }
+    session_guard.guard_shadow(payload, finished.date().isoformat())
     payload["payload_sha256"]=sha_obj({k:v for k,v in payload.items() if k!="payload_sha256"})
     p=Path(args.out); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({k:payload[k] for k in ["snapshot_id","collector_version","universe_count","coverage_ratio","price_coverage_ratio","quote_fresh_ratio_of_covered","trade_fresh_ratio_of_covered","status","provider_mix","payload_sha256"]},ensure_ascii=False,indent=2))
+    print(json.dumps({k:payload.get(k) for k in ["snapshot_id","collector_version","universe_count","coverage_ratio","price_coverage_ratio","quote_fresh_ratio_of_covered","trade_fresh_ratio_of_covered","status","market_calendar_trading_day","market_session_data_usable","provider_mix","payload_sha256"]},ensure_ascii=False,indent=2))
     if coverage < 0.90: raise SystemExit(2)
 
 if __name__=="__main__": main()

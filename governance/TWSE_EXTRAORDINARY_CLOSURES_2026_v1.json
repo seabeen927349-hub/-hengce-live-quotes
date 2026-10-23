@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "market": "TWSE",
+  "calendar_year": 2026,
+  "timezone": "Asia/Taipei",
+  "authority": "TAIPEI_CITY_GOVERNMENT_PLUS_TWSE_NATURAL_DISASTER_RULE",
+  "closures": [
+    {
+      "date": "2026-10-23",
+      "kind": "CLOSED",
+      "reason": "TYPHOON_FULL_DAY_CLOSURE",
+      "evidence": [
+        {
+          "authority": "TAIPEI_CITY_GOVERNMENT_EOC",
+          "url": "https://eoc.gov.taipei/News/Detail/1590?MenuId=51",
+          "published_at": "2026-10-22T20:02:00+08:00",
+          "assertion": "TAIPEI_ALL_OFFICES_AND_SCHOOLS_SUSPENDED_2026-10-23"
+        },
+        {
+          "authority": "TAIWAN_STOCK_EXCHANGE",
+          "url": "https://www.twse.com.tw/zh/clearing/suspended.html",
+          "assertion": "TAIPEI_FULL_DAY_PUBLIC_OFFICE_WORK_SUSPENSION_IMPLIES_FULL_DAY_TWSE_MARKET_CLOSURE"
+        }
+      ]
+    }
+  ],
+  "closures_sha256": "5a09dc8580b5bd08ffac35f48d3809445ac3c322ebeaa713cd33fe2a33384847",
+  "extraordinary_closure_fingerprint_sha256": "0c01c796ccae97347539b790de04491f291f4ec0ae20d9e96faecdf817592d1f"
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "contract": "HENGCE_UNIFIED_Q017_CONTRACT",
+  "effective_date": "2026-10-23",
+  "architecture": "SINGLE_HENGCE",
+  "candidate_sources": ["LEGACY_HENGCE", "Q017"],
+  "candidate_union": {
+    "dedupe_key": "ticker",
+    "source_provenance_values": ["LEGACY", "Q017", "BOTH"],
+    "score_fusion": false,
+    "policy": "UNION_DEDUP_BY_TICKER_NO_SCORE_FUSION"
+  },
+  "q017_frozen": {
+    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+    "beta_history_max": 60,
+    "beta_history_min": 30,
+    "signal_day_excluded_from_beta": true,
+    "k": 25,
+    "score": "beta60*(1+25*max(-residual1,0))",
+    "top_n": 1,
+    "avg_turnover20_min": 20000000,
+    "residual1_max": 0.04,
+    "local_gate": {
+      "electronics_m1_lt": 0.0,
+      "electronics_m5_lte": -0.02
+    },
+    "macro_gate": {
+      "session": "LATEST_PRIOR_COMPLETED_US_SESSION",
+      "sox_1d_lte": 0.0,
+      "sox_5d_lte": -0.03,
+      "dxy_used": false
+    },
+    "entry": "NEXT_TWSE_OPEN",
+    "exit": "FIXED_20_SESSIONS",
+    "roundtrip_cost": 0.008,
+    "overlap_allowed": false
+  },
+  "geometry": {
+    "reuse_existing_legal_geometry": true,
+    "invent_geometry": false,
+    "q017_only_without_geometry": "UNAVAILABLE_FAIL_CLOSED"
+  },
+  "action_board": {
+    "single_output_system": "HENGCE",
+    "q017_separate_ranking_output": false,
+    "can_upgrade_formal_entry_trigger": false,
+    "stale_or_missing_evidence": "FAIL_CLOSED"
+  }
+}
