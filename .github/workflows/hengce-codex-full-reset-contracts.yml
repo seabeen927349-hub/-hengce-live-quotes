@@ -1,0 +1,28 @@
+name: HENGCE Full Reset Offline Contracts
+on:
+  push:
+    branches: ['research/codex-full-reset-run-20261023']
+    paths:
+      - 'research/codex_full_reset_20261023/**'
+      - '.github/workflows/hengce-codex-full-reset*.yml'
+  pull_request:
+    paths:
+      - 'research/codex_full_reset_20261023/**'
+      - '.github/workflows/hengce-codex-full-reset*.yml'
+permissions:
+  contents: read
+jobs:
+  offline-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline synthetic contracts only - no model trials
+        run: |
+          python -B research/codex_full_reset_20261023/test_stage_b_contracts.py
+          python -B research/codex_full_reset_20261023/test_stage_c_integrity.py

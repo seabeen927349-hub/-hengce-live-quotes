@@ -21,22 +21,49 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
-      STAGE_B_RUN_ID: '39915764325'
+      STAGE_B_RUN_ID: '39936974870'
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout research branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
+      - name: Offline temporal and retention regressions
+        run: |
+          python -B research/codex_full_reset_20261023/test_stage_b_contracts.py
+          python -B research/codex_full_reset_20261023/test_stage_c_integrity.py
+      - name: Resolve pinned historical references and audit corpus
+        run: |
+          python - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          manifest=json.loads(Path('research/codex_full_reset_20261023/CORPUS_MANIFEST.json').read_text())
+          for ref in manifest['historical_fixed_refs']:
+              sha=ref['head_sha']
+              if subprocess.run(['git','cat-file','-e',sha+'^{commit}'],stderr=subprocess.DEVNULL).returncode:
+                  subprocess.run(['git','fetch','origin',sha],check=True)
+          PY
+          python -B research/codex_full_reset_20261023/corpus_snapshot_audit.py
+          python -B research/codex_full_reset_20261023/stage_a_data_audit.py
       - name: Compile frozen searcher
         run: python -m py_compile research/codex_full_reset_20261023/stage_c_rule_search.py
 
+      - name: Retain preregistration before any model evaluation
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-reset-preregistration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            research/codex_full_reset_20261023/results/SEARCH_PREREGISTRATION.json
+            research/codex_full_reset_20261023/METHOD_CORRECTIONS_V1.json
+            research/codex_full_reset_20261023/SEARCH_PLAN_V1.json
+          if-no-files-found: error
+          retention-days: 90
       - name: Wait for exact Stage B run and require success
         shell: bash
         run: |
@@ -73,11 +100,11 @@ jobs:
         if: always()
         run: |
           echo '--- SEARCH_RUN_RECEIPT ---'
-          cat research/codex_full_reset_20261023/results/stage_c/SEARCH_RUN_RECEIPT.json 2>/dev/null || true
+          cat research/codex_full_reset_20261023/results/stage_c/runs/${{ github.run_id }}-${{ github.run_attempt }}/SEARCH_RUN_RECEIPT.json 2>/dev/null || true
           echo '--- WINNER_OR_NO_WINNER ---'
-          cat research/codex_full_reset_20261023/results/stage_c/WINNER_OR_NO_WINNER.json 2>/dev/null || true
+          cat research/codex_full_reset_20261023/results/stage_c/runs/${{ github.run_id }}-${{ github.run_attempt }}/WINNER_OR_NO_WINNER.json 2>/dev/null || true
           echo '--- BASELINE_REPRODUCTION ---'
-          cat research/codex_full_reset_20261023/results/stage_c/BASELINE_REPRODUCTION.json 2>/dev/null || true
+          cat research/codex_full_reset_20261023/results/stage_c/runs/${{ github.run_id }}-${{ github.run_attempt }}/BASELINE_REPRODUCTION.json 2>/dev/null || true
 
       - name: Upload Stage C evidence
         if: always()

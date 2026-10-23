@@ -13,6 +13,10 @@ import hashlib
 import itertools
 import json
 import math
+import os
+import subprocess
+from reset_ledger import TrialLedger, AUTHORITY
+from stage_b_build_twse_year import load_expected, verify_pinned_file, CORPUS_BASE
 import statistics
 from collections import Counter, defaultdict, deque
 from dataclasses import dataclass
@@ -84,6 +88,7 @@ def finite_float(value: Any) -> float | None:
 def product_return(rets: Iterable[float]) -> float:
     nav = 1.0
     for r in rets:
+        if r <= -1: return -1.0
         nav *= 1.0 + r
     return nav - 1.0
 
@@ -93,6 +98,7 @@ def max_drawdown(rets: Iterable[float]) -> float:
     peak = 1.0
     mdd = 0.0
     for r in rets:
+        if r <= -1: return -1.0
         nav *= 1.0 + r
         peak = max(peak, nav)
         if peak > 0:
@@ -176,7 +182,7 @@ def load_mother(path: Path) -> tuple[list[str], dict[str, dict[str, Row]]]:
             d = (rec.get("date") or "").strip()
             ticker = (rec.get("ticker") or "").strip()
             if not d or not ticker:
-                continue
+                raise ValueError('MALFORMED_MOTHER_KEY')
             row = Row(
                 date=d,
                 ticker=ticker,
@@ -220,7 +226,7 @@ def prior_macro(series: list[dict[str, Any]], signal_date: str) -> dict[str, Any
     return series[lo - 1] if lo else None
 
 
-def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]]) -> tuple[dict[str, dict[str, float]], dict[str, dict[str, Any]], dict[str, int]]:
+def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]], discontinuity=DISCONTINUITY) -> tuple[dict[str, dict[str, float]], dict[str, dict[str, Any]], dict[str, int]]:
     date_index = {d: i for i, d in enumerate(dates)}
 
     for i, d in enumerate(dates):
@@ -231,7 +237,7 @@ def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]]) -> tu
             p = by_date[prev].get(ticker)
             if p and p.close and row.close and p.close > 0 and row.close > 0:
                 raw = row.close / p.close - 1.0
-                row.bad_jump = abs(raw) > DISCONTINUITY
+                row.bad_jump = abs(raw) > discontinuity
                 if not row.bad_jump:
                     row.r1 = raw
 
@@ -403,7 +409,7 @@ def outcome_for_ticker(ticker: str, signal_i: int, horizon: int, dates: list[str
         return None
     for j in range(entry_i, exit_i + 1):
         rr = by_date[dates[j]].get(ticker)
-        if rr is None or rr.bad_jump:
+        if rr is None or rr.bad_jump or rr.close is None or rr.close <= 0:
             return None
     return exit_row.close / entry.open - 1.0, entry_d, exit_d
 
@@ -418,44 +424,70 @@ def configs() -> list[Config]:
 
 def simulate(config: Config, start: str, end: str, cost: float, dates: list[str], date_index: dict[str, int], by_date: dict[str, dict[str, Row]], context: dict[str, dict[str, Any]], rank_cache: dict[tuple[str, float, str], list[str]], residual_cap: float | None = None, quality_guard: bool = True) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     events = []
+    censored = 0
     next_free_i = -1
     for i, d in enumerate(dates):
         if d < start or d > end: continue
         if i < next_free_i: continue
         if not regime_pass(config.regime, d, context): continue
         ranked = rank_cache.get((config.score, config.turnover_min, d), [])
-        picks = []
+        selected = []
         for ticker in ranked:
             row = by_date[d][ticker]
             if residual_cap is not None and (row.resid1 is None or row.resid1 > residual_cap):
                 continue
             if quality_guard and row.bad_jump:
                 continue
-            outcome = outcome_for_ticker(ticker, i, config.horizon, dates, by_date)
-            if outcome is None: continue
-            picks.append((ticker, outcome))
-            if len(picks) >= config.top_n: break
-        if not picks: continue
+            selected.append(ticker)
+            if len(selected) == config.top_n: break
+        if len(selected) != config.top_n: continue
+        exit_i = i + 1 + config.horizon
+        if exit_i >= len(dates) or dates[exit_i] > end:
+            continue  # purge entire incomplete outcome, never force-close it
+        picks = [(ticker, outcome_for_ticker(ticker,i,config.horizon,dates,by_date)) for ticker in selected]
+        if any(outcome is None for _,outcome in picks):
+            censored += 1
+            next_free_i = exit_i + 1
+            continue  # retain a censored-basket count; never replace with rank+1
         gross = statistics.mean([p[1][0] for p in picks])
         entry_d = picks[0][1][1]
         exit_d = picks[0][1][2]
-        events.append({"signal_date": d, "entry_date": entry_d, "exit_date": exit_d, "tickers": [p[0] for p in picks], "gross_return": gross})
+        daily_path = []
+        for j in range(i+1, exit_i+1):
+            daily_path.append([dates[j], statistics.mean(by_date[dates[j]][t].close / by_date[entry_d][t].open for t,_ in picks)])
+        events.append({"signal_date": d, "entry_date": entry_d, "exit_date": exit_d, "tickers": [p[0] for p in picks], "gross_return": gross, "daily_gross_nav":daily_path})
         next_free_i = date_index[exit_d] + 1
-    return summarize_events(events, cost), events
+    metrics = summarize_events(events, cost)
+    metrics['censored_baskets'] = censored
+    duration=(date.fromisoformat(end)-date.fromisoformat(start)).days+1
+    metrics['evaluation_period']=[start,end]
+    metrics['cagr']=((1+metrics['compounded_return'])**(365.25/duration)-1) if duration>=365 and metrics['compounded_return']>-1 else 'INSUFFICIENT_DURATION_OR_INSOLVENT'
+    return metrics, events
 
 
 def summarize_events(events: list[dict[str, Any]], cost: float) -> dict[str, Any]:
     nets = [event["gross_return"] - cost for event in events]
     wins = sum(r > 0 for r in nets)
+    capital=1.0;peak=1.0;daily_mdd=0.0
+    for event in events:
+        path=event.get('daily_gross_nav',[[event['exit_date'],1+event['gross_return']]])
+        for j,(_,value) in enumerate(path):
+            nav=max(0,capital*(value-(cost if j==len(path)-1 else 0)))
+            peak=max(peak,nav);daily_mdd=min(daily_mdd,nav/peak-1)
+        capital=max(0,capital*(1+event['gross_return']-cost))
     return {
         "complete_trades": len(nets),
+        "insolvent":any(r<=-1 for r in nets),
+        "tail_cvar_5pct":statistics.mean(sorted(nets)[:max(1,math.ceil(len(nets)*.05))]) if len(nets)>=20 else 'INSUFFICIENT_SAMPLE',
+        "mean_holding_sessions":statistics.mean(len(e.get('daily_gross_nav',[])) for e in events) if events else None,
         "wins": wins,
         "losses_or_zero": len(nets) - wins,
         "win_rate": wins / len(nets) if nets else None,
         "mean_net_return": statistics.mean(nets) if nets else None,
         "median_net_return": statistics.median(nets) if nets else None,
         "compounded_return": product_return(nets),
-        "max_drawdown": max_drawdown(nets),
+        "max_drawdown": daily_mdd,
+        "trade_endpoint_max_drawdown": max_drawdown(nets),
         "worst_trade": min(nets) if nets else None,
         "best_trade": max(nets) if nets else None,
     }
@@ -548,19 +580,19 @@ def candidate_b_reproduction(dates: list[str], date_index: dict[str, int], by_da
         legacy_metrics["complete_trades"] == expected["entries"]
         and legacy_metrics["wins"] == expected["wins"]
         and abs(legacy_metrics["compounded_return"] - expected["return"]) <= 1e-10
-        and abs(legacy_metrics["max_drawdown"] - expected["maxdd"]) <= 1e-10
+        and abs(legacy_metrics["trade_endpoint_max_drawdown"] - expected["maxdd"]) <= 1e-10
     )
     return {
         "reference_artifact": str(BASELINE_PATH.relative_to(ROOT)),
         "reference_sha256": sha256_file(BASELINE_PATH),
         "expected_aggregate": expected,
-        "new_official_mother_legacy_semantics": legacy_metrics,
+        "new_mother_without_signal_jump_guard_reference_only": legacy_metrics,
         "new_official_mother_strict_reset_quality_guard": strict_metrics,
-        "legacy_semantics_event_sample": legacy_events[:20],
+        "reference_event_sample": legacy_events[:20],
         "strict_quality_event_sample": strict_events[:20],
         "exact_aggregate_match": exact_aggregate_match,
         "status": "AGGREGATE_REPRODUCED_FROM_NEW_MOTHER" if exact_aggregate_match else "BASELINE_REPRODUCTION_FAILED_OR_DIFFERS",
-        "caveat": "Preserved historical event payload is corrupt, so old event identity cannot be proven even if aggregate metrics match."
+        "caveat": "This new-mother reset simulation is not a proof of legacy event semantics. Preserved historical event payload is corrupt, so old event identity cannot be proven even if aggregate metrics match. Only like-for-like trade-end drawdown is used for the aggregate comparison."
     }
 
 
@@ -575,13 +607,76 @@ def historical_ledger_records(manifest: dict[str, Any]) -> list[dict[str, Any]]:
             "capital_authority_twd": 0,
             "broker_order_execution": False,
         })
+    records.append({'experiment_id':'HIST-CANDIDATE-B','record_type':'HISTORICAL_REFERENCE',
+                    'source':str(BASELINE_PATH.relative_to(ROOT)),'source_sha256':sha256_file(BASELINE_PATH),
+                    'result':'AGGREGATE_SUCCESS_EVENT_IDENTITY_UNPROVEN'})
+    failures_path=RESET/'results/DATA_QUALITY_FAILURES.json'
+    if failures_path.exists():
+        for i,failure in enumerate(json_load(failures_path).get('historical_evidence_failures',[])):
+            records.append({'experiment_id':'HIST-DATA-FAIL-'+str(i),'record_type':'HISTORICAL_REFERENCE','result':'DATA_QUALITY_REJECT','evidence':failure})
+    records.append({'experiment_id':'HIST-STAGE-B-39915764325','record_type':'HISTORICAL_REFERENCE','result':'FAILED_ALL_724_DATES','run_id':39915764325})
+    records.append({'experiment_id':'HIST-STAGE-C-39915801452','record_type':'HISTORICAL_REFERENCE','result':'ABORTED_AT_DATA_GATE_ZERO_MODEL_TRIALS','run_id':39915801452})
     return records
 
 
-def main() -> int:
+def quarterly_signflip(events, cost=.012):
+    blocks={f'{year}-Q{q}':0.0 for year in (2024,2025) for q in (1,2,3,4)}
+    for event in events:
+        net=event['gross_return']-cost
+        if net<=-1:return {'status':'INSOLVENT','p_value':1.0}
+        key=event['exit_date'][:4]+'-Q'+str((int(event['exit_date'][5:7])-1)//3+1)
+        blocks[key]+=math.log1p(net)
+    values=list(blocks.values());active=sum(abs(v)>1e-15 for v in values)
+    if active<6:return {'status':'INSUFFICIENT_SAMPLE','p_value':1.0,'active_quarters':active,'blocks':blocks}
+    observed=sum(values)
+    null=[sum(sign*x for sign,x in zip(signs,values)) for signs in itertools.product((-1,1),repeat=len(values))]
+    return {'status':'EXPLORATORY_BLOCK_SIGNFLIP','p_value':sum(v>=observed-1e-15 for v in null)/len(null),
+            'active_quarters':active,'blocks':blocks,'assumption':'Symmetric independent quarter blocks; historical exploratory evidence, not pristine or guaranteed inference'}
+
+
+def holm_adjust(items):
+    previous=0.0
+    for i,(name,item) in enumerate(sorted(items.items(),key=lambda x:(x[1]['p_value'],x[0]))):
+        previous=max(previous,min(1.0,(len(items)-i)*item['p_value']))
+        item['holm_adjusted_p']=previous
+    return items
+
+
+def validate_mother_receipt(mother, receipt_path):
+    if receipt_path is None or not receipt_path.is_file():
+        raise ValueError('MOTHER_RECEIPT_REQUIRED')
+    receipt = json_load(receipt_path)
+    if receipt.get('status') != 'PASS_EXACT_MEMBERSHIP_SET' or type(receipt.get('failed_dates')) is not int or receipt['failed_dates'] != 0:
+        raise ValueError('MOTHER_RECEIPT_NOT_PASS')
+    if receipt.get('universe') != 'TWSE_LISTED_ELECTRONICS_PIT_DAILY':
+        raise ValueError('MOTHER_SCOPE_MISMATCH')
+    years=receipt.get('year_receipts',[])
+    if len(years)!=3 or {r.get('year') for r in years}!={2023,2024,2025}:
+        raise ValueError('MOTHER_YEAR_BINDING_INCOMPLETE')
+    for r in years:
+        _,_,source=load_expected(r['year'])
+        if r.get('membership_source',{}).get('sha256') != source['sha256']:
+            raise ValueError('MOTHER_FROZEN_MEMBERSHIP_HASH_MISMATCH')
+    if receipt.get('mother_sha256') != sha256_file(mother):
+        raise ValueError('MOTHER_SHA_MISMATCH')
+    return receipt
+
+
+def verify_mother_membership(dates, by_date):
+    expected = {}
+    for year in (2023,2024,2025):
+        daily,_,_ = load_expected(year);expected.update(daily)
+    if dates != sorted(expected):
+        raise ValueError('MOTHER_DATE_SET_MISMATCH')
+    for d in dates:
+        if set(by_date[d]) != expected[d]:
+            raise ValueError('MOTHER_TICKER_SET_MISMATCH:'+d)
+
+
+def _main(ledger) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mother", required=True)
-    parser.add_argument("--mother-receipt")
+    parser.add_argument("--mother-receipt", required=True)
     args = parser.parse_args()
     mother = Path(args.mother)
     receipt_path = Path(args.mother_receipt) if args.mother_receipt else None
@@ -601,21 +696,46 @@ def main() -> int:
         raise RuntimeError("UNIVERSE_SCOPE_ENFORCEMENT_INVALID")
     if abs(json_load(QUALITY_PATH)["rule"]["unverified_discontinuity_if_abs_close_to_close_return_gt"] - DISCONTINUITY) > 1e-12:
         raise RuntimeError("QUALITY_RULE_DRIFT")
-    if receipt_path and receipt_path.exists():
-        receipt = json_load(receipt_path)
-        if receipt.get("status") != "PASS_EXACT_MEMBERSHIP_SET" or receipt.get("failed_dates") != 0:
-            raise RuntimeError("MOTHER_RECEIPT_NOT_PASS")
-        if receipt.get("mother_sha256") != sha256_file(mother):
-            raise RuntimeError("MOTHER_SHA_MISMATCH")
-
+    receipt = validate_mother_receipt(mother, receipt_path)
+    for source in (BASELINE_PATH, MACRO/'sox_daily_202212_202610.csv', MACRO/'dxy_exact_DX-Y.NYB_202212_202610.csv'):
+        verify_pinned_file(source)
     dates, by_date = load_mother(mother)
+    verify_mother_membership(dates, by_date)
     market, context, date_index = prepare_features(dates, by_date)
     rank_cache = build_rank_cache(dates, by_date)
     all_configs = configs()
     manifest = json_load(MANIFEST_PATH)
+    authorization = json_load(RESET/'RESET_AUTHORIZATION.json')
+    if authorization.get('research_authorized') is not True or authorization.get('automated_model_search_authorized') is not True or authorization.get('production_changes_authorized') is not False:
+        raise ValueError('RESET_RESEARCH_AUTHORIZATION_INVALID')
+    if manifest['frozen_base']['base_commit'] != CORPUS_BASE:
+        raise ValueError('CORPUS_MANIFEST_DRIFT')
 
     ledger_path = OUT / "EXPERIMENT_LEDGER.jsonl"
-    ledger = historical_ledger_records(manifest)
+    run_prefix = str(os.environ.get('GITHUB_RUN_ID', datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')))+':'+str(os.environ.get('GITHUB_RUN_ATTEMPT','1'))
+    for record in historical_ledger_records(manifest):
+        ledger.append({**record,'record_id':run_prefix+':'+record['experiment_id'],'status':'HISTORICAL_REFERENCE'})
+    sequence = 0
+    global simulate
+    original_simulate = simulate
+    def journaled(*args, **kwargs):
+        nonlocal sequence
+        sequence += 1
+        experiment_id = run_prefix+':EVAL:'+str(sequence)
+        config,start,end,cost = args[:4]
+        detail = {'experiment_id':experiment_id,'config_id':config.id,'period':[start,end],'cost':cost,
+                  'evaluation_sequence':sequence,'options':kwargs}
+        ledger.append({**detail,'record_id':experiment_id+':STARTED','status':'STARTED'})
+        try:
+            result = original_simulate(*args,**kwargs)
+        except BaseException as exc:
+            ledger.append({**detail,'record_id':experiment_id+':FAILED','status':'ABORTED' if isinstance(exc,(KeyboardInterrupt,SystemExit)) else 'FAILED','error':type(exc).__name__+':'+str(exc)})
+            raise
+        ledger.append({**detail,'record_id':experiment_id+':RESULT','status':'EVALUATED' if result[0]['complete_trades'] else 'NO_TRADE','metrics':result[0]})
+        return result
+    simulate = journaled
+    baseline = candidate_b_reproduction(dates,date_index,by_date,context,rank_cache)
+    print('Baseline comparison status='+baseline['status']+'; event identity is not proven',flush=True)
     family_results: dict[str, Any] = {}
     trial_seq = 0
     folds = [
@@ -628,12 +748,14 @@ def main() -> int:
         family_configs = [c for c in all_configs if c.family == family]
         for fold_name, sel_start, sel_end, val_start, val_end in folds:
             best: tuple[tuple[Any, ...], Config, dict[str, Any]] | None = None
+            print('Selection family='+family+' fold='+fold_name+' configs='+str(len(family_configs)),flush=True)
             for config in family_configs:
                 metrics, _ = simulate(config, sel_start, sel_end, SELECTION_COST, dates, date_index, by_date, context, rank_cache)
                 trial_seq += 1
                 eligible = metrics["complete_trades"] >= 6
                 ledger.append({
-                    "experiment_id": f"RESET-{trial_seq:06d}",
+                    'record_id':run_prefix+':SELECTION:'+str(trial_seq), 'status':'SELECTED_SAMPLE_ELIGIBLE' if eligible else 'REJECTED_SAMPLE_SIZE',
+                    "experiment_id": run_prefix+':SELECTION:'+str(trial_seq),
                     "record_type": "RESET_SELECTION_TRIAL",
                     "fold": fold_name,
                     "family": family,
@@ -687,6 +809,7 @@ def main() -> int:
         f2_016 = f2["validation"]["cost_0.016"]["compounded_return"]
         eligibility = {
             "minimum_total_validation_trades": c012["complete_trades"] >= 8,
+            "no_insolvency": not any(m['insolvent'] for m in combined_by_cost.values()),
             "minimum_each_fold": f1["validation"]["cost_0.012"]["complete_trades"] >= 3 and f2["validation"]["cost_0.012"]["complete_trades"] >= 3,
             "positive_each_fold_at_0.016": f1_016 > 0 and f2_016 > 0,
             "positive_total_all_costs": all(combined_by_cost[f"cost_{cost:.3f}"]["compounded_return"] > 0 for cost in COSTS),
@@ -721,6 +844,36 @@ def main() -> int:
         fr["eligibility"] = eligibility
         fr["eligible"] = eligible
 
+    print('Primary selection/validation completed; running preregistered destruction checks',flush=True)
+    alt_dates,alt_rows=load_mother(mother)
+    _,alt_context,alt_index=prepare_features(alt_dates,alt_rows,discontinuity=.10)
+    alt_cache=build_rank_cache(alt_dates,alt_rows)
+    statistical={}
+    quality_results={}
+    for family,fr in family_results.items():
+        events=[];attacks=[]
+        for fold_name,_,_,val_start,val_end in folds:
+            fold=fr['folds'].get(fold_name,{})
+            if fold.get('status')!='SELECTED_AND_VALIDATED':continue
+            events+=fold['events']['cost_0.012']
+            selected=Config(**fold['selected_config'])
+            metrics,_=simulate(selected,val_start,val_end,.016,alt_dates,alt_index,alt_rows,alt_context,alt_cache)
+            attacks.append({'fold':fold_name,'config_id':selected.id,'metrics':metrics})
+        statistical[family]=quarterly_signflip(events)
+        quality_results[family]={'alternative_discontinuity':.10,'folds':attacks,
+            'pass':len(attacks)==2 and all(a['metrics']['complete_trades']>=3 and a['metrics']['compounded_return']>0 and not a['metrics']['insolvent'] for a in attacks)}
+    holm_adjust(statistical)
+    for row in summary_rows:
+        family=row['family'];row['statistical_evidence']=statistical[family];row['quality_sensitivity']=quality_results[family]
+        if 'eligibility' in row:
+            row['eligibility']['holm_quarter_block_p_le_0.05']=statistical[family]['holm_adjusted_p']<=.05
+            row['eligibility']['alternative_quality_survives']=quality_results[family]['pass']
+            row['eligible']=all(row['eligibility'].values())
+            family_results[family]['eligibility']=row['eligibility'];family_results[family]['eligible']=row['eligible']
+    robustness={'method':'PREREGISTERED_QUARTER_BLOCK_SIGNFLIP_HOLM_7_FAMILIES_AND_STRICTER_QUALITY',
+                'statistical':statistical,'quality_sensitivity':quality_results,'authority':AUTHORITY}
+    (OUT/'ROBUSTNESS_REPORT.json').write_text(json.dumps(robustness,indent=2,sort_keys=True)+'\n')
+
     numeric_rows = [r for r in summary_rows if "return_012" in r]
     pareto = [r for r in numeric_rows if not any(dominates(other, r) for other in numeric_rows if other is not r)]
     eligible_rows = [r for r in numeric_rows if r.get("eligible")]
@@ -737,12 +890,20 @@ def main() -> int:
             ),
         )[0]
 
-    baseline = candidate_b_reproduction(dates, date_index, by_date, context, rank_cache)
-
-    with ledger_path.open("w", encoding="utf-8") as f:
-        for record in ledger:
-            f.write(json.dumps(record, ensure_ascii=False, sort_keys=True, default=str) + "\n")
-
+    characterization={}
+    for family,fr in family_results.items():
+        events=[event for fold in fr['folds'].values() for event in fold.get('events',{}).get('cost_0.012',[])]
+        groups=defaultdict(list)
+        for event in events:
+            d=event['signal_date'];state=context[d];m1=state['market'].get('r1');sox=state['sox']
+            label=('LOCAL_NEG' if m1 is not None and m1<0 else 'LOCAL_OTHER_OR_MISSING')+'|'+('SOX5_WEAK' if sox and sox.get('ret5') is not None and sox['ret5']<=-.03 else 'SOX_OTHER_OR_MISSING')
+            groups[label].append(event)
+        characterization[family]={'regimes':{k:summarize_events(v,.012) for k,v in groups.items()},
+                                  'concentration':concentration(events,.012)}
+    (OUT/'REGIME_AND_CONCENTRATION_REPORT.json').write_text(json.dumps({'families':characterization,'authority':AUTHORITY},indent=2,sort_keys=True)+'\n')
+    # Immutable per-attempt prefix snapshot; the shared journal stays append-only.
+    with ledger_path.open('xb') as snapshot:
+        snapshot.write(ledger.path.read_bytes())
     trial_summary = {
         "schema_version": 1,
         "stage": "C_D_CHRONOLOGICAL_RULE_SEARCH",
@@ -753,9 +914,12 @@ def main() -> int:
         "scope_lock_sha256": sha256_file(SCOPE_PATH),
         "universe": scope["universe"],
         "mother_sha256": sha256_file(mother),
+        "stage_b_run_id": os.environ.get('STAGE_B_RUN_ID'),
+        "method_corrections_sha256":sha256_file(RESET/'METHOD_CORRECTIONS_V1.json'),
         "config_count": len(all_configs),
         "selection_trial_count": trial_seq,
-        "ledger_record_count": len(ledger),
+        "ledger_record_count": ledger.count,
+        "all_evaluation_count": sequence,
         "families": family_results,
         "summary": summary_rows,
         "authority": {"research_only": True, "capital_authority_twd": 0, "broker_order_execution": False, "production_promotion": False},
@@ -792,7 +956,34 @@ def main() -> int:
     }
     (OUT / "SEARCH_RUN_RECEIPT.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(receipt, sort_keys=True))
+    simulate = original_simulate
     return 0
+
+
+def main():
+    global OUT
+    root_output=OUT
+    run_id=str(os.environ.get('GITHUB_RUN_ID',datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')))+'-'+str(os.environ.get('GITHUB_RUN_ATTEMPT','1'))
+    OUT=root_output/'runs'/run_id
+    OUT.mkdir(parents=True,exist_ok=False)
+    provenance={'code_commit':subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip(),
+                'code_sha256':sha256_file(Path(__file__)),
+                'frozen_corpus_base':CORPUS_BASE,'search_plan_sha256':sha256_file(PLAN_PATH),
+                'method_corrections_sha256':sha256_file(RESET/'METHOD_CORRECTIONS_V1.json')}
+    with TrialLedger(root_output/'EXPERIMENT_LEDGER.jsonl',provenance) as ledger:
+        ledger.append({'record_id':run_id+':RUN_STARTED','status':'RUN_STARTED'})
+        try:
+            result=_main(ledger)
+        except BaseException as exc:
+            status='ABORTED' if isinstance(exc,(KeyboardInterrupt,SystemExit)) else 'FAILED'
+            ledger.append({'record_id':run_id+':RUN_'+status,'status':status,'error':type(exc).__name__+':'+str(exc)})
+            failure={'status':'NO_ROBUST_WINNER','execution_status':'BLOCKED_'+status,
+                     'reason':type(exc).__name__+':'+str(exc),'authority':AUTHORITY}
+            (OUT/'WINNER_OR_NO_WINNER.json').write_text(json.dumps(failure,indent=2)+'\n')
+            (OUT/'SEARCH_RUN_RECEIPT.json').write_text(json.dumps(failure,indent=2)+'\n')
+            raise
+        ledger.append({'record_id':run_id+':RUN_COMPLETED','status':'RUN_COMPLETED'})
+        return result
 
 
 if __name__ == "__main__":
