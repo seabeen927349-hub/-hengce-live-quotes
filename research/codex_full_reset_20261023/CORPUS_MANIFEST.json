@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "purpose": "Complete hash-bound corpus for a from-scratch Codex model-research reset. Historical successes and failures are evidence, not privileged champions.",
+  "frozen_base": {
+    "branch": "research/codex-full-reset-20261023",
+    "base_commit": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+    "base_tree": "aa1af4ce9ed69327e2da272caef4128992ba6ea3",
+    "meaning": "All in-tree paths below are resolved exactly at this immutable base snapshot unless a different commit is explicitly pinned. Do not silently follow moving main."
+  },
+  "corpus_policy": {
+    "copy_data": false,
+    "resolution": "Read files from the pinned Git commit/tree or the explicitly pinned historical branch commit. Git object identity is the provenance boundary.",
+    "include_successes": true,
+    "include_failures": true,
+    "include_rejected": true,
+    "include_aborted": true,
+    "include_abandoned": true,
+    "include_governance_and_data_integrity_history": true,
+    "old_champion_privilege": false,
+    "pristine_holdout_claim_for_2023_2026": false
+  },
+  "in_tree_primary_data_and_research_roots": [
+    {
+      "path": "research/e2_profit_max/**",
+      "class": "PIT_RESEARCH_DATA_MODELS_RESULTS",
+      "notes": "Candidate-B validation, PIT membership acquisition/evidence, macro series, Round-2 payloads/masks/scripts and debug evidence. Use failures and warnings too."
+    },
+    {
+      "path": "research/q017_sox_tw_electronics/**",
+      "class": "PIT_Q017_RESEARCH_DATA",
+      "notes": "Official/PIT acquisition and Q017 electronics/SOX research evidence."
+    },
+    {
+      "path": "research/q012/**",
+      "class": "MICROSTRUCTURE_RESEARCH_AND_INTEGRITY",
+      "notes": "Microstructure feature code, tests and integrity lessons; do not infer missing historical depth."
+    },
+    {
+      "path": "research/phase1_audit/**",
+      "class": "EVIDENCE_INVENTORY_AND_GOVERNANCE",
+      "notes": "Coverage, dependency, lineage, executability and known-gap inventory."
+    },
+    {
+      "path": "research/phase2_governance/**",
+      "class": "EXPERIMENT_GOVERNANCE_AND_FAILURE_RETENTION",
+      "notes": "Old scoped policy is historical evidence. RESET_AUTHORIZATION.json in this reset supersedes its model-search restrictions for research only; production locks remain."
+    },
+    {
+      "path": "research/phase2_q017/**",
+      "class": "Q017_PROSPECTIVE_CHARACTERIZATION",
+      "notes": "Registered challenger family and characterization tooling/results where present."
+    },
+    {
+      "path": "research/radar/**",
+      "class": "LEGACY_RESEARCH_REFERENCE",
+      "notes": "Legacy research evidence only; no authority implied."
+    },
+    {
+      "path": "eod/**",
+      "class": "ORIGINAL_VESSEL_EOD_MOTHER_AND_LEGS",
+      "known_day_folders_at_base": ["20261014","20261015","20261016","20261019","20261020","20261021","20261022"],
+      "notes": "Original-vessel price/institutional/margin/status/receipt material where present. Never synthesize a missing leg."
+    },
+    {
+      "path": "hengce/**",
+      "class": "FORMAL_AND_RUNTIME_ARTIFACT_CONTEXT",
+      "notes": "Current formal Q017/E2/unified/runtime/calendar/live-context artifacts and contracts. Use only fields with proven timestamp/authority semantics."
+    },
+    {
+      "path": "receipts/**",
+      "class": "DATA_PROVENANCE_RECEIPTS",
+      "notes": "Hash/status lineage and ingestion receipts where present."
+    },
+    {
+      "path": "shadow/**",
+      "class": "ZERO_AUTHORITY_CONTEXT",
+      "notes": "Full-market/electronics shadow/context; never relabel as execution or formal signal evidence."
+    },
+    {
+      "path": "scripts/**",
+      "class": "HISTORICAL_AND_CURRENT_MODEL_DATA_PIPELINE_CODE",
+      "notes": "Needed to reconstruct semantics, timestamps, feature definitions, failures and exact replay. Production files are read-only for this reset."
+    },
+    {
+      "path": ".github/workflows/**",
+      "class": "EXECUTION_AND_DATA_ACQUISITION_PROVENANCE",
+      "notes": "Schedules, acquisition lanes, historical research workflows and CI evidence."
+    },
+    {
+      "path": "docs/**",
+      "class": "ENGINEERING_AND_RESEARCH_DECISION_HISTORY",
+      "notes": "Use as rationale/evidence map; code/data beat prose when inconsistent."
+    }
+  ],
+  "historical_fixed_refs": [
+    {
+      "kind": "MERGED_PR",
+      "pr": 28,
+      "head_branch": "feature/unified-hengce-q017-20261023",
+      "head_sha": "c2bfe20cd4534df439ffb318d67554eec1fd18a0",
+      "class": "CANONICAL_Q017_AND_UNIFIED_RUNTIME_ENGINEERING",
+      "performance_evidence": false
+    },
+    {
+      "kind": "MERGED_PR",
+      "pr": 27,
+      "head_branch": "phase2/q017-prospective-optimization-20261023",
+      "head_sha": "e9c39b0d9c801ecefdc54fb781c7fd188e1f847e",
+      "class": "Q017_PROSPECTIVE_CHARACTERIZATION",
+      "performance_evidence": "PROSPECTIVE_ONLY; pre-activation locks are smoke-only"
+    },
+    {
+      "kind": "CLOSED_UNMERGED_PR",
+      "pr": 26,
+      "head_branch": "phase2/e2-p2a-baseline-destruction-20261023",
+      "head_sha": "fbe16b4ec1c9b3495704b1ef716accd9e11b9ece",
+      "class": "FAILED_ABANDONED_E2_DIAGNOSTICS",
+      "outcome": "Partial diagnostics; leave-one-year-out remained positive, but trade-level diagnostics were blocked by unreadable/corrupt preserved Round-2 event payloads. No candidate accepted."
+    },
+    {
+      "kind": "MERGED_PR",
+      "pr": 25,
+      "head_branch": "phase2/e2-p2a-authorization-20261023",
+      "head_sha": "21c8a8c0d1973a0a07bf1b97a605c864cbb36cbb",
+      "class": "RESEARCH_GOVERNANCE",
+      "performance_evidence": false
+    },
+    {
+      "kind": "MERGED_PR",
+      "pr": 23,
+      "head_branch": "codex/phase2-governance-freeze-20261023",
+      "head_sha": "e067d9bb68cf9eb7f21ba01080fc1b32c6509475",
+      "class": "RESEARCH_GOVERNANCE_READINESS",
+      "performance_evidence": false
+    },
+    {
+      "kind": "MERGED_PR",
+      "pr": 15,
+      "head_branch": "codex/phase1-foundation-b01-b09-20261022",
+      "head_sha": "840771e20215cbf9899dd74599a6fdc2a5af881c",
+      "class": "RESEARCH_EVIDENCE_FOUNDATION",
+      "performance_evidence": false
+    },
+    {
+      "kind": "MERGED_PR",
+      "pr": 13,
+      "head_branch": "research/phase1-evidence-map-20261022",
+      "head_sha": "fb4ac5809de1012edaedf10e2c9870770db39eae",
+      "class": "RESEARCH_EVIDENCE_DELTA",
+      "performance_evidence": false
+    },
+    {
+      "kind": "MERGED_PR",
+      "pr": 1,
+      "head_branch": "q012-integrity-guard-v02-20261017",
+      "head_sha": "5303f4382c44fa2d2a3955fae781220453df66c1",
+      "class": "MICROSTRUCTURE_DATA_INTEGRITY",
+      "performance_evidence": false
+    },
+    {
+      "kind": "ABORTED_RESEARCH_BRANCH",
+      "head_branch": "research/hengce-profit-winrate-optimization-20261023",
+      "head_sha": "4930fb042354d0abacdab47d2f16ab12846f89ff",
+      "class": "FAILED_CANDIDATE_C_SCREEN",
+      "workflow_run": 39907799192,
+      "outcome": "Compile/unit tests passed; real-data locked finite screen failed. User then explicitly stopped the effort. Preserve as failed/aborted evidence; do not inherit its narrow search space."
+    }
+  ],
+  "known_reference_baseline": {
+    "artifact": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_FINAL_VALIDATION_20261019.json",
+    "label": "REFERENCE_ONLY_NOT_CHAMPION",
+    "pit_2023_2025": {
+      "return": 0.530103542875737,
+      "entries": 13,
+      "wins": 8,
+      "win_rate": 0.6153846153846154,
+      "max_drawdown": -0.41633333333333333
+    },
+    "observed_2026_through_20261016": {
+      "return": 0.7495681240845711,
+      "entries": 6,
+      "wins": 3,
+      "win_rate": 0.5,
+      "max_drawdown": -0.10411945992507265
+    },
+    "warning": "Very small trade sample and all 2023-2026 history is exposed. These numbers are a baseline, not a target to overfit."
+  },
+  "mandatory_gaps_and_warnings": [
+    "The repository does not prove that every conceivable historical market field exists. Missing PIT publication/first-seen/revision/depth/fill/corporate-action evidence must remain missing, never reconstructed from future information.",
+    "2023-2026 history has been exposed to prior research and cannot be called pristine holdout.",
+    "Daily EOD mother folders in the current repo cover only the listed 2026 dates; longer historical PIT evidence is stored in research datasets/payloads and must be lineage-audited before use.",
+    "Q017 old schema-v5 09:01/Top3/DXY semantics and current canonical Q017 are different contracts; do not silently blend them.",
+    "Actual user trades and no-fill reports are execution-state evidence, not model labels for retrospective optimization.",
+    "Any unreadable/corrupt historical payload must be recorded as a failed input, not silently repaired unless source-equivalent bytes can be independently proven."
+  ]
+}
