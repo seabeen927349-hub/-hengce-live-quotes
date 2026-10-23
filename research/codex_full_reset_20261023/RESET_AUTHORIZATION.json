@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "event": "FULL_RESEARCH_RESET",
+  "effective_date": "2026-10-23",
+  "source": "explicit_human_instruction_in_chat",
+  "instruction_summary": "Give Codex the complete mother/universe data and all prior successful and failed research, restart from scratch, and search for the model with the strongest profit and win-rate evidence.",
+  "research_authorized": true,
+  "automated_model_search_authorized": true,
+  "research_candidate_creation_authorized": true,
+  "research_candidate_selection_authorized": true,
+  "causal_pit_feature_discovery_authorized": true,
+  "old_models_privileged": false,
+  "old_parameter_locks_privileged": false,
+  "production_changes_authorized": false,
+  "production_promotion_authorized": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "main_branch_write_authorized": false,
+  "merge_authorized": false,
+  "requirements": [
+    "retain every successful, failed, rejected, aborted and abandoned experiment",
+    "use chronological causal point-in-time validation only",
+    "do not call any exposed 2023-2026 history a pristine holdout",
+    "optimize after-cost profitability and win rate jointly, not win rate alone",
+    "control drawdown, tail risk, turnover, sample size, regime stability and multiple testing",
+    "return NO_ROBUST_WINNER when evidence does not support a robust winner"
+  ]
+}
