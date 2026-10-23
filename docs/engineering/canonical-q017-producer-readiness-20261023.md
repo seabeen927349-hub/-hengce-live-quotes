@@ -4,11 +4,14 @@ This note supersedes only the **Canonical Q017 producer search and readiness** s
 
 ## Status
 
-**IMPLEMENTED / REVIEW-BOUND / FAIL-CLOSED / NOT AUTO-PROMOTED**
+**IMPLEMENTED / REVIEW-BOUND / OFFICIAL-CALENDAR-BOUND / FAIL-CLOSED / NOT AUTO-PROMOTED**
 
 - Producer: `scripts/hengce_q017_canonical_producer.py`
-- Reviewed producer commit: `a60265f29cc57e79873f4fc9e99fa8996e15558c`
+- Reviewed producer commit: `ba003ca8989efa524c5505e28e206a3cc2d27327`
 - Admission: `scripts/hengce_unified_q017_admission.py`
+- Calendar validator: `scripts/hengce_twse_calendar.py`
+- Official retained calendar: `hengce/calendar/TWSE_TRADING_CALENDAR_2026_v1.json`
+- Governance/deployment copy: `governance/TWSE_TRADING_CALENDAR_2026_v1.json`
 - Output contract: `HENGCE_CANONICAL_Q017_CANDIDATES`, schema version 1
 - Default artifact path: `hengce/q017_canonical/latest.json`
 - Capital authority: 0
@@ -45,23 +48,37 @@ The independent Q017 producer:
 - deterministically ranks by score descending then ticker;
 - emits at most Top1 when the full gate is GO;
 - emits CASH with no candidate when the global gate is not GO;
-- emits source-byte SHA-256 lineage and frozen-evidence references;
+- emits source-byte SHA-256 lineage, official-calendar lineage and frozen-evidence references;
 - writes atomically and emits zero-authority fields.
 
 No entry/stop/target/risk geometry is generated.
 
-## Explicit session binding
+## Official TWSE trading-calendar binding
 
-The producer requires both `--signal-date` and `--trade-date`; it does not infer a signal date from a stale file.
+The retained 2026 calendar comes from the Taiwan Stock Exchange official OpenAPI endpoint:
 
-It requires the latest electronics-history date to equal the explicit signal date and rejects history containing the trade date or later. It also rejects stale SOX evidence.
+`https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule`
 
-There is still no authoritative TWSE holiday calendar in this package. Therefore the producer intentionally accepts only ordinary unambiguous next-session mappings:
+The manifest is frozen with:
 
-- adjacent weekday -> next weekday; or
-- Friday -> Monday.
+- ROC year 115 / Gregorian year 2026;
+- normalized official records SHA-256 `8f9096843c09c877a51df318946e6dc279f36863ec9230b79a8b1a07a1af3cc6`;
+- calendar fingerprint `eb8861a737327a867c6cea8d6d58fa41235dd125cdae1760e0b1441751b26f84`;
+- base rule Monday-Friday plus the official closure/open-marker exceptions.
 
-Other gaps fail closed with `OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP`. This intentionally sacrifices availability after holidays rather than guessing that an older signal is the immediately prior TWSE session.
+The source and governance copies are byte-identical. If both exist and differ, calendar loading fails closed. The deployed hard-bind bundle installs the validated governance copy and records its file hash.
+
+The producer requires both `--signal-date` and `--trade-date`; it does not infer a signal date from a stale file. It requires the latest electronics-history date to equal the explicit signal date, rejects history containing the trade date or later, rejects stale SOX evidence, and requires:
+
+`trade_date == official_next_TWSE_trading_day(signal_date)`
+
+Examples covered by regression tests:
+
+- 2026-10-23 (Friday) -> 2026-10-27 (Tuesday): valid, because 2026-10-26 is an official TWSE closure;
+- 2026-10-23 -> 2026-10-26: rejected;
+- 2026-02-11 -> 2026-02-23: valid across the official Lunar New Year closure interval.
+
+Dates outside the retained 2026 calendar coverage fail closed rather than being guessed.
 
 ## Admission invariants
 
@@ -69,11 +86,12 @@ The unified runtime admits reviewed producer evidence through `hengce_unified_q0
 
 The admission layer independently checks:
 
-- reviewed producer name;
-- reviewed producer commit;
+- reviewed producer name and commit;
 - frozen evidence commit;
-- signal date precedes trade date;
-- ordinary next-session binding while no official calendar is available;
+- local retained TWSE calendar schema, official-source records hash and fingerprint;
+- artifact calendar fingerprint and raw manifest SHA against the local retained manifest;
+- producer input hash for the calendar manifest;
+- official next-TWSE-open signal/trade binding;
 - GO has exactly one candidate and CASH has none;
 - candidate signal/entry dates match artifact dates;
 - beta observations are 30..60;
@@ -96,17 +114,19 @@ Q017 remains only an internal candidate source.
 
 ## Verification
 
-Golden producer tests cover score/residual identity, signal-day beta exclusion, Top1, local/SOX gates, DXY exclusion, CASH behavior, same-day/noncausal data rejection, stale explicit signal rejection and ambiguous session-gap rejection.
+Calendar tests cover official closures/open markers, 2026-10-23 -> 2026-10-27, 2026-02-11 -> 2026-02-23, closure rejection and tamper rejection.
 
-Admission tests cover reviewed producer acceptance plus rejection of wrong producer commit, stale/same-day signal binding, ambiguous session gap, beta observation count below 30 and attempted geometry injection.
+Golden producer tests cover score/residual identity, signal-day beta exclusion, Top1, local/SOX gates, DXY exclusion, CASH behavior, noncausal/stale data rejection, calendar lineage and non-trading entry rejection.
 
-The unified Q017 integration workflow runs these tests together with the existing adapter/action/display/runtime suites. Engineering Replay continues to exact-equality gate historical model/safety payloads except the already-authorized single-HENGCE router migration.
+Admission tests cover reviewed producer acceptance plus rejection of wrong producer commit, stale/same-day signal binding, calendar-lineage tampering, official closure misuse, beta observation count below 30 and attempted geometry injection.
+
+The hard-bind bundle verifies the calendar is installed and usable in an isolated deployed fixture. Engineering Replay continues to exact-equality gate historical model/safety payloads except the already-authorized single-HENGCE router migration; new regression tests run after the historical snapshot comparison without introducing a replay exemption.
 
 ## Remaining limitation
 
-A current canonical artifact must not be generated until the required PIT electronics/SOX data and explicit signal/trade session binding are available. This implementation does not fabricate missing daily data, does not translate legacy Q017 v5, and does not use a guessed holiday calendar.
+A **current** canonical artifact still must not be fabricated. It may be generated only when the required PIT electronics/SOX data are available and bind to an explicit valid 2026 signal/trade session. This implementation does not fabricate missing daily data and does not translate legacy Q017 v5.
 
-The next infrastructure improvement is an independently authoritative TWSE trading-calendar/session manifest. Until then, ambiguous holiday gaps remain deliberately unavailable.
+Calendar coverage is intentionally pinned to 2026. A future year requires a newly retained official TWSE manifest, independent review, new fingerprint, tests and admission update; the current code fails closed outside coverage.
 
 **MODEL CHANGES: NONE IMPLEMENTED**  
 **PR #28: OPEN / DRAFT / NOT MERGED**
