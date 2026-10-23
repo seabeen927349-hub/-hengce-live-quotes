@@ -1,0 +1,33 @@
+{
+  "study": "OFFICIAL_ACTION_AND_EXECUTION_EVIDENCE_V1",
+  "authorization": "User: 你繼續，我照準; continue research with the previously identified data-foundation step",
+  "parent_commit": "dcd122523308a9701708c6e86d05c2988005c23a",
+  "parent_model_evaluations": 8529,
+  "new_model_evaluation_budget": 0,
+  "purpose": "Resolve whether specific censored cases are corporate actions, suspensions or unknown fills before defining another model study. Do not retroactively revise previous trial outcomes.",
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "raw_report_scope": "Full official reports may include other securities; preserve as evidence only. Normalized event output admits exact mother-date electronics membership only. No full-market model fallback.",
+  "period": ["2023-01-01", "2025-12-31"],
+  "network_budget": "Thirteen planned requests, each at most two attempts; sequential >=1.5sec spacing, <=25sec timeout. Retain errors and response bytes, no access-control bypass. Additional exploratory source-discovery probes are separately retained, not claimed as planned collection.",
+  "sources": [
+    "TWT49U annual 2023/2024/2025",
+    "TWTAUU annual 2023/2024/2025",
+    "TWT49UDetail 6189 effective 2025-07-25 and 2364 effective 2025-08-28",
+    "STOCK_DAY 2327 August 2025 and 3090 July 2025",
+    "TWT84U requested 2025-04-07",
+    "Official TWSE 2025-07-14 3090 suspension PDF",
+    "Official TAIFEX 2327 2025-08-25 contract-adjustment PDF"
+  ],
+  "mandatory_rules": [
+    "Validate response status, echoed range/title, schema, unique event identities, finite positive prices and source/effective dates; never equate HTTP200 with data success",
+    "Quarantine latest financial-statement/NAV/EPS columns from historical data projections even when the source appends them to historic events",
+    "Record fetched_at_utc separately from original publication timestamp; original first-seen and revision history remain UNKNOWN unless actually evidenced",
+    "Reference-price ratios are not assumed to be total-return or share-adjustment factors",
+    "Cash payouts, share entitlements, paid subscription rights, delivery dates and identity changes require their own verified terms; missing terms block adjusted PnL",
+    "Suspension explains missing OHLC but does not create a fill or permit carrying a guessed price",
+    "Daily OHLC/volume or opening reference prices cannot prove auction fills or queue position",
+    "Do not overwrite raw mother, old plans, old trial results or ledgers",
+    "No new model study until required data readiness is explicitly assessed; this data-only stage launches zero trials"
+  ],
+  "authority": {"research_only": true, "signal_authority": false, "ranking_authority": false, "capital_authority_twd": 0, "broker_order_execution": false, "production_promotion": false, "merge_authorized": false}
+}
