@@ -90,6 +90,8 @@ class Runtime(unittest.TestCase):
         x['receipt'].update(generated_at=x['action']['generated_at'],action_hash=digest(x['action']))
         self.assertEqual(display.build(NOW+timedelta(minutes=9),x['action'],x['base'],x['receipt'])['binding_status'],'FAIL_CLOSED')
     def test_q017_only_and_both(self):
+        self.live['data'].append({'symbol':'3008','price':103,'high':104,'quote_date':'2026-10-23'})
+        self.save(self.root/'live.json', self.live)
         for symbol, provenance in [('3008','Q017'),('2330.TW','BOTH')]:
             q=canonical_q017(symbol);self.save(self.root/'hengce/q017_canonical/latest.json',q)
             self.assertEqual(self.run_pipeline(),0)
@@ -98,8 +100,46 @@ class Runtime(unittest.TestCase):
             self.assertNotIn('UnifiedScore',row)
             if provenance=='Q017':
                 self.assertEqual(row['FinalAction'],'ABSTAIN');self.assertEqual(row['GeometryStatus'],'UNAVAILABLE')
+                self.assertEqual(row['PriceProof'], 'LIVE_BOUND_NO_GEOMETRY')
             else:
                 self.assertEqual(row['FinalAction'],'REVIEW_ENTRY');self.assertEqual(row['LegacyScore'],.9)
+    def test_real_installed_scan_command_prints_one_result(self):
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+        import shutil
+        clock = datetime.now(ZoneInfo('Asia/Taipei'))
+        for obj, path in [(self.legacy,self.formal),(self.ctx,self.context)]:
+            obj.update(trade_date=clock.date().isoformat(), generated_at=clock.isoformat())
+            self.save(path,obj)
+        self.live['generated_at_taipei'] = clock.isoformat()
+        self.live['data'][0]['quote_date'] = clock.date().isoformat()
+        self.save(self.root/'live.json', self.live)
+        work=self.root/'work';work.mkdir()
+        source=Path(__file__).resolve().parent
+        for name in ['hengce_unified_contracts','hengce_unified_runner','hengce_unified_candidate_adapter',
+                     'hengce_unified_action_board','hengce_intraday_action_board','hengce_unified_scan_display','hengce_scan_once_router']:
+            shutil.copyfile(source/(name+'.py'),work/(name+'.py'))
+        shutil.copyfile(source/'RUN_INTRADAY_ACTION_BOARD.sh',self.root/'RUN_INTRADAY_ACTION_BOARD.sh')
+        command=[sys.executable,str(work/'hengce_scan_once_router.py'),'--now',clock.isoformat()]
+        env={**os.environ,'HENGCE_LIVE_RAW_URL':'https://127.0.0.1:9/MUST_NOT_FETCH'}
+        good=subprocess.run(command,text=True,capture_output=True,timeout=10,env=env)
+        self.assertEqual(good.returncode,0,good.stdout+good.stderr)
+        result=json.loads(good.stdout) # extra outputs would make JSON invalid
+        self.assertEqual(result['architecture'],'SINGLE_HENGCE')
+        self.assertEqual(result['rows'][0]['FinalAction'],'REVIEW_ENTRY')
+        self.context.unlink()
+        bad=subprocess.run(command,text=True,capture_output=True,timeout=10,env=env)
+        self.assertEqual(bad.returncode,2)
+        self.assertEqual(json.loads(bad.stdout)['rows'],[])
+    def test_candidate_geometry_payload_is_evidence_only(self):
+        q=canonical_q017('3008')
+        q['candidates'][0].update(BreakoutLower=100,BreakoutUpper=105,NoChase=110,
+                                 InvalidationPrice=90,FormalEntryTrigger=True,PositionHeld=True)
+        row=next(r for r in adapter.build(self.legacy,q)['rows'] if r['Ticker']=='3008')
+        self.assertEqual(row['GeometryStatus'],'UNAVAILABLE')
+        self.assertFalse(row['FormalEntryTrigger'])
+        self.assertNotIn('BreakoutLower',row)
+        self.assertNotIn('PositionHeld',row)
     def test_unverified_producer_cannot_self_certify_canonical_authority(self):
         self.save(self.root/'hengce/q017_canonical/latest.json', canonical_q017())
         with patch.object(adapter, 'VERIFIED_Q017_PRODUCERS', frozenset()):

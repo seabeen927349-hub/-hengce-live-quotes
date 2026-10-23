@@ -120,8 +120,11 @@ Adversarial review added rejection of conflicting context/quote metadata aliases
 failed/unexpected-stale/inactive quotes, conflicting geometry aliases even for held
 positions, and entry review of explicitly nonformal candidates. These corrections
 have targeted regression cases. Valid held-position exits with valid geometry
-retain priority over capital-blocking context. A final targeted review follows
-those substantive changes. CI run IDs/results are recorded in PR #28 for its final
+retain priority over capital-blocking context. The final targeted review found no remaining high-severity issue in this scoped
+runtime path. It also added a real installed scan command test (one parseable JSON
+result on success/failure), a fresh-quote Q017-only geometry test, and rejection of
+Q017 candidate geometry/held-position payloads as authority (retained as evidence
+only). CI run IDs/results are recorded in PR #28 for its final
 head; CI success does not imply canonical producer readiness.
 
 Optional standalone Phase 2 governance scope suites were also attempted. Their
