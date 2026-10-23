@@ -1,6 +1,7 @@
 name: HENGCE intraday hard-bind bundle
 
 on:
+  pull_request:
   workflow_dispatch:
   push:
     paths:
@@ -10,6 +11,8 @@ on:
       - 'scripts/CHECK_HENGCE_RUN.sh'
       - 'scripts/RUN_INTRADAY_ACTION_BOARD.sh'
       - 'scripts/hengce_intraday_action_board.py'
+      - 'scripts/hengce_unified*.py'
+      - 'scripts/hengce_scan_once_router.py'
       - 'hengce/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json'
       - 'patch/INSTALL_HENGCE_INTRADAY_HARD_BIND.sh'
       - '.github/workflows/hengce-intraday-hard-bind-bundle.yml'
@@ -36,6 +39,8 @@ jobs:
           cp scripts/CHECK_HENGCE_RUN.sh "$B/scripts/"
           cp scripts/RUN_INTRADAY_ACTION_BOARD.sh "$B/scripts/"
           cp scripts/hengce_intraday_action_board.py "$B/scripts/"
+          cp scripts/hengce_unified*.py "$B/scripts/"
+          cp scripts/hengce_scan_once_router.py "$B/scripts/"
           cp hengce/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json "$B/hengce/"
           cp patch/INSTALL_HENGCE_INTRADAY_HARD_BIND.sh "$B/patch/"
           chmod +x "$B/scripts/"*.sh "$B/patch/"*.sh
@@ -66,9 +71,26 @@ jobs:
             ]
           }
           JSON
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          now=datetime.now(ZoneInfo('Asia/Taipei'))
+          p=Path('work_output/formal/production/v2_scan.json')
+          x=json.loads(p.read_text());x.update(trade_date=now.date().isoformat(),generated_at=now.isoformat());p.write_text(json.dumps(x))
+          PY
           SH
           chmod +x "$T/RUN_IN_WORK.sh"
           printf '{"MarketContextState":"CAUTION","NewCapitalPolicy":"PROBE_ONLY"}\n' > "$T/work_output/context/HENGCE_MARKET_CONTEXT.json"
+          python3 - "$T/work_output/context/HENGCE_MARKET_CONTEXT.json" <<'PY'
+          import json,sys
+          from pathlib import Path
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          now=datetime.now(ZoneInfo('Asia/Taipei'));p=Path(sys.argv[1])
+          x=json.loads(p.read_text());x.update(trade_date=now.date().isoformat(),generated_at=now.isoformat());p.write_text(json.dumps(x))
+          PY
           bash "$BUNDLE/patch/INSTALL_HENGCE_INTRADAY_HARD_BIND.sh" "$T"
           sha256sum "$T/runtime/production_core/fake.joblib" > "$RUNNER_TEMP/model.after"
           cmp "$RUNNER_TEMP/model.before" "$RUNNER_TEMP/model.after"

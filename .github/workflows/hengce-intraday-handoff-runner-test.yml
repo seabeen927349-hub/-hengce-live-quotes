@@ -1,13 +1,14 @@
 name: HENGCE intraday handoff runner test
 
 on:
+  pull_request:
   workflow_dispatch:
   push:
     paths:
       - 'scripts/RUN_INTRADAY_ACTION_BOARD.sh'
       - 'scripts/hengce_intraday_action_board.py'
       - 'scripts/hengce_unified_candidate_adapter.py'
-      - 'scripts/hengce_unified_action_board.py'
+      - 'scripts/hengce_unified*.py'
       - '.github/workflows/hengce-intraday-handoff-runner-test.yml'
 
 permissions:
@@ -29,7 +30,7 @@ jobs:
           mkdir -p "$ROOT/work" "$ROOT/work_output/formal/production" "$ROOT/work_output/context" "$ROOT/fixture"
           cp scripts/hengce_intraday_action_board.py "$ROOT/work/"
           cp scripts/hengce_unified_candidate_adapter.py "$ROOT/work/"
-          cp scripts/hengce_unified_action_board.py "$ROOT/work/"
+          cp scripts/hengce_unified*.py "$ROOT/work/"
           cp scripts/RUN_INTRADAY_ACTION_BOARD.sh "$ROOT/"
           chmod +x "$ROOT/RUN_INTRADAY_ACTION_BOARD.sh"
           cat > "$ROOT/work_output/formal/production/v2_scan.json" <<'JSON'
@@ -46,6 +47,16 @@ jobs:
           cat > "$ROOT/work_output/context/HENGCE_MARKET_CONTEXT.json" <<'JSON'
           {"MarketContextState":"CAUTION","NewCapitalPolicy":"PROBE_ONLY"}
           JSON
+          python3 - "$ROOT" <<'PY'
+          import json,sys
+          from pathlib import Path
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          now=datetime.now(ZoneInfo('Asia/Taipei'))
+          root=Path(sys.argv[1])
+          for rel in ['work_output/formal/production/v2_scan.json','work_output/context/HENGCE_MARKET_CONTEXT.json']:
+              p=root/rel;x=json.loads(p.read_text());x.update(trade_date=now.date().isoformat(),generated_at=now.isoformat());p.write_text(json.dumps(x))
+          PY
           NOW="$(TZ=Asia/Taipei date --iso-8601=seconds)"
           DATE="$(TZ=Asia/Taipei date +%F)"
           cat > "$ROOT/fixture/live.json" <<JSON
@@ -100,7 +111,7 @@ jobs:
           mkdir -p "$ROOT/work" "$ROOT/work_output/formal/production" "$ROOT/fixture"
           cp scripts/hengce_intraday_action_board.py "$ROOT/work/"
           cp scripts/hengce_unified_candidate_adapter.py "$ROOT/work/"
-          cp scripts/hengce_unified_action_board.py "$ROOT/work/"
+          cp scripts/hengce_unified*.py "$ROOT/work/"
           cp scripts/RUN_INTRADAY_ACTION_BOARD.sh "$ROOT/"
           chmod +x "$ROOT/RUN_INTRADAY_ACTION_BOARD.sh"
           cp /tmp/hengce-intraday-runner-test/work_output/formal/production/v2_scan.json "$ROOT/work_output/formal/production/v2_scan.json"
@@ -128,7 +139,7 @@ jobs:
           mkdir -p "$ROOT/work" "$ROOT/work_output/formal/production" "$ROOT/work_output/context" "$ROOT/fixture"
           cp scripts/hengce_intraday_action_board.py "$ROOT/work/"
           cp scripts/hengce_unified_candidate_adapter.py "$ROOT/work/"
-          cp scripts/hengce_unified_action_board.py "$ROOT/work/"
+          cp scripts/hengce_unified*.py "$ROOT/work/"
           cp scripts/RUN_INTRADAY_ACTION_BOARD.sh "$ROOT/"
           chmod +x "$ROOT/RUN_INTRADAY_ACTION_BOARD.sh"
           printf '{"formal_scan_allowed":false,"rows":[]}' > "$ROOT/work_output/formal/production/v2_scan.json"

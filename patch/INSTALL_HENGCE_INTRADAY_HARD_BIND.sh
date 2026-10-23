@@ -43,6 +43,9 @@ copy_one(){
 }
 
 copy_one "$BUNDLE_ROOT/scripts/hengce_intraday_action_board.py" "$TARGET/work/hengce_intraday_action_board.py"
+for module in hengce_unified_contracts hengce_unified_candidate_adapter hengce_unified_action_board hengce_unified_runner hengce_unified_scan_display hengce_scan_once_router; do
+  copy_one "$BUNDLE_ROOT/scripts/$module.py" "$TARGET/work/$module.py"
+done
 copy_one "$BUNDLE_ROOT/scripts/RUN_INTRADAY_ACTION_BOARD.sh" "$TARGET/RUN_INTRADAY_ACTION_BOARD.sh"
 copy_one "$BUNDLE_ROOT/scripts/RUN_HENGCE_COMPLETE.sh" "$TARGET/RUN_HENGCE_COMPLETE.sh"
 copy_one "$BUNDLE_ROOT/scripts/RUN_IN_WORK_DETACHED.sh" "$TARGET/RUN_IN_WORK_DETACHED.sh"
@@ -87,6 +90,8 @@ import sys,os,json,hashlib
 from datetime import datetime,timezone
 root,backup,receipt,models,expected_present=sys.argv[1:]
 rels=[
+ 'work/hengce_unified_contracts.py','work/hengce_unified_candidate_adapter.py',
+ 'work/hengce_unified_action_board.py','work/hengce_unified_runner.py','work/hengce_unified_scan_display.py','work/hengce_scan_once_router.py',
  'work/hengce_intraday_action_board.py','RUN_INTRADAY_ACTION_BOARD.sh','RUN_HENGCE_COMPLETE.sh',
  'RUN_IN_WORK_DETACHED.sh','CHECK_HENGCE_RUN.sh','RUN_HENGCE.sh',
  'governance/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json']

@@ -14,12 +14,17 @@ import sys
 from datetime import datetime, time
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from hengce_unified_runner import locations
+from hengce_unified_contracts import ZERO_AUTHORITY, strict_loads
 
 TZ = ZoneInfo('Asia/Taipei')
-ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = ROOT / 'scripts'
-ACTION = ROOT / 'work_output' / 'intraday_action_board' / 'HENGCE_INTRADAY_ACTION_BOARD.json'
-BASE = ROOT / 'work_output' / 'intraday_action_board' / 'HENGCE_UNIFIED_CANDIDATE_BASE.json'
+ROOT, OUTPUT_DIR = locations()
+SCRIPTS = Path(__file__).resolve().parent
+RUNNER = ROOT / 'RUN_INTRADAY_ACTION_BOARD.sh'
+if not RUNNER.is_file():
+    RUNNER = SCRIPTS / 'RUN_INTRADAY_ACTION_BOARD.sh'
+ACTION = OUTPUT_DIR / 'HENGCE_INTRADAY_ACTION_BOARD.json'
+BASE = OUTPUT_DIR / 'HENGCE_UNIFIED_CANDIDATE_BASE.json'
 
 
 def parse_now(value: str | None):
@@ -48,33 +53,12 @@ def run_step(name: str, argv: list[str], timeout: int = 180):
 
 
 def refresh(now: datetime):
-    """Preserve existing data lanes, but do not grant them separate display authority."""
-    attempts = []
-    today = now.date().isoformat()
-    clock = now.timetz().replace(tzinfo=None)
-    if now.weekday() >= 5:
-        return attempts
-    if clock < time(8, 30):
-        return attempts
-    if clock < time(9, 1):
-        attempts.append(run_step('premarket_gate', [sys.executable, str(SCRIPTS/'hengce_daily_command_center.py'), '--mode', 'premarket', '--date', today]))
-        return attempts
-    if clock < time(9, 2):
-        # Retain the existing lane only as legacy evidence. The unified adapter
-        # rejects it when its contract is not the frozen canonical Q017 contract.
-        obs = run_step('q017_legacy_observation_evidence', [sys.executable, str(SCRIPTS/'hengce_q017_observation_lock_v5.py'), '--mode', 'observe', '--date', today], timeout=90)
-        attempts.append(obs)
-        if obs['ok']:
-            attempts.append(run_step('q017_legacy_compute_evidence', [sys.executable, str(SCRIPTS/'hengce_q017_observation_lock_v5.py'), '--mode', 'compute', '--date', today]))
-        return attempts
-    if clock < time(14, 0):
-        attempts.append(run_step('q017_legacy_evidence_recovery', [sys.executable, str(SCRIPTS/'hengce_q017_recovery_compute_v5.py'), '--mode', 'compute', '--date', today]))
-        attempts.append(run_step('q017_legacy_authority_guard', [sys.executable, str(SCRIPTS/'hengce_q017_authority_guard_v5.py'), '--mode', 'check-and-repair']))
-        return attempts
-    if clock >= time(15, 0):
-        attempts.append(run_step('postclose_three_leg', [sys.executable, str(SCRIPTS/'hengce_daily_command_center.py'), '--mode', 'postclose', '--date', today], timeout=240))
-        attempts.append(run_step('q017_legacy_authority_guard', [sys.executable, str(SCRIPTS/'hengce_q017_authority_guard_v5.py'), '--mode', 'check-and-repair']))
-    return attempts
+    """No producer recovery or legacy decision writer is invoked by a scan.
+
+    Scheduled captures remain independent. An interactive scan cannot create a
+    late observation, repair a legacy authority, or rerun an old trading engine.
+    """
+    return []
 
 
 def main():
@@ -86,21 +70,26 @@ def main():
     attempts = [] if args.display_only else refresh(now)
 
     if not args.display_only:
-        attempts.append(run_step('unified_hengce_action_board', ['bash', str(SCRIPTS/'RUN_INTRADAY_ACTION_BOARD.sh')], timeout=240))
+        attempts.append(run_step('unified_hengce_action_board', ['bash', str(RUNNER)], timeout=240))
 
     display_cmd = [sys.executable, str(SCRIPTS/'hengce_unified_scan_display.py'), '--now', now.isoformat(), '--no-write']
     if ACTION.exists():
         display_cmd += ['--action', str(ACTION)]
     if BASE.exists():
         display_cmd += ['--base', str(BASE)]
-    p = subprocess.run(display_cmd, cwd=ROOT, text=True, capture_output=True)
     try:
-        display = json.loads(p.stdout) if p.stdout.strip() else {}
+        p = subprocess.run(display_cmd, cwd=ROOT, text=True, capture_output=True, timeout=30)
+        display = strict_loads(p.stdout) if p.stdout.strip() else {}
+        if p.returncode != 0 and isinstance(display, dict) and display.get('binding_status') == 'PASS':
+            display = {}
     except Exception:
+        display = {}
+    if any(not attempt['ok'] for attempt in attempts):
         display = {}
     if not isinstance(display, dict) or display.get('system') != 'HENGCE':
         display = {
             'schema_version': 1,
+            **ZERO_AUTHORITY,
             'system': 'HENGCE',
             'module': 'HENGCE_SCAN_ONCE_ROUTER',
             'architecture': 'SINGLE_HENGCE',

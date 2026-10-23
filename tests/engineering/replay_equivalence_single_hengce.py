@@ -79,16 +79,49 @@ def assert_single_hengce_router(after_root: Path, after_probe: dict) -> dict:
     base.require("q017_separate_ranking_displayed" in display_text and
                  "e2_separate_engine_displayed" in display_text,
                  "unified display lacks separate-engine prohibition evidence")
-    base.require("hengce_unified_candidate_adapter.py" in runner_text,
-                 "runner does not bind unified candidate adapter")
-    base.require("hengce_unified_action_board.py" in runner_text,
-                 "runner does not bind unified action-board wrapper")
-
-    route_text = json.dumps(after_probe.get("router_routes", {}), ensure_ascii=False)
-    base.require("hengce_dual_engine_display" not in route_text,
-                 "observed router path contains dual-engine display")
-    base.require("RUN_HENGCE" not in route_text and "run_hengce_work" not in route_text,
-                 "legacy capital-bearing runner entered scan-once routes")
+    runtime = after_root / "scripts" / "hengce_unified_runner.py"
+    base.require(runtime.is_file(), "transaction runner missing")
+    runtime_text = runtime.read_text(encoding="utf-8")
+    base.require("hengce_unified_runner.py" in runner_text and
+                 "import hengce_unified_candidate_adapter as adapter" in runtime_text and
+                 "import hengce_unified_action_board as board" in runtime_text,
+                 "runner no longer binds the unified adapter and board")
+    # This is an exact, positive contract for every observed refresh branch;
+    # arbitrary new routing is not exempt from replay comparison.
+    expected = {clock: [] for clock in ("08:00", "08:45", "09:01", "09:03", "14:30", "15:30")}
+    base.require(after_probe.get("router_routes") == expected,
+                 "interactive scan invoked an unauthorized producer/recovery route")
+    # Exercise main(), not only refresh(), in a separate after-tree interpreter.
+    behavior = r"""
+import contextlib, io, json, sys
+from unittest.mock import patch
+sys.path.insert(0, 'scripts')
+import hengce_scan_once_router as router
+for failed in (False, True):
+    calls=[]
+    def step(name, argv, timeout=180):
+        calls.append((name, argv))
+        return {'ok': not failed}
+    payload={'system':'HENGCE','module':'HENGCE_UNIFIED_SCAN_DISPLAY','binding_status':'PASS','rows':[],
+             'capital_authority_twd':0,'broker_order_execution':False,'PROMOTE_TO_PRODUCTION':'FORBIDDEN'}
+    def child(argv, **kw):
+        assert argv[1].endswith('hengce_unified_scan_display.py'), argv
+        assert kw['timeout'] == 30
+        return type('Result',(),{'stdout':json.dumps(payload),'returncode':0})()
+    with patch.object(sys,'argv',['scan','--now','2026-10-23T10:00:00+08:00']), patch.object(router,'run_step',side_effect=step), patch.object(router.subprocess,'run',side_effect=child), contextlib.redirect_stdout(io.StringIO()) as stream:
+        rc=router.main()
+    result=json.loads(stream.getvalue())
+    assert len(calls)==1 and calls[0][0]=='unified_hengce_action_board'
+    assert calls[0][1][-1].endswith('RUN_INTRADAY_ACTION_BOARD.sh')
+    assert rc==(2 if failed else 0)
+    assert result['binding_status']==('FAIL_CLOSED' if failed else 'PASS')
+    assert result['scan_once_router']['single_hengce_output'] is True
+"""
+    run = subprocess.run([sys.executable, "-B", "-c", behavior], cwd=after_root,
+                         text=True, capture_output=True, timeout=30)
+    base.require(run.returncode == 0, "single-authority behavior failed: " + run.stderr[-4000:])
+    for required in ("test_hengce_unified_q017.py", "test_hengce_unified_boundaries.py", "test_hengce_unified_runtime.py"):
+        base.require((after_root / "scripts" / required).is_file(), "unified behavioral regression missing: " + required)
 
     return {
         "scan_once_single_hengce": True,
@@ -121,6 +154,15 @@ def self_test():
         base.require("/q017/score" in str(exc), "stable replay mismatch evidence missing")
     else:
         raise RuntimeError("STOP: stable model difference was accepted")
+    for key in stable_snapshot(before):
+        changed = json.loads(json.dumps(after))
+        changed[key] = "SYNTHETIC_TAMPERING"
+        try:
+            base.compare(stable_snapshot(before), stable_snapshot(changed))
+        except RuntimeError:
+            pass
+        else:
+            raise RuntimeError("STOP: replay bypass accepted: " + key)
     print(json.dumps({"status": "PASS", "authorized_delta": "router_routes_only"}))
 
 
@@ -189,17 +231,13 @@ def main():
         base.require(after_tests.issuperset(before_tests), "after tree lost baseline regression coverage")
 
     result = results[0]
-    checks = {
-        "q017_exact_replay": "IDENTICAL",
-        "e2_exact_replay": "IDENTICAL",
-        "full_rankings_exact_replay": "IDENTICAL",
-        "fail_closed_exact_replay": "IDENTICAL",
-        "legacy_dual_display_isolation_exact_replay": "IDENTICAL",
-        "zero_new_capital_authority": "IDENTICAL",
-        "router_delta_authorized": "SINGLE_HENGCE_ONLY",
-        "baseline_tests_preserved": True,
-        "all_after_script_tests_pass": True,
-    }
+    checks = {name: "IDENTICAL" for name in (
+        "top3", "full_ranking", "scores", "authority", "schema", "universe",
+        "decision_hashes", "fail_closed", "display", "zero_new_capital_authority")}
+    checks["router_routes"] = "AUTHORIZED_SINGLE_HENGCE_MIGRATION"
+    checks["unified_runtime_behavior"] = "PASS"
+    checks["baseline_tests_preserved"] = True
+    checks["all_after_script_tests_pass"] = True
     report = {
         "status": "PASS",
         "before_commit": before_sha,

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from hengce_unified_contracts import finite, ticker, geometry
 import argparse
 import json
 import sys
@@ -16,12 +17,7 @@ def _first(d, names, default=None):
 
 
 def _to_float(v):
-    if v is None or v == "":
-        return None
-    try:
-        return float(v)
-    except Exception:
-        return None
+    return finite(v)
 
 
 def _to_bool(v):
@@ -35,8 +31,7 @@ def _to_bool(v):
 
 
 def _ticker(row):
-    v = _first(row, ["Ticker", "ticker", "Symbol", "symbol", "StockNo", "stock_no", "證券代號"])
-    return str(v).strip() if v is not None else ""
+    return ticker(row)
 
 
 def _extract_rows(base):
@@ -70,7 +65,15 @@ def _extract_context(ctx):
             policy = "NORMAL"
         else:
             policy = "CONTEXT_UNAVAILABLE"
-    return str(state), str(policy)
+    state, policy = str(state).upper(), str(policy).upper()
+    allowed = {"RISK_OFF": {"BLOCK_NEW_CAPITAL"}, "BLOCK_NEW_CAPITAL": {"BLOCK_NEW_CAPITAL"},
+               "CAUTION": {"PROBE_ONLY", "BLOCK_NEW_CAPITAL"}, "PROBE_ONLY": {"PROBE_ONLY", "BLOCK_NEW_CAPITAL"},
+               "RISK_ON": {"NORMAL", "PROBE_ONLY", "BLOCK_NEW_CAPITAL"},
+               "NORMAL": {"NORMAL", "PROBE_ONLY", "BLOCK_NEW_CAPITAL"},
+               "BROAD_ADVANCE": {"NORMAL", "PROBE_ONLY", "BLOCK_NEW_CAPITAL"}}
+    if policy not in allowed.get(state, set()):
+        policy = "CONTEXT_UNAVAILABLE"
+    return state, policy
 
 
 def _parse_dt(s):
@@ -114,6 +117,17 @@ def _validate_live(live, trade_date=None, max_age_seconds=480, now=None):
     if not isinstance(rows, list) or not rows:
         return False, "LIVE_EMPTY"
 
+    try:
+        tickers = [_ticker(row) for row in rows if isinstance(row, dict)]
+        if len(tickers) != len(rows) or not all(tickers) or len(set(tickers)) != len(tickers):
+            return False, "LIVE_MALFORMED_OR_DUPLICATE_TICKER"
+        for key in ("unexpected_stale_count", "expected_inactive_count", "stale_count"):
+            if key in live and (type(live[key]) is not int or live[key] < 0):
+                return False, "LIVE_INVALID_FRESHNESS_COUNT"
+    except (ValueError, TypeError):
+        return False, "LIVE_INVALID_TICKER"
+    if generated.tzinfo is None:
+        return False, "LIVE_NAIVE_TIMESTAMP"
     lifecycle_aware = _has_lifecycle_freshness_contract(live)
     if lifecycle_aware:
         if str(live.get("data_freshness_status", "")).upper() not in {"", "PASS"}:
@@ -130,7 +144,7 @@ def _validate_live(live, trade_date=None, max_age_seconds=480, now=None):
     if trade_date:
         for row in rows:
             qdate = row.get("quote_date")
-            if not qdate or str(qdate) == trade_date:
+            if str(qdate) == trade_date:
                 continue
             if lifecycle_aware and _row_expected_inactive(row):
                 continue
@@ -160,14 +174,14 @@ def _geometry(row):
 def _price_proof(base_row, live_row):
     p = _to_float(_first(live_row, ["price", "last", "last_price"]))
     hi = _to_float(_first(live_row, ["high", "day_high"]))
-    if p is None:
+    if p is None or p <= 0:
         return "LIVE_UNAVAILABLE"
     blo, bhi, nochase, invalid = _geometry(base_row)
     if invalid is not None and p < invalid:
         return "STRUCTURE_INVALIDATED"
     if nochase is not None and p > nochase:
         return "EXTENSION_NO_CHASE"
-    if blo is None or bhi is None:
+    if geometry(base_row) is None:
         return "LIVE_BOUND_NO_GEOMETRY"
     if p < blo:
         if hi is not None and hi >= blo:
@@ -193,7 +207,7 @@ def _decision(base_row, proof, policy):
     if policy == "CONTEXT_UNAVAILABLE":
         return formal, base_activation, "CONTEXT_UNAVAILABLE", "FAIL_CLOSED_CONTEXT", "ABSTAIN"
 
-    bad = {"LIVE_UNAVAILABLE", "FAILED_BREAKOUT", "EXTENSION_NO_CHASE", "STRUCTURE_INVALIDATED"}
+    bad = {"LIVE_BOUND_NO_GEOMETRY", "LIVE_UNAVAILABLE", "FAILED_BREAKOUT", "EXTENSION_NO_CHASE", "STRUCTURE_INVALIDATED"}
     if proof in bad:
         return formal, base_activation, f"DOWNGRADED_{proof}", f"ABSTAIN_{proof}", "ABSTAIN"
 
@@ -210,7 +224,7 @@ def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
     live_ok, live_reason = _validate_live(live, trade_date=trade_date, max_age_seconds=max_age_seconds, now=now)
     ctx_state, policy = _extract_context(context if isinstance(context, dict) else {})
     rows = _extract_rows(base)
-    live_map = {_ticker(x): x for x in live.get("data", []) if _ticker(x)} if isinstance(live, dict) else {}
+    live_map = {_ticker(x): x for x in live.get("data", [])} if live_ok else {}
 
     binding_status = "PASS" if live_ok and policy != "CONTEXT_UNAVAILABLE" else "FAIL_CLOSED"
     out_rows = []
@@ -243,8 +257,8 @@ def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
         "LiveValidationReason": live_reason,
         "LiveLifecycleAwareValidation": _has_lifecycle_freshness_contract(live) if isinstance(live, dict) else False,
         "LiveDataFreshnessStatus": live.get("data_freshness_status") if isinstance(live, dict) else None,
-        "LiveExpectedInactiveCount": int(live.get("expected_inactive_count", 0) or 0) if isinstance(live, dict) else 0,
-        "LiveUnexpectedStaleCount": int(live.get("unexpected_stale_count", 0) or 0) if isinstance(live, dict) else 0,
+        "LiveExpectedInactiveCount": live.get("expected_inactive_count", 0) if isinstance(live, dict) else 0,
+        "LiveUnexpectedStaleCount": live.get("unexpected_stale_count", 0) if isinstance(live, dict) else 0,
         "BaseRunId": _first(base, ["run_id", "RunId", "scan_id", "ScanId"], None) if isinstance(base, dict) else None,
         "LiveSnapshotId": _first(live, ["snapshot_id", "SnapshotId"], None) if isinstance(live, dict) else None,
         "LiveGeneratedAt": _first(live, ["generated_at_taipei", "generated_at"], None) if isinstance(live, dict) else None,

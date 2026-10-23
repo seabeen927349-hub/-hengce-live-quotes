@@ -14,6 +14,9 @@ spec.loader.exec_module(adapter)
 
 def canonical_q017(ticker="3008"):
     return {
+        "schema_version": 1, "module": "HENGCE_CANONICAL_Q017_CANDIDATES",
+        "producer": {"code_commit": "0" * 40, "input_hashes": {"synthetic": "0" * 64}},
+        "generated_at": "2026-10-23T10:00:00+08:00",
         "system": "HENGCE",
         "binding_status": "PASS",
         "market_state": "GO",
@@ -22,11 +25,12 @@ def canonical_q017(ticker="3008"):
         "candidates": [{
             "ticker": ticker, "name": "測試", "rank": 1, "beta60": 1.10,
             "residual1": -0.02, "score": 1.65, "qualified": True,
+            "filter_evidence": {"avg_turnover20": 30000000, "electronics_m1": -.01, "electronics_m5": -.03, "sox_1d": -.01, "sox_5d": -.04},
         }],
     }
 
 
-def run():
+def cases():
     legacy = {
         "run_id": "BASE",
         "rows": [
@@ -69,6 +73,11 @@ def run():
 
     print("PASS: HENGCE unified Q017 candidate integration")
 
+
+def run():
+    from unittest.mock import patch
+    with patch.object(adapter, 'VERIFIED_Q017_PRODUCERS', frozenset({'0' * 40})):
+        cases()
 
 if __name__ == "__main__":
     run()
