@@ -1,0 +1,28 @@
+{
+  "archive_sha256": "fce9e6f5b441fd4a2f2fe0a06719a3b199f4d86464369287935ebcb80f3ad140",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 481,
+  "content_type": "application/json;charset=UTF-8",
+  "day": "20250828",
+  "fetch_completed_at_utc": "2026-10-23T11:33:04.052161+00:00",
+  "fetch_started_at_utc": "2026-10-23T11:33:01.987769+00:00",
+  "http_status": 200,
+  "id": "DETAIL_2364_20250828",
+  "kind": "DETAIL",
+  "original_first_seen_at": null,
+  "raw_path": "DETAIL_2364_20250828.bin.gz",
+  "response_sha256": "a22e7a85f1e284da7e8bdbde0a0f4e934316987c7cb2808d85988380d7be432e",
+  "ticker": "2364",
+  "transport": "HTTP_RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/rwd/zh/exRight/TWT49UDetail?response=json&STK_NO=2364&T1=20250828",
+  "validation": "REJECTED",
+  "validation_reason": "ValueError:NONPASS_OR_EMPTY_REPORT"
+}

@@ -1,0 +1,25 @@
+{
+  "archive_sha256": "7552424d9e1f8e9b3327a8824463de27976b39a2ee2651561ec3710fa5431ac9",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 168704,
+  "content_type": "application/pdf",
+  "fetch_completed_at_utc": "2026-10-23T11:33:18.793871+00:00",
+  "fetch_started_at_utc": "2026-10-23T11:33:16.711104+00:00",
+  "http_status": 200,
+  "id": "SPLIT_2327_20250825",
+  "kind": "PDF",
+  "original_first_seen_at": null,
+  "raw_path": "SPLIT_2327_20250825.bin.gz",
+  "response_sha256": "55a5896c4bd4325cbffb034baf0ba7c053b86f2855d90448736441594fcc4a6d",
+  "transport": "HTTP_RESPONSE_RETAINED",
+  "url": "https://www.taifex.com.tw/file/taifex/CHINESE/11/attach/2327_20250825.pdf",
+  "validation": "PDF_BYTES_ONLY_CONTENT_REQUIRES_REVIEW"
+}

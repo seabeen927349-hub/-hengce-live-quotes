@@ -1,0 +1,25 @@
+{
+  "archive_sha256": "2f0a7b5440b6359517f520f5ea1fe29c63a34924415841bd83f688c8f2449d9f",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 125018,
+  "content_type": "application/json;charset=UTF-8",
+  "fetch_completed_at_utc": "2026-10-23T11:33:12.211875+00:00",
+  "fetch_started_at_utc": "2026-10-23T11:33:10.811031+00:00",
+  "http_status": 200,
+  "id": "OPEN_REFERENCE_20250407",
+  "kind": "LIMIT",
+  "original_first_seen_at": null,
+  "raw_path": "OPEN_REFERENCE_20250407.bin.gz",
+  "response_sha256": "fcaa43361e04c1cfa87e64f72fb27fc8a0689917ffc6bddd66891b09a2b5eb6d",
+  "transport": "HTTP_RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/exchangeReport/TWT84U?response=json&date=20250407",
+  "validation": "UNVALIDATED_SCHEMA_EVIDENCE_ONLY"
+}

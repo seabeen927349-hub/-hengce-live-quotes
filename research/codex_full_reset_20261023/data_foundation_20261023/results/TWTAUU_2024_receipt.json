@@ -1,0 +1,27 @@
+{
+  "archive_sha256": "08e50c91ccb62265a85029edc9c94d172fa5be19d305c3c6f03a8dc060870009",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 2837,
+  "content_type": "application/json;charset=UTF-8",
+  "fetch_completed_at_utc": "2026-10-23T11:32:55.157115+00:00",
+  "fetch_started_at_utc": "2026-10-23T11:32:53.407514+00:00",
+  "http_status": 200,
+  "id": "TWTAUU_2024",
+  "kind": "TWTAUU",
+  "original_first_seen_at": null,
+  "raw_path": "TWTAUU_2024.bin.gz",
+  "response_sha256": "bdc145eca800c739674d4f8f63a5458e65cb99603fba4ed76fe4ceba7e305ae9",
+  "transport": "HTTP_RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/exchangeReport/TWTAUU?response=json&startDate=20240101&endDate=20241231",
+  "validation": "REJECTED",
+  "validation_reason": "ValueError:INVALID_ROC_EFFECTIVE_DATE",
+  "year": 2024
+}
