@@ -1,0 +1,52 @@
+name: HENGCE RR V1 2026 Validation
+
+on:
+  push:
+    branches:
+      - research/rr-v1-2026-validation-20261023
+    paths:
+      - 'research/rr_v1_2026_validation.py'
+      - '.github/workflows/hengce-rr-v1-2026-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: hengce-rr-v1-2026-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout frozen research branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile frozen validator
+        run: python -m py_compile research/rr_v1_2026_validation.py
+
+      - name: Validate RR V1 on 2026 PIT TWSE electronics
+        run: python -u research/rr_v1_2026_validation.py
+
+      - name: Print result
+        if: always()
+        run: cat research/rr_v1_2026_validation_result.json 2>/dev/null || true
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-rr-v1-2026-validation
+          path: research/rr_v1_2026_validation_result.json
+          if-no-files-found: warn
+          retention-days: 30
