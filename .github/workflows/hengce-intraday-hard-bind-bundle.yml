@@ -15,6 +15,7 @@ on:
       - 'scripts/hengce_twse_calendar.py'
       - 'scripts/hengce_scan_once_router.py'
       - 'hengce/calendar/TWSE_TRADING_CALENDAR_2026_v1.json'
+      - 'hengce/calendar/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json'
       - 'hengce/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json'
       - 'patch/INSTALL_HENGCE_INTRADAY_HARD_BIND.sh'
       - '.github/workflows/hengce-intraday-hard-bind-bundle.yml'
@@ -46,6 +47,7 @@ jobs:
           cp scripts/hengce_scan_once_router.py "$B/scripts/"
           cp hengce/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json "$B/hengce/"
           cp hengce/calendar/TWSE_TRADING_CALENDAR_2026_v1.json "$B/hengce/calendar/"
+          cp hengce/calendar/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json "$B/hengce/calendar/"
           cp patch/INSTALL_HENGCE_INTRADAY_HARD_BIND.sh "$B/patch/"
           chmod +x "$B/scripts/"*.sh "$B/patch/"*.sh
           echo "BUNDLE=$B" >> "$GITHUB_ENV"
@@ -98,6 +100,7 @@ jobs:
           sha256sum "$T/runtime/production_core/fake.joblib" > "$RUNNER_TEMP/model.after"
           cmp "$RUNNER_TEMP/model.before" "$RUNNER_TEMP/model.after"
           test -f "$T/governance/TWSE_TRADING_CALENDAR_2026_v1.json"
+          test -f "$T/governance/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json"
           python3 - "$T/work_output/HENGCE_INTRADAY_HARD_BIND_INSTALL_RECEIPT.json" <<'PY'
           import json,sys
           x=json.load(open(sys.argv[1]))
@@ -106,6 +109,7 @@ jobs:
           assert x['entrypoint']=='RUN_HENGCE.sh'
           assert 'work/hengce_twse_calendar.py' in x['installed_files']
           assert 'governance/TWSE_TRADING_CALENDAR_2026_v1.json' in x['installed_files']
+          assert 'governance/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json' in x['installed_files']
           print('INSTALLER_PASS')
           PY
 
