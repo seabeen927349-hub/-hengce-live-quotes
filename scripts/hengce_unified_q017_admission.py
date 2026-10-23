@@ -49,8 +49,8 @@ def validate(q017):
     expected_calendar = {
         "market": "TWSE",
         "calendar_year": twse_calendar.CALENDAR_YEAR,
-        "authority": "TWSE_OFFICIAL_HOLIDAY_SCHEDULE",
-        "fingerprint_sha256": twse_calendar.EXPECTED_CALENDAR_FINGERPRINT_SHA256,
+        "authority": twse_calendar.EFFECTIVE_AUTHORITY,
+        "fingerprint_sha256": twse_calendar.EXPECTED_EFFECTIVE_CALENDAR_FINGERPRINT_SHA256,
         "manifest_sha256": calendar_sha,
     }
     if calendar_evidence != expected_calendar:
