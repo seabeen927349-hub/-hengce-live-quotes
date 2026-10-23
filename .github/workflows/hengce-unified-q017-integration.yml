@@ -1,0 +1,76 @@
+name: HENGCE unified Q017 integration
+
+on:
+  push:
+    paths:
+      - 'scripts/hengce_unified_candidate_adapter.py'
+      - 'scripts/hengce_unified_action_board.py'
+      - 'scripts/test_hengce_unified_q017.py'
+      - 'scripts/RUN_INTRADAY_ACTION_BOARD.sh'
+      - 'scripts/hengce_intraday_action_board.py'
+      - 'scripts/hengce_scan_once_router.py'
+      - 'scripts/hengce_unified_scan_display.py'
+      - 'hengce/HENGCE_UNIFIED_Q017_CONTRACT_v1_0_20261023.json'
+      - '.github/workflows/hengce-unified-q017-integration.yml'
+  pull_request:
+    paths:
+      - 'scripts/hengce_unified_candidate_adapter.py'
+      - 'scripts/hengce_unified_action_board.py'
+      - 'scripts/test_hengce_unified_q017.py'
+      - 'scripts/RUN_INTRADAY_ACTION_BOARD.sh'
+      - 'scripts/hengce_intraday_action_board.py'
+      - 'scripts/hengce_scan_once_router.py'
+      - 'scripts/hengce_unified_scan_display.py'
+      - 'hengce/HENGCE_UNIFIED_Q017_CONTRACT_v1_0_20261023.json'
+      - '.github/workflows/hengce-unified-q017-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile
+        run: |
+          python -m py_compile \
+            scripts/hengce_unified_candidate_adapter.py \
+            scripts/hengce_unified_action_board.py \
+            scripts/hengce_intraday_action_board.py \
+            scripts/test_hengce_unified_q017.py
+      - name: Candidate adapter self-test
+        run: python scripts/hengce_unified_candidate_adapter.py --self-test
+      - name: Unified Q017 tests
+        run: python scripts/test_hengce_unified_q017.py
+      - name: Existing action-board regression self-test
+        run: python scripts/hengce_intraday_action_board.py --self-test
+      - name: Wrapper provenance and geometry fail-closed smoke
+        run: |
+          python - <<'PY'
+          import sys
+          from datetime import datetime
+          sys.path.insert(0, 'scripts')
+          import hengce_unified_action_board as board
+          base={
+            'candidate_union_policy':'UNION_DEDUP_BY_TICKER_NO_SCORE_FUSION',
+            'q017_contract_status':'PASS',
+            'source_provenance_counts':{'LEGACY':0,'Q017':1,'BOTH':0},
+            'rows':[{'Ticker':'3008','SourceProvenance':'Q017','Q017Score':1.65,'Q017Rank':1,'FormalCandidate':True,'GeometryStatus':'UNAVAILABLE','FormalEntryTrigger':False,'ActivationState':'Q017_CANDIDATE_GEOMETRY_PENDING'}],
+          }
+          live={'snapshot_id':'S','generated_at_taipei':'2026-10-23T10:00:00+08:00','stale_count':0,'data':[{'symbol':'3008','price':100,'high':101,'low':99,'avg_price':100,'quote_date':'2026-10-23'}]}
+          ctx={'MarketContextState':'NORMAL','NewCapitalPolicy':'NORMAL'}
+          out=board.build(base,live,ctx,trade_date='2026-10-23',now=datetime.fromisoformat('2026-10-23T10:01:00+08:00'))
+          row=out['rows'][0]
+          assert out['binding_status']=='PASS'
+          assert row['SourceProvenance']=='Q017'
+          assert row['GeometryStatus']=='UNAVAILABLE'
+          assert row['PriceProof']=='LIVE_BOUND_NO_GEOMETRY'
+          assert row['FinalAction']=='ABSTAIN'
+          assert out['score_fusion'] is False
+          print('PASS: unified action-board wrapper')
+          PY
