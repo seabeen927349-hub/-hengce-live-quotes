@@ -8,6 +8,7 @@ from pathlib import Path
 from statistics import median
 from zoneinfo import ZoneInfo
 from hengce_unified_contracts import ZERO_AUTHORITY,atomic
+import hengce_twse_calendar as twse_calendar
 
 TZ=ZoneInfo('Asia/Taipei'); ROOT=Path(__file__).resolve().parents[1]
 DEFAULT_ELECTRONICS=ROOT/'hengce/q017_radar/data/twse_electronics_history_2026.csv'
@@ -86,8 +87,8 @@ def prepare_features(rows,signal_date,min_daily_members=MIN_MEMBERS):
     for i,ds in enumerate(dates):
         m1=median(md[ds]);market[ds]={'m1':m1,'m5':None,'return_count':len(md[ds])}
         if i>=4:
-            z=dates[i-4:i+1];p=1.0
-            for d in z:p*=1+market[d]['m1']
+            p=1.0
+            for d in dates[i-4:i+1]:p*=1+market[d]['m1']
             market[ds]['m5']=p-1
     curm=market.get(signal_date)
     if not curm or curm['m5'] is None:raise ValueError('LOCAL_MARKET_FEATURES_MISSING')
@@ -118,21 +119,15 @@ def macro(rows,signal_date):
     if (date.fromisoformat(signal_date)-date.fromisoformat(last['date'])).days>7:raise ValueError('SOX_STALE_FOR_SIGNAL:'+last['date'])
     return {'session':last['date'],'sox_1d':last['close']/z[-2]['close']-1,'sox_5d':last['close']/z[-6]['close']-1}
 
-def _ordinary_next_session(signal_date,trade_date):
-    s=date.fromisoformat(signal_date);t=date.fromisoformat(trade_date);gap=(t-s).days
-    if gap==1 and s.weekday()<4 and t.weekday()==s.weekday()+1:return
-    if gap==3 and s.weekday()==4 and t.weekday()==0:return
-    raise ValueError('OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP')
-
-def build_artifact(electronics,sox,*,trade_date,signal_date,generated_at,code_commit,input_hashes,min_daily_members=MIN_MEMBERS):
+def build_artifact(electronics,sox,*,trade_date,signal_date,generated_at,code_commit,input_hashes,calendar_manifest,calendar_raw_sha,min_daily_members=MIN_MEMBERS):
     trade_date=day(trade_date);signal_date=day(signal_date)
     if generated_at.tzinfo is None:raise ValueError('GENERATED_AT_NAIVE')
     generated_at=generated_at.astimezone(TZ)
     if generated_at.date().isoformat()!=trade_date:raise ValueError('GENERATED_AT_TRADE_DATE_MISMATCH')
-    if signal_date>=trade_date:raise ValueError('SIGNAL_DATE_NOT_PRIOR_TO_TRADE_DATE')
-    _ordinary_next_session(signal_date,trade_date)
+    twse_calendar.validate_next_session(signal_date,trade_date,calendar_manifest)
     if not re.fullmatch(r'[0-9a-f]{40}',code_commit):raise ValueError('PRODUCER_COMMIT_INVALID')
     if not input_hashes or any(not re.fullmatch(r'[0-9a-f]{64}',x) for x in input_hashes.values()):raise ValueError('INPUT_HASH_INVALID')
+    if input_hashes.get('twse_calendar_manifest')!=calendar_raw_sha:raise ValueError('TWSE_CALENDAR_INPUT_HASH_MISMATCH')
     dates=sorted({r['date'] for r in electronics})
     if not dates:raise ValueError('ELECTRONICS_HISTORY_EMPTY')
     if dates[-1]!=signal_date:raise ValueError('SIGNAL_DATE_NOT_LATEST_ELECTRONICS_SESSION:'+dates[-1])
@@ -149,6 +144,8 @@ def build_artifact(electronics,sox,*,trade_date,signal_date,generated_at,code_co
          'filter_evidence':{'avg_turnover20':top['avg_turnover20'],'electronics_m1':loc['m1'],'electronics_m5':loc['m5'],'sox_1d':mac['sox_1d'],'sox_5d':mac['sox_5d']}}]
     return {'schema_version':1,'system':'HENGCE','module':'HENGCE_CANONICAL_Q017_CANDIDATES',**ZERO_AUTHORITY,
      'generated_at':generated_at.isoformat(),'trade_date':trade_date,'signal_date':signal_date,'binding_status':'PASS','market_state':state,
+     'session_calendar':{'market':'TWSE','calendar_year':calendar_manifest['calendar_year'],'authority':calendar_manifest['authority'],
+       'fingerprint_sha256':twse_calendar.manifest_fingerprint(calendar_manifest),'manifest_sha256':calendar_raw_sha},
      'canonical_q017_contract':dict(CONTRACT),'producer':{'name':'hengce_q017_canonical_producer','code_commit':code_commit,'input_hashes':dict(sorted(input_hashes.items())),'evidence':dict(EVIDENCE)},
      'local_gate':{'go':all(lc.values()),'checks':lc,'electronics_m1':loc['m1'],'electronics_m5':loc['m5']},
      'macro_gate':{'go':all(mc.values()),'checks':mc,'sox_session':mac['session'],'sox_1d':mac['sox_1d'],'sox_5d':mac['sox_5d'],'dxy_used':False},
@@ -163,14 +160,15 @@ def fail(trade_date,generated_at,commit,hashes,reason):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--trade-date',required=True);ap.add_argument('--signal-date',required=True)
     ap.add_argument('--electronics-history',type=Path,default=DEFAULT_ELECTRONICS);ap.add_argument('--sox-history',type=Path,default=DEFAULT_SOX)
-    ap.add_argument('--output',type=Path,default=DEFAULT_OUTPUT);ap.add_argument('--generated-at');a=ap.parse_args()
+    ap.add_argument('--calendar',type=Path);ap.add_argument('--output',type=Path,default=DEFAULT_OUTPUT);ap.add_argument('--generated-at');a=ap.parse_args()
     now=datetime.fromisoformat(a.generated_at) if a.generated_at else datetime.now(TZ)
     if now.tzinfo is None:print('FAIL_CLOSED: GENERATED_AT_NAIVE',file=sys.stderr);return 2
     hashes={};commit=None
     try:
-        td=day(a.trade_date);sd=day(a.signal_date);hashes={'electronics_history':raw_hash(a.electronics_history),'sox_history':raw_hash(a.sox_history)};commit=producer_commit()
-        out=build_artifact(load_electronics(a.electronics_history),load_sox(a.sox_history),trade_date=td,signal_date=sd,generated_at=now,code_commit=commit,input_hashes=hashes)
-        atomic(a.output,out);print(json.dumps({'binding_status':'PASS','market_state':out['market_state'],'signal_date':sd,'trade_date':td,'candidate_count':len(out['candidates']),'output':str(a.output)},ensure_ascii=False));return 0
+        td=day(a.trade_date);sd=day(a.signal_date);cal,cal_path,cal_sha=twse_calendar.load_manifest(a.calendar)
+        hashes={'electronics_history':raw_hash(a.electronics_history),'sox_history':raw_hash(a.sox_history),'twse_calendar_manifest':cal_sha};commit=producer_commit()
+        out=build_artifact(load_electronics(a.electronics_history),load_sox(a.sox_history),trade_date=td,signal_date=sd,generated_at=now,code_commit=commit,input_hashes=hashes,calendar_manifest=cal,calendar_raw_sha=cal_sha)
+        atomic(a.output,out);print(json.dumps({'binding_status':'PASS','market_state':out['market_state'],'signal_date':sd,'trade_date':td,'calendar':str(cal_path),'candidate_count':len(out['candidates']),'output':str(a.output)},ensure_ascii=False));return 0
     except Exception as e:
         reason=f'{type(e).__name__}:{e}'
         try:atomic(a.output,fail(day(a.trade_date),now,commit,hashes,reason))
