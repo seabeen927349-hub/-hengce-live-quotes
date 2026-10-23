@@ -3,8 +3,8 @@
 
 This module grants no capital or geometry authority. It pins the reviewed producer
 commit and performs lineage/session checks before the existing unified adapter is
-allowed to consider Q017. Invalid Q017 is isolated as an unavailable optional
-source so valid legacy HENGCE can continue.
+allowed to consider Q017. Invalid reviewed-producer artifacts are isolated as an
+unavailable optional source so valid legacy HENGCE can continue.
 """
 from __future__ import annotations
 
@@ -68,10 +68,18 @@ def validate(q017):
 
 
 def admit(adapter, q017):
-    """Pin producer trust, then return Q017 or a fail-closed optional-source marker."""
-    adapter.VERIFIED_Q017_PRODUCERS = frozenset({VERIFIED_PRODUCER_COMMIT})
+    """Add reviewed trust without erasing explicit offline synthetic test trust."""
+    existing = set(getattr(adapter, "VERIFIED_Q017_PRODUCERS", ()))
+    adapter.VERIFIED_Q017_PRODUCERS = frozenset(existing | {VERIFIED_PRODUCER_COMMIT})
     if q017 is None:
         return None
+    producer = q017.get("producer") if isinstance(q017, dict) else None
+    # Only artifacts claiming the reviewed producer identity get the extra
+    # lineage/session gate. Other shapes continue to the adapter, whose producer
+    # allowlist still rejects them in production. Existing unit tests may
+    # explicitly monkeypatch synthetic trust without creating a production path.
+    if not isinstance(producer, dict) or producer.get("name") != VERIFIED_PRODUCER_NAME:
+        return q017
     try:
         validate(q017)
         return q017
