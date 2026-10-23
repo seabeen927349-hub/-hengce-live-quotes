@@ -66,6 +66,7 @@ def run(now=None):
         try:
             import hengce_unified_candidate_adapter as adapter
             import hengce_unified_action_board as board
+            import hengce_unified_q017_admission as q017_admission
             for variable, module in [('HENGCE_UNIFIED_ADAPTER', adapter), ('HENGCE_INTRADAY_BRIDGE', board)]:
                 if variable in os.environ and Path(os.environ[variable]).resolve() != Path(module.__file__).resolve():
                     raise ValueError('UNSUPPORTED_RUNTIME_OVERRIDE:' + variable)
@@ -96,6 +97,9 @@ def run(now=None):
                         raise ValueError('Q017_LINEAGE_UNAVAILABLE')
                 except (OSError, ValueError, TypeError) as exc:
                     q017 = {'input_error': str(exc)}  # isolate unavailable optional source; never translate v5
+            # The reviewed producer pin is applied only in this authoritative runtime.
+            # Invalid optional Q017 remains isolated and cannot block valid legacy HENGCE.
+            q017 = q017_admission.admit(adapter, q017)
             if os.environ.get('HENGCE_LIVE_JSON') is not None:
                 livepath = select(root, 'HENGCE_LIVE_JSON', [], 'LIVE_OVERRIDE_NOT_FOUND')
                 live, live_sha = read(livepath)
