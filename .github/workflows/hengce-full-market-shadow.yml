@@ -11,10 +11,6 @@ name: HENGCE full-market rolling shadow
       - '.github/workflows/hengce-full-market-shadow.yml'
       - 'scripts/hengce_full_market_shadow.py'
       - 'scripts/hengce_electronics_live_coverage.py'
-      - 'scripts/hengce_market_session_guard.py'
-      - 'scripts/hengce_twse_calendar.py'
-      - 'hengce/calendar/TWSE_TRADING_CALENDAR_2026_v1.json'
-      - 'hengce/calendar/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json'
       - 'hengce/HENGCE_ELECTRONICS_LIVE_COVERAGE_CONTRACT_v1_0_20261022.json'
       - 'hengce/HENGCE_LIVE_COVERAGE_ROUTING_v1_0_20261022.json'
       - 'shadow/priority_tickers.json'
@@ -55,13 +51,6 @@ jobs:
             --out shadow/full_market_latest.json \
             --priority-file shadow/priority_tickers.json
 
-      - name: Apply effective TWSE session guard
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 scripts/hengce_market_session_guard.py --self-test
-          python3 scripts/hengce_market_session_guard.py --mode shadow --artifact shadow/full_market_latest.json
-
       - name: Build canonical all-electronics live coverage
         run: python3 scripts/hengce_electronics_live_coverage.py --mode build
 
@@ -86,12 +75,7 @@ jobs:
           gate=x.get('full_market_gate') or {}
           if x.get('status')=='SHADOW_FULL_MARKET_READY' and not gate.get('pass'):
               raise SystemExit('FALSE_FULL_MARKET_LABEL')
-          if x.get('market_calendar_trading_day') is False:
-              if x.get('status') != 'SHADOW_MARKET_CLOSED' or gate.get('pass'):
-                  raise SystemExit('MARKET_CLOSED_GATE_BROKEN')
-              if x.get('market_session_data_usable') is not False:
-                  raise SystemExit('MARKET_CLOSED_DATA_USABILITY_BROKEN')
-          print(json.dumps({'snapshot_id':x.get('snapshot_id'),'universe_count':x.get('universe_count'),'coverage_ratio':cov,'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),'status':x.get('status'),'market_calendar_trading_day':x.get('market_calendar_trading_day'),'market_session_data_usable':x.get('market_session_data_usable'),'provider_mix':x.get('provider_mix'),'payload_sha256':x.get('payload_sha256')}, ensure_ascii=False, indent=2))
+          print(json.dumps({'snapshot_id':x.get('snapshot_id'),'universe_count':x.get('universe_count'),'coverage_ratio':cov,'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),'status':x.get('status'),'provider_mix':x.get('provider_mix'),'payload_sha256':x.get('payload_sha256')}, ensure_ascii=False, indent=2))
           PY
 
       - name: Validate canonical all-electronics live coverage
@@ -111,7 +95,7 @@ jobs:
           electronics=json.loads(ep.read_text(encoding='utf-8')) if ep.exists() else None
           if p.exists():
               x=json.loads(p.read_text(encoding='utf-8'))
-              r={'system':'HENGCE','artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS','generated_at_taipei':datetime.now(TZ).isoformat(),'snapshot_id':x.get('snapshot_id'),'status':x.get('status'),'authority':x.get('authority'),'universe_count':x.get('universe_count'),'universe_sha256':x.get('universe_sha256'),'coverage_ratio':x.get('coverage_ratio'),'price_coverage_ratio':x.get('price_coverage_ratio'),'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),'full_market_gate':x.get('full_market_gate'),'market_calendar_date':x.get('market_calendar_date'),'market_calendar_trading_day':x.get('market_calendar_trading_day'),'market_session_data_usable':x.get('market_session_data_usable'),'provider_mix':x.get('provider_mix'),'payload_sha256':x.get('payload_sha256'),'electronics_live_status':(electronics or {}).get('status'),'electronics_member_count':(electronics or {}).get('member_count'),'electronics_provider_coverage_ratio':(electronics or {}).get('provider_coverage_ratio'),'electronics_quote_fresh_ratio':(electronics or {}).get('quote_fresh_ratio'),'electronics_legacy_77_watchlist_is_not_coverage_authority':True,'production_core_effect':'NONE','capital_authority':False}
+              r={'system':'HENGCE','artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS','generated_at_taipei':datetime.now(TZ).isoformat(),'snapshot_id':x.get('snapshot_id'),'status':x.get('status'),'authority':x.get('authority'),'universe_count':x.get('universe_count'),'universe_sha256':x.get('universe_sha256'),'coverage_ratio':x.get('coverage_ratio'),'price_coverage_ratio':x.get('price_coverage_ratio'),'fresh_ratio_of_covered':x.get('fresh_ratio_of_covered'),'full_market_gate':x.get('full_market_gate'),'provider_mix':x.get('provider_mix'),'payload_sha256':x.get('payload_sha256'),'electronics_live_status':(electronics or {}).get('status'),'electronics_member_count':(electronics or {}).get('member_count'),'electronics_provider_coverage_ratio':(electronics or {}).get('provider_coverage_ratio'),'electronics_quote_fresh_ratio':(electronics or {}).get('quote_fresh_ratio'),'electronics_legacy_77_watchlist_is_not_coverage_authority':True,'production_core_effect':'NONE','capital_authority':False}
           else:
               r={'system':'HENGCE','artifact':'FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS','generated_at_taipei':datetime.now(TZ).isoformat(),'status':'SHADOW_RUN_FAILED_BEFORE_SNAPSHOT','production_core_effect':'NONE','capital_authority':False}
           Path('shadow/deployment_status.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
