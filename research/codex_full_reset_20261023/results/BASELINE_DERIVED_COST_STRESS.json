@@ -1,0 +1,36 @@
+{
+  "method": "Postprocess the same fixed 13 retained V2 events; remove embedded .008 and apply aggregate scenario once. No new signals or model variant.",
+  "period": [
+    "2023-01-01",
+    "2025-12-31"
+  ],
+  "costs": {
+    "0.008": {
+      "return": 0.530103542875737,
+      "entries": 13,
+      "wins": 8,
+      "win_rate": 0.6153846153846154
+    },
+    "0.012": {
+      "return": 0.4527852669270691,
+      "entries": 13,
+      "wins": 8,
+      "win_rate": 0.6153846153846154
+    },
+    "0.016": {
+      "return": 0.3790685521978687,
+      "entries": 13,
+      "wins": 8,
+      "win_rate": 0.6153846153846154
+    }
+  },
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  }
+}

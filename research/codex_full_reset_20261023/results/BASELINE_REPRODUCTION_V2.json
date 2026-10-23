@@ -1,0 +1,156 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "caveat": "Aggregate agreement cannot authenticate corrupt original event payload. This diagnostic reuses old semantics, with no new family selection or promotion.",
+  "censored": [],
+  "events": [
+    {
+      "entry_date": "2023-03-14",
+      "exit_date": "2023-04-14",
+      "net_return": 0.34042519685039374,
+      "signal_date": "2023-03-13",
+      "ticker": "2482"
+    },
+    {
+      "entry_date": "2023-08-10",
+      "exit_date": "2023-09-07",
+      "net_return": -0.059724137931034475,
+      "signal_date": "2023-08-09",
+      "ticker": "3231"
+    },
+    {
+      "entry_date": "2023-09-22",
+      "exit_date": "2023-10-25",
+      "net_return": -0.19404651162790698,
+      "signal_date": "2023-09-21",
+      "ticker": "3617"
+    },
+    {
+      "entry_date": "2023-11-01",
+      "exit_date": "2023-11-29",
+      "net_return": 0.10774074074074069,
+      "signal_date": "2023-10-31",
+      "ticker": "6235"
+    },
+    {
+      "entry_date": "2024-04-17",
+      "exit_date": "2024-05-16",
+      "net_return": 0.07969792935444575,
+      "signal_date": "2024-04-16",
+      "ticker": "6117"
+    },
+    {
+      "entry_date": "2024-06-06",
+      "exit_date": "2024-07-05",
+      "net_return": 0.19158847736625506,
+      "signal_date": "2024-06-05",
+      "ticker": "2417"
+    },
+    {
+      "entry_date": "2024-07-23",
+      "exit_date": "2024-08-22",
+      "net_return": -0.1368981288981289,
+      "signal_date": "2024-07-22",
+      "ticker": "6442"
+    },
+    {
+      "entry_date": "2024-09-05",
+      "exit_date": "2024-10-08",
+      "net_return": -0.011164556962025333,
+      "signal_date": "2024-09-04",
+      "ticker": "5269"
+    },
+    {
+      "entry_date": "2024-11-15",
+      "exit_date": "2024-12-13",
+      "net_return": 0.20063309352517988,
+      "signal_date": "2024-11-14",
+      "ticker": "6854"
+    },
+    {
+      "entry_date": "2025-03-10",
+      "exit_date": "2025-04-09",
+      "net_return": -0.41633333333333333,
+      "signal_date": "2025-03-07",
+      "ticker": "4912"
+    },
+    {
+      "entry_date": "2025-04-23",
+      "exit_date": "2025-05-22",
+      "net_return": 0.4454231200897867,
+      "signal_date": "2025-04-22",
+      "ticker": "3653"
+    },
+    {
+      "entry_date": "2025-08-25",
+      "exit_date": "2025-09-22",
+      "net_return": 0.07957637474541746,
+      "signal_date": "2025-08-22",
+      "ticker": "3059"
+    },
+    {
+      "entry_date": "2025-11-11",
+      "exit_date": "2025-12-09",
+      "net_return": 0.132495867768595,
+      "signal_date": "2025-11-10",
+      "ticker": "8021"
+    }
+  ],
+  "expected_aggregate": {
+    "entries": 13,
+    "maxdd": -0.41633333333333333,
+    "nav": 1.530103542875737,
+    "return": 0.530103542875737,
+    "winrate": 0.6153846153846154,
+    "wins": 8,
+    "years": {
+      "2023": {
+        "entries": 4,
+        "maxdd": -0.2421813889334401,
+        "nav": 1.1252421149566751,
+        "return": 0.12524211495667514,
+        "winrate": 0.5,
+        "wins": 2
+      },
+      "2024": {
+        "entries": 5,
+        "maxdd": -0.14653427890207638,
+        "nav": 1.3183324917884003,
+        "return": 0.3183324917884003,
+        "winrate": 0.6,
+        "wins": 3
+      },
+      "2025": {
+        "entries": 4,
+        "maxdd": -0.41633333333333333,
+        "nav": 1.0314540525052487,
+        "return": 0.031454052505248686,
+        "winrate": 0.75,
+        "wins": 3
+      }
+    }
+  },
+  "experiment_id": "RESET-BASELINE-V2-20261023-001",
+  "gate_eligible_signal_checks": 13,
+  "metrics": {
+    "entries": 13,
+    "return": 0.530103542875737,
+    "trade_endpoint_max_drawdown": -0.41633333333333333,
+    "win_rate": 0.6153846153846154,
+    "wins": 8
+  },
+  "mother_sha256": "e3012612fcf3c38c05f5c7defdf7160a0de481db21ca6381ab53178091ad3f6b",
+  "original_event_identity_proven": false,
+  "plan_sha256": "c38eca153853342d867c1d0b3607eef7c5a0eedc945f93598d9fa656c2ff3bbf",
+  "source_commit": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+  "source_sha256": "bd05acb97180f514b52eb5c1f6c7fc3603927a3d9247d47007359a7f72c7c1cb",
+  "stage_c_decision_unchanged": "NO_ROBUST_WINNER",
+  "status": "AGGREGATE_MATCH_PINNED_FUNCTIONS"
+}

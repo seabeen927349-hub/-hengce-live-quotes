@@ -1,0 +1,77 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "expected_trading_dates": 724,
+  "failed_dates": 0,
+  "frozen_corpus_base": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+  "historical_window": [
+    "2023-01-01",
+    "2025-12-31"
+  ],
+  "mode": "PARALLEL_YEAR_SHARDS_THEN_HASH_VERIFIED_MERGE",
+  "mother_path": "TWSE_ELECTRONICS_DAILY_2023_2025.csv.gz",
+  "mother_sha256": "e3012612fcf3c38c05f5c7defdf7160a0de481db21ca6381ab53178091ad3f6b",
+  "pass_dates": 724,
+  "pit_limitation": "RETROSPECTIVE_OFFICIAL_ARCHIVE; original publication/first-seen/revision history is not proven and must not be invented.",
+  "qa_path": "TWSE_MOTHER_QA_2023_2025.jsonl",
+  "qa_sha256": "642b6495d535971221129c99dec395324b5f0d543433ea66715f8aa1d667d1e6",
+  "raw_responses_revalidated": 724,
+  "rows_written": 313749,
+  "schema_version": 2,
+  "source": "TWSE MI_INDEX type=13 historical daily CSV",
+  "stage": "B_OFFICIAL_MOTHER_REBUILD",
+  "status": "PASS_EXACT_MEMBERSHIP_SET",
+  "unique_date_ticker_keys": 313749,
+  "unique_dates": 724,
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "year_receipts": [
+    {
+      "expected_trading_dates": 239,
+      "membership_source": {
+        "dates": 239,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2023.csv",
+        "rows": 101024,
+        "sha256": "296f19c0c676e558007b22f12e08ba9f81045ad3706d9609b7a151974b6ece3e",
+        "year": 2023
+      },
+      "mother_sha256": "a2781ed0925718f3988db284f50ff6bcdb0817d68e90990e043d9a91f2ecb50e",
+      "qa_sha256": "9dedb455cbb257d6af84848f01133cc35477c1dcedda89c466a11929bebfbecc",
+      "rows_written": 101024,
+      "year": 2023
+    },
+    {
+      "expected_trading_dates": 242,
+      "membership_source": {
+        "dates": 242,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2024.csv",
+        "rows": 105016,
+        "sha256": "13c8ffe2cb6cfaaa2516c90482d0aecda933cb33ae4eb1cffbbc90e49d77bd7d",
+        "year": 2024
+      },
+      "mother_sha256": "431cebe8fa15975069820fa47f4c5e0212ac267d4d00005f7cd22bbbe3f64f71",
+      "qa_sha256": "217221e48ebd6599b639c7f558361bc8d44b6647acf55f563afe817df2a979a0",
+      "rows_written": 105016,
+      "year": 2024
+    },
+    {
+      "expected_trading_dates": 243,
+      "membership_source": {
+        "dates": 243,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2025.csv",
+        "rows": 107709,
+        "sha256": "da4a8c6deb7cad5d221d453b64e2685b771242db6ce8fc5128d11aa21cfe7e14",
+        "year": 2025
+      },
+      "mother_sha256": "d360f1e1f97ae564c2a215332dcc194e73a0c0ea1c4bb367e890cb119b57ce0c",
+      "qa_sha256": "531a83ac3f92339a06c727290dbff804abde83a7b7b7ef59ce0e91293b8c26af",
+      "rows_written": 107709,
+      "year": 2025
+    }
+  ]
+}

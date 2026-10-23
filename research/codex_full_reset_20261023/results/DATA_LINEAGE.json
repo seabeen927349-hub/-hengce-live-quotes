@@ -7,6 +7,15 @@
     "research_only": true,
     "signal_authority": false
   },
+  "completed_reset_evidence": {
+    "artifact_manifest": "ARTIFACT_MANIFEST.json",
+    "baseline_v2": "BASELINE_REPRODUCTION_V2.json",
+    "evidence_audit": "EVIDENCE_AUDIT.json",
+    "mother_receipt": "stage_b/TWSE_MOTHER_RECEIPT.json",
+    "publication_limitation": "Retrospective archive retrieval does not establish original first-seen/revision history",
+    "stage_b_run_id": 39936974870,
+    "stage_c_run_id": 39937394677
+  },
   "corpus_manifest_sha256": "416c4e1dcc2fe1ac9e5c32a2d9fbe18b3ff8aa0efccc8fb62f55450466bdeac2",
   "frozen_corpus_base": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
   "history_refs": [

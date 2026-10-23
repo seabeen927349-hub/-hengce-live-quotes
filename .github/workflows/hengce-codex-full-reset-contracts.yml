@@ -26,3 +26,8 @@ jobs:
         run: |
           python -B research/codex_full_reset_20261023/test_stage_b_contracts.py
           python -B research/codex_full_reset_20261023/test_stage_c_integrity.py
+      - name: Audit retained completed evidence offline - no model evaluation
+        run: |
+          if [ -f research/codex_full_reset_20261023/results/ARTIFACT_MANIFEST.json ]; then
+            python -B research/codex_full_reset_20261023/audit_completed_evidence.py
+          fi

@@ -1,0 +1,28 @@
+{
+  "status": "DOWNLOADED_AND_ZIP_SHA256_VERIFIED",
+  "artifacts": [
+    {
+      "path": "artifacts/stage_b_39936974870.zip",
+      "workflow_run_id": 39936974870,
+      "artifact_id": 12494921112,
+      "zip_sha256": "fceb79d1e3b0886b3d7c01f7402730651f85e091978110100589329aff0c44fe",
+      "bytes": 21232758,
+      "retention": "CHECKED_IN_HASH_BOUND_ARCHIVE_NOT_ONLY_EPHEMERAL_GITHUB_ARTIFACT"
+    },
+    {
+      "path": "artifacts/stage_c_39937394677.zip",
+      "workflow_run_id": 39937394677,
+      "artifact_id": 12495425658,
+      "zip_sha256": "d059e6fe96f7e3ed7ed4dd4bb933d1548c4ce7fc51d6582dfd21bd6cb2d83e7e",
+      "bytes": 5162130,
+      "retention": "CHECKED_IN_HASH_BOUND_ARCHIVE_NOT_ONLY_EPHEMERAL_GITHUB_ARTIFACT"
+    }
+  ],
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "research_only": true
+  },
+  "baseline_sha256": "58147c45ac571c9c9dd42a8385dda18c573c0e60e27f4f7636c5c110be3c050f",
+  "config_count": 4200,
+  "ledger_sha256": "914a9f2381c4f6f92dac1b3eee0a5c9cb1dc8922ae33b871e34d43d9d655d80c",
+  "pareto_sha256": "7ae3b204cde08cdfca37d9b193d8dfcef37fbe18bea4f17c50665b37dfc60c32",
+  "selection_trial_count": 8400,
+  "stage": "C_D_CHRONOLOGICAL_RULE_SEARCH",
+  "status": "COMPLETE",
+  "trial_summary_sha256": "410ec41a96bcf3314df909d01779a11f620f7449f988f868f515e047a4a58ddf",
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "winner_family": null,
+  "winner_sha256": "ab5bfdc826c98f4120230a6901ebb8a2afa3f8a228190e4780a985bcd23806d8",
+  "winner_status": "NO_ROBUST_WINNER"
+}

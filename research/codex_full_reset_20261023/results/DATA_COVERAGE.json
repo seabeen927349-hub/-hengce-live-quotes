@@ -278,5 +278,12 @@
     }
   ],
   "schema_version": 1,
-  "stage": "A_DATA_AUDIT"
+  "stage": "A_DATA_AUDIT",
+  "verified_rebuilt_mother": {
+    "date_ticker_rows": 313749,
+    "failed_dates": 0,
+    "raw_responses_revalidated": 724,
+    "sessions": 724,
+    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY"
+  }
 }
