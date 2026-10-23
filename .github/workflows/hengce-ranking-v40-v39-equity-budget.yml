@@ -28,3 +28,4 @@ jobs:
           path: |
             research/codex_full_reset_20261023/ranking_v40_v39_equity_budget_result.json
             research/codex_full_reset_20261023/ranking_v40_events.jsonl
+# trigger-only update; model rules unchanged
