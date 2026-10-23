@@ -14,7 +14,7 @@ V17_REF={'ret':2.1215791589270894,'dd':-0.28720698410951295,'rem':1.031059124000
 def clip(x,lo,hi): return max(lo,min(hi,x))
 
 def vol_ratio(e):
-    s=e['state']; a=s.get('median_vol20'); b=s.get('prior60_median_vol20')
+    s=e.get('state') or v15.state(e); a=s.get('median_vol20'); b=s.get('prior60_median_vol20')
     return a/b if a is not None and b not in (None,0) else 1.0
 
 def v17_exposure(e):
