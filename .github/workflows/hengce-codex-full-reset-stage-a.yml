@@ -1,0 +1,55 @@
+name: HENGCE Codex Full Reset Stage A
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/**'
+      - '.github/workflows/hengce-codex-full-reset-stage-a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-codex-full-reset-stage-a-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  data-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout frozen research branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile Stage A audit
+        run: python -m py_compile research/codex_full_reset_20261023/stage_a_data_audit.py
+
+      - name: Run Stage A data audit
+        run: python research/codex_full_reset_20261023/stage_a_data_audit.py
+
+      - name: Print Stage A evidence
+        if: always()
+        run: |
+          echo '--- STAGE_A_SUMMARY.md ---'
+          cat research/codex_full_reset_20261023/results/STAGE_A_SUMMARY.md 2>/dev/null || true
+          echo '--- DATA_QUALITY_FAILURES.json ---'
+          cat research/codex_full_reset_20261023/results/DATA_QUALITY_FAILURES.json 2>/dev/null || true
+
+      - name: Upload Stage A evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-codex-full-reset-stage-a
+          path: research/codex_full_reset_20261023/results/
+          if-no-files-found: warn
+          retention-days: 90
