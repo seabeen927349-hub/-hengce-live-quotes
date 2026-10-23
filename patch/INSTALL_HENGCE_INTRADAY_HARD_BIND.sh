@@ -51,6 +51,7 @@ copy_one "$BUNDLE_ROOT/scripts/CHECK_HENGCE_RUN.sh" "$TARGET/CHECK_HENGCE_RUN.sh
 copy_one "$BUNDLE_ROOT/scripts/RUN_HENGCE.sh" "$TARGET/RUN_HENGCE.sh"
 copy_one "$BUNDLE_ROOT/hengce/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json" "$TARGET/governance/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json"
 copy_one "$BUNDLE_ROOT/hengce/calendar/TWSE_TRADING_CALENDAR_2026_v1.json" "$TARGET/governance/TWSE_TRADING_CALENDAR_2026_v1.json"
+copy_one "$BUNDLE_ROOT/hengce/calendar/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json" "$TARGET/governance/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json"
 chmod +x "$TARGET/RUN_INTRADAY_ACTION_BOARD.sh" "$TARGET/RUN_HENGCE_COMPLETE.sh" "$TARGET/RUN_IN_WORK_DETACHED.sh" "$TARGET/CHECK_HENGCE_RUN.sh" "$TARGET/RUN_HENGCE.sh"
 
 bash -n "$TARGET/RUN_INTRADAY_ACTION_BOARD.sh"
@@ -63,8 +64,10 @@ HENGCE_ROOT="$TARGET" PYTHONPATH="$TARGET/work" python3 - <<'PY'
 import hengce_twse_calendar as c
 m,p,_=c.load_manifest()
 assert p.name==c.MANIFEST_NAME
-assert c.next_trading_day('2026-10-23',m)=='2026-10-27'
-print('TWSE_CALENDAR_INSTALL_PASS')
+assert not c.is_trading_day('2026-10-23',m)
+assert c.next_trading_day('2026-10-22',m)=='2026-10-27'
+c.validate_next_session('2026-10-22','2026-10-27',m)
+print('TWSE_EFFECTIVE_CALENDAR_INSTALL_PASS')
 PY
 
 python3 - "$TARGET" "$AFTER_MODELS" <<'PY'
@@ -97,7 +100,8 @@ rels=[
  'work/hengce_unified_action_board.py','work/hengce_unified_runner.py','work/hengce_unified_scan_display.py','work/hengce_scan_once_router.py',
  'work/hengce_twse_calendar.py','work/hengce_intraday_action_board.py','RUN_INTRADAY_ACTION_BOARD.sh','RUN_HENGCE_COMPLETE.sh',
  'RUN_IN_WORK_DETACHED.sh','CHECK_HENGCE_RUN.sh','RUN_HENGCE.sh',
- 'governance/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json','governance/TWSE_TRADING_CALENDAR_2026_v1.json']
+ 'governance/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json',
+ 'governance/TWSE_TRADING_CALENDAR_2026_v1.json','governance/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json']
 def sha(p):
  h=hashlib.sha256()
  with open(p,'rb') as f:
