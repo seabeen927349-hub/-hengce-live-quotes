@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run V14 weak exposure
-        run: python -u research/codex_full_reset_20261023/ranking_v14_weak_exposure.py
+        run: PYTHONPATH=. python -u research/codex_full_reset_20261023/ranking_v14_weak_exposure.py
       - name: Print result
         if: always()
         run: cat research/codex_full_reset_20261023/ranking_v14_weak_exposure_result.json 2>/dev/null || true
