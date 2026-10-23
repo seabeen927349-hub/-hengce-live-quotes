@@ -1,0 +1,74 @@
+{
+  "study": "DIVERSIFIED_FIXED_HYPOTHESES_V1",
+  "status": "REGISTERED_BEFORE_THIS_BATCH_RESULTS",
+  "authorization": "User instruction: 那就找有獲利潛力的模型; research-only continuation of full reset",
+  "parent_evidence_commit": "71a88b13b1eba588df5e8c7043b64839e5606850",
+  "parent_evaluations": 8505,
+  "parent_ledger_sha256": "0f92fb6803522549fd9e531338aeb164bc144f27a5db3d4144fe3405dd58f14f",
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "mother_sha256": "e3012612fcf3c38c05f5c7defdf7160a0de481db21ca6381ab53178091ad3f6b",
+  "historical_exposure": "ALL_2023_2026_EXPOSED; THIS IS NOT AN INDEPENDENT HOLDOUT OR CONFIRMATORY TEST",
+  "motivation": "Test diversification and slow trends, rather than retuning the previously observed residual-reversal winner. Parameters below are new human-readable research choices, not approved production rules.",
+  "history_sessions": 61,
+  "liquidity": "mean of latest 20 turnover_ntd observations including signal >=50000000",
+  "history_validity": "61 consecutive TWSE sessions of present positive internally consistent OHLC; finite nonnegative turnover; no close-to-close jump above the quality threshold",
+  "scores": {
+    "SKIP5_MOMENTUM": "close[t-5]/close[t-60]-1, require score>0",
+    "TREND_PULLBACK": "-(close[t]/close[t-3]-1), require positive score AND close[t]>mean(last60 closes) AND close[t]/close[t-60]-1>0",
+    "LOW_VOL_TREND": "-sample_stdev(last20 daily returns EXCLUDING signal daily return), require positive stdev AND close[t]>mean(last60 closes) AND close[t]/close[t-60]-1>0"
+  },
+  "top_n": 10,
+  "tie_break": "ticker ASCII ascending",
+  "holding_session_intervals_after_entry": [
+    5,
+    20
+  ],
+  "quality_thresholds": [
+    0.15,
+    0.1
+  ],
+  "model_configs": 6,
+  "matched_benchmark_streams": 6,
+  "total_evaluation_budget": 24,
+  "execution": "Signal after close, equal-weight next session OPEN, exit CLOSE entry_index+horizon, no overlap; first eligible signal after prior exit; no forced year-end close. Annual schedules reset independently. No signal-time outcome filtering or replacement.",
+  "benchmark": "At each model signal, equal weight ALL same-day base-eligible PIT electronics tickers at the same entry/exit. Descriptive matched control, not an investable index. Its missing constituents censor the whole benchmark basket.",
+  "invalid_future_outcome": "Retain selected tickers and intended dates, reserve full interval, mark CENSORED with reason. Never substitute another ticker or treat an unknown outcome as cash. Complete-case metrics are descriptive; any censored model basket blocks potential classification. Also show total-loss lower bound, not a fabricated point estimate.",
+  "unfillable_entry": "Entry session has high==low: censor, never assume a limit-locked fill",
+  "costs": [
+    0.008,
+    0.012,
+    0.016
+  ],
+  "cost_application": "Subtract aggregate cost ONCE at exit of each completed equal-weight basket; do not count cost scenarios as separately optimized models",
+  "evaluation": "2023,2024,2025 separately with outcomes entirely contained in the calendar year; 2024+2025 combined is descriptive, no parameter selection on any year",
+  "potential_screen": {
+    "label": "HISTORICAL_POTENTIAL_ONLY_NOT_ACCEPTED",
+    "all_quality_scenarios_required": true,
+    "zero_censored_model_baskets": true,
+    "minimum_complete_baskets_2024_2025": 20,
+    "minimum_complete_baskets_each_2024_2025_year": 5,
+    "positive_each_year_at_cost": 0.016,
+    "positive_after_removing_best_basket_at_cost": 0.012,
+    "maximum_daily_close_drawdown_at_cost_0_012": 0.35,
+    "beat_matched_benchmark_total_at_cost_0_012": true,
+    "benchmark_must_be_uncensored_for_comparison": true,
+    "inference": "No significance or robust-winner claim. All past searches count as exposure. No future/pristine data available. Passing this heuristic only nominates future shadow observation."
+  },
+  "limitations": [
+    "Unadjusted prices; corporate-action completeness unproven",
+    "PIT original first-seen/revision timestamps unproven",
+    "No execution/slippage proof",
+    "Daily-close drawdown misses intraday risk",
+    "Shared holdings/baskets/years not independent",
+    "New hypotheses informed by exposed historical study; no claim that preregistration restores independence"
+  ],
+  "authority": {
+    "research_only": true,
+    "signal_authority": false,
+    "ranking_authority": false,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  }
+}
