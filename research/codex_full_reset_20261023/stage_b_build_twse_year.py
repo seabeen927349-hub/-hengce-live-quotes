@@ -29,7 +29,10 @@ RESET = ROOT / "research" / "codex_full_reset_20261023"
 MEMBERSHIP = ROOT / "research" / "e2_profit_max" / "membership"
 URL = "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX"
 UA = "Mozilla/5.0 (HENGCE full-reset research; official TWSE archive rebuild)"
-MAX_WORKERS = 4
+MAX_WORKERS = 1
+REQUEST_INTERVAL_SECONDS = 1.5
+RAW_DIR = None
+STOP_FETCH = threading.Event()
 PRINT_LOCK = threading.Lock()
 
 
@@ -162,6 +165,9 @@ def fetch_day(date_s: str, expected: set[str]) -> tuple[str, str, list[dict[str,
     url = f"{URL}?{query}"
     last = ""
     for attempt in range(5):
+        if STOP_FETCH.is_set():
+            return date_s,'NOT_FETCHED_CIRCUIT_OPEN',[],{'date':date_s,'status':'NOT_FETCHED_CIRCUIT_OPEN','expected_tickers':len(expected)}
+        time.sleep(REQUEST_INTERVAL_SECONDS)
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA})
             with urllib.request.urlopen(req, timeout=22) as resp:
@@ -170,7 +176,14 @@ def fetch_day(date_s: str, expected: set[str]) -> tuple[str, str, list[dict[str,
             if status_code != 200 or not content:
                 last = f"HTTP_OR_EMPTY:{status_code}:{len(content)}"
             else:
+                raw_path = None
+                if RAW_DIR is not None:
+                    RAW_DIR.mkdir(parents=True,exist_ok=True)
+                    raw_path=RAW_DIR/(ds+'_'+hashlib.sha256(content).hexdigest()+'.csv.gz')
+                    raw_path.write_bytes(gzip.compress(content,mtime=0))
                 rows, qa = validate_daily(decode(content), date_s, expected)
+                if raw_path:
+                    qa.update(raw_source_path=str(raw_path.relative_to(RAW_DIR.parent)),raw_archive_sha256=sha256_file(raw_path))
                 qa.update(response_sha256=hashlib.sha256(content).hexdigest(),
                           response_bytes=len(content), attempt=attempt+1)
                 return date_s, qa['status'], rows, qa
@@ -190,21 +203,28 @@ def main() -> int:
     parser.add_argument("--year", required=True, type=int, choices=(2023, 2024, 2025))
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()
+    global RAW_DIR
+    STOP_FETCH.clear()
     year = args.year
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    RAW_DIR=out_dir/'raw'
 
     expected_by_date, expected_names, source = load_expected(year)
     dates = sorted(expected_by_date)
     fetched: dict[str, list[dict[str, str]]] = {}
     qa: list[dict[str, Any]] = []
     done = 0
+    consecutive_transport_failures=0
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {executor.submit(fetch_day, d, expected_by_date[d]): d for d in dates}
         for future in as_completed(futures):
             d, status, rows, q = future.result()
             qa.append(q)
+            consecutive_transport_failures=consecutive_transport_failures+1 if status=='FETCH_ERROR' else 0
+            if consecutive_transport_failures>=3:
+                STOP_FETCH.set()
             if status == "PASS":
                 fetched[d] = rows
             done += 1
@@ -250,6 +270,7 @@ def main() -> int:
         "year": year,
         "source": "TWSE MI_INDEX type=13 historical daily CSV",
         "source_url": URL,
+        "transport_policy": {"workers_per_year":1,"minimum_request_interval_seconds":REQUEST_INTERVAL_SECONDS,"circuit_breaker_after_consecutive_exhausted_dates":3},
         "retrieval_time_utc": datetime.now(timezone.utc).isoformat(),
         "expected_trading_dates": len(dates),
         "pass_dates": sum(x["status"] == "PASS" for x in qa),
