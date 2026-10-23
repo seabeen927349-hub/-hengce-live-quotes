@@ -20,8 +20,11 @@ jobs:
           python-version: '3.12'
       - name: Compile and behavioral safety contracts
         run: |
-          python -m compileall -q scripts/hengce_unified* scripts/hengce_intraday_action_board.py scripts/hengce_scan_once_router.py
+          python -m compileall -q scripts/hengce_unified* scripts/hengce_q017_canonical_producer.py scripts/hengce_intraday_action_board.py scripts/hengce_scan_once_router.py
           bash -n scripts/RUN_INTRADAY_ACTION_BOARD.sh
+          python scripts/hengce_q017_canonical_producer.py --help >/dev/null
+          python scripts/test_hengce_q017_canonical_producer.py
+          python scripts/test_hengce_unified_q017_admission.py
           python scripts/hengce_unified_candidate_adapter.py --self-test
           python scripts/hengce_intraday_action_board.py --self-test
           python scripts/hengce_unified_scan_display.py --self-test
