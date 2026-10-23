@@ -13,6 +13,7 @@ import gzip
 import hashlib
 import io
 import json
+import subprocess
 import re
 import threading
 import time
@@ -46,7 +47,7 @@ def decode(content: bytes) -> str:
             return content.decode(enc)
         except UnicodeDecodeError:
             pass
-    return content.decode("utf-8", errors="replace")
+    raise ValueError('UNDECODABLE_SOURCE')
 
 
 def clean_num(value: str) -> str:
@@ -65,8 +66,11 @@ def parse_twse_csv(text: str) -> tuple[list[dict[str, str]], list[str] | None]:
             header_idx = i
             break
     if header_idx is None:
-        return [], None
+        raise ValueError('HEADER_NOT_FOUND')
     headers = [x.strip().replace("\ufeff", "") for x in rows[header_idx]]
+    required = {'證券代號','證券名稱','開盤價','最高價','最低價','收盤價','成交股數','成交金額'}
+    if not required.issubset(headers) or any(headers.count(k) != 1 for k in required):
+        raise ValueError('MALFORMED_OR_DUPLICATE_HEADER')
     out: list[dict[str, str]] = []
     for row in rows[header_idx + 1:]:
         if not row or len(row) < 2:
@@ -75,6 +79,8 @@ def parse_twse_csv(text: str) -> tuple[list[dict[str, str]], list[str] | None]:
         rec = {headers[i]: padded[i].strip() for i in range(len(headers))}
         ticker = rec.get("證券代號", "").replace("=", "").replace('"', "").strip()
         name = rec.get("證券名稱", "").strip()
+        if ticker and ticker[0].isdigit() and (not name or not re.fullmatch(r'[0-9A-Za-z]{4,8}',ticker) or len(row) < max(headers.index(k) for k in required)+1):
+            raise ValueError('MALFORMED_SECURITY_ROW:' + ticker)
         if ticker and name and re.fullmatch(r"[0-9A-Za-z]{4,8}", ticker):
             out.append({
                 "ticker": ticker,
@@ -89,10 +95,43 @@ def parse_twse_csv(text: str) -> tuple[list[dict[str, str]], list[str] | None]:
     return out, headers
 
 
+CORPUS_BASE = '05bf0e35fb6a88473fd4f947952ef1b6875d3f88'
+SCOPE_RULE = 'PINNED_MEMBERSHIP_ACQUISITION_V2_FOUR_ASCII_DIGITS'
+
+def validate_daily(text, date_s, expected):
+    raw_rows, headers = parse_twse_csv(text)
+    year, month, day = map(int,date_s.split('-'))
+    title = re.sub(r'\s+', '', text.split('證券代號',1)[0])
+    date_match = re.search(r'(\d+)年(\d+)月(\d+)日每日收盤行情\(電子工業\)', title)
+    if not date_match or tuple(map(int,date_match.groups())) != (year-1911, month, day):
+        return [], {'date':date_s,'status':'SOURCE_DATE_OR_SECTOR_MISMATCH'}
+    # This predicate is copied from the pinned membership acquisition, NOT from
+    # expected tickers. Unexpected four-digit common stocks still fail exact-set.
+    rows = [r for r in raw_rows if re.fullmatch(r'[0-9]{4}',r['ticker'])]
+    excluded = [r['ticker'] for r in raw_rows if not re.fullmatch(r'[0-9]{4}',r['ticker'])]
+    actual = {r['ticker'] for r in rows}
+    missing, extra = sorted(expected-actual), sorted(actual-expected)
+    duplicates = len(raw_rows)-len({r['ticker'] for r in raw_rows})
+    status = 'DUPLICATE_TICKERS' if duplicates else 'MEMBERSHIP_SET_MISMATCH' if missing or extra else 'PASS'
+    return rows, {'date':date_s,'status':status,'expected_tickers':len(expected),
+        'raw_rows':len(raw_rows),'actual_rows':len(rows),'actual_unique_tickers':len(actual),
+        'duplicate_count':duplicates,'missing_count':len(missing),'extra_count':len(extra),
+        'missing_sample':missing[:10],'extra_sample':extra[:10],
+        'scope_rule':SCOPE_RULE,'excluded_non_common_tickers':sorted(excluded)}
+
+def verify_pinned_file(path):
+    rel = str(path.relative_to(ROOT))
+    original = subprocess.check_output(['git','-C',str(ROOT),'show',CORPUS_BASE+':'+rel])
+    if hashlib.sha256(original).hexdigest() != sha256_file(path):
+        raise ValueError('FROZEN_CORPUS_FILE_CHANGED:'+rel)
+    return hashlib.sha256(original).hexdigest()
+
+
 def load_expected(year: int) -> tuple[dict[str, set[str]], dict[tuple[str, str], str], dict[str, Any]]:
     path = MEMBERSHIP / f"twse_electronics_membership_{year}.csv"
     if not path.exists():
         raise RuntimeError(f"MISSING_MEMBERSHIP:{path}")
+    verify_pinned_file(path)
     by_date: dict[str, set[str]] = {}
     names: dict[tuple[str, str], str] = {}
     rows = 0
@@ -101,8 +140,8 @@ def load_expected(year: int) -> tuple[dict[str, set[str]], dict[tuple[str, str],
             d = (row.get("Date") or row.get("date") or "").strip()
             ticker = (row.get("Ticker") or row.get("ticker") or "").strip()
             name = (row.get("Name") or row.get("name") or "").strip()
-            if not d or not ticker:
-                raise RuntimeError(f"BAD_MEMBERSHIP_ROW:{year}")
+            if not d.startswith(str(year)+'-') or not re.fullmatch(r'[0-9]{4}',ticker) or (d,ticker) in names:
+                raise RuntimeError(f"BAD_OR_DUPLICATE_MEMBERSHIP_ROW:{year}")
             by_date.setdefault(d, set()).add(ticker)
             names[(d, ticker)] = name
             rows += 1
@@ -131,34 +170,10 @@ def fetch_day(date_s: str, expected: set[str]) -> tuple[str, str, list[dict[str,
             if status_code != 200 or not content:
                 last = f"HTTP_OR_EMPTY:{status_code}:{len(content)}"
             else:
-                rows, headers = parse_twse_csv(decode(content))
-                actual = {row["ticker"] for row in rows}
-                missing = sorted(expected - actual)
-                extra = sorted(actual - expected)
-                duplicate_count = len(rows) - len(actual)
-                if headers is None:
-                    status = "HEADER_NOT_FOUND"
-                elif duplicate_count:
-                    status = "DUPLICATE_TICKERS"
-                elif missing or extra:
-                    status = "MEMBERSHIP_SET_MISMATCH"
-                else:
-                    status = "PASS"
-                return date_s, status, rows, {
-                    "date": date_s,
-                    "status": status,
-                    "expected_tickers": len(expected),
-                    "actual_rows": len(rows),
-                    "actual_unique_tickers": len(actual),
-                    "duplicate_count": duplicate_count,
-                    "missing_count": len(missing),
-                    "extra_count": len(extra),
-                    "missing_sample": missing[:10],
-                    "extra_sample": extra[:10],
-                    "response_sha256": hashlib.sha256(content).hexdigest(),
-                    "response_bytes": len(content),
-                    "attempt": attempt + 1,
-                }
+                rows, qa = validate_daily(decode(content), date_s, expected)
+                qa.update(response_sha256=hashlib.sha256(content).hexdigest(),
+                          response_bytes=len(content), attempt=attempt+1)
+                return date_s, qa['status'], rows, qa
         except Exception as exc:
             last = f"{type(exc).__name__}:{str(exc)[:300]}"
         time.sleep(0.6 * (2 ** attempt))
@@ -227,7 +242,10 @@ def main() -> int:
                 total_rows += 1
 
     receipt = {
-        "schema_version": 1,
+        "schema_version": 2,
+        "frozen_corpus_base": CORPUS_BASE,
+        "normalization_rule": SCOPE_RULE,
+        "normalization_source_sha256": verify_pinned_file(ROOT/'research/e2_profit_max/acquire_pit_electronics_membership_v2.py'),
         "stage": "B_YEARLY_OFFICIAL_MOTHER_REBUILD",
         "year": year,
         "source": "TWSE MI_INDEX type=13 historical daily CSV",

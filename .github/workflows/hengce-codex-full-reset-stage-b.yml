@@ -30,13 +30,15 @@ jobs:
       - name: Checkout research branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
+      - name: Offline data-contract regressions
+        run: python -B research/codex_full_reset_20261023/test_stage_b_contracts.py
       - name: Compile yearly builder
         run: python -m py_compile research/codex_full_reset_20261023/stage_b_build_twse_year.py
 
@@ -68,7 +70,7 @@ jobs:
       - name: Checkout research branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
