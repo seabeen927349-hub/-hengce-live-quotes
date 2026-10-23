@@ -1,0 +1,52 @@
+name: HENGCE Codex Full Reset Stage B Mother
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/stage_b_build_twse_mother.py'
+      - '.github/workflows/hengce-codex-full-reset-stage-b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-codex-full-reset-stage-b-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-mother:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout frozen research branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile builder
+        run: python -m py_compile research/codex_full_reset_20261023/stage_b_build_twse_mother.py
+
+      - name: Build exact-membership official TWSE mother
+        run: python research/codex_full_reset_20261023/stage_b_build_twse_mother.py
+
+      - name: Print receipt
+        if: always()
+        run: cat research/codex_full_reset_20261023/results/stage_b/TWSE_MOTHER_RECEIPT.json 2>/dev/null || true
+
+      - name: Upload Stage B mother and QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-codex-full-reset-stage-b-mother
+          path: research/codex_full_reset_20261023/results/stage_b/
+          if-no-files-found: warn
+          retention-days: 90
+          compression-level: 6
