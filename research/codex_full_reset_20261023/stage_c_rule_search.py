@@ -29,6 +29,7 @@ PLAN_PATH = RESET / "SEARCH_PLAN_V1.json"
 NEIGHBOR_PATH = RESET / "SEARCH_PLAN_V1_NEIGHBOR_RULE.json"
 QUALITY_PATH = RESET / "DATA_QUALITY_RULE_V1.json"
 MANIFEST_PATH = RESET / "CORPUS_MANIFEST.json"
+SCOPE_PATH = RESET / "UNIVERSE_SCOPE_LOCK.json"
 
 COSTS = (0.008, 0.012, 0.016)
 SELECTION_COST = 0.012
@@ -222,7 +223,6 @@ def prior_macro(series: list[dict[str, Any]], signal_date: str) -> dict[str, Any
 def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]]) -> tuple[dict[str, dict[str, float]], dict[str, dict[str, Any]], dict[str, int]]:
     date_index = {d: i for i, d in enumerate(dates)}
 
-    # Mark unverified close-to-close discontinuities first.
     for i, d in enumerate(dates):
         if i == 0:
             continue
@@ -257,7 +257,6 @@ def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]]) -> tu
                 value = row.close / start.close - 1.0
                 setattr(row, f"r{h}", value)
 
-            # turnover20 includes signal day, requires 20 consecutive PIT sessions.
             if i >= 19:
                 vals = []
                 for j in range(i - 19, i + 1):
@@ -269,7 +268,6 @@ def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]]) -> tu
                 if len(vals) == 20:
                     row.turnover20 = statistics.mean(vals)
 
-            # vol20 excludes signal-day daily return and uses 20 consecutive prior sessions.
             if i >= 21:
                 vals = []
                 for j in range(i - 20, i):
@@ -308,7 +306,6 @@ def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]]) -> tu
             if m1 is not None and row.r1 is not None:
                 hist.append((m1, row.r1))
 
-    # Base scores.
     for d in dates:
         for ticker, row in by_date[d].items():
             s = row.scores if row.scores is not None else {}
@@ -334,7 +331,6 @@ def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]]) -> tu
                     s[f"BETA_K{k}_RESID_REV"] = row.beta60 * (1.0 + k * max(-row.resid1, 0.0))
             row.scores = s
 
-        # Rank ensembles use only same-day observable values.
         resid_vals = {t: r.scores["NEG_RESID1"] for t, r in by_date[d].items() if r.scores and "NEG_RESID1" in r.scores}
         mom_vals = {t: r.scores["R20"] for t, r in by_date[d].items() if r.scores and "R20" in r.scores}
         liq_vals = {t: r.turnover20 for t, r in by_date[d].items() if r.turnover20 is not None}
@@ -351,36 +347,31 @@ def prepare_features(dates: list[str], by_date: dict[str, dict[str, Row]]) -> tu
     dxy = load_macro(MACRO / "dxy_exact_DX-Y.NYB_202212_202610.csv")
     context: dict[str, dict[str, Any]] = {}
     for d in dates:
-        ps = prior_macro(sox, d)
-        px = prior_macro(dxy, d)
         context[d] = {
-            "market_r1": market[d].get("r1"),
-            "market_r5": market[d].get("r5"),
-            "sox_date": ps.get("date") if ps else None,
-            "sox1": ps.get("ret1") if ps else None,
-            "sox5": ps.get("ret5") if ps else None,
-            "dxy_date": px.get("date") if px else None,
-            "dxy1": px.get("ret1") if px else None,
-            "dxy5": px.get("ret5") if px else None,
+            "market": market[d],
+            "sox": prior_macro(sox, d),
+            "dxy": prior_macro(dxy, d),
         }
     return market, context, date_index
 
 
-def regime_ok(name: str, ctx: dict[str, Any]) -> bool:
-    m1, m5, s1, s5 = ctx.get("market_r1"), ctx.get("market_r5"), ctx.get("sox1"), ctx.get("sox5")
-    if name == "ALL": return True
-    if name == "LOCAL_M1_NEG": return m1 is not None and m1 < 0
-    if name == "LOCAL_M5_LE_-0.02": return m5 is not None and m5 <= -0.02
-    if name == "LOCAL_M1_NEG_AND_M5_LE_-0.02": return m1 is not None and m1 < 0 and m5 is not None and m5 <= -0.02
-    if name == "PRIOR_SOX1_LE_0": return s1 is not None and s1 <= 0
-    if name == "PRIOR_SOX5_LE_-0.03": return s5 is not None and s5 <= -0.03
-    if name == "LOCAL_SHOCK_AND_PRIOR_SOX_WEAK":
-        return m1 is not None and m1 < 0 and m5 is not None and m5 <= -0.02 and s1 is not None and s1 <= 0 and s5 is not None and s5 <= -0.03
-    raise KeyError(name)
+def regime_pass(regime: str, d: str, context: dict[str, dict[str, Any]]) -> bool:
+    c = context[d]
+    m = c["market"]
+    sox = c["sox"]
+    if regime == "ALL": return True
+    if regime == "LOCAL_M1_NEG": return m.get("r1") is not None and m["r1"] < 0
+    if regime == "LOCAL_M5_LE_-0.02": return m.get("r5") is not None and m["r5"] <= -0.02
+    if regime == "LOCAL_M1_NEG_AND_M5_LE_-0.02": return m.get("r1") is not None and m["r1"] < 0 and m.get("r5") is not None and m["r5"] <= -0.02
+    if regime == "PRIOR_SOX1_LE_0": return sox is not None and sox.get("ret1") is not None and sox["ret1"] <= 0
+    if regime == "PRIOR_SOX5_LE_-0.03": return sox is not None and sox.get("ret5") is not None and sox["ret5"] <= -0.03
+    if regime == "LOCAL_SHOCK_AND_PRIOR_SOX_WEAK":
+        return m.get("r1") is not None and m["r1"] < 0 and m.get("r5") is not None and m["r5"] <= -0.02 and sox is not None and sox.get("ret1") is not None and sox.get("ret5") is not None and sox["ret1"] <= 0 and sox["ret5"] <= -0.03
+    raise RuntimeError(f"UNKNOWN_REGIME:{regime}")
 
 
 def build_rank_cache(dates: list[str], by_date: dict[str, dict[str, Row]]) -> dict[tuple[str, float, str], list[str]]:
-    cache: dict[tuple[str, float, str], list[str]] = {}
+    cache = {}
     all_scores = sorted({score for scores in FAMILY_SCORES.values() for score in scores})
     for d in dates:
         rows = by_date[d]
@@ -403,114 +394,81 @@ def build_rank_cache(dates: list[str], by_date: dict[str, dict[str, Row]]) -> di
 
 def outcome_for_ticker(ticker: str, signal_i: int, horizon: int, dates: list[str], by_date: dict[str, dict[str, Row]]) -> tuple[float, str, str] | None:
     entry_i = signal_i + 1
-    exit_i = signal_i + horizon
-    if entry_i >= len(dates) or exit_i >= len(dates) or exit_i < entry_i:
-        return None
+    exit_i = entry_i + horizon
+    if exit_i >= len(dates): return None
     entry_d, exit_d = dates[entry_i], dates[exit_i]
     entry = by_date[entry_d].get(ticker)
     exit_row = by_date[exit_d].get(ticker)
-    if entry is None or exit_row is None or entry.open is None or exit_row.close is None or entry.open <= 0 or exit_row.close <= 0:
+    if not entry or not exit_row or entry.open is None or exit_row.close is None or entry.open <= 0 or exit_row.close <= 0:
         return None
     for j in range(entry_i, exit_i + 1):
         rr = by_date[dates[j]].get(ticker)
-        if rr is None or rr.bad_jump or rr.close is None or rr.close <= 0:
+        if rr is None or rr.bad_jump:
             return None
     return exit_row.close / entry.open - 1.0, entry_d, exit_d
-
-
-def summarize_events(events: list[dict[str, Any]], cost: float) -> dict[str, Any]:
-    nets = [event["gross_return"] - cost for event in events]
-    wins = sum(x > 0 for x in nets)
-    return {
-        "complete_trades": len(nets),
-        "wins": wins,
-        "win_rate": wins / len(nets) if nets else None,
-        "compounded_return": product_return(nets) if nets else 0.0,
-        "mean_net_return": statistics.mean(nets) if nets else None,
-        "median_net_return": statistics.median(nets) if nets else None,
-        "max_drawdown": max_drawdown(nets) if nets else 0.0,
-        "worst_trade": min(nets) if nets else None,
-        "best_trade": max(nets) if nets else None,
-        "unavailable_signals": None,
-    }
-
-
-def simulate(config: Config, start: str, end: str, cost: float, dates: list[str], date_index: dict[str, int], by_date: dict[str, dict[str, Row]], context: dict[str, dict[str, Any]], rank_cache: dict[tuple[str, float, str], list[str]], residual_cap: float | None = None, quality_guard: bool = True) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    events: list[dict[str, Any]] = []
-    blocked_exit_i: int | None = None
-    unavailable = 0
-    for i, d in enumerate(dates):
-        if d < start or d > end:
-            continue
-        if blocked_exit_i is not None and i <= blocked_exit_i:
-            continue
-        if not regime_ok(config.regime, context[d]):
-            continue
-        ranked = rank_cache.get((config.score, config.turnover_min, d), [])
-        if residual_cap is not None:
-            ranked = [t for t in ranked if by_date[d][t].resid1 is not None and by_date[d][t].resid1 <= residual_cap]
-        chosen = ranked[: config.top_n]
-        if len(chosen) < config.top_n:
-            continue
-        exit_i = i + config.horizon
-        if exit_i >= len(dates) or dates[exit_i] > end:
-            continue
-        gross_parts = []
-        entry_d = None
-        exit_d = None
-        valid = True
-        for ticker in chosen:
-            if quality_guard:
-                outcome = outcome_for_ticker(ticker, i, config.horizon, dates, by_date)
-            else:
-                entry_i = i + 1
-                if entry_i >= len(dates) or exit_i >= len(dates):
-                    outcome = None
-                else:
-                    er = by_date[dates[entry_i]].get(ticker)
-                    xr = by_date[dates[exit_i]].get(ticker)
-                    outcome = None if er is None or xr is None or er.open is None or xr.close is None or er.open <= 0 or xr.close <= 0 else (xr.close / er.open - 1.0, dates[entry_i], dates[exit_i])
-            if outcome is None:
-                valid = False
-                break
-            gross, ed, xd = outcome
-            gross_parts.append(gross)
-            entry_d, exit_d = ed, xd
-        if not valid:
-            unavailable += 1
-            continue
-        gross_basket = statistics.mean(gross_parts)
-        events.append({
-            "signal_date": d,
-            "entry_date": entry_d,
-            "exit_date": exit_d,
-            "tickers": chosen,
-            "gross_return": gross_basket,
-            "net_return": gross_basket - cost,
-        })
-        blocked_exit_i = exit_i
-    metrics = summarize_events(events, cost)
-    metrics["unavailable_signals"] = unavailable
-    return metrics, events
 
 
 def configs() -> list[Config]:
     out = []
     for family, scores in FAMILY_SCORES.items():
-        for score, threshold, top_n, horizon, regime in itertools.product(scores, TURNOVER_THRESHOLDS, TOP_NS, HORIZONS, REGIMES):
-            out.append(Config(family, score, threshold, top_n, horizon, regime))
+        for score, turnover, top_n, horizon, regime in itertools.product(scores, TURNOVER_THRESHOLDS, TOP_NS, HORIZONS, REGIMES):
+            out.append(Config(family, score, turnover, top_n, horizon, regime))
     return out
 
 
+def simulate(config: Config, start: str, end: str, cost: float, dates: list[str], date_index: dict[str, int], by_date: dict[str, dict[str, Row]], context: dict[str, dict[str, Any]], rank_cache: dict[tuple[str, float, str], list[str]], residual_cap: float | None = None, quality_guard: bool = True) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    events = []
+    next_free_i = -1
+    for i, d in enumerate(dates):
+        if d < start or d > end: continue
+        if i < next_free_i: continue
+        if not regime_pass(config.regime, d, context): continue
+        ranked = rank_cache.get((config.score, config.turnover_min, d), [])
+        picks = []
+        for ticker in ranked:
+            row = by_date[d][ticker]
+            if residual_cap is not None and (row.resid1 is None or row.resid1 > residual_cap):
+                continue
+            if quality_guard and row.bad_jump:
+                continue
+            outcome = outcome_for_ticker(ticker, i, config.horizon, dates, by_date)
+            if outcome is None: continue
+            picks.append((ticker, outcome))
+            if len(picks) >= config.top_n: break
+        if not picks: continue
+        gross = statistics.mean([p[1][0] for p in picks])
+        entry_d = picks[0][1][1]
+        exit_d = picks[0][1][2]
+        events.append({"signal_date": d, "entry_date": entry_d, "exit_date": exit_d, "tickers": [p[0] for p in picks], "gross_return": gross})
+        next_free_i = date_index[exit_d] + 1
+    return summarize_events(events, cost), events
+
+
+def summarize_events(events: list[dict[str, Any]], cost: float) -> dict[str, Any]:
+    nets = [event["gross_return"] - cost for event in events]
+    wins = sum(r > 0 for r in nets)
+    return {
+        "complete_trades": len(nets),
+        "wins": wins,
+        "losses_or_zero": len(nets) - wins,
+        "win_rate": wins / len(nets) if nets else None,
+        "mean_net_return": statistics.mean(nets) if nets else None,
+        "median_net_return": statistics.median(nets) if nets else None,
+        "compounded_return": product_return(nets),
+        "max_drawdown": max_drawdown(nets),
+        "worst_trade": min(nets) if nets else None,
+        "best_trade": max(nets) if nets else None,
+    }
+
+
 def selection_key(metrics: dict[str, Any], config: Config) -> tuple[Any, ...]:
-    wr = metrics["win_rate"] if metrics["win_rate"] is not None else -1.0
     return (
         metrics["compounded_return"],
-        wr,
+        metrics["win_rate"] if metrics["win_rate"] is not None else -1.0,
         metrics["max_drawdown"],
         metrics["complete_trades"],
         -config.parameter_count,
-        tuple(-ord(c) for c in config.id),
+        config.id,
     )
 
 
@@ -629,12 +587,18 @@ def main() -> int:
     receipt_path = Path(args.mother_receipt) if args.mother_receipt else None
 
     OUT.mkdir(parents=True, exist_ok=True)
-    for required in (PLAN_PATH, NEIGHBOR_PATH, QUALITY_PATH, MANIFEST_PATH, BASELINE_PATH):
+    for required in (PLAN_PATH, NEIGHBOR_PATH, QUALITY_PATH, MANIFEST_PATH, BASELINE_PATH, SCOPE_PATH):
         if not required.exists():
             raise RuntimeError(f"REQUIRED_FILE_MISSING:{required}")
     plan = json_load(PLAN_PATH)
     if plan.get("status") != "FROZEN_BEFORE_SEARCH_RESULTS" or plan.get("authority", {}).get("capital_authority_twd") != 0:
         raise RuntimeError("SEARCH_PLAN_NOT_FROZEN_OR_AUTHORITY_INVALID")
+    scope = json_load(SCOPE_PATH)
+    if scope.get("status") != "HARD_SCOPE_LOCK" or scope.get("universe") != "TWSE_LISTED_ELECTRONICS_PIT_DAILY":
+        raise RuntimeError("UNIVERSE_SCOPE_LOCK_INVALID")
+    enforcement = scope.get("enforcement", {})
+    if enforcement.get("signal_date_ticker_must_exist_in_pit_membership") is not True or enforcement.get("no_full_market_fallback") is not True:
+        raise RuntimeError("UNIVERSE_SCOPE_ENFORCEMENT_INVALID")
     if abs(json_load(QUALITY_PATH)["rule"]["unverified_discontinuity_if_abs_close_to_close_return_gt"] - DISCONTINUITY) > 1e-12:
         raise RuntimeError("QUALITY_RULE_DRIFT")
     if receipt_path and receipt_path.exists():
@@ -786,6 +750,8 @@ def main() -> int:
         "search_plan_sha256": sha256_file(PLAN_PATH),
         "neighbor_rule_sha256": sha256_file(NEIGHBOR_PATH),
         "quality_rule_sha256": sha256_file(QUALITY_PATH),
+        "scope_lock_sha256": sha256_file(SCOPE_PATH),
+        "universe": scope["universe"],
         "mother_sha256": sha256_file(mother),
         "config_count": len(all_configs),
         "selection_trial_count": trial_seq,
@@ -801,6 +767,7 @@ def main() -> int:
     winner_doc = {
         "schema_version": 1,
         "status": "HISTORICAL_RESEARCH_WINNER_NOT_PROSPECTIVE_VALIDATED" if winner else "NO_ROBUST_WINNER",
+        "universe": scope["universe"],
         "winner": winner,
         "pareto_families": [r["family"] for r in pareto],
         "historical_exposure_warning": "2023-2025 was previously exposed and is not pristine OOS. Future prospective shadow validation is mandatory before any production discussion.",
@@ -811,6 +778,7 @@ def main() -> int:
     receipt = {
         "stage": "C_D_CHRONOLOGICAL_RULE_SEARCH",
         "status": "COMPLETE",
+        "universe": scope["universe"],
         "winner_status": winner_doc["status"],
         "winner_family": winner["family"] if winner else None,
         "config_count": len(all_configs),
