@@ -30,6 +30,7 @@ jobs:
           python -B research/codex_full_reset_20261023/data_foundation_20261023/test_evidence.py
           python -B research/codex_full_reset_20261023/data_foundation_20261023/test_normalize.py
           python -B research/codex_full_reset_20261023/data_foundation_v2_20261023/test_v2.py
+          python -B research/codex_full_reset_20261023/rr_v1_20261023/test_readiness.py
       - name: Audit retained completed evidence offline - no model evaluation
         run: |
           if [ -f research/codex_full_reset_20261023/results/ARTIFACT_MANIFEST.json ]; then
@@ -45,3 +46,4 @@ jobs:
           if [ -f research/codex_full_reset_20261023/data_foundation_v2_20261023/results/READINESS_V2.json ]; then
             python -B research/codex_full_reset_20261023/data_foundation_v2_20261023/audit.py
           fi
+          python -B research/codex_full_reset_20261023/rr_v1_20261023/readiness.py --audit
