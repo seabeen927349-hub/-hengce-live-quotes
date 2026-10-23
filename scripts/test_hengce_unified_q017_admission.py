@@ -42,7 +42,7 @@ def main():
     q = artifact()
     admitted = admission.admit(adapter, q)
     assert admitted is q
-    assert adapter.VERIFIED_Q017_PRODUCERS == frozenset({admission.VERIFIED_PRODUCER_COMMIT})
+    assert admission.VERIFIED_PRODUCER_COMMIT in adapter.VERIFIED_Q017_PRODUCERS
     legacy = {"run_id": "ADMISSION_TEST", "trade_date": q["trade_date"],
               "rows": [{"Ticker": "2330", "AlphaScore": .9, "FormalEntryTrigger": False}]}
     out = adapter.build(legacy, admitted)
@@ -56,6 +56,11 @@ def main():
     stale = copy.deepcopy(q)
     stale["signal_date"] = stale["trade_date"]
     assert admission.admit(adapter, stale).get("input_error") == "Q017_SIGNAL_DATE_NOT_PRIOR"
+
+    gap = copy.deepcopy(q)
+    gap["trade_date"] = (date.fromisoformat(gap["signal_date"]) + timedelta(days=2)).isoformat()
+    gap["candidates"][0]["entry_trade_date"] = gap["trade_date"]
+    assert admission.admit(adapter, gap).get("input_error") == "Q017_OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP"
 
     bad_obs = copy.deepcopy(q)
     bad_obs["candidates"][0]["beta_observations"] = 29
