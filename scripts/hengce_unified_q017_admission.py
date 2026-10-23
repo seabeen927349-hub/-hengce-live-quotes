@@ -11,7 +11,7 @@ from __future__ import annotations
 from datetime import date
 
 VERIFIED_PRODUCER_NAME = "hengce_q017_canonical_producer"
-VERIFIED_PRODUCER_COMMIT = "ba574052f57cd77509b8452be48e588ab59a2ef2"
+VERIFIED_PRODUCER_COMMIT = "a60265f29cc57e79873f4fc9e99fa8996e15558c"
 EXPECTED_EVIDENCE_COMMIT = "f5abef555d9174e3919a9dca52e9bfb07351e02e"
 
 AUTHORITY_KEYS = {
@@ -74,10 +74,6 @@ def admit(adapter, q017):
     if q017 is None:
         return None
     producer = q017.get("producer") if isinstance(q017, dict) else None
-    # Only artifacts claiming the reviewed producer identity get the extra
-    # lineage/session gate. Other shapes continue to the adapter, whose producer
-    # allowlist still rejects them in production. Existing unit tests may
-    # explicitly monkeypatch synthetic trust without creating a production path.
     if not isinstance(producer, dict) or producer.get("name") != VERIFIED_PRODUCER_NAME:
         return q017
     try:
