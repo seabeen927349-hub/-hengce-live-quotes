@@ -29,11 +29,14 @@ def artifact():
         p *= 1 + (-.008 if i >= 12 else .002)
         sox.append({"date": ds, "close": p})
     trade = (signal + timedelta(days=1)).isoformat()
+    calendar, _, calendar_sha = producer.twse_calendar.load_manifest()
     return producer.build_artifact(
         rows, sox, trade_date=trade, signal_date=signal.isoformat(),
         generated_at=datetime.fromisoformat(trade + "T08:30:00+08:00"),
         code_commit=admission.VERIFIED_PRODUCER_COMMIT,
-        input_hashes={"electronics_history": "2" * 64, "sox_history": "3" * 64},
+        input_hashes={"electronics_history": "2" * 64, "sox_history": "3" * 64,
+                      "twse_calendar_manifest": calendar_sha},
+        calendar_manifest=calendar, calendar_raw_sha=calendar_sha,
         min_daily_members=3,
     )
 
@@ -57,10 +60,26 @@ def main():
     stale["signal_date"] = stale["trade_date"]
     assert admission.admit(adapter, stale).get("input_error") == "Q017_SIGNAL_DATE_NOT_PRIOR"
 
-    gap = copy.deepcopy(q)
-    gap["trade_date"] = (date.fromisoformat(gap["signal_date"]) + timedelta(days=2)).isoformat()
-    gap["candidates"][0]["entry_trade_date"] = gap["trade_date"]
-    assert admission.admit(adapter, gap).get("input_error") == "Q017_OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP"
+    weekend = copy.deepcopy(q)
+    weekend["trade_date"] = (date.fromisoformat(weekend["signal_date"]) + timedelta(days=2)).isoformat()
+    weekend["candidates"][0]["entry_trade_date"] = weekend["trade_date"]
+    assert "Q017_TRADE_DATE_NOT_TWSE_TRADING_DAY" in admission.admit(adapter, weekend).get("input_error", "")
+
+    calendar_tamper = copy.deepcopy(q)
+    calendar_tamper["session_calendar"]["manifest_sha256"] = "f" * 64
+    assert admission.admit(adapter, calendar_tamper).get("input_error") == "Q017_SESSION_CALENDAR_LINEAGE_MISMATCH"
+
+    holiday = copy.deepcopy(q)
+    holiday["signal_date"] = "2026-10-23"
+    holiday["trade_date"] = "2026-10-27"
+    holiday["candidates"][0]["signal_date"] = holiday["signal_date"]
+    holiday["candidates"][0]["entry_trade_date"] = holiday["trade_date"]
+    assert admission.admit(adapter, holiday) is holiday
+
+    holiday_bad = copy.deepcopy(holiday)
+    holiday_bad["trade_date"] = "2026-10-26"
+    holiday_bad["candidates"][0]["entry_trade_date"] = holiday_bad["trade_date"]
+    assert "Q017_TRADE_DATE_NOT_TWSE_TRADING_DAY" in admission.admit(adapter, holiday_bad).get("input_error", "")
 
     bad_obs = copy.deepcopy(q)
     bad_obs["candidates"][0]["beta_observations"] = 29
