@@ -42,13 +42,28 @@ jobs:
             scripts/hengce_unified_candidate_adapter.py \
             scripts/hengce_unified_action_board.py \
             scripts/hengce_intraday_action_board.py \
+            scripts/hengce_unified_scan_display.py \
+            scripts/hengce_scan_once_router.py \
             scripts/test_hengce_unified_q017.py
+          bash -n scripts/RUN_INTRADAY_ACTION_BOARD.sh
       - name: Candidate adapter self-test
         run: python scripts/hengce_unified_candidate_adapter.py --self-test
       - name: Unified Q017 tests
         run: python scripts/test_hengce_unified_q017.py
       - name: Existing action-board regression self-test
         run: python scripts/hengce_intraday_action_board.py --self-test
+      - name: Single HENGCE display self-test
+        run: python scripts/hengce_unified_scan_display.py --self-test
+      - name: Scan-once no dual-engine authority
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          text=Path('scripts/hengce_scan_once_router.py').read_text(encoding='utf-8')
+          assert 'hengce_dual_engine_display.py' not in text
+          assert 'hengce_unified_scan_display.py' in text
+          assert "'single_hengce_output': True" in text
+          print('PASS: scan-once routes to single HENGCE display')
+          PY
       - name: Wrapper provenance and geometry fail-closed smoke
         run: |
           python - <<'PY'
