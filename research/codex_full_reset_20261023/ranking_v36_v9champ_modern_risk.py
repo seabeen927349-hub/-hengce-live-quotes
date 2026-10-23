@@ -2,7 +2,6 @@
 from __future__ import annotations
 import json,statistics
 from pathlib import Path
-import research.codex_full_reset_20261023.ranking_v9_walkforward_ic as v9
 import research.codex_full_reset_20261023.ranking_v13_weak_regime_profiles as v13
 import research.codex_full_reset_20261023.ranking_v19_diversification as v19
 import research.codex_full_reset_20261023.ranking_v27_capped_covariance as v27
@@ -16,21 +15,43 @@ CAP=.50
 TOPN=3
 METHOD='MEAN_IC'
 SHRINK=.90
+FACTORS=('resid_rev','mom20','skip5_60','liquidity','lowvol')
+V9_PROVENANCE={
+ 'successful_run_id':39978921042,
+ 'artifact_id':12513125460,
+ 'artifact_sha256':'d2b4bd649f720a3df6ae68bd7ba57d8b60091e33629551b8c331f5c74ee9a51c',
+ 'champion_method':'MEAN_IC',
+ 'champion_shrink_to_v6':0.90,
+}
+# Exact annual final weights recovered from the successful canonical V9 artifact.
+# They are frozen inputs here; V36 performs no re-learning and no V9 resweep.
+LEARNED={
+ '2024':{'final_weights':{
+   'resid_rev':0.21026935533573474,
+   'mom20':0.24955453687572232,
+   'skip5_60':0.2865882760386327,
+   'liquidity':0.07358783174991028,
+   'lowvol':0.18000000000000002,
+ },'training_end':'2023-12-31'},
+ '2025':{'final_weights':{
+   'resid_rev':0.20159241998850475,
+   'mom20':0.2512249587399482,
+   'skip5_60':0.2864638040929887,
+   'liquidity':0.05990526148737986,
+   'lowvol':0.20081355569117848,
+ },'training_end':'2024-12-31'},
+ '2026':{'final_weights':{
+   'resid_rev':0.1880651272237035,
+   'mom20':0.25859212409312254,
+   'skip5_60':0.28170466457881926,
+   'liquidity':0.0745153923199833,
+   'lowvol':0.19712269178437147,
+ },'training_end':'2025-12-31'},
+}
 V30_REF={'ret':2.8508800598517157,'dd':-0.25219372871514845,'rem':1.5500728046277374,'max_weight':0.5000000000000001}
 V32_REF={'ret':2.513405145180079,'dd':-0.17014957723452873,'rem':1.326595160875482}
 V33_REF={'ret':2.47212917645407,'dd':-0.1624723468868463,'rem':1.2992619997027308}
 DI={d:i for i,d in enumerate(v13.dates)}
-
-LEARNED={}
-for y in v13.PERIODS:
-    w,raw,diag,anchors=v9.yearly_weights(y,METHOD,SHRINK)
-    LEARNED[y]={
-      'final_weights':dict(zip(v9.FACTORS,w)),
-      'raw_learned_weights':dict(zip(v9.FACTORS,raw)),
-      'factor_ic':diag,
-      'training_anchors':anchors,
-      'training_end':v9.TRAIN_END[y],
-    }
 
 
 def rank_cache():
@@ -38,7 +59,7 @@ def rank_cache():
     for d,F in v13.features.items():
         y=d[:4]
         if y not in LEARNED:continue
-        w=[LEARNED[y]['final_weights'][f] for f in v9.FACTORS]
+        w=[LEARNED[y]['final_weights'][f] for f in FACTORS]
         arr=[]
         for t,vals in F.items():
             arr.append((sum(w[i]*vals[i] for i in range(5)),t))
@@ -82,7 +103,6 @@ def build():
           'factor_weights':LEARNED[b['year']]['final_weights'],
           'ranking_rule':'V9_CHAMPION_MEAN_IC_SHRINK_0.90',
         }
-        # Modern exposure/diversification layer.
         e['exposure']=v19.exposure(e);e['vol_ratio']=v19.vol_ratio(e)
         # Recompute V30 fragile-strong overlay from THIS V36 basket series only.
         sig=v30.predicted_sigma(e)
@@ -137,8 +157,8 @@ base_by_date={e['signal_date']:e for e in v30.EV}
 changed=sum(a!=b for e in EV for a,b in zip(base_by_date[e['signal_date']]['tickers'],e['tickers']))
 res={
  'status':status,
- 'method':'single fixed port of the exact historical V9 champion (annual prior-only MEAN_IC factor learning with 0.90 shrink toward V6) into the modern risk stack: same common schedule/Top3/H20/turnover eligibility, 50% capped covariance weights, V19 exposure, and V30 fragile-strong prior-vol overlay recomputed on V36 baskets.',
- 'v9_champion':{'method':METHOD,'shrink_to_v6':SHRINK},
+ 'method':'single fixed port of the exact canonical V9 champion (annual prior-only MEAN_IC factor learning with 0.90 shrink toward V6) into the modern risk stack: same common schedule/Top3/H20/turnover eligibility, 50% capped covariance weights, V19 exposure, and V30 fragile-strong prior-vol overlay recomputed on V36 baskets. Exact annual weights are frozen from the successful V9 artifact rather than re-importing the defective historical script.',
+ 'v9_champion':{'method':METHOD,'shrink_to_v6':SHRINK,'provenance':V9_PROVENANCE},
  'learned':LEARNED,
  'complete_common_schedule':complete,'invalid':INVALID,'robust':robust,
  'years':years,'combined':combined,
