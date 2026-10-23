@@ -12,7 +12,9 @@ on:
       - 'scripts/RUN_INTRADAY_ACTION_BOARD.sh'
       - 'scripts/hengce_intraday_action_board.py'
       - 'scripts/hengce_unified*.py'
+      - 'scripts/hengce_twse_calendar.py'
       - 'scripts/hengce_scan_once_router.py'
+      - 'hengce/calendar/TWSE_TRADING_CALENDAR_2026_v1.json'
       - 'hengce/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json'
       - 'patch/INSTALL_HENGCE_INTRADAY_HARD_BIND.sh'
       - '.github/workflows/hengce-intraday-hard-bind-bundle.yml'
@@ -32,7 +34,7 @@ jobs:
         run: |
           set -euo pipefail
           B="$RUNNER_TEMP/HENGCE_v9_3_46_INTRADAY_HARD_BIND_PATCH"
-          mkdir -p "$B/scripts" "$B/hengce" "$B/patch"
+          mkdir -p "$B/scripts" "$B/hengce/calendar" "$B/patch"
           cp scripts/RUN_HENGCE.sh "$B/scripts/"
           cp scripts/RUN_HENGCE_COMPLETE.sh "$B/scripts/"
           cp scripts/RUN_IN_WORK_DETACHED.sh "$B/scripts/"
@@ -40,8 +42,10 @@ jobs:
           cp scripts/RUN_INTRADAY_ACTION_BOARD.sh "$B/scripts/"
           cp scripts/hengce_intraday_action_board.py "$B/scripts/"
           cp scripts/hengce_unified*.py "$B/scripts/"
+          cp scripts/hengce_twse_calendar.py "$B/scripts/"
           cp scripts/hengce_scan_once_router.py "$B/scripts/"
           cp hengce/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json "$B/hengce/"
+          cp hengce/calendar/TWSE_TRADING_CALENDAR_2026_v1.json "$B/hengce/calendar/"
           cp patch/INSTALL_HENGCE_INTRADAY_HARD_BIND.sh "$B/patch/"
           chmod +x "$B/scripts/"*.sh "$B/patch/"*.sh
           echo "BUNDLE=$B" >> "$GITHUB_ENV"
@@ -52,7 +56,6 @@ jobs:
           set -euo pipefail
           T="$RUNNER_TEMP/fake-hengce"
           mkdir -p "$T/runtime/production_core" "$T/work_output/context"
-          # Fake frozen model file proves installer preserves arbitrary joblib bytes/hashes.
           printf 'MODEL_BYTES_MUST_NOT_CHANGE' > "$T/runtime/production_core/fake.joblib"
           sha256sum "$T/runtime/production_core/fake.joblib" > "$RUNNER_TEMP/model.before"
           cat > "$T/RUN_IN_WORK.sh" <<'SH'
@@ -94,12 +97,15 @@ jobs:
           bash "$BUNDLE/patch/INSTALL_HENGCE_INTRADAY_HARD_BIND.sh" "$T"
           sha256sum "$T/runtime/production_core/fake.joblib" > "$RUNNER_TEMP/model.after"
           cmp "$RUNNER_TEMP/model.before" "$RUNNER_TEMP/model.after"
+          test -f "$T/governance/TWSE_TRADING_CALENDAR_2026_v1.json"
           python3 - "$T/work_output/HENGCE_INTRADAY_HARD_BIND_INSTALL_RECEIPT.json" <<'PY'
           import json,sys
           x=json.load(open(sys.argv[1]))
           assert x['status']=='PASS'
           assert x['production_model_mutated_by_patch'] is False
           assert x['entrypoint']=='RUN_HENGCE.sh'
+          assert 'work/hengce_twse_calendar.py' in x['installed_files']
+          assert 'governance/TWSE_TRADING_CALENDAR_2026_v1.json' in x['installed_files']
           print('INSTALLER_PASS')
           PY
 
@@ -131,7 +137,6 @@ jobs:
           T="$RUNNER_TEMP/fake-hengce"
           cd "$T"
           HENGCE_ROOT="$T" HENGCE_LIVE_JSON="$T/fixture/live.json" bash ./RUN_HENGCE.sh
-          # RUN_HENGCE must detach promptly. Poll with short status checks only.
           for i in $(seq 1 30); do
             set +e
             HENGCE_ROOT="$T" bash ./CHECK_HENGCE_RUN.sh >/tmp/hengce-status.txt 2>&1
