@@ -1,8 +1,8 @@
 {
   "system": "HENGCE",
   "artifact": "FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS",
-  "generated_at_taipei": "2026-10-22T13:56:25.450229+08:00",
-  "snapshot_id": "20261022T135625+0800",
+  "generated_at_taipei": "2026-10-23T09:20:03.528869+08:00",
+  "snapshot_id": "20261023T092003+0800",
   "status": "SHADOW_FULL_MARKET_READY",
   "authority": "SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
   "universe_count": 1088,
@@ -21,11 +21,11 @@
     "FUGLE": 25,
     "NONE": 0
   },
-  "payload_sha256": "57b6dca2bfdef60a3dc52c1c74697a404e26b176712e393ea10f81f8280d3639",
-  "electronics_live_status": "PASS_FULL_ELECTRONICS_LIVE_COVERAGE",
-  "electronics_member_count": 457,
-  "electronics_provider_coverage_ratio": 1.0,
-  "electronics_quote_fresh_ratio": 1.0,
+  "payload_sha256": "a643720246971f40ced395e44ca05830724cc7664e304f6e3d1e622ca5c4cc63",
+  "electronics_live_status": "DATA_PENDING_CURRENT_Q017_UNIVERSE",
+  "electronics_member_count": 0,
+  "electronics_provider_coverage_ratio": 0.0,
+  "electronics_quote_fresh_ratio": 0.0,
   "electronics_legacy_77_watchlist_is_not_coverage_authority": true,
   "production_core_effect": "NONE",
   "capital_authority": false
