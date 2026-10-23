@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "status": "READY_FOR_CODEX_RESEARCH",
+  "branch": "research/codex-full-reset-20261023",
+  "frozen_corpus_base_commit": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+  "github_task_issue": 29,
+  "github_task_url": "https://github.com/seabeen927349-hub/-hengce-live-quotes/issues/29",
+  "entrypoint": "research/codex_full_reset_20261023/CODEX_FULL_RESET_TASK.md",
+  "manifest": "research/codex_full_reset_20261023/CORPUS_MANIFEST.json",
+  "history": "research/codex_full_reset_20261023/EXPERIMENT_HISTORY.md",
+  "authorization": "research/codex_full_reset_20261023/RESET_AUTHORIZATION.json",
+  "production_untouched": true,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "merge_authorized": false,
+  "note": "Handoff package is complete. Running a Codex coding-agent session is a separate product action; this repository task does not claim an asynchronous agent has been launched."
+}
