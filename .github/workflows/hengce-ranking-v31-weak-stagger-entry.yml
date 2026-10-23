@@ -32,3 +32,5 @@ jobs:
             research/codex_full_reset_20261023/ranking_v31_weak_stagger_entry_result.json
             research/codex_full_reset_20261023/ranking_v31_events.jsonl
           if-no-files-found: error
+
+# trigger-only update; research rule unchanged
