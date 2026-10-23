@@ -112,7 +112,7 @@ def main():
         if args.mode == 'premarket':
             result = premarket(run_date)
         else:
-            import hengce_eod_incremental_ingest as eod_inc
+            import hengce_eod_guarded_ingest as eod_inc
             today = run_date
             eod = eod_inc.ingest(today)
             if eod.get('status') in {'SKIP_WEEKEND', 'SKIP_NONTRADING'}:
