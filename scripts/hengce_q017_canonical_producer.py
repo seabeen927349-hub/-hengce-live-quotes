@@ -118,12 +118,19 @@ def macro(rows,signal_date):
     if (date.fromisoformat(signal_date)-date.fromisoformat(last['date'])).days>7:raise ValueError('SOX_STALE_FOR_SIGNAL:'+last['date'])
     return {'session':last['date'],'sox_1d':last['close']/z[-2]['close']-1,'sox_5d':last['close']/z[-6]['close']-1}
 
+def _ordinary_next_session(signal_date,trade_date):
+    s=date.fromisoformat(signal_date);t=date.fromisoformat(trade_date);gap=(t-s).days
+    if gap==1 and s.weekday()<4 and t.weekday()==s.weekday()+1:return
+    if gap==3 and s.weekday()==4 and t.weekday()==0:return
+    raise ValueError('OFFICIAL_TRADING_CALENDAR_REQUIRED_FOR_SESSION_GAP')
+
 def build_artifact(electronics,sox,*,trade_date,signal_date,generated_at,code_commit,input_hashes,min_daily_members=MIN_MEMBERS):
     trade_date=day(trade_date);signal_date=day(signal_date)
     if generated_at.tzinfo is None:raise ValueError('GENERATED_AT_NAIVE')
     generated_at=generated_at.astimezone(TZ)
     if generated_at.date().isoformat()!=trade_date:raise ValueError('GENERATED_AT_TRADE_DATE_MISMATCH')
     if signal_date>=trade_date:raise ValueError('SIGNAL_DATE_NOT_PRIOR_TO_TRADE_DATE')
+    _ordinary_next_session(signal_date,trade_date)
     if not re.fullmatch(r'[0-9a-f]{40}',code_commit):raise ValueError('PRODUCER_COMMIT_INVALID')
     if not input_hashes or any(not re.fullmatch(r'[0-9a-f]{64}',x) for x in input_hashes.values()):raise ValueError('INPUT_HASH_INVALID')
     dates=sorted({r['date'] for r in electronics})
