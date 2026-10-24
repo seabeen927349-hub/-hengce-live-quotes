@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "engine": "HENGCE_V43_DAILY",
+  "module": "V43_INDEPENDENT_HISTORY_SYNC",
+  "status": "PASS_NO_NEW_SESSION",
+  "generated_at_taipei": "2026-10-24T12:47:04.093818+08:00",
+  "history_path": "hengce/v43_daily/data/twse_electronics_history_2026.csv",
+  "history_latest_before": "2026-10-22",
+  "history_latest_after": "2026-10-22",
+  "through_date": "2026-10-24",
+  "added_sessions": [],
+  "skipped_dates": [
+    {
+      "date": "2026-10-23",
+      "reason": "TWSE_TYPE13_SESSION_UNAVAILABLE:ZERO_SECURITY_ROWS"
+    },
+    {
+      "date": "2026-10-24",
+      "reason": "WEEKEND"
+    }
+  ],
+  "bootstrap_used_this_run": true,
+  "bootstrap_git_blob": "b84c642f262fdcb7ba68018548f4d90b1ff41b9e",
+  "bootstrap_expected_git_blob": "b84c642f262fdcb7ba68018548f4d90b1ff41b9e",
+  "bootstrap_semantics": "ONE_TIME_DATA_MIGRATION_ONLY_NOT_Q017_RUNTIME_DEPENDENCY",
+  "runtime_source": "TWSE_MI_INDEX_TYPE_13",
+  "q017_runtime_read": false,
+  "q017_write": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false
+}
