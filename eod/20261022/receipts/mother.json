@@ -1,0 +1,40 @@
+{
+  "system": "HENGCE",
+  "artifact": "CANONICAL_HIST_MOTHER_PROMOTION_RECEIPT",
+  "version": "v1_20261022_available_legs",
+  "target_date": "2026-10-22",
+  "status": "PASS",
+  "canonical_store": "ChatGPT Library:/HENGCE_CANONICAL",
+  "canonical_mother": "HENGCE_2026_HIST_MOTHER.csv",
+  "promoted_legs": [
+    "price",
+    "institutional"
+  ],
+  "promoted_leg_sha256": {
+    "price": "9a25e7982f665eea6d6128c216ae21c673467ea86eb95d30676b36223ce78df2",
+    "institutional": "5d25789eabf024faf5bf825d09891bf8e3d0529e1147d960fd4d24057113cb7e"
+  },
+  "source_rows": {
+    "price": 1088,
+    "institutional": 1072
+  },
+  "pending_legs": [
+    "margin"
+  ],
+  "mother_target_rows": 1088,
+  "mother_latest_date": "2026-10-22",
+  "mother_rows": 208306,
+  "mother_sha256": "69c1b5caef9f8a14c1d660af81cd426c9c58779537d5ad00a65b494110d071cc",
+  "canonical_price_sha256": "f1a95ce8d274e2022166ea091d88c089d871ea248f3652051254ed4f356e53e9",
+  "canonical_institutional_sha256": "350d157809e371b6b9483601189d634466796b250dcc644085cae0587a7e36e9",
+  "canonical_margin_sha256": "51342c4f5cc05aa8c1b3d6da4bb3e384c17bc4226c000967eca83c3277b31676",
+  "missing_evidence_is_null": true,
+  "three_leg_complete": false,
+  "formal_complete_day": false,
+  "second_mother": false,
+  "model_or_schema_mutated": false,
+  "new_model_evaluations": 0,
+  "total_model_evaluations": 8529,
+  "stage_b_ran": false,
+  "updated_at_taipei": "2026-10-24T22:03:56.321757+08:00"
+}
