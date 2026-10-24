@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "artifact": "HENGCE_CANONICAL_MOTHER_LIBRARY_BRIDGE_VERIFICATION",
+  "source_library_path": "/HENGCE_CANONICAL/HENGCE_2026_HIST_MOTHER.csv",
+  "source_library_version_id": 3,
+  "size_bytes": 19909112,
+  "sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
+  "receipt_expected_sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
+  "sha256_match": true,
+  "rows": 207218,
+  "columns": [
+    "Date",
+    "Ticker",
+    "Name",
+    "Volume",
+    "Turnover",
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Margin_MarginBalance",
+    "ForeignNet",
+    "TrustNet",
+    "TotalNet"
+  ],
+  "min_date": "2026-01-02",
+  "max_date": "2026-10-21",
+  "unique_dates": 192,
+  "unique_tickers": 1144,
+  "duplicate_date_ticker_rows": 0,
+  "rows_2026_10_21": 1088,
+  "rows_2026_10_22": 0,
+  "important_interpretation": [
+    "The canonical mother bytes are now accessible and hash-verified.",
+    "This resolves the previous 'referenced but not accessible' condition for the 2026-10-21 canonical artifact.",
+    "It does NOT prove a 2026-10-22 canonical mother promotion.",
+    "The provided mother ends on 2026-10-21."
+  ]
+}

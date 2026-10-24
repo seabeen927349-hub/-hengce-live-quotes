@@ -1,0 +1,39 @@
+{
+  "system": "HENGCE",
+  "artifact": "CANONICAL_STATE_POINTER",
+  "updated_at_taipei": "2026-10-21T23:00:05.009272+08:00",
+  "canonical_folder": "/HENGCE_CANONICAL",
+  "canonical_mother": "HENGCE_2026_HIST_MOTHER.csv",
+  "canonical_price": "TWSE_2026_price.csv",
+  "canonical_institutional": "TWSE_2026_institutional.csv",
+  "canonical_margin": "TWSE_2026_margin.csv",
+  "mother_latest_date": "2026-10-21",
+  "target_date": "2026-10-21",
+  "promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "pending_legs": [],
+  "mandatory_sequence": [
+    "download_leg",
+    "validate_leg",
+    "promote_leg_to_canonical",
+    "patch_existing_historical_mother",
+    "verify_mother_receipt",
+    "only_then_return_or_run_downstream"
+  ],
+  "missing_leg_policy": "NULL_PENDING_NO_SYNTHESIS",
+  "second_mother_forbidden": true,
+  "user_repeat_required": false,
+  "formal_daily_close_ready": true,
+  "mother_sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
+  "canonical_margin_sha256": "51342c4f5cc05aa8c1b3d6da4bb3e384c17bc4226c000967eca83c3277b31676",
+  "canonical_institutional_sha256": "482ca9eff3bf805916607704499ed07d582107f3a0dcc08f76b6f8685dda9e6b",
+  "eod_leg_sha256": {
+    "price": "3b6ff161b39682b988454ec243f277562fed4738a365568651c2f29524946cb9",
+    "institutional": "f15c9c14ad9e57f573395b3576a1863f664e42a85ae735dedc29cc420b5b96f4",
+    "margin": "e2398e1afd55f9278897c8900d9b524ab6ae35d1f6c4fe87e730de1f182f7ab7"
+  },
+  "canonical_price_sha256": "d4abded760a685a7ebeb1d52bf9c68a62f0d46e4b65c0540e6b8625462cf076c"
+}

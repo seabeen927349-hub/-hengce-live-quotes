@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "status": "BLOCKED_DATA_READINESS",
+  "working_parent_head": "f2c1ade48a20d758e49c507b29269545b12be3d3",
+  "plan_commit": "1bcb6fe2e3946e0b774600dd91247e00784f4dac",
+  "observed_main_head": "bbc2e123fc7007adab576406373ce5a553aeaafe",
+  "frozen_config": "RESIDUAL_REVERSAL|NEG_RESID1|TO50000000|N1|H20|PRIOR_SOX5_LE_-0.03",
+  "blockers": [
+    {
+      "id": "CANONICAL_ACCUMULATED_MOTHER_REFERENCED_BUT_NOT_ACCESSIBLE",
+      "status": "PASS",
+      "evidence_file": "CANONICAL_MOTHER_RECONCILIATION.json",
+      "sha256": "1a54a3c241bb66e84ed71b8e1123c08a9614cfbf461f2678aa58e27e71fed896",
+      "scope": "Accessibility/authenticity of exact canonical artifact through 2026-10-21 only"
+    },
+    {
+      "id": "CANONICAL_20261022_PROMOTION_NOT_COMPLETE",
+      "status": "BLOCKED",
+      "evidence_file": "../CANONICAL_MOTHER_RECONCILIATION.json",
+      "sha256": "3b0fc0640fa3075a1225eb9ca26ff86f5d4e513faa9a6bd324696db17d83e372"
+    },
+    {
+      "id": "FULL_2026_PIT_AND_WARMUP_LINEAGE_NOT_RECONCILED",
+      "status": "BLOCKED",
+      "evidence_file": "../PIT_WARMUP_LINEAGE.json",
+      "sha256": "960e67ec8978b0a47c6fc450445467c171bc16432fdda85ec82bf463acd1ce1f"
+    },
+    {
+      "id": "FROZEN_MACRO_INPUT_NOT_CURRENT_FOR_REQUESTED_END_DATE",
+      "status": "BLOCKED",
+      "evidence_file": "../FROZEN_MACRO_RECONCILIATION.json",
+      "sha256": "ca560f580f47a3debdae5d3d6f898035576e1e37456c1be18845fc403dd50cdf"
+    },
+    {
+      "id": "V2_ENTITLEMENT_IDENTITY_EXECUTION_EVIDENCE_NOT_PROVEN_FOR_2026",
+      "status": "BLOCKED",
+      "evidence_file": "../V2_2026_APPLICABILITY.json",
+      "sha256": "19e3665f727a6cad3b82dd2d400645f17c3550f3b73205ae57835d369da26957"
+    }
+  ],
+  "prior_model_evaluations": 8529,
+  "new_model_evaluations": 0,
+  "total_model_evaluations": 8529,
+  "count_scope": "8529 is the task frozen RR baseline, not a recensus of unrelated later research. All pre-existing Git blobs will remain byte-identical.",
+  "stage_b_ran": false,
+  "authority": {
+    "research_only": true,
+    "signal_authority": false,
+    "ranking_authority": false,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "main_write_authorized": false,
+    "merge_authorized": false
+  },
+  "revision": "canonical_bridge_20261024",
+  "supersedes": "../READINESS_V3.json"
+}
