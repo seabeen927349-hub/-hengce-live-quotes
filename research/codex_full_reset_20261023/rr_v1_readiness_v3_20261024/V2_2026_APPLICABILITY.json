@@ -1,0 +1,22 @@
+{
+  "status": "BLOCKED",
+  "prior_v2_status": "BLOCKED_DATA_READINESS",
+  "prior_v2_block_reasons": [
+    "UNRETAINED_HISTORICAL_TRADE_WINDOWS",
+    "ENTITLEMENT_PAYMENT_DELIVERY_INCOMPLETE",
+    "LISTED_SECURITY_IDENTITIES_UNKNOWN",
+    "AUCTION_ORDER_ALLOCATION_UNKNOWN",
+    "FIRST_SEEN_REVISION_UNKNOWN"
+  ],
+  "admissible_adjusted_pnl_scope": [],
+  "2026_entitlement_identity_execution_proven": false,
+  "unknowns_preserved": true,
+  "evidence_files_are": "Explicit scope-gap records, not fabricated per-security events or complete coverage.",
+  "daily_volume_as_fill_proof": false,
+  "one_price_as_fill_or_no_fill_proof": false,
+  "same_ticker_as_same_instrument": false,
+  "unknown_receivable_reinvestment": false,
+  "undelivered_share_sales": false,
+  "new_official_requests": [],
+  "adverse_dates_removed": false
+}

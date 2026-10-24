@@ -1,0 +1,26 @@
+{
+  "status": "BLOCKED",
+  "path": "research/e2_profit_max/macro/sox_daily_202212_202610.csv",
+  "sha256": "dd1d86f7f0003dd6286596f454100cab91e7edd32db56f2e5a4e49dfa006db14",
+  "columns": [
+    "date",
+    "close",
+    "ret1",
+    "ret5"
+  ],
+  "rows": 972,
+  "first_date": "2022-12-01",
+  "last_date": "2026-10-16",
+  "requested_end_date": "2026-10-22",
+  "regime": "PRIOR_SOX5_LE_-0.03",
+  "threshold": -0.03,
+  "frozen_mapping_implementation": "def prior_macro(series: list[dict[str, Any]], signal_date: str) -> dict[str, Any] | None:\n    lo, hi = 0, len(series)\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if series[mid][\"date\"] < signal_date:\n            lo = mid + 1\n        else:\n            hi = mid\n    return series[lo - 1] if lo else None\n\n",
+  "date_mapping": "Latest macro row with date strictly earlier than Taiwan signal date. This is a date comparison, not independent proof of source publication time or US/Taiwan timezone/session causality.",
+  "causal_timezone_session_proven": false,
+  "new_values_collected": 0,
+  "forward_fill_applied": false,
+  "schema_splice_applied": false,
+  "definition_changed": false,
+  "missing_current_exact_schema": true,
+  "live_closes_note": "Prior lineage identifies separate closes-only SOX data; not substituted or recomputed."
+}

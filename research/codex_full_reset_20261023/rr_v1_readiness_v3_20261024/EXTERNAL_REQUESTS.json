@@ -1,0 +1,8 @@
+{
+  "official_data_requests": [],
+  "frozen_plan_commit": "1bcb6fe2e3946e0b774600dd91247e00784f4dac",
+  "new_collection": false,
+  "repository_reads": "Read-only GitHub connector requests for pinned trees, retained evidence/code and refs. Git clone failed to connect to environment proxy; no credentials altered.",
+  "library_access": "Mounted library-files and shared directories contain no dataset; no Library retrieval capability available.",
+  "large_file_behavior": "Contents API returned empty content for large CSVs; not interpreted as missing rows or as dataset bytes."
+}
