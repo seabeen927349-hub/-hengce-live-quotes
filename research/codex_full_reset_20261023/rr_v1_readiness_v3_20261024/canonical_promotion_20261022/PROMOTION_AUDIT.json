@@ -1,0 +1,235 @@
+{
+  "status": "PASS_AVAILABLE_LEGS_CANDIDATE_ONLY",
+  "working_parent_head": "39156457f3605861a2e090e3c41ae5aa10186ba0",
+  "observed_main_head": "bbc2e123fc7007adab576406373ce5a553aeaafe",
+  "canonical_inputs": {
+    "HENGCE_2026_HIST_MOTHER.csv": {
+      "sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
+      "bytes": 19909112,
+      "rows": 207218
+    },
+    "TWSE_2026_institutional.csv": {
+      "sha256": "482ca9eff3bf805916607704499ed07d582107f3a0dcc08f76b6f8685dda9e6b",
+      "bytes": 43874583,
+      "rows": 204963
+    },
+    "TWSE_2026_margin.csv": {
+      "sha256": "51342c4f5cc05aa8c1b3d6da4bb3e384c17bc4226c000967eca83c3277b31676",
+      "bytes": 37198236,
+      "rows": 201121
+    },
+    "TWSE_2026_price.csv": {
+      "sha256": "d4abded760a685a7ebeb1d52bf9c68a62f0d46e4b65c0540e6b8625462cf076c",
+      "bytes": 45875632,
+      "rows": 207218
+    }
+  },
+  "eod_sources": [
+    {
+      "path": "eod/20261022/price_1.csv",
+      "sha256": "7bc0a9e16b216d86f50b60b954483017de5c49ccf804b724a9a262e0091565ff",
+      "bytes": 34986
+    },
+    {
+      "path": "eod/20261022/price_2.csv",
+      "sha256": "7db4bfe4fb81e2b5fc125b6fc72dbc05117e02331ca03cf775c72c726f130f3a",
+      "bytes": 54744
+    },
+    {
+      "path": "eod/20261022/price_3.csv",
+      "sha256": "645d6d4a13cbc330840297b25f793b445fdb627647f34629e887728b322a77dd",
+      "bytes": 25568
+    },
+    {
+      "path": "eod/20261022/price_4.csv",
+      "sha256": "7fab80b8f853d015d478ed61efc66ccc47b47e7cac3314089f7f614e032c88f3",
+      "bytes": 14984
+    },
+    {
+      "path": "eod/20261022/price_5.csv",
+      "sha256": "e5218417b9b5fe14e96e876ecaf750c432d9ca12ddec9612bcaea2a1ddfb0be1",
+      "bytes": 7238
+    },
+    {
+      "path": "eod/20261022/price_6.csv",
+      "sha256": "c394acc7224bd9432843687f955d7aa209d9bd1d5262cedac5590d65cc492ac4",
+      "bytes": 33451
+    },
+    {
+      "path": "eod/20261022/price_7.csv",
+      "sha256": "03618919f740a191890e58905c5dbe6b86372fd3d5cb4056d46744706379f982",
+      "bytes": 5962
+    },
+    {
+      "path": "eod/20261022/price_8.csv",
+      "sha256": "f961b510f889178a26bd1468a1d997f3ab8911684a5bce4bd440f53d12e8a4d1",
+      "bytes": 10500
+    },
+    {
+      "path": "eod/20261022/price_9.csv",
+      "sha256": "3f84587fec4ee6c161895f600539c5ac69aca9744de3c5c55702afaf5c457d4d",
+      "bytes": 7520
+    },
+    {
+      "path": "eod/20261022/institutional_1.csv",
+      "sha256": "5814ae6cac2ac2667af7dadf494e0a4dd338a59c9fb17ec91eed69e751e5a836",
+      "bytes": 24740
+    },
+    {
+      "path": "eod/20261022/institutional_2.csv",
+      "sha256": "b19a867219bc1d147106d8c0f9f868000307be19612877487056c55ac058124d",
+      "bytes": 42314
+    },
+    {
+      "path": "eod/20261022/institutional_3.csv",
+      "sha256": "e477d7b38040a19bb422f738a396cbbc5ff96f1029eb8c857346a2bdacde1f7f",
+      "bytes": 19406
+    },
+    {
+      "path": "eod/20261022/institutional_4.csv",
+      "sha256": "68f76ef3b1fcac2d779ba352e9e6dbe06f9c9feef300d81b39633908e7bd41b3",
+      "bytes": 10754
+    },
+    {
+      "path": "eod/20261022/institutional_5.csv",
+      "sha256": "21b5e03a1e93912f43f27dd24fb1a7f3c5131747f6b798f38c5299eb0098fd8d",
+      "bytes": 5327
+    },
+    {
+      "path": "eod/20261022/institutional_6.csv",
+      "sha256": "b85d3f71f238c4e7ccf049e9bad5fc017b92607db40757c1e902ee0196ef5866",
+      "bytes": 24507
+    },
+    {
+      "path": "eod/20261022/institutional_7.csv",
+      "sha256": "02f4d4ab6d102c9279f98fad18021c8a1f871b0bb10a3ac0be6ac7d4a561ada2",
+      "bytes": 4402
+    },
+    {
+      "path": "eod/20261022/institutional_8.csv",
+      "sha256": "8fbcadc9b5d7746a30dbe5e4dfeb92e4c96f60cbf22cb16f11b9abfd4ec1c1c8",
+      "bytes": 7790
+    },
+    {
+      "path": "eod/20261022/institutional_9.csv",
+      "sha256": "3741fa8eb2efc67c6fcfe43e22e0d4eca65d3f5ce8d7c8096e8e6dff7a949e53",
+      "bytes": 5467
+    }
+  ],
+  "source_leg_receipts": {
+    "price": {
+      "rows": 1088,
+      "sha256": "9a25e7982f665eea6d6128c216ae21c673467ea86eb95d30676b36223ce78df2",
+      "files": [
+        "price_1.csv",
+        "price_2.csv",
+        "price_3.csv",
+        "price_4.csv",
+        "price_5.csv",
+        "price_6.csv",
+        "price_7.csv",
+        "price_8.csv",
+        "price_9.csv"
+      ]
+    },
+    "institutional": {
+      "rows": 1072,
+      "sha256": "5d25789eabf024faf5bf825d09891bf8e3d0529e1147d960fd4d24057113cb7e",
+      "files": [
+        "institutional_1.csv",
+        "institutional_2.csv",
+        "institutional_3.csv",
+        "institutional_4.csv",
+        "institutional_5.csv",
+        "institutional_6.csv",
+        "institutional_7.csv",
+        "institutional_8.csv",
+        "institutional_9.csv"
+      ]
+    }
+  },
+  "candidate_outputs": {
+    "TWSE_2026_price.csv": {
+      "sha256": "f1a95ce8d274e2022166ea091d88c089d871ea248f3652051254ed4f356e53e9",
+      "bytes": 46068192,
+      "rows": 208306,
+      "appended_rows": 1088
+    },
+    "TWSE_2026_institutional.csv": {
+      "sha256": "350d157809e371b6b9483601189d634466796b250dcc644085cae0587a7e36e9",
+      "bytes": 44015779,
+      "rows": 206035,
+      "appended_rows": 1072
+    },
+    "HENGCE_2026_HIST_MOTHER.csv": {
+      "sha256": "69c1b5caef9f8a14c1d660af81cd426c9c58779537d5ad00a65b494110d071cc",
+      "bytes": 20010370,
+      "rows": 208306,
+      "appended_rows": 1088
+    },
+    "TWSE_2026_margin.csv": {
+      "sha256": "51342c4f5cc05aa8c1b3d6da4bb3e384c17bc4226c000967eca83c3277b31676",
+      "bytes": 37198236,
+      "rows": 201121,
+      "appended_rows": 0
+    }
+  },
+  "historical_byte_prefix_preserved": {
+    "TWSE_2026_price.csv": true,
+    "TWSE_2026_institutional.csv": true,
+    "HENGCE_2026_HIST_MOTHER.csv": true,
+    "TWSE_2026_margin.csv": true
+  },
+  "all_historical_rows_and_schemas_exact": true,
+  "duplicate_keys": 0,
+  "serialization_1021_equivalence_checked_rows": 1088,
+  "serialization": "Existing bytes preserved verbatim, ticker-sorted target rows appended with LF; existing 10/21 mother numeric float spelling and literal OHLC spelling reproduced.",
+  "pinned_offline_vessel_validators_used": [
+    "_files",
+    "_digest",
+    "_read",
+    "_mother_receipt"
+  ],
+  "pinned_vessel_script_sha256": "a3e27eb343f5fe9c321f482163ce11c09b208fc81dcfebb031648ba0f7efd101",
+  "pinned_admission_accepts_candidate_receipt": true,
+  "negative_checks": [
+    "Wrong price-leg digest rejected",
+    "Wrong latest mother date rejected"
+  ],
+  "margin_unchanged": true,
+  "new_margin_null_rows": 1088,
+  "institutional_missing_tickers": [
+    "1213",
+    "1233",
+    "1341",
+    "1435",
+    "1441",
+    "1512",
+    "1538",
+    "1583",
+    "2321",
+    "4581",
+    "4943",
+    "5906",
+    "6921",
+    "6952",
+    "8101",
+    "9110"
+  ],
+  "institutional_extra_tickers_outside_price": [],
+  "official_external_requests": [],
+  "new_model_evaluations": 0,
+  "total_model_evaluations": 8529,
+  "stage_b_ran": false,
+  "RR_results_computed": false,
+  "candidate_only": true,
+  "applied_to_library": false,
+  "production_semantics_changed": false,
+  "main_write": false,
+  "merge": false,
+  "second_mother": false,
+  "parallel_eod_tree": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "production_promotion": false
+}
