@@ -7,6 +7,7 @@ on:
     paths:
       - 'research/codex_full_reset_20261023/ranking_v43_clean_prospective_observer.py'
       - 'research/codex_full_reset_20261023/V43_CLEAN_PROSPECTIVE_OBSERVER_PROTOCOL_20261024.md'
+      - 'research/codex_full_reset_20261023/results/V43_FROZEN_BASELINE_REFERENCE_20261024.tar.gz'
       - '.github/workflows/hengce-ranking-v43-clean-prospective-observer.yml'
   workflow_dispatch:
 
@@ -35,10 +36,16 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONPATH=. python research/codex_full_reset_20261023/ranking_v43_clean_prospective_observer.py \
-            --current-csv /tmp/hengce-v43-observer/twse_electronics_history_2026.csv
+            --current-csv /tmp/hengce-v43-observer/twse_electronics_history_2026.csv \
+            --archive research/codex_full_reset_20261023/results/V43_FROZEN_BASELINE_REFERENCE_20261024.tar.gz
       - name: Print observer result
-        run: cat research/codex_full_reset_20261023/results/V43_CLEAN_PROSPECTIVE_OBSERVER_RESULT.json
+        if: always()
+        run: |
+          if [ -f research/codex_full_reset_20261023/results/V43_CLEAN_PROSPECTIVE_OBSERVER_RESULT.json ]; then
+            cat research/codex_full_reset_20261023/results/V43_CLEAN_PROSPECTIVE_OBSERVER_RESULT.json
+          fi
       - name: Upload observer evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: hengce-ranking-v43-clean-prospective-observer
