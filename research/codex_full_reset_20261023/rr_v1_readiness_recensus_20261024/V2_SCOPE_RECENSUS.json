@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "scope": "RR_V1_2026_PROSPECTIVE_VALIDATION_ONLY",
+  "new_model_evaluations": 0,
+  "rr_v1_evaluation_8530": "UNSPENT",
+  "historical_8460_missing_trial_windows": {
+    "status_for_rr_v1": "NOT_PRIMARY_GATE",
+    "reason": "Those missing windows concern prior 8529 historical evaluations and should not by themselves block a new 2026 prospective validation."
+  },
+  "actual_v2_gates_for_rr_v1": {
+    "corporate_action_entitlement_delivery": {
+      "status": "BLOCKED",
+      "evidence": "V2 classified 1151 retained electronics corporate-action events, but all latest entitlement assertions remain PARTIAL; payment_dates_known=0 and delivery_dates_known=0. Official TWT49U detail responses prove some numeric terms but are explicitly RAW_ONLY_NOT_ENTITLEMENT_AUTHORITY and historical first-seen is unproven."
+    },
+    "listed_security_identity_continuity": {
+      "status": "BLOCKED",
+      "evidence": "listed_security_id_transitions_proven=0; same ticker/economic continuity is not accepted as proof of identical listed instrument."
+    },
+    "execution_fill_proof": {
+      "status": "BLOCKED",
+      "evidence": "1331 retained one-price/known-limit execution records all have fill_status UNKNOWN. Daily volume, one-price state, assumed next-open pricing, or paper execution ledgers cannot prove actual allocation/fill under the frozen fail-closed policy."
+    },
+    "first_seen_revision_lineage": {
+      "status": "BLOCKED",
+      "evidence": "original_first_seen_proven=0 and revision_lineage_proven=0; current retrospective source rows cannot be promoted to contemporaneous historical knowledge."
+    }
+  },
+  "preserved_evidence_examined": [
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/COLLECTION_MANIFEST.json",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/COVERAGE_V2.json",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/ENTITLEMENT_LEDGER.jsonl",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/EVENT_CLASSIFICATION.jsonl",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/EXECUTION_EVIDENCE.jsonl",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/HISTORICAL_IMPACT_MAP.jsonl",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/IDENTITY_TRANSITIONS.jsonl",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/REPORT.md",
+    "Library /HENGCE archived and research-memory artifacts including 2026-10 complete handoff execution/lifecycle state"
+  ],
+  "decision": {
+    "status": "BLOCKED_V2_2026_EVIDENCE",
+    "overall_rr_v1": "UNTESTABLE_UNDER_CURRENTLY_PRESERVED_EVIDENCE",
+    "spend_evaluation": false,
+    "next_legal_action": "Only accept a previously preserved artifact that directly closes one or more 2026 entitlement/delivery, listed-security identity, execution allocation/fill, or contemporaneous first-seen/revision fields. Contracts, current master data, daily OHLCV, paper ledgers, or reconstructed assumptions do not close the gate."
+  }
+}
