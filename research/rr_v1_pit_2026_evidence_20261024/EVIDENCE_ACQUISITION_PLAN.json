@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "task_id": "HENGCE-RR-V1-PIT-2026-EVIDENCE-20261024",
+  "issue": 34,
+  "stage": "EVIDENCE_ACQUISITION_ONLY",
+  "status": "AUTHORIZED_NOT_YET_COLLECTED",
+  "purpose": "Acquire official 2026 TWSE listed-electronics PIT daily membership needed to re-audit RR V1 readiness without any model evaluation.",
+  "authority": {
+    "research_only": true,
+    "new_model_evaluations": 0,
+    "stage_b_authorized": false,
+    "parameter_search": false,
+    "tuning": false,
+    "outcome_driven_filtering": false,
+    "main_write": false,
+    "production_change": false,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false
+  },
+  "source_contract": {
+    "provider": "TWSE",
+    "endpoint": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+    "response": "csv",
+    "type": "13",
+    "date_start": "2026-01-01",
+    "date_end": "2026-10-22",
+    "ticker_scope": "FOUR_ASCII_DIGITS",
+    "method_parent": "research/q017_sox_tw_electronics/acquire_official_pit.py",
+    "historical_membership_parent": "research/q017_sox_tw_electronics/archive/twse_electronics_membership_2024_2025.csv",
+    "no_full_market_fallback": true,
+    "no_current_constituent_backfill": true,
+    "no_second_mother": true,
+    "no_parallel_eod_tree": true
+  },
+  "required_evidence": [
+    "per-date request parameters",
+    "retrieval timestamp",
+    "HTTP status",
+    "raw response SHA256",
+    "parsed row count",
+    "unique four-digit ticker count",
+    "QA status PASS/NO_DATA/REVIEW/ERROR",
+    "parsed membership CSV",
+    "daily QA CSV",
+    "aggregate receipt with SHA256 hashes"
+  ],
+  "fail_closed_rules": [
+    "No silent date intersection or row dropping",
+    "No substitution from broad-market canonical mother",
+    "No inference from current electronics constituents",
+    "No model PnL, signal, rank, or candidate computation",
+    "Any ERROR or REVIEW remains explicit and blocks PIT readiness PASS"
+  ],
+  "rr_v1_evaluation_baseline": 8529,
+  "acceptance": "Evidence acquisition may only change readiness evidence. RR V1 Stage B remains prohibited until an independent recensus shows every hard blocker PASS."
+}
