@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import importlib.util
 import json
@@ -29,6 +30,17 @@ def sha256_path(path: Path) -> str:
         for chunk in iter(lambda: f.read(1024 * 1024), b''):
             h.update(chunk)
     return h.hexdigest()
+
+
+def load_names(path: Path) -> dict[str, str]:
+    names: dict[str, str] = {}
+    with path.open(encoding='utf-8-sig', newline='') as f:
+        for row in csv.DictReader(f):
+            t = str(row.get('ticker') or '').strip()
+            n = str(row.get('name') or '').strip()
+            if t and n:
+                names[t] = n
+    return names
 
 
 def load_core(path: Path):
@@ -77,13 +89,15 @@ def markdown(report: dict) -> str:
         '',
         '## 今日 Top 3',
         '',
-        '| 排名 | 股票 | V43 score | 組合權重 | 有效曝險權重 |',
-        '|---:|---:|---:|---:|---:|',
+        '| 排名 | 股票 | 名稱 | V43 score | 組合權重 | 有效曝險權重 |',
+        '|---:|---:|---|---:|---:|---:|',
     ]
     for i, p in enumerate(picks, 1):
-        lines.append(f"| {i} | **{p['ticker']}** | {p['score']} | {p['portfolio_weight']} | {p['effective_weight']} |")
+        lines.append(
+            f"| {i} | **{p['ticker']}** | {p.get('name','')} | {p['score']} | {p['portfolio_weight']} | {p['effective_weight']} |"
+        )
     if not picks:
-        lines.append('| - | - | - | - | - |')
+        lines.append('| - | - | - | - | - | - |')
     lines += [
         '',
         '## Frozen schedule / prospective validation',
@@ -108,6 +122,7 @@ def markdown(report: dict) -> str:
 
 def build_report(core, hist: Path, current: Path) -> dict:
     now = datetime.now(TAIPEI)
+    names = load_names(current)
     core_blob = git_blob_sha_bytes(Path(core.__file__))
     if core_blob != CANONICAL_CORE_BLOB:
         raise RuntimeError(f'CANONICAL_CORE_BLOB_MISMATCH:{core_blob}')
@@ -195,12 +210,13 @@ def build_report(core, hist: Path, current: Path) -> dict:
     risk_mult = (q75 / sigma) if fragile and tail else 1.0
     final_exposure = base_exposure * risk_mult
 
-    score_map = dict(ranked)
+    score_map = {t: score for score, t in ranked}
     top3 = []
     for t, pw in zip(picks, portfolio_weights):
         vals = F[t]
         top3.append({
             'ticker': t,
+            'name': names.get(t, ''),
             'score': q(score_map[t], 8),
             'portfolio_weight': q(pw, 8),
             'effective_weight': q(pw * final_exposure, 8),
@@ -251,8 +267,9 @@ def build_report(core, hist: Path, current: Path) -> dict:
             'max_date': max_date,
             'current_history_sha256': sha256_path(current),
             'historical_frozen_sha256': sha256_path(hist),
-            'current_history_role': 'READ_ONLY_EXISTING_ELECTRONICS_HISTORY_CACHE',
-            'daily_report_is_independent_of_q017_decision_authority': True,
+            'current_history_role': 'V43_OWN_PERSISTED_TWSE_TYPE13_HISTORY',
+            'runtime_source': 'TWSE_MI_INDEX_TYPE_13',
+            'q017_runtime_dependency': False,
         },
         'integrity': {
             'canonical_observer_commit': CANONICAL_OBSERVER_COMMIT,
@@ -307,7 +324,7 @@ def build_report(core, hist: Path, current: Path) -> dict:
         },
         'notes': [
             'V43 is an independent HENGCE screening engine, not a Q017 submodule.',
-            'The existing electronics history cache is read-only input data and creates no Q017 decision dependency or authority.',
+            'V43 runtime history is owned under hengce/v43_daily/data and updated from TWSE type=13.',
             'Daily reports are informational watchlists; frozen H20 schedule remains the only prospective basket clock.',
             'No parameter tuning, V45, broker order, or automatic production promotion is authorized.',
         ],
