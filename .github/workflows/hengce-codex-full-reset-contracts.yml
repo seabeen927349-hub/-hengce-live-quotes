@@ -49,4 +49,28 @@ jobs:
           if [ -f research/codex_full_reset_20261023/data_foundation_v2_20261023/results/READINESS_V2.json ]; then
             python -B research/codex_full_reset_20261023/data_foundation_v2_20261023/audit.py
           fi
-          python -B research/codex_full_reset_20261023/rr_v1_20261023/readiness.py --audit
+
+          # RR V1's scope audit is intentionally bound to its historical task
+          # and final readiness head. Running that old scope check at a later
+          # research head makes unrelated V2/V43/V44 files look out-of-scope.
+          # Keep the retained readiness evidence byte-frozen, then execute the
+          # original audit inside a detached worktree at the registered final
+          # RR head. This preserves fail-closed evidence checks without
+          # widening the old issue's allowlist.
+          RR_FINAL=9d140e209407035aa3c7b3df9ba8078d0d643458
+          RR_CORE=(
+            research/codex_full_reset_20261023/rr_v1_20261023/readiness.py
+            research/codex_full_reset_20261023/rr_v1_20261023/test_readiness.py
+            research/codex_full_reset_20261023/rr_v1_20261023/results
+          )
+          if ! git diff --quiet "$RR_FINAL" HEAD -- "${RR_CORE[@]}"; then
+            echo '::error::Retained RR V1 readiness evidence drifted after the frozen final head.'
+            git diff --name-status "$RR_FINAL" HEAD -- "${RR_CORE[@]}"
+            exit 1
+          fi
+          RR_TMP="$(mktemp -d)"
+          git worktree add --detach "$RR_TMP" "$RR_FINAL"
+          trap 'git worktree remove --force "$RR_TMP" >/dev/null 2>&1 || true' EXIT
+          python -B "$RR_TMP/research/codex_full_reset_20261023/rr_v1_20261023/readiness.py" --audit
+          git worktree remove --force "$RR_TMP"
+          trap - EXIT
