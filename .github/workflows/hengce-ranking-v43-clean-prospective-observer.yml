@@ -1,0 +1,47 @@
+name: HENGCE Ranking V43 Clean Prospective Observer
+
+on:
+  push:
+    branches:
+      - research/v43-clean-observer-20261024
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v43_clean_prospective_observer.py'
+      - 'research/codex_full_reset_20261023/V43_CLEAN_PROSPECTIVE_OBSERVER_PROTOCOL_20261024.md'
+      - '.github/workflows/hengce-ranking-v43-clean-prospective-observer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Read latest main Q017 history without writing main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin main
+          mkdir -p /tmp/hengce-v43-observer
+          git show origin/main:hengce/q017_radar/data/twse_electronics_history_2026.csv > /tmp/hengce-v43-observer/twse_electronics_history_2026.csv
+      - name: Run clean frozen V43 observer
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python research/codex_full_reset_20261023/ranking_v43_clean_prospective_observer.py \
+            --current-csv /tmp/hengce-v43-observer/twse_electronics_history_2026.csv
+      - name: Print observer result
+        run: cat research/codex_full_reset_20261023/results/V43_CLEAN_PROSPECTIVE_OBSERVER_RESULT.json
+      - name: Upload observer evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v43-clean-prospective-observer
+          path: |
+            research/codex_full_reset_20261023/results/V43_CLEAN_PROSPECTIVE_OBSERVER_RESULT.json
+            research/codex_full_reset_20261023/V43_CLEAN_PROSPECTIVE_OBSERVER_PROTOCOL_20261024.md
