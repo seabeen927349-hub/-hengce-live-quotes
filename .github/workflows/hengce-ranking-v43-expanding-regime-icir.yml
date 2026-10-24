@@ -1,0 +1,30 @@
+name: HENGCE Ranking V43 Expanding Regime ICIR
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v43_expanding_regime_icir.py'
+      - '.github/workflows/hengce-ranking-v43-expanding-regime-icir.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run V43 expanding regime ICIR
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/ranking_v43_expanding_regime_icir.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/ranking_v43_expanding_regime_icir_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v43-expanding-regime-icir
+          path: |
+            research/codex_full_reset_20261023/ranking_v43_expanding_regime_icir_result.json
+            research/codex_full_reset_20261023/ranking_v43_events.jsonl
