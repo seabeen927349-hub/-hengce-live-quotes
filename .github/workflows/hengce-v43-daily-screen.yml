@@ -31,7 +31,6 @@ env:
   V43_CANONICAL_COMMIT: 959f96831fdea65f32bed65ca11011d67328f695
   V43_CORE_BLOB: 584acac7a78d11440ba08a6c7fcf11cd3293d79a
   V43_HIST_BLOB: 9fde5eebeec06ef0782bd9150f1f3d1174aed1e3
-  V43_BOOTSTRAP_BLOB: b84c642f262fdcb7ba68018548f4d90b1ff41b9e
 
 jobs:
   screen:
@@ -61,23 +60,16 @@ jobs:
           test "$(git hash-object /tmp/hengce-v43/v43_core.py)" = "$V43_CORE_BLOB"
           test "$(git hash-object /tmp/hengce-v43/history_2023_2025.csv.gz)" = "$V43_HIST_BLOB"
 
-      - name: One-time independent V43 history bootstrap when absent
+      - name: Sync V43-owned TWSE type-13 history
         shell: bash
         run: |
           set -euo pipefail
-          BOOT=''
-          if [[ ! -f hengce/v43_daily/data/twse_electronics_history_2026.csv ]]; then
-            git fetch --no-tags origin main
-            git show origin/main:hengce/q017_radar/data/twse_electronics_history_2026.csv > /tmp/hengce-v43/bootstrap_2026.csv
-            test "$(git hash-object /tmp/hengce-v43/bootstrap_2026.csv)" = "$V43_BOOTSTRAP_BLOB"
-            BOOT='--bootstrap /tmp/hengce-v43/bootstrap_2026.csv'
-          fi
+          test -s hengce/v43_daily/data/twse_electronics_history_2026.csv
           THROUGH='${{ github.event.inputs.through_date }}'
           if [[ -z "$THROUGH" ]]; then THROUGH="$(TZ=Asia/Taipei date '+%Y-%m-%d')"; fi
           python scripts/hengce_v43_history_sync.py \
             --history hengce/v43_daily/data/twse_electronics_history_2026.csv \
-            --through-date "$THROUGH" \
-            $BOOT
+            --through-date "$THROUGH"
 
       - name: Generate independent daily V43 report
         shell: bash
@@ -106,6 +98,7 @@ jobs:
           assert x['authority']['q017_engine_integration'] is False
           assert x['authority']['q017_write'] is False
           assert x['data']['q017_runtime_dependency'] is False
+          assert x['data']['runtime_source']=='TWSE_MI_INDEX_TYPE_13'
           assert x['integrity']['historical_parity_verified'] is True
           assert x['integrity']['rebuilt_event_count']==30
           assert x['integrity']['rebuilt_events_sha256']=='ed5b0c4caff523525ecafb303e04dc82bc07d7d2fe706733edf4ce0180ecfd6e'
