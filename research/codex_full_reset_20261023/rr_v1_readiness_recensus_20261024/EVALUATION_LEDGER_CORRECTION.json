@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "status": "COUNTER_CORRECTION_LOCKED",
+  "stale_counter": {
+    "value": 8529,
+    "meaning": "pre-RR-V1 retained evaluation total only",
+    "must_not_be_used_as_current_global_total": true,
+    "reason": "The canonical-mother receipt was written later but carried the pre-existing 8529 research counter and did not reconcile subsequent RR/ranking artifacts."
+  },
+  "proven_post_8529_evaluations": [
+    {
+      "artifact": "Library: RR_V1_SIM_RESULT.json",
+      "increment": 1,
+      "field": "new_configurations_evaluated",
+      "config": "RESIDUAL_REVERSAL|NEG_RESID1|TO50000000|N1|H20|PRIOR_SOX5_LE_-0.03",
+      "period": ["2026-01-01", "2026-10-22"]
+    },
+    {
+      "artifact": "Library: ranking_v2_2026_result.json",
+      "increment": 1,
+      "field": "new_model_evaluations"
+    }
+  ],
+  "additional_research_known_to_exist": {
+    "version_history": "HENGCE_V1_V43_VERSION_HISTORY_20261024.md",
+    "v3_bounded_search_configurations": 432,
+    "historical_frontier_through": "V43",
+    "v44": "REJECTED",
+    "note": "Version labels are not assumed to equal one evaluation each. Some versions are diagnostics, some finite searches, and some single-evaluation challengers. Therefore no exact global total is asserted without artifact-by-artifact reconciliation."
+  },
+  "safe_statements": {
+    "rr_v1_8530_spent": true,
+    "current_global_total_equals_8529": false,
+    "current_global_total_exactly_reconciled": false,
+    "minimum_proven_total_after_rr_and_v2_only": 8531
+  },
+  "governance": {
+    "no_model_rerun_for_counting": true,
+    "no_parameter_search": true,
+    "no_production_change": true,
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_execution": false
+  },
+  "next_action": "If an exact cumulative evaluation count is needed, reconcile only immutable result artifacts / prereg budgets / workflow receipts already preserved. Never infer counts from version numbers and never rerun models to reconstruct the ledger."
+}
