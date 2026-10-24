@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "engine": "HENGCE_V43_DAILY",
+  "model": "V43_EXPANDING_REGIME_ICIR",
+  "lane": "INDEPENDENT_DAILY_SCREENING_ENGINE",
+  "status": "PASS",
+  "generated_at_taipei": "2026-10-24T12:50:52.379856+08:00",
+  "report_date_taipei": "2026-10-24",
+  "authority": {
+    "authority": "SCREENING_ONLY_NO_ORDER_AUTHORITY",
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "q017_engine_integration": false,
+    "q017_write": false,
+    "e2_write": false,
+    "m1_write": false,
+    "pr_30_merge": false
+  },
+  "data": {
+    "max_date": "2026-10-22",
+    "current_history_sha256": "e46c5788404dcf8ac780af75f84cbb3c39cb63f11d161113a8356d1a19f3d26a",
+    "historical_frozen_sha256": "e3012612fcf3c38c05f5c7defdf7160a0de481db21ca6381ab53178091ad3f6b",
+    "current_history_role": "V43_OWN_PERSISTED_TWSE_TYPE13_HISTORY",
+    "runtime_source": "TWSE_MI_INDEX_TYPE_13",
+    "q017_runtime_dependency": false
+  },
+  "integrity": {
+    "canonical_observer_commit": "959f96831fdea65f32bed65ca11011d67328f695",
+    "canonical_core_blob_expected": "584acac7a78d11440ba08a6c7fcf11cd3293d79a",
+    "canonical_core_blob_actual": "584acac7a78d11440ba08a6c7fcf11cd3293d79a",
+    "frozen_v43_source_blob": "60c3ce478c5f88bfce9263739a310ea5f5cf05a6",
+    "historical_parity_verified": true,
+    "rebuilt_event_count": 30,
+    "rebuilt_events_sha256": "ed5b0c4caff523525ecafb303e04dc82bc07d7d2fe706733edf4ce0180ecfd6e",
+    "expected_events_sha256": "ed5b0c4caff523525ecafb303e04dc82bc07d7d2fe706733edf4ce0180ecfd6e",
+    "last_frozen_exit": "2026-09-23",
+    "dynamic_frozen_subset_sha256": "ed5b0c4caff523525ecafb303e04dc82bc07d7d2fe706733edf4ce0180ecfd6e",
+    "new_model_evaluations": 0,
+    "parameters_searched": 0,
+    "historical_challenger_selection_rerun": false
+  },
+  "screen": {
+    "signal_date": "2026-10-22",
+    "report_kind": "DAILY_WATCHLIST_NOT_A_NEW_H20_BASKET",
+    "research_entry_semantics": "NEXT_SESSION_OPEN_IF_AND_ONLY_IF_FROZEN_SCHEDULE_SELECTS_SIGNAL;NO_ORDER_AUTHORITY",
+    "regime": "WEAK",
+    "breadth20": 0.41772152,
+    "factor_weights": {
+      "resid_rev": 0.20119168,
+      "mom20": 0.25243478,
+      "skip5_60": 0.27,
+      "liquidity": 0.08587384,
+      "lowvol": 0.1904997
+    },
+    "factor_icir": {
+      "resid_rev": {
+        "n": 13,
+        "mean_ic": 0.026177021615495732,
+        "sd_ic": 0.09978848120842507,
+        "icir_stat": 0.17475991080429865
+      },
+      "mom20": {
+        "n": 13,
+        "mean_ic": 0.0308287692810329,
+        "sd_ic": 0.08626311430417506,
+        "icir_stat": 0.22624442013129825
+      },
+      "skip5_60": {
+        "n": 13,
+        "mean_ic": -0.02113979090762902,
+        "sd_ic": 0.12392947235933938,
+        "icir_stat": 0.0
+      },
+      "liquidity": {
+        "n": 13,
+        "mean_ic": 0.06665409597530235,
+        "sd_ic": 0.14774477888374885,
+        "icir_stat": 0.3370713318023293
+      },
+      "lowvol": {
+        "n": 13,
+        "mean_ic": 0.018067241889779463,
+        "sd_ic": 0.1586597914043862,
+        "icir_stat": 0.08658707922680149
+      }
+    },
+    "prior_same_regime_realized_anchors": 13,
+    "fallback_used": false,
+    "base_exposure": 0.62136642,
+    "vol_ratio": 0.96561381,
+    "predicted_daily_sigma": 0.01784037,
+    "prior_sigma_q75": 0.02921961,
+    "fragile_strong": false,
+    "tail_vol": false,
+    "risk_multiplier": 1.0,
+    "final_exposure": 0.62136642,
+    "top3": [
+      {
+        "ticker": "3044",
+        "name": "健鼎",
+        "score": 0.77742947,
+        "portfolio_weight": 0.42649421,
+        "effective_weight": 0.26500918,
+        "factor_percentiles": {
+          "resid_rev": 0.77777778,
+          "mom20": 0.76507937,
+          "skip5_60": 0.91111111,
+          "liquidity": 0.76507937,
+          "lowvol": 0.60952381
+        }
+      },
+      {
+        "ticker": "2355",
+        "name": "敬鵬",
+        "score": 0.76878371,
+        "portfolio_weight": 0.27228671,
+        "effective_weight": 0.16918982,
+        "factor_percentiles": {
+          "resid_rev": 0.8031746,
+          "mom20": 0.94920635,
+          "skip5_60": 0.82857143,
+          "liquidity": 0.55555556,
+          "lowvol": 0.5047619
+        }
+      },
+      {
+        "ticker": "6438",
+        "name": "迅得",
+        "score": 0.76043905,
+        "portfolio_weight": 0.30121907,
+        "effective_weight": 0.18716742,
+        "factor_percentiles": {
+          "resid_rev": 0.94285714,
+          "mom20": 0.82857143,
+          "skip5_60": 0.77460317,
+          "liquidity": 0.47936508,
+          "lowvol": 0.58412698
+        }
+      }
+    ],
+    "sample_covariance": [
+      [
+        0.0006378499549856083,
+        8.479012987796039e-05,
+        0.00023037027918002402
+      ],
+      [
+        8.479012987796039e-05,
+        0.0008554422145522575,
+        0.00044666553747491457
+      ],
+      [
+        0.00023037027918002402,
+        0.00044666553747491457,
+        0.0006916645326125997
+      ]
+    ],
+    "shrunk_covariance": [
+      [
+        0.0006378499549856083,
+        4.2395064938980195e-05,
+        0.00011518513959001201
+      ],
+      [
+        4.2395064938980195e-05,
+        0.0008554422145522575,
+        0.00022333276873745729
+      ],
+      [
+        0.00011518513959001201,
+        0.00022333276873745729,
+        0.0006916645326125997
+      ]
+    ]
+  },
+  "schedule": {
+    "state": "FROZEN_BASKET_ACTIVE_OR_AWAITING_COMPLETION",
+    "pending_candidate": {
+      "signal_date": "2026-09-24",
+      "reason": "INSUFFICIENT_FUTURE_SESSIONS",
+      "sessions_available_after_signal": 17,
+      "sessions_required_after_signal": 21
+    },
+    "today_is_frozen_schedule_signal": false,
+    "daily_watchlist_does_not_increment_validation_baskets": true
+  },
+  "validation": {
+    "lock_date": "2026-10-24",
+    "status": "WAITING_FOR_POST_LOCK_DATA",
+    "postlock_complete_baskets": 0,
+    "postlock_signal_dates": [],
+    "first_6_role": "INTERIM_NON_DECISIONAL",
+    "first_12_role": "PRIMARY_REGISTERED_READ"
+  },
+  "notes": [
+    "V43 is an independent HENGCE screening engine, not a Q017 submodule.",
+    "V43 runtime history is owned under hengce/v43_daily/data and updated from TWSE type=13.",
+    "Daily reports are informational watchlists; frozen H20 schedule remains the only prospective basket clock.",
+    "No parameter tuning, V45, broker order, or automatic production promotion is authorized."
+  ]
+}
