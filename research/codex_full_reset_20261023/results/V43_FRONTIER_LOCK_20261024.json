@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "as_of_date": "2026-10-24",
+  "system": "HENGCE",
+  "branch": "research/codex-full-reset-run-20261023",
+  "status": "HISTORICAL_RESEARCH_FRONTIER_LOCKED",
+  "scope": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "decision": {
+    "primary_frontier": {
+      "model": "V43_EXPANDING_REGIME_ICIR",
+      "workflow_run_id": 40051125835,
+      "cost_1p2": {
+        "compounded_return": 3.4264542481969347,
+        "max_drawdown": -0.1766638170167315,
+        "remove_best_basket_return": 1.9312210257960025,
+        "win_rate": 0.6666666666666666
+      },
+      "cost_1p6": {
+        "compounded_return": 3.0649,
+        "remove_best_basket_return": 1.6986
+      },
+      "year_2024_2025_2026_positive_at_1p2": true,
+      "year_2024_2025_2026_remove_best_positive_at_1p2": true,
+      "historical_research_only": true,
+      "prospectively_validated": false
+    },
+    "secondary_pareto": {
+      "model": "V42_V41_EQUITY_BUDGET",
+      "workflow_run_id": 40000148934,
+      "reason": "lower drawdown tradeoff retained as conservative Pareto point",
+      "cost_1p2": {
+        "compounded_return": 2.7751303217562437,
+        "max_drawdown": -0.1624723468868463,
+        "remove_best_basket_return": 1.4999109340753796,
+        "win_rate": 0.6333333333333333
+      }
+    },
+    "latest_rejected": {
+      "model": "V44_LEADERSHIP_PERSISTENCE",
+      "workflow_run_id": 40054258291,
+      "source_commit": "50b1afc54029f09850b6a628d8d85ecb0c7fddd0",
+      "artifact_id": 12544602809,
+      "artifact_sha256": "4d01ff35390244b9e16235ca3b57997814f58f33c370ed00f6f1790c3b57b9f1",
+      "status": "V44_DOES_NOT_IMPROVE_FRONTIER",
+      "cost_1p2": {
+        "compounded_return": 0.49503,
+        "max_drawdown": -0.52642,
+        "remove_best_basket_return": 0.07928,
+        "win_rate": 0.46667
+      },
+      "cost_1p6_remove_best_basket_return": -0.013,
+      "retune_nearby": false
+    }
+  },
+  "v45_gate": {
+    "authorized_now": false,
+    "reason": "No separately registered executable orthogonal survivor is present in the frozen branch after V44; do not invent or locally retune a V45.",
+    "requirements_before_any_new_model_evaluation": [
+      "separately preregister a genuinely orthogonal alpha or data family",
+      "prove causal PIT/no-lookahead availability at signal time",
+      "do not reuse killed residual-reversal, simple lead-lag, institutional-propagation, or rejected V44 local variants under a new name",
+      "if new price/fundamental lineage is introduced, verify security-master, corporate-action, publication/revision and PIT adjustment lineage first",
+      "declare the finite evaluation count and fixed hypothesis before execution",
+      "evaluate with the same 0.8/1.2/1.6 cost, drawdown, remove-best, yearly stability, concentration and authority checks"
+    ]
+  },
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false,
+    "main_write": false,
+    "q017_production_change": false,
+    "e2_production_change": false,
+    "m1_production_change": false,
+    "pr_30_merge": false
+  },
+  "interpretation": "V43 is the current historical research frontier, V42 remains a lower-drawdown Pareto alternative, and V44 is rejected. Model expansion stops here until a new preregistered orthogonal information family passes the V45 gate."
+}
