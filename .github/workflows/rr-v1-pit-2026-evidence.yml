@@ -1,0 +1,46 @@
+name: RR V1 2026 PIT Evidence
+
+on:
+  push:
+    branches:
+      - research/rr-v1-pit-2026-evidence-20261024
+    paths:
+      - 'research/rr_v1_pit_2026_evidence_20261024/**'
+      - '.github/workflows/rr-v1-pit-2026-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install requests
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Run evidence-only collector
+        run: python research/rr_v1_pit_2026_evidence_20261024/collect_twse_electronics_pit_2026.py
+      - name: Assert no model evaluation state
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/rr_v1_pit_2026_evidence_20261024/output/PIT_2026_EVIDENCE_RECEIPT.json')
+          x=json.loads(p.read_text(encoding='utf-8'))
+          assert x['new_model_evaluations'] == 0
+          assert x['rr_v1_total_model_evaluations'] == 8529
+          assert x['stage_b_ran'] is False
+          print(json.dumps(x, ensure_ascii=False, indent=2))
+          PY
+      - name: Upload evidence bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: rr-v1-pit-2026-evidence
+          path: research/rr_v1_pit_2026_evidence_20261024/output/
+          if-no-files-found: error
+          retention-days: 30
