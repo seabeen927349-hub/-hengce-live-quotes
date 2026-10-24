@@ -1,0 +1,32 @@
+name: Bundle 20261022 Old Vessel EOD
+
+on:
+  push:
+    branches:
+      - research/rr-v1-pit-2026-evidence-20261024
+    paths:
+      - '.github/workflows/bundle-eod-20261022.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify existing old-vessel inputs only
+        run: |
+          test -d eod/20261022
+          test -f eod/20261022/status.json
+          ls eod/20261022/price_*.csv >/dev/null
+          ls eod/20261022/institutional_*.csv >/dev/null
+          sha256sum eod/20261022/price_*.csv eod/20261022/institutional_*.csv > eod/20261022/OLD_VESSEL_FILE_SHA256.txt
+      - name: Upload existing EOD bytes
+        uses: actions/upload-artifact@v4
+        with:
+          name: eod-20261022-old-vessel
+          path: eod/20261022/
+          if-no-files-found: error
+          retention-days: 7
