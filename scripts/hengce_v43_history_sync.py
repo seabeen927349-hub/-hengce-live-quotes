@@ -73,8 +73,11 @@ def fetch_type13(target: date) -> tuple[str, list[dict]]:
         if '證券代號' in fs and '收盤價' in fs:
             table = t
             break
+    # A requested calendar date can legitimately have no completed trading
+    # session. Zero rows / no securities table are unavailable-session states,
+    # not permission to fabricate or partially ingest a day.
     if table is None:
-        raise RuntimeError(f'V43_TYPE13_TABLE_NOT_FOUND:{target.isoformat()}')
+        return 'TWSE_TYPE13_SESSION_UNAVAILABLE:NO_SECURITY_TABLE', []
     fs = table.get('fields') or []
     idx = {x: i for i, x in enumerate(fs)}
     data = table.get('data') or table.get('records') or []
@@ -102,8 +105,12 @@ def fetch_type13(target: date) -> tuple[str, list[dict]]:
             'volume_shares': v(row, '成交股數', '成交量'),
             'turnover_ntd': v(row, '成交金額'),
         })
+    if len(rows) == 0:
+        return 'TWSE_TYPE13_SESSION_UNAVAILABLE:ZERO_SECURITY_ROWS', []
+    # A nonzero but undersized universe is materially different from an absent
+    # session: treat it as suspected partial/malformed market data and fail closed.
     if len(rows) < MIN_MEMBERS:
-        raise RuntimeError(f'V43_TYPE13_ROWS_TOO_FEW:{target.isoformat()}:{len(rows)}')
+        raise RuntimeError(f'V43_TYPE13_PARTIAL_ROWS_FAIL_CLOSED:{target.isoformat()}:{len(rows)}')
     rows.sort(key=lambda x: x['ticker'])
     if len({x['ticker'] for x in rows}) != len(rows):
         raise RuntimeError(f'V43_TYPE13_DUPLICATE_TICKER:{target.isoformat()}')
