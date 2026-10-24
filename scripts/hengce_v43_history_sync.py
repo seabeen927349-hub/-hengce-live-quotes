@@ -3,10 +3,8 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import json
 import re
-import shutil
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -18,12 +16,6 @@ TWSE = 'https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX'
 UA = {'User-Agent': 'Mozilla/5.0 HENGCE-V43-DAILY/1.0', 'Accept': 'application/json', 'Referer': 'https://www.twse.com.tw/'}
 FIELDS = ['date','ticker','name','open','high','low','close','volume_shares','turnover_ntd']
 MIN_MEMBERS = 150
-BOOTSTRAP_GIT_BLOB = 'b84c642f262fdcb7ba68018548f4d90b1ff41b9e'
-
-
-def git_blob_sha(path: Path) -> str:
-    raw = path.read_bytes()
-    return hashlib.sha1(f'blob {len(raw)}\0'.encode() + raw).hexdigest()
 
 
 def clean(x) -> str:
@@ -73,9 +65,6 @@ def fetch_type13(target: date) -> tuple[str, list[dict]]:
         if '證券代號' in fs and '收盤價' in fs:
             table = t
             break
-    # A requested calendar date can legitimately have no completed trading
-    # session. Zero rows / no securities table are unavailable-session states,
-    # not permission to fabricate or partially ingest a day.
     if table is None:
         return 'TWSE_TYPE13_SESSION_UNAVAILABLE:NO_SECURITY_TABLE', []
     fs = table.get('fields') or []
@@ -107,8 +96,6 @@ def fetch_type13(target: date) -> tuple[str, list[dict]]:
         })
     if len(rows) == 0:
         return 'TWSE_TYPE13_SESSION_UNAVAILABLE:ZERO_SECURITY_ROWS', []
-    # A nonzero but undersized universe is materially different from an absent
-    # session: treat it as suspected partial/malformed market data and fail closed.
     if len(rows) < MIN_MEMBERS:
         raise RuntimeError(f'V43_TYPE13_PARTIAL_ROWS_FAIL_CLOSED:{target.isoformat()}:{len(rows)}')
     rows.sort(key=lambda x: x['ticker'])
@@ -120,25 +107,14 @@ def fetch_type13(target: date) -> tuple[str, list[dict]]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('--history', type=Path, default=Path('hengce/v43_daily/data/twse_electronics_history_2026.csv'))
-    ap.add_argument('--bootstrap', type=Path)
     ap.add_argument('--through-date')
     ap.add_argument('--status', type=Path, default=Path('hengce/v43_daily/data_sync_latest.json'))
     a = ap.parse_args()
 
     now = datetime.now(TZ)
     through = date.fromisoformat(a.through_date) if a.through_date else now.date()
-    a.history.parent.mkdir(parents=True, exist_ok=True)
-    bootstrap_used = False
-    bootstrap_blob = None
-
-    if not a.history.exists():
-        if a.bootstrap is None or not a.bootstrap.exists():
-            raise RuntimeError('V43_HISTORY_MISSING_AND_NO_BOOTSTRAP')
-        bootstrap_blob = git_blob_sha(a.bootstrap)
-        if bootstrap_blob != BOOTSTRAP_GIT_BLOB:
-            raise RuntimeError(f'V43_BOOTSTRAP_BLOB_MISMATCH:{bootstrap_blob}')
-        shutil.copyfile(a.bootstrap, a.history)
-        bootstrap_used = True
+    if not a.history.exists() or a.history.stat().st_size < 100000:
+        raise RuntimeError('V43_OWNED_HISTORY_MISSING_OR_TOO_SMALL')
 
     before = latest_date(a.history)
     if through < before:
@@ -177,12 +153,10 @@ def main() -> int:
         'through_date': through.isoformat(),
         'added_sessions': added,
         'skipped_dates': skipped,
-        'bootstrap_used_this_run': bootstrap_used,
-        'bootstrap_git_blob': bootstrap_blob,
-        'bootstrap_expected_git_blob': BOOTSTRAP_GIT_BLOB,
-        'bootstrap_semantics': 'ONE_TIME_DATA_MIGRATION_ONLY_NOT_Q017_RUNTIME_DEPENDENCY',
+        'history_ownership': 'HENGCE_V43_DAILY_OWNED',
         'runtime_source': 'TWSE_MI_INDEX_TYPE_13',
         'q017_runtime_read': False,
+        'q017_runtime_dependency': False,
         'q017_write': False,
         'capital_authority_twd': 0,
         'broker_order_execution': False,
