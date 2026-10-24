@@ -1,0 +1,43 @@
+name: HENGCE Ranking V16 Vol Target
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v16_vol_target_exposure.py'
+      - '.github/workflows/hengce-ranking-v16-vol-target.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: hengce-ranking-v16-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run V16 volatility-targeted exposure
+        run: PYTHONPATH=. python -u research/codex_full_reset_20261023/ranking_v16_vol_target_exposure.py
+      - name: Print result
+        if: always()
+        run: cat research/codex_full_reset_20261023/ranking_v16_vol_target_exposure_result.json 2>/dev/null || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v16-vol-target
+          path: |
+            research/codex_full_reset_20261023/ranking_v16_vol_target_exposure_result.json
+            research/codex_full_reset_20261023/ranking_v16_champion_events.jsonl
+          if-no-files-found: warn
+          retention-days: 30

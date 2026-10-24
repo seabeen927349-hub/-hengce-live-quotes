@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "task_id": "HENGCE-CODEX-RR-V1-READINESS-V3-20261024",
+  "stage": "A",
+  "status": "FROZEN_BEFORE_NEW_COLLECTION",
+  "base_head": "d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8",
+  "observed_main_head": "bbc2e123fc7007adab576406373ce5a553aeaafe",
+  "frozen_config": "RESIDUAL_REVERSAL|NEG_RESID1|TO50000000|N1|H20|PRIOR_SOX5_LE_-0.03",
+  "new_model_evaluation_budget": 0,
+  "stage_b_max": 1,
+  "admission": "All five blockers PASS with evidence hashes and audit PASS; otherwise STOP BLOCKED_DATA_READINESS",
+  "sources": "Retained immutable Git objects and mounted authorized files only",
+  "official_external_requests": [],
+  "new_external_collection_authorized_by_this_plan": false,
+  "workstreams": {
+    "A": "Inspect accessible canonical bytes and promotion receipts; pointer is not data",
+    "B": "Reconcile source identities and compatible exact keys; no intersection/drop/substitute",
+    "C": "Inspect frozen definition, timestamps and current same-schema data; no fill/splice",
+    "D": "Inspect retained 2026 V2 applicability; unknown stays null",
+    "E": "Hash inputs and outputs; compare full Git trees for unchanged parents/production"
+  },
+  "stop_rule": "Missing canonical bytes blocks Stage B; no replacement mother or collection to evade gate",
+  "prohibited": [
+    "model evaluation in Stage A",
+    "search",
+    "tuning",
+    "outcome driven filtering",
+    "second mother",
+    "parallel EOD",
+    "production change",
+    "main write",
+    "merge"
+  ]
+}

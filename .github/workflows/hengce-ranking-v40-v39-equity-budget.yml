@@ -1,0 +1,31 @@
+name: HENGCE Ranking V40 V39 Equity Budget
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v40_v39_equity_budget.py'
+      - '.github/workflows/hengce-ranking-v40-v39-equity-budget.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run V40 V39 equity budget
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/ranking_v40_v39_equity_budget.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/ranking_v40_v39_equity_budget_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v40-v39-equity-budget
+          path: |
+            research/codex_full_reset_20261023/ranking_v40_v39_equity_budget_result.json
+            research/codex_full_reset_20261023/ranking_v40_events.jsonl
+# trigger-only update; model rules unchanged

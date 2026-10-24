@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "created_date": "2026-10-23",
+  "name": "HENGCE_RR_V1_FROZEN_PROSPECTIVE_VALIDATION",
+  "purpose": "One-config research-only validation using the existing HENGCE data path. This is not a new model search and cannot create production authority.",
+  "parent_evidence": {
+    "winner_file": "research/codex_full_reset_20261023/results/WINNER_OR_NO_WINNER.json",
+    "pareto_file": "research/codex_full_reset_20261023/results/stage_c/runs/39937394677-1/PARETO_FRONTIER.json",
+    "implementation": "research/codex_full_reset_20261023/stage_c_rule_search.py",
+    "prior_total_model_evaluations_before_continuation": 8529,
+    "prior_status": "NO_ROBUST_WINNER"
+  },
+  "human_review": {
+    "continuation_authorized": true,
+    "scope": "research-only one frozen configuration",
+    "does_not_authorize_production": true,
+    "does_not_authorize_parameter_search": true,
+    "does_not_authorize_model_family_search": true
+  },
+  "authority": {
+    "research_only": true,
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "signal_authority": false,
+    "ranking_authority": false,
+    "production_promotion": false,
+    "merge_authorized": false,
+    "main_write_authorized": false
+  },
+  "frozen_config": {
+    "family": "RESIDUAL_REVERSAL",
+    "score": "NEG_RESID1",
+    "turnover_min": 50000000.0,
+    "top_n": 1,
+    "horizon": 20,
+    "regime": "PRIOR_SOX5_LE_-0.03"
+  },
+  "frozen_method": {
+    "market_return_aggregation": "cross-sectional median",
+    "beta_lookback_sessions_max": 60,
+    "beta_min_history_pairs": 30,
+    "residual_1d": "ticker_r1 - beta60 * market_median_r1",
+    "score": "-residual_1d",
+    "entry": "next eligible session open, identical to frozen Stage C semantics",
+    "exit": "frozen Stage C horizon-20 semantics",
+    "discontinuity_threshold": 0.15,
+    "round_trip_costs": [0.008, 0.012, 0.016],
+    "selection_cost": 0.012
+  },
+  "data_contract": {
+    "use_existing_hengce_data_path_only": true,
+    "repo_eod_latest_confirmed": "2026-10-22",
+    "no_parallel_eod_tree": true,
+    "no_second_mother": true,
+    "no_new_full_market_redownload": true,
+    "validation_period_requested": ["2026-01-01", "2026-10-22"],
+    "required_warmup": "enough pre-2026 history to reproduce frozen beta/return/liquidity features",
+    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY"
+  },
+  "execution_and_corporate_action_policy": {
+    "fail_closed": true,
+    "do_not_impute_unknown_fill": true,
+    "do_not_infer_entitlement_terms": true,
+    "preserve_v2_unknowns": true,
+    "report_complete_case_only_as_diagnostic": true,
+    "complete_case_is_not_executable_strategy": true
+  },
+  "evaluation_budget": {
+    "configurations": 1,
+    "parameter_tuning": 0,
+    "family_search": 0,
+    "allowed_new_model_evaluations": 1,
+    "all_additional_diagnostics_must_not_select_or_tune_parameters": true
+  },
+  "required_outputs": [
+    "RR_V1_READINESS.json",
+    "RR_V1_DATA_LINEAGE.json",
+    "RR_V1_EVENTS.jsonl",
+    "RR_V1_RESULT.json",
+    "RR_V1_REPORT.md",
+    "RR_V1_AUDIT.json"
+  ],
+  "result_states": [
+    "BLOCKED_DATA_READINESS",
+    "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+    "FAILED_FROZEN_VALIDATION",
+    "PASSED_RESEARCH_VALIDATION_ONLY"
+  ],
+  "promotion_rule": "No result state authorizes production, signals, capital, ranking, merge, or main writes. Any production discussion requires a separate explicit human authorization and independent prospective evidence review."
+}

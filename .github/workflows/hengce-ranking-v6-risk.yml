@@ -1,0 +1,37 @@
+name: HENGCE Ranking V6 Risk Refinement
+
+on:
+  push:
+    branches: [research/codex-full-reset-run-20261023]
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v6_risk_refine.py'
+      - '.github/workflows/hengce-ranking-v6-risk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run V6 cross-year risk refinement
+        run: python -u research/codex_full_reset_20261023/ranking_v6_risk_refine.py
+      - name: Print result
+        if: always()
+        run: cat research/codex_full_reset_20261023/ranking_v6_risk_refine_result.json 2>/dev/null || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v6-risk
+          path: |
+            research/codex_full_reset_20261023/ranking_v6_risk_refine_result.json
+            research/codex_full_reset_20261023/ranking_v6_champion_events.jsonl
+          if-no-files-found: warn
+          retention-days: 30

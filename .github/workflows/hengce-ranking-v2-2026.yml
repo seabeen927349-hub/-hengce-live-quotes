@@ -1,0 +1,38 @@
+name: HENGCE Electronics Ranking V2 2026
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v2_2026.py'
+      - '.github/workflows/hengce-ranking-v2-2026.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run fixed ranking V2
+        run: python -u research/codex_full_reset_20261023/ranking_v2_2026.py
+      - name: Print result
+        if: always()
+        run: cat research/codex_full_reset_20261023/ranking_v2_2026_result.json 2>/dev/null || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v2-2026
+          path: |
+            research/codex_full_reset_20261023/ranking_v2_2026_result.json
+            research/codex_full_reset_20261023/ranking_v2_2026_events.jsonl
+          if-no-files-found: error
+          retention-days: 30

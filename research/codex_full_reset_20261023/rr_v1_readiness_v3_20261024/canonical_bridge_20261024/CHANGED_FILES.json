@@ -1,0 +1,18 @@
+{
+  "scope": "research/codex_full_reset_20261023/rr_v1_readiness_v3_20261024/canonical_bridge_20261024/",
+  "added_files": [
+    "BRIDGE_AUDIT.json",
+    "CANONICAL_MOTHER_RECONCILIATION.json",
+    "CHANGED_FILES.json",
+    "CODEX_BRIDGE_INSTRUCTIONS.md",
+    "EOD_20261022_STATUS_SNAPSHOT.json",
+    "HENGCE_CANONICAL_STATE.json",
+    "HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261021.json",
+    "MANIFEST.sha256",
+    "MOTHER_VERIFICATION.json",
+    "READINESS_V3.json",
+    "REPORT.md",
+    "verify_bridge.py"
+  ],
+  "modified_existing_files": []
+}

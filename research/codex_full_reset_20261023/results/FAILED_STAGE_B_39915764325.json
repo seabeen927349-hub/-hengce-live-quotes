@@ -1,0 +1,1231 @@
+{
+  "source": "EXTRACTED_FROM_GITHUB_JOB_LOGS_NOT_ORIGINAL_ARTIFACT_BYTES",
+  "run_id": 39915764325,
+  "receipts": [
+    {
+      "authority": {
+        "broker_order_execution": false,
+        "capital_authority_twd": 0,
+        "production_promotion": false,
+        "ranking_authority": false,
+        "research_only": true,
+        "signal_authority": false
+      },
+      "expected_trading_dates": 239,
+      "failed_dates": 239,
+      "first_failures": [
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-03",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52035,
+          "response_sha256": "332ce11da51b69d961a260cb20c222dca8b69db8d1c0fb8f1a4a7c138769b290",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-04",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52111,
+          "response_sha256": "a64eb571ce53fbaff1d547d17ce8cfdcfe61a82bf85d2988ffdf498e29cc35e3",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-05",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52272,
+          "response_sha256": "3f4407a6c911f1acfe3ed5c8ff7f0eaecdaa59e2bc95599d69025cc5d3b131c3",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-06",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52231,
+          "response_sha256": "d2afa6afa5f22e92e228234f3f7aa7bb02570345aa939a4c1e5af85ce6d3cf76",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-09",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52618,
+          "response_sha256": "40ae42e5501588e89ff3d34834f48da2edc5ede05295fae83cd81b8afa4fd1c7",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-10",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52451,
+          "response_sha256": "d8fc10014238e120d3e174f1961946511a7ad5dbf279ee5b8562132964871aa8",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-11",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52406,
+          "response_sha256": "5252cf6a1c8ec1175e6a3f4c2acee6ccddf63002e400e9565e684d508c8ffa62",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-12",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52278,
+          "response_sha256": "33eea85c76352fa9cb515524d9952ccb1e48c089ccde8ed125ff80abd98991ac",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-13",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52329,
+          "response_sha256": "448f5f64ad81d5b6ef329c65ffaef23d629ef5c6ebfb5fbc5fa0d012a79de239",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-16",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52115,
+          "response_sha256": "50f667670f91482dd9f0bee7b531f95de8987e47f8cdde6681274c01e0557278",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-17",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52133,
+          "response_sha256": "e3006650aa07f189c7402a9f72fc2866b6e7584990c87b7226eec9943fc64129",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-30",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52759,
+          "response_sha256": "c80fd17a04e7c270cf549883fc9ac6472d2912a8ee72e6039d7232cce5ead30a",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-01-31",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52761,
+          "response_sha256": "3a728f6ea240633e2a61602292dff695badfc697cd10cd26dfd23ffe75efc940",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-02-01",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52907,
+          "response_sha256": "4e69c978a7c458fe894a16da59865347bdfb03baffec93f966411825eea51aa8",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-02-02",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 53149,
+          "response_sha256": "393f564d1ddbacbb59a115516dafb19d96686c598927b2c22e06a020a93a0c78",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-02-03",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52926,
+          "response_sha256": "f94801b7231a5331cf6a7cf96ca6eba81b5a617c518e681c6c6b7647c6b01128",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-02-06",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52772,
+          "response_sha256": "5db5006dc46d0fd547b718bcd87bdcb100aa6f9a4b0c72245bece520c0b4bf9d",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-02-07",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52700,
+          "response_sha256": "5a85b365ed3330b47dbf427ba8b1ba9853ef6a2583864fdac278f3c9b28cd05a",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 424,
+          "actual_unique_tickers": 424,
+          "attempt": 1,
+          "date": "2023-02-08",
+          "duplicate_count": 0,
+          "expected_tickers": 421,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52959,
+          "response_sha256": "dbb2e320673cdeb279001def8b2e97ae8a1bc3feb025994ad46d1f09d4fbce42",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 423,
+          "actual_unique_tickers": 423,
+          "attempt": 1,
+          "date": "2023-02-09",
+          "duplicate_count": 0,
+          "expected_tickers": 420,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 52727,
+          "response_sha256": "127a5f383804ae6cc89fb173bde7a960e6130b9aa9878c269a214e001d38bfda",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        }
+      ],
+      "membership_source": {
+        "dates": 239,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2023.csv",
+        "rows": 101024,
+        "sha256": "296f19c0c676e558007b22f12e08ba9f81045ad3706d9609b7a151974b6ece3e",
+        "year": 2023
+      },
+      "mother_path": "TWSE_ELECTRONICS_DAILY_2023.csv.gz",
+      "mother_sha256": "a8e51d57b03c34a07f0b5306ac91e49b3c8698f97fadad1f6735c119df5bf34c",
+      "pass_dates": 0,
+      "qa_path": "TWSE_MOTHER_QA_2023.jsonl",
+      "qa_sha256": "618d46316c417526800c58891fedc31e4fe02500a9787f39b4093053b5b92260",
+      "retrieval_time_utc": "2026-10-23T07:22:39.715123+00:00",
+      "rows_written": 0,
+      "schema_version": 1,
+      "source": "TWSE MI_INDEX type=13 historical daily CSV",
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+      "stage": "B_YEARLY_OFFICIAL_MOTHER_REBUILD",
+      "status": "FAIL_CLOSED_DATE_OR_MEMBERSHIP_MISMATCH",
+      "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+      "year": 2023
+    },
+    {
+      "authority": {
+        "broker_order_execution": false,
+        "capital_authority_twd": 0,
+        "production_promotion": false,
+        "ranking_authority": false,
+        "research_only": true,
+        "signal_authority": false
+      },
+      "expected_trading_dates": 242,
+      "failed_dates": 242,
+      "first_failures": [
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-02",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54248,
+          "response_sha256": "c4c297c88cf0adbeb4deff147e8635caedfc435a8648b332ab086891c0f0a5bd",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-03",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54278,
+          "response_sha256": "9678a4daaec1cef506aada086b2c7179065e403425e5180326820341b67cfc13",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-04",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54312,
+          "response_sha256": "f3a9cd582dc3c85084a2cfa392a2b89b3992b207511ec824813072508bce633c",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-05",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54214,
+          "response_sha256": "75e16a6a0d32cce31c2d77acc294a4869fafd5aaee0a02b0c32dc8543166d5af",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-08",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54188,
+          "response_sha256": "a65d90dd9b3bb68b179f37b8a414adeb9cf566d4998b23883a31495cc2e8750e",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-09",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54340,
+          "response_sha256": "0829befffd61a45b620c7115c95d78627907ca5a965749232d53d00920d4d105",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-10",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54233,
+          "response_sha256": "fb782973190434fc56ce9b059e4bc1bbeda1b37dda7fff92daab7d2b7956ee3a",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 431,
+          "actual_unique_tickers": 431,
+          "attempt": 1,
+          "date": "2024-01-11",
+          "duplicate_count": 0,
+          "expected_tickers": 428,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54188,
+          "response_sha256": "550f97054704be019928f134386d0d5da6cc01cbb9bd4b81d9128e55e4a6ddba",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 431,
+          "actual_unique_tickers": 431,
+          "attempt": 1,
+          "date": "2024-01-12",
+          "duplicate_count": 0,
+          "expected_tickers": 428,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54049,
+          "response_sha256": "905aa14d8d33a7bcca7d3a81063105a2eba82b855cc5200085d7a8deb7c835c6",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 431,
+          "actual_unique_tickers": 431,
+          "attempt": 1,
+          "date": "2024-01-15",
+          "duplicate_count": 0,
+          "expected_tickers": 428,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54073,
+          "response_sha256": "2d2aa73e3d91cdfd8c712d386a614a10ce4c6396cad7e3419b8315c2b87e0ba6",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 431,
+          "actual_unique_tickers": 431,
+          "attempt": 1,
+          "date": "2024-01-16",
+          "duplicate_count": 0,
+          "expected_tickers": 428,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54200,
+          "response_sha256": "73c0a638a6b8f1b368156955bc901df11d04758f1b16f27d8f171f0f5caa9a5e",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 431,
+          "actual_unique_tickers": 431,
+          "attempt": 1,
+          "date": "2024-01-17",
+          "duplicate_count": 0,
+          "expected_tickers": 428,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54338,
+          "response_sha256": "083e768bcc0636387182c0391a85797ba2bead6facf0c2bd506cdc11615637cf",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 431,
+          "actual_unique_tickers": 431,
+          "attempt": 1,
+          "date": "2024-01-18",
+          "duplicate_count": 0,
+          "expected_tickers": 428,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54067,
+          "response_sha256": "a0183ef8df4a43557dc04024c6f473379f5618e8eeb8c0d78122a90072561a0b",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 431,
+          "actual_unique_tickers": 431,
+          "attempt": 1,
+          "date": "2024-01-19",
+          "duplicate_count": 0,
+          "expected_tickers": 428,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54133,
+          "response_sha256": "2954191b824d43877b5d1b6f76677c7c8ed0a75be87536c5f105d692b5137d49",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-22",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54316,
+          "response_sha256": "1e49d6a1294fa29118c318c51c121803825e43a0cff974d788c1ad26ca861c5c",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-23",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54333,
+          "response_sha256": "c1ab0317790cb44af9880f7d2937aa28f7e07a1b847680b16b41673932a20047",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-24",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54384,
+          "response_sha256": "302741daeabcc453bcd468e6e168ccc7bb1a48e8674ceb0342005ac9fb469013",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-25",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54292,
+          "response_sha256": "fa12e1a45e0aa5eafdc81dd58aa74d3e2236aa091e571fcd7b9a0d818d603cdf",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 432,
+          "actual_unique_tickers": 432,
+          "attempt": 1,
+          "date": "2024-01-26",
+          "duplicate_count": 0,
+          "expected_tickers": 429,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54144,
+          "response_sha256": "fb878e31586ef44ed914044546e5412b7f3a7e593d6222cbf832579dee5cc42d",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 433,
+          "actual_unique_tickers": 433,
+          "attempt": 1,
+          "date": "2024-01-29",
+          "duplicate_count": 0,
+          "expected_tickers": 430,
+          "extra_count": 3,
+          "extra_sample": [
+            "3036A",
+            "3702A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 54278,
+          "response_sha256": "1483f55d368b0fff79ff8e4f0b041207182f07d5d51210825e21dbf6a326e741",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        }
+      ],
+      "membership_source": {
+        "dates": 242,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2024.csv",
+        "rows": 105016,
+        "sha256": "13c8ffe2cb6cfaaa2516c90482d0aecda933cb33ae4eb1cffbbc90e49d77bd7d",
+        "year": 2024
+      },
+      "mother_path": "TWSE_ELECTRONICS_DAILY_2024.csv.gz",
+      "mother_sha256": "99710d14edcb7f1197d9c1c9a0904452015cef4183fb50cb85acf2882099c386",
+      "pass_dates": 0,
+      "qa_path": "TWSE_MOTHER_QA_2024.jsonl",
+      "qa_sha256": "12867c4cd2c13dbf3f5defeb26b410a1b80bf0ddda37e9dbf678eb178fcdb5fc",
+      "retrieval_time_utc": "2026-10-23T07:24:07.245371+00:00",
+      "rows_written": 0,
+      "schema_version": 1,
+      "source": "TWSE MI_INDEX type=13 historical daily CSV",
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+      "stage": "B_YEARLY_OFFICIAL_MOTHER_REBUILD",
+      "status": "FAIL_CLOSED_DATE_OR_MEMBERSHIP_MISMATCH",
+      "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+      "year": 2024
+    },
+    {
+      "authority": {
+        "broker_order_execution": false,
+        "capital_authority_twd": 0,
+        "production_promotion": false,
+        "ranking_authority": false,
+        "research_only": true,
+        "signal_authority": false
+      },
+      "expected_trading_dates": 243,
+      "failed_dates": 243,
+      "first_failures": [
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-02",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55639,
+          "response_sha256": "5f20f9a09db2281d2779565aac851541b1cf5ea395edc794e9ecac7b560fcb51",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-03",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55695,
+          "response_sha256": "dfbfba6483fd42105a8954cabd8d0ade1bea8c7d3e6e204fd5bc9f20a9e92517",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-06",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55744,
+          "response_sha256": "bd2a30c89615b6a01c0f2c814ba9e6ab6215f32f7a2dbe8e545976b0b8420db1",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-07",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55852,
+          "response_sha256": "5e261efaeba9a44a24fa991e39767bef4295c5b51b435bf87a254faea14a89aa",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-08",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55666,
+          "response_sha256": "f3c8b7afaac9e9ed63d9df183f073fae8a04d5452e623ac0657ebc12cab1b036",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-09",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 56018,
+          "response_sha256": "b8088ac7dc90435297d8b296dc110cf20a8bb822033bbe70a4cc37eab63e0cb6",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-10",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55656,
+          "response_sha256": "cca10b79fb7eacd9c172587ddd4b77851a690c05a132ff4bdcb14b36b735d3f1",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-13",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 56028,
+          "response_sha256": "097b28103fd857517399f1e2d9aa69365a8997232ddd6ed3f96e347a9c851a42",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-14",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55431,
+          "response_sha256": "e50b735ce1e805a9d6bce56db140de12609d1c53a57062920b3c34e65111c5b4",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-15",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55360,
+          "response_sha256": "1aae722cfae5ee9fa5c1dacc6afd9339bfa0dcfeb390691e51cd96ecfcc55d7e",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-16",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55438,
+          "response_sha256": "8d4526cb583070cbb68e9d9987d4c4160ef44dc6e42107e902693ef62208647a",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-17",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55321,
+          "response_sha256": "304bc1e748875714e54e69a7b4f80e4fbd4fd77d7f8c8832f50645a7ada43c5c",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-20",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55300,
+          "response_sha256": "688eabb58446f4bdbe0ffbb2249578ec4b00ca380825ab9151e67c4e7218bef7",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-21",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55260,
+          "response_sha256": "9d571b6072ab253eff74cc4e1735c9a76e65e70ebf7425fd3658cee34a347f44",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-01-22",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55540,
+          "response_sha256": "c016a2224e37c1a6bbb6f4e1dbf625a0abb3541053a694e2f364623b9a91994f",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-02-03",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55615,
+          "response_sha256": "c254ff78df75ff196d436566f15ab90f26d18a415ea5ed34128d50e5eec620a2",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-02-04",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55492,
+          "response_sha256": "93c28d8967ec7ec07c05d4e16beb5a66345ec3d73faede5836efa45ce2d752fd",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-02-05",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55570,
+          "response_sha256": "535bcf0a25f43100f5f7b13b92c2e82faa88ee34750839892dda3ca7c76d6398",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-02-06",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55660,
+          "response_sha256": "5f35256a6ee6711222a76b75ee6e9bd7ddadcaefcfd2e628eb8187e5de8dd62e",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        },
+        {
+          "actual_rows": 442,
+          "actual_unique_tickers": 442,
+          "attempt": 1,
+          "date": "2025-02-07",
+          "duplicate_count": 0,
+          "expected_tickers": 440,
+          "extra_count": 2,
+          "extra_sample": [
+            "3036A",
+            "8112A"
+          ],
+          "missing_count": 0,
+          "missing_sample": [],
+          "response_bytes": 55714,
+          "response_sha256": "3d4ea28506c4d984e4f9a09b2ecfa47cc1980aaa37a79f6c2b9783e1398f1309",
+          "status": "MEMBERSHIP_SET_MISMATCH"
+        }
+      ],
+      "membership_source": {
+        "dates": 243,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2025.csv",
+        "rows": 107709,
+        "sha256": "da4a8c6deb7cad5d221d453b64e2685b771242db6ce8fc5128d11aa21cfe7e14",
+        "year": 2025
+      },
+      "mother_path": "TWSE_ELECTRONICS_DAILY_2025.csv.gz",
+      "mother_sha256": "f26f775cdd72342694657966a77a2a53b50ed97fe85efdd4601891693eeedf5c",
+      "pass_dates": 0,
+      "qa_path": "TWSE_MOTHER_QA_2025.jsonl",
+      "qa_sha256": "4d4e04d85de039c0b8a22bf433baf12e18c4e0d652e631c8345de48a161a3f9d",
+      "retrieval_time_utc": "2026-10-23T07:22:53.525667+00:00",
+      "rows_written": 0,
+      "schema_version": 1,
+      "source": "TWSE MI_INDEX type=13 historical daily CSV",
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+      "stage": "B_YEARLY_OFFICIAL_MOTHER_REBUILD",
+      "status": "FAIL_CLOSED_DATE_OR_MEMBERSHIP_MISMATCH",
+      "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+      "year": 2025
+    }
+  ]
+}

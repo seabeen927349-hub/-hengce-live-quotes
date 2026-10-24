@@ -1,0 +1,24 @@
+{
+  "archive_sha256": "c073d46db38b4e707e983f80770cfd8477d8d0ec5909f8e6dd8ff47084b156f6",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 152851,
+  "fetch_completed_at_utc": "2026-10-23T12:23:07.754394+00:00",
+  "fetch_started_at_utc": "2026-10-23T12:23:06.654983+00:00",
+  "http_status": 200,
+  "id": "SOURCE_DOC_0",
+  "kind": "DOCUMENT",
+  "original_first_seen_at": null,
+  "raw_path": "SOURCE_DOC_0.gz",
+  "response_sha256": "067014ff583627301d06510c4ab0b36f2511db556ad6fe5cc9efb2d39b848dee",
+  "transport": "RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/zh/products/system/trading.html",
+  "validation": "RAW_ONLY_NOT_ENTITLEMENT_AUTHORITY"
+}

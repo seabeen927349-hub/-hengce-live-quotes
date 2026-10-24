@@ -1,0 +1,10 @@
+{
+  "research_only": true,
+  "signal_authority": false,
+  "ranking_authority": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "production_promotion": false,
+  "main_write_authorized": false,
+  "merge_authorized": false
+}

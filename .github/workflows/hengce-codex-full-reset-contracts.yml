@@ -1,0 +1,76 @@
+name: HENGCE Full Reset Offline Contracts
+on:
+  push:
+    branches: ['research/codex-full-reset-run-20261023']
+    paths:
+      - 'research/codex_full_reset_20261023/**'
+      - '.github/workflows/hengce-codex-full-reset*.yml'
+  pull_request:
+    paths:
+      - 'research/codex_full_reset_20261023/**'
+      - '.github/workflows/hengce-codex-full-reset*.yml'
+permissions:
+  contents: read
+jobs:
+  offline-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Evidence scope binds to the actual research head, not GitHub's
+          # synthetic PR merge (which also contains unrelated main updates).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline synthetic contracts only - no model trials
+        run: |
+          python -B research/codex_full_reset_20261023/test_stage_b_contracts.py
+          python -B research/codex_full_reset_20261023/test_stage_c_integrity.py
+          python -B research/codex_full_reset_20261023/continuation_20261023/test_contracts.py
+          python -B research/codex_full_reset_20261023/data_foundation_20261023/test_evidence.py
+          python -B research/codex_full_reset_20261023/data_foundation_20261023/test_normalize.py
+          python -B research/codex_full_reset_20261023/data_foundation_v2_20261023/test_v2.py
+          python -B research/codex_full_reset_20261023/rr_v1_20261023/test_readiness.py
+      - name: Audit retained completed evidence offline - no model evaluation
+        run: |
+          if [ -f research/codex_full_reset_20261023/results/ARTIFACT_MANIFEST.json ]; then
+            python -B research/codex_full_reset_20261023/audit_completed_evidence.py
+          fi
+          if [ -f research/codex_full_reset_20261023/continuation_20261023/results/SUMMARY.json ]; then
+            python -B research/codex_full_reset_20261023/continuation_20261023/search.py --audit
+            python -B research/codex_full_reset_20261023/continuation_20261023/audit_checkpoint.py
+          fi
+          if [ -f research/codex_full_reset_20261023/data_foundation_20261023/results/MANIFEST.json ]; then
+            python -B research/codex_full_reset_20261023/data_foundation_20261023/audit_all.py
+          fi
+          if [ -f research/codex_full_reset_20261023/data_foundation_v2_20261023/results/READINESS_V2.json ]; then
+            python -B research/codex_full_reset_20261023/data_foundation_v2_20261023/audit.py
+          fi
+
+          # RR V1's scope audit is intentionally bound to its historical task
+          # and final readiness head. Running that old scope check at a later
+          # research head makes unrelated V2/V43/V44 files look out-of-scope.
+          # Keep the retained readiness evidence byte-frozen, then execute the
+          # original audit inside a detached worktree at the registered final
+          # RR head. This preserves fail-closed evidence checks without
+          # widening the old issue's allowlist.
+          RR_FINAL=9d140e209407035aa3c7b3df9ba8078d0d643458
+          RR_CORE=(
+            research/codex_full_reset_20261023/rr_v1_20261023/readiness.py
+            research/codex_full_reset_20261023/rr_v1_20261023/test_readiness.py
+            research/codex_full_reset_20261023/rr_v1_20261023/results
+          )
+          if ! git diff --quiet "$RR_FINAL" HEAD -- "${RR_CORE[@]}"; then
+            echo '::error::Retained RR V1 readiness evidence drifted after the frozen final head.'
+            git diff --name-status "$RR_FINAL" HEAD -- "${RR_CORE[@]}"
+            exit 1
+          fi
+          RR_TMP="$(mktemp -d)"
+          git worktree add --detach "$RR_TMP" "$RR_FINAL"
+          trap 'git worktree remove --force "$RR_TMP" >/dev/null 2>&1 || true' EXIT
+          python -B "$RR_TMP/research/codex_full_reset_20261023/rr_v1_20261023/readiness.py" --audit
+          git worktree remove --force "$RR_TMP"
+          trap - EXIT

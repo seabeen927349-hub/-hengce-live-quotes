@@ -1,0 +1,289 @@
+{
+  "candidate_b_baseline_evidence": {
+    "exists": true,
+    "metric_hits": [
+      {
+        "path": "pit_2023_2025.wins",
+        "value": 8
+      },
+      {
+        "path": "pit_2023_2025.years.2023.wins",
+        "value": 2
+      },
+      {
+        "path": "pit_2023_2025.years.2024.wins",
+        "value": 3
+      },
+      {
+        "path": "pit_2023_2025.years.2025.wins",
+        "value": 3
+      },
+      {
+        "path": "oos_2026_to_20261016.wins",
+        "value": 3
+      }
+    ],
+    "path": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_FINAL_VALIDATION_20261019.json",
+    "sha256": "2cb3d41befdd62d292128687725171709fc467574a32f7ea6da3bee1912afac9"
+  },
+  "eod": [
+    {
+      "date": "20261014",
+      "downstream_ready": null,
+      "file_count": 39,
+      "formal_complete_day": null,
+      "path": "eod/20261014",
+      "status": null,
+      "status_exists": true,
+      "status_sha256": "794c0a22bb5e1621ca73d8f9804526812b7a4c89ce43bd98241a0748b255d184",
+      "three_leg_complete": null
+    },
+    {
+      "date": "20261015",
+      "downstream_ready": null,
+      "file_count": 28,
+      "formal_complete_day": null,
+      "path": "eod/20261015",
+      "status": null,
+      "status_exists": true,
+      "status_sha256": "ce5c1e8844e6fe5481f14188914442493d5e51cf6f62f36f90951b7150a4c0aa",
+      "three_leg_complete": null
+    },
+    {
+      "date": "20261016",
+      "downstream_ready": null,
+      "file_count": 28,
+      "formal_complete_day": null,
+      "path": "eod/20261016",
+      "status": null,
+      "status_exists": true,
+      "status_sha256": "c6bfd1afb0cd3d5b557fa29e5f54bd94cab498bb15136cfea816141b7def942a",
+      "three_leg_complete": null
+    },
+    {
+      "date": "20261019",
+      "downstream_ready": null,
+      "file_count": 28,
+      "formal_complete_day": null,
+      "path": "eod/20261019",
+      "status": null,
+      "status_exists": true,
+      "status_sha256": "f946c10d427b2cda234e96589d22c03ed63da0093c25d9ff818a1d8123065d94",
+      "three_leg_complete": null
+    },
+    {
+      "date": "20261020",
+      "downstream_ready": true,
+      "file_count": 22,
+      "formal_complete_day": false,
+      "path": "eod/20261020",
+      "status": "PARTIAL",
+      "status_exists": true,
+      "status_sha256": "f7bc6495865503ea2d8eac12a9729b1b50febe1a50138d294a87a04476b7e531",
+      "three_leg_complete": false
+    },
+    {
+      "date": "20261021",
+      "downstream_ready": true,
+      "file_count": 32,
+      "formal_complete_day": true,
+      "path": "eod/20261021",
+      "status": "COMPLETE",
+      "status_exists": true,
+      "status_sha256": "fab64a4ea107d78d990e97300983789441d05cdb98dcf521420bd50ad0f53d3c",
+      "three_leg_complete": true
+    },
+    {
+      "date": "20261022",
+      "downstream_ready": false,
+      "file_count": 21,
+      "formal_complete_day": false,
+      "path": "eod/20261022",
+      "status": "PARTIAL",
+      "status_exists": true,
+      "status_sha256": "5f7284fc198048e508ed1b2d1c15b6d964eb28a10ea622cda72f298f61b234b3",
+      "three_leg_complete": false
+    }
+  ],
+  "macro": [
+    {
+      "bytes": 69114,
+      "date_max": "2026-10-16",
+      "date_min": "2022-12-01",
+      "exists": true,
+      "headers": [
+        "date",
+        "close",
+        "ret1",
+        "ret5"
+      ],
+      "malformed_rows": 0,
+      "path": "research/e2_profit_max/macro/sox_daily_202212_202610.csv",
+      "rows": 972,
+      "sha256": "dd1d86f7f0003dd6286596f454100cab91e7edd32db56f2e5a4e49dfa006db14",
+      "unique_dates": 972,
+      "unique_symbols": null
+    },
+    {
+      "bytes": 71397,
+      "date_max": "2026-10-19",
+      "date_min": "2022-12-01",
+      "exists": true,
+      "headers": [
+        "date",
+        "close",
+        "ret1",
+        "ret5"
+      ],
+      "malformed_rows": 0,
+      "path": "research/e2_profit_max/macro/dxy_exact_DX-Y.NYB_202212_202610.csv",
+      "rows": 975,
+      "sha256": "6f18975b1582fdb24c12c7590c5cbd9f4bed5b0b4aee33a7a9be982621ad7b1f",
+      "unique_dates": 975,
+      "unique_symbols": null
+    }
+  ],
+  "membership": [
+    {
+      "bytes": 2525869,
+      "date_max": "2023-12-29",
+      "date_min": "2023-01-03",
+      "exists": true,
+      "headers": [
+        "Date",
+        "Ticker",
+        "Name"
+      ],
+      "malformed_rows": 0,
+      "path": "research/e2_profit_max/membership/twse_electronics_membership_2023.csv",
+      "rows": 101024,
+      "sha256": "296f19c0c676e558007b22f12e08ba9f81045ad3706d9609b7a151974b6ece3e",
+      "unique_dates": 239,
+      "unique_symbols": 431
+    },
+    {
+      "bytes": 2632963,
+      "date_max": "2024-12-31",
+      "date_min": "2024-01-02",
+      "exists": true,
+      "headers": [
+        "Date",
+        "Ticker",
+        "Name"
+      ],
+      "malformed_rows": 0,
+      "path": "research/e2_profit_max/membership/twse_electronics_membership_2024.csv",
+      "rows": 105016,
+      "sha256": "13c8ffe2cb6cfaaa2516c90482d0aecda933cb33ae4eb1cffbbc90e49d77bd7d",
+      "unique_dates": 242,
+      "unique_symbols": 440
+    },
+    {
+      "bytes": 2708248,
+      "date_max": "2025-12-31",
+      "date_min": "2025-01-02",
+      "exists": true,
+      "headers": [
+        "Date",
+        "Ticker",
+        "Name"
+      ],
+      "malformed_rows": 0,
+      "path": "research/e2_profit_max/membership/twse_electronics_membership_2025.csv",
+      "rows": 107709,
+      "sha256": "da4a8c6deb7cad5d221d453b64e2685b771242db6ce8fc5128d11aa21cfe7e14",
+      "unique_dates": 243,
+      "unique_symbols": 452
+    }
+  ],
+  "membership_years": [
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "round2_readable_count": 0,
+  "round2_segment_count": 8,
+  "round2_segments": [
+    {
+      "bytes": 6000,
+      "error": "Compressed file ended before the end-of-stream marker was reached",
+      "error_type": "EOFError",
+      "exists": true,
+      "parse_status": "FAILED",
+      "path": "research/e2_profit_max/round2/input/r2seg_01.txt",
+      "sha256": "8ec2041620ae075f88a83b407fbe9e8ddfe892b928f0f5e1172d25456b8dde08"
+    },
+    {
+      "bytes": 6000,
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "error_type": "JSONDecodeError",
+      "exists": true,
+      "parse_status": "FAILED",
+      "path": "research/e2_profit_max/round2/input/r2seg_02.txt",
+      "sha256": "13368b2e91f2f9848902f8a314078f9252ef1bdea5e676368b3743a0e690daee"
+    },
+    {
+      "bytes": 6000,
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "error_type": "JSONDecodeError",
+      "exists": true,
+      "parse_status": "FAILED",
+      "path": "research/e2_profit_max/round2/input/r2seg_03.txt",
+      "sha256": "407f698ee0df5a8d35815d8f1a1f7f58fa47ff569e7d441433be6dd1d6867353"
+    },
+    {
+      "bytes": 9000,
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "error_type": "JSONDecodeError",
+      "exists": true,
+      "parse_status": "FAILED",
+      "path": "research/e2_profit_max/round2/input/r2seg_04.txt",
+      "sha256": "5fee2e88a59a065abe7ec916c584f126109b5e0085611622ebacc429e12857d5"
+    },
+    {
+      "bytes": 6000,
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "error_type": "JSONDecodeError",
+      "exists": true,
+      "parse_status": "FAILED",
+      "path": "research/e2_profit_max/round2/input/r2seg_05.txt",
+      "sha256": "2d601242e5844ced0680d3421e8b360fffccaceff52e147efe7735148cf3278c"
+    },
+    {
+      "bytes": 6000,
+      "error": "Extra data: line 1 column 2 (char 1)",
+      "error_type": "JSONDecodeError",
+      "exists": true,
+      "parse_status": "FAILED",
+      "path": "research/e2_profit_max/round2/input/r2seg_06.txt",
+      "sha256": "c21f5fe783562d8984c9e10cc3adc89bcdf10884c3c5bc930fcaa640ba86b4b9"
+    },
+    {
+      "bytes": 6000,
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "error_type": "JSONDecodeError",
+      "exists": true,
+      "parse_status": "FAILED",
+      "path": "research/e2_profit_max/round2/input/r2seg_07.txt",
+      "sha256": "3d50fafce6b3349f9b4f926c68ab3e5098b345cf9095fae2759a6c2e4a827774"
+    },
+    {
+      "bytes": 6000,
+      "error": "Extra data: line 1 column 2 (char 1)",
+      "error_type": "JSONDecodeError",
+      "exists": true,
+      "parse_status": "FAILED",
+      "path": "research/e2_profit_max/round2/input/r2seg_08.txt",
+      "sha256": "6a1d69be22f8741c36a0739f884cb936e1b94a32a3c60d7590b46d985a727403"
+    }
+  ],
+  "schema_version": 1,
+  "stage": "A_DATA_AUDIT",
+  "verified_rebuilt_mother": {
+    "date_ticker_rows": 313749,
+    "failed_dates": 0,
+    "raw_responses_revalidated": 724,
+    "sessions": 724,
+    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY"
+  }
+}

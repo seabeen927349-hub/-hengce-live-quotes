@@ -1,0 +1,134 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "completed_reset_evidence": {
+    "artifact_manifest": "ARTIFACT_MANIFEST.json",
+    "baseline_v2": "BASELINE_REPRODUCTION_V2.json",
+    "evidence_audit": "EVIDENCE_AUDIT.json",
+    "mother_receipt": "stage_b/TWSE_MOTHER_RECEIPT.json",
+    "publication_limitation": "Retrospective archive retrieval does not establish original first-seen/revision history",
+    "stage_b_run_id": 39936974870,
+    "stage_c_run_id": 39937394677
+  },
+  "corpus_manifest_sha256": "416c4e1dcc2fe1ac9e5c32a2d9fbe18b3ff8aa0efccc8fb62f55450466bdeac2",
+  "frozen_corpus_base": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+  "history_refs": [
+    {
+      "path": "frozen_base.branch",
+      "value": "research/codex-full-reset-20261023"
+    },
+    {
+      "path": "frozen_base.base_commit",
+      "value": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88"
+    },
+    {
+      "path": "frozen_base.base_tree",
+      "value": "aa1af4ce9ed69327e2da272caef4128992ba6ea3"
+    },
+    {
+      "path": "in_tree_primary_data_and_research_roots[0].path",
+      "value": "research/e2_profit_max/**"
+    },
+    {
+      "path": "in_tree_primary_data_and_research_roots[1].path",
+      "value": "research/q017_sox_tw_electronics/**"
+    },
+    {
+      "path": "in_tree_primary_data_and_research_roots[2].path",
+      "value": "research/q012/**"
+    },
+    {
+      "path": "in_tree_primary_data_and_research_roots[3].path",
+      "value": "research/phase1_audit/**"
+    },
+    {
+      "path": "in_tree_primary_data_and_research_roots[4].path",
+      "value": "research/phase2_governance/**"
+    },
+    {
+      "path": "in_tree_primary_data_and_research_roots[5].path",
+      "value": "research/phase2_q017/**"
+    },
+    {
+      "path": "in_tree_primary_data_and_research_roots[6].path",
+      "value": "research/radar/**"
+    },
+    {
+      "path": "historical_fixed_refs[0].head_sha",
+      "value": "c2bfe20cd4534df439ffb318d67554eec1fd18a0"
+    },
+    {
+      "path": "historical_fixed_refs[1].head_branch",
+      "value": "phase2/q017-prospective-optimization-20261023"
+    },
+    {
+      "path": "historical_fixed_refs[1].head_sha",
+      "value": "e9c39b0d9c801ecefdc54fb781c7fd188e1f847e"
+    },
+    {
+      "path": "historical_fixed_refs[2].head_branch",
+      "value": "phase2/e2-p2a-baseline-destruction-20261023"
+    },
+    {
+      "path": "historical_fixed_refs[2].head_sha",
+      "value": "fbe16b4ec1c9b3495704b1ef716accd9e11b9ece"
+    },
+    {
+      "path": "historical_fixed_refs[3].head_branch",
+      "value": "phase2/e2-p2a-authorization-20261023"
+    },
+    {
+      "path": "historical_fixed_refs[3].head_sha",
+      "value": "21c8a8c0d1973a0a07bf1b97a605c864cbb36cbb"
+    },
+    {
+      "path": "historical_fixed_refs[4].head_branch",
+      "value": "codex/phase2-governance-freeze-20261023"
+    },
+    {
+      "path": "historical_fixed_refs[4].head_sha",
+      "value": "e067d9bb68cf9eb7f21ba01080fc1b32c6509475"
+    },
+    {
+      "path": "historical_fixed_refs[5].head_branch",
+      "value": "codex/phase1-foundation-b01-b09-20261022"
+    },
+    {
+      "path": "historical_fixed_refs[5].head_sha",
+      "value": "840771e20215cbf9899dd74599a6fdc2a5af881c"
+    },
+    {
+      "path": "historical_fixed_refs[6].head_branch",
+      "value": "research/phase1-evidence-map-20261022"
+    },
+    {
+      "path": "historical_fixed_refs[6].head_sha",
+      "value": "fb4ac5809de1012edaedf10e2c9870770db39eae"
+    },
+    {
+      "path": "historical_fixed_refs[7].head_sha",
+      "value": "5303f4382c44fa2d2a3955fae781220453df66c1"
+    },
+    {
+      "path": "historical_fixed_refs[8].head_branch",
+      "value": "research/hengce-profit-winrate-optimization-20261023"
+    },
+    {
+      "path": "historical_fixed_refs[8].head_sha",
+      "value": "4930fb042354d0abacdab47d2f16ab12846f89ff"
+    },
+    {
+      "path": "known_reference_baseline.artifact",
+      "value": "research/e2_profit_max/E2_PROFIT_MAX_CANDIDATE_B_FINAL_VALIDATION_20261019.json"
+    }
+  ],
+  "reset_authorization_sha256": "d15bb17ca0236283e24a0c09933e86d285337a4fc60b95a08de8125b40107b09",
+  "schema_version": 1,
+  "stage": "A_DATA_AUDIT"
+}

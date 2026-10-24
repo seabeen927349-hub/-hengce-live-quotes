@@ -1,0 +1,20 @@
+{
+  "experiment_id": "RESET-BASELINE-V2-20261023-001",
+  "status": "PREREGISTERED_BEFORE_V2_DIAGNOSTIC",
+  "purpose": "Resolve a known semantic mismatch in the first reference attempt; never rescue or reselect a winner",
+  "source_commit": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+  "source": "scripts/hengce_e2_live.py",
+  "reuse": "AST-extract and execute the exact pinned f, iso_date, tw_rows_through and prepare_features functions with read-only mother and no module import/side effects",
+  "macro": "Frozen SOX CSV, latest session strictly earlier than signal date, SOX1<=0 and SOX5<=-.03",
+  "entry": "Next preserved TWSE session open",
+  "exit": "Entry session index plus 20 intervals close",
+  "cost": 0.008,
+  "overlap": "Signal strictly after previous exit date",
+  "missing_future_data": "Censor fixed Top1 without replacement, reserve intended interval and disclose; cannot prove old event identity",
+  "period": ["2023-01-01", "2025-12-31"],
+  "variants": 1,
+  "no_parameter_search": true,
+  "cannot_change_stage_c_decision": true,
+  "original_failed_attempt_retained": true,
+  "authority": {"research_only":true,"capital_authority_twd":0,"broker_order_execution":false,"production_promotion":false,"merge_authorized":false}
+}

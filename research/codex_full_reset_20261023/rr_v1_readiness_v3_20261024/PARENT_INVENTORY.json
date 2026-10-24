@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "inputs": [
+    {
+      "path": "parents/MAIN_TREE.json",
+      "bytes": 226088,
+      "sha256": "10b390d1ba795f18ce9ecc775d6ad926024bd03420a5f2797195bf38690e30bc",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "parents/RESEARCH_TREE.json",
+      "bytes": 345759,
+      "sha256": "b8202783860b21b057200fdf10393c68c448ec456946ff5d17062ed088c8c142",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "parents/research/codex_full_reset_20261023/CODEX_RR_V1_TASK.md",
+      "bytes": 2831,
+      "sha256": "62c92de526f750de9a025c0c762668b741ef32a97675ac6506285e1f56c70335",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "parents/research/codex_full_reset_20261023/RR_V1_PREREG_20261023.json",
+      "bytes": 3463,
+      "sha256": "79aca51a1c716cd40933eb1a0ab3564bb29cb367eae3c29603a1f360d06b20ee",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "parents/research/codex_full_reset_20261023/rr_v1_20261023/results/RR_V1_AUDIT.json",
+      "bytes": 2163,
+      "sha256": "9698e4b54aee93a33e62072c76daf8eb3a7be17e1de8a74c8e7a852ac87392d5",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "parents/research/codex_full_reset_20261023/rr_v1_20261023/results/RR_V1_DATA_LINEAGE.json",
+      "bytes": 11326,
+      "sha256": "b95ae7612c5b686dc41d11e4b8b9c3f615bc1370a2d576a4aaf70f214c4a70a8",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "parents/research/codex_full_reset_20261023/rr_v1_20261023/results/RR_V1_READINESS.json",
+      "bytes": 1119,
+      "sha256": "552df2afca2eb7367b8c9a554f0e624f8a078fe9a849384d92669b72f510171c",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "/workspace/HENGCE_CODEX_NEXT_TASK_20261024/ACCEPTANCE_GATES.json",
+      "bytes": 555,
+      "sha256": "5fa82ab94e0157c1e74652287dacdee4afea79fdc740eb8d1ecf9b30bd670378",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "/workspace/HENGCE_CODEX_NEXT_TASK_20261024/BLOCKER_MATRIX.json",
+      "bytes": 387,
+      "sha256": "904b12303cbd6e9c21ac9ec9c9eb1628257f77b531ff550228f732e44eda3d7c",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "/workspace/HENGCE_CODEX_NEXT_TASK_20261024/CODEX_TASK_DATA_READINESS_THEN_RR_V1.md",
+      "bytes": 7901,
+      "sha256": "ac37038eeee5803255e81eda023c749c385de17b29dab0bd5f2bc24ddee91adc",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "/workspace/HENGCE_CODEX_NEXT_TASK_20261024/CURRENT_STATE_SNAPSHOT.json",
+      "bytes": 540,
+      "sha256": "dd28e7389a62a71ef6a4cac2e264262ad9fbcd46571eaffaad1a4aa723db81f1",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "/workspace/HENGCE_CODEX_NEXT_TASK_20261024/MANIFEST.sha256",
+      "bytes": 625,
+      "sha256": "92ec28ce4d8a81a9012f04521ace8029da109be04bf0531d6e785f695fa3cafe",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "/workspace/HENGCE_CODEX_NEXT_TASK_20261024/PROMPT_TO_CODEX.txt",
+      "bytes": 1487,
+      "sha256": "5463ddc7bcaf033af7b787b7a3690b10a47d1358ccdef8a524c62543e59cfc38",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "/workspace/HENGCE_CODEX_NEXT_TASK_20261024/READ_FIRST.md",
+      "bytes": 842,
+      "sha256": "7ace7122f482f0ecba06d8709146e8156864455ed86107f19f73f21e21a59377",
+      "scope": "actually_read_bytes"
+    },
+    {
+      "path": "/workspace/HENGCE_CODEX_NEXT_TASK_20261024/TASK_CONTRACT.json",
+      "bytes": 924,
+      "sha256": "e22d76cea6424dd5947d32522d01acc1f6230d7375f287e032d619eb2f495b92",
+      "scope": "actually_read_bytes"
+    }
+  ],
+  "unread_sources": "Prior source hashes are assertions until bytes are read. Full retained tree lists provide Git blob identities, not SHA256 verification of every blob."
+}

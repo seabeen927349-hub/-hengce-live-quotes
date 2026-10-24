@@ -1,0 +1,23 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "research_only": true
+  },
+  "baseline_candidate_b": {
+    "exact_aggregate_match": false,
+    "status": "BASELINE_REPRODUCTION_FAILED_OR_DIFFERS"
+  },
+  "historical_exposure_warning": "2023-2025 was previously exposed and is not pristine OOS. Future prospective shadow validation is mandatory before any production discussion.",
+  "pareto_families": [
+    "RAW_REVERSAL",
+    "RESIDUAL_REVERSAL",
+    "BETA_WEIGHTED_RESIDUAL_REVERSAL"
+  ],
+  "schema_version": 1,
+  "status": "NO_ROBUST_WINNER",
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "winner": null
+}

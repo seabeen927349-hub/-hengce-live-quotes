@@ -1,0 +1,36 @@
+{
+  "status": "FROZEN_BEFORE_ANY_STAGE_C_SEARCH_RESULT",
+  "parent_plan": "SEARCH_PLAN_V1.json",
+  "reason": "Offline synthetic tests exposed temporal leakage and non-append ledger in unexecuted handoff searcher",
+  "folds": "Selection and validation outcomes must be completely inside their own period; no cross-boundary outcome or forced closing",
+  "basket": "Freeze exact TopN using signal-time evidence before outcome availability checks; no replacement after seeing future data",
+  "censoring": "A missing or discontinuous future outcome censors the whole fixed basket; reserve its scheduled holding interval; report censored counts",
+  "horizon": "Preserve existing entry index=signal+1; exit index=entry+H TWSE sessions; H is intervals after entry, not an intraday fill claim",
+  "ledger": "Append STARTED before every simulation, retain EVALUATED/NO_TRADE/FAILED/ABORTED, selection rejection and all baseline/neighbor/validation attempts; no overwrite",
+  "mother": "Mandatory PASS receipt, exact pinned corpus and complete date/ticker sets; no partial or missing-receipt search",
+  "winner_caveat": "No production promotion. Unfinished mandatory robustness evidence prevents robust winner declaration",
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  },
+  "risk_metrics": "Daily-close mark-to-market drawdown and trade-end drawdown separately; no NAV resurrection after insolvency; CVaR only if >=20 complete trades",
+  "additional_destruction": {
+    "frozen_before_results": true,
+    "data_quality_sensitivity": {
+      "discontinuity": 0.1,
+      "reselect_parameters": false,
+      "required": "positive each fold at .016 cost with >=3 complete trades each; no insolvency"
+    },
+    "multiple_testing": {
+      "method": "Quarter-block log-return sign-flip with Holm across all 7 preregistered families",
+      "blocks": "2024Q1..2025Q4",
+      "minimum_active_blocks": 6,
+      "maximum_holm_p": 0.05,
+      "assumptions": "Independent symmetric quarter blocks are not proven; report as exploratory historical evidence only",
+      "insufficient_sample": "INELIGIBLE_FOR_ROBUST_WINNER"
+    }
+  }
+}

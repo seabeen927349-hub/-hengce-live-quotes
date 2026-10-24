@@ -1,0 +1,57 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "main_write_authorized": false,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "censor_reasons": null,
+  "censored_baskets": null,
+  "complete_baskets": null,
+  "complete_case_is_not_executable_strategy": true,
+  "config": {
+    "family": "RESIDUAL_REVERSAL",
+    "horizon": 20,
+    "regime": "PRIOR_SOX5_LE_-0.03",
+    "score": "NEG_RESID1",
+    "top_n": 1,
+    "turnover_min": 50000000.0
+  },
+  "cost_cases": [
+    {
+      "aggregate_roundtrip_cost": 0.008,
+      "compounded_return": null,
+      "max_drawdown": null,
+      "remove_best_trade_return": null,
+      "win_rate": null
+    },
+    {
+      "aggregate_roundtrip_cost": 0.012,
+      "compounded_return": null,
+      "max_drawdown": null,
+      "remove_best_trade_return": null,
+      "win_rate": null
+    },
+    {
+      "aggregate_roundtrip_cost": 0.016,
+      "compounded_return": null,
+      "max_drawdown": null,
+      "remove_best_trade_return": null,
+      "win_rate": null
+    }
+  ],
+  "intended_baskets": null,
+  "metric_status": "NOT_EVALUATED_DATA_READINESS_BLOCKED",
+  "new_model_evaluations": 0,
+  "prior_model_evaluations": 8529,
+  "pristine_holdout": false,
+  "prospective_claim": false,
+  "regime_occurrences": null,
+  "status": "BLOCKED_DATA_READINESS",
+  "ticker_concentration": null,
+  "trade_concentration": null
+}

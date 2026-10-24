@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "date": "2026-10-24",
+  "scope": "RR_V1_POST_HOC_EVIDENCE_GRADE_RECONCILIATION",
+  "rr_v1_evaluation_8530": "SPENT_2026-10-23",
+  "rr_v1_rerun_authorized": false,
+  "historical_8460_missing_trial_windows": {
+    "status_for_rr_v1": "NOT_PRIMARY_GATE",
+    "reason": "Those missing windows concern prior historical evaluations and do not undo the already-completed RR V1 simulation."
+  },
+  "actual_v2_limits_on_rr_v1_interpretation": {
+    "corporate_action_entitlement_delivery": {
+      "status": "UNRESOLVED",
+      "evidence": "V2 classified 1151 retained electronics corporate-action events, but all latest entitlement assertions remain PARTIAL; payment_dates_known=0 and delivery_dates_known=0. Official TWT49U detail responses prove some numeric terms but do not establish complete entitlement authority or historical first-seen."
+    },
+    "listed_security_identity_continuity": {
+      "status": "UNRESOLVED",
+      "evidence": "listed_security_id_transitions_proven=0; same ticker/economic continuity is not proof of identical listed instrument."
+    },
+    "execution_fill_proof": {
+      "status": "UNRESOLVED",
+      "evidence": "1331 retained one-price/known-limit execution records all have fill_status UNKNOWN. Daily volume, one-price state, assumed next-open pricing, or paper execution ledgers do not prove actual historical allocation/fill."
+    },
+    "first_seen_revision_lineage": {
+      "status": "UNRESOLVED",
+      "evidence": "original_first_seen_proven=0 and revision_lineage_proven=0; retrospective source rows cannot be promoted to contemporaneous historical knowledge."
+    }
+  },
+  "effect_on_existing_rr_v1_result": {
+    "simulation_exists": true,
+    "config": "RESIDUAL_REVERSAL|NEG_RESID1|TO50000000|N1|H20|PRIOR_SOX5_LE_-0.03",
+    "period": ["2026-01-01", "2026-10-22"],
+    "selection_cost_0_012": {
+      "complete_trades": 6,
+      "compounded_return": 0.31388881985724804,
+      "win_rate": 0.6666666666666666,
+      "max_drawdown": -0.42557415909771434,
+      "remove_best_trade_return": -0.04026227616347766
+    },
+    "evidence_grade": "HISTORICAL_DIAGNOSTIC_NOT_CONFIRMATORY_EXECUTABLE_VALIDATION",
+    "frozen_conclusion": "REJECTED_SPARSE_SAMPLE_AND_BEST_TRADE_DEPENDENCE"
+  },
+  "preserved_evidence_examined": [
+    "Library: RR_V1_SIM_RESULT.json",
+    "Library: RR_V1_SIM_EVENTS.jsonl",
+    "Library: HENGCE_V1_V43_VERSION_HISTORY_20261024.md",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/COVERAGE_V2.json",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/ENTITLEMENT_LEDGER.jsonl",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/EXECUTION_EVIDENCE.jsonl",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/IDENTITY_TRANSITIONS.jsonl",
+    "research/codex_full_reset_20261023/data_foundation_v2_20261023/REPORT.md"
+  ],
+  "decision": {
+    "status": "RR_V1_ALREADY_RUN_V2_LIMITS_EVIDENCE_GRADE",
+    "rerun": false,
+    "next_legal_action": "Do not rerun or tune RR V1. Preserve the existing result and V2 unknowns. Any future confirmatory claim requires a separately preregistered prospective post-lock protocol rather than retroactively repairing the consumed evaluation."
+  }
+}

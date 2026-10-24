@@ -1,0 +1,19 @@
+{
+  "status": "BLOCKED",
+  "v43_q017_current_snapshot_bytes_identical": true,
+  "seed_key_differences": "PIT_KEY_DIFFS.jsonl",
+  "historical_warmup_rows_asserted": 313749,
+  "historical_warmup_dates_asserted": [
+    "2023-01-03",
+    "2025-12-31"
+  ],
+  "warmup_bridge_proven": false,
+  "canonical_cross_source_identity_proven": false,
+  "four_digit_domain_difference_resolved": false,
+  "raw_daily_membership_reconciled": false,
+  "silent_intersection": false,
+  "non_four_digit_rows_dropped": false,
+  "sources_blended": false,
+  "v43_used_as_replacement": false,
+  "limitation": "Full row-level reconciliation and bridge cannot be certified without canonical bytes. Existing metadata is not promoted to proof."
+}

@@ -1,0 +1,39 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "main_write_authorized": false,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "config_sha256": "0d1d1baec39a1a36711473c5a902f45e65511a0069627ca4c702609dde3a582a",
+  "configurations_evaluated": 0,
+  "events_file_is_empty": true,
+  "external_anchor": "Pushed Git commit containing these evidence bytes; compare checkpoint against commit history, not a self-contained hash alone.",
+  "family_search": 0,
+  "files_sha256": {
+    "../readiness.py": "7fae1d9e28fdcf35c9ee2505c7fe247c088c65d7e5677787edd233177eb9a4bf",
+    "../test_readiness.py": "c35567a9699a0e80b6ec8681b741ec45d73dc325577c3eff8cabc0993e6792b2",
+    "RR_V1_DATA_LINEAGE.json": "b95ae7612c5b686dc41d11e4b8b9c3f615bc1370a2d576a4aaf70f214c4a70a8",
+    "RR_V1_EVENTS.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RR_V1_READINESS.json": "552df2afca2eb7367b8c9a554f0e624f8a078fe9a849384d92669b72f510171c",
+    "RR_V1_REPORT.md": "e13feeff9d53fdf036815c3336d91b94ec4e2c213204758a76f77a2bc7f4f78a",
+    "RR_V1_RESULT.json": "a33487a233dfd9af8a18ace939871a2f449d80d5ef56f205c84b5f59a9ffe2bc"
+  },
+  "frozen_implementation_sha256": "6a6cbfbfec03c98cd69dc16512c11e9c3d151171df4caee5300b0bc8f59b4c9c",
+  "main_operations": "Fetch/read only. This tool contains no commit, push, merge, rebase, feature or simulation operation.",
+  "market_downloads": 0,
+  "new_model_evaluations": 0,
+  "parameter_tuning": 0,
+  "preregistration_commit": "2da94b21025a71dc74de78a041e4e6280ce792bb",
+  "preregistration_sha256": "79aca51a1c716cd40933eb1a0ab3564bb29cb367eae3c29603a1f360d06b20ee",
+  "prior_model_evaluations": 8529,
+  "scope_audit": "git diff against task commit permits only rr_v1_20261023/** and the existing offline-contract CI workflow; all prior evidence and production bytes unchanged",
+  "second_mother_created": false,
+  "status": "PASS_BLOCKED_READINESS_EVIDENCE_ONLY",
+  "task_commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+  "total_model_evaluations": 8529
+}

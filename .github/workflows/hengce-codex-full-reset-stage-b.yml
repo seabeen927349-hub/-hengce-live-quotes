@@ -1,0 +1,106 @@
+name: HENGCE Codex Full Reset Stage B Mother
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/stage_b_build_twse_year.py'
+      - 'research/codex_full_reset_20261023/stage_b_merge_twse_years.py'
+      - '.github/workflows/hengce-codex-full-reset-stage-b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: hengce-codex-full-reset-stage-b-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-year:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        year: [2023, 2024, 2025]
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Offline data-contract regressions
+        run: python -B research/codex_full_reset_20261023/test_stage_b_contracts.py
+      - name: Compile yearly builder
+        run: python -m py_compile research/codex_full_reset_20261023/stage_b_build_twse_year.py
+
+      - name: Build exact-membership TWSE electronics year
+        run: |
+          python research/codex_full_reset_20261023/stage_b_build_twse_year.py \
+            --year ${{ matrix.year }} \
+            --out-dir research/codex_full_reset_20261023/results/stage_b_year_${{ matrix.year }}
+
+      - name: Print yearly receipt
+        if: always()
+        run: cat research/codex_full_reset_20261023/results/stage_b_year_${{ matrix.year }}/TWSE_MOTHER_RECEIPT_${{ matrix.year }}.json 2>/dev/null || true
+
+      - name: Upload yearly shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-stage-b-year-${{ matrix.year }}
+          path: research/codex_full_reset_20261023/results/stage_b_year_${{ matrix.year }}/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
+
+  merge-years:
+    needs: build-year
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile merger
+        run: python -m py_compile research/codex_full_reset_20261023/stage_b_merge_twse_years.py
+
+      - name: Download all verified yearly shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: hengce-stage-b-year-*
+          path: research/codex_full_reset_20261023/results/stage_b_shards
+          merge-multiple: true
+
+      - name: Merge and hash-verify exact electronics mother
+        run: |
+          python research/codex_full_reset_20261023/stage_b_merge_twse_years.py \
+            --input-dir research/codex_full_reset_20261023/results/stage_b_shards \
+            --output-dir research/codex_full_reset_20261023/results/stage_b
+
+      - name: Print merged receipt
+        run: cat research/codex_full_reset_20261023/results/stage_b/TWSE_MOTHER_RECEIPT.json
+
+      - name: Upload final Stage B mother and QA
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-codex-full-reset-stage-b-mother
+          path: research/codex_full_reset_20261023/results/stage_b/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6

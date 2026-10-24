@@ -1,0 +1,147 @@
+{
+  "status": "PASS_ACCESSIBILITY_AND_20261021_ARTIFACT_AUTHENTICITY",
+  "computed": {
+    "sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
+    "size_bytes": 19909112,
+    "rows": 207218,
+    "columns": [
+      "Date",
+      "Ticker",
+      "Name",
+      "Volume",
+      "Turnover",
+      "Open",
+      "High",
+      "Low",
+      "Close",
+      "Margin_MarginBalance",
+      "ForeignNet",
+      "TrustNet",
+      "TotalNet"
+    ],
+    "min_date": "2026-01-02",
+    "max_date": "2026-10-21",
+    "unique_dates": 192,
+    "unique_tickers": 1144,
+    "duplicate_date_ticker_rows": 0,
+    "rows_2026_10_21": 1088,
+    "rows_2026_10_22": 0
+  },
+  "latest_missing_tickers": {
+    "Date": [],
+    "Ticker": [],
+    "Name": [],
+    "Volume": [],
+    "Turnover": [],
+    "Open": [],
+    "High": [],
+    "Low": [],
+    "Close": [],
+    "Margin_MarginBalance": [
+      "1341",
+      "2227",
+      "2237",
+      "2258",
+      "2923",
+      "2945",
+      "4178",
+      "4195",
+      "4582",
+      "6467",
+      "6908",
+      "6921",
+      "6924",
+      "6947",
+      "6955",
+      "6969",
+      "6988",
+      "7610",
+      "7689",
+      "7760",
+      "7768",
+      "7803",
+      "7812",
+      "7818",
+      "7821",
+      "7827",
+      "7835",
+      "7855",
+      "8908",
+      "9110"
+    ],
+    "ForeignNet": [
+      "1213",
+      "2321",
+      "2424",
+      "3018",
+      "3593",
+      "4581",
+      "4943",
+      "8101",
+      "9928"
+    ],
+    "TrustNet": [
+      "1213",
+      "2321",
+      "2424",
+      "3018",
+      "3593",
+      "4581",
+      "4943",
+      "8101",
+      "9928"
+    ],
+    "TotalNet": [
+      "1213",
+      "2321",
+      "2424",
+      "3018",
+      "3593",
+      "4581",
+      "4943",
+      "8101",
+      "9928"
+    ]
+  },
+  "receipt_identity_match": true,
+  "receipt_null_ticker_sets_match": true,
+  "new_model_evaluations": 0,
+  "canonical_bytes_modified": false,
+  "second_mother_created": false,
+  "pit_electronics_membership_proven": false,
+  "warmup_bridge_proven": false,
+  "promotion_20261022_proven": false,
+  "source_inventory": [
+    {
+      "path": "CODEX_BRIDGE_INSTRUCTIONS.md",
+      "bytes": 1363,
+      "sha256": "2fa13e4b6bf998abcc2dc7c62ba373ee74793f0edd7d86ec48e9388798f2eda6"
+    },
+    {
+      "path": "EOD_20261022_STATUS_SNAPSHOT.json",
+      "bytes": 1207,
+      "sha256": "559abef0333118d50fd7ff1606d3a0ee7f415c7db7aca43f89d9b627416df8b0"
+    },
+    {
+      "path": "HENGCE_2026_HIST_MOTHER.csv",
+      "bytes": 19909112,
+      "sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47"
+    },
+    {
+      "path": "HENGCE_CANONICAL_STATE.json",
+      "bytes": 1567,
+      "sha256": "ac016e1b3a2fdfbe2e5b2f39a2f76e42295d6a88353ade65d8aa110b0d3bd8f0"
+    },
+    {
+      "path": "HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261021.json",
+      "bytes": 2360,
+      "sha256": "810890111e8b04595c988d9b8e063e669d0effee33121e475c838a3e72993fbc"
+    },
+    {
+      "path": "MOTHER_VERIFICATION.json",
+      "bytes": 1188,
+      "sha256": "907c67a9e9fc5f6d7bb766194fcbc4fa82ef3b99818b7e10b4dd74ed117e6766"
+    }
+  ],
+  "interpretation": "Hash identity, schema/key checks and receipt consistency authenticate the supplied 10/21 artifact. They do not independently verify every official raw value, PIT sector membership, historical instrument identity or 10/22 promotion."
+}

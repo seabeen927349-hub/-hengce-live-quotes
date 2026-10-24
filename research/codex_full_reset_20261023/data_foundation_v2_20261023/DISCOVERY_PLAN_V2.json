@@ -1,0 +1,31 @@
+{
+  "attempts": 1,
+  "maximum_requests": 4,
+  "new_model_evaluation_budget": 0,
+  "purpose": "Bounded official-issuer/MOPS disclosure discovery for payment/delivery dates absent from TWT49UDetail; separate from the14-request frozen batch",
+  "sources": [
+    {
+      "family": "ISSUER_PROMATE",
+      "id": "PROMATE_DIVIDEND",
+      "url": "https://www.promate.com.tw/investors-relations/dividend/"
+    },
+    {
+      "family": "ISSUER_TWINHEAD",
+      "id": "TWINHEAD_MOPS_LINKS",
+      "url": "https://www.twinhead.com.tw/market-observation-post-system/"
+    },
+    {
+      "family": "MOPS",
+      "id": "MOPS_6189_202508",
+      "url": "https://mops.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&TYPEK=all&co_id=6189&year=114&month=08"
+    },
+    {
+      "family": "MOPS",
+      "id": "MOPS_2364_202509",
+      "url": "https://mops.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&TYPEK=all&co_id=2364&year=114&month=09"
+    }
+  ],
+  "spacing_seconds": 1.5,
+  "stop": "No authentication, CAPTCHA or rate-limit bypass. If MOPS family denies access or presents a challenge, do not request another MOPS route. Retain raw refusal; no inferred terms. Current issuer pages cannot establish historic first-seen.",
+  "timeout_seconds": 25
+}

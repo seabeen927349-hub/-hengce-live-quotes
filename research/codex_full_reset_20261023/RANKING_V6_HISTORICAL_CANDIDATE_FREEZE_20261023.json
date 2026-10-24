@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "created_date": "2026-10-23",
+  "status": "HISTORICAL_RESEARCH_CANDIDATE_FOUND",
+  "name": "HENGCE_ELECTRONICS_RANKING_V6",
+  "config_sha256": "3774a8078aa9c7d2c2813cc832857191484b8bf6e7939b9a8eed102c45ed8b82",
+  "frozen_config": {
+    "profile": "MOM_RR20",
+    "score_formula": "0.20*rank(-Residual5)+0.25*rank(R20)+0.30*rank(R60-R5)+0.05*rank(Turnover20)+0.20*rank(-Vol20)",
+    "residual_horizon": 5,
+    "turnover20_min": 20000000.0,
+    "top_n": 3,
+    "holding_sessions": 20,
+    "regime": "ALL",
+    "entry": "next session open",
+    "exit": "close after 20 sessions",
+    "equal_weight": true,
+    "non_overlapping": true,
+    "jump_guard": 0.15,
+    "costs": [0.008, 0.012, 0.016],
+    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY_4DIGIT"
+  },
+  "historical_screening": {
+    "periods": ["2024", "2025", "2026-01-01_to_2026-10-22"],
+    "cost_012": {
+      "2024": {"baskets": 11, "wins": 6, "win_rate": 0.5454545454545454, "return": 0.2942604576042107, "max_drawdown": -0.22632166976916368, "remove_best_return": 0.07087321908522659},
+      "2025": {"baskets": 11, "wins": 8, "win_rate": 0.7272727272727273, "return": 0.4191748947341225, "max_drawdown": -0.3000710237354728, "remove_best_return": 0.21157444127889868},
+      "2026": {"baskets": 8, "wins": 5, "win_rate": 0.625, "return": 0.9069938538123095, "max_drawdown": -0.29390473237009496, "remove_best_return": 0.218385588696552},
+      "combined": {"baskets": 30, "wins": 19, "win_rate": 0.6333333333333333, "return": 2.502731886924238, "max_drawdown": -0.40608721504832834, "remove_best_return": 1.237908655848456}
+    },
+    "cost_016": {
+      "2024_return": 0.2394920883087175,
+      "2025_return": 0.35962736826456587,
+      "2026_return": 0.8506536798124542,
+      "combined_return": 2.1188092393042277,
+      "combined_max_drawdown": -0.425192113791092
+    },
+    "risk_guards": {
+      "all_years_positive_at_012": true,
+      "all_years_positive_at_016": true,
+      "all_years_remove_best_positive_at_012": true,
+      "worst_annual_drawdown_better_than_minus_35pct": true,
+      "combined_drawdown_better_than_minus_45pct": true,
+      "max_losing_streak_baskets": 2,
+      "max_single_ticker_basket_share": 0.13333333333333333,
+      "total_stock_positions": 90
+    }
+  },
+  "evidence": {
+    "workflow_run_id": 39975915656,
+    "workflow_head": "8430ccccf66fabc3b12b1dd6bc5ec66cc1e7d4d9",
+    "artifact_id": 12510858662,
+    "artifact_sha256": "6afee5b2f93abaa28da755f9c25a5f249038ddedc2af889a16f318d06d4a9ebb",
+    "search_status": "RISK_CONTROLLED_ROBUST_CANDIDATE",
+    "evaluated_configs": 678
+  },
+  "authority": {
+    "research_only": true,
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "signal_authority": false,
+    "ranking_authority": false,
+    "production_promotion": false,
+    "merge_authorized": false,
+    "main_write_authorized": false
+  },
+  "next_step": "FREEZE_AND_PROSPECTIVE_SHADOW; do not continue tuning on exposed 2024-2026 history unless a separately preregistered model-science hypothesis is approved.",
+  "caveat": "2024-2026 are exposed historical screening data. This is the best risk-controlled candidate found in the bounded searches, not pristine OOS proof and not a guarantee of future profit."
+}

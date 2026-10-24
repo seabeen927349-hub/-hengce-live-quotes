@@ -1,0 +1,43 @@
+name: HENGCE RR V1 Frozen 2026 Simulation
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/rr_v1_20261023/run_frozen_2026_simulation.py'
+      - '.github/workflows/hengce-rr-v1-frozen-2026-simulation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-rr-v1-frozen-2026-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run exactly one frozen RR V1 simulation
+        run: python -u research/codex_full_reset_20261023/rr_v1_20261023/run_frozen_2026_simulation.py
+      - name: Print result
+        if: always()
+        run: cat research/codex_full_reset_20261023/rr_v1_20261023/simulation_20261023/RR_V1_SIM_RESULT.json 2>/dev/null || true
+      - name: Upload result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-rr-v1-frozen-2026-simulation
+          path: research/codex_full_reset_20261023/rr_v1_20261023/simulation_20261023/
+          if-no-files-found: warn
+          retention-days: 30

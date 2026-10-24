@@ -1,0 +1,76 @@
+{
+  "inputs": [
+    {
+      "path": "MAIN_TREE.json",
+      "bytes": 226088,
+      "sha256": "10b390d1ba795f18ce9ecc775d6ad926024bd03420a5f2797195bf38690e30bc"
+    },
+    {
+      "path": "RESEARCH_TREE.json",
+      "bytes": 345759,
+      "sha256": "b8202783860b21b057200fdf10393c68c448ec456946ff5d17062ed088c8c142"
+    },
+    {
+      "path": "bbc2e123fc7007adab576406373ce5a553aeaafe/hengce/v43_daily/data_sync_latest.json",
+      "bytes": 884,
+      "sha256": "4c75b9e0931a3d89756b61c13b1b29684d63ad993cedbba07343d3efaeb78f72"
+    },
+    {
+      "path": "bbc2e123fc7007adab576406373ce5a553aeaafe/scripts/hengce_v43_history_sync.py",
+      "bytes": 6261,
+      "sha256": "ede9e1d087e6bbf9383fd81847775199dd65745bc437b9b64b3ec3e3464c2dff"
+    },
+    {
+      "path": "d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8/eod/20261021/receipts/mother.json",
+      "bytes": 1524,
+      "sha256": "8cebf051f15ad6fb93cfb63e0cb5f13f46bed6358af734f938fe00889ee39801"
+    },
+    {
+      "path": "d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8/eod/20261022/status.json",
+      "bytes": 2016,
+      "sha256": "5f7284fc198048e508ed1b2d1c15b6d964eb28a10ea622cda72f298f61b234b3"
+    },
+    {
+      "path": "d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8/research/codex_full_reset_20261023/data_foundation_v2_20261023/results/READINESS_V2.json",
+      "bytes": 2872,
+      "sha256": "97d8c5c2fdd3ce6be0140bb386d60732bd62c7ae5b2dfca3f3675c08ca827f5b"
+    },
+    {
+      "path": "d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8/research/codex_full_reset_20261023/stage_c_rule_search.py",
+      "bytes": 48912,
+      "sha256": "6a6cbfbfec03c98cd69dc16512c11e9c3d151171df4caee5300b0bc8f59b4c9c"
+    },
+    {
+      "path": "d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8/research/e2_profit_max/macro/sox_daily_202212_202610.csv",
+      "bytes": 69114,
+      "sha256": "dd1d86f7f0003dd6286596f454100cab91e7edd32db56f2e5a4e49dfa006db14"
+    },
+    {
+      "path": "research/codex_full_reset_20261023/CODEX_RR_V1_TASK.md",
+      "bytes": 2831,
+      "sha256": "62c92de526f750de9a025c0c762668b741ef32a97675ac6506285e1f56c70335"
+    },
+    {
+      "path": "research/codex_full_reset_20261023/RR_V1_PREREG_20261023.json",
+      "bytes": 3463,
+      "sha256": "79aca51a1c716cd40933eb1a0ab3564bb29cb367eae3c29603a1f360d06b20ee"
+    },
+    {
+      "path": "research/codex_full_reset_20261023/rr_v1_20261023/results/RR_V1_AUDIT.json",
+      "bytes": 2163,
+      "sha256": "9698e4b54aee93a33e62072c76daf8eb3a7be17e1de8a74c8e7a852ac87392d5"
+    },
+    {
+      "path": "research/codex_full_reset_20261023/rr_v1_20261023/results/RR_V1_DATA_LINEAGE.json",
+      "bytes": 11326,
+      "sha256": "b95ae7612c5b686dc41d11e4b8b9c3f615bc1370a2d576a4aaf70f214c4a70a8"
+    },
+    {
+      "path": "research/codex_full_reset_20261023/rr_v1_20261023/results/RR_V1_READINESS.json",
+      "bytes": 1119,
+      "sha256": "552df2afca2eb7367b8c9a554f0e624f8a078fe9a849384d92669b72f510171c"
+    }
+  ],
+  "status": "HASHED_ACTUALLY_READ_BYTES",
+  "unread_source_hashes": "Historical lineage assertions remain attributed, not independently verified SHA256."
+}

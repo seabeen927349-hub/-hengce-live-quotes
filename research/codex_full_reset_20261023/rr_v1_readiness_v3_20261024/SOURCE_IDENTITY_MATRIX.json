@@ -1,0 +1,276 @@
+{
+  "sources": [
+    {
+      "bytes": 3463,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "research/codex_full_reset_20261023/RR_V1_PREREG_20261023.json",
+      "sha256": "79aca51a1c716cd40933eb1a0ab3564bb29cb367eae3c29603a1f360d06b20ee",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 2831,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "research/codex_full_reset_20261023/CODEX_RR_V1_TASK.md",
+      "sha256": "62c92de526f750de9a025c0c762668b741ef32a97675ac6506285e1f56c70335",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 48912,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "research/codex_full_reset_20261023/stage_c_rule_search.py",
+      "sha256": "6a6cbfbfec03c98cd69dc16512c11e9c3d151171df4caee5300b0bc8f59b4c9c",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 6730848,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "coverage": {
+        "columns": [
+          "date",
+          "ticker",
+          "name",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume_shares",
+          "turnover_ntd"
+        ],
+        "date_max": "2026-10-22",
+        "date_min": "2026-01-02",
+        "distinct_dates": 194,
+        "explicit_missing_numeric_fields": {
+          "close": 79,
+          "high": 79,
+          "low": 79,
+          "open": 79
+        },
+        "non_four_digit_ticker_rows": {
+          "3036A": 29,
+          "8112A": 189
+        },
+        "rows": 88442
+      },
+      "path": "hengce/q017_radar/data/twse_electronics_history_2026.csv",
+      "sha256": "e46c5788404dcf8ac780af75f84cbb3c39cb63f11d161113a8356d1a19f3d26a",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 5968,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "coverage": {
+        "columns": [
+          "date",
+          "close"
+        ],
+        "date_max": "2026-10-21",
+        "date_min": "2026-01-02",
+        "distinct_dates": 202,
+        "explicit_missing_numeric_fields": {},
+        "non_four_digit_ticker_rows": {},
+        "rows": 202
+      },
+      "path": "hengce/q017_radar/data/sox_2026.csv",
+      "sha256": "ac58b866699af32c5e58735f03be924628ecce90f4a09d885f47da566366c472",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 192,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "hengce/q017_radar/data/sox_status.json",
+      "sha256": "6310b0896e6c7f6debe7256b4624338abe1ba65cec453b809706118f9a0d1143",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 69114,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "coverage": {
+        "columns": [
+          "date",
+          "close",
+          "ret1",
+          "ret5"
+        ],
+        "date_max": "2026-10-16",
+        "date_min": "2022-12-01",
+        "distinct_dates": 972,
+        "explicit_missing_numeric_fields": {},
+        "non_four_digit_ticker_rows": {},
+        "rows": 972
+      },
+      "path": "research/e2_profit_max/macro/sox_daily_202212_202610.csv",
+      "sha256": "dd1d86f7f0003dd6286596f454100cab91e7edd32db56f2e5a4e49dfa006db14",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 6521713,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "coverage": {
+        "columns": [
+          "date",
+          "ticker",
+          "name",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume_shares",
+          "turnover_ntd"
+        ],
+        "date_max": "2025-12-31",
+        "date_min": "2023-01-03",
+        "distinct_dates": 724,
+        "explicit_missing_numeric_fields": {
+          "close": 271,
+          "high": 271,
+          "low": 271,
+          "open": 271
+        },
+        "non_four_digit_ticker_rows": {},
+        "rows": 313749
+      },
+      "path": "research/codex_full_reset_20261023/results/stage_b/TWSE_ELECTRONICS_DAILY_2023_2025.csv.gz",
+      "sha256": "e3012612fcf3c38c05f5c7defdf7160a0de481db21ca6381ab53178091ad3f6b",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 2940,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "research/codex_full_reset_20261023/results/stage_b/TWSE_MOTHER_RECEIPT.json",
+      "sha256": "2489f46a4aed077732dc8030e0704ae350f023b123a7f9ff4a689ecfe4b64e35",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 3730,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "research/e2_profit_max/membership/membership_receipt.json",
+      "sha256": "b7bd8cf0a273f8c38ebed93957e2dfd6f97f7fc887fe78186932424def6262b8",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 24266,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "scripts/hengce_daily_command_center_core_legacy.py",
+      "sha256": "54386d628237058c8108212b00d1be18da24abc341af114d516eded245702b65",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 1524,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "eod/20261021/receipts/mother.json",
+      "sha256": "8cebf051f15ad6fb93cfb63e0cb5f13f46bed6358af734f938fe00889ee39801",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 2016,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "eod/20261022/status.json",
+      "sha256": "5f7284fc198048e508ed1b2d1c15b6d964eb28a10ea622cda72f298f61b234b3",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 2872,
+      "commit": "868cf34fae807472506df5a4d008ab0d9af12536",
+      "path": "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/READINESS_V2.json",
+      "sha256": "97d8c5c2fdd3ce6be0140bb386d60732bd62c7ae5b2dfca3f3675c08ca827f5b",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 1400,
+      "commit": "09e59c5a0142a73be9d7ad0d50388444232d0a8e",
+      "path": "research/q017_sox_tw_electronics/archive_2026/acquisition_receipt_2026.json",
+      "sha256": "8662c8002377bb1ff8a44256d3a45b390a3a325300af2206f298f14d55738be1",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 6610875,
+      "commit": "09e59c5a0142a73be9d7ad0d50388444232d0a8e",
+      "coverage": {
+        "columns": [
+          "date",
+          "ticker",
+          "name",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume_shares",
+          "turnover_ntd"
+        ],
+        "date_max": "2026-10-16",
+        "date_min": "2026-01-02",
+        "distinct_dates": 190,
+        "explicit_missing_numeric_fields": {
+          "close": 74,
+          "high": 74,
+          "low": 74,
+          "open": 74
+        },
+        "non_four_digit_ticker_rows": {
+          "3036A": 29,
+          "8112A": 190
+        },
+        "rows": 86615
+      },
+      "path": "research/q017_sox_tw_electronics/archive_2026/twse_electronics_membership_2026.csv",
+      "sha256": "1b90e8d1d1e12c77bda968cb5785e572eea05c9a410cfb164df46257836f1260",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 6452,
+      "commit": "09e59c5a0142a73be9d7ad0d50388444232d0a8e",
+      "path": "research/q017_sox_tw_electronics/archive_2026/twse_electronics_daily_qa_2026.csv",
+      "sha256": "25470fb61ee4c6ce474728706cb3e64307ceda1c67552e8fbb21822ac94e7da9",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 8013,
+      "commit": "09e59c5a0142a73be9d7ad0d50388444232d0a8e",
+      "path": "research/q017_sox_tw_electronics/acquire_2026_sox_dxy_pit.py",
+      "sha256": "dcb8873c0377cc00a87d90bce39ebeeb57d82e2d27ac3b3b6c41990739109c5c",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "bytes": 2016,
+      "commit": "0b7781bfacc261128fb3720dda8a81225c8996e7",
+      "path": "eod/20261022/status.json",
+      "sha256": "5f7284fc198048e508ed1b2d1c15b6d964eb28a10ea622cda72f298f61b234b3",
+      "verification_level": "INHERITED_LINEAGE_ASSERTION",
+      "read_in_this_stage": false
+    },
+    {
+      "path": "hengce/v43_daily/data/twse_electronics_history_2026.csv",
+      "commit": "bbc2e123fc7007adab576406373ce5a553aeaafe",
+      "git_blob_sha": "b84c642f262fdcb7ba68018548f4d90b1ff41b9e",
+      "bytes": 6730848,
+      "verification_level": "COMPLETE_TREE_GIT_IDENTITY",
+      "identical_to_q017_main_and_research": true,
+      "sha256_inherited_from_identical_q017": "e46c5788404dcf8ac780af75f84cbb3c39cb63f11d161113a8356d1a19f3d26a",
+      "ownership": "V43_OWNED",
+      "runtime_dependency": "Official TWSE Type13, per retained sync receipt/code; equal snapshot bytes do not establish ongoing Q017 dependency",
+      "role": "reconciliation_only",
+      "source_receipt": "bbc2e123fc7007adab576406373ce5a553aeaafe/hengce/v43_daily/data_sync_latest.json"
+    }
+  ],
+  "snapshot_identity_proven": true,
+  "actual_csv_body_fetch": "GitHub fetch_file returned empty content for >1MB files, including bounded line request. Empty response is NOT a zero-row dataset. No alternative download/bypass attempted after canonical gate failed.",
+  "schema_date_counts": "2026 Q017 and historical/seed metadata are attributed to immutable prior lineage; no new row scan claimed."
+}

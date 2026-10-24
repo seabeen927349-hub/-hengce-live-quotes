@@ -1,0 +1,37 @@
+name: HENGCE Ranking V15 LIQ_TREND Weak075
+
+on:
+  push:
+    branches: [research/codex-full-reset-run-20261023]
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v15_liqtrend_weak075.py'
+      - '.github/workflows/hengce-ranking-v15-liqtrend-weak075.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run V15 fixed challenger
+        run: python -u research/codex_full_reset_20261023/ranking_v15_liqtrend_weak075.py
+      - name: Print result
+        if: always()
+        run: cat research/codex_full_reset_20261023/ranking_v15_liqtrend_weak075_result.json 2>/dev/null || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v15-liqtrend-weak075
+          path: |
+            research/codex_full_reset_20261023/ranking_v15_liqtrend_weak075_result.json
+            research/codex_full_reset_20261023/ranking_v15_events.jsonl
+          if-no-files-found: warn
+          retention-days: 30

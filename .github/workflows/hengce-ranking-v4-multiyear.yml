@@ -1,0 +1,35 @@
+name: HENGCE Ranking V4 Cross-Year
+
+on:
+  push:
+    branches: [research/codex-full-reset-run-20261023]
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v4_fixed_multiyear.py'
+      - '.github/workflows/hengce-ranking-v4-multiyear.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run frozen V4 cross-year validation
+        run: python -u research/codex_full_reset_20261023/ranking_v4_fixed_multiyear.py
+      - name: Print result
+        if: always()
+        run: cat research/codex_full_reset_20261023/ranking_v4_fixed_multiyear_result.json 2>/dev/null || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v4-multiyear
+          path: research/codex_full_reset_20261023/ranking_v4_fixed_multiyear_result.json
+          if-no-files-found: warn
+          retention-days: 30
