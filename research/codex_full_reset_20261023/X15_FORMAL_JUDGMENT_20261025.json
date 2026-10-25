@@ -1,0 +1,95 @@
+{
+  "system": "HENGCE",
+  "model": "X15",
+  "record_type": "formal_research_judgment",
+  "judgment_date": "2026-10-25",
+  "hypothesis": "retain exact X12 stock picks, exposures and upstream risk controls; after the same four-observation minimum, take an X12-eligible trade only when the current X10 confidence multiplier is at or above the expanding prior-only median; preserve X12 warmup before four priors",
+  "formal_run": {
+    "run_id": 40170777863,
+    "job_id": 121100980777,
+    "head_sha": "e88482a1b3b9d7fac53cf80e6f30bde54bbcc6ad",
+    "conclusion": "success"
+  },
+  "formal_artifact": {
+    "artifact_id": 12589849980,
+    "name": "hengce-ranking-x15-prior-median-take-gate",
+    "digest": "sha256:039355fd1f8832b985558bb8ca344eb1d34d6057b36f55c59f6396d722502cea",
+    "events_sha256": "3ae47b80848fb46af9bba5763fed0d5d48ebb8dfb545417954479ede56a544f7"
+  },
+  "formal_status": "X15_RAISES_WIN_RATE_BUT_NOT_FULL_FRONTIER",
+  "complete_common_schedule": true,
+  "invalid": [],
+  "robust": true,
+  "raises_win_rate": true,
+  "strictly_dominates_x12": false,
+  "x15_metrics": {
+    "cost_0.012": {
+      "scheduled_baskets": 30,
+      "active_trades": 19,
+      "wins": 16,
+      "win_rate": 0.8421052631578947,
+      "compounded_return": 3.318352439654534,
+      "max_drawdown": -0.16526293715335127,
+      "remove_best_active_trade_return": 1.85963544592581,
+      "mean_active_net_return": 0.08631802347432528,
+      "best_active_trade_net": 0.5101059282948089,
+      "worst_active_trade_net": -0.05379463816370807,
+      "max_single_name_weight": 0.5000000000000001,
+      "mean_exposure_all_schedule": 0.48437715038907986
+    },
+    "cost_0.016": {
+      "scheduled_baskets": 30,
+      "active_trades": 19,
+      "wins": 16,
+      "win_rate": 0.8421052631578947,
+      "compounded_return": 3.0933591741779534,
+      "max_drawdown": -0.1682142114729389,
+      "remove_best_active_trade_return": 1.717481951897899,
+      "mean_active_net_return": 0.08325879936660478,
+      "best_active_trade_net": 0.5063059282948089,
+      "worst_active_trade_net": -0.056910702913357834
+    }
+  },
+  "authoritative_x12_reference": {
+    "source": "formal artifact 12586973752; see X12_FRONTIER_LOCK_ERRATUM_20261025.json",
+    "cost_0.012": {
+      "active_trades": 24,
+      "wins": 18,
+      "win_rate": 0.75,
+      "compounded_return": 3.6216429752938364,
+      "max_drawdown": -0.16526293715335127,
+      "remove_best_active_trade_return": 2.0604760160848667,
+      "mean_active_net_return": 0.07133763923789027,
+      "mean_exposure_all_schedule": 0.5697522611500941
+    }
+  },
+  "delta_x15_minus_x12_cost_0.012": {
+    "win_rate": 0.09210526315789469,
+    "compounded_return": -0.3032905356393023,
+    "max_drawdown": 0.0,
+    "remove_best_active_trade_return": -0.20084057015905676,
+    "mean_active_net_return": 0.01498038423643501,
+    "mean_exposure_all_schedule": -0.08537511076101428
+  },
+  "baseline_verification": {
+    "formal_x12_scheduled_events_compared": 30,
+    "x15_pre_gate_against_formal_x12_event_mismatches": 0,
+    "comparison_valid": true
+  },
+  "disposition": "RETAIN_AS_NON_FRONTIER_RESEARCH_RESULT",
+  "frontier_after_judgment": "X12",
+  "reason": "X15 raises active-trade win rate from 75% to 84.21% and preserves X12 max drawdown, but reduces compounded return from +362.16% to +331.84% and remove-best return from +206.05% to +185.96%; therefore it does not strictly dominate X12.",
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  },
+  "production_untouched": true,
+  "x12_shadow_untouched": true,
+  "q017_write": false,
+  "e2_write": false,
+  "m1_write": false,
+  "pr_30_merge_authorized": false
+}
