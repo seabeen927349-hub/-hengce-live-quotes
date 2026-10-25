@@ -22,8 +22,9 @@ MIN_PRE_TRADES=80
 MAX_PRE_TRADES=125
 
 
-def ranks(vals, reverse=False):
-    a=sorted(vals.items(),key=lambda kv:((-kv[1]) if reverse else kv[1],kv[0])); n=len(a)
+def ranks(vals):
+    # Ascending raw value -> percentile rank, so the largest score receives 1.0.
+    a=sorted(vals.items(),key=lambda kv:(kv[1],kv[0])); n=len(a)
     if n<=1:return {t:.5 for t,v in a}
     return {t:i/(n-1) for i,(t,v) in enumerate(a)}
 
@@ -32,15 +33,15 @@ STATE={}
 for d in DATES:
     e={t:r for t,r in BY[d].items() if not r.bad and r.r5 is not None and r.r20 is not None and r.r60 is not None and r.vol20 is not None and r.turn20 is not None and r.turn20>=TURNMIN}
     if len(e)<20:continue
-    lowvol=ranks({t:-r.vol20 for t,r in e.items()},reverse=True) # high = low vol
-    mom20=ranks({t:r.r20 for t,r in e.items()},reverse=True)
-    mom60=ranks({t:r.r60 for t,r in e.items()},reverse=True)
-    pull5=ranks({t:-r.r5 for t,r in e.items()},reverse=True) # high = recent pullback
-    liq=ranks({t:math.log(max(r.turn20,1.0)) for t,r in e.items()},reverse=True)
+    lowvol=ranks({t:-r.vol20 for t,r in e.items()}) # high = low vol
+    mom20=ranks({t:r.r20 for t,r in e.items()})
+    mom60=ranks({t:r.r60 for t,r in e.items()})
+    pull5=ranks({t:-r.r5 for t,r in e.items()}) # high = recent pullback
+    liq=ranks({t:math.log(max(r.turn20,1.0)) for t,r in e.items()})
     beta={t:(r.beta60 if r.beta60 is not None and math.isfinite(r.beta60) else 1.0) for t,r in e.items()}
-    lowbeta=ranks({t:-abs(beta[t]-0.65) for t in e},reverse=True) # center defensive beta ~0.65
+    lowbeta=ranks({t:-abs(beta[t]-0.65) for t in e}) # center defensive beta ~0.65
     resid={t:(r.resid5 if r.resid5 is not None and math.isfinite(r.resid5) else r.r5) for t,r in e.items()}
-    residpull=ranks({t:-resid[t] for t in e},reverse=True)
+    residpull=ranks({t:-resid[t] for t in e})
     breadth=sum(r.r20>0 for r in e.values())/len(e)
     STATE[d]={'elig':e,'breadth':breadth,'rank':{'lowvol':lowvol,'mom20':mom20,'mom60':mom60,'pull5':pull5,'liq':liq,'lowbeta':lowbeta,'residpull':residpull}}
 
