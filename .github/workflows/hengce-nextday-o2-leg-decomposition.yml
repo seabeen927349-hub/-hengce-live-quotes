@@ -1,0 +1,31 @@
+name: HENGCE Nextday O2 Leg Decomposition
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_o2_leg_decomposition.py'
+      - '.github/workflows/hengce-nextday-o2-leg-decomposition.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run O2 leg decomposition audit
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/nextday_o2_leg_decomposition.py
+      - name: Print result
+        if: always()
+        run: test -f research/codex_full_reset_20261023/nextday_o2_leg_decomposition_result.json && cat research/codex_full_reset_20261023/nextday_o2_leg_decomposition_result.json || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-o2-leg-decomposition
+          path: research/codex_full_reset_20261023/nextday_o2_leg_decomposition_result.json
+          if-no-files-found: ignore
