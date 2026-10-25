@@ -1,0 +1,48 @@
+{
+  "contract_id": "HENGCE_Q017_SCOPE_RESOLUTION_v1_0_20261025",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-25",
+  "purpose": "Resolve reporting and authority scope between the still-effective schema-v5 09:01 Q017 observation lane and the 2026-10-23 unified Q017 candidate contract without deleting either historical contract.",
+  "inherits_prior_contracts": true,
+  "resolved_scopes": {
+    "Q017_SCHEMA5_0901_LANE": {
+      "governing_anchor": "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019",
+      "role": "CAUSAL_0901_OBSERVATION_RANKING_AND_LEGACY_REQUIRED_REVIEW_EVIDENCE",
+      "universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+      "top_n": 3,
+      "dxy_gate_required_in_its_own_scope": true,
+      "must_preserve_observation_hash_and_universe_hash": true,
+      "may_be_reported_separately": true,
+      "may_create_a_second_user_facing_formal_action_board": false
+    },
+    "UNIFIED_Q017_CANDIDATE_LANE": {
+      "governing_anchor": "HENGCE_UNIFIED_Q017_CONTRACT_v1_0_20261023",
+      "role": "INTERNAL_CANDIDATE_SOURCE_TO_SINGLE_HENGCE_ACTION_BOARD",
+      "top_n": 1,
+      "dxy_used": false,
+      "entry": "NEXT_TWSE_OPEN",
+      "exit": "FIXED_20_SESSIONS",
+      "separate_user_facing_ranking_output": false
+    }
+  },
+  "conflict_resolution": {
+    "formal_user_facing_action_authority_after_2026_10_23": "SINGLE_UNIFIED_HENGCE_ACTION_BOARD_ONLY",
+    "schema5_lane_is_not_deleted": true,
+    "schema5_lane_remains_reportable_for_old_contract_compliance": true,
+    "score_fusion_forbidden": true,
+    "topn_dxy_entry_hold_exit_must_not_be_cross_copied_between_scopes": true,
+    "if_source_provenance_or_scope_is_ambiguous": "FAIL_CLOSED_AND_REPORT_CONTRACT_CONFLICT"
+  },
+  "scan_once_semantics": {
+    "report_q017_schema5_status": true,
+    "report_unified_formal_action_output": true,
+    "do_not_label_schema5_top3_as_unified_top1": true,
+    "do_not_label_unified_h20_as_schema5_10d_review": true
+  },
+  "authority": {
+    "changes_model_logic": false,
+    "changes_broker_order_authority": false,
+    "changes_capital_authority": false,
+    "adds_formal_entry_authority": false
+  }
+}
