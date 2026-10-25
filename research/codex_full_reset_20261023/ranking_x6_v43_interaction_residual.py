@@ -13,10 +13,21 @@ V43_REF={'ret':3.4265,'dd':-0.1767,'rem':1.9312,'win':0.667,'ret16':3.0649,'rem1
 PAIRS=[(i,j) for i in range(5) for j in range(i+1,5)]
 PAIR_NAMES=[v41.FACTORS[i]+'*'+v41.FACTORS[j] for i,j in PAIRS]
 
+def rank_values(vals):
+    a=sorted(vals.items(),key=lambda kv:(kv[1],kv[0]));n=len(a);out={}
+    if n<=1:return {t:.5 for t,v in a}
+    i=0
+    while i<n:
+        j=i+1
+        while j<n and a[j][1]==a[i][1]:j+=1
+        pct=(((i+1)+j)/2-1)/(n-1)
+        for k in range(i,j):out[a[k][0]]=pct
+        i=j
+    return out
+
 def corr(x,y):
     if len(x)<10:return None
-    xb=statistics.mean(x);yb=statistics.mean(y)
-    dx=sum((a-xb)**2 for a in x);dy=sum((b-yb)**2 for b in y)
+    xb=statistics.mean(x);yb=statistics.mean(y);dx=sum((a-xb)**2 for a in x);dy=sum((b-yb)**2 for b in y)
     if dx<=1e-18 or dy<=1e-18:return None
     return sum((a-xb)*(b-yb) for a,b in zip(x,y))/math.sqrt(dx*dy)
 
@@ -24,70 +35,49 @@ def interactions(vals):
     c=[x-.5 for x in vals]
     return tuple(c[i]*c[j] for i,j in PAIRS)
 
-# Cache only canonical non-overlapping H20 anchors. Each anchor's base prediction is
-# the V43 prediction that would genuinely have existed at that anchor signal date.
 ANCH=[]
 for a in v41.ANCHORS:
     d=a['signal_date'];regime=a['regime'];F=v41.v13.features.get(d,{})
     target=v41.target_rank(d);w,_,_,_=v43.weights_at(d,regime)
     raw={t:sum(w[i]*vals[i] for i in range(5)) for t,vals in F.items() if t in target}
-    base=v41.v13.ranks(raw) if raw else {}
+    base=rank_values(raw) if raw else {}
     rows=[]
     for t in raw:
-        if t in base:
-            rows.append({'ticker':t,'z':interactions(F[t]),'resid':target[t]-base[t]})
-    ics=[]
-    for k in range(len(PAIRS)):
-        ics.append(corr([r['z'][k] for r in rows],[r['resid'] for r in rows]))
+        if t in base:rows.append({'ticker':t,'z':interactions(F[t]),'resid':target[t]-base[t]})
+    ics=[corr([r['z'][k] for r in rows],[r['resid'] for r in rows]) for k in range(len(PAIRS))]
     ANCH.append({'signal_date':d,'exit_date':a['exit_date'],'regime':regime,'rows':rows,'ics':ics})
 
 def learner(signal_date,regime):
     prior=[a for a in ANCH if a['exit_date']<signal_date and a['regime']==regime]
-    if len(prior)<MIN_ANCHORS:
-        return None,{'prior_anchors':len(prior),'fallback':True,'beta':0.0,'intercept':0.0,'weights':{n:0.0 for n in PAIR_NAMES}}
+    if len(prior)<MIN_ANCHORS:return None,{'prior_anchors':len(prior),'fallback':True,'beta':0.0,'intercept':0.0,'weights':{n:0.0 for n in PAIR_NAMES}}
     stats=[]
     for k in range(len(PAIRS)):
         z=[a['ics'][k] for a in prior if a['ics'][k] is not None]
         if len(z)<MIN_ANCHORS:stats.append(0.0);continue
-        mu=statistics.mean(z);sd=statistics.stdev(z) if len(z)>1 else 0.0
-        stats.append(mu/(sd+STAB))
+        mu=statistics.mean(z);sd=statistics.stdev(z) if len(z)>1 else 0.0;stats.append(mu/(sd+STAB))
     den=sum(abs(x) for x in stats)
-    if den<=1e-18:
-        return None,{'prior_anchors':len(prior),'fallback':True,'beta':0.0,'intercept':0.0,'weights':{n:0.0 for n in PAIR_NAMES}}
-    weights=[x/den for x in stats]
-    xs=[];ys=[]
+    if den<=1e-18:return None,{'prior_anchors':len(prior),'fallback':True,'beta':0.0,'intercept':0.0,'weights':{n:0.0 for n in PAIR_NAMES}}
+    weights=[x/den for x in stats];xs=[];ys=[]
     for a in prior:
-        vals={r['ticker']:sum(weights[k]*r['z'][k] for k in range(len(PAIRS))) for r in a['rows']}
-        ranks=v41.v13.ranks(vals) if vals else {}
+        vals={r['ticker']:sum(weights[k]*r['z'][k] for k in range(len(PAIRS))) for r in a['rows']};rr=rank_values(vals) if vals else {}
         for r in a['rows']:
-            if r['ticker'] in ranks:
-                xs.append(ranks[r['ticker']]-.5);ys.append(r['resid'])
-    if len(xs)<20:
-        return None,{'prior_anchors':len(prior),'fallback':True,'beta':0.0,'intercept':0.0,'weights':dict(zip(PAIR_NAMES,weights))}
-    xb=statistics.mean(xs);yb=statistics.mean(ys);vx=sum((x-xb)**2 for x in xs)
-    beta=sum((x-xb)*(y-yb) for x,y in zip(xs,ys))/vx if vx>1e-18 else 0.0
-    intercept=yb-beta*xb
+            if r['ticker'] in rr:xs.append(rr[r['ticker']]-.5);ys.append(r['resid'])
+    if len(xs)<20:return None,{'prior_anchors':len(prior),'fallback':True,'beta':0.0,'intercept':0.0,'weights':dict(zip(PAIR_NAMES,weights))}
+    xb=statistics.mean(xs);yb=statistics.mean(ys);vx=sum((x-xb)**2 for x in xs);beta=sum((x-xb)*(y-yb) for x,y in zip(xs,ys))/vx if vx>1e-18 else 0.0;intercept=yb-beta*xb
     return (weights,beta,intercept),{'prior_anchors':len(prior),'fallback':False,'beta':beta,'intercept':intercept,'weights':dict(zip(PAIR_NAMES,weights))}
 
 def scores_at(d,regime):
-    F=v41.v13.features.get(d,{})
-    w,diag,prior,fallback=v43.weights_at(d,regime)
-    raw={t:sum(w[i]*vals[i] for i in range(5)) for t,vals in F.items()}
-    base=v41.v13.ranks(raw) if raw else {}
-    fit,meta=learner(d,regime)
+    F=v41.v13.features.get(d,{});w,diag,prior,fallback=v43.weights_at(d,regime)
+    raw={t:sum(w[i]*vals[i] for i in range(5)) for t,vals in F.items()};base=rank_values(raw) if raw else {};fit,meta=learner(d,regime)
     meta.update({'factor_weights':dict(zip(v41.FACTORS,w)),'v43_prior_regime_anchors':len(prior),'v43_fallback':fallback})
     if fit is None:return dict(base),meta
-    iw,beta,intercept=fit
-    comp={t:sum(iw[k]*interactions(vals)[k] for k in range(len(PAIRS))) for t,vals in F.items()}
-    crank=v41.v13.ranks(comp) if comp else {}
-    out={t:base[t]+intercept+beta*(crank[t]-.5) for t in base if t in crank}
-    return out,meta
+    iw,beta,intercept=fit;comp={t:sum(iw[k]*interactions(vals)[k] for k in range(len(PAIRS))) for t,vals in F.items()};crank=rank_values(comp) if comp else {}
+    return {t:base[t]+intercept+beta*(crank[t]-.5) for t in base if t in crank},meta
 
 def build():
     out=[];invalid=[];prior_sigma=[];score_log=[]
     for b in sorted(v41.v19.v15.base,key=lambda e:e['signal_date']):
-        d=b['signal_date'];si=v41.DI[d];regime=b['regime'];scores,meta=scores_at(d,regime)
-        arr=sorted([(s,t) for t,s in scores.items()],key=lambda z:(-z[0],z[1]));picks=[t for s,t in arr[:TOPN]]
+        d=b['signal_date'];si=v41.DI[d];regime=b['regime'];scores,meta=scores_at(d,regime);arr=sorted([(s,t) for t,s in scores.items()],key=lambda z:(-z[0],z[1]));picks=[t for s,t in arr[:TOPN]]
         score_log.append({'signal_date':d,'regime':regime,'picks':picks,'top10':arr[:10],**meta})
         if len(picks)<TOPN:invalid.append([d,'NOT_ENOUGH_PICKS']);continue
         cw=v41.v27.uncapped_cov_weights(d,picks)
@@ -104,10 +94,8 @@ def build():
         for j in range(v41.v13.H+1):daily.append([outs[0][3][j][0],sum(wi*o[3][j][1] for wi,o in zip(weights,outs))])
         e={'signal_date':d,'entry_date':outs[0][1],'exit_date':outs[0][2],'tickers':picks,'uncapped_weights':uncapped,'weights':weights,'weight_cap':CAP,'sample_covariance':cov,'shrunk_covariance':shr,'gross_return':gross,'daily':daily,'regime':regime,'breadth20':b['breadth20'],'year':b['year'],'ranking_rule':'X6_V43_PLUS_PRIOR_ONLY_PAIR_INTERACTION_RESIDUAL','interaction_beta':meta['beta'],'interaction_prior_anchors':meta['prior_anchors'],'factor_weights':meta['factor_weights']}
         e['exposure']=v41.v19.exposure(e);e['vol_ratio']=v41.v19.vol_ratio(e)
-        sig=v41.v30.predicted_sigma(e);q75=v41.v30.quantile(prior_sigma,v41.v30.TAIL_Q) if len(prior_sigma)>=v41.v30.MIN_PRIOR else None
-        breadth=e.get('breadth20');fragile=(regime=='STRONG' and breadth is not None and v41.v30.BREADTH_LO<=breadth<v41.v30.BREADTH_HI);tail=(q75 is not None and sig>q75 and sig>0);mult=(q75/sig) if fragile and tail else 1.0
-        e['predicted_daily_sigma']=sig;e['prior_sigma_q75']=q75;e['fragile_strong']=fragile;e['tail_vol']=tail;e['risk_multiplier']=mult;e['base_exposure']=e['exposure'];e['exposure']=e['base_exposure']*mult
-        out.append(e);prior_sigma.append(sig)
+        sig=v41.v30.predicted_sigma(e);q75=v41.v30.quantile(prior_sigma,v41.v30.TAIL_Q) if len(prior_sigma)>=v41.v30.MIN_PRIOR else None;breadth=e.get('breadth20');fragile=(regime=='STRONG' and breadth is not None and v41.v30.BREADTH_LO<=breadth<v41.v30.BREADTH_HI);tail=(q75 is not None and sig>q75 and sig>0);mult=(q75/sig) if fragile and tail else 1.0
+        e['predicted_daily_sigma']=sig;e['prior_sigma_q75']=q75;e['fragile_strong']=fragile;e['tail_vol']=tail;e['risk_multiplier']=mult;e['base_exposure']=e['exposure'];e['exposure']=e['base_exposure']*mult;out.append(e);prior_sigma.append(sig)
     return out,invalid,score_log
 
 def product(xs):
