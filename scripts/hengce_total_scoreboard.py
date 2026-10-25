@@ -6,6 +6,7 @@ from pathlib import Path
 
 CAP=25.0
 FACT={'NATIVE_ENTRY_SIGNAL':1.0,'WATCH_ONLY':0.5,'ENTRY_BLOCKED':0.25,'INVALID_OR_MISSING':0.0}
+RETIRED_RESEARCH_FAMILIES={'V43_FAMILY','NEXTDAY_FAMILY','X_FAMILY'}
 
 def read(p): return json.loads(Path(p).read_text(encoding='utf-8')) if Path(p).is_file() else None
 
@@ -26,22 +27,27 @@ def latest_prices(path):
 def contribution(family,rank,state,ticker,name='',detail=None):
     return {'family':family,'rank':rank,'state':state,'points':CAP/math.sqrt(rank)*FACT[state],'ticker':ticker,'name':name,'detail':detail or {}}
 
-def build(q,e,v,w,prices,price_date):
+def build(q,e,v,w,prices,price_date,retired_families=None):
+    retired=set(RETIRED_RESEARCH_FAMILIES if retired_families is None else retired_families)
     cs=[]
-    qok=isinstance(q,dict) and str(q.get('binding_status')).upper()=='PASS'
+    # Q017 schema-v5 is reporting evidence; CASH/invalid can never become a native entry via scoreboard.
+    qok=isinstance(q,dict) and str(q.get('binding_status')).upper()=='PASS'; qcash=str((q or {}).get('market_state','')).upper()=='CASH'
     qstate='ENTRY_BLOCKED' if qok else 'INVALID_OR_MISSING'
     for i,r in enumerate((q or {}).get('top3') or [],1):
         if isinstance(r,dict) and r.get('ticker'): cs.append(contribution('Q017_CANONICAL_FAMILY',i,qstate,str(r['ticker']),r.get('name',''),{'market_state':q.get('market_state'),'qualified':r.get('qualified')}))
+    # E2 successor
     if isinstance(e,dict) and isinstance(e.get('top1'),dict) and e['top1'].get('ticker'):
         entry=str(e.get('engine_status')).upper()=='ON' and str(e.get('action')).upper() not in {'OFF','ABSTAIN',''}
         state='NATIVE_ENTRY_SIGNAL' if entry else ('ENTRY_BLOCKED' if str(e.get('binding_status')).upper()=='PASS' else 'INVALID_OR_MISSING')
         r=e['top1']; cs.append(contribution('E2_PROFIT_MAX_FAMILY',1,state,str(r['ticker']),r.get('name',''),{'engine_status':e.get('engine_status'),'action':e.get('action')}))
-    if isinstance(v,dict):
+    # V43 is retired from operational research scoring; audit reconstruction may explicitly re-enable it.
+    if isinstance(v,dict) and 'V43_FAMILY' not in retired:
         sched=v.get('schedule') if isinstance(v.get('schedule'),dict) else {}; active=bool(sched.get('today_is_frozen_schedule_signal'))
         state='NATIVE_ENTRY_SIGNAL' if active else ('WATCH_ONLY' if str(v.get('status')).upper()=='PASS' else 'INVALID_OR_MISSING')
         for i,r in enumerate(((v.get('screen') or {}).get('top3') or []),1):
             if isinstance(r,dict) and r.get('ticker'): cs.append(contribution('V43_FAMILY',i,state,str(r['ticker']),r.get('name',''),{'schedule_signal':active,'score':r.get('score')}))
-    if isinstance(w,dict):
+    # W1/NEXTDAY is retired from operational research scoring; audit reconstruction may explicitly re-enable it.
+    if isinstance(w,dict) and 'NEXTDAY_FAMILY' not in retired:
         gate=bool(((w.get('economic_gate_40bp') or {}).get('pass')))
         state='NATIVE_ENTRY_SIGNAL' if gate else ('ENTRY_BLOCKED' if str(w.get('status','')).startswith('PASS') else 'INVALID_OR_MISSING')
         for i,r in enumerate(w.get('top20') or [],1):
@@ -57,6 +63,7 @@ def build(q,e,v,w,prices,price_date):
                      'native_entry_family':[x['family'] for x in active],
                      'action_state':'NATIVE_ENTRY_PRESENT_RESEARCH_OR_CANONICAL_LAYER_CHECK_REQUIRED' if active else 'NO_NATIVE_ENTRY_FROM_SCORED_FAMILIES'})
     rows.sort(key=lambda r:(-r['score'],-r['consensus_count'],r['ticker']))
+    # competition ranking: exact score ties share rank
     last=None; rank=0
     for i,r in enumerate(rows,1):
         key=round(r['score'],12)
@@ -79,17 +86,18 @@ def build(q,e,v,w,prices,price_date):
                  'conditional_if_native_lane_activates':conditional}
     lane_asof={'q017':(q or {}).get('trade_date'),'e2':(e or {}).get('signal_asof'),'v43':((v or {}).get('screen') or {}).get('signal_date'),'w1':(w or {}).get('signal_date')}
     dates={d for d in lane_asof.values() if d}
-    return {'schema_version':2,'system':'HENGCE','module':'HENGCE_TOTAL_SCOREBOARD','score_policy':'HENGCE_ATTENTION_SCORE_V1','lane_asof':lane_asof,'asof_signal_date':next(iter(dates)) if len(dates)==1 else None,
+    return {'schema_version':3,'system':'HENGCE','module':'HENGCE_TOTAL_SCOREBOARD','score_policy':'HENGCE_ATTENTION_SCORE_V1','lane_asof':lane_asof,'asof_signal_date':next(iter(dates)) if len(dates)==1 else None,
             'authority':{'display_only_meta_analysis':True,'capital_authority_twd':0,'broker_order_execution':False,'can_upgrade_entry_trigger':False},
             'family_alias_resolution':{'NEXTDAY_FAMILY':'canonical family id','W1_NEXTDAY_FAMILY':'deprecated contract alias; never a second capacity'},
             'price_reference':{'date':price_date,'role':'REFERENCE_ONLY_NOT_AUTOMATIC_BUY_PRICE'},
+            'retired_research_families':sorted(retired),
             'attention_leader':leader,'action_card':action_card,'top10':rows[:10],'rows':rows,
-            'guards':['Attention score is not trade authority.','Family capacity is never reallocated when a lane is missing.','Within NEXTDAY family a ticker can receive at most one 25-point family capacity; W1 is current registered frontier.','Resonance contributes zero points.','Buy/hold/exit must come from native active lane, never from attention score.']}
+            'guards':['Attention score is not trade authority.','Retired research families contribute zero attention points and zero trade authority.','Family capacity is never reallocated when a lane is missing or retired.','Resonance contributes zero points.','Buy/hold/exit must come from native active lane, never from attention score.']}
 
 def main():
-    ap=argparse.ArgumentParser()
-    ap.add_argument('--q017-json',type=Path,required=True);ap.add_argument('--e2-json',type=Path,required=True);ap.add_argument('--v43-json',type=Path,required=True);ap.add_argument('--w1-json',type=Path,required=True);ap.add_argument('--price-history',type=Path,required=True);ap.add_argument('--out',type=Path)
-    a=ap.parse_args(); prices,d=latest_prices(a.price_history); out=build(read(a.q017_json),read(a.e2_json),read(a.v43_json),read(a.w1_json),prices,d); text=json.dumps(out,ensure_ascii=False,indent=2,allow_nan=False)+'\n'
+    ap=argparse.ArgumentParser();
+    ap.add_argument('--q017-json',type=Path,required=True);ap.add_argument('--e2-json',type=Path,required=True);ap.add_argument('--v43-json',type=Path,required=True);ap.add_argument('--w1-json',type=Path,required=True);ap.add_argument('--price-history',type=Path,required=True);ap.add_argument('--out',type=Path);ap.add_argument('--include-retired-research',action='store_true')
+    a=ap.parse_args(); prices,d=latest_prices(a.price_history); retired=set() if a.include_retired_research else None; out=build(read(a.q017_json),read(a.e2_json),read(a.v43_json),read(a.w1_json),prices,d,retired_families=retired); text=json.dumps(out,ensure_ascii=False,indent=2,allow_nan=False)+'\n'
     if a.out:a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(text,encoding='utf-8')
     print(text,end='')
 if __name__=='__main__':main()
