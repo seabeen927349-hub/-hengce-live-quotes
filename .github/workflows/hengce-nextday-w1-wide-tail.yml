@@ -1,0 +1,38 @@
+name: HENGCE Nextday W1 Wide Tail
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_w1_wide_tail_basket.py'
+      - '.github/workflows/hengce-nextday-w1-wide-tail.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  w1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run W1 wide-tail basket
+        run: |
+          python -m research.codex_full_reset_20261023.nextday_w1_wide_tail_basket | tee /tmp/w1.log
+          grep '^W1_RESULT=' /tmp/w1.log
+      - name: Upload W1 outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-w1-wide-tail
+          if-no-files-found: warn
+          path: |
+            research/codex_full_reset_20261023/nextday_w1_wide_tail_basket_result.json
+            research/codex_full_reset_20261023/nextday_w1_wide_tail_basket_events.jsonl
