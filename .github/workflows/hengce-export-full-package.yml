@@ -36,19 +36,22 @@ jobs:
           RESEARCH_SHA=$(git -C package/research-codex-full-reset-run-20261023 rev-parse HEAD)
           rm -rf package/main/.git package/research-codex-full-reset-run-20261023/.git
           cat > package/HENGCE_FULL_PACKAGE_MANIFEST.txt <<EOF
-          HENGCE FULL PACKAGE
+          HENGCE FULL PACKAGE FOR CODEX REVIEW
           generated_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           main_sha=${MAIN_SHA}
           research_branch=research/codex-full-reset-run-20261023
           research_sha=${RESEARCH_SHA}
           latest_scan_contract=hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json
+          total_scoreboard_contract=hengce/HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_0_20261025.json
+          current_scoreboard=hengce/HENGCE_TOTAL_SCOREBOARD_CURRENT_20261025.json
+          review_focus=contract inheritance; duplicate/obsolete lines; Q017/E2/V43/X/W1/Q1 boundaries; scoreboard correctness; no-lookahead; action-gate integrity; dead code/data; reproducibility
           package_scope=complete main working tree + complete current research branch working tree
           EOF
 
       - name: Upload full package
         uses: actions/upload-artifact@v4
         with:
-          name: HENGCE_FULL_PACKAGE_20261025
+          name: HENGCE_FULL_PACKAGE_20261025_V22_CODEX
           path: package/
           include-hidden-files: true
           if-no-files-found: error
