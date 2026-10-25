@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_W1_WIDE_TAIL_CURRENT_SNAPSHOT",
+  "status": "PASS_RESEARCH_SNAPSHOT",
+  "signal_date": "2026-10-22",
+  "strategy": "W1_TAIL20",
+  "frontier": "W1 Wide Tail fixed 20-stock basket",
+  "timing": "signal after t close; predetermined entry t+1 close; exit t+2 open",
+  "authority": {
+    "reporting_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false
+  },
+  "provenance": {
+    "branch": "research/codex-full-reset-run-20261023",
+    "head_sha": "571fbf9c2fd326d9086b6658529552fbfa6736c1",
+    "workflow_run_id": 40195529538,
+    "artifact_id": 12600275035,
+    "artifact_digest": "sha256:9c3065d18480f913ab583fd8e427e939e680959d2538c56ff01b5aa362463a44",
+    "result_file": "nextday_w1_wide_tail_basket_result.json",
+    "events_file": "nextday_w1_wide_tail_basket_events.jsonl"
+  },
+  "top20": [
+    {"rank": 1, "ticker": "3481", "name": "群創"},
+    {"rank": 2, "ticker": "2434", "name": "統懋"},
+    {"rank": 3, "ticker": "8210", "name": "勤誠"},
+    {"rank": 4, "ticker": "6205", "name": "詮欣"},
+    {"rank": 5, "ticker": "2399", "name": "映泰"},
+    {"rank": 6, "ticker": "4956", "name": "光鋐"},
+    {"rank": 7, "ticker": "6937", "name": "天虹"},
+    {"rank": 8, "ticker": "3149", "name": "正達"},
+    {"rank": 9, "ticker": "2363", "name": "矽統"},
+    {"rank": 10, "ticker": "2342", "name": "茂矽"},
+    {"rank": 11, "ticker": "3338", "name": "泰碩"},
+    {"rank": 12, "ticker": "3665", "name": "貿聯-KY"},
+    {"rank": 13, "ticker": "8261", "name": "富鼎"},
+    {"rank": 14, "ticker": "8110", "name": "華東"},
+    {"rank": 15, "ticker": "6781", "name": "AES-KY"},
+    {"rank": 16, "ticker": "6525", "name": "捷敏-KY"},
+    {"rank": 17, "ticker": "3041", "name": "揚智"},
+    {"rank": 18, "ticker": "2455", "name": "全新"},
+    {"rank": 19, "ticker": "2464", "name": "盟立"},
+    {"rank": 20, "ticker": "3714", "name": "富采"}
+  ],
+  "full_rank_available": false,
+  "latest_event_outcome": {
+    "mature": false,
+    "gross_return_field_is_fail_closed_sentinel": true,
+    "fail_closed_legs": 20,
+    "reason": "signal 2026-10-22 future overnight leg was not mature at artifact generation; do not treat -15% sentinel as realized result"
+  },
+  "economic_gate_40bp": {
+    "required_total_cost": 0.004,
+    "pass": false,
+    "by_year": {
+      "2024": {"20bp_win_rate": 0.731404958677686, "20bp_mean_return": 0.0013010914745158894, "40bp_win_rate": 0.5247933884297521, "40bp_mean_return": -0.0006989085254841108},
+      "2025": {"20bp_win_rate": 0.7037037037037037, "20bp_mean_return": 0.0011570406529333866, "40bp_win_rate": 0.5679012345679012, "40bp_mean_return": -0.0008429593470666135},
+      "2026": {"20bp_win_rate": 0.6752577319587629, "20bp_mean_return": 0.0011752622511135428, "40bp_win_rate": 0.6185567010309279, "40bp_mean_return": -0.0008247377488864573}
+    },
+    "rule": "positive expected value after 40bp total cost in every target year; win rate alone is insufficient"
+  },
+  "research_boundary": "W1 was proposed after C0 exposed the broad-market overnight effect. All 2024-2026 results are historical diagnostics for this architecture; prospective validation remains required.",
+  "caveat": "Historical research only. Close auction execution, slippage, capacity, corporate actions and real fees require separate validation."
+}
