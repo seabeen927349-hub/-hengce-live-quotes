@@ -1,0 +1,60 @@
+{
+  "system": "HENGCE",
+  "model": "X12",
+  "role": "accepted_research_frontier_under_prospective_shadow",
+  "status": "X12_STRICTLY_DOMINATES_X11_AND_RAISES_WIN_RATE",
+  "lock_date": "2026-10-25",
+  "formal_run_head_sha": "02175a45a63e6435dacad354c96f5581bc57d26f",
+  "source_path": "research/codex_full_reset_20261023/ranking_x12_prior_q25_skip.py",
+  "source_blob_sha": "facd953a312cf83fd0cd4c979306107d80c6ea58",
+  "formal_run_id": 40163760289,
+  "formal_artifact_id": 12586973752,
+  "formal_artifact_digest": "sha256:849fbe8e7ca0adeeabe91241d6d53b23e5cecca2ff4c017b8a99e42053b5dae9",
+  "prelock_event_count": 30,
+  "prelock_last_signal_date": "2026-08-25",
+  "prelock_last_entry_date": "2026-08-26",
+  "prelock_last_exit_date": "2026-09-23",
+  "prelock_events_sha256": "1a5dfe097ddd4db9443301c8ca1e6346941d6a84013a769908804b7824319002",
+  "formal_metrics": {
+    "cost_0.012": {
+      "scheduled_baskets": 30,
+      "active_trades": 24,
+      "wins": 18,
+      "win_rate": 0.75,
+      "compounded_return": 3.621555903594956,
+      "max_drawdown": -0.16528280465128753,
+      "remove_best_active_trade_return": 2.0603872868777515,
+      "mean_active_net_return": 0.06836829884910241,
+      "best_active_trade_net": 0.5095164363804293,
+      "worst_active_trade_net": -0.16853188638251299,
+      "max_single_name_weight": 0.2350288660282978,
+      "mean_exposure_all_schedule": 0.44331698743780407
+    },
+    "cost_0.016": {
+      "scheduled_baskets": 30,
+      "active_trades": 24,
+      "wins": 18,
+      "win_rate": 0.75,
+      "compounded_return": 3.337164429324934,
+      "max_drawdown": -0.17917292587131672,
+      "remove_best_active_trade_return": 1.8754791768365198,
+      "mean_active_net_return": 0.06559756767761686,
+      "best_active_trade_net": 0.505149198364698,
+      "worst_active_trade_net": -0.17094435898406743,
+      "max_single_name_weight": 0.2350288660282978,
+      "mean_exposure_all_schedule": 0.44331698743780407
+    }
+  },
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  },
+  "production_untouched": true,
+  "q017_write": false,
+  "e2_write": false,
+  "m1_write": false,
+  "pr_30_merge_authorized": false
+}
