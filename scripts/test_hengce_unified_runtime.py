@@ -103,6 +103,21 @@ class Runtime(unittest.TestCase):
                 self.assertEqual(row['PriceProof'], 'LIVE_BOUND_NO_GEOMETRY')
             else:
                 self.assertEqual(row['FinalAction'],'REVIEW_ENTRY');self.assertEqual(row['LegacyScore'],.9)
+    def test_q017_only_candidate_mode_filters_legacy_candidates(self):
+        q=canonical_q017('2330.TW');self.save(self.root/'hengce/q017_canonical/latest.json',q)
+        import hengce_q017_only_runner as qrunner
+        original=adapter.build
+        try:
+            adapter.build=qrunner.build_q017_only
+            with contextlib.redirect_stderr(io.StringIO()): self.assertEqual(runner.run(NOW),0)
+        finally:
+            adapter.build=original
+        b=self.bundle();x=self.render();self.assertEqual(x['binding_status'],'PASS')
+        self.assertEqual(len(x['rows']),1)
+        self.assertEqual(x['rows'][0]['SourceProvenance'],'BOTH')
+        self.assertEqual(b['base']['candidate_union_policy'],'Q017_ONLY_REUSE_LEGACY_GEOMETRY_NO_LEGACY_CANDIDATES')
+        self.assertTrue(b['base']['q017_is_only_active_candidate_source'])
+
     def test_real_installed_scan_command_prints_one_result(self):
         from datetime import datetime
         from zoneinfo import ZoneInfo
@@ -117,7 +132,7 @@ class Runtime(unittest.TestCase):
         work=self.root/'work';work.mkdir()
         source=Path(__file__).resolve().parent
         for name in ['hengce_unified_contracts','hengce_unified_runner','hengce_unified_candidate_adapter',
-                     'hengce_unified_action_board','hengce_intraday_action_board','hengce_unified_scan_display','hengce_scan_once_router']:
+                     'hengce_unified_action_board','hengce_intraday_action_board','hengce_unified_scan_display','hengce_scan_once_router','hengce_q017_only_runner']:
             shutil.copyfile(source/(name+'.py'),work/(name+'.py'))
         shutil.copyfile(source/'RUN_INTRADAY_ACTION_BOARD.sh',self.root/'RUN_INTRADAY_ACTION_BOARD.sh')
         command=[sys.executable,str(work/'hengce_scan_once_router.py'),'--now',clock.isoformat()]
@@ -126,10 +141,11 @@ class Runtime(unittest.TestCase):
         self.assertEqual(good.returncode,0,good.stdout+good.stderr)
         result=json.loads(good.stdout)
         self.assertEqual(result['architecture'],'SINGLE_HENGCE')
-        self.assertEqual(result['status'],'RETIRED_NO_ACTIVE_STRATEGY')
+        self.assertTrue(result['status'].startswith('ACTIVE_Q017_'))
         self.assertEqual(result['rows'],[])
         self.assertFalse(result['can_create_new_entry'])
-        self.assertEqual(result['scan_once_router']['active_strategy_count'],0)
+        self.assertEqual(result['scan_once_router']['active_strategy_count'],1)
+        self.assertEqual(result['scan_once_router']['active_strategy'],'Q017_CANONICAL_FAMILY')
         self.context.unlink()
         bad=subprocess.run(command,text=True,capture_output=True,timeout=10,env=env)
         self.assertEqual(bad.returncode,0)
