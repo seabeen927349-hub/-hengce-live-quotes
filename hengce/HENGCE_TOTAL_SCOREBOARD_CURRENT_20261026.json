@@ -1,0 +1,43 @@
+{
+  "schema_version": 4,
+  "system": "HENGCE",
+  "module": "HENGCE_TOTAL_SCOREBOARD",
+  "generated_for_date": "2026-10-26",
+  "status": "RETIRED_NO_ACTIVE_STRATEGY",
+  "authority": {
+    "display_only_meta_analysis": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "can_upgrade_entry_trigger": false,
+    "can_create_new_entry": false
+  },
+  "retired_operational_families": [
+    "E2_PROFIT_MAX_FAMILY",
+    "NEXTDAY_FAMILY",
+    "Q017_CANONICAL_FAMILY",
+    "V43_FAMILY",
+    "X_FAMILY"
+  ],
+  "active_strategy_count": 0,
+  "attention_leader": null,
+  "top10": [],
+  "rows": [],
+  "action_card": {
+    "status": "NO_BUY",
+    "ticker": null,
+    "name": null,
+    "reference_price": null,
+    "buy_price": null,
+    "sell_price": null,
+    "buy_rule": null,
+    "hold_rule": null,
+    "exit_rule": null
+  },
+  "decision_source": "hengce/HENGCE_MAINLINE_RETIREMENT_DECISION_20261026.json",
+  "guards": [
+    "All old HENGCE operational families are retired or deleted.",
+    "Retired families contribute zero attention points and zero trade authority.",
+    "Historical scoreboards remain audit evidence only.",
+    "A newly preregistered and separately validated model/version is required before any active strategy can return."
+  ]
+}
