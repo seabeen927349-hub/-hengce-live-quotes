@@ -1,0 +1,30 @@
+name: HENGCE Ranking X15 Prior Median Take Gate
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_x15_prior_median_take_gate.py'
+      - '.github/workflows/hengce-ranking-x15-prior-median-take-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run X15 prior-median take gate
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/ranking_x15_prior_median_take_gate.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/ranking_x15_prior_median_take_gate_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-x15-prior-median-take-gate
+          path: |
+            research/codex_full_reset_20261023/ranking_x15_prior_median_take_gate_result.json
+            research/codex_full_reset_20261023/ranking_x15_events.jsonl
