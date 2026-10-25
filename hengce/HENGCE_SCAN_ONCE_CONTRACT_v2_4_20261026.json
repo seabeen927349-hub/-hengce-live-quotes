@@ -1,0 +1,36 @@
+{
+  "contract_id": "HENGCE_SCAN_ONCE_CONTRACT_v2_4_20261026",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-26",
+  "trigger_phrases": ["衡策掃一次"],
+  "supersedes_scan_orchestration_only": "HENGCE_SCAN_ONCE_CONTRACT_v2_3_20261025",
+  "inherits_all_still_effective_prior_contracts": true,
+  "purpose": "Reflect the 2026-10-26 research-frontier retirement decision in operational scan reporting without changing formal Q017/E2 action authority.",
+  "research_retirement": {
+    "retired_from_active_research": ["X12", "V43", "W1_WIDE_TAIL"],
+    "retired_scoreboard_families": ["X_FAMILY", "V43_FAMILY", "NEXTDAY_FAMILY"],
+    "attention_score_contribution": 0,
+    "trade_authority": 0,
+    "historical_audit_visibility": true,
+    "three_line_resonance": "RETIRED_RESEARCH_COMBINATION"
+  },
+  "remaining_operational_reporting": {
+    "Q017_CANONICAL_FAMILY": "UNCHANGED",
+    "E2_PROFIT_MAX_FAMILY": "UNCHANGED",
+    "Q1": "UNVALIDATED_CHALLENGER_ONLY_IF_A_VERIFIABLE_CURRENT_ARTIFACT_EXISTS"
+  },
+  "runtime": {
+    "router": "scripts/hengce_scan_once_router.py",
+    "scoreboard": "scripts/hengce_total_scoreboard.py",
+    "reporting_sidecar_version": "v2.4"
+  },
+  "guards": [
+    "Retired X12, V43 and W1 may not influence operational attention ranking.",
+    "Retired X12, V43 and W1 may not support a buy/sell recommendation.",
+    "Historical evidence is retained and may be reconstructed only for audit.",
+    "Old models are not rerun to refill the frontier.",
+    "Formal action authority remains governed by the applicable unified HENGCE/Q017 rules; this retirement contract does not promote E2 or any research lane."
+  ],
+  "decision_source": "hengce/HENGCE_RESEARCH_FRONTIER_DECISION_v2_20261026.json",
+  "cross_chat_restore_required": true
+}
