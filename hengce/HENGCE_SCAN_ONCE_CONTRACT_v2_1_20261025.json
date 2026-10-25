@@ -1,0 +1,114 @@
+{
+  "contract_id": "HENGCE_SCAN_ONCE_CONTRACT_v2_1_20261025",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-25",
+  "trigger_phrases": ["衡策掃一次"],
+  "supersedes": "HENGCE_SCAN_ONCE_CONTRACT_v2_0_20261025",
+  "change_reason": "Preserve and obey all prior HENGCE contracts unless a later contract explicitly revokes or supersedes a specific clause; correct the over-broad E2 retirement statement in v2.0.",
+  "persistence_semantics": {
+    "cross_chat_restore_required": true,
+    "source_of_truth": "repository contracts and locks, not conversation memory",
+    "new_chat_instruction": "When the user says 衡策掃一次, load HENGCE_SCAN_ONCE_CONTRACT_LATEST first, then inherit all still-effective prior HENGCE contracts/locks and apply only explicit later revocations or supersessions. Do not re-ask already-defined architecture."
+  },
+  "contract_inheritance_policy": {
+    "default": "ALL_PRIOR_HENGCE_CONTRACTS_LOCKS_AND_HARD_RULES_REMAIN_EFFECTIVE_IN_THEIR_SCOPE",
+    "old_contracts_must_be_obeyed": true,
+    "blanket_supersession_forbidden": true,
+    "clause_level_supersession_only": true,
+    "revoked_clause_must_have_explicit_evidence": true,
+    "conflict_resolution_order": [
+      "explicit revoke or explicit supersede of the same clause/scope",
+      "later effective contract with narrower/more-specific scope",
+      "later effective contract with same scope",
+      "more restrictive fail-closed / zero-authority / integrity rule when ambiguity remains"
+    ],
+    "ambiguity_policy": "FAIL_CLOSED_AND_REPORT_CONTRACT_CONFLICT; do not invent authority or silently discard an older lock",
+    "historical_contracts_are_not_deleted": true
+  },
+  "known_governance_anchors": [
+    "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019",
+    "HENGCE_REALTIME_INTEGRITY_HARD_RULE_20261012",
+    "HENGCE_ELECTRONICS_ONLY_UNIVERSE_LOCK_v1_0_20261021",
+    "HENGCE_UNIFIED_Q017_CONTRACT_v1_0_20261023",
+    "HENGCE_Q017_10D_REVIEW_CONTRACT_v1_1_20261019",
+    "E2_LEGACY_REVOCATION_20261019",
+    "E2_PROFIT_MAX_DISPLAY_EXECUTION_LOCK_v1_0_20261019",
+    "E2_PROFIT_MAX_LOCK_v1_0_20261019",
+    "HENGCE_SCAN_ONCE_CONTRACT_v2_0_20261025"
+  ],
+  "scan_order": [
+    "Q017 canonical / unified HENGCE line under the latest applicable Q017 contract",
+    "E2_PROFIT_MAX lane required by still-effective dual-engine/E2 contracts, reported separately and fail-closed if invalid",
+    "V43 independent screening engine",
+    "X frontier",
+    "W1 next-day frontier",
+    "Q1 / next-day challenger status",
+    "Q017 x V43 x W1 resonance reporting layer",
+    "Q017 10D review / active legacy-required review state when applicable",
+    "live/data/realtime integrity health",
+    "active user position / action-board items required by still-effective hard rules"
+  ],
+  "lane_roles": {
+    "Q017": "canonical gate/selection line under the latest applicable Q017 authority contract; do not merge model scores unless a contract explicitly authorizes it",
+    "E2_LEGACY": "REVOKED_ZERO_AUTHORITY; audit only",
+    "E2_PROFIT_MAX": "successor E2 lane remains governed by its own active locks/contracts and must not be treated as retired merely because legacy E2 was revoked",
+    "V43": "independent screening/research engine with zero Q017 write/order authority",
+    "X": "frozen research frontier; status/output only when valid artifacts exist",
+    "W1": "next-day/overnight research frontier",
+    "Q1": "secondary next-day challenger lane"
+  },
+  "e2_correction_from_v2_0": {
+    "v2_0_statement_retracted": "E2 retired from current scan-once protocol",
+    "correct_rule": "Only pre-20261019 legacy E2 implementations are revoked. E2_PROFIT_MAX is the named successor and remains subject to active contracts. Scan-once must report Q017 and E2 separately where the still-effective command-center contract requires it.",
+    "evidence_contracts": [
+      "E2_LEGACY_REVOCATION_20261019",
+      "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_6_20261019"
+    ]
+  },
+  "resonance_policy": {
+    "policy_id": "HENGCE_Q017_V43_W1_RESONANCE_V2",
+    "role": "REPORTING_ONLY_META_ANALYSIS",
+    "must_not_violate_old_contracts": true,
+    "no_score_fusion_into_q017": true,
+    "cannot_upgrade_formal_entry_trigger": true,
+    "cannot_override_cash_or_fail_closed_gate": true,
+    "cannot_override_electronics_only_universe": true,
+    "grades": {
+      "SS": "Q017 explicit selection AND V43 Top3 AND W1 Top20",
+      "S": "any two hard research/selection lanes agree, subject to canonical gate",
+      "A": "near resonance under the v2 reporting policy",
+      "B": "broader three-line percentile agreement when full ranks exist",
+      "C": "soft percentile agreement when full ranks exist"
+    },
+    "canonical_gate": "Q017/Unified-HENGCE formal authority remains governed by active contracts; reporting resonance never creates authority."
+  },
+  "frozen_and_eliminated_rules": {
+    "do_not_rerun_eliminated_models": true,
+    "do_not_rerun_x1_x15_for_scan": true,
+    "x_frontier": "X12 LOCKED",
+    "nextday_eliminated_research_challengers": ["G1", "B2", "M1 challenger"],
+    "note": "Do not confuse the eliminated M1 next-day challenger with any older M1 shadow/governance lane still required by an active contract; preserve contract scope distinctions.",
+    "missing_current_output_rule": "Report no current valid output; do not manufacture picks."
+  },
+  "reporting_rules": {
+    "keep_architecture_status_performance_authority_separate": true,
+    "use_latest_valid_signal_or_trading_date": true,
+    "weekend_rule": "Use the most recent valid market signal date; never fabricate a weekend signal.",
+    "show_contract_conflicts_if_found": true,
+    "show_q017_and_e2_separately_when_required": true,
+    "show_resonance": true,
+    "show_live_integrity_and_position_requirements_from_active_old_contracts": true,
+    "do_not_hide_old_contract_required_items_for_brevity": true
+  },
+  "research_next_step": {
+    "nextday_primary": "T86 institutional signal",
+    "fallback_if_cross_year_unstable_or_coverage_inadequate": "MI_MARGN + TWT93U",
+    "do_not_revisit_eliminated_without_explicit_new_contract": true
+  },
+  "authority": {
+    "changes_model_logic": false,
+    "changes_broker_order_authority": false,
+    "changes_capital_authority": false,
+    "purpose": "persistent scan orchestration, cumulative contract inheritance, and reporting semantics"
+  }
+}
