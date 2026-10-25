@@ -1,0 +1,102 @@
+{
+  "contract_id": "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_0_20261025",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-25",
+  "purpose": "Group old/new HENGCE lines by lineage and show one display-only cross-lane attention score plus native entry/hold/exit status without mutating any model.",
+  "inherits_all_prior_contracts": true,
+  "authority": {
+    "display_only_meta_analysis": true,
+    "formal_model_score_fusion": false,
+    "can_upgrade_entry_trigger": false,
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "q017_canonical_authority_unchanged": true
+  },
+  "line_families": {
+    "Q017_CANONICAL_FAMILY": {
+      "members": ["LEGACY_HENGCE", "Q017"],
+      "current_stock_source": "Q017/Unified-HENGCE valid evidence",
+      "rule": "Group by ticker/provenance only. HENGCE_UNIFIED_Q017_CONTRACT no-score-fusion rule remains binding."
+    },
+    "E2_PROFIT_MAX_FAMILY": {
+      "members": ["E2_PROFIT_MAX"],
+      "legacy_e2": "REVOKED_ZERO_AUTHORITY",
+      "rule": "Only the named E2_PROFIT_MAX successor may contribute current evidence."
+    },
+    "V43_FAMILY": {
+      "members": ["V1-V43 lineage", "V43"],
+      "current_stock_source": "V43 latest valid independent screening output"
+    },
+    "X_FAMILY": {
+      "members": ["X1-X15 lineage", "X12 LOCKED"],
+      "current_stock_source": "NONE_UNLESS_A_VALID_CURRENT_OUTPUT_ALREADY_EXISTS",
+      "rule": "Never rerun X1-X15 merely to manufacture daily picks."
+    },
+    "NEXTDAY_FAMILY": {
+      "members": ["W1 Wide Tail", "Q1", "G1", "B2", "M1 challenger"],
+      "frontier": "W1 Wide Tail 20-stock basket",
+      "secondary": "Q1",
+      "eliminated": ["G1", "B2", "M1 challenger"],
+      "rule": "Eliminated challengers contribute zero; Q1 contributes only when a verifiable current artifact exists."
+    },
+    "RESONANCE_META": {
+      "members": ["Q017 x V43 x W1 resonance"],
+      "score_points": 0,
+      "rule": "Resonance is derived from underlying lanes and must not be double-counted into the attention score."
+    }
+  },
+  "attention_score": {
+    "policy_id": "HENGCE_ATTENTION_SCORE_V1",
+    "maximum_points": 100,
+    "scored_current_families": ["Q017_CANONICAL_FAMILY", "E2_PROFIT_MAX_FAMILY", "V43_FAMILY", "W1_NEXTDAY_FAMILY"],
+    "family_capacity_points": {
+      "Q017_CANONICAL_FAMILY": 25,
+      "E2_PROFIT_MAX_FAMILY": 25,
+      "V43_FAMILY": 25,
+      "W1_NEXTDAY_FAMILY": 25
+    },
+    "why_equal_capacity": "Avoid outcome-tuned discretionary weighting across incompatible horizons; each independent stock-bearing family can contribute at most one quarter of the display score.",
+    "rank_strength": "1 / sqrt(rank)",
+    "state_factors": {
+      "NATIVE_ENTRY_SIGNAL": 1.0,
+      "WATCH_ONLY": 0.5,
+      "ENTRY_BLOCKED": 0.25,
+      "INVALID_OR_MISSING": 0.0
+    },
+    "formula": "sum(family_capacity * rank_strength * state_factor)",
+    "missing_points_reallocated": false,
+    "outcome_optimization_forbidden": true,
+    "version_bump_required_for_weight_or_formula_change": true
+  },
+  "state_mapping": {
+    "Q017": "CASH or no formal qualified buy => ENTRY_BLOCKED; a valid native formal entry => NATIVE_ENTRY_SIGNAL",
+    "E2_PROFIT_MAX": "engine/action OFF => ENTRY_BLOCKED; valid native entry signal => NATIVE_ENTRY_SIGNAL",
+    "V43": "daily Top3 when frozen schedule did not select the signal => WATCH_ONLY; frozen schedule selection => NATIVE_ENTRY_SIGNAL",
+    "W1": "40bp hard economic gate fail => ENTRY_BLOCKED; a future policy may only raise state after the hard gate and prospective requirements are satisfied",
+    "X_Q1_missing": "INVALID_OR_MISSING for current stock score; do not rerun to fill the gap"
+  },
+  "economic_gate": {
+    "W1_required_total_cost": 0.004,
+    "rule": "Expected value after 40bp total cost must be positive in each target year before W1 may independently be treated as entry-ready.",
+    "win_rate_alone_is_insufficient": true
+  },
+  "action_card": {
+    "attention_leader": "highest HENGCE_ATTENTION_SCORE_V1; ties remain ties rather than fabricating precision",
+    "buy_price": "Only show a price/reference when a still-effective native line actually enables entry. Otherwise null / NO BUY.",
+    "hold_period": "Use the winning native line's own horizon; never copy another line's horizon.",
+    "sell_price": "Only show a fixed sell price if the native model defines one. Time-based exits must show their native time/session exit and keep target price null.",
+    "latest_close_is_reference_not_buy_price": true,
+    "q017_cash_rule": "Q017 CASH must be shown as canonical NO BUY; research watchlists may remain visible but cannot be relabeled as canonical entry."
+  },
+  "scan_once_requirement": {
+    "include_top10_scoreboard": true,
+    "include_attention_leader": true,
+    "include_consensus_count": true,
+    "include_action_state": true,
+    "include_latest_valid_reference_price": true,
+    "include_native_buy_rule": true,
+    "include_native_hold_rule": true,
+    "include_native_exit_rule": true,
+    "never_invent_buy_or_sell_price": true
+  }
+}
