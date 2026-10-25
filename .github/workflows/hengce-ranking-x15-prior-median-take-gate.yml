@@ -1,4 +1,5 @@
 name: HENGCE Ranking X15 Prior Median Take Gate
+# Formal adjudication trigger: 2026-10-25; model source unchanged.
 on:
   push:
     branches:
