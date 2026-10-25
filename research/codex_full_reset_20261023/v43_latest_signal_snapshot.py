@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "research/codex_full_reset_20261023/v43_latest_signal_snapshot_result.json"
 YEAR = "2026"
 START, END = v13.PERIODS[YEAR]
+CAPITAL_TWD = 10_000_000.0
 
 # Reproduce the frozen V6 non-overlapping H20 schedule used upstream by V15/V19/V41/V43.
 # Historical slots advance only after a valid 3-name signal. A slot whose H20 outcome is
@@ -78,12 +79,47 @@ if portfolio_weights is None:
 
 entry_date = v13.dates[i + 1] if i + 1 < len(v13.dates) else None
 last_completed = history[-1] if history else None
+latest_date = v13.dates[-1]
+entry_index = i + 1
+required_exit_index = entry_index + v13.H
+remaining_trading_sessions_after_data_asof = max(0, required_exit_index - (len(v13.dates) - 1))
+
+allocation = {}
+for t, w in zip(top3, portfolio_weights):
+    erow = v13.by.get(entry_date, {}).get(t) if entry_date else None
+    lrow = v13.by.get(latest_date, {}).get(t)
+    entry_open = erow.o if erow else None
+    latest_close = lrow.c if lrow else None
+    target_twd = CAPITAL_TWD * w
+    shares = int(target_twd // entry_open) if entry_open and entry_open > 0 else None
+    deployed_twd = shares * entry_open if shares is not None else None
+    cash_left_vs_target = target_twd - deployed_twd if deployed_twd is not None else None
+    mtm_value = shares * latest_close if shares is not None and latest_close is not None else None
+    mtm_return = latest_close / entry_open - 1 if entry_open and latest_close else None
+    allocation[t] = {
+        "portfolio_weight": w,
+        "target_twd": target_twd,
+        "entry_open": entry_open,
+        "integer_shares_at_or_below_target": shares,
+        "board_lots_1000": shares // 1000 if shares is not None else None,
+        "odd_lot_shares": shares % 1000 if shares is not None else None,
+        "deployed_twd": deployed_twd,
+        "cash_left_vs_target": cash_left_vs_target,
+        "latest_mark_date": latest_date,
+        "latest_close": latest_close,
+        "mtm_value": mtm_value,
+        "mtm_return": mtm_return,
+    }
+
 result = {
     "status": "V43_LATEST_SCHEDULE_SIGNAL_SNAPSHOT",
-    "data_asof": v13.dates[-1],
+    "data_asof": latest_date,
     "signal_date": d,
     "entry_date_if_observed": entry_date,
     "horizon_trading_days": v13.H,
+    "required_exit_index_offset_from_entry": v13.H,
+    "remaining_trading_sessions_after_data_asof": remaining_trading_sessions_after_data_asof,
+    "exit_execution_rule": "close on the H20 scheduled exit trading date; no fixed target price and no early take-profit rule",
     "schedule": "frozen V6 non-overlapping H20 schedule; first not-yet-fully-realized slot",
     "regime": regime,
     "breadth20": breadth,
@@ -95,6 +131,8 @@ result = {
     "factor_weight_fallback": fallback,
     "portfolio_weights": dict(zip(top3, portfolio_weights)),
     "uncapped_portfolio_weights": dict(zip(top3, uncapped)),
+    "capital_example_twd": CAPITAL_TWD,
+    "allocation_at_entry_open": allocation,
     "last_completed_or_censored_schedule_slot": last_completed,
     "historical_schedule_slots_before_current": len(history),
     "authority": {
