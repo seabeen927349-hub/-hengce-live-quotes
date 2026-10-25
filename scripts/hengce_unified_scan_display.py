@@ -63,6 +63,10 @@ def build(now, action=None, base=None, receipt=None):
         age = (now - aware(action.get('LiveGeneratedAt'))).total_seconds()
         if not -30 <= age <= 480:
             raise ValueError('STALE_SOURCE_SNAPSHOT')
+        if (not isinstance(base.get('rows'), list) or
+            not isinstance(action.get('rows'), list) or
+            any(not isinstance(r, dict) for r in base['rows'] + action['rows'])):
+            raise ValueError('INVALID_PUBLICATION_ROWS')
         source_rows = {r['Ticker']: r for r in base['rows']}
         rows = action['rows']
         if not isinstance(rows, list) or len(source_rows) != len(base['rows']) or len(rows) != len(source_rows):
