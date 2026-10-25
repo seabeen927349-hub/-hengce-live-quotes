@@ -1,0 +1,68 @@
+{
+  "contract_id": "HENGCE_Q017_SOLE_ACTIVE_CONTRACT_v1_0_20261026",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-26",
+  "system": "HENGCE",
+  "architecture": "SINGLE_HENGCE_Q017_ONLY",
+  "preservation_decision": "HENGCE_Q017_PRESERVATION_DECISION_20261026",
+  "active_strategy_count": 1,
+  "active_strategy": "Q017_CANONICAL_FAMILY",
+  "selection_sources": ["Q017"],
+  "legacy_hengce": {
+    "candidate_source_active": false,
+    "allowed_role": "EXISTING_LEGAL_GEOMETRY_AND_FORMAL_TRIGGER_INFRASTRUCTURE_FOR_Q017_SELECTED_TICKER_ONLY",
+    "may_create_independent_candidate": false,
+    "may_upgrade_q017_entry": false,
+    "score_fusion": false
+  },
+  "q017_frozen_rules": {
+    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+    "beta_history_max": 60,
+    "beta_history_min": 30,
+    "signal_day_excluded_from_beta": true,
+    "k": 25,
+    "score": "beta60*(1+25*max(-residual1,0))",
+    "top_n": 1,
+    "avg_turnover20_min": 20000000,
+    "residual1_max": 0.04,
+    "local_gate": {
+      "electronics_m1_lt": 0.0,
+      "electronics_m5_lte": -0.02
+    },
+    "macro_gate": {
+      "session": "LATEST_PRIOR_COMPLETED_US_SESSION",
+      "sox_1d_lte": 0.0,
+      "sox_5d_lte": -0.03,
+      "dxy_used": false
+    },
+    "entry": "NEXT_TWSE_OPEN",
+    "exit": "FIXED_20_SESSIONS",
+    "roundtrip_cost": 0.008,
+    "overlap_allowed": false
+  },
+  "fail_closed_rules": {
+    "missing_current_q017": true,
+    "stale_q017": true,
+    "unverified_producer": true,
+    "calendar_lineage_mismatch": true,
+    "geometry_unavailable": true,
+    "cash_state_blocks_entry": true,
+    "invent_geometry": false,
+    "invent_buy_or_sell_price": false
+  },
+  "retired_or_deleted_families": [
+    "E2_PROFIT_MAX_FAMILY",
+    "V43_FAMILY",
+    "X_FAMILY",
+    "NEXTDAY_FAMILY"
+  ],
+  "historical_artifacts": {
+    "q017": "PRESERVE_FULLY",
+    "retired_families": "AUDIT_ONLY"
+  },
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "formal_action_requires_current_binding": true
+  }
+}
