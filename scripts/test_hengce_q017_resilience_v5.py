@@ -4,6 +4,7 @@ from __future__ import annotations
 import json, tempfile
 from datetime import date, datetime
 from pathlib import Path
+from unittest.mock import patch
 
 import hengce_q017_observation_lock_v5 as v5
 import hengce_q017_recovery_compute_v5 as recovery
@@ -36,37 +37,30 @@ def rehash(o):
 def main():
     o=fixture();assert v5.validate_observation(o)[0]
 
-    # Simulate primary collector dead: only independent backup artifact exists.
-    with tempfile.TemporaryDirectory() as td:
+    with tempfile.TemporaryDirectory() as td, patch.object(v5, 'OBS_LATEST', Path(td)/'observation_latest.json'):
         root=Path(td);canonical=root/'canonical.json';backup=root/'backup.json'
         backup.write_text(json.dumps(o,ensure_ascii=False),encoding='utf-8')
         promoted,source=recovery.promote_if_needed(date(2026,10,20),canonical,backup)
         assert source=='BACKUP_PROMOTED_TO_CANONICAL'
         assert promoted['observation_snapshot_sha256']==o['observation_snapshot_sha256']
-        # Computation at 09:03 is legal because market observation itself is locked at 09:01.
         d=v5.build_decision_from_observation(promoted,datetime.fromisoformat('2026-10-20T09:03:30+08:00'))
         assert d['decision_lock']['authority_semantics']=='OBSERVATION_TIME_LOCK'
         assert d['decision_lock']['calculation_may_occur_after_cutoff'] is True
         assert all(x['ticker'] in set(o['universe_lock']['members']) for x in d['top3'])
-        # Re-promoting never blends/replaces an existing canonical observation.
         _,source2=recovery.promote_if_needed(date(2026,10,20),canonical,backup);assert source2=='CANONICAL_ALREADY_PRESENT'
 
-    # No primary and no backup means Q017 new-entry remains fail-closed; no late quote fabrication.
-    with tempfile.TemporaryDirectory() as td:
+    with tempfile.TemporaryDirectory() as td, patch.object(v5, 'OBS_LATEST', Path(td)/'observation_latest.json'):
         root=Path(td)
         try:recovery.promote_if_needed(date(2026,10,20),root/'canonical.json',root/'backup.json')
         except RuntimeError as e:assert 'NO_CANONICAL_OR_BACKUP_0901_OBSERVATION' in str(e)
         else:raise AssertionError('missing observation did not fail closed')
 
-    # Inject a non-electronics ticker with an absurdly attractive beta/open: must be rejected before ranking.
     bad=json.loads(json.dumps(o));bad['eligible_models'].append({'ticker':'2603','name':'NON_ELECTRONICS','beta':9.9,'previous_close':100.0});bad['quotes']['2603']={'ticker':'2603','name':'NON_ELECTRONICS','open':50.0,'reference_close':100.0,'fetched_at_taipei':'2026-10-20T09:01:13+08:00'};bad['data_status']['eligible_beta_count']=4;bad['data_status']['provider_returned_count']=4;rehash(bad)
     ok,reason=v5.validate_observation(bad);assert not ok and reason=='ELIGIBLE_OUTSIDE_ELECTRONICS_UNIVERSE'
 
-    # Full-market transport extras also cannot silently expand Q017.
     extra=json.loads(json.dumps(o));extra['quotes']['2603']={'ticker':'2603','open':50.0,'reference_close':100.0,'fetched_at_taipei':'2026-10-20T09:01:13+08:00'};rehash(extra)
     ok,reason=v5.validate_observation(extra);assert not ok and reason=='OBS_QUOTES_NOT_100PCT_ELIGIBLE'
 
-    # A quote first observed at 09:02 can never rescue the original Q017.
     late=json.loads(json.dumps(o));late['quotes']['1111']['fetched_at_taipei']='2026-10-20T09:02:00+08:00';rehash(late)
     ok,reason=v5.validate_observation(late);assert not ok and reason=='OBS_QUOTE_NOT_0901'
 
