@@ -124,12 +124,15 @@ class Runtime(unittest.TestCase):
         env={**os.environ,'HENGCE_LIVE_RAW_URL':'https://127.0.0.1:9/MUST_NOT_FETCH'}
         good=subprocess.run(command,text=True,capture_output=True,timeout=10,env=env)
         self.assertEqual(good.returncode,0,good.stdout+good.stderr)
-        result=json.loads(good.stdout) # extra outputs would make JSON invalid
+        result=json.loads(good.stdout)
         self.assertEqual(result['architecture'],'SINGLE_HENGCE')
-        self.assertEqual(result['rows'][0]['FinalAction'],'REVIEW_ENTRY')
+        self.assertEqual(result['status'],'RETIRED_NO_ACTIVE_STRATEGY')
+        self.assertEqual(result['rows'],[])
+        self.assertFalse(result['can_create_new_entry'])
+        self.assertEqual(result['scan_once_router']['active_strategy_count'],0)
         self.context.unlink()
         bad=subprocess.run(command,text=True,capture_output=True,timeout=10,env=env)
-        self.assertEqual(bad.returncode,2)
+        self.assertEqual(bad.returncode,0)
         self.assertEqual(json.loads(bad.stdout)['rows'],[])
     def test_candidate_geometry_payload_is_evidence_only(self):
         q=canonical_q017('3008')
@@ -160,12 +163,14 @@ class Runtime(unittest.TestCase):
     def test_scan_refresh_never_runs_legacy_producer(self):
         with patch.object(router,'run_step',side_effect=AssertionError('producer invoked')):
             for hour in (7,8,9,10,13,15,18): self.assertEqual(router.refresh(NOW.replace(hour=hour)),[])
-    def test_scan_failed_attempt_cannot_show_old_pass(self):
+    def test_scan_retirement_cannot_show_old_pass(self):
         fake=type('Result',(),{'stdout':json.dumps({'system':'HENGCE','binding_status':'PASS','rows':[{'FinalAction':'REVIEW_ENTRY'}]}),'returncode':0})()
         with patch.object(sys,'argv',['router','--now',NOW.isoformat()]), patch.object(router,'run_step',return_value={'ok':False}),patch.object(router.subprocess,'run',return_value=fake),contextlib.redirect_stdout(io.StringIO()) as stream:
             rc=router.main()
-        obj=json.loads(stream.getvalue());self.assertEqual(rc,2);self.assertEqual(obj['rows'],[])
+        obj=json.loads(stream.getvalue());self.assertEqual(rc,0);self.assertEqual(obj['rows'],[])
         self.assertTrue(obj['scan_once_router']['single_hengce_output'])
+        self.assertFalse(obj['can_create_new_entry'])
+        self.assertFalse(obj['scan_once_router']['retired_producers_invoked'])
     def test_source_change_during_computation_stops(self):
         import hengce_unified_action_board as board
         original = board.build
