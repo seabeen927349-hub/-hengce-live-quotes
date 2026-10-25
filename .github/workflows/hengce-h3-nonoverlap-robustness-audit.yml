@@ -24,3 +24,4 @@ jobs:
         with:
           name: hengce-h3-nonoverlap-robustness-audit
           path: research/codex_full_reset_20261023/h3_nonoverlap_robustness_audit_result.json
+# trigger: formal h3 robustness audit 2026-10-25
