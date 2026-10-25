@@ -1,0 +1,82 @@
+{
+  "system": "HENGCE",
+  "model": "X12",
+  "record_type": "frontier_lock_metadata_erratum",
+  "erratum_date": "2026-10-25",
+  "original_lock_path": "research/codex_full_reset_20261023/X12_FRONTIER_LOCK_20261025.json",
+  "original_lock_commit": "fc418d51771a2807ebf3af277c3d1892cef3b2f4",
+  "issue": "metadata_transcription_error_in_formal_metrics_only",
+  "authoritative_evidence": {
+    "formal_run_id": 40163760289,
+    "formal_run_head_sha": "02175a45a63e6435dacad354c96f5581bc57d26f",
+    "formal_artifact_id": 12586973752,
+    "formal_artifact_digest": "sha256:849fbe8e7ca0adeeabe91241d6d53b23e5cecca2ff4c017b8a99e42053b5dae9",
+    "source_path": "research/codex_full_reset_20261023/ranking_x12_prior_q25_skip.py",
+    "source_blob_sha": "facd953a312cf83fd0cd4c979306107d80c6ea58",
+    "prelock_event_count": 30,
+    "prelock_events_sha256": "1a5dfe097ddd4db9443301c8ca1e6346941d6a84013a769908804b7824319002",
+    "prelock_last_signal_date": "2026-08-25",
+    "prelock_last_entry_date": "2026-08-26",
+    "prelock_last_exit_date": "2026-09-23"
+  },
+  "corrected_formal_metrics": {
+    "cost_0.012": {
+      "scheduled_baskets": 30,
+      "active_trades": 24,
+      "wins": 18,
+      "win_rate": 0.75,
+      "compounded_return": 3.6216429752938364,
+      "max_drawdown": -0.16526293715335127,
+      "remove_best_active_trade_return": 2.0604760160848667,
+      "mean_active_net_return": 0.07133763923789027,
+      "best_active_trade_net": 0.5101059282948089,
+      "worst_active_trade_net": -0.05379463816370807,
+      "max_single_name_weight": 0.5000000000000001,
+      "mean_exposure_all_schedule": 0.5697522611500941
+    },
+    "cost_0.016": {
+      "scheduled_baskets": 30,
+      "active_trades": 24,
+      "wins": 18,
+      "win_rate": 0.75,
+      "compounded_return": 3.3371875318088984,
+      "max_drawdown": -0.1682142114729389,
+      "remove_best_active_trade_return": 1.879353689272635,
+      "mean_active_net_return": 0.0684888779321398,
+      "best_active_trade_net": 0.5063059282948089,
+      "worst_active_trade_net": -0.056910702913357834,
+      "max_single_name_weight": 0.5000000000000001,
+      "mean_exposure_all_schedule": 0.5697522611500941
+    }
+  },
+  "verification": {
+    "artifact_zip_sha256_verified": true,
+    "artifact_events_sha256_verified": true,
+    "x15_pre_gate_against_formal_x12_compared_event_count": 30,
+    "x15_pre_gate_against_formal_x12_event_mismatches": 0,
+    "prospective_shadow_consumes_original_lock_formal_metrics": false,
+    "prospective_shadow_eligibility_affected": false
+  },
+  "unchanged": {
+    "x12_model_logic": true,
+    "x12_source_blob": true,
+    "prelock_event_history": true,
+    "lock_date_and_timestamp": true,
+    "prospective_shadow_protocol": true,
+    "prospective_shadow_registered_windows": true,
+    "frontier_role": true
+  },
+  "reporting_rule": "For X12 historical formal metrics, this erratum supersedes only the formal_metrics values transcribed into X12_FRONTIER_LOCK_20261025.json. The original formal run, artifact digest, source blob, event fingerprint, lock, and prospective-shadow protocol remain authoritative and unchanged.",
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  },
+  "production_untouched": true,
+  "q017_write": false,
+  "e2_write": false,
+  "m1_write": false,
+  "pr_30_merge_authorized": false
+}
