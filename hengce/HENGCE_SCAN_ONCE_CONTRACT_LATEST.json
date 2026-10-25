@@ -1,14 +1,15 @@
 {
   "status": "ACTIVE",
-  "current_contract": "HENGCE_SCAN_ONCE_CONTRACT_v2_3_20261025",
-  "path": "hengce/HENGCE_SCAN_ONCE_CONTRACT_v2_3_20261025.json",
-  "effective_date": "2026-10-25",
+  "current_contract": "HENGCE_SCAN_ONCE_CONTRACT_v2_4_20261026",
+  "path": "hengce/HENGCE_SCAN_ONCE_CONTRACT_v2_4_20261026.json",
+  "effective_date": "2026-10-26",
   "trigger": "衡策掃一次",
-  "summary": "Runtime-backed cumulative HENGCE scan: single formal unified HENGCE action output plus separate reporting-only Q017 schema-v5, E2_PROFIT_MAX, V43, X12, W1, Q1, hard/soft-aware three-line resonance, dynamic total scoreboard, review, health and positions. Old contracts remain binding by scope; no eliminated/frozen model is rerun to manufacture picks.",
+  "summary": "Runtime-backed cumulative HENGCE scan with X12, V43 and W1 retired from active research after the six-month practicality review. Retired lines contribute zero attention/trade authority and three-line resonance is retired; historical artifacts remain audit-only. Q017 and E2 remain unchanged by this research-retirement decision.",
   "cross_chat_restore_required": true,
   "contract_inheritance_required": true,
   "total_scoreboard_required": true,
   "total_scoreboard_contract": "hengce/HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_1_20261025.json",
+  "research_frontier_decision": "hengce/HENGCE_RESEARCH_FRONTIER_DECISION_v2_20261026.json",
   "q017_scope_resolution": "hengce/HENGCE_Q017_SCOPE_RESOLUTION_v1_0_20261025.json",
   "runtime_router": "scripts/hengce_scan_once_router.py"
 }
