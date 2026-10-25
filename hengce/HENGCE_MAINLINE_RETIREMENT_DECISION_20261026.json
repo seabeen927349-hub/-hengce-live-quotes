@@ -1,0 +1,56 @@
+{
+  "decision_id": "HENGCE_MAINLINE_RETIREMENT_DECISION_20261026",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-26",
+  "scope": "remaining HENGCE active mainline after prior X12/V43/W1 retirement",
+  "user_validation_rule": {
+    "window": "2026-04-22 through 2026-10-22",
+    "capital_per_operation_twd": 1000000,
+    "compounding": false,
+    "must_use_historical_data": true,
+    "practicality": "A mainline that trades only a handful of times in six months is not sufficiently actionable even if historical P/L is positive."
+  },
+  "q017_historical_native_d10": {
+    "source_lineage": "Q017 2026 historical Top1 / D10 executable research output",
+    "signal_opportunities_in_window": 7,
+    "fixed_1m_boardlot_executable_operations": 6,
+    "wins": 5,
+    "losses": 1,
+    "win_rate": 0.8333333333333334,
+    "total_pl_twd": 1278393.8232,
+    "remove_best_pl_twd": 755277.6312,
+    "first_3m_pl_twd": 805590.18,
+    "last_3m_pl_twd": 472803.6432,
+    "note": "2026-07-08 ticker 2360 was not executable with a NT$1m board-lot account because one lot exceeded capital."
+  },
+  "unified_q017_h20_historical_replay": {
+    "mechanics": "same historical Q017 signal opportunities replayed with NEXT_TWSE_OPEN, FIXED_20_SESSIONS, 0.8% roundtrip cost, no overlap, fixed NT$1m board-lot capital",
+    "candidate_signal_opportunities": 7,
+    "executed_operations_after_no_overlap": 4,
+    "wins": 4,
+    "losses": 0,
+    "win_rate": 1.0,
+    "total_pl_twd": 879756.0,
+    "remove_best_pl_twd": 486252.0,
+    "first_3m_pl_twd": 401416.0,
+    "last_3m_pl_twd": 478340.0,
+    "skipped_overlap_entries": ["2026-06-08", "2026-07-08", "2026-08-20"],
+    "decision_basis": "Economically positive but only four executable operations in six months under the actual unified H20/no-overlap mechanics; fails the user's practicality requirement for an active mainline."
+  },
+  "final_decision": {
+    "Q017_CANONICAL_FAMILY": "RETIRED_FROM_ACTIVE_MAINLINE",
+    "UNIFIED_HENGCE_Q017": "RETIRED_FROM_ACTIVE_MAINLINE",
+    "E2_PROFIT_MAX_FAMILY": "ALREADY_DELETED_OR_RETIRED_PER_USER; NOT_REVALIDATED",
+    "active_strategy_count": 0
+  },
+  "operational_effect": {
+    "q017_attention_score_contribution": 0,
+    "q017_trade_authority": 0,
+    "unified_hengce_new_entry_authority": 0,
+    "remove_from_daily_buy_sell_support": true,
+    "historical_artifacts_retained_for_audit": true,
+    "do_not_delete_historical_evidence": true,
+    "do_not_rescue_with_old_backtest_results": true,
+    "future_reactivation_requires_new_preregistered_model_version": true
+  }
+}
