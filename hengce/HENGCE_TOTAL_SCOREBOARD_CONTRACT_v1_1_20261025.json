@@ -1,0 +1,45 @@
+{
+  "contract_id": "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_1_20261025",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-25",
+  "supersedes_scoreboard_orchestration_only": "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_0_20261025",
+  "inherits_all_prior_authority_and_model_rules": true,
+  "purpose": "Clarify family aliases, tie ranking, within-family reduction and native action-card semantics discovered during Codex audit.",
+  "score_policy": {
+    "policy_id": "HENGCE_ATTENTION_SCORE_V1",
+    "formula_unchanged": "sum(25 / sqrt(rank) * state_factor) across distinct scored families",
+    "state_factors_unchanged": {"NATIVE_ENTRY_SIGNAL": 1.0, "WATCH_ONLY": 0.5, "ENTRY_BLOCKED": 0.25, "INVALID_OR_MISSING": 0.0},
+    "missing_capacity_reallocated": false,
+    "outcome_tuning_forbidden": true
+  },
+  "family_resolution": {
+    "canonical_nextday_family_id": "NEXTDAY_FAMILY",
+    "deprecated_alias": "W1_NEXTDAY_FAMILY",
+    "alias_creates_second_capacity": false,
+    "within_family_reducer": "MAX_ONE_CONTRIBUTION_PER_TICKER_PER_FAMILY; current registered frontier W1 wins exact tie; Q1 may contribute only when a verifiable current artifact exists; eliminated G1/B2/M1 contribute zero",
+    "resonance_points": 0,
+    "x12_current_stock_points": 0,
+    "x12_reason": "No current valid daily selection artifact; do not rerun X1-X15 to manufacture picks"
+  },
+  "ranking_display": {
+    "tie_policy": "COMPETITION_RANKING_EQUAL_SCORE_SHARES_RANK",
+    "full_precision_calculation": true,
+    "display_rounding_only_after_ranking": true,
+    "consensus_count_required": true
+  },
+  "action_card": {
+    "attention_leader_is_not_buy_authority": true,
+    "formal_action_board_confirmation_required_for_formal_hengce_entry": true,
+    "buy_price_only_if_native_authorized_price_exists": true,
+    "reference_close_never_automatic_buy_price": true,
+    "hold_and_exit_from_native_active_lane_only": true,
+    "conditional_watch_rules_may_be_shown_when_lane_is_blocked": true,
+    "fixed_sell_price_may_not_be_invented_for_time_based_exit": true
+  },
+  "authority": {
+    "display_only_meta_analysis": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "can_upgrade_entry_trigger": false
+  }
+}
