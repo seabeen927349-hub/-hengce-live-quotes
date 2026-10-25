@@ -1,0 +1,61 @@
+{
+  "decision_id": "HENGCE_RESEARCH_FRONTIER_DECISION_20261026",
+  "status": "ACTIVE",
+  "decision_date": "2026-10-26",
+  "validation_window": {
+    "start_signal_date": "2026-04-22",
+    "end_signal_date": "2026-10-22",
+    "capital_per_operation_twd": 1000000,
+    "compounding": false
+  },
+  "decision_rule": {
+    "W1": "Must have total P/L > 0 after 40bp total cost AND win_rate >= 65%; recent half-window must not show a clear negative-expectancy breakdown.",
+    "V43_X12": "Six-month total P/L must be > 0 and remove-best P/L must not turn negative. Extremely small samples may only be retained as PROVISIONAL, never promoted to live authority by this review.",
+    "lineage_rule": "V43 and X12 share the H20 lineage and their profits must never be added together as independent strategies."
+  },
+  "results": {
+    "X12": {
+      "scheduled_events": 4,
+      "executed_operations": 3,
+      "wins": 2,
+      "losses": 1,
+      "win_rate": 0.6666666666666666,
+      "net_total_pl_twd_fixed_1m": 446322.9207005671,
+      "remove_best_pl_twd": 10470.560149382567,
+      "first_half_pl_twd": 10470.56014938259,
+      "second_half_pl_twd": 435852.3605511845,
+      "decision": "RETAIN_PROVISIONAL_SMALL_SAMPLE",
+      "reason": "Meets the six-month numerical gates, including remove-best > 0 and both half-windows non-negative, but only three executed operations are available."
+    },
+    "V43": {
+      "executed_operations": 4,
+      "wins": 2,
+      "losses": 2,
+      "win_rate": 0.5,
+      "net_total_pl_twd_fixed_1m": 430072.51858436165,
+      "remove_best_pl_twd": -5779.84196682286,
+      "decision": "ELIMINATED_FROM_ACTIVE_RESEARCH_FRONTIER",
+      "reason": "Profit is excessively concentrated in one trade; remove-best turns the six-month result negative and win rate is only 50%."
+    },
+    "W1_WIDE_TAIL": {
+      "mature_operations": 124,
+      "wins_40bp": 73,
+      "losses_40bp": 51,
+      "win_rate_40bp": 0.5887096774193549,
+      "net_total_pl_twd_fixed_1m_40bp": 56194.69792408654,
+      "mean_net_return_40bp": 0.0004531830477748915,
+      "first_3m_pl_twd_40bp": 95891.21231056294,
+      "last_3m_pl_twd_40bp": -39696.5143864764,
+      "net_total_pl_twd_fixed_1m_20bp_reference_only": 304194.69792408653,
+      "decision": "ELIMINATED_FROM_ACTIVE_RESEARCH_FRONTIER",
+      "reason": "Fails the locked >=65% win-rate requirement at 40bp and the most recent three-month half-window is negative."
+    }
+  },
+  "governance": {
+    "delete_historical_evidence": false,
+    "mutate_historical_backtests": false,
+    "promote_x12_to_live_authority": false,
+    "v43_and_w1_may_remain_visible_for_historical_audit": true,
+    "future_research_priority": "X12 prospective evidence expansion; do not revive V43 or W1 without a new preregistered challenger/version."
+  }
+}
