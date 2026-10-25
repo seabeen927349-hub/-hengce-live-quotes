@@ -1,0 +1,40 @@
+{
+  "contract_id": "HENGCE_SCAN_ONCE_CONTRACT_v2_6_20261026",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-26",
+  "trigger_phrases": ["衡策掃一次"],
+  "supersedes_scan_orchestration_only": "HENGCE_SCAN_ONCE_CONTRACT_v2_5_20261026",
+  "q017_preservation_decision": "HENGCE_Q017_PRESERVATION_DECISION_20261026",
+  "q017_sole_active_contract": "HENGCE_Q017_SOLE_ACTIVE_CONTRACT_v1_0_20261026",
+  "scoreboard_contract": "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_2_20261026",
+  "active_strategy_count": 1,
+  "active_strategy": "Q017_CANONICAL_FAMILY",
+  "architecture": "SINGLE_HENGCE_Q017_ONLY",
+  "candidate_sources": ["Q017"],
+  "legacy_hengce_role": "GEOMETRY_AND_FORMAL_TRIGGER_INFRASTRUCTURE_ONLY_NOT_SELECTION_SOURCE",
+  "retired_or_deleted_families": [
+    "E2_PROFIT_MAX_FAMILY",
+    "V43_FAMILY",
+    "X_FAMILY",
+    "NEXTDAY_FAMILY"
+  ],
+  "q017_native_rules_unchanged": {
+    "top_n": 1,
+    "entry": "NEXT_TWSE_OPEN",
+    "exit": "FIXED_20_SESSIONS",
+    "roundtrip_cost": 0.008,
+    "overlap_allowed": false
+  },
+  "operational_rules": {
+    "invoke_retired_producer": false,
+    "q017_only_formal_bridge": true,
+    "legacy_candidate_selection": false,
+    "score_fusion": false,
+    "missing_or_stale_q017": "FAIL_CLOSED",
+    "market_closed": "NO_NEW_ENTRY_BUT_Q017_REMAINS_ACTIVE",
+    "historical_q017_artifacts": "PRESERVE_FULLY"
+  },
+  "runtime_router": "scripts/hengce_scan_once_router.py",
+  "q017_only_runner": "scripts/hengce_q017_only_runner.py",
+  "cross_chat_restore_required": true
+}
