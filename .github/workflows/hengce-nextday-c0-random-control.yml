@@ -1,0 +1,36 @@
+name: HENGCE Nextday C0 Random Basket Control
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_c0_random_basket_control.py'
+      - '.github/workflows/hengce-nextday-c0-random-control.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  c0:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run C0 randomized control
+        run: |
+          python -m research.codex_full_reset_20261023.nextday_c0_random_basket_control | tee /tmp/c0.log
+          grep '^C0_RESULT=' /tmp/c0.log
+      - name: Upload C0 control result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-c0-random-control
+          if-no-files-found: warn
+          path: research/codex_full_reset_20261023/nextday_c0_random_basket_control_result.json
