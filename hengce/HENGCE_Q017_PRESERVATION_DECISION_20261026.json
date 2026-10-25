@@ -1,0 +1,57 @@
+{
+  "decision_id": "HENGCE_Q017_PRESERVATION_DECISION_20261026",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-26",
+  "user_directive": "Q017唯一留下，請完整保留在衡策！",
+  "scope": "Q017 family only",
+  "supersedes_in_q017_scope": {
+    "decision": "HENGCE_MAINLINE_RETIREMENT_DECISION_20261026",
+    "clauses": [
+      "final_decision.Q017_CANONICAL_FAMILY",
+      "final_decision.UNIFIED_HENGCE_Q017",
+      "final_decision.active_strategy_count",
+      "operational_effect.q017_attention_score_contribution",
+      "operational_effect.q017_trade_authority",
+      "operational_effect.unified_hengce_new_entry_authority",
+      "operational_effect.remove_from_daily_buy_sell_support"
+    ]
+  },
+  "final_decision": {
+    "Q017_CANONICAL_FAMILY": "ACTIVE_SOLE_HENGCE_STRATEGY",
+    "active_strategy_count": 1,
+    "all_other_prior_hengce_strategy_families": "REMAIN_RETIRED_OR_DELETED"
+  },
+  "preserve_in_full": [
+    "Q017 canonical producer and frozen mathematics",
+    "Q017 schema-v5 09:01 radar/decision/observation evidence",
+    "Q017 historical research and validation artifacts",
+    "Q017 10D review artifacts",
+    "TWSE calendar lineage and fail-closed session binding",
+    "Q017 native timing/cost/no-overlap rules",
+    "Q017 tests and producer admission lineage"
+  ],
+  "q017_native_rules_unchanged": {
+    "top_n": 1,
+    "entry": "NEXT_TWSE_OPEN",
+    "exit": "FIXED_20_SESSIONS",
+    "roundtrip_cost": 0.008,
+    "overlap_allowed": false,
+    "score": "beta60*(1+25*max(-residual1,0))"
+  },
+  "single_strategy_architecture": {
+    "selection_source": "Q017_ONLY",
+    "legacy_hengce_candidate_source_active": false,
+    "legacy_hengce_allowed_role": "EXISTING_LEGAL_GEOMETRY_AND_FORMAL_TRIGGER_INFRASTRUCTURE_FOR_Q017_SELECTED_TICKER_ONLY",
+    "score_fusion": false,
+    "invent_geometry": false,
+    "missing_or_stale_evidence": "FAIL_CLOSED"
+  },
+  "retirement_state_unchanged": {
+    "E2_PROFIT_MAX_FAMILY": "RETIRED_OR_DELETED",
+    "V43_FAMILY": "RETIRED",
+    "X_FAMILY": "RETIRED",
+    "NEXTDAY_FAMILY": "RETIRED"
+  },
+  "historical_six_month_validation_note": "Q017 was economically positive in the six-month fixed-NT$1m replay; the prior frequency-based retirement is explicitly reversed by the user's preservation directive and is not evidence that Q017 failed economically.",
+  "cross_chat_restore_required": true
+}
