@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_TOTAL_SCOREBOARD",
+  "asof_signal_date": "2026-10-22",
+  "generated_for_date": "2026-10-25",
+  "market_context": {
+    "2026-10-23": "CLOSED_TYPHOON_EXTRAORDINARY",
+    "2026-10-24": "WEEKEND",
+    "2026-10-25": "WEEKEND_HOLIDAY",
+    "2026-10-26": "CLOSED_SUBSTITUTE_HOLIDAY",
+    "next_known_twse_session": "2026-10-27"
+  },
+  "score_policy": "HENGCE_ATTENTION_SCORE_V1",
+  "canonical_gate": {
+    "q017_status": "CASH",
+    "formal_buy_count": 0,
+    "e2_status": "OFF",
+    "v43_native_schedule_signal": false,
+    "w1_40bp_economic_gate": false,
+    "result": "NO_BUY_CURRENTLY"
+  },
+  "w1_40bp_economic_gate": {
+    "pass": false,
+    "mean_return_after_40bp": {
+      "2024": -0.0006989085254841108,
+      "2025": -0.0008429593470666135,
+      "2026": -0.0008247377488864573
+    }
+  },
+  "attention_leader": {
+    "overall_rank": 1,
+    "ticker": "3044",
+    "name": "健鼎",
+    "total_score": 12.5,
+    "supporting_line": "V43_FAMILY rank 1 WATCH_ONLY",
+    "latest_valid_close_20261022": 556.0,
+    "status": "WATCH_ONLY_NO_BUY",
+    "buy_price": null,
+    "hold_rule_if_native_v43_schedule_activates": "about 20 TWSE sessions under frozen H20 schedule",
+    "sell_price": null,
+    "exit_rule_if_native_v43_schedule_activates": "exit at native H20 schedule close; no fixed target-price rule"
+  },
+  "top10": [
+    {"rank":1,"ticker":"3044","name":"健鼎","score":12.5,"source":"V43 rank1 WATCH_ONLY","latest_close":556.0},
+    {"rank":2,"ticker":"2355","name":"敬鵬","score":8.8388,"source":"V43 rank2 WATCH_ONLY","latest_close":50.7},
+    {"rank":3,"ticker":"6438","name":"迅得","score":7.2169,"source":"V43 rank3 WATCH_ONLY","latest_close":164.0},
+    {"rank":4,"ticker":"2492","name":"華新科","score":6.25,"source":"E2 rank1 ENTRY_BLOCKED","latest_close":368.0},
+    {"rank":5,"ticker":"3055","name":"蔚華科","score":6.25,"source":"Q017 rank1 ENTRY_BLOCKED","latest_close":143.0},
+    {"rank":6,"ticker":"3481","name":"群創","score":6.25,"source":"W1 rank1 ENTRY_BLOCKED","latest_close":46.75},
+    {"rank":7,"ticker":"2434","name":"統懋","score":4.4194,"source":"W1 rank2 ENTRY_BLOCKED","latest_close":50.7},
+    {"rank":8,"ticker":"7795","name":"長廣","score":4.4194,"source":"Q017 rank2 ENTRY_BLOCKED","latest_close":409.5},
+    {"rank":9,"ticker":"3016","name":"嘉晶","score":3.6084,"source":"Q017 rank3 ENTRY_BLOCKED","latest_close":145.0},
+    {"rank":10,"ticker":"8210","name":"勤誠","score":3.6084,"source":"W1 rank3 ENTRY_BLOCKED","latest_close":764.0}
+  ],
+  "guards": [
+    "High attention score is not a buy signal.",
+    "Q017 CASH remains canonical NO BUY.",
+    "E2 OFF cannot create an entry.",
+    "V43 current daily Top3 is a watchlist because the frozen schedule did not select the signal date.",
+    "W1 is blocked from independent entry-readiness because the 40bp hard economic gate fails in 2024-2026.",
+    "No buy price or fixed sell price is invented when the native model does not authorize/define one."
+  ]
+}
