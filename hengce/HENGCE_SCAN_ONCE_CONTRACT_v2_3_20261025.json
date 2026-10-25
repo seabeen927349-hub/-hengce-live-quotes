@@ -1,0 +1,55 @@
+{
+  "contract_id": "HENGCE_SCAN_ONCE_CONTRACT_v2_3_20261025",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-25",
+  "trigger_phrases": ["衡策掃一次"],
+  "supersedes_scan_orchestration_only": "HENGCE_SCAN_ONCE_CONTRACT_v2_2_20261025",
+  "inherits_all_still_effective_prior_contracts": true,
+  "purpose": "Implement the v2.2 reporting contract in runtime while preserving a single formal HENGCE action authority and separate legacy-required lane reporting.",
+  "scope_resolution_contracts": [
+    "HENGCE_Q017_SCOPE_RESOLUTION_v1_0_20261025",
+    "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_1_20261025"
+  ],
+  "runtime_implementation": {
+    "router": "scripts/hengce_scan_once_router.py",
+    "formal_action_display": "scripts/hengce_unified_scan_display.py",
+    "scoreboard_builder": "scripts/hengce_total_scoreboard.py",
+    "three_line_resonance": "scripts/hengce_three_line_resonance.py",
+    "w1_current_snapshot": "hengce/w1_nextday/latest.json"
+  },
+  "authority_partition": {
+    "formal_user_facing_action_authority": "UNIFIED_HENGCE_ACTION_BOARD_ONLY",
+    "separate_lane_sections": "REPORTING_AND_FAILURE_ISOLATION_ONLY",
+    "separate_lane_sections_are_competing_formal_engines": false,
+    "attention_score_is_trade_authority": false,
+    "resonance_is_trade_authority": false
+  },
+  "required_reporting_sections": [
+    "FORMAL_HENGCE_OUTPUT",
+    "Q017_SCHEMA5_STATUS",
+    "E2_PROFIT_MAX_STATUS",
+    "V43_STATUS",
+    "X12_FRONTIER_STATUS",
+    "W1_NEXTDAY_STATUS_AND_40BP_GATE",
+    "Q1_STATUS",
+    "THREE_LINE_RESONANCE",
+    "TOTAL_SCOREBOARD",
+    "Q017_10D_REVIEW",
+    "LIVE_DATA_HEALTH",
+    "POSITION_AND_ACTION_STATE"
+  ],
+  "missing_artifact_policy": {
+    "x12_or_q1_current_output_missing": "REPORT_DATA_PENDING_NO_CURRENT_ARTIFACT; DO_NOT_RERUN",
+    "soft_resonance_full_rank_missing": "REPORT_HARD_OVERLAP_AND_DATA_PENDING_FULL_RANKS; DO_NOT_FABRICATE_PERCENTILES",
+    "formal_action_output_missing_or_stale": "FORMAL_ACTION_FAIL_CLOSED; research/reporting sections may still be shown with their own dates and authority",
+    "lane_failure_isolated": true
+  },
+  "weekend_and_closed_session_rule": "Use most recent valid lane signal dates for reporting. Never fabricate a new non-trading-day signal or refresh an old model merely to make the report look current.",
+  "authority": {
+    "changes_model_logic": false,
+    "changes_broker_order_authority": false,
+    "changes_capital_authority": false,
+    "changes_q017_or_e2_native_rules": false
+  },
+  "cross_chat_restore_required": true
+}
