@@ -1,15 +1,13 @@
 {
   "status": "ACTIVE",
-  "current_contract": "HENGCE_SCAN_ONCE_CONTRACT_v2_4_20261026",
-  "path": "hengce/HENGCE_SCAN_ONCE_CONTRACT_v2_4_20261026.json",
+  "current_contract": "HENGCE_SCAN_ONCE_CONTRACT_v2_5_20261026",
+  "path": "hengce/HENGCE_SCAN_ONCE_CONTRACT_v2_5_20261026.json",
   "effective_date": "2026-10-26",
   "trigger": "衡策掃一次",
-  "summary": "Runtime-backed cumulative HENGCE scan with X12, V43 and W1 retired from active research after the six-month practicality review. Retired lines contribute zero attention/trade authority and three-line resonance is retired; historical artifacts remain audit-only. Q017 and E2 remain unchanged by this research-retirement decision.",
+  "summary": "Audit/status-only HENGCE scan. Q017/Unified, X12, V43 and W1 are retired; E2 is already deleted/retired per user. Active strategy count is zero. Retired families have zero attention/trade authority and no retired producer may be invoked.",
+  "active_strategy_count": 0,
+  "mainline_retirement_decision": "hengce/HENGCE_MAINLINE_RETIREMENT_DECISION_20261026.json",
+  "runtime_router": "scripts/hengce_scan_once_router.py",
   "cross_chat_restore_required": true,
-  "contract_inheritance_required": true,
-  "total_scoreboard_required": true,
-  "total_scoreboard_contract": "hengce/HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_1_20261025.json",
-  "research_frontier_decision": "hengce/HENGCE_RESEARCH_FRONTIER_DECISION_v2_20261026.json",
-  "q017_scope_resolution": "hengce/HENGCE_Q017_SCOPE_RESOLUTION_v1_0_20261025.json",
-  "runtime_router": "scripts/hengce_scan_once_router.py"
+  "contract_inheritance_required": true
 }
