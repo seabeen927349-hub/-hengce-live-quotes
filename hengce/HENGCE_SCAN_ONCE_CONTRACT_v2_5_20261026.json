@@ -1,0 +1,30 @@
+{
+  "contract_id": "HENGCE_SCAN_ONCE_CONTRACT_v2_5_20261026",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-26",
+  "trigger_phrases": ["衡策掃一次"],
+  "supersedes_scan_orchestration_only": "HENGCE_SCAN_ONCE_CONTRACT_v2_4_20261026",
+  "inherits_all_still_effective_audit_integrity_contracts": true,
+  "mainline_retirement_decision": "HENGCE_MAINLINE_RETIREMENT_DECISION_20261026",
+  "active_strategy_count": 0,
+  "purpose": "Audit/status-only scan after retirement of Q017/Unified and prior retirement/deletion of all other old HENGCE strategy families.",
+  "retired_or_deleted_families": [
+    "Q017_CANONICAL_FAMILY",
+    "E2_PROFIT_MAX_FAMILY",
+    "V43_FAMILY",
+    "X_FAMILY",
+    "NEXTDAY_FAMILY"
+  ],
+  "operational_rules": {
+    "invoke_retired_producer": false,
+    "create_new_entry": false,
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "attention_score_from_retired_family": 0,
+    "historical_artifacts": "AUDIT_ONLY",
+    "three_line_resonance": "RETIRED"
+  },
+  "future_activation_rule": "Only a newly preregistered and separately validated model/version may restore active strategy authority. Old retired results cannot self-reactivate.",
+  "runtime_router": "scripts/hengce_scan_once_router.py",
+  "cross_chat_restore_required": true
+}
