@@ -2,9 +2,9 @@
 """Authoritative router for `衡策掃一次`.
 
 Backward compatibility: top-level JSON remains the single unified HENGCE formal
-action display. v2.3 adds a reporting-only sidecar under `reporting` for old/new
-lane status, resonance, scoreboard, review and health. The sidecar never upgrades
-formal action/order/capital authority.
+action display. v2.4 keeps the reporting-only sidecar but retires X12/V43/W1
+from active research scoring after the 2026-10-26 six-month practicality review.
+The sidecar never upgrades formal action/order/capital authority.
 """
 from __future__ import annotations
 import argparse,json,subprocess,sys
@@ -61,7 +61,7 @@ def _user_positions():
     return out
 
 def build_reporting(now):
-    """Best-effort reporting sidecar; missing research artifacts never alter formal rows."""
+    """Best-effort reporting sidecar; retired research never alters formal rows."""
     try:
         import hengce_total_scoreboard as scoreboard
         import hengce_three_line_resonance as resonance
@@ -75,17 +75,19 @@ def build_reporting(now):
     try:
         prices,pdate=scoreboard.latest_prices(paths['prices']); sb=scoreboard.build(q,e,v,w,prices,pdate) if all(isinstance(x,dict) for x in (q,e,v,w)) else {'status':'DATA_PENDING_REQUIRED_LANE'}
     except Exception as exc: sb={'status':'FAIL_CLOSED','reason':f'{type(exc).__name__}:{exc}'}
-    try: res=resonance.build(q,v,w) if all(isinstance(x,dict) for x in (q,v,w)) else {'status':'DATA_PENDING_REQUIRED_LANE'}
-    except Exception as exc: res={'status':'FAIL_CLOSED','reason':f'{type(exc).__name__}:{exc}',**ZERO_AUTHORITY}
-    lanes={'q017_schema5':_lane_summary_q(q),'e2_profit_max':_lane_summary_e(e),'v43':_lane_summary_v(v),
-           'x12_frontier':{'status':'LOCKED_NO_CURRENT_DAILY_ARTIFACT','frontier':'X12 LOCKED','action':'DO_NOT_RERUN_X1_X15_TO_MANUFACTURE_PICKS'},
-           'w1_nextday':_lane_summary_w(w),'q1':{'status':'DATA_PENDING_NO_VERIFIABLE_CURRENT_ARTIFACT','role':'SECOND_BEST_NEXTDAY_CHALLENGER','action':'DO_NOT_GUESS_OR_RERUN_ELIMINATED_MODELS'}}
-    essential=all(lanes[k].get('status')!='DATA_PENDING_NO_CURRENT_ARTIFACT' for k in ('q017_schema5','e2_profit_max','v43','w1_nextday')) and sb.get('module')=='HENGCE_TOTAL_SCOREBOARD' and res.get('status')=='PASS'
-    return {'schema_version':1,'status':'PASS_REPORTING' if essential else 'PARTIAL_REPORTING',**ZERO_AUTHORITY,
-            'contract':contract,'runtime_expected':'HENGCE_SCAN_ONCE_CONTRACT_v2_3_20261025','lanes':lanes,'three_line_resonance':res,'total_scoreboard':sb,
+    res={'status':'RETIRED_RESEARCH_COMBINATION','reason':'V43_AND_W1_RETIRED_FROM_ACTIVE_RESEARCH_FRONTIER_20261026',**ZERO_AUTHORITY}
+    v_last=_lane_summary_v(v); w_last=_lane_summary_w(w)
+    lanes={'q017_schema5':_lane_summary_q(q),'e2_profit_max':_lane_summary_e(e),
+           'v43':{'status':'RETIRED_FROM_ACTIVE_RESEARCH_FRONTIER','attention_score_contribution':0,'trade_authority':0,'historical_last_artifact':v_last},
+           'x12_frontier':{'status':'RETIRED_FROM_ACTIVE_RESEARCH_FRONTIER','attention_score_contribution':0,'trade_authority':0,'reason':'ONLY_3_EXECUTED_OPERATIONS_IN_6_MONTHS_UNDER_USER_PRACTICALITY_REQUIREMENT'},
+           'w1_nextday':{'status':'RETIRED_FROM_ACTIVE_RESEARCH_FRONTIER','attention_score_contribution':0,'trade_authority':0,'historical_last_artifact':w_last},
+           'q1':{'status':'DATA_PENDING_NO_VERIFIABLE_CURRENT_ARTIFACT','role':'UNVALIDATED_NEXTDAY_CHALLENGER','action':'DO_NOT_GUESS_OR_RERUN_ELIMINATED_MODELS'}}
+    essential=all(lanes[k].get('status')!='DATA_PENDING_NO_CURRENT_ARTIFACT' for k in ('q017_schema5','e2_profit_max')) and sb.get('module')=='HENGCE_TOTAL_SCOREBOARD'
+    return {'schema_version':2,'status':'PASS_REPORTING' if essential else 'PARTIAL_REPORTING',**ZERO_AUTHORITY,
+            'contract':contract,'runtime_expected':'HENGCE_SCAN_ONCE_CONTRACT_v2_4_20261026','lanes':lanes,'three_line_resonance':res,'total_scoreboard':sb,
             'q017_10d_review':load(paths['review']) or {'status':'DATA_PENDING_NO_CURRENT_ARTIFACT'},'live_data_health':load(paths['health']) or {'status':'DATA_PENDING_NO_CURRENT_ARTIFACT'},
             'position_and_action_state':{'e2':(e or {}).get('position_state') if isinstance(e,dict) else None,'user_actual_trades':_user_positions()},
-            'guards':['Reporting sidecar has zero formal action/order/capital authority.','Schema-v5 Q017 remains separately visible for old-contract compliance but is not a second formal action board.','X12/Q1 missing current artifacts are not regenerated.','Attention score/resonance cannot upgrade formal action.']}
+            'guards':['Reporting sidecar has zero formal action/order/capital authority.','Schema-v5 Q017 remains separately visible for old-contract compliance but is not a second formal action board.','X12, V43 and W1 are retired from active research and contribute zero attention/trade authority.','Retired research may be shown only as historical audit evidence.','Attention score cannot upgrade formal action.']}
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--now');ap.add_argument('--display-only',action='store_true');a=ap.parse_args();now=parse_now(a.now)
@@ -101,7 +103,7 @@ def main():
     if any(not x.get('ok',False) for x in attempts):display={}
     if not isinstance(display,dict) or display.get('system')!='HENGCE':
         display={'schema_version':1,**ZERO_AUTHORITY,'system':'HENGCE','module':'HENGCE_SCAN_ONCE_ROUTER','architecture':'SINGLE_HENGCE','status':'DATA_PENDING','binding_status':'FAIL_CLOSED','authority':'NO_FORMAL_HENGCE_OUTPUT','rows':[],'reason':'UNIFIED_SCAN_DISPLAY_FAILED'}
-    display['scan_once_router']={'status':'PASS' if display.get('binding_status')=='PASS' else 'FAIL_CLOSED','command':'衡策掃一次','refresh_attempts':attempts,'single_hengce_output':True,'q017_separate_ranking_displayed':False,'e2_separate_engine_displayed':False,'legacy_v3_separate_ranking_displayed':False,'score_fusion':False,'reporting_sidecar_version':'v2.3'}
+    display['scan_once_router']={'status':'PASS' if display.get('binding_status')=='PASS' else 'FAIL_CLOSED','command':'衡策掃一次','refresh_attempts':attempts,'single_hengce_output':True,'q017_separate_ranking_displayed':False,'e2_separate_engine_displayed':False,'legacy_v3_separate_ranking_displayed':False,'score_fusion':False,'reporting_sidecar_version':'v2.4'}
     display['reporting']=build_reporting(now)
     print(json.dumps(display,ensure_ascii=False,indent=2,allow_nan=False))
     return 0 if display.get('binding_status')=='PASS' else 2
