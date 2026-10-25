@@ -1,0 +1,97 @@
+{
+  "contract_id": "HENGCE_SCAN_ONCE_CONTRACT_v2_0_20261025",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-25",
+  "trigger_phrases": [
+    "衡策掃一次"
+  ],
+  "persistence_semantics": {
+    "cross_chat_restore_required": true,
+    "source_of_truth": "this repository contract, not conversation memory",
+    "new_chat_instruction": "When the user says 衡策掃一次, load this contract first and follow it without re-asking already-defined architecture or rerunning eliminated models."
+  },
+  "supersedes_scan_once_only": [
+    "HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_4_20261019.scan_once_contract"
+  ],
+  "historical_model_locks_unchanged": true,
+  "scan_order": [
+    "Q017 canonical line",
+    "V43 independent screening engine",
+    "X frontier",
+    "W1 next-day frontier",
+    "Q1 / next-day challenger status",
+    "Q017 x V43 x W1 resonance layer",
+    "live/data health"
+  ],
+  "lane_roles": {
+    "Q017": "canonical decision gate and optional third ranking/selection signal",
+    "V43": "independent H20-style medium-horizon screening/research signal with zero Q017 write/order authority",
+    "X": "frozen full-model research frontier; status only unless a current valid output already exists",
+    "W1": "next-day/overnight research frontier",
+    "Q1": "secondary next-day challenger status lane",
+    "E2": "retired from current scan-once protocol; do not restore as a required scan lane unless a later contract explicitly reactivates it"
+  },
+  "resonance_policy": {
+    "policy_id": "HENGCE_Q017_V43_W1_RESONANCE_V2",
+    "implementation_reference": {
+      "branch": "research/codex-full-reset-run-20261023",
+      "path": "research/codex_full_reset_20261023/hengce_v43_w1_resonance_report.py",
+      "commit": "0529c6bbc93691bdf3b9c4a49d8853296cedbf2b"
+    },
+    "grades": {
+      "SS": "Q017 explicit selection AND V43 Top3 AND W1 Top20",
+      "S": "any two hard lanes agree",
+      "A": "with Q017 ranking: at least one hard lane and all three rank percentiles >= 85%; otherwise preserve V43/W1 A-grade only",
+      "B": "with Q017 ranking: all three rank percentiles >= 85%; otherwise preserve V43/W1 B-grade only",
+      "C": "with Q017 ranking: all three rank percentiles >= 80%; otherwise preserve V43/W1 C-grade only"
+    },
+    "canonical_gate": {
+      "rule": "Q017 retains canonical authority",
+      "if_q017_cash": "Research resonance may still be displayed, but canonical action must be CASH_BLOCKED.",
+      "universe_membership_is_not_selection": true,
+      "do_not_fabricate_q017_percentile_without_full_ranking": true,
+      "do_not_fabricate_v43_or_w1_soft_resonance_from_truncated_topk": true
+    },
+    "score_semantics": "Reporting-only rank consensus. It must not change Q017, V43, or W1 model weights, thresholds, holding periods, costs, frontier metrics, or execution authority."
+  },
+  "frozen_and_eliminated_rules": {
+    "do_not_rerun_x1_x15_for_scan": true,
+    "x_frontier": "X12 LOCKED",
+    "x15_role": "historical challenger, not frontier",
+    "e2": "retired",
+    "nextday_eliminated": [
+      "G1",
+      "B2",
+      "M1 challenger"
+    ],
+    "do_not_rerun_eliminated_models": true,
+    "missing_current_output_rule": "Report no current valid output; never rerun a frozen/eliminated model just to manufacture picks."
+  },
+  "reporting_rules": {
+    "keep_architecture_status_performance_separate": true,
+    "use_latest_valid_signal_or_trading_date": true,
+    "weekend_rule": "Do not pretend a weekend has a new trading signal; use the most recent valid signal date.",
+    "q017_cash_rule": "Explicitly show CASH / no canonical picks when Q017 is CASH.",
+    "resonance_must_be_included": true,
+    "resonance_output_fields": [
+      "ticker",
+      "grade",
+      "Q017 status/rank when available",
+      "V43 rank",
+      "W1 rank",
+      "resonance score when computable",
+      "canonical gate"
+    ]
+  },
+  "research_next_step": {
+    "nextday_primary": "T86 institutional signal",
+    "fallback_if_cross_year_unstable_or_coverage_inadequate": "MI_MARGN + TWT93U",
+    "do_not_revisit_eliminated_without_explicit_new_contract": true
+  },
+  "authority": {
+    "this_contract_changes_model_logic": false,
+    "this_contract_changes_broker_order_authority": false,
+    "this_contract_changes_capital_authority": false,
+    "purpose": "persistent scan orchestration and reporting semantics"
+  }
+}
