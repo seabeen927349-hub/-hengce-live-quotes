@@ -35,16 +35,12 @@ class ReportingV23(unittest.TestCase):
         self.assertEqual(out['soft_resonance_status'],'DATA_PENDING_FULL_RANKS')
         self.assertEqual(out['rows'][0]['canonical_gate'],'CASH_BLOCKED')
 
-    def test_scoreboard_retires_v43_w1_and_keeps_no_buy(self):
+    def test_scoreboard_retires_all_old_operational_families_and_keeps_no_buy(self):
         prices={'3044':{'name':'健鼎','close':556},'2492':{'name':'華新科','close':368},'3055':{'name':'蔚華科','close':143},'3481':{'name':'群創','close':46.75}}
         out=scoreboard.build(self.q(),self.e(),self.v(),self.w(),prices,'2026-10-22')
-        self.assertEqual(set(out['retired_research_families']),{'NEXTDAY_FAMILY','V43_FAMILY','X_FAMILY'})
-        tickers={r['ticker'] for r in out['top10']}
-        self.assertNotIn('3044',tickers)
-        self.assertNotIn('3481',tickers)
-        tied={r['ticker']:r['rank'] for r in out['top10'] if r['ticker'] in {'2492','3055'}}
-        self.assertEqual(len(tied),2)
-        self.assertEqual(len(set(tied.values())),1)
+        self.assertEqual(set(out['retired_operational_families']),{'Q017_CANONICAL_FAMILY','E2_PROFIT_MAX_FAMILY','NEXTDAY_FAMILY','V43_FAMILY','X_FAMILY'})
+        self.assertEqual(out['top10'],[])
+        self.assertIsNone(out['attention_leader'])
         self.assertEqual(out['action_card']['status'],'NO_BUY')
         self.assertIsNone(out['action_card']['buy_price'])
         self.assertIsNone(out['action_card']['sell_price'])
