@@ -11,40 +11,46 @@ EVENTS=ROOT/'research/codex_full_reset_20261023/ranking_x5_events.jsonl'
 COSTS=(.008,.012,.016); CAP=.50; TOPN=3
 V43_REF={'ret':3.4265,'dd':-0.1767,'rem':1.9312,'win':0.667,'ret16':3.0649,'rem16':1.6986}
 
-# Historical labels are residual errors of a genuinely signal-time V43 prediction.
-# They are unavailable to a future signal until the anchor H20 exit date has passed.
+def rank_values(vals):
+    a=sorted(vals.items(),key=lambda kv:(kv[1],kv[0]));n=len(a);out={}
+    if n<=1:return {t:.5 for t,v in a}
+    i=0
+    while i<n:
+        j=i+1
+        while j<n and a[j][1]==a[i][1]:j+=1
+        pct=(((i+1)+j)/2-1)/(n-1)
+        for k in range(i,j):out[a[k][0]]=pct
+        i=j
+    return out
+
+# Exact X5 hypothesis retained. Historical labels are residual errors of a genuine
+# signal-time V43 prediction and are unavailable until the H20 anchor has exited.
 TRAIN_ANCHORS=[]
 for a in v41.ANCHORS:
-    d=a['signal_date']; regime=a['regime']; F=v41.v13.features.get(d,{})
-    y=v41.target_rank(d); w,diag,prior,fallback=v43.weights_at(d,regime)
+    d=a['signal_date'];regime=a['regime'];F=v41.v13.features.get(d,{})
+    y=v41.target_rank(d);w,diag,prior,fallback=v43.weights_at(d,regime)
     raw={t:sum(w[i]*vals[i] for i in range(5)) for t,vals in F.items() if t in y}
-    br=v41.v13.ranks(raw) if raw else {}
-    rows=[(tuple(F[t]), y[t]-br[t], t) for t in raw if t in br]
+    br=rank_values(raw) if raw else {}
+    rows=[(tuple(F[t]),y[t]-br[t],t) for t in raw if t in br]
     TRAIN_ANCHORS.append({'signal_date':d,'exit_date':a['exit_date'],'regime':regime,'rows':rows,'fallback':fallback})
-
 
 def corrected_scores(signal_date,regime):
     F=v41.v13.features.get(signal_date,{})
     w,diag,prior,fallback=v43.weights_at(signal_date,regime)
     raw={t:sum(w[i]*vals[i] for i in range(5)) for t,vals in F.items()}
-    base=v41.v13.ranks(raw) if raw else {}
+    base=rank_values(raw) if raw else {}
     train=[]
     for a in TRAIN_ANCHORS:
-        if a['exit_date']<signal_date and a['regime']==regime: train.extend(a['rows'])
+        if a['exit_date']<signal_date and a['regime']==regime:train.extend(a['rows'])
     if not train:
         return dict(base),{'train_rows':0,'k':0,'factor_weights':dict(zip(v41.FACTORS,w)),'prior_regime_anchors':len(prior),'v43_fallback':fallback,'mean_abs_correction':0.0}
-    k=max(1,int(math.sqrt(len(train))))
-    out={};corrs=[]
+    k=max(1,int(math.sqrt(len(train))));out={};corrs=[]
     for t,x in F.items():
         near=[]
         for z,resid,src_t in train:
-            ds=sum((x[i]-z[i])**2 for i in range(5))
-            near.append((ds,resid,src_t))
-        near.sort(key=lambda q:(q[0],q[2]))
-        correction=statistics.mean(q[1] for q in near[:k]);corrs.append(abs(correction))
-        out[t]=base[t]+correction
+            ds=sum((x[i]-z[i])**2 for i in range(5));near.append((ds,resid,src_t))
+        near.sort(key=lambda q:(q[0],q[2]));correction=statistics.mean(q[1] for q in near[:k]);corrs.append(abs(correction));out[t]=base[t]+correction
     return out,{'train_rows':len(train),'k':k,'factor_weights':dict(zip(v41.FACTORS,w)),'prior_regime_anchors':len(prior),'v43_fallback':fallback,'mean_abs_correction':statistics.mean(corrs) if corrs else 0.0}
-
 
 def build():
     out=[];invalid=[];prior_sigma=[];score_log=[]
@@ -73,12 +79,10 @@ def build():
         out.append(e);prior_sigma.append(sig)
     return out,invalid,score_log
 
-
 def product(xs):
     n=1.0
     for x in xs:n*=1+x
     return n-1
-
 
 def summarize(events,cost):
     nets=[];nav=1.;peak=1.;mdd=0.
