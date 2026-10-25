@@ -1,3 +1,4 @@
+# retrigger after rank-helper fix 2026-10-25
 name: HENGCE Ranking X6 V43 Interaction Residual
 on:
   push:
