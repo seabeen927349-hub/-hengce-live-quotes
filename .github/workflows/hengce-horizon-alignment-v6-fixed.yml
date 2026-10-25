@@ -24,3 +24,4 @@ jobs:
         with:
           name: hengce-horizon-alignment-v6-fixed
           path: research/codex_full_reset_20261023/horizon_alignment_v6_fixed_result.json
+# trigger: formal horizon alignment run 2026-10-25
