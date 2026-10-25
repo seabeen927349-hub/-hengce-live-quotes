@@ -1,0 +1,21 @@
+name: HENGCE Nextday O5 TWSE Chip Probe
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_o5_twse_chip_probe.py'
+      - '.github/workflows/hengce-nextday-o5-twse-chip-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Probe historical TWSE chip endpoints
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/nextday_o5_twse_chip_probe.py
