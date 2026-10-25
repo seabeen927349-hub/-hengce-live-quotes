@@ -28,3 +28,4 @@ jobs:
           path: |
             research/codex_full_reset_20261023/nextday_precision_ceiling_result.json
             research/codex_full_reset_20261023/nextday_precision_ceiling_primary_events.jsonl
+# trigger: precision-ceiling formal run 2026-10-25
