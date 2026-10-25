@@ -1,12 +1,14 @@
 {
   "status": "ACTIVE",
-  "current_contract": "HENGCE_SCAN_ONCE_CONTRACT_v2_2_20261025",
-  "path": "hengce/HENGCE_SCAN_ONCE_CONTRACT_v2_2_20261025.json",
+  "current_contract": "HENGCE_SCAN_ONCE_CONTRACT_v2_3_20261025",
+  "path": "hengce/HENGCE_SCAN_ONCE_CONTRACT_v2_3_20261025.json",
   "effective_date": "2026-10-25",
   "trigger": "衡策掃一次",
-  "summary": "Full cumulative HENGCE scan. Obey all still-effective prior contracts/locks/hard rules; only explicit clause-level revocations/supersessions override older terms. Scan Q017, E2_PROFIT_MAX, V43, X, W1 and its 40bp gate, Q1/next-day, Q017 x V43 x W1 resonance, then HENGCE_TOTAL_SCOREBOARD with old/new family grouping, Top10 attention scores, today's attention leader and a separate native action card (buy/hold/exit only when actually authorized; never invent prices), followed by Q017 review and live/data/realtime integrity.",
+  "summary": "Runtime-backed cumulative HENGCE scan: single formal unified HENGCE action output plus separate reporting-only Q017 schema-v5, E2_PROFIT_MAX, V43, X12, W1, Q1, hard/soft-aware three-line resonance, dynamic total scoreboard, review, health and positions. Old contracts remain binding by scope; no eliminated/frozen model is rerun to manufacture picks.",
   "cross_chat_restore_required": true,
   "contract_inheritance_required": true,
   "total_scoreboard_required": true,
-  "total_scoreboard_contract": "hengce/HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_0_20261025.json"
+  "total_scoreboard_contract": "hengce/HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_1_20261025.json",
+  "q017_scope_resolution": "hengce/HENGCE_Q017_SCOPE_RESOLUTION_v1_0_20261025.json",
+  "runtime_router": "scripts/hengce_scan_once_router.py"
 }
