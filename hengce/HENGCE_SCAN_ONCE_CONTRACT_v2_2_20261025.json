@@ -1,0 +1,72 @@
+{
+  "contract_id": "HENGCE_SCAN_ONCE_CONTRACT_v2_2_20261025",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-25",
+  "trigger_phrases": ["衡策掃一次"],
+  "supersedes_scan_orchestration": "HENGCE_SCAN_ONCE_CONTRACT_v2_1_20261025",
+  "inherits_all_still_effective_prior_contracts": true,
+  "inheritance_rule": "All prior HENGCE contracts, locks and hard rules remain binding in their own scope unless a later contract explicitly revokes or supersedes the same clause/scope. This v2.2 adds the total scoreboard and does not relax any prior authority, integrity, universe, model or execution rule.",
+  "new_required_layer": {
+    "contract": "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_0_20261025",
+    "name": "HENGCE_TOTAL_SCOREBOARD",
+    "role": "DISPLAY_ONLY_META_ANALYSIS",
+    "formal_model_score_fusion": false,
+    "can_upgrade_entry_trigger": false,
+    "must_group_old_new_lines_by_family": true,
+    "must_show_top10": true,
+    "must_show_attention_leader": true,
+    "must_show_total_attention_score": true,
+    "must_show_action_gate_separately": true,
+    "must_show_latest_valid_reference_price": true,
+    "must_show_native_buy_rule": true,
+    "must_show_native_hold_rule": true,
+    "must_show_native_exit_rule": true,
+    "never_invent_buy_price": true,
+    "never_invent_sell_price": true,
+    "latest_close_is_not_automatically_a_buy_price": true
+  },
+  "scan_order": [
+    "Q017 canonical / unified HENGCE line under the latest applicable Q017 contract",
+    "E2_PROFIT_MAX lane required by still-effective E2 contracts, reported separately and fail-closed if invalid",
+    "V43 independent screening engine",
+    "X frontier",
+    "W1 next-day frontier and 40bp economic gate",
+    "Q1 / next-day challenger status",
+    "Q017 x V43 x W1 resonance reporting layer",
+    "HENGCE total scoreboard: old/new family grouping + Top10 + attention leader + action card",
+    "Q017 10D review / active review state when applicable",
+    "live/data/realtime integrity health",
+    "active user position / action-board items required by still-effective hard rules"
+  ],
+  "scoreboard_action_semantics": {
+    "attention_score_is_not_trade_authority": true,
+    "q017_cash": "Show research attention rankings but canonical action remains NO BUY/CASH_BLOCKED.",
+    "e2_off": "E2 candidate may appear for attention but cannot create an entry.",
+    "v43_watchlist_only": "V43 daily Top3 may contribute watch points but native buy rule activates only when the frozen H20 schedule selects the signal.",
+    "w1_gate": "W1 cannot independently become entry-ready unless the registered 40bp total-cost expected-value gate is positive as required.",
+    "missing_current_x_or_q1": "Score zero for current-stock scoreboard; do not rerun frozen/eliminated research merely to manufacture picks.",
+    "hold_and_exit": "Use only the native active lane's own horizon and exit semantics. Time-based exits do not receive fabricated price targets."
+  },
+  "report_layout": [
+    "CANONICAL_GATE",
+    "TODAY_ATTENTION_LEADER",
+    "TOTAL_SCORE_TOP10",
+    "Q017",
+    "E2_PROFIT_MAX",
+    "V43",
+    "X_FRONTIER",
+    "W1_AND_NEXTDAY",
+    "THREE_LINE_RESONANCE",
+    "NATIVE_ACTION_CARD",
+    "REVIEW_AND_LIVE_HEALTH"
+  ],
+  "cross_chat_restore_required": true,
+  "source_of_truth": "repository contracts and current valid artifacts, not conversation memory",
+  "authority": {
+    "changes_model_logic": false,
+    "changes_broker_order_authority": false,
+    "changes_capital_authority": false,
+    "changes_q017_canonical_authority": false,
+    "purpose": "persistent cumulative scan orchestration with one-glance total scoreboard"
+  }
+}
