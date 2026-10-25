@@ -1,0 +1,9 @@
+{
+  "status": "ACTIVE",
+  "current_contract": "HENGCE_SCAN_ONCE_CONTRACT_v2_0_20261025",
+  "path": "hengce/HENGCE_SCAN_ONCE_CONTRACT_v2_0_20261025.json",
+  "effective_date": "2026-10-25",
+  "trigger": "衡策掃一次",
+  "summary": "Full HENGCE scan: Q017 canonical -> V43 -> X frontier -> W1 -> Q1/next-day -> Q017 x V43 x W1 resonance -> live/data health. Q017 remains canonical gate; CASH blocks canonical action while research resonance may still be shown.",
+  "cross_chat_restore_required": true
+}
