@@ -1,0 +1,41 @@
+{
+  "contract_id": "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_2_20261026",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-26",
+  "supersedes_scoreboard_orchestration_only": "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_1_20261025",
+  "preservation_decision": "HENGCE_Q017_PRESERVATION_DECISION_20261026",
+  "score_policy": {
+    "policy_id": "HENGCE_ATTENTION_SCORE_V1",
+    "formula_unchanged": "25 / sqrt(rank) * state_factor within the sole active Q017 family",
+    "state_factors_unchanged": {
+      "NATIVE_ENTRY_SIGNAL": 1.0,
+      "WATCH_ONLY": 0.5,
+      "ENTRY_BLOCKED": 0.25,
+      "INVALID_OR_MISSING": 0.0
+    }
+  },
+  "active_operational_families": ["Q017_CANONICAL_FAMILY"],
+  "retired_operational_families": [
+    "E2_PROFIT_MAX_FAMILY",
+    "V43_FAMILY",
+    "X_FAMILY",
+    "NEXTDAY_FAMILY"
+  ],
+  "retired_family_points": 0,
+  "retired_family_trade_authority": 0,
+  "resonance_points": 0,
+  "action_card": {
+    "attention_leader_is_not_buy_authority": true,
+    "formal_q017_action_confirmation_required": true,
+    "buy_price_only_if_native_authorized_price_exists": true,
+    "reference_close_never_automatic_buy_price": true,
+    "hold_and_exit_from_q017_native_rule_only": true,
+    "fixed_sell_price_may_not_be_invented": true
+  },
+  "authority": {
+    "display_only_meta_analysis": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "can_upgrade_entry_trigger": false
+  }
+}
