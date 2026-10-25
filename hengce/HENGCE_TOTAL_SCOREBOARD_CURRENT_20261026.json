@@ -1,43 +1,76 @@
 {
-  "schema_version": 4,
+  "schema_version": 3,
   "system": "HENGCE",
   "module": "HENGCE_TOTAL_SCOREBOARD",
+  "score_policy": "HENGCE_ATTENTION_SCORE_V1",
   "generated_for_date": "2026-10-26",
-  "status": "RETIRED_NO_ACTIVE_STRATEGY",
+  "market_session_state": "TWSE_CLOSED_SUBSTITUTE_HOLIDAY",
+  "active_strategy_count": 1,
+  "active_strategy": "Q017_CANONICAL_FAMILY",
+  "lane_asof": {
+    "q017": "2026-10-22",
+    "e2": "2026-10-22",
+    "v43": "2026-10-22",
+    "w1": "2026-10-22"
+  },
+  "asof_signal_date": "2026-10-22",
   "authority": {
     "display_only_meta_analysis": true,
     "capital_authority_twd": 0,
     "broker_order_execution": false,
-    "can_upgrade_entry_trigger": false,
-    "can_create_new_entry": false
+    "can_upgrade_entry_trigger": false
   },
   "retired_operational_families": [
     "E2_PROFIT_MAX_FAMILY",
     "NEXTDAY_FAMILY",
-    "Q017_CANONICAL_FAMILY",
     "V43_FAMILY",
     "X_FAMILY"
   ],
-  "active_strategy_count": 0,
-  "attention_leader": null,
-  "top10": [],
-  "rows": [],
+  "price_reference": {
+    "date": "2026-10-22",
+    "role": "REFERENCE_ONLY_NOT_AUTOMATIC_BUY_PRICE"
+  },
+  "attention_leader": {
+    "rank": 1,
+    "ticker": "3055",
+    "name": "蔚華科",
+    "score": 6.25,
+    "consensus_count": 1,
+    "source": "Q017_CANONICAL_FAMILY rank1 ENTRY_BLOCKED",
+    "reference_price": 143.0,
+    "reference_price_date": "2026-10-22",
+    "action_state": "NO_NATIVE_ENTRY_FROM_SCORED_FAMILIES"
+  },
   "action_card": {
     "status": "NO_BUY",
-    "ticker": null,
-    "name": null,
-    "reference_price": null,
+    "ticker": "3055",
+    "name": "蔚華科",
+    "reference_price": 143.0,
+    "reference_price_date": "2026-10-22",
     "buy_price": null,
     "sell_price": null,
     "buy_rule": null,
     "hold_rule": null,
-    "exit_rule": null
+    "exit_rule": null,
+    "reason": "Q017 schema-v5 evidence is CASH/ENTRY_BLOCKED and 2026-10-26 is not a TWSE trading session."
   },
-  "decision_source": "hengce/HENGCE_MAINLINE_RETIREMENT_DECISION_20261026.json",
+  "top10": [
+    {"rank": 1, "ticker": "3055", "name": "蔚華科", "score": 6.25, "consensus_count": 1, "source": "Q017 rank1 ENTRY_BLOCKED", "reference_price": 143.0},
+    {"rank": 2, "ticker": "7795", "name": "長廣", "score": 4.4194, "consensus_count": 1, "source": "Q017 rank2 ENTRY_BLOCKED", "reference_price": 409.5},
+    {"rank": 3, "ticker": "3016", "name": "嘉晶", "score": 3.6084, "consensus_count": 1, "source": "Q017 rank3 ENTRY_BLOCKED", "reference_price": 145.0}
+  ],
+  "rows": [
+    {"rank": 1, "ticker": "3055", "name": "蔚華科", "score": 6.25, "state": "ENTRY_BLOCKED", "family": "Q017_CANONICAL_FAMILY"},
+    {"rank": 2, "ticker": "7795", "name": "長廣", "score": 4.4194, "state": "ENTRY_BLOCKED", "family": "Q017_CANONICAL_FAMILY"},
+    {"rank": 3, "ticker": "3016", "name": "嘉晶", "score": 3.6084, "state": "ENTRY_BLOCKED", "family": "Q017_CANONICAL_FAMILY"}
+  ],
+  "decision_source": "hengce/HENGCE_Q017_PRESERVATION_DECISION_20261026.json",
   "guards": [
-    "All old HENGCE operational families are retired or deleted.",
-    "Retired families contribute zero attention points and zero trade authority.",
-    "Historical scoreboards remain audit evidence only.",
-    "A newly preregistered and separately validated model/version is required before any active strategy can return."
+    "Q017 is the sole active HENGCE strategy.",
+    "E2, X12, V43 and W1/NEXTDAY contribute zero operational attention and zero trade authority.",
+    "Attention score is not trade authority.",
+    "Q017 CASH blocks entry.",
+    "Reference close is never automatically a buy price.",
+    "Missing or stale current Q017 formal evidence fails closed."
   ]
 }
