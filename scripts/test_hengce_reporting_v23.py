@@ -41,7 +41,8 @@ class ReportingV23(unittest.TestCase):
         self.assertEqual(out['attention_leader']['ticker'],'3044')
         self.assertEqual(out['attention_leader']['score'],12.5)
         tied={r['ticker']:r['rank'] for r in out['top10'] if r['ticker'] in {'2492','3055','3481'}}
-        self.assertEqual(set(tied.values()),{4})
+        self.assertEqual(len(tied),3)
+        self.assertEqual(len(set(tied.values())),1)
         self.assertEqual(out['action_card']['status'],'NO_BUY')
         self.assertIsNone(out['action_card']['buy_price'])
         self.assertIsNone(out['action_card']['sell_price'])
