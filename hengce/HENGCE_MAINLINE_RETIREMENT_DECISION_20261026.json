@@ -1,7 +1,9 @@
 {
   "decision_id": "HENGCE_MAINLINE_RETIREMENT_DECISION_20261026",
-  "status": "ACTIVE",
+  "status": "SUPERSEDED_IN_Q017_SCOPE",
   "effective_date": "2026-10-26",
+  "superseded_by": "HENGCE_Q017_PRESERVATION_DECISION_20261026",
+  "supersession_note": "The user's later directive explicitly preserves Q017 as the sole active HENGCE strategy. All Q017 retirement clauses below are retained only as historical audit evidence and have no current operational effect. E2 remains deleted/retired as previously directed.",
   "scope": "remaining HENGCE active mainline after prior X12/V43/W1 retirement",
   "user_validation_rule": {
     "window": "2026-04-22 through 2026-10-22",
@@ -35,22 +37,18 @@
     "first_3m_pl_twd": 401416.0,
     "last_3m_pl_twd": 478340.0,
     "skipped_overlap_entries": ["2026-06-08", "2026-07-08", "2026-08-20"],
-    "decision_basis": "Economically positive but only four executable operations in six months under the actual unified H20/no-overlap mechanics; fails the user's practicality requirement for an active mainline."
+    "decision_basis_historical_only": "Economically positive but only four executable operations in six months; this frequency-based retirement decision was later explicitly reversed for Q017 by user directive."
   },
-  "final_decision": {
+  "historical_final_decision_superseded_for_q017": {
     "Q017_CANONICAL_FAMILY": "RETIRED_FROM_ACTIVE_MAINLINE",
     "UNIFIED_HENGCE_Q017": "RETIRED_FROM_ACTIVE_MAINLINE",
     "E2_PROFIT_MAX_FAMILY": "ALREADY_DELETED_OR_RETIRED_PER_USER; NOT_REVALIDATED",
     "active_strategy_count": 0
   },
-  "operational_effect": {
-    "q017_attention_score_contribution": 0,
-    "q017_trade_authority": 0,
-    "unified_hengce_new_entry_authority": 0,
-    "remove_from_daily_buy_sell_support": true,
-    "historical_artifacts_retained_for_audit": true,
-    "do_not_delete_historical_evidence": true,
-    "do_not_rescue_with_old_backtest_results": true,
-    "future_reactivation_requires_new_preregistered_model_version": true
+  "current_effect_after_supersession": {
+    "Q017_CANONICAL_FAMILY": "NO_EFFECT_USE_PRESERVATION_DECISION",
+    "UNIFIED_HENGCE_Q017": "NO_EFFECT_USE_PRESERVATION_DECISION",
+    "E2_PROFIT_MAX_FAMILY": "REMAINS_RETIRED_OR_DELETED",
+    "historical_artifacts_retained_for_audit": true
   }
 }
