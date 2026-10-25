@@ -1,0 +1,45 @@
+{
+  "decision_id": "HENGCE_RESEARCH_FRONTIER_DECISION_v2_20261026",
+  "status": "ACTIVE",
+  "effective_date": "2026-10-26",
+  "supersedes_clause_scope": "HENGCE_RESEARCH_FRONTIER_DECISION_20261026 results/governance for X12, V43 and W1 active-frontier status",
+  "basis": {
+    "validation_window": "2026-04-22 through 2026-10-22",
+    "capital_per_operation_twd": 1000000,
+    "compounding": false,
+    "user_practicality_requirement": "A strategy that executes only three times in six months is not sufficiently actionable for the active HENGCE research frontier."
+  },
+  "final_decisions": {
+    "X12": {
+      "decision": "RETIRED_FROM_ACTIVE_RESEARCH_FRONTIER",
+      "reason": "Only three executed operations in six months. Numerical profitability is insufficient to justify retention given the explicit practicality/frequency requirement.",
+      "attention_score_contribution": 0,
+      "trade_authority": 0
+    },
+    "V43": {
+      "decision": "RETIRED_FROM_ACTIVE_RESEARCH_FRONTIER",
+      "reason": "Six-month 50% win rate and remove-best P/L below zero; profit concentrated in one trade.",
+      "attention_score_contribution": 0,
+      "trade_authority": 0
+    },
+    "W1_WIDE_TAIL": {
+      "decision": "RETIRED_FROM_ACTIVE_RESEARCH_FRONTIER",
+      "reason": "Fails locked >=65% win-rate requirement at 40bp and the most recent three-month window is negative.",
+      "attention_score_contribution": 0,
+      "trade_authority": 0
+    }
+  },
+  "operational_effect": {
+    "retired_scoreboard_families": ["X_FAMILY", "V43_FAMILY", "NEXTDAY_FAMILY"],
+    "remove_from_daily_attention_ranking": true,
+    "remove_from_buy_sell_recommendation_support": true,
+    "historical_audit_visibility": true,
+    "delete_historical_artifacts": false,
+    "rerun_old_models_to_refill_frontier": false
+  },
+  "remaining_not_in_scope": {
+    "Q017_CANONICAL_FAMILY": "UNCHANGED_BY_THIS_DECISION",
+    "E2_PROFIT_MAX_FAMILY": "UNCHANGED_BY_THIS_DECISION"
+  },
+  "future_research_rule": "Any replacement must be a new preregistered challenger/version. Retired X12, V43, and W1 may not regain active status merely by re-presenting old backtest results."
+}
