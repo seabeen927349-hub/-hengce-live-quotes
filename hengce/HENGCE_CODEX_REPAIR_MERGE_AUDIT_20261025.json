@@ -1,0 +1,83 @@
+{
+  "audit_id": "HENGCE_CODEX_REPAIR_MERGE_AUDIT_20261025",
+  "status": "MERGED_WITH_GUARDS",
+  "audit_date": "2026-10-25",
+  "input_package": {
+    "name": "HENGCE_CODEX_SLIM_V22_REPAIRED.zip",
+    "sha256": "90890d6532548db5017e22ed3697cccc435ace758b22781cf97f7b265d0d2130"
+  },
+  "accepted": [
+    "Explicit INVALID_PUBLICATION_ROWS fail-closed validation in hengce_unified_scan_display.py",
+    "Q017 resilience tests redirect OBS_LATEST into temporary directories so synthetic recovery tests cannot overwrite production evidence",
+    "Q017 invalid/CASH evidence cannot contribute a resonance selection vote",
+    "Resonance duplicate ticker/nonfinite score/invalid rank hardening principles",
+    "Cross-lane signal-date coherence, with a compatibility correction for schema-v5 Q017 09:01 artifacts",
+    "Competition ranking for equal scoreboard scores",
+    "Scoreboard family-alias clarification: NEXTDAY_FAMILY and W1_NEXTDAY_FAMILY are one capacity, not two",
+    "Native action authority remains separate from attention score"
+  ],
+  "accepted_with_modification": [
+    {
+      "codex_change": "Require signal_date on every resonance input",
+      "final_rule": "Use explicit signal_date when present. For recognized schema-v5 09:01 Q017 modules only, trade_date may be resolved as the causal signal session when the 09:01 decision/observation lock is present. Generic trade_date fallback remains forbidden."
+    },
+    {
+      "codex_change": "v2.2 router integration gap",
+      "final_rule": "Top-level router remains the backward-compatible single formal unified HENGCE output. v2.3 adds a zero-authority reporting sidecar for Q017 schema-v5, E2_PROFIT_MAX, V43, X12, W1, Q1, resonance, scoreboard, review, health and positions."
+    }
+  ],
+  "rejected": [
+    "Whole repaired ZIP replacement of main",
+    "Deleting dual_engine solely because unified HENGCE is newer",
+    "Deleting health or q017_review_10d evidence required by still-effective contracts",
+    "Deleting research/e2_profit_max or conflating revoked legacy E2 with the E2_PROFIT_MAX successor",
+    "Using truncated Top-K inputs to fabricate A/B/C soft resonance percentiles",
+    "Treating W1 fail-closed -15% immature future-leg sentinel as a realized trading loss",
+    "Rerunning X1-X15, G1, B2 or M1 challenger merely to fill current picks"
+  ],
+  "new_runtime_files": [
+    "scripts/hengce_three_line_resonance.py",
+    "scripts/hengce_total_scoreboard.py",
+    "hengce/w1_nextday/latest.json",
+    "scripts/test_hengce_reporting_v23.py"
+  ],
+  "new_governance_files": [
+    "hengce/HENGCE_Q017_SCOPE_RESOLUTION_v1_0_20261025.json",
+    "hengce/HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_1_20261025.json",
+    "hengce/HENGCE_SCAN_ONCE_CONTRACT_v2_3_20261025.json"
+  ],
+  "validation": {
+    "environment": "complete HENGCE package with pinned TWSE annual and extraordinary-closure calendar JSON restored",
+    "native_test_scripts_passed": 15,
+    "native_test_scripts_total": 15,
+    "result": "PASS",
+    "important_regressions": [
+      "unified runtime backward compatibility",
+      "Q017 admission and boundary tests",
+      "Q017 schema-v5 resilience without production artifact contamination",
+      "E2 release/no-fill tests",
+      "effective TWSE calendar validation",
+      "v2.3 Q017 signal-date compatibility and mismatch fail-closed",
+      "v2.3 hard-overlap vs soft-rank separation",
+      "scoreboard tie ranking and NO_BUY guard"
+    ]
+  },
+  "current_reporting_result": {
+    "asof_signal_date": "2026-10-22",
+    "attention_leader": "3044 健鼎",
+    "attention_score": 12.5,
+    "action_card": "NO_BUY",
+    "q017_schema5": "PASS/CASH",
+    "e2_profit_max": "PASS/OFF",
+    "v43": "PASS/WATCH_ONLY",
+    "w1_40bp_gate": false,
+    "v43_top3_x_w1_top20_overlap_count": 0,
+    "soft_resonance": "DATA_PENDING_FULL_RANKS"
+  },
+  "authority": {
+    "changes_model_parameters": false,
+    "changes_broker_order_authority": false,
+    "changes_capital_authority": false,
+    "formal_action_authority_remains": "SINGLE_UNIFIED_HENGCE_ACTION_BOARD"
+  }
+}
