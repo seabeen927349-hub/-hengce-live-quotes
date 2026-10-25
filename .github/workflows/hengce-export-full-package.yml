@@ -1,0 +1,55 @@
+name: HENGCE Export Full Package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-export-full-package.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: package/main
+          fetch-depth: 1
+
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+          path: package/research-codex-full-reset-run-20261023
+          fetch-depth: 1
+
+      - name: Write export manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA=$(git -C package/main rev-parse HEAD)
+          RESEARCH_SHA=$(git -C package/research-codex-full-reset-run-20261023 rev-parse HEAD)
+          rm -rf package/main/.git package/research-codex-full-reset-run-20261023/.git
+          cat > package/HENGCE_FULL_PACKAGE_MANIFEST.txt <<EOF
+          HENGCE FULL PACKAGE
+          generated_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          main_sha=${MAIN_SHA}
+          research_branch=research/codex-full-reset-run-20261023
+          research_sha=${RESEARCH_SHA}
+          latest_scan_contract=hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json
+          package_scope=complete main working tree + complete current research branch working tree
+          EOF
+
+      - name: Upload full package
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_FULL_PACKAGE_20261025
+          path: package/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
