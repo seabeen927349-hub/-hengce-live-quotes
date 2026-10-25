@@ -6,7 +6,7 @@ from pathlib import Path
 
 CAP=25.0
 FACT={'NATIVE_ENTRY_SIGNAL':1.0,'WATCH_ONLY':0.5,'ENTRY_BLOCKED':0.25,'INVALID_OR_MISSING':0.0}
-RETIRED_OPERATIONAL_FAMILIES={'Q017_CANONICAL_FAMILY','E2_PROFIT_MAX_FAMILY','V43_FAMILY','NEXTDAY_FAMILY','X_FAMILY'}
+RETIRED_OPERATIONAL_FAMILIES={'E2_PROFIT_MAX_FAMILY','V43_FAMILY','NEXTDAY_FAMILY','X_FAMILY'}
 
 def read(p): return json.loads(Path(p).read_text(encoding='utf-8')) if Path(p).is_file() else None
 
@@ -30,6 +30,7 @@ def contribution(family,rank,state,ticker,name='',detail=None):
 def build(q,e,v,w,prices,price_date,retired_families=None):
     retired=set(RETIRED_OPERATIONAL_FAMILIES if retired_families is None else retired_families)
     cs=[]
+    # Q017 schema-v5 is reporting evidence; CASH/invalid can never become a native entry via scoreboard.
     qok=isinstance(q,dict) and str(q.get('binding_status')).upper()=='PASS'; qcash=str((q or {}).get('market_state','')).upper()=='CASH'
     qstate='ENTRY_BLOCKED' if qok else 'INVALID_OR_MISSING'
     if 'Q017_CANONICAL_FAMILY' not in retired:
@@ -40,11 +41,13 @@ def build(q,e,v,w,prices,price_date,retired_families=None):
         entry=str(e.get('engine_status')).upper()=='ON' and str(e.get('action')).upper() not in {'OFF','ABSTAIN',''}
         state='NATIVE_ENTRY_SIGNAL' if entry else ('ENTRY_BLOCKED' if str(e.get('binding_status')).upper()=='PASS' else 'INVALID_OR_MISSING')
         r=e['top1']; cs.append(contribution('E2_PROFIT_MAX_FAMILY',1,state,str(r['ticker']),r.get('name',''),{'engine_status':e.get('engine_status'),'action':e.get('action')}))
+    # V43 daily watchlist vs frozen native schedule
     if isinstance(v,dict) and 'V43_FAMILY' not in retired:
         sched=v.get('schedule') if isinstance(v.get('schedule'),dict) else {}; active=bool(sched.get('today_is_frozen_schedule_signal'))
         state='NATIVE_ENTRY_SIGNAL' if active else ('WATCH_ONLY' if str(v.get('status')).upper()=='PASS' else 'INVALID_OR_MISSING')
         for i,r in enumerate(((v.get('screen') or {}).get('top3') or []),1):
             if isinstance(r,dict) and r.get('ticker'): cs.append(contribution('V43_FAMILY',i,state,str(r['ticker']),r.get('name',''),{'schedule_signal':active,'score':r.get('score')}))
+    # NEXTDAY family: W1 is registered frontier. Q1 may later compete within family but may never add a second 25-point capacity.
     if isinstance(w,dict) and 'NEXTDAY_FAMILY' not in retired:
         gate=bool(((w.get('economic_gate_40bp') or {}).get('pass')))
         state='NATIVE_ENTRY_SIGNAL' if gate else ('ENTRY_BLOCKED' if str(w.get('status','')).startswith('PASS') else 'INVALID_OR_MISSING')
@@ -61,6 +64,7 @@ def build(q,e,v,w,prices,price_date,retired_families=None):
                      'native_entry_family':[x['family'] for x in active],
                      'action_state':'NATIVE_ENTRY_PRESENT_RESEARCH_OR_CANONICAL_LAYER_CHECK_REQUIRED' if active else 'NO_NATIVE_ENTRY_FROM_SCORED_FAMILIES'})
     rows.sort(key=lambda r:(-r['score'],-r['consensus_count'],r['ticker']))
+    # competition ranking: exact score ties share rank
     last=None; rank=0
     for i,r in enumerate(rows,1):
         key=round(r['score'],12)
@@ -89,7 +93,7 @@ def build(q,e,v,w,prices,price_date,retired_families=None):
             'price_reference':{'date':price_date,'role':'REFERENCE_ONLY_NOT_AUTOMATIC_BUY_PRICE'},
             'retired_operational_families':sorted(retired),'retired_research_families':sorted(retired),
             'attention_leader':leader,'action_card':action_card,'top10':rows[:10],'rows':rows,
-            'guards':['Attention score is not trade authority.','Retired operational families contribute zero attention points and zero trade authority.','Family capacity is never reallocated when a lane is missing or retired.','Resonance contributes zero points.','Buy/hold/exit must come from native active lane, never from attention score.']}
+            'guards':['Attention score is not trade authority.','Q017 is the sole active operational family; retired operational families contribute zero attention points and zero trade authority.','Family capacity is never reallocated when a lane is missing or retired.','Resonance contributes zero points.','Buy/hold/exit must come from native active lane, never from attention score.']}
 
 def main():
     ap=argparse.ArgumentParser();
