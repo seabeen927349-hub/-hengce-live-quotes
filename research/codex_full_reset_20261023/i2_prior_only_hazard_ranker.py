@@ -42,17 +42,25 @@ def quantile(xs,q):
     p=(len(ys)-1)*q; lo=int(math.floor(p)); hi=int(math.ceil(p))
     return ys[lo] if lo==hi else ys[lo]+(ys[hi]-ys[lo])*(p-lo)
 
+# Precompute market breadth once. This keeps the independent model practical without changing semantics.
+BREADTH={}
+for d in DATES:
+    eligible=[x for x in BY[d].values() if not x.bad and x.r20 is not None and x.turn20 is not None and x.turn20>=TURNMIN]
+    BREADTH[d]=sum(x.r20>0 for x in eligible)/len(eligible) if eligible else .5
 
+FCACHE={}
 def feat(d,t):
+    key=(d,t)
+    if key in FCACHE:return FCACHE[key]
     r=BY[d].get(t)
     if not r or r.bad or r.r1 is None or r.r5 is None or r.r20 is None or r.r60 is None or r.vol20 is None or r.turn20 is None or r.turn20<TURNMIN:
-        return None
+        FCACHE[key]=None; return None
     beta=r.beta60 if r.beta60 is not None and math.isfinite(r.beta60) else 1.0
     resid=r.resid5 if r.resid5 is not None and math.isfinite(r.resid5) else r.r5
-    eligible=[x for x in BY[d].values() if not x.bad and x.r20 is not None and x.turn20 is not None and x.turn20>=TURNMIN]
-    breadth=sum(x.r20>0 for x in eligible)/len(eligible) if eligible else .5
-    return {'r1':r.r1,'r5':r.r5,'r20':r.r20,'r60':r.r60,'vol20':r.vol20,'beta60':beta,'resid5':resid,
-            'logturn':math.log(max(r.turn20,1.0)),'breadth20':breadth}
+    f={'r1':r.r1,'r5':r.r5,'r20':r.r20,'r60':r.r60,'vol20':r.vol20,'beta60':beta,'resid5':resid,
+       'logturn':math.log(max(r.turn20,1.0)),'breadth20':BREADTH[d]}
+    FCACHE[key]=f
+    return f
 
 
 def elig(f,kind):
@@ -80,8 +88,10 @@ def outcome(si,t,h,end):
     ret=r.c/entry-1
     return {'win':ret>0,'entry_date':DATES[ei],'exit_date':DATES[xi],'entry_open':entry,'exit_close':r.c,'gross_return':ret,'hold':h,'exit_i':xi}
 
-
+TRAIN_ROWS={}
 def training_examples(cutoff,h):
+    key=(cutoff,h)
+    if key in TRAIN_ROWS:return TRAIN_ROWS[key]
     rows=[]
     for i,d in enumerate(DATES):
         if d<'2023-01-01' or d>cutoff or i % SAMPLE_STRIDE != 0:continue
@@ -92,6 +102,7 @@ def training_examples(cutoff,h):
             o=outcome(i,t,h,cutoff)
             if o is None:continue
             rows.append((f,1 if o['win'] else 0))
+    TRAIN_ROWS[key]=rows
     return rows
 
 
@@ -101,8 +112,7 @@ def fit_binned(rows,features):
     model['base']=base
     for name in features:
         vals=[f[name] for f,_ in rows]
-        cuts=[]
-        for j in range(1,BINS):cuts.append(quantile(vals,j/BINS))
+        cuts=[quantile(vals,j/BINS) for j in range(1,BINS)]
         wins=[0]*BINS; ns=[0]*BINS
         for f,y in rows:
             b=0
@@ -118,33 +128,34 @@ def logit(p):
 
 
 def score(model,f):
-    vals=[]
+    vals=[]; base_logit=logit(model['base'])
     for name in model['features']:
         part=model['parts'][name]; b=0
         while b<len(part['cuts']) and f[name]>part['cuts'][b]:b+=1
         vals.append(logit(part['probs'][b]))
-    # center on the training base so features contribute relative evidence.
-    return logit(model['base']) + sum(v-logit(model['base']) for v in vals)/max(len(vals),1)
+    return base_logit + sum(v-base_logit for v in vals)/max(len(vals),1)
 
-CACHE={}
+MODEL_CACHE={}
 def yearly_model(eval_year,h,features):
     cutoff=f'{eval_year-1}-12-31'
     key=(cutoff,h,features)
-    if key not in CACHE:
-        rows=training_examples(cutoff,h)
-        CACHE[key]=fit_binned(rows,features)
-    return CACHE[key]
+    if key not in MODEL_CACHE:
+        MODEL_CACHE[key]=fit_binned(training_examples(cutoff,h),features)
+    return MODEL_CACHE[key]
 
-
+PICK_CACHE={}
 def choose(d,year,spec):
+    key=(d,year,spec['features'],spec['eligibility'],spec['hold'])
+    if key in PICK_CACHE:return PICK_CACHE[key]
     m=yearly_model(year,spec['hold'],FEATURE_SETS[spec['features']])
-    arr=[]
+    best=None
     for t in BY[d]:
         f=feat(d,t)
         if f is None or not elig(f,spec['eligibility']):continue
-        arr.append((score(m,f),t,f))
-    if not arr:return None
-    arr.sort(key=lambda z:(-z[0],z[1])); return arr[0]
+        z=(score(m,f),t,f)
+        if best is None or z[0]>best[0] or (z[0]==best[0] and z[1]<best[1]):best=z
+    PICK_CACHE[key]=best
+    return best
 
 
 def simulate(spec,start,end,include=False):
@@ -177,10 +188,10 @@ champ=rows[0]
 champ['validation_2025']=simulate(champ['spec'],'2025-01-01','2025-12-31')
 champ['historical_diagnostic_2026']=simulate(champ['spec'],'2026-01-01','2026-10-22')
 
+EVENTS.write_text('',encoding='utf-8')
 for label,period in [('DEV2024',('2024-01-01','2024-12-31')),('VAL2025',('2025-01-01','2025-12-31')),('DIAG2026',('2026-01-01','2026-10-22'))]:
     m=simulate(champ['spec'],*period,include=True)
-    mode='w' if label=='DEV2024' else 'a'
-    with EVENTS.open(mode,encoding='utf-8') as fh:
+    with EVENTS.open('a',encoding='utf-8') as fh:
         for e in m['events']:fh.write(json.dumps({'split':label,**e},ensure_ascii=False)+'\n')
 
 v25=champ['validation_2025']; d26=champ['historical_diagnostic_2026']
