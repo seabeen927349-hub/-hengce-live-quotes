@@ -26,3 +26,4 @@ jobs:
           path: |
             research/codex_full_reset_20261023/INDEPENDENT_HIGHWIN_RESULT_20261025.json
             research/codex_full_reset_20261023/independent_highwin_champion_events.jsonl
+# retrigger corrected rank-direction build
