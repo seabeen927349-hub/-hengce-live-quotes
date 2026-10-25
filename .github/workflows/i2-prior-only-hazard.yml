@@ -33,3 +33,5 @@ jobs:
           path: |
             research/codex_full_reset_20261023/I2_PRIOR_ONLY_HAZARD_RESULT_20261025.json
             research/codex_full_reset_20261023/i2_prior_only_hazard_events.jsonl
+
+# retrigger 2026-10-25: execution-only; model specification unchanged
