@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from urllib.request import urlopen
 from zoneinfo import ZoneInfo
-from hengce_unified_contracts import atomic, digest, strict_loads, session_metadata, ZERO_AUTHORITY
+from hengce_unified_contracts import atomic, digest, strict_loads, session_metadata, ticker, ZERO_AUTHORITY
 
 NAMES = {'base': 'HENGCE_UNIFIED_CANDIDATE_BASE.json',
          'action': 'HENGCE_INTRADAY_ACTION_BOARD.json',
@@ -129,6 +129,16 @@ def run(now=None):
 
             unified = adapter.build(legacy, q017)
             unified = position_watch.merge(unified, q017_watch)
+            watched = set(unified.get('q017_position_watch_tickers') or [])
+            if watched:
+                live_rows = live.get('data') if isinstance(live, dict) else None
+                if not isinstance(live_rows, list):
+                    raise ValueError('Q017_POSITION_WATCH_LIVE_DATA_UNAVAILABLE')
+                live_tickers = {ticker(r) for r in live_rows if isinstance(r, dict) and ticker(r)}
+                missing_live = sorted(watched - live_tickers)
+                if missing_live:
+                    raise ValueError('Q017_POSITION_WATCH_LIVE_TICKER_MISSING:' + ','.join(missing_live))
+
             action = board.build(unified, live, context, trade_date=now.date().isoformat(),
                                  max_age_seconds=max_age, now=now)
             if action['binding_status'] != 'PASS':
