@@ -1,0 +1,130 @@
+{
+  "name": "ME3_COHORT_EXHAUSTION_TRANSITION",
+  "rule": {
+    "stock_selector": "FROZEN_UNCHANGED",
+    "date_gate": [
+      "yesterday base_candidate density > median density of sessions t-21..t-2",
+      "today base_candidate density < yesterday base_candidate density"
+    ],
+    "threshold_tuning": "NONE",
+    "signal_time": "t close; all gate inputs known by t close"
+  },
+  "baseline_3m_40bp": {
+    "raw_signals": 281,
+    "selected_roundlot_trades": 39,
+    "skipped_zero_lot": 242,
+    "unique_signal_dates": 14,
+    "total_pnl": 92555.80000000003,
+    "win_rate": 0.6666666666666666,
+    "profit_factor": 1.8882378005712006,
+    "max_drawdown_amount": -20654.400000000023,
+    "max_drawdown_pct": -0.020997913262222,
+    "max_concurrent_positions": 8,
+    "remove_best_trade_pnl": 50641.80000000002,
+    "remove_top2_trades_pnl": 13893.800000000017,
+    "remove_best_signal_date_pnl": 17785.200000000055,
+    "remove_best_3_signal_dates_pnl": -27661.799999999974,
+    "monthly_by_signal_date": [
+      {
+        "month": "2026-07",
+        "count": 12,
+        "sum": 45309.19999999999
+      },
+      {
+        "month": "2026-08",
+        "count": 5,
+        "sum": 21737.400000000023
+      },
+      {
+        "month": "2026-09",
+        "count": 20,
+        "sum": 25600.000000000007
+      },
+      {
+        "month": "2026-10",
+        "count": 2,
+        "sum": -90.80000000000155
+      }
+    ]
+  },
+  "challenger_3m_40bp": {
+    "raw_signals": 77,
+    "selected_roundlot_trades": 27,
+    "skipped_zero_lot": 50,
+    "unique_signal_dates": 6,
+    "total_pnl": 119984.19999999992,
+    "win_rate": 0.4444444444444444,
+    "profit_factor": 3.7169104660115,
+    "max_drawdown_amount": -46100.0,
+    "max_drawdown_pct": -0.04630202499546021,
+    "max_concurrent_positions": 12,
+    "remove_best_trade_pnl": 59139.39999999993,
+    "remove_top2_trades_pnl": 28255.39999999992,
+    "remove_best_signal_date_pnl": 53683.999999999956,
+    "remove_best_3_signal_dates_pnl": -17001.79999999999,
+    "monthly_by_signal_date": [
+      {
+        "month": "2026-07",
+        "count": 7,
+        "sum": 47589.79999999998
+      },
+      {
+        "month": "2026-08",
+        "count": 4,
+        "sum": -6336.999999999995
+      },
+      {
+        "month": "2026-09",
+        "count": 16,
+        "sum": 78731.39999999994
+      }
+    ]
+  },
+  "challenger_3m_100bp": {
+    "raw_signals": 77,
+    "selected_roundlot_trades": 27,
+    "skipped_zero_lot": 50,
+    "unique_signal_dates": 6,
+    "total_pnl": 104585.49999999993,
+    "win_rate": 0.37037037037037035,
+    "profit_factor": 3.0955448470701357,
+    "max_drawdown_amount": -46100.0,
+    "max_drawdown_pct": -0.04639731398803537,
+    "max_concurrent_positions": 12,
+    "remove_best_trade_pnl": 44273.499999999935,
+    "remove_top2_trades_pnl": 15363.499999999927,
+    "remove_best_signal_date_pnl": 40909.999999999956,
+    "remove_best_3_signal_dates_pnl": -22254.499999999985,
+    "monthly_by_signal_date": [
+      {
+        "month": "2026-07",
+        "count": 7,
+        "sum": 41649.499999999985
+      },
+      {
+        "month": "2026-08",
+        "count": 4,
+        "sum": -7667.499999999995
+      },
+      {
+        "month": "2026-09",
+        "count": 16,
+        "sum": 70603.49999999994
+      }
+    ]
+  },
+  "checks": {
+    "days_ge_7": false,
+    "trades_ge_15": true,
+    "pnl40_positive": true,
+    "pf40_ge_1_5": true,
+    "remove_top3_day_positive": false,
+    "mdd_not_worse": false,
+    "pnl100_positive": true,
+    "pf100_gt_1": true,
+    "active_months_ge_3": true,
+    "positive_months_ge_active_minus_1": true
+  },
+  "three_month_decision": "KILL",
+  "one_year": null
+}
