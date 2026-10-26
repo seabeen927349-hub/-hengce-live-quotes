@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "task_id": "HENGCE_Q017_CODEX_CLEANUP_OPT_20261026",
+  "created_date_taipei": "2026-10-26",
+  "authority_mode": "Q017_ONLY",
+  "production_stock_output_authority": ["Q017"],
+  "non_authoritative_engines": "ALL_OTHER_HENGCE_MODELS_AND_RESEARCH_LANES",
+  "q017_contract": {
+    "formal_live_schema": 5,
+    "universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "observation_time": "09:01_ASIA_TAIPEI_IMMUTABLE",
+    "eligible_quote_row_coverage_required": "100_PERCENT",
+    "late_backfill_forbidden": true,
+    "post_0901_data_may_not_create_or_repair_formal_0901_evidence": true,
+    "fail_closed_when_formal_evidence_incomplete": true,
+    "model_logic_frozen": true
+  },
+  "allowed_changes": [
+    "repository organization and documentation",
+    "Q017 code deduplication with proven behavior equivalence",
+    "Q017 module boundaries and dependency cleanup",
+    "deterministic replay and fixture improvements",
+    "tests and fail-closed guards",
+    "logging, observability, receipts, hashes and auditability",
+    "runtime efficiency improvements that preserve exact semantics",
+    "workflow reliability and offline CI improvements",
+    "Q017-only formal-output routing and authority guards",
+    "dead-code quarantine where it cannot affect Q017 formal behavior"
+  ],
+  "forbidden_changes": [
+    "retraining Q017",
+    "parameter tuning or threshold search",
+    "feature addition, removal or transformation that changes Q017 scores",
+    "coefficient changes",
+    "ranking formula changes",
+    "universe expansion or substitution",
+    "09:01 timing relaxation",
+    "coverage relaxation",
+    "late market backfill",
+    "historical output regeneration presented as original formal evidence",
+    "using 2026 outcomes to tune Q017",
+    "mixing Q017 with NOVA, V43, W1, Q1, E2, M1 or any retired/research model for formal stock output",
+    "granting any non-Q017 engine formal stock-output authority",
+    "broker execution",
+    "direct writes or merge to main"
+  ],
+  "required_equivalence": {
+    "same_input_same_q017_formal_output": true,
+    "same_input_same_ranking_order": true,
+    "same_input_same_buy_count": true,
+    "same_input_same_fail_closed_state": true,
+    "observation_hash_binding_preserved": true,
+    "universe_hash_binding_preserved": true
+  },
+  "required_deliverables": [
+    "INVENTORY.md",
+    "ARCHITECTURE_BEFORE_AFTER.md",
+    "DUPLICATE_AND_DEAD_CODE_MAP.json",
+    "Q017_AUTHORITY_ROUTE_MAP.json",
+    "REFACTOR_PLAN.json",
+    "EQUIVALENCE_TEST_REPORT.json",
+    "PERFORMANCE_BEFORE_AFTER.json",
+    "RISK_REGISTER.md",
+    "FINAL_AUDIT.json",
+    "REPORT.md"
+  ],
+  "final_states_allowed": [
+    "PASS_ENGINEERING_OPTIMIZATION_NO_SEMANTIC_CHANGE",
+    "PASS_NO_SAFE_CHANGE_NEEDED",
+    "BLOCKED_BY_MISSING_EQUIVALENCE_EVIDENCE",
+    "FAIL_SEMANTIC_DRIFT_DETECTED"
+  ],
+  "promotion_authority": false,
+  "merge_authority": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false
+}
