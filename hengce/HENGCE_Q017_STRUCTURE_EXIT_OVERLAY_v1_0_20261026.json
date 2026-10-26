@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "HENGCE_Q017_STRUCTURE_EXIT_OVERLAY",
+  "version": "Q017_FAILED_RECLAIM_V1",
+  "date": "2026-10-26",
+  "purpose": "EXECUTION_ONLY_EXIT_OVERLAY",
+  "scope": "ALREADY_HELD_Q017_OR_BOTH_POSITIONS_ONLY",
+  "position_source": {
+    "module": "HENGCE_Q017_POSITION_WATCH",
+    "candidate_is_not_position": true,
+    "missing_position_source_policy": "FAIL_CLOSED_NO_Q017_EXIT_MONITORING"
+  },
+  "structure": {
+    "pivot": "STRICT_ONE_BAR_CONFIRMED_CAUSAL",
+    "lower_high": "SECOND_CONFIRMED_SWING_HIGH_BELOW_PRIOR_CONFIRMED_SWING_HIGH",
+    "break_level": "LATEST_CONFIRMED_SWING_LOW_BETWEEN_THE_TWO_SWING_HIGHS",
+    "thresholds": [],
+    "atr": false,
+    "rsi": false,
+    "macd": false,
+    "percent_stop": false,
+    "max_holding_days": false
+  },
+  "states": {
+    "STRUCTURE_WARNING": {
+      "condition": "FIRST_TOUCH_OR_BREAK_OF_BREAK_LEVEL_AFTER_LOWER_HIGH_CONFIRMATION",
+      "action": "HOLD",
+      "notify": true,
+      "forced_exit": false
+    },
+    "STRUCTURE_RECLAIMED": {
+      "condition": "COMPLETED_CLOSE_BACK_ABOVE_BROKEN_BREAK_LEVEL",
+      "action": "HOLD",
+      "notify": false,
+      "forced_exit": false
+    },
+    "STRUCTURE_EXIT_REBREAK": {
+      "condition": "RECLAIM_THEN_TOUCH_OR_BREAK_THE_SAME_BREAK_LEVEL_AGAIN",
+      "action": "EXIT_ALL",
+      "notify": true,
+      "forced_exit": true
+    },
+    "STRUCTURE_REPAIR_PENDING": {
+      "condition": "FIRST_BREAK_OCCURRED_BUT_REPAIR_FAILURE_NOT_YET_CONFIRMED",
+      "action": "HOLD",
+      "notify": true,
+      "forced_exit": false
+    },
+    "STRUCTURE_EXIT_FAILED_RECLAIM": {
+      "condition": "NO_RECLAIM_THEN_CONFIRMED_REBOUND_HIGH_BELOW_BREAK_LEVEL_THEN_BREAK_REPAIR_REACTION_LOW",
+      "action": "EXIT_ALL",
+      "notify": true,
+      "forced_exit": true
+    }
+  },
+  "alerts": {
+    "required_field": "AlertRequired",
+    "level_field": "AlertLevel",
+    "dedupe_key_field": "AlertKey",
+    "warning_once_per_break": true,
+    "exit_is_distinct_alert": true,
+    "ledger": "HENGCE_ALERT_LEDGER.json",
+    "new_alert_output": "HENGCE_ALERTS.json",
+    "external_transport": "NOT_CONFIGURED_IN_REPOSITORY"
+  },
+  "governance": {
+    "frozen_q017_signal_contract_changed": false,
+    "fixed_20_sessions_research_benchmark_changed": false,
+    "entry_authority_added": false,
+    "trade_authority_of_alert_ledger": 0,
+    "merge_to_main": false
+  }
+}
