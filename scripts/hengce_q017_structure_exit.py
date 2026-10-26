@@ -6,12 +6,12 @@ classifies already-held Q017/BOTH positions for the live action board.
 
 State machine (no percentage/ATR/time threshold):
   Lower High + first touch/break of intervening Swing Low -> WARNING only.
-  Reclaim the broken level, then break it again               -> EXIT_ALL.
+  Reclaim the broken level, then break it again           -> EXIT_ALL.
   Fail to reclaim, form a confirmed rebound high below level,
-  then break the repair reaction low                           -> EXIT_ALL.
+  then break the repair reaction low                      -> EXIT_ALL.
 
 Pivots are strict 1-bar pivots and are causal: a pivot at t is usable only
-after t+1 has completed.  All post-entry lower-high setups are reconstructed;
+after t+1 has completed. All post-entry lower-high setups are reconstructed;
 a newer setup may not erase an older repair-failure EXIT.
 """
 from __future__ import annotations
@@ -39,8 +39,17 @@ def _truthy(row: dict[str, Any], *keys: str) -> bool:
     return False
 
 
+def _field(row: dict[str, Any], *keys: str) -> Any:
+    for key in keys:
+        if key in row and row.get(key) not in (None, ""):
+            return row.get(key)
+    return None
+
+
 def _num(value: Any) -> float | None:
     try:
+        if isinstance(value, str):
+            value = value.replace(",", "").strip()
         value = float(value)
     except (TypeError, ValueError):
         return None
@@ -62,12 +71,16 @@ def _load_bars(ticker: str, trade_date: str | None, history_path: Path = HISTORY
     try:
         with history_path.open("r", encoding="utf-8-sig", newline="") as fh:
             for row in csv.DictReader(fh):
-                if str(row.get("Ticker", "")).strip() != str(ticker):
+                code = str(_field(row, "Ticker", "ticker", "Symbol", "symbol") or "").strip()
+                if code != str(ticker):
                     continue
-                day = str(row.get("Date", ""))
+                day = str(_field(row, "Date", "date") or "")[:10]
                 if not day or day >= trade_date:
                     continue
-                o, h, l, c = (_num(row.get(k)) for k in ("Open", "High", "Low", "Close"))
+                o = _num(_field(row, "Open", "open"))
+                h = _num(_field(row, "High", "high"))
+                l = _num(_field(row, "Low", "low"))
+                c = _num(_field(row, "Close", "close"))
                 if None in (o, h, l, c):
                     continue
                 bars.append({"date": day, "open": o, "high": h, "low": l, "close": c})
@@ -231,8 +244,8 @@ def classify(src: dict[str, Any], live_row: dict[str, Any], trade_date: str | No
         return None
 
     entry_index = _first_entry_index(bars, _entry_date(src))
-    live_price = _num(live_row.get("price") or live_row.get("last") or live_row.get("last_price"))
-    live_low = _num(live_row.get("low") or live_row.get("day_low"))
+    live_price = _num(_field(live_row, "price", "last", "last_price"))
+    live_low = _num(_field(live_row, "low", "day_low"))
     events = [
         _evaluate_setup(s, bars, ticker, entry_index, live_price, live_low, trade_date)
         for s in setups
