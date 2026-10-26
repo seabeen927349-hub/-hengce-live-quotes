@@ -1,0 +1,35 @@
+name: HENGCE Q017 structural buy validation
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'scripts/hengce_q017_buy_structure_validate.py'
+      - '.github/workflows/hengce-q017-buy-structure-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run frozen structural buy tournament
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/hengce_q017_buy_structure_validate.py \
+            --input hengce/q017_radar/data/twse_electronics_history_2026.csv \
+            --out-dir research/q017_buy_structure_20261026/output
+          cat research/q017_buy_structure_20261026/output/BUY_STRUCTURE_SUMMARY.json
+      - name: Upload validation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-q017-buy-structure-validation
+          path: research/q017_buy_structure_20261026/output/
+          if-no-files-found: error
+          retention-days: 30
