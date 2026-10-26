@@ -11,7 +11,8 @@ State machine (no percentage/ATR/time threshold):
   then break the repair reaction low                           -> EXIT_ALL.
 
 Pivots are strict 1-bar pivots and are causal: a pivot at t is usable only
-after t+1 has completed.
+after t+1 has completed.  All post-entry lower-high setups are reconstructed;
+a newer setup may not erase an older repair-failure EXIT.
 """
 from __future__ import annotations
 
@@ -87,10 +88,8 @@ def _pivots(bars: list[dict[str, Any]]) -> tuple[list[int], list[int]]:
     return highs, lows
 
 
-def _latest_setup(bars: list[dict[str, Any]], entry_date: str | None) -> dict[str, Any] | None:
+def _setups(bars: list[dict[str, Any]]) -> list[dict[str, Any]]:
     highs, lows = _pivots(bars)
-    if len(highs) < 2:
-        return None
     setups: list[dict[str, Any]] = []
     for n in range(1, len(highs)):
         h1, h2 = highs[n - 1], highs[n]
@@ -103,8 +102,6 @@ def _latest_setup(bars: list[dict[str, Any]], entry_date: str | None) -> dict[st
         # h2 is confirmed at h2+1 close; first actionable completed bar is h2+2.
         activation_index = h2 + 2
         activation_date = bars[activation_index]["date"] if activation_index < len(bars) else None
-        if entry_date and activation_date and activation_date < entry_date:
-            continue
         setups.append({
             "prev_high": bars[h1]["high"],
             "prev_high_date": bars[h1]["date"],
@@ -115,32 +112,21 @@ def _latest_setup(bars: list[dict[str, Any]], entry_date: str | None) -> dict[st
             "activation_index": activation_index,
             "activation_date": activation_date,
         })
-    return setups[-1] if setups else None
+    return setups
 
 
-def classify(src: dict[str, Any], live_row: dict[str, Any], trade_date: str | None,
-             history_path: Path = HISTORY_PATH) -> dict[str, Any] | None:
-    provenance = str(src.get("SourceProvenance") or "").upper()
-    held = _truthy(src, "PositionHeld", "position_held", "Held", "held")
-    if provenance not in {"Q017", "BOTH"} or not held:
-        return None
-    ticker = _ticker(src)
-    if not ticker:
-        return None
+def _first_entry_index(bars: list[dict[str, Any]], entry_date: str | None) -> int:
+    if not entry_date:
+        return 0
+    return next((i for i, bar in enumerate(bars) if bar["date"] >= entry_date), len(bars))
 
-    bars = _load_bars(ticker, trade_date, history_path=history_path)
-    if len(bars) < 5:
-        return None
-    setup = _latest_setup(bars, _entry_date(src))
-    if not setup:
-        return None
 
+def _evaluate_setup(setup: dict[str, Any], bars: list[dict[str, Any]], ticker: str,
+                    entry_index: int, live_price: float | None, live_low: float | None,
+                    trade_date: str | None) -> dict[str, Any]:
     level = float(setup["break_level"])
-    start = int(setup["activation_index"])
-    live_price = _num(live_row.get("price") or live_row.get("last") or live_row.get("last_price"))
-    live_low = _num(live_row.get("low") or live_row.get("day_low"))
+    start = max(int(setup["activation_index"]), entry_index)
     live_touch = (live_low is not None and live_low <= level) or (live_price is not None and live_price <= level)
-
     break_idx = next((i for i in range(start, len(bars)) if bars[i]["low"] <= level), None)
     event: dict[str, Any] = {
         **setup,
@@ -152,6 +138,7 @@ def classify(src: dict[str, Any], live_row: dict[str, Any], trade_date: str | No
         "reclaim_date": None,
         "reaction_low": None,
         "reaction_low_date": None,
+        "event_index": break_idx if break_idx is not None else start,
     }
 
     # First touch/break is deliberately NOT an exit.
@@ -163,6 +150,7 @@ def classify(src: dict[str, Any], live_row: dict[str, Any], trade_date: str | No
                 alert_level="WARNING",
                 alert_key=f"STRUCTURE_WARNING:{ticker}:{level:g}:{trade_date or 'LIVE'}",
                 first_break_date=trade_date,
+                event_index=len(bars),
             )
         return event
 
@@ -178,9 +166,10 @@ def classify(src: dict[str, Any], live_row: dict[str, Any], trade_date: str | No
                 alert_required=True,
                 alert_level="EXIT",
                 alert_key=f"STRUCTURE_EXIT_REBREAK:{ticker}:{level:g}:{exit_date}",
+                event_index=rebreak_idx if rebreak_idx is not None else len(bars),
             )
         else:
-            event["state"] = "STRUCTURE_RECLAIMED"
+            event.update(state="STRUCTURE_RECLAIMED", event_index=reclaim_idx)
         return event
 
     # No reclaim: wait for a confirmed rebound high below the broken level.
@@ -211,6 +200,7 @@ def classify(src: dict[str, Any], live_row: dict[str, Any], trade_date: str | No
             alert_required=True,
             alert_level="EXIT",
             alert_key=f"STRUCTURE_EXIT_FAILED_RECLAIM:{ticker}:{reaction_low:g}:{exit_date}",
+            event_index=failed_idx if failed_idx is not None else len(bars),
         )
     else:
         event.update(
@@ -218,8 +208,49 @@ def classify(src: dict[str, Any], live_row: dict[str, Any], trade_date: str | No
             alert_required=True,
             alert_level="WARNING",
             alert_key=f"STRUCTURE_WARNING:{ticker}:{level:g}:{event['first_break_date']}",
+            event_index=failed_high,
         )
     return event
+
+
+def classify(src: dict[str, Any], live_row: dict[str, Any], trade_date: str | None,
+             history_path: Path = HISTORY_PATH) -> dict[str, Any] | None:
+    provenance = str(src.get("SourceProvenance") or "").upper()
+    held = _truthy(src, "PositionHeld", "position_held", "Held", "held")
+    if provenance not in {"Q017", "BOTH"} or not held:
+        return None
+    ticker = _ticker(src)
+    if not ticker:
+        return None
+
+    bars = _load_bars(ticker, trade_date, history_path=history_path)
+    if len(bars) < 5:
+        return None
+    setups = _setups(bars)
+    if not setups:
+        return None
+
+    entry_index = _first_entry_index(bars, _entry_date(src))
+    live_price = _num(live_row.get("price") or live_row.get("last") or live_row.get("last_price"))
+    live_low = _num(live_row.get("low") or live_row.get("day_low"))
+    events = [
+        _evaluate_setup(s, bars, ticker, entry_index, live_price, live_low, trade_date)
+        for s in setups
+        if max(int(s["activation_index"]), entry_index) <= len(bars)
+    ]
+    if not events:
+        return None
+
+    # A newer lower high must never erase an already-confirmed mandatory exit.
+    exits = [e for e in events if e["state"] in {"STRUCTURE_EXIT_REBREAK", "STRUCTURE_EXIT_FAILED_RECLAIM"}]
+    if exits:
+        return min(exits, key=lambda e: int(e.get("event_index") or 10**9))
+
+    # Otherwise report the most recent active structural state.
+    active = [e for e in events if e["state"] != "STRUCTURE_CLEAR"]
+    if active:
+        return max(active, key=lambda e: int(e.get("event_index") or -1))
+    return max(events, key=lambda e: int(e.get("activation_index") or -1))
 
 
 def apply(row: dict[str, Any], event: dict[str, Any] | None, binding_ok: bool) -> None:
