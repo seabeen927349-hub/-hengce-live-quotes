@@ -4,11 +4,11 @@
   "engine": "HENGCE_V43_DAILY",
   "module": "V43_INDEPENDENT_HISTORY_SYNC",
   "status": "PASS_NO_NEW_SESSION",
-  "generated_at_taipei": "2026-10-24T12:52:53.804065+08:00",
+  "generated_at_taipei": "2026-10-26T18:44:06.834280+08:00",
   "history_path": "hengce/v43_daily/data/twse_electronics_history_2026.csv",
   "history_latest_before": "2026-10-22",
   "history_latest_after": "2026-10-22",
-  "through_date": "2026-10-24",
+  "through_date": "2026-10-26",
   "added_sessions": [],
   "skipped_dates": [
     {
@@ -18,6 +18,14 @@
     {
       "date": "2026-10-24",
       "reason": "WEEKEND"
+    },
+    {
+      "date": "2026-10-25",
+      "reason": "WEEKEND"
+    },
+    {
+      "date": "2026-10-26",
+      "reason": "TWSE_TYPE13_SESSION_UNAVAILABLE:ZERO_SECURITY_ROWS"
     }
   ],
   "history_ownership": "HENGCE_V43_DAILY_OWNED",
