@@ -2,9 +2,9 @@
   "schema_version": 1,
   "system": "HENGCE",
   "module": "HENGCE_SYSTEM_HEALTH",
-  "generated_at_taipei": "2026-10-26T16:28:59.005827+08:00",
+  "generated_at_taipei": "2026-10-26T18:01:10.141150+08:00",
   "evaluated_trade_date": "2026-10-26",
-  "authoritative_main_sha": "0eb739ad4cf328babf55108025710153f3acc34a",
+  "authoritative_main_sha": "5bca8e3b17b066053b9e95e57846a6f292fec0ea",
   "health_only": true,
   "signal_authority": false,
   "ranking_authority": false,
@@ -162,17 +162,34 @@
           {
             "state": "FAIL_CLOSED",
             "reason_codes": [
+              "AMBIGUOUS_SCHEDULE_SLOT",
               "LATE_RUN",
               "WORKFLOW_FAILED"
             ],
             "expected_at_taipei": "2026-10-26T16:00:00+08:00",
             "run_ids": [
+              40292718024,
               40291093650
             ],
             "status": "completed",
             "conclusion": "failure",
             "created_at": "2026-10-26T08:16:14Z",
             "run_started_at": "2026-10-26T08:16:14Z"
+          },
+          {
+            "state": "FAIL_CLOSED",
+            "reason_codes": [
+              "LATE_RUN",
+              "WORKFLOW_FAILED"
+            ],
+            "expected_at_taipei": "2026-10-26T17:00:00+08:00",
+            "run_ids": [
+              40300364588
+            ],
+            "status": "completed",
+            "conclusion": "failure",
+            "created_at": "2026-10-26T09:32:35Z",
+            "run_started_at": "2026-10-26T09:32:35Z"
           }
         ]
       },
@@ -360,10 +377,12 @@
           {
             "state": "DEGRADED",
             "reason_codes": [
+              "AMBIGUOUS_SCHEDULE_SLOT",
               "WORKFLOW_FAILED"
             ],
             "expected_at_taipei": "2026-10-26T16:10:00+08:00",
             "run_ids": [
+              40294884086,
               40291704914
             ],
             "status": "completed",
@@ -397,7 +416,7 @@
         "path": "hengce/q017_radar/observation_latest.json",
         "source_date": "2026-10-22",
         "source_timestamp": "2026-10-22T09:01:41.119132+08:00",
-        "source_age_seconds": 372437.886695
+        "source_age_seconds": 377969.022018
       },
       "e2_morning": {
         "state": "DEGRADED",
@@ -407,7 +426,7 @@
         "path": "hengce/e2_live/morning_latest.json",
         "source_date": "2026-10-22",
         "source_timestamp": "2026-10-22T09:50:04.301538+08:00",
-        "source_age_seconds": 369534.704289
+        "source_age_seconds": 375065.839612
       },
       "eod": {
         "state": "FAIL_CLOSED",
@@ -429,7 +448,7 @@
         "path": "hengce/dual_engine/latest.json",
         "source_date": null,
         "source_timestamp": "2026-10-22T19:44:52.462029+08:00",
-        "source_age_seconds": 333846.543798
+        "source_age_seconds": 339377.679121
       }
     }
   },
