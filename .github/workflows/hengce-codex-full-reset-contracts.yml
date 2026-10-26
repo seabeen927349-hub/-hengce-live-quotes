@@ -104,6 +104,8 @@ jobs:
         run: python research/codex_full_reset_20261023/compare_nova6_rebound_2025tail_20261026.py
       - name: Audit rolling 63-session challenger stability
         run: python research/codex_full_reset_20261023/rolling_3m_stability_20261026.py
+      - name: Discover healthy-market recent3m electronics factors
+        run: python research/codex_full_reset_20261023/healthy_market_discovery_20261026.py
       - name: Upload frozen validation results
         if: always()
         uses: actions/upload-artifact@v4
@@ -115,4 +117,5 @@ jobs:
             research/codex_full_reset_20261023/results/compare_nova6_rebound_20261026/
             research/codex_full_reset_20261023/results/compare_nova6_rebound_2025tail_20261026/
             research/codex_full_reset_20261023/results/rolling_3m_stability_20261026/
+            research/codex_full_reset_20261023/results/healthy_market_discovery_20261026/
           if-no-files-found: warn
