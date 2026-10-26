@@ -1,0 +1,26 @@
+name: HENGCE StageB artifact inspect
+on:
+  push:
+    branches: [research/codex-full-reset-run-20261023]
+    paths: ['.github/workflows/hengce-stageb-artifact-inspect.yml']
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect historical Stage B artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for id in 12485377481 12485965339 12485467257; do
+            echo "===== ARTIFACT $id ====="
+            curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" -o "/tmp/${id}.zip"
+            unzip -l "/tmp/${id}.zip" | head -200
+          done
