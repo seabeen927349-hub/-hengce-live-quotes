@@ -1,0 +1,81 @@
+{
+  "source_workflow_run_id": 40351684307,
+  "workflow_conclusion": "success",
+  "rule_status": "unchanged_frozen_rule",
+  "execution": {
+    "initial_capital": 1000000,
+    "compounding": false,
+    "lot_size": 1000,
+    "roundtrip_cost": 0.004,
+    "entry": "t+1 open",
+    "exit": "t+5 close",
+    "same_entry_day_allocation": "equal available cash per signal, floor to whole lots, unused target cash not reallocated",
+    "profit_policy": "profits restore capital deficit first; deployable capital capped at NT$1m; excess profits swept"
+  },
+  "recent_3m": {
+    "window": ["2026-07-22", "2026-10-21"],
+    "raw_signals": 281,
+    "selected_roundlot_trades": 39,
+    "skipped_zero_lot": 242,
+    "unique_signal_dates": 14,
+    "total_pnl": 92555.8,
+    "win_rate": 0.6666666667,
+    "profit_factor": 1.8882378006,
+    "max_drawdown_amount": -20654.4,
+    "max_drawdown_pct": -0.0209979133,
+    "max_concurrent_positions": 8,
+    "max_utilization": 0.95675,
+    "avg_daily_utilization": 0.2630825397,
+    "remove_best_trade_pnl": 50641.8,
+    "remove_top2_trades_pnl": 13893.8,
+    "remove_best_signal_date_pnl": 17785.2,
+    "remove_best_3_signal_dates_pnl": -27661.8,
+    "monthly_by_signal_date": {
+      "2026-07": 45309.2,
+      "2026-08": 21737.4,
+      "2026-09": 25600.0,
+      "2026-10": -90.8
+    }
+  },
+  "one_year": {
+    "window": ["2025-10-22", "2026-10-21"],
+    "raw_signals": 959,
+    "selected_roundlot_trades": 241,
+    "skipped_zero_lot": 718,
+    "unique_signal_dates": 82,
+    "unique_entry_dates": 81,
+    "total_pnl": 210108.96,
+    "win_rate": 0.4937759336,
+    "profit_factor": 1.4330914061,
+    "median_trade_pnl": -61.2,
+    "max_drawdown_amount": -106636.52,
+    "max_drawdown_pct": -0.0981971180,
+    "max_concurrent_positions": 16,
+    "max_utilization": 0.9908,
+    "avg_daily_utilization": 0.3033725726,
+    "remove_best_trade_pnl": 164590.56,
+    "remove_top2_trades_pnl": 124882.56,
+    "remove_best_signal_date_pnl": 126832.96,
+    "remove_best_3_signal_dates_pnl": 22146.96,
+    "monthly_by_signal_date": {
+      "2025-10": -24006.6,
+      "2025-11": -6520.92,
+      "2025-12": 42412.2,
+      "2026-01": 30010.6,
+      "2026-02": 31013.28,
+      "2026-03": -40353.0,
+      "2026-04": 11627.4,
+      "2026-05": 83276.0,
+      "2026-06": 1241.6,
+      "2026-07": 34877.0,
+      "2026-08": 21022.2,
+      "2026-09": 25600.0,
+      "2026-10": -90.8
+    }
+  },
+  "governance_assessment": {
+    "execution_level": "SURVIVE / FREEZE AS CHALLENGER",
+    "formal_buy": false,
+    "reason": "Positive fixed-capital round-lot P/L and PF>1 over one year, but recent-3M concentration fails remove-best-3-signal-dates and investability is low because many raw signals cannot receive one whole lot under equal-cash allocation."
+  }
+}
