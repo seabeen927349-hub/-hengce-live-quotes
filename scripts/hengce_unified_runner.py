@@ -17,7 +17,9 @@ from hengce_unified_contracts import atomic, digest, strict_loads, session_metad
 
 NAMES = {'base': 'HENGCE_UNIFIED_CANDIDATE_BASE.json',
          'action': 'HENGCE_INTRADAY_ACTION_BOARD.json',
-         'receipt': 'HENGCE_INTRADAY_BINDING_RECEIPT.json'}
+         'receipt': 'HENGCE_INTRADAY_BINDING_RECEIPT.json',
+         'alerts': 'HENGCE_ALERTS.json',
+         'alert_ledger': 'HENGCE_ALERT_LEDGER.json'}
 TZ = ZoneInfo('Asia/Taipei')
 
 
@@ -65,6 +67,8 @@ def run(now=None):
         try:
             import hengce_unified_candidate_adapter as adapter
             import hengce_unified_action_board as board
+            import hengce_q017_position_watch as position_watch
+            import hengce_alert_ledger as alert_ledger
             for variable, module in [('HENGCE_UNIFIED_ADAPTER', adapter), ('HENGCE_INTRADAY_BRIDGE', board)]:
                 if variable in os.environ and Path(os.environ[variable]).resolve() != Path(module.__file__).resolve():
                     raise ValueError('UNSUPPORTED_RUNTIME_OVERRIDE:' + variable)
@@ -97,6 +101,13 @@ def run(now=None):
                     q017 = {'input_error': str(exc)}
                 import hengce_unified_q017_admission as q017_admission
                 q017 = q017_admission.admit(adapter, q017)
+
+            watchpath = select(root, 'HENGCE_Q017_POSITION_WATCH_JSON',
+                               ['work_output/q017/Q017_POSITION_WATCH.json'], '', optional=True)
+            q017_watch, watch_sha = (None, None)
+            if watchpath:
+                q017_watch, watch_sha = read(watchpath)
+
             if os.environ.get('HENGCE_LIVE_JSON') is not None:
                 livepath = select(root, 'HENGCE_LIVE_JSON', [], 'LIVE_OVERRIDE_NOT_FOUND')
                 live, live_sha = read(livepath)
@@ -115,26 +126,39 @@ def run(now=None):
             max_age = int(os.environ.get('HENGCE_LIVE_MAX_AGE_SECONDS', '480'))
             if not 0 < max_age <= 480:
                 raise ValueError('LIVE_MAX_AGE_CANNOT_WEAKEN_CONTRACT')
+
             unified = adapter.build(legacy, q017)
+            unified = position_watch.merge(unified, q017_watch)
             action = board.build(unified, live, context, trade_date=now.date().isoformat(),
                                  max_age_seconds=max_age, now=now)
             if action['binding_status'] != 'PASS':
                 raise ValueError('INTRADAY_BRIDGE_FAIL_CLOSED:' + action['binding_reason'])
             source_sha = {'legacy_base': legacy_sha, 'q017_source': qsha,
+                          'q017_position_watch': watch_sha,
                           'context': context_sha, 'live': live_sha}
             transaction = digest({'sources': source_sha, 'time': now.isoformat()})
             unified.update(transaction_id=transaction)
             action.update(transaction_id=transaction, generated_at=now.isoformat(),
                           trade_date=now.date().isoformat(), base_hash=digest(unified))
             receipt = {**envelope, 'binding_status': 'PASS', 'transaction_id': transaction,
-                       'source_paths': {'legacy_base': str(formal), 'q017_source': str(qpath) if qpath else None, 'context': str(ctxpath)},
+                       'source_paths': {'legacy_base': str(formal),
+                                        'q017_source': str(qpath) if qpath else None,
+                                        'q017_position_watch': str(watchpath) if watchpath else None,
+                                        'context': str(ctxpath)},
                        'source_sha256': source_sha, 'base_hash': digest(unified), 'action_hash': digest(action),
                        'q017_contract_status': unified['q017_contract_status'],
+                       'q017_position_watch_status': unified.get('q017_position_watch_status'),
+                       'q017_position_watch_count': unified.get('q017_position_watch_count', 0),
                        'source_provenance_counts': unified['source_provenance_counts']}
             for source_path, expected in [(formal, legacy_sha), (ctxpath, context_sha),
-                                          (qpath, qsha), (livepath, live_sha)]:
+                                          (qpath, qsha), (watchpath, watch_sha), (livepath, live_sha)]:
                 if source_path and hashlib.sha256(source_path.read_bytes()).hexdigest() != expected:
                     raise ValueError('AUTHORITATIVE_SOURCE_CHANGED_DURING_COMPUTATION')
+
+            alerts, ledger = alert_ledger.update(action, paths['alerts'], paths['alert_ledger'], now=now)
+            receipt['new_alert_count'] = alerts['new_alert_count']
+            receipt['alert_seen_count'] = ledger['seen_count']
+            receipt['alert_transport_status'] = alerts['transport_status']
             atomic(outdir / 'live_active.json', live)
             atomic(paths['base'], unified)
             atomic(paths['action'], action)
