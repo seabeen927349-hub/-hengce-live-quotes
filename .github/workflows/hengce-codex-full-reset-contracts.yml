@@ -100,6 +100,8 @@ jobs:
         run: python research/codex_full_reset_20261023/frozen_1m_portfolio_20261026.py
       - name: Compare challenger with frozen NOVA6 recent-3M ledger
         run: python research/codex_full_reset_20261023/compare_nova6_rebound_20261026.py
+      - name: Compare challenger with NOVA6 2025 audited tail
+        run: python research/codex_full_reset_20261023/compare_nova6_rebound_2025tail_20261026.py
       - name: Upload frozen validation results
         if: always()
         uses: actions/upload-artifact@v4
@@ -109,4 +111,5 @@ jobs:
             research/codex_full_reset_20261023/results/frozen_3m_1y_20261026/
             research/codex_full_reset_20261023/results/frozen_1m_portfolio_20261026/
             research/codex_full_reset_20261023/results/compare_nova6_rebound_20261026/
+            research/codex_full_reset_20261023/results/compare_nova6_rebound_2025tail_20261026/
           if-no-files-found: warn
