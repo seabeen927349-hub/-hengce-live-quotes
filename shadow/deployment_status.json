@@ -1,8 +1,8 @@
 {
   "system": "HENGCE",
   "artifact": "FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS",
-  "generated_at_taipei": "2026-10-26T09:26:20.840753+08:00",
-  "snapshot_id": "20261026T092620+0800",
+  "generated_at_taipei": "2026-10-26T09:32:40.338809+08:00",
+  "snapshot_id": "20261026T093240+0800",
   "status": "SHADOW_MARKET_CLOSED",
   "authority": "SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
   "universe_count": 1088,
@@ -23,7 +23,7 @@
     "FUGLE": 25,
     "NONE": 0
   },
-  "payload_sha256": "107e3b980d26b5cc4506774b9d117ea7473c1613f4ca0179eec6d4985d36aba2",
+  "payload_sha256": "3e5d7b80f1f331b56bb5d5353e87b79113beea61fcdc063d5c4b4c7729a65799",
   "electronics_live_status": "DATA_PENDING_CURRENT_Q017_UNIVERSE",
   "electronics_member_count": 0,
   "electronics_provider_coverage_ratio": 0.0,
