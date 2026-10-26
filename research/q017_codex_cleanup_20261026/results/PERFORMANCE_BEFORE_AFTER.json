@@ -1,0 +1,106 @@
+{
+  "method": "5 batches of 20 deterministic guard validations per fixture; perf_counter; network disabled; same interpreter",
+  "before": {
+    "20261021": {
+      "guard_seconds_samples": [
+        0.013063670099995761,
+        0.013861183049993998,
+        0.014978279150000162,
+        0.01650971504999461,
+        0.01486620050000056
+      ],
+      "guard_seconds_median": 0.01486620050000056,
+      "recompute_seconds_samples": [
+        0.006012063950004176,
+        0.0061482147999981866,
+        0.005846896050002215,
+        0.006557971649999672,
+        0.00658222020000494
+      ],
+      "recompute_seconds_median": 0.0061482147999981866,
+      "file_reads_per_validation": 1,
+      "json_parses_per_validation": 1,
+      "canonical_hash_calls_per_validation": 8,
+      "network_calls": 0,
+      "observation_bytes": 193502,
+      "decision_bytes": 13315
+    },
+    "20261022": {
+      "guard_seconds_samples": [
+        0.01303106725000589,
+        0.013026144499997372,
+        0.013239806599995064,
+        0.013319437949996881,
+        0.015164082200010398
+      ],
+      "guard_seconds_median": 0.013239806599995064,
+      "recompute_seconds_samples": [
+        0.006300542849999147,
+        0.006255012000008264,
+        0.0066045885499988796,
+        0.00708722014999239,
+        0.0071239743000091945
+      ],
+      "recompute_seconds_median": 0.0066045885499988796,
+      "file_reads_per_validation": 1,
+      "json_parses_per_validation": 1,
+      "canonical_hash_calls_per_validation": 8,
+      "network_calls": 0,
+      "observation_bytes": 193583,
+      "decision_bytes": 13302
+    }
+  },
+  "after": {
+    "20261021": {
+      "guard_seconds_samples": [
+        0.013616493849997368,
+        0.016223922550000224,
+        0.014361420400007319,
+        0.014563474850001512,
+        0.014292551849996471
+      ],
+      "guard_seconds_median": 0.014361420400007319,
+      "recompute_seconds_samples": [
+        0.0055739582999990486,
+        0.005511400049999793,
+        0.005414212899995619,
+        0.005554831250003644,
+        0.005623687299998892
+      ],
+      "recompute_seconds_median": 0.005554831250003644,
+      "file_reads_per_validation": 1,
+      "json_parses_per_validation": 1,
+      "canonical_hash_calls_per_validation": 6,
+      "network_calls": 0,
+      "observation_bytes": 193502,
+      "decision_bytes": 13315
+    },
+    "20261022": {
+      "guard_seconds_samples": [
+        0.015401154500000302,
+        0.017160266249993582,
+        0.015376033649999954,
+        0.013754110249999485,
+        0.013676729249993969
+      ],
+      "guard_seconds_median": 0.015376033649999954,
+      "recompute_seconds_samples": [
+        0.006253901050001787,
+        0.006392902999994021,
+        0.007174673549991439,
+        0.006886214799999379,
+        0.006118170349998309
+      ],
+      "recompute_seconds_median": 0.006392902999994021,
+      "file_reads_per_validation": 1,
+      "json_parses_per_validation": 1,
+      "canonical_hash_calls_per_validation": 6,
+      "network_calls": 0,
+      "observation_bytes": 193583,
+      "decision_bytes": 13302
+    }
+  },
+  "workflow_retries": "Unchanged; no online workflow executed",
+  "critical_0901_network_lane": "Unchanged; no capture code modified",
+  "artifact_size": "Original observation and decision bytes unchanged; audit outputs are separate"
+}

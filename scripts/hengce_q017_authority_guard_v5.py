@@ -16,15 +16,15 @@ FAIL_MODULES={'Q017_OBSERVATION_TIME_PIPELINE','Q017_AUTHORITY_GUARD_FAIL_CLOSED
 def read(p):return json.loads(Path(p).read_text(encoding='utf-8'))
 def atomic(p,o):v5.core.atomic_json(Path(p),o)
 def _trade(p):return str(p.get('trade_date') or '')
-def _obs_path(trade):return RADAR/'observations'/f'{trade.replace("-","")}_0901_observation.json'
+def _obs_path(trade,radar=None):return (radar or RADAR)/'observations'/f'{trade.replace("-","")}_0901_observation.json'
 def _decision_path(trade):return RADAR/'decision'/f'{trade.replace("-","")}_0901.json'
 
-def validate_decision_payload(d):
+def validate_decision_payload(d,*,radar=None):
     if int(d.get('schema_version') or 0)!=FORMAL_SCHEMA:return False,'FORMAL_SCHEMA_NOT_V5'
     if d.get('module')!=FORMAL_MODULE:return False,'FORMAL_DECISION_MODULE_INVALID'
     trade=_trade(d)
     if len(trade)!=10:return False,'TRADE_DATE_MISSING'
-    op=_obs_path(trade)
+    op=_obs_path(trade,radar)
     if not op.exists():return False,'OBSERVATION_ARTIFACT_MISSING'
     o=read(op);ok,reason=v5.validate_observation(o)
     if not ok:return False,reason
@@ -35,8 +35,9 @@ def validate_decision_payload(d):
     try:computed_at=datetime.fromisoformat(str(d.get('generated_at_taipei')))
     except Exception:return False,'DECISION_COMPUTE_TIMESTAMP_INVALID'
     expected=v5.build_decision_from_observation(o,computed_at)
-    if v5.csha({k:v for k,v in d.items() if k!='decision_snapshot_sha256'})!=v5.csha({k:v for k,v in expected.items() if k!='decision_snapshot_sha256'}):return False,'DECISION_NOT_DETERMINISTIC_FROM_LOCKED_OBSERVATION'
-    if d.get('decision_snapshot_sha256')!=v5.csha({k:v for k,v in d.items() if k!='decision_snapshot_sha256'}):return False,'DECISION_HASH_INVALID'
+    payload_hash=v5.csha({k:v for k,v in d.items() if k!='decision_snapshot_sha256'})
+    if payload_hash!=expected['decision_snapshot_sha256']:return False,'DECISION_NOT_DETERMINISTIC_FROM_LOCKED_OBSERVATION'
+    if d.get('decision_snapshot_sha256')!=payload_hash:return False,'DECISION_HASH_INVALID'
     members=set((o.get('universe_lock') or {}).get('members') or [])
     if any(str(x.get('ticker')) not in members for x in d.get('top3') or []):return False,'TOP3_OUTSIDE_ELECTRONICS_UNIVERSE'
     return True,'VALID_V5_OBSERVATION_BOUND_ELECTRONICS_Q017'
@@ -57,6 +58,10 @@ def validate(p):
         if not ok:return False,reason
         if p.get('decision_snapshot_sha256')!=d.get('decision_snapshot_sha256'):return False,'MONITOR_DECISION_HASH_MISMATCH'
         if [str(x.get('ticker')) for x in p.get('top3') or []]!=[str(x.get('ticker')) for x in d.get('top3') or []]:return False,'MONITOR_TOP3_CHANGED'
+        # monitor() changes only these projection fields. Every decision field,
+        # including exact scores and universe members, remains immutable.
+        projection={'module','generated_at_taipei','monitor'}
+        if {k:v for k,v in p.items() if k not in projection}!={k:v for k,v in d.items() if k not in projection}:return False,'MONITOR_DECISION_FIELDS_CHANGED'
         mon=p.get('monitor') or {}
         if mon.get('rerank_performed') is not False or mon.get('ranking_frozen') is not True:return False,'MONITOR_RERANK_POLICY_INVALID'
         return True,'VALID_V5_LOCKED_MONITOR'

@@ -1,0 +1,164 @@
+{
+  "task_id": "HENGCE_Q017_CODEX_CLEANUP_OPT_20261026",
+  "final_state": "PASS_ENGINEERING_OPTIMIZATION_NO_SEMANTIC_CHANGE",
+  "branch": "codex/q017-only-cleanup-opt-20261026",
+  "baseline_commit": "780e8a225de637c32b42da0d28f5aa1428e49e20",
+  "formal_hengce_stock_output_engine": "Q017",
+  "formal_schema": 5,
+  "model_semantics_changed": false,
+  "frozen_sources": {
+    "scripts/hengce_q017_observation_lock_v5.py": {
+      "sha256": "ac79a53f7d03492b8c516fdb15f09d2e49009c67d217b506ca6b90f03e27d546",
+      "baseline_byte_equality": true
+    },
+    "scripts/hengce_q017_decision_lock_v4.py": {
+      "sha256": "8e3027634f37802b64c4f95509b641485268685018ad3ebaef4cee8708874dc2",
+      "baseline_byte_equality": true
+    },
+    "scripts/hengce_q017_decision_lock.py": {
+      "sha256": "6dc259907141c92593a1dedaf6d520a7d243b417a44ff50a768c652b933df8f2",
+      "baseline_byte_equality": true
+    },
+    "scripts/hengce_q017_canonical_producer.py": {
+      "sha256": "38b492dfc6a60527c678e7a536065bd4c8a0ec8db846ead09225250503cf05fb",
+      "baseline_byte_equality": true
+    },
+    "scripts/hengce_q017_premarket_snapshot_v1.py": {
+      "sha256": "c01be57b0237e2b97a1388783b221a56aa050d68b061b61b931a9bb19bb9c7a7",
+      "baseline_byte_equality": true
+    },
+    "scripts/hengce_q017_observer_supervisor_v1.py": {
+      "sha256": "1e29b631c6904ba32bc936afb78dbd0b09d6a9445155c9e4dca68d226d8eb3e7",
+      "baseline_byte_equality": true
+    },
+    "scripts/hengce_q017_observer_supervisor_v2.py": {
+      "sha256": "91daf292b4448f6b22d2bf32ae6dcfdef40f9f541493b6d38b47968d3ee261e2",
+      "baseline_byte_equality": true
+    },
+    "scripts/hengce_q017_recovery_compute_v5.py": {
+      "sha256": "42fc1423ae2b88c5463cc6e5aa35f5ceec9c97900969bac62ac89faafbde83e0",
+      "baseline_byte_equality": true
+    },
+    "scripts/hengce_q017_macro_cache_v1.py": {
+      "sha256": "309b7bbd61f898d8ea2cddc42e6d684341d50e95ff642b1241fd7b789bba3920",
+      "baseline_byte_equality": true
+    }
+  },
+  "protected_artifact_roots_unchanged": [
+    "hengce",
+    "eod",
+    "latest.json",
+    "live",
+    "shadow",
+    "receipts",
+    "research/e2_profit_max",
+    "research/phase2_governance",
+    "governance"
+  ],
+  "equivalence_semantic_payload_sha256": "fe69ca8157ce6ea268ea5b7a4d2cf5a86ed4779fef7fce76bdac7b4728adf232",
+  "full_rankings_exact": true,
+  "scores_exact": true,
+  "buy_counts_exact": true,
+  "observation_and_universe_bindings_exact": true,
+  "go_fixture": {
+    "date": "2026-10-21",
+    "formal_buy_count": 3,
+    "ranked_count": 155
+  },
+  "cash_fixture": {
+    "date": "2026-10-22",
+    "formal_buy_count": 0,
+    "ranked_count": 221
+  },
+  "regressions": {
+    "script_programs": 15,
+    "script_programs_passed": 15,
+    "engineering_tests": 132,
+    "engineering_tests_passed": 132,
+    "network_denied_during_model_replay_and_script_tests": true,
+    "shell_syntax": "PASS",
+    "git_diff_whitespace": "PASS"
+  },
+  "inventory": {
+    "code_and_workflow_files": 166,
+    "workflow_count": 55,
+    "exact_ast_duplicate_candidate_groups": 20,
+    "deleted_historical_files": 0
+  },
+  "performance": {
+    "canonical_hash_calls_before": 8,
+    "canonical_hash_calls_after": 6,
+    "deterministic_hash_work_reduction_percent": 25,
+    "wall_clock_guaranteed_improvement": false,
+    "live_capture_measurement_performed": false
+  },
+  "authorized_output_changes": [
+    "Reject forged/stale/mixed/non-Q017 formal publications",
+    "Reject monitor decision-field tampering",
+    "Current dated decision overrides convenience latest pointers",
+    "Daily canonical contract explicitly research-only unless original schema5 evidence bindings are supplied",
+    "Retired E2 explicitly non-formal",
+    "Shell candidate source Q017-only",
+    "Router no longer reads observability output",
+    "Existing CI migrated to Q017-only replay"
+  ],
+  "limitations": [
+    "Existing daily canonical bridge lacks schema5 bindings and remains fail closed; no evidence fabricated",
+    "Standalone Q017_LOCK_20261018.json not present; effective frozen code/original fixtures verified",
+    "No online market session, deployment or workflow retry benchmark",
+    "Administrator/future-code changes require continued review"
+  ],
+  "retrain": false,
+  "retune": false,
+  "universe_expansion": false,
+  "late_backfill": false,
+  "new_live_dependencies": false,
+  "main_written": false,
+  "merge_performed": false,
+  "promotion_authority": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "required_deliverables": {
+    "INVENTORY.md": {
+      "sha256": "842150371a0dc01d2312af55bd3b720b4a25d68eb08b9a4278e2075cb8d01720",
+      "bytes": 15798
+    },
+    "ARCHITECTURE_BEFORE_AFTER.md": {
+      "sha256": "c9a555dbf63f4f320eea70352004a4eb681a641c2d72e2def084315f8d56dd73",
+      "bytes": 3626
+    },
+    "DUPLICATE_AND_DEAD_CODE_MAP.json": {
+      "sha256": "10db038f4ed0995dffc07b633def8007ecdc1561f994c2c0828f73308203221e",
+      "bytes": 13726
+    },
+    "Q017_AUTHORITY_ROUTE_MAP.json": {
+      "sha256": "b767f66fdd807c63426a8e1e16ce0fb3f3378af0cb318dc7f5853aba1abf02ba",
+      "bytes": 32956
+    },
+    "REFACTOR_PLAN.json": {
+      "sha256": "bea84ad61eb75af1af4cab9edf638ad4cea2802ce69d32af4c340d5e82b5a6fb",
+      "bytes": 2299
+    },
+    "EQUIVALENCE_TEST_REPORT.json": {
+      "sha256": "ea0c18c82729eaf0ae0a8bd53170e8b99133a8f98bf9070547e5c749316ce03a",
+      "bytes": 8766
+    },
+    "PERFORMANCE_BEFORE_AFTER.json": {
+      "sha256": "6856fe48adc6ec3bcac25f8cd433cba7f017d8846b2c8e7f3ba8c75c750bf36c",
+      "bytes": 3338
+    },
+    "RISK_REGISTER.md": {
+      "sha256": "dd21f61f0ecd448632554815c6c733c30c126ecbc82423af5eb488a9242c4cb3",
+      "bytes": 3562
+    },
+    "FINAL_AUDIT.json": {
+      "self_hash": "OMITTED_TO_AVOID_SELF_REFERENCE"
+    },
+    "REPORT.md": {
+      "sha256": "bb45e8999106bc007c493a34a8a8d8ffb2d98b003f08e0c800ac307335e628a2",
+      "bytes": 3479
+    }
+  },
+  "tested_source_manifest": "SOURCE_INVENTORY.json",
+  "production_merge_requires_human_review": true
+}

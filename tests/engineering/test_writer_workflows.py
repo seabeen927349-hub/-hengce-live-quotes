@@ -55,6 +55,14 @@ class WriterWorkflowTests(unittest.TestCase):
             publications = {p['step'] for p in writer['publications']}
             actual_steps=[s for s in after['jobs'][writer['job']]['steps']
                           if s.get('name') != 'Recovery admission from clean current remote']
+            # Cleanup task: the display now imports the existing schema-5 guard.
+            # Permit this exact import-only installation, on this workflow only;
+            # preserve every original capture/compute/validation/publication step.
+            if writer['workflow'] == '.github/workflows/hengce-dual-engine-display-refresh.yml':
+                dependency = {'name': 'Install existing schema-5 import dependencies',
+                              'run': 'python -m pip install requests==2.32.5 openpyxl==3.1.5'}
+                self.assertEqual([s for s in actual_steps if s.get('name') == dependency['name']], [dependency])
+                actual_steps.remove(dependency)
             for index, step in enumerate(before['jobs'][writer['job']]['steps']):
                 if step.get('name') in publications:
                     continue

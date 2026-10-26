@@ -1,0 +1,77 @@
+[
+  {
+    "path": "scripts/test_hengce_dual_engine_display_hard_lock.py",
+    "returncode": 0,
+    "output": "{\"status\": \"PASS\", \"tests\": 7, \"legacy_v3_display_authority\": false, \"mixed_ranking_forbidden\": true}\n"
+  },
+  {
+    "path": "scripts/test_hengce_e2_morning_release.py",
+    "returncode": 0,
+    "output": "{\"status\": \"PASS\", \"trade_date\": \"2026-10-21\", \"prior_no_fill_persisted_idle\": true, \"free_slots_next_session\": 1, \"same_model_top1_preserved\": true, \"candidate_b_formula_mutated\": false, \"broker_order_execution\": false}\n"
+  },
+  {
+    "path": "scripts/test_hengce_e2_no_fill.py",
+    "returncode": 0,
+    "output": "{\"status\": \"PASS\", \"matching_no_fill_releases_slot\": true, \"same_session_hindsight_forbidden\": true, \"next_session_idle\": true, \"mismatch_fail_closed\": true, \"candidate_b_formula_mutated\": false}\n"
+  },
+  {
+    "path": "scripts/test_hengce_eod_original_vessel_incremental.py",
+    "returncode": 0,
+    "output": "{\"status\": \"PASS\", \"price_only\": true, \"price_plus_institutional\": true, \"price_plus_margin\": true, \"all_three\": true, \"idempotent_rerun\": true, \"wrong_date_rejected\": true, \"corrupt_row_count_rejected\": true, \"original_eod_tree_only\": true, \"second_mother\": false, \"mother_gate\": true, \"q017_e2_model_change\": false}\n"
+  },
+  {
+    "path": "scripts/test_hengce_q017_adversarial_v4.py",
+    "returncode": 0,
+    "output": "{\"adversarial_v4\": \"PASS\", \"checks\": [\"same_minute_retry_without_poison\", \"late_0940_forgery_rejected_even_with_fresh_hash\", \"partial_coverage_rejected\", \"binding_pending_rejected\", \"trade_date_mismatch_rejected\", \"invalid_market_state_rejected\", \"score_math_tamper_rejected\", \"single_missing_provider_row_rejected\", \"monitor_rerank_rejected\"]}\n"
+  },
+  {
+    "path": "scripts/test_hengce_q017_canonical_producer.py",
+    "returncode": 0,
+    "output": "CANONICAL_Q017_PRODUCER_TEST_PASS\n"
+  },
+  {
+    "path": "scripts/test_hengce_q017_decision_lock.py",
+    "returncode": 0,
+    "output": "{\"deterministic_replay_test\": \"PASS\", \"checks\": [\"frozen_gate_sox1d_0_sox5d_minus3pct_dxy5d_minus0_5pct\", \"legacy_minus2pct_gate_rejected\", \"dxy_gate_mandatory\", \"immutable_snapshot_write\", \"09:01_missing_open_excluded_without_data_failure\", \"09:03_price_reversal_does_not_rerank\", \"second_capture_does_not_rewrite\", \"snapshot_hash_tamper_detected\", \"missing_snapshot_fail_closed\"]}\n"
+  },
+  {
+    "path": "scripts/test_hengce_q017_observer_resilience_v1.py",
+    "returncode": 0,
+    "output": "HENGCE_Q017_OBSERVER_RESILIENCE_HARD_LOCK_V2=PASS\nMACRO_CACHE=05:45/06:15/06:45/07:15/07:35 SNAPSHOT=06:30 PRIMARY=07:45 BACKUP=08:15\nNORMAL_0901_NETWORK=TWSE_MIS_ONLY MACRO_NETWORK_CALLS=0 MIS_BOUNDED=2.5/6.0\nSCHEMA5=True COVERAGE=100PCT NO_0903_CAPTURE=True LATE_BACKFILL_FORBIDDEN=True\n"
+  },
+  {
+    "path": "scripts/test_hengce_q017_resilience_v5.py",
+    "returncode": 0,
+    "output": "{\"resilience_test\": \"PASS\", \"checks\": [\"primary_dead_backup_0901_promoted\", \"09:03_compute_from_09:01_evidence_valid\", \"no_observation_fail_closed\", \"non_electronics_high_score_injection_rejected\", \"full_market_extra_cannot_expand_q017\", \"09:02_quote_cannot_backfill_09:01\"]}\n"
+  },
+  {
+    "path": "scripts/test_hengce_reporting_v23.py",
+    "returncode": 0,
+    "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nOK\n"
+  },
+  {
+    "path": "scripts/test_hengce_twse_calendar.py",
+    "returncode": 0,
+    "output": "TWSE_EFFECTIVE_CALENDAR_TEST_PASS\n"
+  },
+  {
+    "path": "scripts/test_hengce_unified_boundaries.py",
+    "returncode": 0,
+    "output": ".............\n----------------------------------------------------------------------\nRan 13 tests in 0.036s\n\nOK\n"
+  },
+  {
+    "path": "scripts/test_hengce_unified_q017.py",
+    "returncode": 0,
+    "output": "PASS: HENGCE unified Q017 candidate integration\n"
+  },
+  {
+    "path": "scripts/test_hengce_unified_q017_admission.py",
+    "returncode": 0,
+    "output": "Q017_REVIEWED_PRODUCER_ADMISSION_TEST_PASS\n"
+  },
+  {
+    "path": "scripts/test_hengce_unified_runtime.py",
+    "returncode": 0,
+    "output": "........................\n----------------------------------------------------------------------\nRan 24 tests in 0.463s\n\nOK\n"
+  }
+]

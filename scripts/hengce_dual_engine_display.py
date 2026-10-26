@@ -106,6 +106,17 @@ def q017_view(x: dict, now: datetime):
                 top = []
                 reason = 'Q017_TOP3_OUTSIDE_TWSE_ELECTRONICS_UNIVERSE:' + ','.join(bad)
 
+    if formal:
+        try:
+            import hengce_q017_authority_guard_v5 as guard
+            valid, validation_reason = guard.validate(x)
+            if not valid:
+                formal = False
+                reason = validation_reason
+        except (OSError, ValueError, TypeError, KeyError, OverflowError, AttributeError, RuntimeError) as exc:
+            formal = False
+            reason = 'Q017_SCHEMA5_EVIDENCE_UNAVAILABLE:' + str(exc)
+
     return {
         'engine': 'Q017',
         'status': x.get('market_state') or x.get('binding_status') or 'DATA_PENDING',
@@ -127,14 +138,18 @@ def e2_view(x: dict):
     if x.get('module') != 'E2_PROFIT_MAX_STATE' or int(x.get('schema_version') or 0) < 2:
         return {
             'engine': 'E2_PROFIT_MAX', 'status': 'DATA_PENDING', 'authority': 'NO_E2_SIGNAL',
+            'formal_authority': False, 'research_only': True,
             'top1': None, 'action': 'OFF', 'reason': 'E2_PROFIT_MAX_STATE_NOT_AVAILABLE',
             'broker_order_execution': False,
         }
     return {
         'engine': 'E2_PROFIT_MAX',
+        'formal_authority': False,
+        'research_only': True,
         'status': x.get('engine_status'),
         'binding_status': x.get('binding_status'),
-        'authority': x.get('authority'),
+        'authority': 'RETIRED_RESEARCH_ARTIFACT_ONLY',
+        'historical_source_authority': x.get('authority'),
         'signal_asof': x.get('signal_asof'),
         'local_gate': x.get('local_gate'),
         'macro_gate': x.get('macro_gate'),
@@ -151,10 +166,13 @@ def e2_view(x: dict):
 
 
 def build(now: datetime):
-    q = load(Q017) if Q017.exists() else {
-        'schema_version': 5, 'module': 'Q017_MISSING', 'binding_status': 'DATA_PENDING',
-        'market_state': 'DATA_PENDING', 'authority': 'NO_FORMAL_SIGNAL', 'formal_buy_count': 0,
-    }
+    try:
+        from hengce_q017_formal_output import current_decision
+        q = current_decision(now, ROOT)
+    except (OSError, ValueError, TypeError, KeyError, OverflowError) as exc:
+        q = {'schema_version': 5, 'module': 'Q017_MISSING', 'trade_date': now.date().isoformat(),
+             'binding_status': 'DATA_PENDING', 'market_state': 'DATA_PENDING',
+             'authority': 'NO_FORMAL_SIGNAL', 'formal_buy_count': 0, 'reason': str(exc)}
     e = load(E2) if E2.exists() else {}
     return {
         'schema_version': 2,
@@ -165,6 +183,8 @@ def build(now: datetime):
         'rankings_separate': True,
         'mixed_ranking_forbidden': True,
         'legacy_v3_display_authority': False,
+        'formal_hengce_stock_output_engine': 'Q017',
+        'retired_engine_artifacts_are_research_only': True,
         'q017': q017_view(q, now),
         'e2': e2_view(e),
         'display_policy': 'ALWAYS_SHOW_Q017_AND_E2_SEPARATELY; NEVER_MIX_RANKINGS; NEVER_PROMOTE_STALE_Q017_TO_TODAY',

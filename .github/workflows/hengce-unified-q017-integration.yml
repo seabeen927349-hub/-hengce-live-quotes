@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install existing schema-5 import dependencies
+        run: python -m pip install requests==2.32.5 openpyxl==3.1.5
       - name: Compile and behavioral safety contracts
         run: |
           python -m compileall -q scripts/hengce_unified* scripts/hengce_q017_canonical_producer.py scripts/hengce_twse_calendar.py scripts/hengce_intraday_action_board.py scripts/hengce_scan_once_router.py

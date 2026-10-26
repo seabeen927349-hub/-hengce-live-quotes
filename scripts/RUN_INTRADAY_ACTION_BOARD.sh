@@ -2,9 +2,9 @@
 set -euo pipefail
 ROOT="${HENGCE_ROOT:-$(pwd)}"
 export HENGCE_ROOT="$ROOT"
-RUNNER="$ROOT/work/hengce_unified_runner.py"
+RUNNER="$ROOT/work/hengce_q017_only_runner.py"
 if [[ ! -f "$RUNNER" ]]; then
-  RUNNER="$ROOT/scripts/hengce_unified_runner.py"
+  RUNNER="$ROOT/scripts/hengce_q017_only_runner.py"
 fi
 if [[ ! -f "$RUNNER" ]]; then
   # Missing deployment must revoke old output, even before Python imports work.

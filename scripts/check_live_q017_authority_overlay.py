@@ -87,7 +87,10 @@ def main() -> int:
     assert int(e2.get("capital_authority_twd") or 0) == 0
     assert e2.get("broker_order_execution") is False
     assert e2.get("q017_effect") == "NONE"
-    assert de.get("authority") == e2.get("authority")
+    assert de.get("authority") == "RETIRED_RESEARCH_ARTIFACT_ONLY"
+    assert de.get("historical_source_authority") == e2.get("authority")
+    assert de.get("formal_authority") is False
+    assert de.get("research_only") is True
     assert de.get("status") == e2.get("engine_status")
     assert int(de.get("capital_authority_twd") or 0) == 0
     assert de.get("broker_order_execution") is False

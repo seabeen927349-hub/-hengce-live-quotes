@@ -132,7 +132,7 @@ class Runtime(unittest.TestCase):
         work=self.root/'work';work.mkdir()
         source=Path(__file__).resolve().parent
         for name in ['hengce_unified_contracts','hengce_unified_runner','hengce_unified_candidate_adapter',
-                     'hengce_unified_action_board','hengce_intraday_action_board','hengce_unified_scan_display','hengce_scan_once_router','hengce_q017_only_runner']:
+                     'hengce_unified_action_board','hengce_intraday_action_board','hengce_unified_scan_display','hengce_scan_once_router','hengce_q017_only_runner','hengce_q017_formal_output']:
             shutil.copyfile(source/(name+'.py'),work/(name+'.py'))
         shutil.copyfile(source/'RUN_INTRADAY_ACTION_BOARD.sh',self.root/'RUN_INTRADAY_ACTION_BOARD.sh')
         command=[sys.executable,str(work/'hengce_scan_once_router.py'),'--now',clock.isoformat()]
@@ -145,7 +145,7 @@ class Runtime(unittest.TestCase):
         self.assertEqual(result['rows'],[])
         self.assertFalse(result['can_create_new_entry'])
         self.assertEqual(result['scan_once_router']['active_strategy_count'],1)
-        self.assertEqual(result['scan_once_router']['active_strategy'],'Q017_CANONICAL_FAMILY')
+        self.assertEqual(result['scan_once_router']['active_strategy'],'Q017')
         self.context.unlink()
         bad=subprocess.run(command,text=True,capture_output=True,timeout=10,env=env)
         self.assertEqual(bad.returncode,0)

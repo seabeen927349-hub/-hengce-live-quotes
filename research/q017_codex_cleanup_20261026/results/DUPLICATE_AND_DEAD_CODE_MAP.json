@@ -1,0 +1,457 @@
+{
+  "exact_ast_body_duplicate_candidates": [
+    {
+      "body_ast_sha256": "0c3fce4eaa845c14b7f8b0773b14dc9bf382044103af32cc56a30d07cb65730f",
+      "candidates": [
+        {
+          "path": "scripts/check_live_q017_authority_overlay.py",
+          "function": "load",
+          "line": 18
+        },
+        {
+          "path": "scripts/hengce_dual_engine_display.py",
+          "function": "load",
+          "line": 19
+        },
+        {
+          "path": "scripts/hengce_live_trial_guard.py",
+          "function": "load",
+          "line": 15
+        },
+        {
+          "path": "scripts/hengce_q017_authority_guard.py",
+          "function": "read_json",
+          "line": 41
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "ab58b2b6d1e723d9c19a2d332db4066dc6de19d433b4f04aa79983527a28dbd2",
+      "candidates": [
+        {
+          "path": "scripts/hengce_daily_command_center_core_legacy.py",
+          "function": "now_tw",
+          "line": 42
+        },
+        {
+          "path": "scripts/hengce_live_quote_transport.py",
+          "function": "now_tw",
+          "line": 41
+        },
+        {
+          "path": "scripts/hengce_q017_10d_review.py",
+          "function": "now_tw",
+          "line": 21
+        },
+        {
+          "path": "scripts/hengce_q017_authority_guard.py",
+          "function": "now_tw",
+          "line": 32
+        },
+        {
+          "path": "scripts/hengce_q017_authority_guard_v4.py",
+          "function": "now_tw",
+          "line": 10
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "dc360835079c7f442c597a45955bd05c59fff8db03812b562f1476ae3129bbc6",
+      "candidates": [
+        {
+          "path": "scripts/hengce_daily_command_center_core_legacy.py",
+          "function": "clean",
+          "line": 46
+        },
+        {
+          "path": "scripts/hengce_v43_history_sync.py",
+          "function": "clean",
+          "line": 21
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "01c56622871fb014d3c551cf68498c6cac1c7c263b51ee1698e2bba12a8f46d0",
+      "candidates": [
+        {
+          "path": "scripts/hengce_daily_command_center_core_legacy.py",
+          "function": "atomic_json",
+          "line": 63
+        },
+        {
+          "path": "scripts/hengce_q017_10d_review.py",
+          "function": "atomic_json",
+          "line": 23
+        },
+        {
+          "path": "scripts/hengce_q017_authority_guard.py",
+          "function": "atomic_json",
+          "line": 45
+        },
+        {
+          "path": "scripts/hengce_v43_history_sync.py",
+          "function": "atomic_json",
+          "line": 25
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "8eae662756aa0d94331a5d33af61abc00f80ca860431a1af3ac958440039d24d",
+      "candidates": [
+        {
+          "path": "scripts/hengce_daily_command_center_core_legacy.py",
+          "function": "v",
+          "line": 154
+        },
+        {
+          "path": "scripts/hengce_v43_history_sync.py",
+          "function": "v",
+          "line": 74
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "e0d0c01dc9cf22527d8bc391845174d68b7f09ab7bb993bf91a3ba5b10f07748",
+      "candidates": [
+        {
+          "path": "scripts/hengce_electronics_live_coverage.py",
+          "function": "load",
+          "line": 16
+        },
+        {
+          "path": "scripts/hengce_live_quote_transport.py",
+          "function": "load_json",
+          "line": 33
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "d6e11516af6829442a2555b9b6a2cf023dc155a438528f5d7916d53afb362eef",
+      "candidates": [
+        {
+          "path": "scripts/hengce_full_market_shadow.py",
+          "function": "fnum",
+          "line": 39
+        },
+        {
+          "path": "scripts/hengce_q017_decision_lock.py",
+          "function": "fnum",
+          "line": 60
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "ffd7afb91567edd295a9d20fdc49210c360483bf9a5ea02a5b65e01c1ca88674",
+      "candidates": [
+        {
+          "path": "scripts/hengce_full_market_shadow.py",
+          "function": "chunks",
+          "line": 76
+        },
+        {
+          "path": "scripts/hengce_q017_decision_lock.py",
+          "function": "chunks",
+          "line": 55
+        },
+        {
+          "path": "scripts/hengce_q017_decision_lock_v4.py",
+          "function": "chunks",
+          "line": 17
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "11296710d89667d3cbe1f78505a8b6cd52212d18c657fbf5e5a306680d409844",
+      "candidates": [
+        {
+          "path": "scripts/hengce_live_quote_transport.py",
+          "function": "sha256",
+          "line": 37
+        },
+        {
+          "path": "scripts/hengce_q017_macro_cache_v1.py",
+          "function": "_sha256_bytes",
+          "line": 24
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "3eb7f5f8e2348579721654d4c684bbf1f6d68bb21267d305a0eda70a46c4b884",
+      "candidates": [
+        {
+          "path": "scripts/hengce_live_universe_guard.py",
+          "function": "load",
+          "line": 13
+        },
+        {
+          "path": "scripts/hengce_live_universe_handoff.py",
+          "function": "load",
+          "line": 16
+        },
+        {
+          "path": "scripts/hengce_q017_authority_guard_v4.py",
+          "function": "read_json",
+          "line": 12
+        },
+        {
+          "path": "scripts/hengce_q017_authority_guard_v5.py",
+          "function": "read",
+          "line": 16
+        },
+        {
+          "path": "scripts/hengce_three_line_resonance.py",
+          "function": "read",
+          "line": 13
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "820c848f6c12ecd79d96f15b11266975fb788c6e0f335903ebdb046936d2f8c5",
+      "candidates": [
+        {
+          "path": "scripts/hengce_live_universe_guard.py",
+          "function": "sha",
+          "line": 15
+        },
+        {
+          "path": "scripts/hengce_live_universe_handoff.py",
+          "function": "fsha",
+          "line": 20
+        },
+        {
+          "path": "scripts/hengce_q017_canonical_producer.py",
+          "function": "raw_hash",
+          "line": 37
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "0336b99fa1330db1f174a2c3acf6a7d8c59446a39c2fd323edb85f5283cc9a9c",
+      "candidates": [
+        {
+          "path": "scripts/hengce_live_universe_guard.py",
+          "function": "csha",
+          "line": 16
+        },
+        {
+          "path": "scripts/hengce_live_universe_handoff.py",
+          "function": "csha",
+          "line": 21
+        },
+        {
+          "path": "scripts/hengce_q017_10d_review.py",
+          "function": "csha",
+          "line": 22
+        },
+        {
+          "path": "scripts/hengce_q017_10d_review_extension.py",
+          "function": "sha",
+          "line": 25
+        },
+        {
+          "path": "scripts/hengce_q017_authority_guard_v4.py",
+          "function": "canonical_sha",
+          "line": 11
+        },
+        {
+          "path": "scripts/hengce_q017_hypothetical_open_reconstruction.py",
+          "function": "sha",
+          "line": 16
+        },
+        {
+          "path": "scripts/hengce_q017_observation_lock_v5.py",
+          "function": "csha",
+          "line": 19
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "108247117bccb4787d4a223e749493b8adc29ee70ed58c2f63ec5ec48f6c5b9d",
+      "candidates": [
+        {
+          "path": "scripts/hengce_live_universe_handoff.py",
+          "function": "dump",
+          "line": 17
+        },
+        {
+          "path": "scripts/hengce_q017_authority_guard_v4.py",
+          "function": "atomic_json",
+          "line": 13
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "9b31b9e1aaa3e188685b9ce957790fff426d6783e574cb457668e19b33689c94",
+      "candidates": [
+        {
+          "path": "scripts/hengce_q017_authority_guard.py",
+          "function": "canonical_sha",
+          "line": 36
+        },
+        {
+          "path": "scripts/hengce_q017_decision_lock.py",
+          "function": "canonical_sha",
+          "line": 50
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "ce7453aa4c1c3dc1df14d1e67e91da983493e118bc6aad800c2c7a74b36e8348",
+      "candidates": [
+        {
+          "path": "scripts/hengce_q017_authority_guard.py",
+          "function": "_f",
+          "line": 57
+        },
+        {
+          "path": "scripts/hengce_q017_observation_lock_v5.py",
+          "function": "_f",
+          "line": 27
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "7d5e67cd642ff394d111f74b400386bc78a4826189d4b5b2992088749b870ed1",
+      "candidates": [
+        {
+          "path": "scripts/hengce_q017_authority_guard_v4.py",
+          "function": "_close",
+          "line": 19
+        },
+        {
+          "path": "scripts/hengce_q017_observation_lock_v5.py",
+          "function": "_close",
+          "line": 31
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "143593b7ffea6995cb8e54c3435d09785d6c15c4e017e1fe7d10880e96fcfb0b",
+      "candidates": [
+        {
+          "path": "scripts/hengce_q017_authority_guard_v4.py",
+          "function": "_state",
+          "line": 24
+        },
+        {
+          "path": "scripts/hengce_q017_decision_lock_v4.py",
+          "function": "market_state_from_checks",
+          "line": 21
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "8f852f0312e6de7bb27d00792ec34d7529c6a309e357869f0a08d4fc15b30ec0",
+      "candidates": [
+        {
+          "path": "scripts/hengce_q017_decision_lock.py",
+          "function": "decision_path",
+          "line": 104
+        },
+        {
+          "path": "scripts/hengce_q017_decision_lock_v4.py",
+          "function": "decision_path",
+          "line": 16
+        },
+        {
+          "path": "scripts/hengce_q017_observation_lock_v5.py",
+          "function": "decision_path",
+          "line": 34
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "28cf529c536e5ce3bcf7bcf50b97c56d5511b41da327a7d7f3210396558055e9",
+      "candidates": [
+        {
+          "path": "scripts/hengce_q017_observation_lock_v5.py",
+          "function": "_dt",
+          "line": 22
+        },
+        {
+          "path": "scripts/hengce_q017_premarket_snapshot_v1.py",
+          "function": "_iso_dt",
+          "line": 29
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    },
+    {
+      "body_ast_sha256": "c49a4f39282bb955a181dab82531ee4193c7abbc12244e7606d830676f6b94fb",
+      "candidates": [
+        {
+          "path": "scripts/hengce_q017_observer_supervisor_v1.py",
+          "function": "main",
+          "line": 546
+        },
+        {
+          "path": "scripts/hengce_q017_observer_supervisor_v2.py",
+          "function": "main",
+          "line": 254
+        }
+      ],
+      "disposition": "RETAIN_NOT_PROVEN_BEHAVIORALLY_INTERCHANGEABLE"
+    }
+  ],
+  "centralized": [
+    {
+      "symbol": "Q017_ONLY_POLICY",
+      "owner": "scripts/hengce_q017_formal_output.py",
+      "consumers": [
+        "scripts/hengce_q017_only_runner.py",
+        "scripts/hengce_scan_once_router.py"
+      ]
+    }
+  ],
+  "retained_semantic_boundaries": [
+    {
+      "paths": [
+        "scripts/hengce_q017_decision_lock.py",
+        "scripts/hengce_q017_decision_lock_v4.py",
+        "scripts/hengce_q017_observation_lock_v5.py"
+      ],
+      "reason": "v5 imports v4 which imports legacy helpers. Older capture/monitor CLIs are compatibility/research paths, never a substitute schema-5 source."
+    },
+    {
+      "paths": [
+        "scripts/hengce_q017_premarket_snapshot_v1.py",
+        "scripts/hengce_q017_observer_supervisor_v2.py"
+      ],
+      "reason": "Local history/cache preparation overlaps; unchanged because prewarm/fallback timing and tuple contracts differ."
+    },
+    {
+      "paths": [
+        "scripts/hengce_q017_canonical_producer.py",
+        "scripts/hengce_unified_candidate_adapter.py"
+      ],
+      "reason": "Daily top1/H20/no-DXY and schema-5 top3/H10/DXY are distinct contracts. Never deduplicate formula/ranking across them."
+    }
+  ],
+  "quarantined_by_output_validation": [
+    "schema1/schema3/schema4 radar outputs",
+    "daily canonical artifacts without schema5 observation/decision binding",
+    "LEGACY-only mixed candidate publications",
+    "retired E2/NOVA/V43/W1/Q1/M1 artifacts"
+  ],
+  "deleted_files": [],
+  "proven_dead_code": [],
+  "unknown_reachability_policy": "Keep historical code/evidence; a missing static incoming reference is not proof of deadness."
+}

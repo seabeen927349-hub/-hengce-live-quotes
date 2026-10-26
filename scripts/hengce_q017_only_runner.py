@@ -7,8 +7,8 @@ the Q017-selected ticker only; they are not candidate/selection sources in this 
 from __future__ import annotations
 import hengce_unified_candidate_adapter as adapter
 from hengce_unified_runner import run
+from hengce_q017_formal_output import Q017_ONLY_POLICY
 
-Q017_ONLY_POLICY = 'Q017_ONLY_REUSE_LEGACY_GEOMETRY_NO_LEGACY_CANDIDATES'
 _ORIGINAL_BUILD = adapter.build
 
 def build_q017_only(legacy, q017):

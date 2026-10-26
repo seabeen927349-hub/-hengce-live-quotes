@@ -1,0 +1,145 @@
+{
+  "status": "PASS",
+  "baseline_commit": "780e8a225de637c32b42da0d28f5aa1428e49e20",
+  "comparison_before_commit": "cc7d4cac9d389107ac2d9caa95ec662ae23cfdf7",
+  "comparison_after": "WORKING_TREE",
+  "normalizations": [],
+  "regressions_source": "Working checkout (CI checks out the exact after/head SHA)",
+  "comparison": "Exact JSON and canonical serialized SHA-256; fixed original computation timestamp; full candidate ranking observed at function return",
+  "semantic_payload_sha256": "fe69ca8157ce6ea268ea5b7a4d2cf5a86ed4779fef7fce76bdac7b4728adf232",
+  "fixtures": {
+    "20261021": {
+      "decision_sha256": "15365b82163561a03c7847243bc5e9e4ceea3b7bbc693aa56e168fdea6e57a41",
+      "full_ranking_sha256": "4cddb4b79efcc43d9f7a3b5990eded8c1bf4fd520628dae93d20b77321243756",
+      "full_ranking_count": 155,
+      "top3": [
+        "3055",
+        "8150",
+        "7795"
+      ],
+      "formal_buy_count": 3,
+      "market_state": "GO",
+      "observation_sha256": "00d8bb7dcf3c124487e5a1ed918903e6c4e325bd09d18404cf999591c13c4cbe",
+      "universe_sha256": "7bf610f435bb0e655e02f7ff92b9c76add008373eecec8d5324eba3b713ff783",
+      "fixture_raw_sha256": {
+        "hengce/q017_radar/observations/20261021_0901_observation.json": "f76cf7ff5e35982a2b7b3fd66d493414f7a8a3933b51a24ec51d914db6d64281",
+        "hengce/q017_radar/decision/20261021_0901.json": "8e2767acaf1963812e147b2b80287cdfcd7e25bdb5d0867e33f4a5261d9cf4f3"
+      },
+      "fail_closed": {
+        "missing_quote": [
+          false,
+          "OBS_QUOTES_NOT_100PCT_ELIGIBLE"
+        ],
+        "late_0902": [
+          false,
+          "OBS_QUOTE_NOT_0901"
+        ],
+        "late_0903": [
+          false,
+          "OBS_QUOTE_NOT_0901"
+        ],
+        "outside_electronics": [
+          false,
+          "ELIGIBLE_OUTSIDE_ELECTRONICS_UNIVERSE"
+        ],
+        "coverage": [
+          false,
+          "OBS_QUOTE_ROW_COVERAGE_NOT_100PCT"
+        ],
+        "universe_hash": [
+          false,
+          "UNIVERSE_HASH_OR_COUNT_INVALID"
+        ],
+        "observation_hash": [
+          false,
+          "OBS_HASH_INVALID"
+        ]
+      }
+    },
+    "20261022": {
+      "decision_sha256": "e9e836d40008a89d92b0036c605d7792e62cec74c7ad6ad101f5cf77c8a424d3",
+      "full_ranking_sha256": "f10bff011e94585a12458981501572f2ad22f40531f28c1bc04a1a5b3c4f4abc",
+      "full_ranking_count": 221,
+      "top3": [
+        "3055",
+        "7795",
+        "3016"
+      ],
+      "formal_buy_count": 0,
+      "market_state": "CASH",
+      "observation_sha256": "b02e7a7a3d9a272458daf365c0dd28b54d97b57858635c6c0bb01bae8b9319c1",
+      "universe_sha256": "7bf610f435bb0e655e02f7ff92b9c76add008373eecec8d5324eba3b713ff783",
+      "fixture_raw_sha256": {
+        "hengce/q017_radar/observations/20261022_0901_observation.json": "df7d0c03b4030eed96bebefb0b037e26c0496c165bf503e8ae84890dcb6e0563",
+        "hengce/q017_radar/decision/20261022_0901.json": "9b1905137c05bfc937e927259014b5e05006221ed0d654c4c70ce50c55b078aa"
+      },
+      "fail_closed": {
+        "missing_quote": [
+          false,
+          "OBS_QUOTES_NOT_100PCT_ELIGIBLE"
+        ],
+        "late_0902": [
+          false,
+          "OBS_QUOTE_NOT_0901"
+        ],
+        "late_0903": [
+          false,
+          "OBS_QUOTE_NOT_0901"
+        ],
+        "outside_electronics": [
+          false,
+          "ELIGIBLE_OUTSIDE_ELECTRONICS_UNIVERSE"
+        ],
+        "coverage": [
+          false,
+          "OBS_QUOTE_ROW_COVERAGE_NOT_100PCT"
+        ],
+        "universe_hash": [
+          false,
+          "UNIVERSE_HASH_OR_COUNT_INVALID"
+        ],
+        "observation_hash": [
+          false,
+          "OBS_HASH_INVALID"
+        ]
+      }
+    }
+  },
+  "regressions": [
+    {
+      "command": "scripts/test_hengce_q017_resilience_v5.py",
+      "returncode": 0,
+      "output": "{\"resilience_test\": \"PASS\", \"checks\": [\"primary_dead_backup_0901_promoted\", \"09:03_compute_from_09:01_evidence_valid\", \"no_observation_fail_closed\", \"non_electronics_high_score_injection_rejected\", \"full_market_extra_cannot_expand_q017\", \"09:02_quote_cannot_backfill_09:01\"]}\n"
+    },
+    {
+      "command": "scripts/test_hengce_q017_observer_resilience_v1.py",
+      "returncode": 0,
+      "output": "HENGCE_Q017_OBSERVER_RESILIENCE_HARD_LOCK_V2=PASS\nMACRO_CACHE=05:45/06:15/06:45/07:15/07:35 SNAPSHOT=06:30 PRIMARY=07:45 BACKUP=08:15\nNORMAL_0901_NETWORK=TWSE_MIS_ONLY MACRO_NETWORK_CALLS=0 MIS_BOUNDED=2.5/6.0\nSCHEMA5=True COVERAGE=100PCT NO_0903_CAPTURE=True LATE_BACKFILL_FORBIDDEN=True\n"
+    },
+    {
+      "command": "scripts/test_hengce_q017_decision_lock.py",
+      "returncode": 0,
+      "output": "{\"deterministic_replay_test\": \"PASS\", \"checks\": [\"frozen_gate_sox1d_0_sox5d_minus3pct_dxy5d_minus0_5pct\", \"legacy_minus2pct_gate_rejected\", \"dxy_gate_mandatory\", \"immutable_snapshot_write\", \"09:01_missing_open_excluded_without_data_failure\", \"09:03_price_reversal_does_not_rerank\", \"second_capture_does_not_rewrite\", \"snapshot_hash_tamper_detected\", \"missing_snapshot_fail_closed\"]}\n"
+    },
+    {
+      "command": "scripts/test_hengce_q017_adversarial_v4.py",
+      "returncode": 0,
+      "output": "{\"adversarial_v4\": \"PASS\", \"checks\": [\"same_minute_retry_without_poison\", \"late_0940_forgery_rejected_even_with_fresh_hash\", \"partial_coverage_rejected\", \"binding_pending_rejected\", \"trade_date_mismatch_rejected\", \"invalid_market_state_rejected\", \"score_math_tamper_rejected\", \"single_missing_provider_row_rejected\", \"monitor_rerank_rejected\"]}\n"
+    },
+    {
+      "command": "scripts/test_hengce_dual_engine_display_hard_lock.py",
+      "returncode": 0,
+      "output": "{\"status\": \"PASS\", \"tests\": 7, \"legacy_v3_display_authority\": false, \"mixed_ranking_forbidden\": true}\n"
+    },
+    {
+      "command": "tests/engineering/test_q017_operational_boundary.py",
+      "returncode": 0,
+      "output": "test_any_other_compute_body_change_is_rejected (__main__.FrozenQ017OperationalTests.test_any_other_compute_body_change_is_rejected) ... ok\ntest_current_source_has_only_exact_authorized_io_insertion (__main__.FrozenQ017OperationalTests.test_current_source_has_only_exact_authorized_io_insertion) ... ok\ntest_formula_or_threshold_edit_is_rejected (__main__.FrozenQ017OperationalTests.test_formula_or_threshold_edit_is_rejected) ... ok\ntest_unchanged_original_and_exact_io_insertion_are_allowed (__main__.FrozenQ017OperationalTests.test_unchanged_original_and_exact_io_insertion_are_allowed) ... ok\ntest_widened_admission_or_unvalidated_existing_decision_is_rejected (__main__.FrozenQ017OperationalTests.test_widened_admission_or_unvalidated_existing_decision_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.004s\n\nOK\n"
+    },
+    {
+      "command": "tests/engineering/test_q017_cleanup.py",
+      "returncode": 0,
+      "output": "test_daily_canonical_without_schema5_binding_is_quarantined (__main__.Q017Cleanup.test_daily_canonical_without_schema5_binding_is_quarantined) ... ok\ntest_future_decision_not_available (__main__.Q017Cleanup.test_future_decision_not_available) ... ok\ntest_hash_tampering_rejected (__main__.Q017Cleanup.test_hash_tampering_rejected) ... ok\ntest_late_quotes_and_incomplete_coverage_cannot_be_repaired (__main__.Q017Cleanup.test_late_quotes_and_incomplete_coverage_cannot_be_repaired) ... ok\ntest_malformed_evidence_fails_closed (__main__.Q017Cleanup.test_malformed_evidence_fails_closed) ... ok\ntest_missing_observation_or_decision_has_no_formal_output (__main__.Q017Cleanup.test_missing_observation_or_decision_has_no_formal_output) ... ok\ntest_missing_primary_and_backup_fails_closed_without_fetch (__main__.Q017Cleanup.test_missing_primary_and_backup_fails_closed_without_fetch) ... ok\ntest_monitor_cannot_change_scores_gate_or_members (__main__.Q017Cleanup.test_monitor_cannot_change_scores_gate_or_members) ... ok\ntest_public_display_cli_rejects_hash_valid_legacy_bundle (__main__.Q017Cleanup.test_public_display_cli_rejects_hash_valid_legacy_bundle) ... ok\ntest_research_models_cannot_be_formal_even_with_q017_label (__main__.Q017Cleanup.test_research_models_cannot_be_formal_even_with_q017_label) ... ok\ntest_retired_display_labels_and_valid_decision (__main__.Q017Cleanup.test_retired_display_labels_and_valid_decision) ... ok\ntest_router_requires_full_hash_bound_current_q017_bundle (__main__.Q017Cleanup.test_router_requires_full_hash_bound_current_q017_bundle) ... ok\ntest_stale_or_forged_latest_cannot_override_dated_authority (__main__.Q017Cleanup.test_stale_or_forged_latest_cannot_override_dated_authority) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.593s\n\nOK\n"
+    }
+  ]
+}

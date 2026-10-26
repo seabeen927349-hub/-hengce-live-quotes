@@ -73,6 +73,7 @@ class WorkflowAdmissionTests(unittest.TestCase):
         self.assertIn("github.event.pull_request.head.sha", step["env"]["AFTER_SHA"])
         self.assertIn('--before "$BEFORE_SHA"', step["run"])
         self.assertIn('--after "$AFTER_SHA"', step["run"])
+        self.assertIn('tests/engineering/q017_cleanup_audit.py', step['run'])
         self.assertEqual(self.config["permissions"], {"contents": "read"})
 
 

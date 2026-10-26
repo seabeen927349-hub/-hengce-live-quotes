@@ -34,6 +34,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install existing schema-5 import dependencies
+        run: python -m pip install requests==2.32.5 openpyxl==3.1.5
+
       - name: Run dual-engine anti-drift regression
         run: python scripts/test_hengce_dual_engine_display_hard_lock.py
 

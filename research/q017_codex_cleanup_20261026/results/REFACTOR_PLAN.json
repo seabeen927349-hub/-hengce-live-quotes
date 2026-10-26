@@ -1,0 +1,24 @@
+{
+  "baseline_commit": "780e8a225de637c32b42da0d28f5aa1428e49e20",
+  "status": "EXECUTED_BOUNDED_SAFE_CHANGES",
+  "steps": [
+    {"order": 1, "action": "Read repository hard lock, task, frozen source guard, original schema5 fixtures and workflow/route dependencies", "result": "DONE"},
+    {"order": 2, "action": "Capture original exact GO/CASH decisions, full ranked candidates, failure outcomes and baseline guard measurements before production edits", "result": "BASELINE_REPLAY.json"},
+    {"order": 3, "action": "Centralize Q017-only output policy and current dated schema5 authority selection", "result": "DONE; no model code changed"},
+    {"order": 4, "action": "Gate router and public display on complete fresh publication and schema5 binding; constrain shell to Q017 candidate source; label daily/retired artifacts research-only", "result": "DONE; unbound daily bridge fails closed"},
+    {"order": 5, "action": "Reduce duplicate deterministic guard hashing and reject monitor field tampering", "result": "DONE; exact model replay identical; eight to six hash calls"},
+    {"order": 6, "action": "Strengthen offline attacks and migrate existing engineering CI; pin existing import dependencies", "result": "DONE; no duplicate CI workflow added"},
+    {"order": 7, "action": "Complete source/workflow inventory, duplicate map, performance samples, risk and audit reports", "result": "DONE"}
+  ],
+  "deferred": [
+    {"change": "Deduplicate observation/v4/legacy model or prewarm helpers", "reason": "Frozen source and distinct fallback/timing contracts; retain exact bytes"},
+    {"change": "Enable daily canonical action as schema5 formal output", "reason": "Different model contract and no original observation binding; cannot fabricate equivalence"},
+    {"change": "Delete historical or apparently unused model code", "reason": "Static absence of callers is not proof of no audit/operator use"},
+    {"change": "Optimize live quote transport, retry schedules or external dependency behavior", "reason": "Not needed for proven safe bounded cleanup; no live measurement or source-contract expansion"}
+  ],
+  "normalizations_allowed": [],
+  "semantic_drift_policy": "STOP_AND_FAIL_IMMEDIATELY",
+  "merge_authority": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false
+}

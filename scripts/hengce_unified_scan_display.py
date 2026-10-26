@@ -112,8 +112,18 @@ def main():
     if args.self_test:
         self_test(); return 0
     now = parse_now(args.now)
-    out = build(now, load(args.action or ACTION), load(args.base or BASE),
-                load(args.receipt or DEFAULT_DIR / NAMES['receipt']))
+    action = load(args.action or ACTION)
+    base = load(args.base or BASE)
+    receipt = load(args.receipt or DEFAULT_DIR / NAMES['receipt'])
+    out = build(now, action, base, receipt)
+    # build() remains the historical transaction renderer for audit callers.
+    # The public CLI additionally enforces the sole formal schema-5 authority.
+    try:
+        from hengce_q017_formal_output import require_q017_publication
+        require_q017_publication(out, base, now, ROOT)
+    except (OSError, ValueError, TypeError, KeyError, OverflowError) as exc:
+        out.update(binding_status='FAIL_CLOSED', status='DATA_PENDING', rows=[],
+                   candidate_count=0, authority='NO_FORMAL_HENGCE_OUTPUT', reason=str(exc))
     if not args.no_write:
         atomic(OUT, out)
     print(json.dumps(out, ensure_ascii=False, indent=2, allow_nan=False))
