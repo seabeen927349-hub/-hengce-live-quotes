@@ -11,13 +11,26 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - uses: actions/checkout@v4
+      - name: Inspect historical Stage B artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for id in 12485377481 12485965339 12485467257; do
+            echo "===== ARTIFACT $id ====="
+            curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" -o "/tmp/${id}.zip"
+            unzip -l "/tmp/${id}.zip" | head -200
+          done
       - name: Run frozen structural buy tournament
         shell: bash
         run: |
