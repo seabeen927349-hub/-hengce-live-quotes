@@ -77,7 +77,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install validator dependencies
-        run: pip install pandas numpy
+        run: pip install pandas numpy scipy
       - name: Recover frozen historical electronics artifacts
         env:
           GH_TOKEN: ${{ github.token }}
