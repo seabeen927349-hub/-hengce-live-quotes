@@ -1,0 +1,490 @@
+{
+  "governance": {
+    "stock_selector": "FROZEN / UNCHANGED",
+    "discovery_window": [
+      "2026-07-22",
+      "2026-10-21"
+    ],
+    "date_gate_search": "five predeclared natural-boundary mechanisms only; no threshold sweep; first passing gate in fixed order is frozen",
+    "fixed_order": [
+      "G1_SELLING_CLIMAX_REJECTION",
+      "G2_PANIC_REJECTION",
+      "G3_PANIC_INTENSITY",
+      "G4_PRIOR_PANIC_BREADTH_RECOVERY",
+      "G5_NEG_GAP_UPPER_HALF_CLOSE"
+    ],
+    "promotion_rule": "3M pass first; only then run frozen unchanged gate on 1Y"
+  },
+  "baseline_reproduction": {
+    "status": "PASS",
+    "recent_3m_40bp": {
+      "raw_signals": 281,
+      "selected_roundlot_trades": 39,
+      "skipped_zero_lot": 242,
+      "unique_signal_dates": 14,
+      "total_pnl": 92555.80000000003,
+      "win_rate": 0.6666666666666666,
+      "profit_factor": 1.8882378005712006,
+      "max_drawdown_amount": -20654.400000000023,
+      "max_drawdown_pct": -0.020997913262222,
+      "max_concurrent_positions": 8,
+      "remove_best_trade_pnl": 50641.80000000002,
+      "remove_top2_trades_pnl": 13893.800000000017,
+      "remove_best_signal_date_pnl": 17785.200000000055,
+      "remove_best_3_signal_dates_pnl": -27661.799999999974,
+      "monthly_by_signal_date": [
+        {
+          "month": "2026-07",
+          "count": 12,
+          "sum": 45309.19999999999
+        },
+        {
+          "month": "2026-08",
+          "count": 5,
+          "sum": 21737.400000000023
+        },
+        {
+          "month": "2026-09",
+          "count": 20,
+          "sum": 25600.000000000007
+        },
+        {
+          "month": "2026-10",
+          "count": 2,
+          "sum": -90.80000000000155
+        }
+      ]
+    }
+  },
+  "forensic_tier_means": [
+    {
+      "forensic_tier": "BOTTOM3",
+      "days": 3,
+      "pnl": -50727.19999999997,
+      "breadth1": 0.5512351721755154,
+      "med_ret1": 0.0008878824018773157,
+      "med_gap": 0.01039005940247717,
+      "med_body": -0.009861945124010507,
+      "med_close_loc": 0.3371732976996136,
+      "disp1": 0.028174540795856396,
+      "deep3_frac": 0.1422543411775244
+    },
+    {
+      "forensic_tier": "MIDDLE",
+      "days": 8,
+      "pnl": 23065.39999999998,
+      "breadth1": 0.3492274333877247,
+      "med_ret1": -0.008547915596198379,
+      "med_gap": -0.003428011204776406,
+      "med_body": -0.0045250986398609125,
+      "med_close_loc": 0.3677429309998041,
+      "disp1": 0.027701534364715265,
+      "deep3_frac": 0.2001496689206496
+    },
+    {
+      "forensic_tier": "TOP3",
+      "days": 3,
+      "pnl": 120217.6,
+      "breadth1": 0.47474181578837443,
+      "med_ret1": 0.014852474436315119,
+      "med_gap": 0.014076642892974778,
+      "med_body": -0.003925650789331399,
+      "med_close_loc": 0.43594022215564127,
+      "disp1": 0.029956175258370344,
+      "deep3_frac": 0.12380695446382563
+    }
+  ],
+  "gate_tests": {
+    "G1_SELLING_CLIMAX_REJECTION": {
+      "definition": "market median gap < 0 AND market median body > 0",
+      "recent_3m_40bp": {
+        "raw_signals": 29,
+        "selected_roundlot_trades": 12,
+        "skipped_zero_lot": 17,
+        "unique_signal_dates": 3,
+        "total_pnl": 47391.200000000026,
+        "win_rate": 0.75,
+        "profit_factor": 17.462137001528454,
+        "max_drawdown_amount": -16300.0,
+        "max_drawdown_pct": -0.0159122751390518,
+        "max_concurrent_positions": 10,
+        "remove_best_trade_pnl": 32484.00000000003,
+        "remove_top2_trades_pnl": 25988.000000000033,
+        "remove_best_signal_date_pnl": 15905.600000000013,
+        "remove_best_3_signal_dates_pnl": 7.275957614183426e-12,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-08",
+            "count": 10,
+            "sum": 38466.40000000002
+          },
+          {
+            "month": "2026-09",
+            "count": 2,
+            "sum": 8924.8
+          }
+        ]
+      },
+      "recent_3m_100bp": {
+        "raw_signals": 29,
+        "selected_roundlot_trades": 12,
+        "skipped_zero_lot": 17,
+        "unique_signal_dates": 3,
+        "total_pnl": 41003.000000000015,
+        "win_rate": 0.75,
+        "profit_factor": 11.131702495675826,
+        "max_drawdown_amount": -16300.0,
+        "max_drawdown_pct": -0.015998570925198297,
+        "max_concurrent_positions": 10,
+        "remove_best_trade_pnl": 26685.00000000002,
+        "remove_top2_trades_pnl": 20645.000000000022,
+        "remove_best_signal_date_pnl": 13214.000000000007,
+        "remove_best_3_signal_dates_pnl": 0.0,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-08",
+            "count": 10,
+            "sum": 32941.00000000002
+          },
+          {
+            "month": "2026-09",
+            "count": 2,
+            "sum": 8062.0
+          }
+        ]
+      },
+      "pass": false,
+      "pass_reasons": [
+        "FAIL: signal_days 3 >= 7",
+        "FAIL: trades 12 >= 15",
+        "PASS: 40bp pnl 47391.20 > 0",
+        "PASS: 40bp PF 17.462137001528454 >= 1.50",
+        "PASS: remove-top3-day pnl 0.00 > 0",
+        "PASS: MDD -0.015912 no worse than baseline -0.020998",
+        "PASS: 100bp pnl 41003.00 > 0",
+        "PASS: 100bp PF 11.131702495675826 > 1",
+        "FAIL: active_months 2 >= 3",
+        "PASS: positive_months 2 >= active_months-1"
+      ]
+    },
+    "G2_PANIC_REJECTION": {
+      "definition": "breadth1 <= 0.50 AND market median gap < 0 AND market median body > 0",
+      "recent_3m_40bp": {
+        "raw_signals": 12,
+        "selected_roundlot_trades": 2,
+        "skipped_zero_lot": 10,
+        "unique_signal_dates": 1,
+        "total_pnl": 8924.8,
+        "win_rate": 1.0,
+        "profit_factor": Infinity,
+        "max_drawdown_amount": -500.0,
+        "max_drawdown_pct": -0.0004991889178462827,
+        "max_concurrent_positions": 2,
+        "remove_best_trade_pnl": 2428.800000000002,
+        "remove_top2_trades_pnl": 0.0,
+        "remove_best_signal_date_pnl": 0.0,
+        "remove_best_3_signal_dates_pnl": 0.0,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-09",
+            "count": 2,
+            "sum": 8924.8
+          }
+        ]
+      },
+      "recent_3m_100bp": {
+        "raw_signals": 12,
+        "selected_roundlot_trades": 2,
+        "skipped_zero_lot": 10,
+        "unique_signal_dates": 1,
+        "total_pnl": 8062.0,
+        "win_rate": 1.0,
+        "profit_factor": Infinity,
+        "max_drawdown_amount": -500.0,
+        "max_drawdown_pct": -0.0004996192901008945,
+        "max_concurrent_positions": 2,
+        "remove_best_trade_pnl": 2022.0000000000027,
+        "remove_top2_trades_pnl": 0.0,
+        "remove_best_signal_date_pnl": 0.0,
+        "remove_best_3_signal_dates_pnl": 0.0,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-09",
+            "count": 2,
+            "sum": 8062.0
+          }
+        ]
+      },
+      "pass": false,
+      "pass_reasons": [
+        "FAIL: signal_days 1 >= 7",
+        "FAIL: trades 2 >= 15",
+        "PASS: 40bp pnl 8924.80 > 0",
+        "PASS: 40bp PF inf >= 1.50",
+        "FAIL: remove-top3-day pnl 0.00 > 0",
+        "PASS: MDD -0.000499 no worse than baseline -0.020998",
+        "PASS: 100bp pnl 8062.00 > 0",
+        "PASS: 100bp PF inf > 1",
+        "FAIL: active_months 1 >= 3",
+        "PASS: positive_months 1 >= active_months-1"
+      ]
+    },
+    "G3_PANIC_INTENSITY": {
+      "definition": "breadth1 <= 0.50",
+      "recent_3m_40bp": {
+        "raw_signals": 210,
+        "selected_roundlot_trades": 34,
+        "skipped_zero_lot": 176,
+        "unique_signal_dates": 11,
+        "total_pnl": 27656.280000000042,
+        "win_rate": 0.5882352941176471,
+        "profit_factor": 1.5043306052781313,
+        "max_drawdown_amount": -29754.400000000023,
+        "max_drawdown_pct": -0.029499781486037713,
+        "max_concurrent_positions": 11,
+        "remove_best_trade_pnl": 11006.080000000045,
+        "remove_top2_trades_pnl": 865.2800000000461,
+        "remove_best_signal_date_pnl": 6168.880000000019,
+        "remove_best_3_signal_dates_pnl": -15887.71999999998,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-07",
+            "count": 10,
+            "sum": -13570.799999999985
+          },
+          {
+            "month": "2026-08",
+            "count": 5,
+            "sum": 21487.400000000023
+          },
+          {
+            "month": "2026-09",
+            "count": 17,
+            "sum": 19830.480000000003
+          },
+          {
+            "month": "2026-10",
+            "count": 2,
+            "sum": -90.80000000000155
+          }
+        ]
+      },
+      "recent_3m_100bp": {
+        "raw_signals": 210,
+        "selected_roundlot_trades": 34,
+        "skipped_zero_lot": 176,
+        "unique_signal_dates": 11,
+        "total_pnl": 12080.700000000037,
+        "win_rate": 0.5294117647058824,
+        "profit_factor": 1.1936707947577259,
+        "max_drawdown_amount": -30005.0,
+        "max_drawdown_pct": -0.029877929167251627,
+        "max_concurrent_positions": 11,
+        "remove_best_trade_pnl": -3819.7999999999593,
+        "remove_top2_trades_pnl": -13871.79999999996,
+        "remove_best_signal_date_pnl": -6087.799999999985,
+        "remove_best_3_signal_dates_pnl": -27479.299999999985,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-07",
+            "count": 10,
+            "sum": -18401.99999999998
+          },
+          {
+            "month": "2026-08",
+            "count": 5,
+            "sum": 18168.500000000022
+          },
+          {
+            "month": "2026-09",
+            "count": 17,
+            "sum": 12766.199999999999
+          },
+          {
+            "month": "2026-10",
+            "count": 2,
+            "sum": -452.00000000000136
+          }
+        ]
+      },
+      "pass": false,
+      "pass_reasons": [
+        "PASS: signal_days 11 >= 7",
+        "PASS: trades 34 >= 15",
+        "PASS: 40bp pnl 27656.28 > 0",
+        "PASS: 40bp PF 1.5043306052781313 >= 1.50",
+        "FAIL: remove-top3-day pnl -15887.72 > 0",
+        "FAIL: MDD -0.029500 no worse than baseline -0.020998",
+        "PASS: 100bp pnl 12080.70 > 0",
+        "PASS: 100bp PF 1.1936707947577259 > 1",
+        "PASS: active_months 4 >= 3",
+        "FAIL: positive_months 2 >= active_months-1"
+      ]
+    },
+    "G4_PRIOR_PANIC_BREADTH_RECOVERY": {
+      "definition": "prior-day breadth1 <= 0.50 AND breadth1 improves vs prior day",
+      "recent_3m_40bp": {
+        "raw_signals": 100,
+        "selected_roundlot_trades": 19,
+        "skipped_zero_lot": 81,
+        "unique_signal_dates": 6,
+        "total_pnl": 40919.000000000015,
+        "win_rate": 0.631578947368421,
+        "profit_factor": 1.8991368778181121,
+        "max_drawdown_amount": -46100.0,
+        "max_drawdown_pct": -0.04630202499546021,
+        "max_concurrent_positions": 6,
+        "remove_best_trade_pnl": 12241.000000000004,
+        "remove_top2_trades_pnl": -11227.99999999997,
+        "remove_best_signal_date_pnl": -11227.99999999997,
+        "remove_best_3_signal_dates_pnl": -25024.599999999977,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-07",
+            "count": 8,
+            "sum": 46167.999999999985
+          },
+          {
+            "month": "2026-09",
+            "count": 11,
+            "sum": -5248.999999999971
+          }
+        ]
+      },
+      "recent_3m_100bp": {
+        "raw_signals": 100,
+        "selected_roundlot_trades": 19,
+        "skipped_zero_lot": 81,
+        "unique_signal_dates": 6,
+        "total_pnl": 26442.500000000007,
+        "win_rate": 0.5263157894736842,
+        "profit_factor": 1.5179624297271361,
+        "max_drawdown_amount": -46100.0,
+        "max_drawdown_pct": -0.04639731398803537,
+        "max_concurrent_positions": 6,
+        "remove_best_trade_pnl": -402.50000000000364,
+        "remove_top2_trades_pnl": -21949.999999999978,
+        "remove_best_signal_date_pnl": -21949.999999999978,
+        "remove_best_3_signal_dates_pnl": -32741.499999999985,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-07",
+            "count": 8,
+            "sum": 40269.999999999985
+          },
+          {
+            "month": "2026-09",
+            "count": 11,
+            "sum": -13827.49999999997
+          }
+        ]
+      },
+      "pass": false,
+      "pass_reasons": [
+        "FAIL: signal_days 6 >= 7",
+        "PASS: trades 19 >= 15",
+        "PASS: 40bp pnl 40919.00 > 0",
+        "PASS: 40bp PF 1.8991368778181121 >= 1.50",
+        "FAIL: remove-top3-day pnl -25024.60 > 0",
+        "FAIL: MDD -0.046302 no worse than baseline -0.020998",
+        "PASS: 100bp pnl 26442.50 > 0",
+        "PASS: 100bp PF 1.5179624297271361 > 1",
+        "FAIL: active_months 2 >= 3",
+        "PASS: positive_months 1 >= active_months-1"
+      ]
+    },
+    "G5_NEG_GAP_UPPER_HALF_CLOSE": {
+      "definition": "market median gap < 0 AND market median close-location >= 0.50",
+      "recent_3m_40bp": {
+        "raw_signals": 29,
+        "selected_roundlot_trades": 12,
+        "skipped_zero_lot": 17,
+        "unique_signal_dates": 3,
+        "total_pnl": 47391.200000000026,
+        "win_rate": 0.75,
+        "profit_factor": 17.462137001528454,
+        "max_drawdown_amount": -16300.0,
+        "max_drawdown_pct": -0.0159122751390518,
+        "max_concurrent_positions": 10,
+        "remove_best_trade_pnl": 32484.00000000003,
+        "remove_top2_trades_pnl": 25988.000000000033,
+        "remove_best_signal_date_pnl": 15905.600000000013,
+        "remove_best_3_signal_dates_pnl": 7.275957614183426e-12,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-08",
+            "count": 10,
+            "sum": 38466.40000000002
+          },
+          {
+            "month": "2026-09",
+            "count": 2,
+            "sum": 8924.8
+          }
+        ]
+      },
+      "recent_3m_100bp": {
+        "raw_signals": 29,
+        "selected_roundlot_trades": 12,
+        "skipped_zero_lot": 17,
+        "unique_signal_dates": 3,
+        "total_pnl": 41003.000000000015,
+        "win_rate": 0.75,
+        "profit_factor": 11.131702495675826,
+        "max_drawdown_amount": -16300.0,
+        "max_drawdown_pct": -0.015998570925198297,
+        "max_concurrent_positions": 10,
+        "remove_best_trade_pnl": 26685.00000000002,
+        "remove_top2_trades_pnl": 20645.000000000022,
+        "remove_best_signal_date_pnl": 13214.000000000007,
+        "remove_best_3_signal_dates_pnl": 0.0,
+        "monthly_by_signal_date": [
+          {
+            "month": "2026-08",
+            "count": 10,
+            "sum": 32941.00000000002
+          },
+          {
+            "month": "2026-09",
+            "count": 2,
+            "sum": 8062.0
+          }
+        ]
+      },
+      "pass": false,
+      "pass_reasons": [
+        "FAIL: signal_days 3 >= 7",
+        "FAIL: trades 12 >= 15",
+        "PASS: 40bp pnl 47391.20 > 0",
+        "PASS: 40bp PF 17.462137001528454 >= 1.50",
+        "PASS: remove-top3-day pnl 0.00 > 0",
+        "PASS: MDD -0.015912 no worse than baseline -0.020998",
+        "PASS: 100bp pnl 41003.00 > 0",
+        "PASS: 100bp PF 11.131702495675826 > 1",
+        "FAIL: active_months 2 >= 3",
+        "PASS: positive_months 2 >= active_months-1"
+      ]
+    }
+  },
+  "frozen_gate": null,
+  "recent_3m_decision": "NO_SURVIVOR_KILL_ME2",
+  "one_year": null,
+  "historical_inventory": [
+    {
+      "path": "_frozen_artifacts/a11670339491/twse_electronics_membership_2024_2025.csv",
+      "rows": 133762,
+      "date_min": "2024-01-02",
+      "date_max": "2025-12-31",
+      "unique_tickers": 452,
+      "median_daily_tickers": 441.0
+    },
+    {
+      "path": "_frozen_artifacts/a11670479047/twse_electronics_membership_2024_2025.csv",
+      "rows": 213697,
+      "date_min": "2024-01-02",
+      "date_max": "2025-12-31",
+      "unique_tickers": 452,
+      "median_daily_tickers": 439.0
+    }
+  ]
+}
