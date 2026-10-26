@@ -98,12 +98,15 @@ jobs:
         run: python research/codex_full_reset_20261023/frozen_3m_to_1y_20261026.py
       - name: Run fixed NT$1m portfolio validator
         run: python research/codex_full_reset_20261023/frozen_1m_portfolio_20261026.py
+      - name: Compare challenger with frozen NOVA6 recent-3M ledger
+        run: python research/codex_full_reset_20261023/compare_nova6_rebound_20261026.py
       - name: Upload frozen validation results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: hengce-frozen-3m-1y-portfolio-20261026
+          name: hengce-frozen-3m-1y-portfolio-compare-20261026
           path: |
             research/codex_full_reset_20261023/results/frozen_3m_1y_20261026/
             research/codex_full_reset_20261023/results/frozen_1m_portfolio_20261026/
+            research/codex_full_reset_20261023/results/compare_nova6_rebound_20261026/
           if-no-files-found: warn
