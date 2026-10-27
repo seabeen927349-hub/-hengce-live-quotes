@@ -1,0 +1,74 @@
+name: HENGCE Legacy Missing EOD Raw Sidecar
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-legacy-missing-eod-raw-sidecar.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-raw:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch exact missing official TWSE raw legs
+        id: fetch
+        shell: bash
+        run: |
+          set -uo pipefail
+          python3 <<'PY'
+          import hashlib, json, time, urllib.request
+          from pathlib import Path
+
+          out=Path('legacy_missing_eod_raw'); out.mkdir(exist_ok=True)
+          specs=[
+            ('20261020','margin','https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date=20261020&selectType=ALL&response=json'),
+            ('20261022','margin','https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date=20261022&selectType=ALL&response=json'),
+            ('20261023','price','https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261023&type=ALLBUT0999&response=json'),
+            ('20261023','institutional','https://www.twse.com.tw/rwd/zh/fund/T86?date=20261023&selectType=ALLBUT0999&response=json'),
+            ('20261023','margin','https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date=20261023&selectType=ALL&response=json'),
+          ]
+          receipt=[]; all_valid=True
+          for ds,leg,url in specs:
+            raw=None; err=None
+            for attempt in range(1,4):
+              try:
+                req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 HENGCE-Legacy-Replay/1.0','Accept':'application/json','Referer':'https://www.twse.com.tw/'})
+                with urllib.request.urlopen(req,timeout=60) as r: raw=r.read()
+                break
+              except Exception as e:
+                err=f'{type(e).__name__}:{e}'
+                time.sleep(attempt*2)
+            row={'date':ds,'leg':leg,'url':url,'attempt_error':err}
+            if raw is None:
+              row.update(status='TRANSPORT_FAILED'); all_valid=False; receipt.append(row); continue
+            d=out/ds; d.mkdir(exist_ok=True)
+            fp=d/f'{leg}.json'; fp.write_bytes(raw)
+            row.update(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+            try:
+              obj=json.loads(raw.decode('utf-8'))
+              row.update(api_stat=obj.get('stat'),api_date=str(obj.get('date','')))
+              valid=(str(obj.get('stat','')).upper()=='OK' and str(obj.get('date',''))==ds)
+              row['status']='VALID' if valid else 'API_NOT_READY_OR_DATE_MISMATCH'
+              all_valid &= valid
+            except Exception as e:
+              row.update(status='INVALID_JSON',parse_error=f'{type(e).__name__}:{e}'); all_valid=False
+            receipt.append(row)
+          obj={'system':'HENGCE','artifact':'LEGACY_MISSING_EOD_RAW_TRANSPORT','authority':'MARKET_DATA_ONLY_NO_MODEL_RANKING_SIGNAL_CAPITAL_AUTHORITY','all_valid':all_valid,'rows':receipt}
+          (out/'receipt.json').write_text(json.dumps(obj,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(obj,ensure_ascii=False,indent=2))
+          raise SystemExit(0 if all_valid else 2)
+          PY
+      - name: Upload raw transport artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_LEGACY_MISSING_EOD_RAW_20261020_22_23
+          path: legacy_missing_eod_raw/
+          if-no-files-found: error
+          retention-days: 7
