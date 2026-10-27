@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PRIMARY = ROOT / '.github/workflows/hengce-q017-primary-observer.yml'
 BACKUP = ROOT / '.github/workflows/hengce-q017-backup-observer.yml'
 MACRO_WORKFLOW = ROOT / '.github/workflows/hengce-q017-macro-cache.yml'
-DAILY = ROOT / '.github/workflows/hengce-daily-command-center.yml'
+AUTHORITY_GUARD = ROOT / '.github/workflows/hengce-q017-authority-guard.yml'
 SUPERVISOR_V1 = ROOT / 'scripts/hengce_q017_observer_supervisor_v1.py'
 SUPERVISOR_V2 = ROOT / 'scripts/hengce_q017_observer_supervisor_v2.py'
 MACRO = ROOT / 'scripts/hengce_q017_macro_cache_v1.py'
@@ -28,7 +28,7 @@ def main():
     p = PRIMARY.read_text(encoding='utf-8')
     b = BACKUP.read_text(encoding='utf-8')
     mw = MACRO_WORKFLOW.read_text(encoding='utf-8')
-    d = DAILY.read_text(encoding='utf-8')
+    ag = AUTHORITY_GUARD.read_text(encoding='utf-8')
     s1 = SUPERVISOR_V1.read_text(encoding='utf-8')
     s2 = SUPERVISOR_V2.read_text(encoding='utf-8')
     macro_text = MACRO.read_text(encoding='utf-8')
@@ -48,17 +48,18 @@ def main():
     must(mw, 'hengce_q017_macro_cache_v1.py --mode validate', 'MACRO_VALIDATE_WIRED')
     must(mw, 'hengce/q017_radar/data/macro_cache/', 'MACRO_CACHE_PERSISTED')
 
-    # Three pre-open layers: morning macro cache, persisted 06:30 model snapshot,
-    # then independent 07:45/08:15 observers.
-    must(d, "cron: '30 22 * * 0-4'", 'SNAPSHOT_PRODUCER_0630_TAIPEI')
-    must(d, 'hengce_q017_premarket_snapshot_v1.py --mode build', 'SNAPSHOT_BUILD_WIRED')
-    must(d, 'hengce_q017_premarket_snapshot_v1.py --mode self-test', 'SNAPSHOT_SELFTEST_WIRED')
+    # Current production topology is Q017-only: morning macro cache, then
+    # independent 07:45/08:15 observer lanes. The premarket snapshot module
+    # remains a self-tested infrastructure helper, not a separate scheduled
+    # ranking/authority producer.
     must(p, "cron: '45 23 * * 0-4'", 'PRIMARY_0745_TAIPEI')
     must(b, "cron: '15 0 * * 1-5'", 'BACKUP_0815_TAIPEI')
     must(p, "'scripts/hengce_q017_macro_cache_v1.py'", 'PRIMARY_TESTS_MACRO_CHANGES')
     must(b, "'scripts/hengce_q017_macro_cache_v1.py'", 'BACKUP_TESTS_MACRO_CHANGES')
     must(p, "'scripts/hengce_q017_premarket_snapshot_v1.py'", 'PRIMARY_TESTS_SNAPSHOT_CHANGES')
     must(b, "'scripts/hengce_q017_premarket_snapshot_v1.py'", 'BACKUP_TESTS_SNAPSHOT_CHANGES')
+    must(p, 'hengce_q017_premarket_snapshot_v1.py --mode self-test', 'PRIMARY_SNAPSHOT_SELFTEST')
+    must(b, 'hengce_q017_premarket_snapshot_v1.py --mode self-test', 'BACKUP_SNAPSHOT_SELFTEST')
 
     must(p, 'group: hengce-q017-primary-observer', 'PRIMARY_CONCURRENCY')
     must(b, 'group: hengce-q017-backup-observer', 'BACKUP_CONCURRENCY')
@@ -73,20 +74,27 @@ def main():
     must_not(p, 'hengce_q017_observation_lock_v5.py --mode observe', 'PRIMARY_RAW_OBSERVE_FORBIDDEN')
     must_not(b, 'hengce_q017_backup_observer_v5.py --mode observe', 'BACKUP_RAW_OBSERVE_FORBIDDEN')
 
+    # Q017-only production hard lock: no E2 or dual-engine display/output may be
+    # wired into any scheduled Q017 production lane or authority guard.
+    for name, text in [('primary', p), ('backup', b), ('macro', mw), ('authority_guard', ag)]:
+        must_not(text, 'e2_live', f'{name.upper()}_NO_E2_LIVE')
+        must_not(text, 'E2_PROFIT_MAX', f'{name.upper()}_NO_E2_ENGINE')
+        must_not(text, 'dual_engine', f'{name.upper()}_NO_DUAL_ENGINE')
+        must_not(text, 'hengce_dual_engine_display', f'{name.upper()}_NO_DUAL_DISPLAY')
+
     # Both observers refresh checkout before waiting so they see the latest persisted morning cache.
     must(p, 'git pull --rebase origin main', 'PRIMARY_SYNC_MORNING_CACHE')
     must(b, 'git pull --rebase origin main', 'BACKUP_SYNC_MORNING_CACHE')
 
-    # Failure diagnostics must persist even when capture/snapshot generation fails.
+    # Failure diagnostics must persist even when capture generation fails.
     must(p, "if: always() && steps.mode.outputs.mode == 'observe'", 'PRIMARY_ALWAYS_PERSIST')
     must(b, "if: always() && steps.mode.outputs.mode == 'observe'", 'BACKUP_ALWAYS_PERSIST')
-    must(d, "if: always() && steps.mode.outputs.mode == 'premarket'", 'SNAPSHOT_ALWAYS_ATTEMPT')
     must(p, 'observer_supervisor_primary_status.json', 'PRIMARY_STATUS_FILE')
     must(b, 'observer_supervisor_backup_status.json', 'BACKUP_STATUS_FILE')
     must(p, 'observer_supervisor_attempts/', 'PRIMARY_ATTEMPTS')
     must(b, 'observer_supervisor_attempts/', 'BACKUP_ATTEMPTS')
 
-    # No extra 09:03 live-market capture. Daily 09:03 can remain monitor-only.
+    # No extra 09:03 live-market capture.
     for name, text in [
         ('primary', p), ('backup', b), ('supervisor_v1', s1), ('supervisor_v2', s2),
         ('macro', macro_text), ('snapshot', snap_text),
@@ -127,7 +135,7 @@ def main():
     v5 = importlib.import_module('hengce_q017_observation_lock_v5')
     v4 = importlib.import_module('hengce_q017_decision_lock_v4')
     sup1 = importlib.import_module('hengce_q017_observer_supervisor_v1')
-    sup2 = importlib.import_module('hengce_q017_observer_supervisor_v2')
+    importlib.import_module('hengce_q017_observer_supervisor_v2')
     macro = importlib.import_module('hengce_q017_macro_cache_v1')
     snap = importlib.import_module('hengce_q017_premarket_snapshot_v1')
 
@@ -172,8 +180,9 @@ def main():
     assert sup1.CONNECT_TIMEOUT_SECONDS <= 2.5
     assert sup1.READ_TIMEOUT_SECONDS <= 6.0
 
-    print('HENGCE_Q017_OBSERVER_RESILIENCE_HARD_LOCK_V2=PASS')
-    print('MACRO_CACHE=05:45/06:15/06:45/07:15/07:35 SNAPSHOT=06:30 PRIMARY=07:45 BACKUP=08:15')
+    print('HENGCE_Q017_OBSERVER_RESILIENCE_HARD_LOCK_V3=PASS')
+    print('MACRO_CACHE=05:45/06:15/06:45/07:15/07:35 PRIMARY=07:45 BACKUP=08:15')
+    print('Q017_ONLY_PRODUCTION=True E2_PRODUCTION=False DUAL_ENGINE_PRODUCTION=False')
     print('NORMAL_0901_NETWORK=TWSE_MIS_ONLY MACRO_NETWORK_CALLS=0 MIS_BOUNDED=2.5/6.0')
     print('SCHEMA5=True COVERAGE=100PCT NO_0903_CAPTURE=True LATE_BACKFILL_FORBIDDEN=True')
     return 0
