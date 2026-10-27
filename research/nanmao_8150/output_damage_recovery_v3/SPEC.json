@@ -1,0 +1,80 @@
+{
+  "ticker": "8150",
+  "mechanism": "damage -> recovery proof (Close > prior High) or failure -> SELL; after SELL first recovery proof -> RESET",
+  "selected": {
+    "lookback": 90,
+    "damage": 0.1,
+    "patience": 5,
+    "status": "PRE2026_ELIGIBLE_PLATEAU"
+  },
+  "pre2026_sell": {
+    "n20": 16,
+    "median_hold20": -0.034892663048142813,
+    "sell_better20_share": 0.75,
+    "deep8_20_share": 0.25,
+    "rebound10_20_share": 0.125,
+    "reclaim_peak98_20_share": 0.0625,
+    "median_mae20": -0.058843007401636116,
+    "median_mfe20": 0.02686274509803921,
+    "n_2024": 10,
+    "sell_better20_share_2024": 0.9,
+    "median_hold20_2024": -0.034892663048142813,
+    "n_2025": 6,
+    "sell_better20_share_2025": 0.5,
+    "median_hold20_2025": -0.002589566525365794,
+    "n_2026": 0,
+    "sell_better20_share_2026": NaN,
+    "median_hold20_2026": NaN
+  },
+  "oos2026_sell": {
+    "n20": 8,
+    "median_hold20": 0.1661878324772359,
+    "sell_better20_share": 0.25,
+    "deep8_20_share": 0.375,
+    "rebound10_20_share": 0.75,
+    "reclaim_peak98_20_share": 0.75,
+    "median_mae20": -0.07404010495654884,
+    "median_mfe20": 0.3088203266787659,
+    "n_2024": 0,
+    "sell_better20_share_2024": NaN,
+    "median_hold20_2024": NaN,
+    "n_2025": 0,
+    "sell_better20_share_2025": NaN,
+    "median_hold20_2025": NaN,
+    "n_2026": 8,
+    "sell_better20_share_2026": 0.25,
+    "median_hold20_2026": 0.1661878324772359
+  },
+  "pre2026_lifecycle": {
+    "n": 15,
+    "pnl": -263068.6999999996,
+    "wr": 0.26666666666666666,
+    "pf": 0.46624268050691753,
+    "mdd": -249259.2999999997,
+    "remove_best1": -364226.1999999997
+  },
+  "oos2026_lifecycle": {
+    "n": 8,
+    "pnl": 722087.6,
+    "wr": 0.75,
+    "pf": 5.029146951165075,
+    "mdd": -165564.0,
+    "remove_best1": 330723.80000000005
+  },
+  "current": {
+    "date": "2026-10-27",
+    "close": 97.0,
+    "state": "WAIT_RESET",
+    "damage_now": -0.24513618677042803,
+    "peak": 128.5,
+    "damage_line": 115.65,
+    "recovery_today": false,
+    "age": 0
+  },
+  "authority": "NOT_FREEZE",
+  "governance": {
+    "2026_used_for_selection": false,
+    "single_stock_only": true,
+    "no_indicator_layer": true
+  }
+}
