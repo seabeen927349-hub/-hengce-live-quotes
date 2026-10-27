@@ -1,0 +1,85 @@
+name: HENGCE Legacy Live Quotes
+
+"on":
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'hengce/live_universe.json'
+      - 'hengce/HENGCE_LIVE_QUOTE_TRANSPORT_CONTRACT_v1_0_20261020.json'
+      - 'hengce/HENGCE_LIVE_UNIVERSE_COVERAGE_CONTRACT_v1_0_20261020.json'
+      - 'hengce/HENGCE_LIVE_UNIVERSE_AUTHORITATIVE_HANDOFF_CONTRACT_v1_0_20261020.json'
+      - 'hengce/live_market_lifecycle.json'
+      - 'scripts/hengce_live_quote_transport.py'
+      - 'scripts/hengce_live_trial_guard.py'
+      - 'scripts/hengce_live_universe_guard.py'
+      - 'scripts/hengce_live_universe_handoff.py'
+      - '.github/workflows/hengce-legacy-live-quotes.yml'
+  schedule:
+    - cron: "*/5 1-4 * * 1-5"
+    - cron: "0-30/5 5 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-legacy-live-quotes
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Self-test transport hard-lock
+        run: python3 scripts/hengce_live_quote_transport.py --mode self-test
+
+      - name: Self-test trial-price guard
+        run: python3 scripts/hengce_live_trial_guard.py --mode self-test
+
+      - name: Self-test authoritative universe handoff consumer
+        run: python3 scripts/hengce_live_universe_handoff.py --mode self-test
+
+      - name: Self-test universe coverage guard
+        run: python3 scripts/hengce_live_universe_guard.py --mode self-test
+
+      - name: Fetch lifecycle-bound Fugle quotes
+        run: python3 scripts/hengce_live_quote_transport.py --mode fetch
+
+      - name: Apply trial-price non-execution guard
+        run: python3 scripts/hengce_live_trial_guard.py --mode apply
+
+      - name: Apply universe coverage source-age guard
+        run: python3 scripts/hengce_live_universe_guard.py --mode apply
+
+      - name: Validate transport provenance and resilience
+        run: python3 scripts/hengce_live_quote_transport.py --mode validate
+
+      - name: Validate trial-price guard
+        run: python3 scripts/hengce_live_trial_guard.py --mode validate
+
+      - name: Validate universe coverage guard
+        run: python3 scripts/hengce_live_universe_guard.py --mode validate
+
+      - name: Commit legacy live snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-legacy-live-bot'
+          git config user.email 'hengce-legacy-live-bot@users.noreply.github.com'
+          git add latest.json live/
+          if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE legacy live ${TS} transport-hard-lock"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
