@@ -1,0 +1,41 @@
+name: HENGCE Legacy EOD Export Sidecar
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-legacy-eod-export-sidecar.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify and package 2026-10-19 through 2026-10-23 EOD vessel
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/HENGCE_LEGACY_EOD_20261019_20261023"
+          mkdir -p "$OUT/eod"
+          for d in 20261019 20261020 20261021 20261022 20261023; do
+            test -d "eod/$d"
+            cp -a "eod/$d" "$OUT/eod/"
+          done
+          find "$OUT/eod" -type f -print0 | sort -z | xargs -0 sha256sum > "$OUT/SHA256SUMS.txt"
+          cd "$RUNNER_TEMP"
+          zip -qr HENGCE_LEGACY_EOD_20261019_20261023.zip HENGCE_LEGACY_EOD_20261019_20261023
+          sha256sum HENGCE_LEGACY_EOD_20261019_20261023.zip > HENGCE_LEGACY_EOD_20261019_20261023.zip.sha256
+      - name: Upload EOD transport artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_LEGACY_EOD_20261019_20261023
+          path: |
+            ${{ runner.temp }}/HENGCE_LEGACY_EOD_20261019_20261023.zip
+            ${{ runner.temp }}/HENGCE_LEGACY_EOD_20261019_20261023.zip.sha256
+          if-no-files-found: error
+          retention-days: 7
