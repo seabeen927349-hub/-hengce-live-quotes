@@ -62,12 +62,12 @@ jobs:
             exit 0
           fi
           git commit -m 'HENGCE Q017 schema-v5 authority guard: quarantine unauthorized latest output'
-          python scripts/hengce_publish.py --profile conservative-all
-
-      - name: Preserve publication arbitration receipts and captured evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/hengce-publication
-          if-no-files-found: ignore
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
+            git add hengce/q017_radar/latest.json
+            if ! git diff --cached --quiet; then
+              git commit --amend --no-edit
+            fi
+            git push origin HEAD:main
+          fi
