@@ -71,13 +71,6 @@ jobs:
           set -euo pipefail
           git pull --rebase origin main
 
-      - name: Recovery admission from clean current remote
-        if: steps.mode.outputs.mode != 'self-test'
-        env:
-          HENGCE_REQUEST_DATE: ${{ inputs.trade_date || '' }}
-          HENGCE_REQUEST_MODE: ${{ steps.mode.outputs.mode }}
-        run: python scripts/hengce_recovery_transaction.py prepare --lane macro --mode "$HENGCE_REQUEST_MODE"
-
       - name: Self-test macro cache contract
         if: steps.mode.outputs.mode == 'self-test'
         run: python scripts/hengce_q017_macro_cache_v1.py --mode self-test
@@ -86,9 +79,7 @@ jobs:
         id: refresh
         if: steps.mode.outputs.mode == 'refresh'
         continue-on-error: true
-        run: |
-          python scripts/hengce_recovery_transaction.py fence --scope macro
-          python scripts/hengce_q017_macro_cache_v1.py --mode refresh
+        run: python scripts/hengce_q017_macro_cache_v1.py --mode refresh
 
       - name: Validate morning cache
         id: validate
@@ -113,9 +104,11 @@ jobs:
             echo 'No macro cache changes to persist.'
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-            python scripts/hengce_recovery_transaction.py stage
             git commit -m "HENGCE Q017 morning macro cache ${TS}"
-            python scripts/hengce_publish.py --profile conservative-all --transaction-lane macro
+            if ! git push origin HEAD:main; then
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
           fi
 
       - name: Macro cache health
@@ -129,11 +122,3 @@ jobs:
             exit 2
           fi
           echo 'Q017_MORNING_MACRO_CACHE_PASS'
-
-      - name: Preserve publication arbitration receipts and captured evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: hengce-publication-${{ github.job }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/hengce-publication
-          if-no-files-found: ignore
