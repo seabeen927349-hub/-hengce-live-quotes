@@ -1,0 +1,108 @@
+{
+  "model": "I1_INDEPENDENT_LOWVOL_TREND",
+  "status": "PASS_AS_INDEPENDENT_HIGH_GROSS_DIRECTIONAL_HIT_RATE_CANDIDATE",
+  "objective": "maximize stable gross directional hit rate at roughly 97-trade-class coverage without using HENGCE/V/X/HR picks, scores, factor weights, or event identities",
+  "formal_run": {
+    "workflow": "Independent High-Win Search",
+    "run_id": 40185494528,
+    "head_sha": "34c8b0aab7584d4dec8e7524cbf663f80ce93e98",
+    "artifact_id": 12595263553,
+    "artifact_digest": "sha256:5bab401f5019db5ead96230d3f146f1201ae114eb832e03e1b7a8af6bf70b036"
+  },
+  "independence": {
+    "shared_infrastructure_only": "PIT TWSE-listed-electronics raw price/turnover data loader",
+    "does_not_use": [
+      "HENGCE/V/X/HR picks",
+      "HENGCE scores",
+      "HENGCE factor weights",
+      "the original 97 event identities"
+    ]
+  },
+  "rule": {
+    "selection": "daily cross-sectional lowest-volatility eligible stock",
+    "eligibility": "raw r20 > 0 and raw r60 > 0; 20-day turnover >= TWD 20m; valid PIT fields",
+    "entry": "next trading-day open",
+    "exit": "first subsequent trading-day close strictly above entry open, otherwise forced at 15 trading days",
+    "max_hold_trading_days": 15
+  },
+  "protocol": {
+    "candidate_rules": 252,
+    "development": "2024",
+    "validation": "2025",
+    "historical_diagnostic": "2026-01-01..2026-10-22",
+    "minimum_trades_each_2024_and_2025": 30,
+    "pre2026_trade_range": [80, 125],
+    "selection_key": "maximize weaker of 2024/2025 hit rates, then 2025, pooled pre-2026, Wilson lower, closeness to 97 trades"
+  },
+  "results": {
+    "2024": {
+      "trades": 45,
+      "wins": 39,
+      "losses": 6,
+      "gross_directional_win_rate": 0.8666666666666667,
+      "wilson95_lower": 0.7382269817382293,
+      "mean_gross_return": 0.005896428397391058
+    },
+    "2025": {
+      "trades": 40,
+      "wins": 35,
+      "losses": 5,
+      "gross_directional_win_rate": 0.875,
+      "wilson95_lower": 0.7388788016114891,
+      "mean_gross_return": 0.0031651994011567403
+    },
+    "pre2026_continuous_schedule": {
+      "trades": 90,
+      "wins": 78,
+      "losses": 12,
+      "gross_directional_win_rate": 0.8666666666666667,
+      "wilson95_lower": 0.7812606949930235,
+      "mean_gross_return": 0.004341727445217459,
+      "median_gross_return": 0.005272757573513087,
+      "compounded_gross_return_diagnostic": 0.44075843658890435,
+      "after_1p2pct_cost_positive_rate_diagnostic": 0.23333333333333334,
+      "mean_hold_trading_days": 4.377777777777778,
+      "dominant_ticker": "2412",
+      "dominant_ticker_trades": 35,
+      "unique_tickers": 22,
+      "leave_2412_out_directional_record": "47/55 = 85.45%"
+    },
+    "2026_historical_diagnostic": {
+      "trades": 26,
+      "wins": 22,
+      "losses": 4,
+      "gross_directional_win_rate": 0.8461538461538461,
+      "wilson95_lower": 0.6646880067178652,
+      "mean_gross_return": 0.008890321467228329,
+      "median_gross_return": 0.0045558322955582264,
+      "compounded_gross_return_diagnostic": 0.2524194161380082,
+      "after_1p2pct_cost_positive_rate_diagnostic": 0.38461538461538464,
+      "mean_hold_trading_days": 5.923076923076923,
+      "dominant_ticker": "3045",
+      "dominant_ticker_trades": 12,
+      "unique_tickers": 10,
+      "leave_3045_out_directional_record": "11/14 = 78.57%"
+    }
+  },
+  "comparison_to_97_reference": {
+    "pre2026_reference": "78/97 = 80.4124%",
+    "i1_pre2026": "78/90 = 86.6667%",
+    "hit_rate_delta_pp": 6.2543,
+    "2026_reference": "32/40 = 80.0%",
+    "i1_2026": "22/26 = 84.6154%",
+    "2026_hit_rate_delta_pp": 4.6154,
+    "interpretation": "I1 raises historical gross directional hit rate with lower trade coverage; it does not replace the return frontier and its pre-2026 wins are often small."
+  },
+  "neighborhood_evidence": {
+    "note": "The top-ranked neighborhood is not a single isolated rule: LOWVOL + R20_POS + H15 produced 86.05% in 2024 and 87.50% in 2025; LOWVOL + R60_POS + H15 produced 86.05% and 86.49%. Several independent families also cluster in the mid-80s, with H15 recurring among top candidates."
+  },
+  "concentration_caveat": "The 2026 diagnostic remains concentrated: 3045 accounts for 12/26 trades. Removing 3045 reduces the remaining 2026 record to 11/14 = 78.57%, so the 2026 improvement is not yet broad-stock evidence.",
+  "data_status_caveat": "2026 was not used to select the rule but has been exposed elsewhere in the broader project; treat it as historical diagnostic evidence, not untouched future OOS.",
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  }
+}

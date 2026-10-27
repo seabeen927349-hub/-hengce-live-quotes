@@ -1,0 +1,28 @@
+name: HENGCE Horizon Nonoverlap Confirm
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/horizon_alignment_nonoverlap_confirm.py'
+      - '.github/workflows/hengce-horizon-nonoverlap-confirm.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run fixed H3 H10 non-overlap confirmation
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/horizon_alignment_nonoverlap_confirm.py
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-horizon-nonoverlap-confirm
+          path: |
+            research/codex_full_reset_20261023/horizon_alignment_nonoverlap_confirm_result.json
+            research/codex_full_reset_20261023/horizon_alignment_nonoverlap_confirm_events.jsonl

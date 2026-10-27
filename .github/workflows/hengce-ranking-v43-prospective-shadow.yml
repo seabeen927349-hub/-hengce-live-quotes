@@ -1,0 +1,33 @@
+name: HENGCE Ranking V43 Prospective Shadow
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v43_prospective_shadow.py'
+      - 'research/codex_full_reset_20261023/V43_PROSPECTIVE_SHADOW_PROTOCOL_20261024.md'
+      - '.github/workflows/hengce-ranking-v43-prospective-shadow.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run frozen V43 prospective shadow gate
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/ranking_v43_prospective_shadow.py
+      - name: Print shadow result
+        run: cat research/codex_full_reset_20261023/ranking_v43_prospective_shadow_result.json
+      - name: Upload shadow evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v43-prospective-shadow
+          path: |
+            research/codex_full_reset_20261023/ranking_v43_prospective_shadow_result.json
+            research/codex_full_reset_20261023/V43_PROSPECTIVE_SHADOW_PROTOCOL_20261024.md

@@ -1,0 +1,17 @@
+{
+  "artifact": "HENGCE_20261022_PROMOTION_CANDIDATE.zip",
+  "sha256": "b33e9ae95de4421c56bba24e77a444e60008b3c59fb8d0075b936cba3c6dc279",
+  "size_bytes": 29373360,
+  "deterministic_rebuild": "All nine payload digests identical across two independent candidate builds",
+  "zip_crc_and_all_payload_hashes_verified": true,
+  "zip_fixed_timestamps": true,
+  "committed_files": [
+    "DELIVERY.json",
+    "MANIFEST.sha256",
+    "PROMOTION_AUDIT.json",
+    "REPORT.md"
+  ],
+  "csv_candidates_committed": false,
+  "candidate_library_installation": false,
+  "new_model_evaluations": 0
+}

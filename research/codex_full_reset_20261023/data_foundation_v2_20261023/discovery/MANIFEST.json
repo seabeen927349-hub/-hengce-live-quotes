@@ -1,0 +1,62 @@
+{
+  "new_model_evaluations": 0,
+  "plan_sha256": "8c350fb9a3832501c2340358cb48de51f0a177b5e653a57ccb93ed4775f368bc",
+  "records": [
+    {
+      "archive_sha256": "c84ab588f56f4beabcb8ba8f47a20db9c866eecf87f2973646f7b3da3db4b0d2",
+      "completed_at_utc": "2026-10-23T12:30:05.491869+00:00",
+      "error": "HTTP Error 403: Forbidden",
+      "family": "ISSUER_PROMATE",
+      "fetched_at_utc": "2026-10-23T12:30:04.978760+00:00",
+      "historical_first_seen_at": null,
+      "http_status": 403,
+      "id": "PROMATE_DIVIDEND",
+      "raw_path": "PROMATE_DIVIDEND.gz",
+      "response_sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c",
+      "status": "SOURCE_FAMILY_STOP_NO_BYPASS",
+      "url": "https://www.promate.com.tw/investors-relations/dividend/"
+    },
+    {
+      "archive_sha256": "c84ab588f56f4beabcb8ba8f47a20db9c866eecf87f2973646f7b3da3db4b0d2",
+      "completed_at_utc": "2026-10-23T12:30:07.113816+00:00",
+      "error": "HTTP Error 403: Forbidden",
+      "family": "ISSUER_TWINHEAD",
+      "fetched_at_utc": "2026-10-23T12:30:06.992335+00:00",
+      "historical_first_seen_at": null,
+      "http_status": 403,
+      "id": "TWINHEAD_MOPS_LINKS",
+      "raw_path": "TWINHEAD_MOPS_LINKS.gz",
+      "response_sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c",
+      "status": "SOURCE_FAMILY_STOP_NO_BYPASS",
+      "url": "https://www.twinhead.com.tw/market-observation-post-system/"
+    },
+    {
+      "archive_sha256": "a3392e9e7b8ae09285bac67293309017ae3888b38a16d1bb8c7d8575baea5285",
+      "completed_at_utc": "2026-10-23T12:30:10.609831+00:00",
+      "family": "MOPS",
+      "fetched_at_utc": "2026-10-23T12:30:08.614134+00:00",
+      "historical_first_seen_at": null,
+      "http_status": 200,
+      "id": "MOPS_6189_202508",
+      "raw_path": "MOPS_6189_202508.gz",
+      "response_sha256": "167205c7e313ca9ed9d79d98e7bde0a31db2740c8a895186b0e0feb60bc5ef7a",
+      "status": "UNREVIEWED_NOT_MODEL_INPUT",
+      "url": "https://mops.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&TYPEK=all&co_id=6189&year=114&month=08"
+    },
+    {
+      "archive_sha256": "26e45837a0a5d555d607d1e484cd3b9a290638ab1e35fc013c6d17f280d69193",
+      "completed_at_utc": "2026-10-23T12:30:13.126953+00:00",
+      "family": "MOPS",
+      "fetched_at_utc": "2026-10-23T12:30:12.110184+00:00",
+      "historical_first_seen_at": null,
+      "http_status": 200,
+      "id": "MOPS_2364_202509",
+      "raw_path": "MOPS_2364_202509.gz",
+      "response_sha256": "3cb20781771369def7fac755267a2ac4a0b0842b95c3a22d86ce518aeb77eb2d",
+      "status": "UNREVIEWED_NOT_MODEL_INPUT",
+      "url": "https://mops.twse.com.tw/mops/web/ajax_t05st01?encodeURIComponent=1&step=1&firstin=1&off=1&TYPEK=all&co_id=2364&year=114&month=09"
+    }
+  ],
+  "source_code_sha256": "56803bd0bd16cb0ba2c954358161c1c29a743b06066291612d9c33cfc6a9240b",
+  "terms_promoted_to_ledger": false
+}

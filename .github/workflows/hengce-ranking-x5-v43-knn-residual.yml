@@ -1,0 +1,31 @@
+# retrigger after rank-helper fix 2026-10-25
+name: HENGCE Ranking X5 V43 kNN Residual
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_x5_v43_knn_residual.py'
+      - '.github/workflows/hengce-ranking-x5-v43-knn-residual.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run X5 V43 kNN residual
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/ranking_x5_v43_knn_residual.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/ranking_x5_v43_knn_residual_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-x5-v43-knn-residual
+          path: |
+            research/codex_full_reset_20261023/ranking_x5_v43_knn_residual_result.json
+            research/codex_full_reset_20261023/ranking_x5_events.jsonl

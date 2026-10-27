@@ -1,0 +1,25 @@
+{
+  "archive_sha256": "1eec19ecbd1b0a970083dd35ff2b953ea33a1539f68386f232a1271f399a30a0",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 202478,
+  "content_type": "application/pdf",
+  "fetch_completed_at_utc": "2026-10-23T11:33:15.204900+00:00",
+  "fetch_started_at_utc": "2026-10-23T11:33:13.763328+00:00",
+  "http_status": 200,
+  "id": "SUSPENSION_3090_20250714",
+  "kind": "PDF",
+  "original_first_seen_at": null,
+  "raw_path": "SUSPENSION_3090_20250714.bin.gz",
+  "response_sha256": "9b62807eae594996de3157f62b430bb33e77831320d990215ab57f7c239bff5d",
+  "transport": "HTTP_RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/staticFiles/news/news/tsecnews/8a8216d697fc438f019808c0ad380026.pdf",
+  "validation": "PDF_BYTES_ONLY_CONTENT_REQUIRES_REVIEW"
+}

@@ -1,0 +1,33 @@
+{
+  "additional_pinned_baseline_evaluations": 1,
+  "all_model_evaluations": 8505,
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "decision": "NO_ROBUST_WINNER",
+  "ledger_records": 25432,
+  "ledger_status_counts": {
+    "EVALUATED": 8505,
+    "HISTORICAL_REFERENCE": 20,
+    "REJECTED_SAMPLE_SIZE": 846,
+    "RUN_COMPLETED": 1,
+    "RUN_STARTED": 1,
+    "SELECTED_SAMPLE_ELIGIBLE": 7554,
+    "STARTED": 8505
+  },
+  "ledger_tip_hash": "a8916fac2123d4d2353678e734fbcec57aafb5c9381af2edde10c60bd4593cff",
+  "raw_responses_revalidated": 724,
+  "search_model_evaluations": 8504,
+  "selection_evaluations": 8400,
+  "stage_b_run_id": 39936974870,
+  "stage_c_run_id": 39937394677,
+  "status": "PASS_OFFLINE_COMPLETED_EVIDENCE_AUDIT",
+  "verified_dates": 724,
+  "verified_rows": 313749
+}

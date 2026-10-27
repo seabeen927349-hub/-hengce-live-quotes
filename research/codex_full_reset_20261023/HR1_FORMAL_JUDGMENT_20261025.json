@@ -1,0 +1,97 @@
+{
+  "status": "HR1_GROSS_DIRECTIONAL_HIT_RATE_CHAMPION_LOCKED",
+  "model": "HR1_ANYRISE_LOWVOL_STRONG_BREADTH",
+  "objective": "maximize gross directional win rate; any strictly positive close-vs-entry-open return counts as a win",
+  "rule": {
+    "universe": "TWSE listed electronics PIT daily frozen research universe",
+    "ranking": "LOWVOL_ONLY top-1",
+    "breadth_gate": "breadth20 >= 0.50",
+    "score_min": 0.75,
+    "gap_min": 0.0,
+    "entry": "next trading-day open after signal",
+    "exit": "first subsequent trading-day close strictly above entry open; otherwise forced close at max_hold",
+    "max_hold_trading_days": 90,
+    "single_capital_non_overlapping": true
+  },
+  "formal_run": {
+    "run_id": 40181453277,
+    "job_id": 121133207303,
+    "head_sha": "fc247c873d48f3e9bb854d40c6c9d0640da82707",
+    "artifact_id": 12594463948,
+    "artifact_digest": "sha256:6ae3c1ec4696f3a996a7cff35c59115189bbcaee45c2d2b2fb0ee67cf4f64a78",
+    "conclusion": "success"
+  },
+  "selection": {
+    "train_window": ["2024-01-01", "2025-12-31"],
+    "minimum_train_trades": 30,
+    "train_trades": 37,
+    "train_wins": 37,
+    "train_losses": 0,
+    "train_win_rate": 1.0,
+    "train_wilson95_lower": 0.9059421741627975,
+    "train_mean_gross_return": 0.005972876803589419,
+    "train_median_gross_return": 0.004081632653061273,
+    "train_worst_gross_return": 0.0010101010101009056,
+    "train_mean_hold_trading_days": 7.8108108108108105,
+    "train_median_hold_trading_days": 2,
+    "train_max_observed_hold_trading_days": 56,
+    "train_after_1p2pct_cost_positive_rate_diagnostic": 0.08108108108108109,
+    "year_breakdown": {
+      "2024": {"trades": 25, "wins": 25, "win_rate": 1.0},
+      "2025": {"trades": 12, "wins": 12, "win_rate": 1.0}
+    }
+  },
+  "locked_2026_complete_horizon_evaluation": {
+    "window": ["2026-01-01", "2026-10-22"],
+    "trades": 11,
+    "wins": 11,
+    "losses": 0,
+    "win_rate": 1.0,
+    "wilson95_lower": 0.7411670330319683,
+    "mean_gross_return": 0.010884432745297712,
+    "median_gross_return": 0.008888888888888946,
+    "worst_gross_return": 0.001007049345417954,
+    "mean_hold_trading_days": 8.363636363636363,
+    "median_hold_trading_days": 6,
+    "max_observed_hold_trading_days": 21,
+    "after_1p2pct_cost_positive_rate_diagnostic": 0.2727272727272727
+  },
+  "combined_complete_horizon_directional_record": {
+    "trades": 48,
+    "wins": 48,
+    "losses": 0,
+    "gross_directional_win_rate": 1.0,
+    "wilson95_lower_approx": 0.9258998703338824
+  },
+  "concentration_diagnostic": {
+    "train_unique_tickers": 4,
+    "train_2412_trades": 28,
+    "holdout_unique_tickers": 3,
+    "holdout_3045_trades": 7,
+    "interpretation": "high hit rate is concentrated in low-volatility defensive names and should not be described as broad stock-selection evidence"
+  },
+  "high_coverage_reference": {
+    "rule": "V6_COMPOSITE top-1, max_hold 10, all breadth",
+    "train": {"trades": 97, "wins": 78, "win_rate": 0.8041237113402062},
+    "holdout_2026": {"trades": 40, "wins": 32, "win_rate": 0.8}
+  },
+  "live_shadow_through_2026_10_22": {
+    "last_completed": {"signal_date": "2026-10-13", "ticker": "6412", "entry_date": "2026-10-14", "entry_open": 73.6, "exit_date": "2026-10-15", "exit_close": 74.2, "gross_return": 0.008152173913043681},
+    "open_trade": {"signal_date": "2026-10-15", "ticker": "6412", "entry_date": "2026-10-16", "entry_open": 75.0, "data_asof": "2026-10-22", "latest_close": 72.3, "latest_gross_return": -0.03600000000000003, "elapsed_trading_days": 4, "max_hold": 90}
+  },
+  "judgment": "PASS_AS_HIGHEST_GROSS_DIRECTIONAL_HIT_RATE_HISTORICAL_RESEARCH_MODEL",
+  "limitations": [
+    "The objective intentionally ignores profit magnitude and loss severity.",
+    "The 1.2% cost statistic is a conservative project diagnostic, not the optimization objective and not a literal Taiwan brokerage fee assumption.",
+    "2026 is locked within HR1 but has been exposed elsewhere in the broader project, so this is not untouched future OOS.",
+    "Recent signals without a full 90-trading-day opportunity are not part of the complete-horizon formal 11-trade 2026 statistic.",
+    "Historical 48/48 gross directional outcomes do not guarantee future wins."
+  ],
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  }
+}

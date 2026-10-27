@@ -1,0 +1,38 @@
+name: HENGCE Nextday B2 Portfolio First
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_b2_portfolio_first.py'
+      - '.github/workflows/hengce-nextday-b2-portfolio-first.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  b2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run B2 portfolio-first model
+        run: |
+          python -m research.codex_full_reset_20261023.nextday_b2_portfolio_first | tee /tmp/b2.log
+          grep '^B2_RESULT=' /tmp/b2.log
+      - name: Upload B2 research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-b2-portfolio-first
+          if-no-files-found: warn
+          path: |
+            research/codex_full_reset_20261023/nextday_b2_portfolio_first_result.json
+            research/codex_full_reset_20261023/nextday_b2_portfolio_first_events.jsonl

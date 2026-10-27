@@ -1,0 +1,58 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "records": [
+    {
+      "archive": "PROBE_twt49u-2025.json.gz",
+      "archive_sha256": "33b4b112a6fefc35f1f4851bf8693646a6e1d85f3c4cae276f6b1132750171a1",
+      "local_file_mtime_utc": "2026-10-23T11:25:57.244340+00:00",
+      "not_model_input": true,
+      "response_sha256": "a6f24afa6d41dc02991ca10911f709e2752beeb46fec17b40fa6a0b6172da334",
+      "timestamp_limit": "File mtime only: exploratory fetch start/end and original first-seen were not recorded",
+      "url": "https://www.twse.com.tw/exchangeReport/TWT49U?response=json&strDate=20250101&endDate=20251231"
+    },
+    {
+      "archive": "PROBE_twt49u-2025-startdate.json.gz",
+      "archive_sha256": "37217f12643ca199defad6d78ca893d0c32fab7f303d67f2d983c16b193e46c6",
+      "local_file_mtime_utc": "2026-10-23T11:26:43.343804+00:00",
+      "not_model_input": true,
+      "response_sha256": "9c38d79d0a69f16ac5927a6be04b74d982cca78d59df362754d1868c3201e907",
+      "timestamp_limit": "File mtime only: exploratory fetch start/end and original first-seen were not recorded",
+      "url": "https://www.twse.com.tw/exchangeReport/TWT49U?response=json&startDate=20250101&endDate=20251231"
+    },
+    {
+      "archive": "PROBE_twtauu-2025-startdate.json.gz",
+      "archive_sha256": "2930c541b8ee00a6c2daee53a7108faecada25301d1738bde72110e2c11c8e75",
+      "local_file_mtime_utc": "2026-10-23T11:26:45.945614+00:00",
+      "not_model_input": true,
+      "response_sha256": "e5b278665a9fda67615f085243da4f95703cdd99f62154446e6fca9bc761ff23",
+      "timestamp_limit": "File mtime only: exploratory fetch start/end and original first-seen were not recorded",
+      "url": "https://www.twse.com.tw/exchangeReport/TWTAUU?response=json&startDate=20250101&endDate=20251231"
+    },
+    {
+      "archive": "PROBE_twt49u-page.html.gz",
+      "archive_sha256": "358987e7ac2114fb4e91aad96e3904fddaf35e427835a6bbbcdae4232bd7438f",
+      "local_file_mtime_utc": "2026-10-23T11:27:22.287287+00:00",
+      "not_model_input": true,
+      "response_sha256": "8bbfa81fb04d99be5a8bb27cde39593e606c2a303263481e4667d121521a3594",
+      "timestamp_limit": "File mtime only: exploratory fetch start/end and original first-seen were not recorded",
+      "url": "https://www.twse.com.tw/zh/announcement/ex-right/twt49u.html"
+    },
+    {
+      "archive": "PROBE_twt49u-detail-6189-page.html.gz",
+      "archive_sha256": "a84d30a8e7552447716da66c1558d57b48c03193089e9aa28986820e11c40012",
+      "local_file_mtime_utc": "2026-10-23T11:28:03.211033+00:00",
+      "not_model_input": true,
+      "response_sha256": "6169822e162415a26f1ed157c1d65704b5d14858230ee99666d0f730320230a2",
+      "timestamp_limit": "File mtime only: exploratory fetch start/end and original first-seen were not recorded",
+      "url": "https://www.twse.com.tw/zh/announcement/ex-right/twt49u-detail.html?6189,20250725"
+    }
+  ]
+}

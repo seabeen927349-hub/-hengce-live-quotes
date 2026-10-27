@@ -1,0 +1,31 @@
+# retrigger: 2026-10-25
+name: HENGCE Ranking X4 Regime kNN
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_x4_regime_knn.py'
+      - '.github/workflows/hengce-ranking-x4-regime-knn.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run X4 regime kNN
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/ranking_x4_regime_knn.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/ranking_x4_regime_knn_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-x4-regime-knn
+          path: |
+            research/codex_full_reset_20261023/ranking_x4_regime_knn_result.json
+            research/codex_full_reset_20261023/ranking_x4_events.jsonl

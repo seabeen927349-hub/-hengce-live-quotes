@@ -1,0 +1,459 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "interpretation": "Censoring establishes unknown assumed fills/returns, not that a trade certainly lost or a corporate action occurred",
+  "quality_scenarios": {
+    "0.1": {
+      "examples": {
+        "LIMIT_LOCKED_OR_UNFILLABLE_ENTRY": [
+          {
+            "date": "2024-04-02",
+            "ticker": "2359"
+          },
+          {
+            "date": "2024-04-24",
+            "ticker": "2359"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2303"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2408"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2429"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2439"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2468"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2474"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3044"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3090"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3209"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3563"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3645"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "4949"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "6206"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "6257"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "6477"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "6558"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "8045"
+          }
+        ],
+        "MISSING_OR_INVALID_OHLC": [
+          {
+            "date": "2024-08-15",
+            "ticker": "3481"
+          },
+          {
+            "date": "2024-09-19",
+            "ticker": "2489"
+          },
+          {
+            "date": "2024-10-09",
+            "ticker": "8249"
+          },
+          {
+            "date": "2025-03-20",
+            "ticker": "3032"
+          },
+          {
+            "date": "2025-07-15",
+            "ticker": "3090"
+          }
+        ],
+        "UNPROVEN_PRICE_DISCONTINUITY": [
+          {
+            "date": "2024-02-15",
+            "ticker": "2329"
+          },
+          {
+            "date": "2024-03-25",
+            "ticker": "3312"
+          },
+          {
+            "date": "2024-04-17",
+            "ticker": "6139"
+          },
+          {
+            "date": "2024-05-17",
+            "ticker": "2359"
+          },
+          {
+            "date": "2024-05-28",
+            "ticker": "6189"
+          },
+          {
+            "date": "2024-06-18",
+            "ticker": "2365"
+          },
+          {
+            "date": "2024-07-01",
+            "ticker": "3047"
+          },
+          {
+            "date": "2024-07-08",
+            "ticker": "3045"
+          },
+          {
+            "date": "2024-07-10",
+            "ticker": "3312"
+          },
+          {
+            "date": "2024-08-05",
+            "ticker": "2409"
+          },
+          {
+            "date": "2024-08-20",
+            "ticker": "3686"
+          },
+          {
+            "date": "2024-08-20",
+            "ticker": "6442"
+          },
+          {
+            "date": "2024-10-11",
+            "ticker": "6224"
+          },
+          {
+            "date": "2024-11-05",
+            "ticker": "6405"
+          },
+          {
+            "date": "2024-11-05",
+            "ticker": "6854"
+          },
+          {
+            "date": "2024-11-12",
+            "ticker": "3021"
+          },
+          {
+            "date": "2024-11-29",
+            "ticker": "6781"
+          },
+          {
+            "date": "2024-12-04",
+            "ticker": "4977"
+          },
+          {
+            "date": "2024-12-09",
+            "ticker": "6691"
+          },
+          {
+            "date": "2024-12-25",
+            "ticker": "4956"
+          },
+          {
+            "date": "2024-12-26",
+            "ticker": "6558"
+          },
+          {
+            "date": "2025-02-03",
+            "ticker": "2466"
+          },
+          {
+            "date": "2025-02-04",
+            "ticker": "3661"
+          },
+          {
+            "date": "2025-02-05",
+            "ticker": "2395"
+          },
+          {
+            "date": "2025-02-05",
+            "ticker": "3019"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2328"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2468"
+          },
+          {
+            "date": "2025-04-09",
+            "ticker": "6835"
+          },
+          {
+            "date": "2025-04-10",
+            "ticker": "3645"
+          },
+          {
+            "date": "2025-04-10",
+            "ticker": "8081"
+          },
+          {
+            "date": "2025-06-09",
+            "ticker": "2429"
+          },
+          {
+            "date": "2025-06-23",
+            "ticker": "2347"
+          },
+          {
+            "date": "2025-07-31",
+            "ticker": "2393"
+          },
+          {
+            "date": "2025-08-08",
+            "ticker": "8210"
+          },
+          {
+            "date": "2025-08-11",
+            "ticker": "6213"
+          },
+          {
+            "date": "2025-08-28",
+            "ticker": "2364"
+          },
+          {
+            "date": "2025-08-29",
+            "ticker": "4989"
+          },
+          {
+            "date": "2025-09-08",
+            "ticker": "8021"
+          },
+          {
+            "date": "2025-09-19",
+            "ticker": "2492"
+          },
+          {
+            "date": "2025-09-19",
+            "ticker": "8046"
+          },
+          {
+            "date": "2025-10-03",
+            "ticker": "3006"
+          },
+          {
+            "date": "2025-10-21",
+            "ticker": "4958"
+          },
+          {
+            "date": "2025-10-29",
+            "ticker": "3543"
+          },
+          {
+            "date": "2025-11-07",
+            "ticker": "8103"
+          }
+        ]
+      },
+      "reason_occurrences_across_overlapping_models": {
+        "LIMIT_LOCKED_OR_UNFILLABLE_ENTRY": 20,
+        "MISSING_OR_INVALID_OHLC": 6,
+        "UNPROVEN_PRICE_DISCONTINUITY": 66
+      },
+      "unique_ticker_date_reason_keys": 68
+    },
+    "0.15": {
+      "examples": {
+        "LIMIT_LOCKED_OR_UNFILLABLE_ENTRY": [
+          {
+            "date": "2024-04-24",
+            "ticker": "2359"
+          },
+          {
+            "date": "2025-02-03",
+            "ticker": "6781"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2302"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2303"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2337"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2385"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2408"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2429"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2439"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2468"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2471"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2474"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "2481"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3044"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3060"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3090"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3209"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3528"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3563"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "3645"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "4916"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "4949"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "6166"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "6206"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "6257"
+          },
+          {
+            "date": "2025-04-07",
+            "ticker": "8045"
+          }
+        ],
+        "MISSING_OR_INVALID_OHLC": [
+          {
+            "date": "2024-08-15",
+            "ticker": "3481"
+          },
+          {
+            "date": "2024-09-19",
+            "ticker": "2489"
+          },
+          {
+            "date": "2024-10-09",
+            "ticker": "8249"
+          },
+          {
+            "date": "2025-07-15",
+            "ticker": "3090"
+          },
+          {
+            "date": "2025-07-30",
+            "ticker": "2317"
+          },
+          {
+            "date": "2025-08-14",
+            "ticker": "2327"
+          },
+          {
+            "date": "2025-11-27",
+            "ticker": "8103"
+          }
+        ],
+        "UNPROVEN_PRICE_DISCONTINUITY": [
+          {
+            "date": "2025-07-25",
+            "ticker": "6189"
+          },
+          {
+            "date": "2025-08-28",
+            "ticker": "2364"
+          }
+        ]
+      },
+      "reason_occurrences_across_overlapping_models": {
+        "LIMIT_LOCKED_OR_UNFILLABLE_ENTRY": 29,
+        "MISSING_OR_INVALID_OHLC": 8,
+        "UNPROVEN_PRICE_DISCONTINUITY": 2
+      },
+      "unique_ticker_date_reason_keys": 35
+    }
+  },
+  "scope": "2024_2025 model streams only; duplicated across models are not independent observations"
+}

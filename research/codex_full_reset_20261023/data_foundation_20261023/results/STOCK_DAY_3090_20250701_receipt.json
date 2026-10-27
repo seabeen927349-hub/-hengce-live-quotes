@@ -1,0 +1,27 @@
+{
+  "archive_sha256": "713059f838053662ead93dd3f5784d2636cc479dec5b29c37e70e22fc64fe18b",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 2890,
+  "content_type": "application/json;charset=UTF-8",
+  "fetch_completed_at_utc": "2026-10-23T11:33:09.309673+00:00",
+  "fetch_started_at_utc": "2026-10-23T11:33:08.435129+00:00",
+  "http_status": 200,
+  "id": "STOCK_DAY_3090_20250701",
+  "kind": "MONTHLY",
+  "month": "20250701",
+  "original_first_seen_at": null,
+  "raw_path": "STOCK_DAY_3090_20250701.bin.gz",
+  "response_sha256": "4c3a0e09bfb0c8506f5b7f9fe48aa68d11af07369da945b39c47e584ed1e1173",
+  "ticker": "3090",
+  "transport": "HTTP_RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&stockNo=3090&date=20250701",
+  "validation": "UNVALIDATED_SCHEMA_EVIDENCE_ONLY"
+}

@@ -1,0 +1,45 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "limitation": "Original collector missed MOPS HTTP200 security-refusal wording and issued the already planned second ticker query before offline review. Both raw refusals and initial labels retained; no alternate host/identity, credential or challenge bypass was used. No further requests. Detection corrected and synthetic stop regression added.",
+  "new_model_evaluations": 0,
+  "original_manifest_sha256": "fe2c1be860f04c952e2ecd661ccfcc9b15e0ebd979e6ce171e4287b3a28481d6",
+  "records": [
+    {
+      "entitlement_or_delivery_evidence_obtained": false,
+      "http_status": 403,
+      "id": "PROMATE_DIVIDEND",
+      "reviewed_status": "HTTP_403_SOURCE_REFUSAL",
+      "source_response_sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c"
+    },
+    {
+      "entitlement_or_delivery_evidence_obtained": false,
+      "http_status": 403,
+      "id": "TWINHEAD_MOPS_LINKS",
+      "reviewed_status": "HTTP_403_SOURCE_REFUSAL",
+      "source_response_sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c"
+    },
+    {
+      "entitlement_or_delivery_evidence_obtained": false,
+      "http_status": 200,
+      "id": "MOPS_6189_202508",
+      "reviewed_status": "HTTP_200_SECURITY_REFUSAL_NOT_DATA",
+      "source_response_sha256": "167205c7e313ca9ed9d79d98e7bde0a31db2740c8a895186b0e0feb60bc5ef7a"
+    },
+    {
+      "entitlement_or_delivery_evidence_obtained": false,
+      "http_status": 200,
+      "id": "MOPS_2364_202509",
+      "reviewed_status": "HTTP_200_SECURITY_REFUSAL_NOT_DATA",
+      "source_response_sha256": "3cb20781771369def7fac755267a2ac4a0b0842b95c3a22d86ce518aeb77eb2d"
+    }
+  ],
+  "source_subtasks": "STOPPED; no numeric terms or dates inferred; no terms promoted"
+}

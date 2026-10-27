@@ -1,0 +1,899 @@
+{
+  "pareto": [
+    {
+      "combined": {
+        "cost_0.008": {
+          "best_trade": 0.19158847736625506,
+          "complete_trades": 14,
+          "compounded_return": -0.10753163774527341,
+          "insolvent": false,
+          "losses_or_zero": 5,
+          "max_drawdown": -0.6191884059252202,
+          "max_positive_trade_pnl_share": 0.3039060584149302,
+          "max_ticker_event_share": 0.14285714285714285,
+          "mean_holding_sessions": 21,
+          "mean_net_return": 0.0001434914351339329,
+          "median_net_return": 0.027533381166399997,
+          "remove_best_trade_return": -0.2510263574994176,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "8011",
+              2
+            ],
+            [
+              "6854",
+              2
+            ],
+            [
+              "2455",
+              1
+            ],
+            [
+              "6128",
+              1
+            ],
+            [
+              "2417",
+              1
+            ],
+            [
+              "3535",
+              1
+            ],
+            [
+              "3025",
+              1
+            ],
+            [
+              "3447",
+              1
+            ],
+            [
+              "3545",
+              1
+            ],
+            [
+              "2360",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.480507442388484,
+          "win_rate": 0.6428571428571429,
+          "wins": 9,
+          "worst_trade": -0.2955
+        },
+        "cost_0.012": {
+          "best_trade": 0.18758847736625506,
+          "complete_trades": 14,
+          "compounded_return": -0.15706377861982335,
+          "insolvent": false,
+          "losses_or_zero": 5,
+          "max_drawdown": -0.62487956438429,
+          "max_positive_trade_pnl_share": 0.3155823434217316,
+          "max_ticker_event_share": 0.14285714285714285,
+          "mean_holding_sessions": 21,
+          "mean_net_return": -0.003856508564866068,
+          "median_net_return": 0.023533381166399997,
+          "remove_best_trade_return": -0.29021185583614173,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "8011",
+              2
+            ],
+            [
+              "6854",
+              2
+            ],
+            [
+              "2455",
+              1
+            ],
+            [
+              "6128",
+              1
+            ],
+            [
+              "2417",
+              1
+            ],
+            [
+              "3535",
+              1
+            ],
+            [
+              "3025",
+              1
+            ],
+            [
+              "3447",
+              1
+            ],
+            [
+              "3545",
+              1
+            ],
+            [
+              "2360",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.4882711620589887,
+          "win_rate": 0.6428571428571429,
+          "wins": 9,
+          "worst_trade": -0.2995
+        },
+        "cost_0.016": {
+          "best_trade": 0.18358847736625505,
+          "complete_trades": 14,
+          "compounded_return": -0.2040369461745818,
+          "insolvent": false,
+          "losses_or_zero": 5,
+          "max_drawdown": -0.6305140821811219,
+          "max_positive_trade_pnl_share": 0.3287641125109681,
+          "max_ticker_event_share": 0.14285714285714285,
+          "mean_holding_sessions": 21,
+          "mean_net_return": -0.007856508564866067,
+          "median_net_return": 0.019533381166399997,
+          "remove_best_trade_return": -0.32750016661482617,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "8011",
+              2
+            ],
+            [
+              "6854",
+              2
+            ],
+            [
+              "2455",
+              1
+            ],
+            [
+              "6128",
+              1
+            ],
+            [
+              "2417",
+              1
+            ],
+            [
+              "3535",
+              1
+            ],
+            [
+              "3025",
+              1
+            ],
+            [
+              "3447",
+              1
+            ],
+            [
+              "3545",
+              1
+            ],
+            [
+              "2360",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.49595761411750705,
+          "win_rate": 0.6428571428571429,
+          "wins": 9,
+          "worst_trade": -0.3035
+        }
+      },
+      "eligibility": {
+        "alternative_quality_survives": false,
+        "holm_quarter_block_p_le_0.05": false,
+        "minimum_each_fold": true,
+        "minimum_total_validation_trades": true,
+        "neighbor_f1": false,
+        "neighbor_f2": false,
+        "no_insolvency": true,
+        "positive_each_fold_at_0.016": false,
+        "positive_pnl_concentration": true,
+        "positive_total_all_costs": false,
+        "remove_best_trade_positive_0.012": false,
+        "ticker_concentration": true
+      },
+      "eligible": false,
+      "f1_selected_config_id": "RAW_REVERSAL|NEG_R1|TO0|N1|H20|PRIOR_SOX5_LE_-0.03",
+      "f2_selected_config_id": "RAW_REVERSAL|NEG_R3|TO50000000|N3|H20|LOCAL_M5_LE_-0.02",
+      "family": "RAW_REVERSAL",
+      "future_frozen_config": {
+        "family": "RAW_REVERSAL",
+        "horizon": 20,
+        "regime": "LOCAL_M5_LE_-0.02",
+        "score": "NEG_R3",
+        "top_n": 3,
+        "turnover_min": 50000000.0
+      },
+      "max_drawdown_012": -0.62487956438429,
+      "max_positive_trade_pnl_share": 0.3155823434217316,
+      "max_ticker_event_share": 0.14285714285714285,
+      "quality_sensitivity": {
+        "alternative_discontinuity": 0.1,
+        "folds": [
+          {
+            "config_id": "RAW_REVERSAL|NEG_R1|TO0|N1|H20|PRIOR_SOX5_LE_-0.03",
+            "fold": "F1",
+            "metrics": {
+              "best_trade": 0.18358847736625505,
+              "cagr": -0.03646354100398275,
+              "censored_baskets": 1,
+              "complete_trades": 7,
+              "compounded_return": -0.03653703001901898,
+              "evaluation_period": [
+                "2024-01-01",
+                "2024-12-31"
+              ],
+              "insolvent": false,
+              "losses_or_zero": 2,
+              "max_drawdown": -0.392,
+              "mean_holding_sessions": 21,
+              "mean_net_return": 0.006129451038422307,
+              "median_net_return": 0.02342181340341655,
+              "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+              "trade_endpoint_max_drawdown": -0.3035,
+              "win_rate": 0.7142857142857143,
+              "wins": 5,
+              "worst_trade": -0.3035
+            }
+          },
+          {
+            "config_id": "RAW_REVERSAL|NEG_R3|TO50000000|N3|H20|LOCAL_M5_LE_-0.02",
+            "fold": "F2",
+            "metrics": {
+              "best_trade": 0.08195161414430624,
+              "cagr": -0.24458474490826332,
+              "censored_baskets": 2,
+              "complete_trades": 5,
+              "compounded_return": -0.24443970383474367,
+              "evaluation_period": [
+                "2025-01-01",
+                "2025-12-31"
+              ],
+              "insolvent": false,
+              "losses_or_zero": 3,
+              "max_drawdown": -0.41222485432531975,
+              "mean_holding_sessions": 21,
+              "mean_net_return": -0.04902470966763708,
+              "median_net_return": -0.06257123016988463,
+              "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+              "trade_endpoint_max_drawdown": -0.2763210540093425,
+              "win_rate": 0.4,
+              "wins": 2,
+              "worst_trade": -0.2103970039590089
+            }
+          }
+        ],
+        "pass": false
+      },
+      "remove_best_trade_return_012": -0.29021185583614173,
+      "return_008": -0.10753163774527341,
+      "return_012": -0.15706377861982335,
+      "return_016": -0.2040369461745818,
+      "statistical_evidence": {
+        "active_quarters": 8,
+        "assumption": "Symmetric independent quarter blocks; historical exploratory evidence, not pristine or guaranteed inference",
+        "blocks": {
+          "2024-Q1": -0.004462773565448459,
+          "2024-Q2": 0.05435887628355118,
+          "2024-Q3": 0.29730853969456705,
+          "2024-Q4": -0.35596091320507534,
+          "2025-Q1": -0.08282754666339256,
+          "2025-Q2": -0.12926080402696516,
+          "2025-Q3": 0.07749915765113008,
+          "2025-Q4": -0.027518516736531815
+        },
+        "holm_adjusted_p": 1.0,
+        "p_value": 0.66015625,
+        "status": "EXPLORATORY_BLOCK_SIGNFLIP"
+      },
+      "trades_012": 14,
+      "win_rate_012": 0.6428571428571429,
+      "worst_fold_return_016": -0.1738519500742921
+    },
+    {
+      "combined": {
+        "cost_0.008": {
+          "best_trade": 0.48725616698292207,
+          "complete_trades": 15,
+          "compounded_return": 1.0269437160559387,
+          "insolvent": false,
+          "losses_or_zero": 6,
+          "max_drawdown": -0.33115858279758714,
+          "max_positive_trade_pnl_share": 0.308754615062114,
+          "max_ticker_event_share": 0.06666666666666667,
+          "mean_holding_sessions": 21,
+          "mean_net_return": 0.06376395948236992,
+          "median_net_return": 0.011354838709677358,
+          "remove_best_trade_return": 0.36287464194405583,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "6933",
+              1
+            ],
+            [
+              "2419",
+              1
+            ],
+            [
+              "3715",
+              1
+            ],
+            [
+              "6269",
+              1
+            ],
+            [
+              "6285",
+              1
+            ],
+            [
+              "2393",
+              1
+            ],
+            [
+              "3030",
+              1
+            ],
+            [
+              "8104",
+              1
+            ],
+            [
+              "6216",
+              1
+            ],
+            [
+              "2466",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.1448821292775666,
+          "win_rate": 0.6,
+          "wins": 9,
+          "worst_trade": -0.1448821292775666
+        },
+        "cost_0.012": {
+          "best_trade": 0.48325616698292206,
+          "complete_trades": 15,
+          "compounded_return": 0.9124573459726926,
+          "insolvent": false,
+          "losses_or_zero": 6,
+          "max_drawdown": -0.3341702568750178,
+          "max_positive_trade_pnl_share": 0.31336845923741147,
+          "max_ticker_event_share": 0.06666666666666667,
+          "mean_holding_sessions": 21,
+          "mean_net_return": 0.05976395948236992,
+          "median_net_return": 0.0073548387096773575,
+          "remove_best_trade_return": 0.2893641628086434,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "6933",
+              1
+            ],
+            [
+              "2419",
+              1
+            ],
+            [
+              "3715",
+              1
+            ],
+            [
+              "6269",
+              1
+            ],
+            [
+              "6285",
+              1
+            ],
+            [
+              "2393",
+              1
+            ],
+            [
+              "3030",
+              1
+            ],
+            [
+              "8104",
+              1
+            ],
+            [
+              "6216",
+              1
+            ],
+            [
+              "2466",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.1488821292775666,
+          "win_rate": 0.6,
+          "wins": 9,
+          "worst_trade": -0.1488821292775666
+        },
+        "cost_0.016": {
+          "best_trade": 0.47925616698292206,
+          "complete_trades": 15,
+          "compounded_return": 0.8040188524888803,
+          "insolvent": false,
+          "losses_or_zero": 6,
+          "max_drawdown": -0.3371819309524484,
+          "max_positive_trade_pnl_share": 0.31820286597390973,
+          "max_ticker_event_share": 0.06666666666666667,
+          "mean_holding_sessions": 21,
+          "mean_net_return": 0.05576395948236992,
+          "median_net_return": 0.0033548387096773574,
+          "remove_best_trade_return": 0.2195445878507587,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "6933",
+              1
+            ],
+            [
+              "2419",
+              1
+            ],
+            [
+              "3715",
+              1
+            ],
+            [
+              "6269",
+              1
+            ],
+            [
+              "6285",
+              1
+            ],
+            [
+              "2393",
+              1
+            ],
+            [
+              "3030",
+              1
+            ],
+            [
+              "8104",
+              1
+            ],
+            [
+              "6216",
+              1
+            ],
+            [
+              "2466",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.15288212927756661,
+          "win_rate": 0.6,
+          "wins": 9,
+          "worst_trade": -0.15288212927756661
+        }
+      },
+      "eligibility": {
+        "alternative_quality_survives": false,
+        "holm_quarter_block_p_le_0.05": false,
+        "minimum_each_fold": true,
+        "minimum_total_validation_trades": true,
+        "neighbor_f1": true,
+        "neighbor_f2": true,
+        "no_insolvency": true,
+        "positive_each_fold_at_0.016": true,
+        "positive_pnl_concentration": true,
+        "positive_total_all_costs": true,
+        "remove_best_trade_positive_0.012": true,
+        "ticker_concentration": true
+      },
+      "eligible": false,
+      "f1_selected_config_id": "RESIDUAL_REVERSAL|NEG_RESID3|TO20000000|N1|H20|LOCAL_M1_NEG",
+      "f2_selected_config_id": "RESIDUAL_REVERSAL|NEG_RESID1|TO50000000|N1|H20|PRIOR_SOX5_LE_-0.03",
+      "family": "RESIDUAL_REVERSAL",
+      "future_frozen_config": {
+        "family": "RESIDUAL_REVERSAL",
+        "horizon": 20,
+        "regime": "PRIOR_SOX5_LE_-0.03",
+        "score": "NEG_RESID1",
+        "top_n": 1,
+        "turnover_min": 50000000.0
+      },
+      "max_drawdown_012": -0.3341702568750178,
+      "max_positive_trade_pnl_share": 0.31336845923741147,
+      "max_ticker_event_share": 0.06666666666666667,
+      "quality_sensitivity": {
+        "alternative_discontinuity": 0.1,
+        "folds": [
+          {
+            "config_id": "RESIDUAL_REVERSAL|NEG_RESID3|TO20000000|N1|H20|LOCAL_M1_NEG",
+            "fold": "F1",
+            "metrics": {
+              "best_trade": 0.2104705882352942,
+              "cagr": 0.035197550312171755,
+              "censored_baskets": 1,
+              "complete_trades": 9,
+              "compounded_return": 0.035271084426484745,
+              "evaluation_period": [
+                "2024-01-01",
+                "2024-12-31"
+              ],
+              "insolvent": false,
+              "losses_or_zero": 4,
+              "max_drawdown": -0.19559098530223373,
+              "mean_holding_sessions": 21,
+              "mean_net_return": 0.007481147086320466,
+              "median_net_return": 0.0022481751824816737,
+              "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+              "trade_endpoint_max_drawdown": -0.09515273132664448,
+              "win_rate": 0.5555555555555556,
+              "wins": 5,
+              "worst_trade": -0.09515273132664447
+            }
+          },
+          {
+            "config_id": "RESIDUAL_REVERSAL|NEG_RESID1|TO50000000|N1|H20|PRIOR_SOX5_LE_-0.03",
+            "fold": "F2",
+            "metrics": {
+              "best_trade": -0.11966826156299835,
+              "cagr": -0.3676465205477296,
+              "censored_baskets": 3,
+              "complete_trades": 3,
+              "compounded_return": -0.36744812402380933,
+              "evaluation_period": [
+                "2025-01-01",
+                "2025-12-31"
+              ],
+              "insolvent": false,
+              "losses_or_zero": 3,
+              "max_drawdown": -0.40804473695959464,
+              "mean_holding_sessions": 21,
+              "mean_net_return": -0.14144513263756692,
+              "median_net_return": -0.15178500707213582,
+              "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+              "trade_endpoint_max_drawdown": -0.36744812402380933,
+              "win_rate": 0.0,
+              "wins": 0,
+              "worst_trade": -0.15288212927756661
+            }
+          }
+        ],
+        "pass": false
+      },
+      "remove_best_trade_return_012": 0.2893641628086434,
+      "return_008": 1.0269437160559387,
+      "return_012": 0.9124573459726926,
+      "return_016": 0.8040188524888803,
+      "statistical_evidence": {
+        "active_quarters": 8,
+        "assumption": "Symmetric independent quarter blocks; historical exploratory evidence, not pristine or guaranteed inference",
+        "blocks": {
+          "2024-Q1": -0.06412728963025108,
+          "2024-Q2": 0.05910003050663255,
+          "2024-Q3": 0.16656383145753142,
+          "2024-Q4": -0.04442091443456961,
+          "2025-Q1": 0.17951331049431415,
+          "2025-Q2": 0.2330351323849483,
+          "2025-Q3": 0.2786413277996318,
+          "2025-Q4": -0.15991644486776999
+        },
+        "holm_adjusted_p": 0.62890625,
+        "p_value": 0.08984375,
+        "status": "EXPLORATORY_BLOCK_SIGNFLIP"
+      },
+      "trades_012": 15,
+      "win_rate_012": 0.6,
+      "worst_fold_return_016": 0.08478863983381624
+    },
+    {
+      "combined": {
+        "cost_0.008": {
+          "best_trade": 0.680034188034188,
+          "complete_trades": 17,
+          "compounded_return": 0.5905704418181204,
+          "insolvent": false,
+          "losses_or_zero": 9,
+          "max_drawdown": -0.49867038403626684,
+          "max_positive_trade_pnl_share": 0.46089408436373985,
+          "max_ticker_event_share": 0.058823529411764705,
+          "mean_holding_sessions": 21,
+          "mean_net_return": 0.04365857164150912,
+          "median_net_return": -0.014968641114982632,
+          "remove_best_trade_return": -0.05325114622860705,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "8210",
+              1
+            ],
+            [
+              "3545",
+              1
+            ],
+            [
+              "2465",
+              1
+            ],
+            [
+              "6442",
+              1
+            ],
+            [
+              "2467",
+              1
+            ],
+            [
+              "3450",
+              1
+            ],
+            [
+              "2365",
+              1
+            ],
+            [
+              "2417",
+              1
+            ],
+            [
+              "2059",
+              1
+            ],
+            [
+              "6449",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.3453730548992293,
+          "win_rate": 0.47058823529411764,
+          "wins": 8,
+          "worst_trade": -0.2467096774193549
+        },
+        "cost_0.012": {
+          "best_trade": 0.676034188034188,
+          "complete_trades": 17,
+          "compounded_return": 0.4871798743715998,
+          "insolvent": false,
+          "losses_or_zero": 9,
+          "max_drawdown": -0.5133051976796741,
+          "max_positive_trade_pnl_share": 0.4683404671734209,
+          "max_ticker_event_share": 0.058823529411764705,
+          "mean_holding_sessions": 21,
+          "mean_net_return": 0.03965857164150912,
+          "median_net_return": -0.018968641114982632,
+          "remove_best_trade_return": -0.11267927289961466,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "8210",
+              1
+            ],
+            [
+              "3545",
+              1
+            ],
+            [
+              "2465",
+              1
+            ],
+            [
+              "6442",
+              1
+            ],
+            [
+              "2467",
+              1
+            ],
+            [
+              "3450",
+              1
+            ],
+            [
+              "2365",
+              1
+            ],
+            [
+              "2417",
+              1
+            ],
+            [
+              "2059",
+              1
+            ],
+            [
+              "6449",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.36219894531041774,
+          "win_rate": 0.47058823529411764,
+          "wins": 8,
+          "worst_trade": -0.2507096774193549
+        },
+        "cost_0.016": {
+          "best_trade": 0.672034188034188,
+          "complete_trades": 17,
+          "compounded_return": 0.3901297499230867,
+          "insolvent": false,
+          "losses_or_zero": 9,
+          "max_drawdown": -0.5275734663389218,
+          "max_positive_trade_pnl_share": 0.4761244904457142,
+          "max_ticker_event_share": 0.058823529411764705,
+          "mean_holding_sessions": 21,
+          "mean_net_return": 0.03565857164150912,
+          "median_net_return": -0.022968641114982633,
+          "remove_best_trade_return": -0.16859968541823678,
+          "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+          "ticker_event_counts": [
+            [
+              "8210",
+              1
+            ],
+            [
+              "3545",
+              1
+            ],
+            [
+              "2465",
+              1
+            ],
+            [
+              "6442",
+              1
+            ],
+            [
+              "2467",
+              1
+            ],
+            [
+              "3450",
+              1
+            ],
+            [
+              "2365",
+              1
+            ],
+            [
+              "2417",
+              1
+            ],
+            [
+              "2059",
+              1
+            ],
+            [
+              "6449",
+              1
+            ]
+          ],
+          "trade_endpoint_max_drawdown": -0.37866413240516583,
+          "win_rate": 0.47058823529411764,
+          "wins": 8,
+          "worst_trade": -0.2547096774193549
+        }
+      },
+      "eligibility": {
+        "alternative_quality_survives": false,
+        "holm_quarter_block_p_le_0.05": false,
+        "minimum_each_fold": true,
+        "minimum_total_validation_trades": true,
+        "neighbor_f1": true,
+        "neighbor_f2": false,
+        "no_insolvency": true,
+        "positive_each_fold_at_0.016": true,
+        "positive_pnl_concentration": true,
+        "positive_total_all_costs": true,
+        "remove_best_trade_positive_0.012": false,
+        "ticker_concentration": true
+      },
+      "eligible": false,
+      "f1_selected_config_id": "BETA_WEIGHTED_RESIDUAL_REVERSAL|BETA_K10_RESID_REV|TO50000000|N1|H20|PRIOR_SOX1_LE_0",
+      "f2_selected_config_id": "BETA_WEIGHTED_RESIDUAL_REVERSAL|BETA_K10_RESID_REV|TO50000000|N1|H20|LOCAL_M5_LE_-0.02",
+      "family": "BETA_WEIGHTED_RESIDUAL_REVERSAL",
+      "future_frozen_config": {
+        "family": "BETA_WEIGHTED_RESIDUAL_REVERSAL",
+        "horizon": 20,
+        "regime": "LOCAL_M5_LE_-0.02",
+        "score": "BETA_K10_RESID_REV",
+        "top_n": 1,
+        "turnover_min": 50000000.0
+      },
+      "max_drawdown_012": -0.5133051976796741,
+      "max_positive_trade_pnl_share": 0.4683404671734209,
+      "max_ticker_event_share": 0.058823529411764705,
+      "quality_sensitivity": {
+        "alternative_discontinuity": 0.1,
+        "folds": [
+          {
+            "config_id": "BETA_WEIGHTED_RESIDUAL_REVERSAL|BETA_K10_RESID_REV|TO50000000|N1|H20|PRIOR_SOX1_LE_0",
+            "fold": "F1",
+            "metrics": {
+              "best_trade": 0.13264864864864867,
+              "cagr": -0.14632817458248526,
+              "censored_baskets": 2,
+              "complete_trades": 8,
+              "compounded_return": -0.14660545620689402,
+              "evaluation_period": [
+                "2024-01-01",
+                "2024-12-31"
+              ],
+              "insolvent": false,
+              "losses_or_zero": 5,
+              "max_drawdown": -0.4534490537397309,
+              "mean_holding_sessions": 21,
+              "mean_net_return": -0.01592511532770276,
+              "median_net_return": -0.04467811900710371,
+              "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+              "trade_endpoint_max_drawdown": -0.3311306104171655,
+              "win_rate": 0.375,
+              "wins": 3,
+              "worst_trade": -0.1287819548872181
+            }
+          },
+          {
+            "config_id": "BETA_WEIGHTED_RESIDUAL_REVERSAL|BETA_K10_RESID_REV|TO50000000|N1|H20|LOCAL_M5_LE_-0.02",
+            "fold": "F2",
+            "metrics": {
+              "best_trade": 0.06162557077625587,
+              "cagr": -0.31524040322455993,
+              "censored_baskets": 1,
+              "complete_trades": 6,
+              "compounded_return": -0.31506289228769624,
+              "evaluation_period": [
+                "2025-01-01",
+                "2025-12-31"
+              ],
+              "insolvent": false,
+              "losses_or_zero": 4,
+              "max_drawdown": -0.3953161353192738,
+              "mean_holding_sessions": 21,
+              "mean_net_return": -0.05499978309767459,
+              "median_net_return": -0.03181430040115306,
+              "tail_cvar_5pct": "INSUFFICIENT_SAMPLE",
+              "trade_endpoint_max_drawdown": -0.33206903840245794,
+              "win_rate": 0.3333333333333333,
+              "wins": 2,
+              "worst_trade": -0.2547096774193549
+            }
+          }
+        ],
+        "pass": false
+      },
+      "remove_best_trade_return_012": -0.11267927289961466,
+      "return_008": 0.5905704418181204,
+      "return_012": 0.4871798743715998,
+      "return_016": 0.3901297499230867,
+      "statistical_evidence": {
+        "active_quarters": 8,
+        "assumption": "Symmetric independent quarter blocks; historical exploratory evidence, not pristine or guaranteed inference",
+        "blocks": {
+          "2024-Q1": 0.013694360162115421,
+          "2024-Q2": 0.16840339914475505,
+          "2024-Q3": -0.12105136037855208,
+          "2024-Q4": 0.17214599208852074,
+          "2025-Q1": -0.10513567321191603,
+          "2025-Q2": 0.26173110172795083,
+          "2025-Q3": -0.021069978719402863,
+          "2025-Q4": 0.028163783956585052
+        },
+        "holm_adjusted_p": 1.0,
+        "p_value": 0.16796875,
+        "status": "EXPLORATORY_BLOCK_SIGNFLIP"
+      },
+      "trades_012": 17,
+      "win_rate_012": 0.47058823529411764,
+      "worst_fold_return_016": 0.14523826074822677
+    }
+  ],
+  "schema_version": 1
+}

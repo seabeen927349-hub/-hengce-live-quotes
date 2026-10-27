@@ -1,0 +1,54 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "collection": {
+    "attempts_per_request": 1,
+    "detail_batch_rule": "At most12 TWT49U events intersecting retained historical entry/holding/exit windows, sorted by (effective_date,ticker); exclude the two V1 details already retained. Outcome/return values must not select requests. If fewer than12 affected events, use only those. Never regenerate missing windows.",
+    "detail_endpoint": "https://www.twse.com.tw/rwd/zh/exRight/TWT49UDetail?response=json&STK_NO={ticker}&T1={yyyymmdd}",
+    "failure_retention": "Immutable raw bytes plus SHA256/fetch/HTTP/validation receipts for every attempted request, including errors. HTTP200 does not mean validated data. Do not retry blocked access or purchase anything.",
+    "free_official_only": true,
+    "maximum_body_bytes": 8388608,
+    "maximum_requests": 14,
+    "spacing_seconds": 1.5,
+    "stop_conditions": [
+      "payment/delivery or identity timing cannot be proven -> block dependent observation",
+      "paid/private access or CAPTCHA/rate limit -> stop source subtask",
+      "conflicting terms -> CONFLICT, no guessed resolution",
+      "missing original event windows -> UNKNOWN, no signal regeneration",
+      "no auction allocation -> UNKNOWN, no guaranteed fill"
+    ],
+    "supporting_documents": [
+      "https://www.twse.com.tw/zh/products/system/trading.html",
+      "https://www.twse.com.tw/zh/products/dataeshop.html"
+    ],
+    "timeout_seconds": 25
+  },
+  "completion": "Produce all required artifacts even when UNKNOWN. STOP after V2 for human review; no automatic model search, merge or promotion.",
+  "frozen_corpus_base": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+  "global_retained_events": 1151,
+  "issue": 31,
+  "new_model_evaluation_budget": 0,
+  "parent_commit": "593652df3e414b223eea0d568299084cf5c85c52",
+  "parent_inventory_sha256": "9cccd92667e350e5a0147bba39e7146fe4bbfc06c11230248cfd1cdcbaed58ce",
+  "parent_tree": "cf326040b11f0f6136fd7b09ba5eae14f274a37e",
+  "prior_model_evaluations": 8529,
+  "publication_lineage": "Actual fetch times != historical first-seen; missing publication/revision dates remain null. No current security-master substitution.",
+  "schema_version": 1,
+  "schemas": {
+    "ENTITLEMENT_LEDGER": "hash-chained append-only assertions with event_id, supersedes_record_hash, old/new security IDs, effective/last_trade/resumption, cash/share/subscription/deadline/payment/delivery/fractional fields, evidence provenance, status PROVEN/PARTIAL/UNKNOWN/CONFLICT, authority",
+    "EVENT_CLASSIFICATION": "event_id, original source/row/hash, PIT evidence, effective_date,ticker, category, candidate_categories,classification_status,authority",
+    "EXECUTION_EVIDENCE": "each retained one-price/censor observation, BUY entry and SELL exit separately; intended signal timing/order-price assumptions, actual reference/OHLC/volume, auction evidence, PROVEN/DISPROVEN/UNKNOWN fill",
+    "HISTORICAL_IMPACT_MAP": "one trial inventory row per8529 and observation rows for retained windows only; entry/holding/exit intersections, original treatment, missing fields; unretained windows explicitly UNKNOWN",
+    "IDENTITY_TRANSITIONS": "event_id, old/new ticker and security IDs, economic vs listed-instrument continuity, ratios only where explicit, source hashes, UNKNOWN when not proven",
+    "READINESS": "global/event/date/identity/window/execution/first-seen coverage separately; blocked scopes named. No claim of complete mapping where windows were never retained."
+  },
+  "state_machine_scope": "Evidence/readiness diagnostics only. Actual adjusted-return/PnL engine BLOCKED unless all required fields proven. Synthetic fixtures may exercise states; no empirical outcome calculation.",
+  "study": "DATA_FOUNDATION_V2"
+}

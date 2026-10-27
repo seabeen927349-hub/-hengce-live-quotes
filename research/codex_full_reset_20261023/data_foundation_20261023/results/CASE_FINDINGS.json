@@ -1,0 +1,343 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "document_review": [
+    {
+      "document_date_printed": "2025-07-14",
+      "document_id": "SUSPENSION_3090_20250714",
+      "fact": "TWSE announcement suspends underlying listed common shares from 2025-07-15 pending material disclosure",
+      "original_first_seen_at": null,
+      "price_imputation_authorized": false,
+      "response_sha256": "9b62807eae594996de3157f62b430bb33e77831320d990215ab57f7c239bff5d",
+      "ticker": "3090"
+    },
+    {
+      "complete_security_identity_chain_proven": false,
+      "document_date_printed": "2025-08-06",
+      "document_id": "SPLIT_2327_20250825",
+      "fact": "TAIFEX underlying-event notice cites TWSE: 1000 old shares exchanged for 4000 new shares; stopped 2025-08-14 through 2025-08-22; resumes 2025-08-25",
+      "original_first_seen_at": null,
+      "response_sha256": "55a5896c4bd4325cbffb034baf0ba7c053b86f2855d90448736441594fcc4a6d",
+      "scope_limit": "Underlying corporate-action corroboration only; no futures model/order behavior is imported",
+      "ticker": "2327"
+    }
+  ],
+  "new_model_evaluations": 0,
+  "old_trial_outcomes_modified": false,
+  "one_price_lower_limit_cases": [
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "274811",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "18.35",
+      "official_lower_limit": "18.35",
+      "sell_fill_proven": false,
+      "ticker": "2302"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "14322325",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "40.75",
+      "official_lower_limit": "40.75",
+      "sell_fill_proven": false,
+      "ticker": "2303"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "3377501",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "19.60",
+      "official_lower_limit": "19.6",
+      "sell_fill_proven": false,
+      "ticker": "2337"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "504253",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "151.00",
+      "official_lower_limit": "151.0",
+      "sell_fill_proven": false,
+      "ticker": "2385"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "12521778",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "37.00",
+      "official_lower_limit": "37.0",
+      "sell_fill_proven": false,
+      "ticker": "2408"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "695736",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "53.80",
+      "official_lower_limit": "53.8",
+      "sell_fill_proven": false,
+      "ticker": "2429"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "403163",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "112.50",
+      "official_lower_limit": "112.5",
+      "sell_fill_proven": false,
+      "ticker": "2439"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "151594",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "46.80",
+      "official_lower_limit": "46.8",
+      "sell_fill_proven": false,
+      "ticker": "2468"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "141291",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "53.20",
+      "official_lower_limit": "53.2",
+      "sell_fill_proven": false,
+      "ticker": "2471"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "1176143",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "198.00",
+      "official_lower_limit": "198.0",
+      "sell_fill_proven": false,
+      "ticker": "2474"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "292582",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "47.65",
+      "official_lower_limit": "47.65",
+      "sell_fill_proven": false,
+      "ticker": "2481"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "390247",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "182.00",
+      "official_lower_limit": "182.0",
+      "sell_fill_proven": false,
+      "ticker": "3044"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "108383",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "24.70",
+      "official_lower_limit": "24.7",
+      "sell_fill_proven": false,
+      "ticker": "3060"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "329475",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "65.00",
+      "official_lower_limit": "65.0",
+      "sell_fill_proven": false,
+      "ticker": "3090"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "287541",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "34.65",
+      "official_lower_limit": "34.65",
+      "sell_fill_proven": false,
+      "ticker": "3209"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "63865",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "70.20",
+      "official_lower_limit": "70.2",
+      "sell_fill_proven": false,
+      "ticker": "3528"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "92108",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "445.00",
+      "official_lower_limit": "445.0",
+      "sell_fill_proven": false,
+      "ticker": "3563"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "90424",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "52.40",
+      "official_lower_limit": "52.4",
+      "sell_fill_proven": false,
+      "ticker": "3645"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "184817",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "35.95",
+      "official_lower_limit": "35.95",
+      "sell_fill_proven": false,
+      "ticker": "4916"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "51388",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "34.60",
+      "official_lower_limit": "34.6",
+      "sell_fill_proven": false,
+      "ticker": "4949"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "98132",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "79.10",
+      "official_lower_limit": "79.1",
+      "sell_fill_proven": false,
+      "ticker": "6166"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "240861",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "111.50",
+      "official_lower_limit": "111.5",
+      "sell_fill_proven": false,
+      "ticker": "6206"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "311778",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "69.30",
+      "official_lower_limit": "69.3",
+      "sell_fill_proven": false,
+      "ticker": "6257"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "62145",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "29.55",
+      "official_lower_limit": "29.55",
+      "sell_fill_proven": false,
+      "ticker": "6477"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "171638",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "46.30",
+      "official_lower_limit": "46.3",
+      "sell_fill_proven": false,
+      "ticker": "6558"
+    },
+    {
+      "buy_fill_proven": false,
+      "date": "2025-04-07",
+      "day_volume_shares": "14375",
+      "interpretation": "ONE_PRICE_AT_LOWER_LIMIT; not proof that a buy could not fill; auction allocation/order evidence is absent",
+      "observed_daily_price": "107.00",
+      "official_lower_limit": "107.0",
+      "sell_fill_proven": false,
+      "ticker": "8045"
+    }
+  ],
+  "source_manifest_sha256": "23c14052bebb0c5825de115bc8d4f23661a47b10ddae3c036739ea77ffccf6e7",
+  "two_specific_action_terms": [
+    {
+      "adjusted_pnl_ready": false,
+      "authority": {
+        "broker_order_execution": false,
+        "capital_authority_twd": 0,
+        "merge_authorized": false,
+        "production_promotion": false,
+        "ranking_authority": false,
+        "research_only": true,
+        "signal_authority": false
+      },
+      "cash_per_old_share_reported": "3.999732",
+      "delivery_and_cash_payment_dates": null,
+      "effective_date": "2025-07-25",
+      "effective_date_binding": "REQUEST_AND_PARENT_EVENT_ONLY_DETAIL_HAS_NO_DATE_ECHO",
+      "free_shares_per_1000_old_shares_reported": "200",
+      "original_first_seen_at": null,
+      "paid_subscription_shares_reported": "0",
+      "raw_sha256": "f2b1e80411f1c04dabc28b366f7be286f82c131fd23f79ffc112df68ec07fdbc",
+      "reference_formula_consistent_with_parent": true,
+      "ticker": "6189"
+    },
+    {
+      "adjusted_pnl_ready": false,
+      "authority": {
+        "broker_order_execution": false,
+        "capital_authority_twd": 0,
+        "merge_authorized": false,
+        "production_promotion": false,
+        "ranking_authority": false,
+        "research_only": true,
+        "signal_authority": false
+      },
+      "cash_per_old_share_reported": "0",
+      "delivery_and_cash_payment_dates": null,
+      "effective_date": "2025-08-28",
+      "effective_date_binding": "REQUEST_AND_PARENT_EVENT_ONLY_DETAIL_HAS_NO_DATE_ECHO",
+      "free_shares_per_1000_old_shares_reported": "300",
+      "original_first_seen_at": null,
+      "paid_subscription_shares_reported": "0",
+      "raw_sha256": "a22e7a85f1e284da7e8bdbde0a0f4e934316987c7cb2808d85988380d7be432e",
+      "reference_formula_consistent_with_parent": true,
+      "ticker": "2364"
+    }
+  ]
+}

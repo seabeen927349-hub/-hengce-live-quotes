@@ -1,0 +1,28 @@
+{
+  "archive_sha256": "37217f12643ca199defad6d78ca893d0c32fab7f303d67f2d983c16b193e46c6",
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "bytes": 267627,
+  "content_type": "application/json;charset=UTF-8",
+  "fetch_completed_at_utc": "2026-10-23T11:32:49.330746+00:00",
+  "fetch_started_at_utc": "2026-10-23T11:32:47.795905+00:00",
+  "http_status": 200,
+  "id": "TWT49U_2025",
+  "kind": "TWT49U",
+  "original_first_seen_at": null,
+  "projected_electronics_events": 385,
+  "raw_path": "TWT49U_2025.bin.gz",
+  "response_sha256": "9c38d79d0a69f16ac5927a6be04b74d982cca78d59df362754d1868c3201e907",
+  "source_event_rows": 1358,
+  "transport": "HTTP_RESPONSE_RETAINED",
+  "url": "https://www.twse.com.tw/exchangeReport/TWT49U?response=json&startDate=20250101&endDate=20251231",
+  "validation": "VALIDATED_EVENT_TABLE_NOT_ADJUSTED_PRICES",
+  "year": 2025
+}

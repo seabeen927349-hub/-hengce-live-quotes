@@ -1,0 +1,28 @@
+name: Independent 97 Meta Filter
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/independent_97_meta_filter.py'
+      - '.github/workflows/independent-97-meta-filter.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run independent 97 meta filter
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/independent_97_meta_filter.py
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-97-meta-filter
+          path: |
+            research/codex_full_reset_20261023/INDEPENDENT_97_META_FILTER_RESULT_20261025.json
+            research/codex_full_reset_20261023/independent_97_meta_filter_events.jsonl

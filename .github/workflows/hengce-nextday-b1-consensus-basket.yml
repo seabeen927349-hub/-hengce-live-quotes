@@ -1,0 +1,40 @@
+name: HENGCE Nextday B1 Consensus Basket
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_b1_consensus_basket.py'
+      - '.github/workflows/hengce-nextday-b1-consensus-basket.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  b1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run B1 consensus basket
+        run: |
+          python -m research.codex_full_reset_20261023.nextday_b1_consensus_basket | tee /tmp/b1.log
+          grep '^B1_RESULT=' /tmp/b1.log
+      - name: Upload B1 research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-b1-consensus-basket
+          if-no-files-found: warn
+          path: |
+            research/codex_full_reset_20261023/nextday_b1_consensus_basket_result.json
+            research/codex_full_reset_20261023/nextday_b1_consensus_basket_events.jsonl

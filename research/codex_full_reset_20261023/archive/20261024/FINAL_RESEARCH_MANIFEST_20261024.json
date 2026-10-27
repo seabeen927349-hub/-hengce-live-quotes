@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "archive_date": "2026-10-24",
+  "system": "HENGCE",
+  "repository": "seabeen927349-hub/-hengce-live-quotes",
+  "research_branch": "research/codex-full-reset-run-20261023",
+  "captured_branch_head": "b5e53bc459d216958893c6b0fd28eb6f5ab8c70f",
+  "frontier_lock_commit": "2e48350b8eab28c7fd81d1144e15aa3fa892b855",
+  "frontier_status": "HISTORICAL_RESEARCH_FRONTIER_LOCKED",
+  "scope": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "frontier": {
+    "V30": {"evidence": "historical handoff reference", "return_1p2": 2.8509, "max_drawdown_1p2": -0.2522, "remove_best_1p2": 1.5501},
+    "V32": {"evidence": "historical handoff reference", "return_1p2": 2.5134, "max_drawdown_1p2": -0.1701, "remove_best_1p2": 1.3266},
+    "V33": {"evidence": "historical handoff reference", "return_1p2": 2.4721, "max_drawdown_1p2": -0.1625, "remove_best_1p2": 1.2993},
+    "V39": {"evidence": "fixed reference embedded in V43/handoff", "return_1p2": 3.382144667539377, "max_drawdown_1p2": -0.2638974028182084, "remove_best_1p2": 1.901878991023918},
+    "V41": {"evidence": "fixed reference embedded in V42/V43 artifacts", "return_1p2": 3.2434637773620763, "max_drawdown_1p2": -0.18593461605119255, "remove_best_1p2": 1.8100437842487898},
+    "V42": {
+      "role": "secondary_pareto_lower_drawdown",
+      "status": "V42_DOMINATES_V32",
+      "robust": true,
+      "workflow_run_id": 40000148934,
+      "head_sha": "8aa6e447e16ee6ce605e1357ae16dd775a06e05a",
+      "artifact_id": 12521871196,
+      "artifact_sha256": "d62cf5483a44fa232ae35f810634506c635ff26f1b219816bf7c6e5048dc373d",
+      "combined": {
+        "0.008": {"compounded_return": 3.0427376239667527, "max_drawdown": -0.1624723468868462, "remove_best_basket_return": 1.6704021355674978, "win_rate": 0.6333333333333333},
+        "0.012": {"compounded_return": 2.7751303217562437, "max_drawdown": -0.1624723468868463, "remove_best_basket_return": 1.4999109340753796, "win_rate": 0.6333333333333333},
+        "0.016": {"compounded_return": 2.5245272718401646, "max_drawdown": -0.1624723468868463, "remove_best_basket_return": 1.3398482377547651, "win_rate": 0.6333333333333333}
+      }
+    },
+    "V43": {
+      "role": "primary_historical_research_frontier",
+      "status": "V43_DOMINATES_V41",
+      "robust": true,
+      "workflow_run_id": 40051125835,
+      "head_sha": "32111aac21f302cb532eb114c9f30d3a8b1a450c",
+      "model_commit": "ce1fdc7eb7fd206a59bde4fd3c7cc6b3ff5ad9f9",
+      "artifact_id": 12543027978,
+      "artifact_sha256": "b900fde5eee6d97ca24cce1e0d77b1977dc9103642d55c228b73ba6be2bb87e3",
+      "combined": {
+        "0.008": {"compounded_return": 3.8189390659554707, "max_drawdown": -0.17448915086555428, "remove_best_basket_return": 2.1831165833291193, "win_rate": 0.6666666666666666},
+        "0.012": {"compounded_return": 3.4264542481969347, "max_drawdown": -0.1766638170167315, "remove_best_basket_return": 1.9312210257960025, "win_rate": 0.6666666666666666},
+        "0.016": {"compounded_return": 3.0648821526767254, "max_drawdown": -0.1895934577735443, "remove_best_basket_return": 1.6985767474727487, "win_rate": 0.6666666666666666}
+      },
+      "year_2024_2025_2026_positive_at_1p2": true,
+      "year_2024_2025_2026_remove_best_positive_at_1p2": true,
+      "prospectively_validated": false
+    },
+    "V44": {
+      "role": "latest_rejected",
+      "status": "V44_DOES_NOT_IMPROVE_FRONTIER",
+      "robust": false,
+      "retune_nearby": false,
+      "workflow_run_id": 40054258291,
+      "head_sha": "50b1afc54029f09850b6a628d8d85ecb0c7fddd0",
+      "artifact_id": 12544602809,
+      "artifact_sha256": "4d01ff35390244b9e16235ca3b57997814f58f33c370ed00f6f1790c3b57b9f1",
+      "combined": {
+        "0.008": {"compounded_return": 0.6387302706122056, "max_drawdown": -0.5091369576086469, "remove_best_basket_return": 0.17983358047379627, "win_rate": 0.4666666666666667},
+        "0.012": {"compounded_return": 0.4950306738546981, "max_drawdown": -0.5264168665978013, "remove_best_basket_return": 0.07928039584328639, "win_rate": 0.4666666666666667},
+        "0.016": {"compounded_return": 0.36351049681617087, "max_drawdown": -0.5431384183062447, "remove_best_basket_return": -0.013000926830238901, "win_rate": 0.4666666666666667}
+      }
+    }
+  },
+  "prospective_shadow": {
+    "status": "WAITING_FOR_POST_LOCK_DATA",
+    "workflow_run_id": 40056943532,
+    "head_sha": "70df95c88ec14ce832254b3cb2ea25a4bd43c807",
+    "artifact_id": 12545399234,
+    "artifact_sha256": "447615a4101c277fae42df417d33aa88f5a58e551e0ea724a7d5b3d6be1022e7",
+    "lock_commit": "2e48350b8eab28c7fd81d1144e15aa3fa892b855",
+    "lock_date": "2026-10-24",
+    "interim_complete_baskets": 6,
+    "primary_complete_baskets": 12,
+    "interpretation": "Validation-only gate; no parameter search, no auto-promotion."
+  },
+  "v45_gate": {"authorized_now": false, "interpretation": "No new model evaluation until a separately preregistered genuinely orthogonal PIT information family satisfies the frozen gate."},
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false,
+    "main_write": false,
+    "q017_production_change": false,
+    "e2_production_change": false,
+    "m1_production_change": false,
+    "pr_30_merge": false
+  },
+  "artifact_files": {
+    "HENGCE_NEW_CHAT_HANDOFF_20261024_V43.zip": {"sha256": "7e7c31df83d67ec46c21ce828eb1c97deba86acc94deb0ec92d5adfb9e17141c", "size_bytes": 6809},
+    "HENGCE_NEW_CHAT_HANDOFF_20261024_V43.zip.sha256": {"sha256": "05453f0176b1d04ce41c54c2454cfade6eda6c0584b71deac7aedb31176f4b19", "size_bytes": 107},
+    "hengce-ranking-v42-v41-equity-budget.zip": {"sha256": "d62cf5483a44fa232ae35f810634506c635ff26f1b219816bf7c6e5048dc373d", "size_bytes": 21643},
+    "hengce-ranking-v43-expanding-regime-icir.zip": {"sha256": "b900fde5eee6d97ca24cce1e0d77b1977dc9103642d55c228b73ba6be2bb87e3", "size_bytes": 25781},
+    "hengce-ranking-v43-prospective-shadow.zip": {"sha256": "447615a4101c277fae42df417d33aa88f5a58e551e0ea724a7d5b3d6be1022e7", "size_bytes": 2559},
+    "hengce-ranking-v44-leadership-persistence.zip": {"sha256": "4d01ff35390244b9e16235ca3b57997814f58f33c370ed00f6f1790c3b57b9f1", "size_bytes": 36254}
+  },
+  "notes": [
+    "V41 is preserved as fixed reference evidence embedded in the formal V42/V43 artifacts; no standalone V41 Actions ZIP was asserted in this archive.",
+    "The raw V42/V43/V44/shadow Actions ZIPs are preserved byte-for-byte in the archive bundle.",
+    "The pre-result V43 handoff is preserved to retain the exact decision boundary and known frontier state before V43 artifact validation."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "additional_pinned_baseline_evaluations": 1,
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "baseline_candidate_b": {
+    "exact_aggregate_match": false,
+    "status": "BASELINE_REPRODUCTION_FAILED_OR_DIFFERS"
+  },
+  "baseline_resolution": "V2_AGGREGATE_MATCH_PINNED_FUNCTIONS_ORIGINAL_EVENT_IDENTITY_UNPROVEN",
+  "completion_scope": "FIRST_PREREGISTERED_FINITE_BATCH_NOT_ALL_POSSIBLE_MODELS",
+  "historical_exposure_warning": "2023-2025 was previously exposed and is not pristine OOS. Future prospective shadow validation is mandatory before any production discussion.",
+  "pareto_families": [
+    "RAW_REVERSAL",
+    "RESIDUAL_REVERSAL",
+    "BETA_WEIGHTED_RESIDUAL_REVERSAL"
+  ],
+  "primary_search_run_id": 39937394677,
+  "schema_version": 1,
+  "search_evaluations": 8504,
+  "selection_evaluations": 8400,
+  "status": "NO_ROBUST_WINNER",
+  "total_model_evaluations": 8505,
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "verified_mother_run_id": 39936974870,
+  "winner": null
+}

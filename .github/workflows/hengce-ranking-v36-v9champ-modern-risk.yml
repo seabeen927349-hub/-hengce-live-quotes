@@ -1,0 +1,30 @@
+name: HENGCE Ranking V36 V9 Champion Modern Risk
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v36_v9champ_modern_risk.py'
+      - '.github/workflows/hengce-ranking-v36-v9champ-modern-risk.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run V36 V9 champion modern risk
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/ranking_v36_v9champ_modern_risk.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/ranking_v36_v9champ_modern_risk_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v36-v9champ-modern-risk
+          path: |
+            research/codex_full_reset_20261023/ranking_v36_v9champ_modern_risk_result.json
+            research/codex_full_reset_20261023/ranking_v36_events.jsonl

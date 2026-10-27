@@ -1,0 +1,39 @@
+{
+  "status": "BLOCKED",
+  "asserted_identity": {
+    "path": "ChatGPT Library:/HENGCE_CANONICAL/HENGCE_2026_HIST_MOTHER.csv",
+    "sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
+    "rows": 207218,
+    "latest_date": "2026-10-21"
+  },
+  "actual_bytes_available": false,
+  "actual_sha256": null,
+  "schema_verified": null,
+  "unique_keys_verified": null,
+  "PIT_binding_verified": null,
+  "accessible_paths_checked": [
+    "uploaded task archive",
+    "/workspace/library-files",
+    "/workspace/shared",
+    "complete research Git tree at d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8",
+    "complete main Git tree at bbc2e123fc7007adab576406373ce5a553aeaafe"
+  ],
+  "matching_filename_in_either_git_tree": false,
+  "library_file_access_tool_available": false,
+  "current_canonical_identity": null,
+  "append_promotion_lineage_proven": false,
+  "promotion_20261022": {
+    "status": "PENDING",
+    "formal_complete_day": false,
+    "downstream_ready": false,
+    "reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION"
+  },
+  "margin_note": "Price leg is COMPLETE. Missing canonical promotion is independently blocking; margin alone is not asserted to be a price-model requirement.",
+  "replacement_created": false,
+  "evidence": [
+    "d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8/eod/20261021/receipts/mother.json",
+    "d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8/eod/20261022/status.json",
+    "RESEARCH_TREE.json",
+    "MAIN_TREE.json"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "study": "HENGCE_CODEX_FULL_RESET",
+  "status": "FROZEN_BEFORE_SEARCH_RESULTS",
+  "purpose": "Prevent unadjusted corporate-action or other unverified raw-price discontinuities from becoming apparent alpha.",
+  "source_context": {
+    "twse_rule": "Ordinary TWSE stocks generally have a daily price fluctuation limit of 10% around the opening reference price, with explicit exceptions such as the first five trading days of certain new listings.",
+    "official_reference": "https://twse-regulation.twse.com.tw/ENG/EN/law/DOC01.aspx?FLCODE=fl007304&FLNO=63",
+    "important_caveat": "A >15% close-to-close change is not asserted to be a corporate action. It is only treated as an unverified discontinuity because the reset corpus lacks complete PIT corporate-action/listing-exception lineage."
+  },
+  "rule": {
+    "unverified_discontinuity_if_abs_close_to_close_return_gt": 0.15,
+    "feature_window_crossing_discontinuity": "EXCLUDE_FEATURE_VALUE",
+    "beta_or_volatility_observation_on_discontinuity": "EXCLUDE_OBSERVATION",
+    "trade_outcome_window_crossing_discontinuity": "EXCLUDE_TRADE_FROM_MODEL_SELECTION_AND_VALIDATION",
+    "missing_or_nonpositive_open_close": "EXCLUDE_AFFECTED_FEATURE_OR_TRADE",
+    "no_adjusted_price_backfill": true
+  },
+  "sensitivity_requirement": "Any leading candidate must later be rechecked with a documented alternative discontinuity treatment; no winner may depend materially on these excluded events.",
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false
+  }
+}

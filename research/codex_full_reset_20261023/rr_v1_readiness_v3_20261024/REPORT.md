@@ -1,0 +1,19 @@
+# RR V1 Stage A — BLOCKED_DATA_READINESS
+
+Research parent: `d9e5eb23c8e7048fe8247a6cd27fc1a19a0639e8`. Observed main: `bbc2e123fc7007adab576406373ce5a553aeaafe` (direct branch read; PR base SHA was stale). Frozen Stage-A plan committed at `1bcb6fe2e3946e0b774600dd91247e00784f4dac` before new collection; no official market-data requests were made.
+
+All five mandatory gates remain BLOCKED; exact evidence SHA256 values are in READINESS_V3.json. Canonical mother bytes are absent from authorized mounted paths and both complete Git trees. Its 207,218-row/10/21 identity is an assertion from a receipt, not verified dataset bytes. The 10/22 status explicitly says mother PENDING and formal_complete_day=false. No promotion was fabricated. Margin availability alone is not treated as a price-model blocker.
+
+New reconciliation: main V43-owned history, main Q017 history and research Q017 history have identical Git blob `b84c642f262fdcb7ba68018548f4d90b1ff41b9e` (6,730,848 bytes). This proves byte equality, including equal key/value content, but neither validates daily PIT membership nor resolves preferred-share scope or a canonical pre-2026 warmup bridge. Prior seed mismatch (8112A on 10/16) remains attributed to existing lineage. Large CSV fetches returned empty content; no independent row scan is claimed. V43 ownership and official Type13 sync evidence are retained, with no automatic replacement of RR inputs.
+
+The exact frozen SOX input was read and SHA256 verified: 972 rows, date/close/ret1/ret5, 2022-12-01 through 2026-10-16. Frozen prior_macro selects the latest date strictly before signal date; independent publication-time/timezone causality remains unproven. No extension, stale fill, closes-only splice, threshold change or feature computation occurred.
+
+Retained V2 remains blocked for entitlement payment/delivery, listed identities, auction allocations and revision evidence. The three 2026 JSONL files record explicit scope gaps with null fields/UNKNOWN, not synthetic security evidence. Daily volume/one-price sessions do not prove fills; no same-ticker continuity, guessed adjustment, receivable reinvestment or undelivered-stock sale was assumed.
+
+Task evaluation count before/after: 8,529 / 8,529; new=0. Stage B did not run; its single evaluation remains unspent. No config, alternate, neighbor, rescue, feature/filter or model search ran. All pre-existing blobs are preserved by the base-tree commit construction and final compare; this is not an independent recount of prior trials.
+
+Exact changed inventory: CHANGED_FILES.json. Inputs actually read are SHA256-inventoried in EVIDENCE_INVENTORY.json and preserved losslessly in INPUT_SNAPSHOTS.json; full tree inventories bind unread parent files with Git object IDs. Prior reported source SHA256 values are labelled inherited assertions. READINESS_V3_AUDIT.json reports offline evidence/authority checks; scientific readiness remains blocked regardless of audit outcome. No inherited model/search code was executed. Complete candidate Git-tree comparison passed: all pre-existing blobs unchanged, exactly 20 new files under this readiness directory. Three negative audit checks rejected forced READY, an extra evaluation, and blocker promotion. No CI result is claimed here; final-head observations follow after commit.
+
+Limitations: no accessible canonical bytes, no 10/22 completed promotion, no certified warmup/PIT bridge, no current causally proven frozen macro, no applicable complete 2026 V2 proof. Resolve these existing-data access/evidence issues before any new evaluation; no second mother or parallel EOD tree was created.
+
+Production Q017/E2/M1/V43 semantics unchanged. No main write, rebase or merge; PR #30 remains OPEN/DRAFT/NOT MERGED. Research only; signal/ranking=false, capital=0, broker=false, production promotion=false, merge authority=false.

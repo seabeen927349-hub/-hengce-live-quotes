@@ -1,0 +1,159 @@
+{
+  "status": "FORENSIC_ONLY_NO_GATE_TUNING_YET",
+  "stock_selector": "FROZEN_UNCHANGED",
+  "baseline": {
+    "trades": 39,
+    "days": 14,
+    "pnl": 92555.80000000003,
+    "pf": 1.8882378005712006
+  },
+  "tier_summary": [
+    {
+      "tier": "BOTTOM3",
+      "days": 3,
+      "pnl": -50727.19999999997,
+      "base_count": 8.666666666666666,
+      "base_density": 0.01897865561058006,
+      "signal_count": 5.0,
+      "base_med_ret1": -0.028211932250044758,
+      "base_med_ret3": -0.05423096271860656,
+      "base_med_gap": -0.0032903421843824185,
+      "base_med_dist_ma10": -0.057961097123616336,
+      "base_med_lower_wick": 0.11842105263157933,
+      "base_med_close_loc": 0.3181818181818182,
+      "d1_base_density": 0.0036405748141323407,
+      "vs_prior20med_base_density": 0.007965386319165074
+    },
+    {
+      "tier": "MIDDLE",
+      "days": 8,
+      "pnl": 23065.39999999998,
+      "base_count": 26.0,
+      "base_density": 0.057125774196957683,
+      "signal_count": 13.25,
+      "base_med_ret1": -0.038061535955799544,
+      "base_med_ret3": -0.07851650390628472,
+      "base_med_gap": -0.022696880363875432,
+      "base_med_dist_ma10": -0.09071201340801435,
+      "base_med_lower_wick": 0.10964763475426992,
+      "base_med_close_loc": 0.2183247825574173,
+      "d1_base_density": 0.02219783243400565,
+      "vs_prior20med_base_density": 0.042414587467533675
+    },
+    {
+      "tier": "TOP3",
+      "days": 3,
+      "pnl": 120217.6,
+      "base_count": 13.0,
+      "base_density": 0.02857159829078475,
+      "signal_count": 6.666666666666667,
+      "base_med_ret1": -0.017448538866125702,
+      "base_med_ret3": -0.062460043030582425,
+      "base_med_gap": -0.006498726050993849,
+      "base_med_dist_ma10": -0.06589229857931093,
+      "base_med_lower_wick": 0.08357843137254901,
+      "base_med_close_loc": 0.29354420534093967,
+      "d1_base_density": -0.0299594576898423,
+      "vs_prior20med_base_density": -0.0007324310132445569
+    }
+  ],
+  "top_stable_correlations": [
+    {
+      "feature": "lag1_base_count",
+      "spearman_all14": 0.6880682529037044,
+      "spearman_ex_top3": 0.7551665363983314,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.6880682529037044
+    },
+    {
+      "feature": "base_mean_rank_severity",
+      "spearman_all14": 0.7538461538461538,
+      "spearman_ex_top3": 0.6636363636363638,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.6636363636363638
+    },
+    {
+      "feature": "lag1_base_density",
+      "spearman_all14": 0.6622666273742395,
+      "spearman_ex_top3": 0.7471545580282566,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.6622666273742395
+    },
+    {
+      "feature": "lag1_signal_density",
+      "spearman_all14": 0.6321601238159351,
+      "spearman_ex_top3": 0.7471545580282566,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.6321601238159351
+    },
+    {
+      "feature": "lag1_signal_count",
+      "spearman_all14": 0.6156509580135688,
+      "spearman_ex_top3": 0.7386081221066813,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.6156509580135688
+    },
+    {
+      "feature": "signal_med_body",
+      "spearman_all14": 0.43736263736263736,
+      "spearman_ex_top3": 0.5090909090909091,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.43736263736263736
+    },
+    {
+      "feature": "d1_signal_density",
+      "spearman_all14": -0.3256327603036127,
+      "spearman_ex_top3": -0.28181818181818186,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.28181818181818186
+    },
+    {
+      "feature": "d1_signal_count",
+      "spearman_all14": -0.3010349608195405,
+      "spearman_ex_top3": -0.2658216639493354,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.2658216639493354
+    },
+    {
+      "feature": "n_market",
+      "spearman_all14": -0.24904610373670194,
+      "spearman_ex_top3": -0.5933108277784941,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.24904610373670194
+    },
+    {
+      "feature": "signal_share_of_base",
+      "spearman_all14": -0.24196545686130175,
+      "spearman_ex_top3": -0.5371291452680612,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.24196545686130175
+    },
+    {
+      "feature": "base_med_body",
+      "spearman_all14": 0.3036305467695849,
+      "spearman_ex_top3": 0.2323468442648847,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.2323468442648847
+    },
+    {
+      "feature": "signal_med_gap",
+      "spearman_all14": -0.22662279940048724,
+      "spearman_ex_top3": -0.4738053294813334,
+      "n": 14,
+      "same_sign": true,
+      "min_abs_rho": 0.22662279940048724
+    }
+  ],
+  "governance": "This pass is diagnostic only. No gate is selected from the same output until mechanism is stated explicitly; any ME3 gate must then start as a new frozen 3M challenger."
+}

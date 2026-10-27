@@ -1,0 +1,61 @@
+# trigger: 2026-10-26 frozen 3m-to-1y validation
+name: HENGCE Frozen 3M to 1Y 20261026
+
+on:
+  push:
+    branches:
+      - 'research/codex-full-reset-run-20261023'
+    paths:
+      - '.github/workflows/hengce-frozen-3m-to-1y-20261026.yml'
+      - 'research/codex_full_reset_20261023/frozen_3m_to_1y_20261026.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pandas numpy
+
+      - name: Recover frozen historical electronics artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p _frozen_artifacts/a11670479047 _frozen_artifacts/a11670339491
+          for id in 11670479047 11670339491; do
+            echo "Downloading artifact ${id}"
+            curl -L --fail --retry 3 \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" \
+              -o "_frozen_artifacts/${id}.zip"
+            unzip -q "_frozen_artifacts/${id}.zip" -d "_frozen_artifacts/a${id}"
+          done
+          find _frozen_artifacts -maxdepth 4 -type f -printf '%p %s bytes\n' | sort | head -200
+
+      - name: Run frozen validator
+        run: python research/codex_full_reset_20261023/frozen_3m_to_1y_20261026.py
+
+      - name: Upload validation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-frozen-3m-1y-20261026
+          path: research/codex_full_reset_20261023/results/frozen_3m_1y_20261026/
+          if-no-files-found: warn

@@ -1,0 +1,37 @@
+name: I2 Prior-Only Hazard Ranker
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - research/codex_full_reset_20261023/i2_prior_only_hazard_ranker.py
+      - .github/workflows/i2-prior-only-hazard.yml
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run I2 prior-only hazard ranker
+        run: python -m research.codex_full_reset_20261023.i2_prior_only_hazard_ranker
+      - name: Upload I2 research artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-prior-only-hazard
+          if-no-files-found: error
+          path: |
+            research/codex_full_reset_20261023/I2_PRIOR_ONLY_HAZARD_RESULT_20261025.json
+            research/codex_full_reset_20261023/i2_prior_only_hazard_events.jsonl
+
+# retrigger 2026-10-25: execution-only; model specification unchanged

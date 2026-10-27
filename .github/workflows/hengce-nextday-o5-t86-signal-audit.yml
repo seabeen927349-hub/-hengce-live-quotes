@@ -1,0 +1,31 @@
+name: HENGCE Nextday O5 T86 Signal Audit
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_o5_t86_signal_audit.py'
+      - '.github/workflows/hengce-nextday-o5-t86-signal-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run O5 T86 orthogonal-signal audit
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/nextday_o5_t86_signal_audit.py
+      - name: Print result
+        if: always()
+        run: test -f research/codex_full_reset_20261023/nextday_o5_t86_signal_audit_result.json && cat research/codex_full_reset_20261023/nextday_o5_t86_signal_audit_result.json || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-o5-t86-signal-audit
+          path: research/codex_full_reset_20261023/nextday_o5_t86_signal_audit_result.json
+          if-no-files-found: ignore

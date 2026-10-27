@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "date": "2026-10-24",
+  "status": "RR_V1_ALREADY_EVALUATED_DIAGNOSTIC_V2_UNRESOLVED",
+  "scope": "Post-hoc RR V1 readiness/evaluation-state reconciliation; this recensus itself runs no model evaluation.",
+  "evaluation_ledger": {
+    "prior_model_evaluations_before_rr_v1": 8529,
+    "rr_v1_new_configurations_evaluated": 1,
+    "rr_v1_evaluation_8530": "SPENT_2026-10-23",
+    "rr_v1_result_artifact": "Library: RR_V1_SIM_RESULT.json",
+    "rr_v1_events_artifact": "Library: RR_V1_SIM_EVENTS.jsonl",
+    "rr_v1_result_created_at_utc": "2026-10-23T14:49:55.848782+00:00",
+    "global_total_after_later_ranking_research": "NOT_RECONCILED_IN_THIS_AUDIT",
+    "note": "Earlier 2026-10-24 recensus statements that #8530 was UNSPENT were incorrect and are superseded by this file. The RR V1 artifact itself states new_configurations_evaluated=1 and exactly matches the frozen config and requested period."
+  },
+  "rr_v1_observed_result_at_selection_cost_0_012": {
+    "status": "HISTORICAL_SIMULATION_COMPLETE",
+    "complete_trades": 6,
+    "compounded_return": 0.31388881985724804,
+    "win_rate": 0.6666666666666666,
+    "max_drawdown": -0.42557415909771434,
+    "remove_best_trade_return": -0.04026227616347766,
+    "interpretation": "Historical diagnostic only; not a confirmatory executable validation because V2 fail-closed evidence was unresolved. Frozen version history records V1 as rejected for sparse sample and best-trade dependence."
+  },
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "main_write": false
+  },
+  "gates": {
+    "canonical_2026_mother": {
+      "status": "PASS",
+      "note": "Existing canonical mother promoted through 2026-10-22 via original-vessel path."
+    },
+    "canonical_20261022_promotion": {
+      "status": "PASS",
+      "note": "Price and institutional available legs promoted into the same canonical mother; margin remains pending/NULL where unavailable."
+    },
+    "pit_electronics_2026_and_warmup": {
+      "status": "PASS",
+      "note": "Preserved old-vessel Q017/E2 electronics history covers 2026 through 2026-10-22, with frozen 2023-2025 official PIT membership as warmup lineage."
+    },
+    "macro_sox": {
+      "status": "PASS",
+      "note": "Existing frozen SOX definition and causal prior-US-session semantics are reproducible through requested end date."
+    },
+    "v2_entitlement_identity_execution": {
+      "status": "BLOCKED_FOR_CONFIRMATORY_INTERPRETATION",
+      "note": "V2 still does not prove entitlement payment/delivery, listed-security identity transitions, execution allocation/fill, or original first-seen/revision lineage. This does not undo the already-run RR V1 simulation; it limits the evidence grade of that result."
+    }
+  },
+  "preserved_evidence": {
+    "rr_v1_handoff_created_at_utc": "2026-10-23T14:19:46.228652+00:00",
+    "rr_v1_prereg_prior_total": 8529,
+    "rr_v1_prereg_max_new_evaluations": 1,
+    "rr_v1_sim_result_created_at_utc": "2026-10-23T14:49:55.848782+00:00",
+    "rr_v1_sim_result_config": "RESIDUAL_REVERSAL|NEG_RESID1|TO50000000|N1|H20|PRIOR_SOX5_LE_-0.03",
+    "version_history_v1_conclusion": "REJECTED_SPARSE_SAMPLE_AND_BEST_TRADE_DEPENDENCE",
+    "v2_readiness_source": "research/codex_full_reset_20261023/data_foundation_v2_20261023/results/READINESS_V2.json"
+  },
+  "decision": {
+    "rerun_rr_v1": false,
+    "reason": "The sole frozen RR V1 configuration was already evaluated once on 2026-10-23. A second run would violate the original one-evaluation contract and would not restore confirmatory status.",
+    "next_legal_action": "Do not rerun RR V1. Preserve the existing V1 simulation as historical diagnostic evidence. Continue only evidence reconciliation or prospective post-lock collection under a separately frozen protocol; do not reconstruct mother/PIT again and do not tune V1."
+  }
+}

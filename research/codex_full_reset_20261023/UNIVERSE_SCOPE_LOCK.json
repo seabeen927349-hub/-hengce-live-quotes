@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "study": "HENGCE_CODEX_FULL_RESET",
+  "status": "HARD_SCOPE_LOCK",
+  "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+  "included": [
+    "TWSE-listed securities present in the preserved daily point-in-time electronics membership set for the signal date"
+  ],
+  "excluded": [
+    "non-electronics TWSE stocks",
+    "financial stocks",
+    "traditional-industry stocks outside the electronics classification",
+    "ETFs",
+    "ETNs",
+    "TPEX/OTC securities",
+    "emerging-board securities",
+    "foreign markets"
+  ],
+  "enforcement": {
+    "membership_source": "research/e2_profit_max/membership/twse_electronics_membership_YYYY.csv",
+    "signal_date_ticker_must_exist_in_pit_membership": true,
+    "cross_sectional_market_state": "electronics universe only",
+    "ranking_universe": "electronics universe only",
+    "training_and_validation_universe": "electronics universe only",
+    "out_of_scope_trial_action": "REJECT_AND_RECORD",
+    "no_full_market_fallback": true,
+    "no_survivorship_backfill": true
+  },
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  }
+}

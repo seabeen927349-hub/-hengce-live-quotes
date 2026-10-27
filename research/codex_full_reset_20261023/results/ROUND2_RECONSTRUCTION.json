@@ -1,0 +1,99 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "production_promotion": false,
+    "research_only": true
+  },
+  "legacy_input": {
+    "chunk_count": 8,
+    "chunks": [
+      {
+        "bytes": 6000,
+        "name": "r2seg_01.txt",
+        "sha256": "8ec2041620ae075f88a83b407fbe9e8ddfe892b928f0f5e1172d25456b8dde08"
+      },
+      {
+        "bytes": 6000,
+        "name": "r2seg_02.txt",
+        "sha256": "13368b2e91f2f9848902f8a314078f9252ef1bdea5e676368b3743a0e690daee"
+      },
+      {
+        "bytes": 6000,
+        "name": "r2seg_03.txt",
+        "sha256": "407f698ee0df5a8d35815d8f1a1f7f58fa47ff569e7d441433be6dd1d6867353"
+      },
+      {
+        "bytes": 9000,
+        "name": "r2seg_04.txt",
+        "sha256": "5fee2e88a59a065abe7ec916c584f126109b5e0085611622ebacc429e12857d5"
+      },
+      {
+        "bytes": 6000,
+        "name": "r2seg_05.txt",
+        "sha256": "2d601242e5844ced0680d3421e8b360fffccaceff52e147efe7735148cf3278c"
+      },
+      {
+        "bytes": 6000,
+        "name": "r2seg_06.txt",
+        "sha256": "c21f5fe783562d8984c9e10cc3adc89bcdf10884c3c5bc930fcaa640ba86b4b9"
+      },
+      {
+        "bytes": 6000,
+        "name": "r2seg_07.txt",
+        "sha256": "3d50fafce6b3349f9b4f926c68ab3e5098b345cf9095fae2759a6c2e4a827774"
+      },
+      {
+        "bytes": 6000,
+        "name": "r2seg_08.txt",
+        "sha256": "6a1d69be22f8741c36a0739f884cb936e1b94a32a3c60d7590b46d985a727403"
+      }
+    ],
+    "directory": "research/e2_profit_max/round2/input",
+    "error": "Compressed file ended before the end-of-stream marker was reached",
+    "error_type": "EOFError",
+    "pattern": "r2seg_*.txt",
+    "status": "FAILED"
+  },
+  "legacy_interpretation": "LEGACY_INPUT_UNREADABLE_RETAIN_AS_FAILURE_EVIDENCE",
+  "original_runner_semantics": "concatenate chunks -> base64 decode -> gzip decompress -> JSON",
+  "research_interpretation": "ROUND2_SHOCK_PAYLOAD_NOT_PROVEN_USABLE",
+  "schema_version": 1,
+  "shock_chunk_vs_direct_exact_payload_match": false,
+  "shock_direct_payload": {
+    "bytes": 18340,
+    "error": "CRC check failed",
+    "error_type": "BadGzipFile",
+    "exists": true,
+    "path": "research/e2_profit_max/round2/input_shock/payload.json.gz.b64",
+    "sha256": "5a1d7233c5d578c16fb0ee8e33b7c322341dadf3d2c302f763f1bdf871df2b7b",
+    "status": "FAILED"
+  },
+  "shock_input": {
+    "chunk_count": 3,
+    "chunks": [
+      {
+        "bytes": 7000,
+        "name": "r2shock_01.txt",
+        "sha256": "a90672ad2c411801b4e2ce06e56e895547dca95d06aa3d9c81f96af7d3548892"
+      },
+      {
+        "bytes": 7000,
+        "name": "r2shock_02.txt",
+        "sha256": "62b49a85d313d935ebe240b5054322eff27a24cdd16ffd406b5e4a5b0dd36d26"
+      },
+      {
+        "bytes": 4340,
+        "name": "r2shock_03.txt",
+        "sha256": "0d50a0157a9a67aa878c3bc02cbe924a5ae2faa06f91cc76d4a79746c8050140"
+      }
+    ],
+    "directory": "research/e2_profit_max/round2/input_shock",
+    "error": "CRC check failed",
+    "error_type": "BadGzipFile",
+    "pattern": "r2shock_*.txt",
+    "status": "FAILED"
+  },
+  "shock_original_contract_ok": false,
+  "stage": "A_ROUND2_RECONSTRUCTION"
+}

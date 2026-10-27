@@ -1,0 +1,53 @@
+{
+  "hard_failure_count": 0,
+  "hard_failures": [],
+  "historical_evidence_failure_count": 8,
+  "historical_evidence_failures": [
+    {
+      "code": "ROUND2_SEGMENT_UNREADABLE",
+      "error": "Compressed file ended before the end-of-stream marker was reached",
+      "path": "research/e2_profit_max/round2/input/r2seg_01.txt"
+    },
+    {
+      "code": "ROUND2_SEGMENT_UNREADABLE",
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "path": "research/e2_profit_max/round2/input/r2seg_02.txt"
+    },
+    {
+      "code": "ROUND2_SEGMENT_UNREADABLE",
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "path": "research/e2_profit_max/round2/input/r2seg_03.txt"
+    },
+    {
+      "code": "ROUND2_SEGMENT_UNREADABLE",
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "path": "research/e2_profit_max/round2/input/r2seg_04.txt"
+    },
+    {
+      "code": "ROUND2_SEGMENT_UNREADABLE",
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "path": "research/e2_profit_max/round2/input/r2seg_05.txt"
+    },
+    {
+      "code": "ROUND2_SEGMENT_UNREADABLE",
+      "error": "Extra data: line 1 column 2 (char 1)",
+      "path": "research/e2_profit_max/round2/input/r2seg_06.txt"
+    },
+    {
+      "code": "ROUND2_SEGMENT_UNREADABLE",
+      "error": "Expecting value: line 1 column 1 (char 0)",
+      "path": "research/e2_profit_max/round2/input/r2seg_07.txt"
+    },
+    {
+      "code": "ROUND2_SEGMENT_UNREADABLE",
+      "error": "Extra data: line 1 column 2 (char 1)",
+      "path": "research/e2_profit_max/round2/input/r2seg_08.txt"
+    }
+  ],
+  "model_search_admission": "ELIGIBLE_FOR_STAGE_B_SEARCH_PLAN_FREEZE",
+  "note": "Unreadable historical evidence is retained and disclosed; it is never repaired, dropped, or promoted silently.",
+  "schema_version": 1,
+  "stage": "A_DATA_AUDIT",
+  "warning_count": 0,
+  "warnings": []
+}

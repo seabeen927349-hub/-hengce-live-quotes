@@ -1,0 +1,30 @@
+name: HENGCE Nextday N2 Executable Analog Veto
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_n2_executable_analog_veto.py'
+      - '.github/workflows/hengce-nextday-n2-executable-analog-veto.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run N2 executable next-day analog veto
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/nextday_n2_executable_analog_veto.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/nextday_n2_executable_analog_veto_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-n2-executable-analog-veto
+          path: |
+            research/codex_full_reset_20261023/nextday_n2_executable_analog_veto_result.json
+            research/codex_full_reset_20261023/nextday_n2_events.jsonl

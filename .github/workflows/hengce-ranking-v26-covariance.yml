@@ -1,0 +1,43 @@
+name: HENGCE Ranking V26 Covariance
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v26_covariance_weight.py'
+      - '.github/workflows/hengce-ranking-v26-covariance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: hengce-ranking-v26-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run fixed V26 covariance-aware weighting
+        run: PYTHONPATH=. python -u research/codex_full_reset_20261023/ranking_v26_covariance_weight.py
+      - name: Print result
+        if: always()
+        run: cat research/codex_full_reset_20261023/ranking_v26_covariance_weight_result.json 2>/dev/null || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v26-covariance
+          path: |
+            research/codex_full_reset_20261023/ranking_v26_covariance_weight_result.json
+            research/codex_full_reset_20261023/ranking_v26_events.jsonl
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,30 @@
+name: HENGCE Nextday P90 Rule Library Holdout
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_p90_rule_library_holdout.py'
+      - '.github/workflows/hengce-nextday-p90-rule-library-holdout.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run finite P90 rule holdout test
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/nextday_p90_rule_library_holdout.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/nextday_p90_rule_library_holdout_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-p90-rule-library-holdout
+          path: |
+            research/codex_full_reset_20261023/nextday_p90_rule_library_holdout_result.json
+            research/codex_full_reset_20261023/nextday_p90_rule_holdout_events.jsonl

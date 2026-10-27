@@ -1,0 +1,30 @@
+name: HENGCE Ranking V37 V36 Equity Budget
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/ranking_v37_v36_equity_budget.py'
+      - '.github/workflows/hengce-ranking-v37-v36-equity-budget.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run V37 V36 equity budget
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/ranking_v37_v36_equity_budget.py
+      - name: Print result
+        run: cat research/codex_full_reset_20261023/ranking_v37_v36_equity_budget_result.json
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-ranking-v37-v36-equity-budget
+          path: |
+            research/codex_full_reset_20261023/ranking_v37_v36_equity_budget_result.json
+            research/codex_full_reset_20261023/ranking_v37_events.jsonl

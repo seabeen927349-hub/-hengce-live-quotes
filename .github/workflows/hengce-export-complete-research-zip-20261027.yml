@@ -1,0 +1,132 @@
+name: HENGCE Export Complete Research ZIP 20261027
+
+on:
+  push:
+    branches:
+      - 'research/codex-full-reset-run-20261023'
+    paths:
+      - '.github/workflows/hengce-export-complete-research-zip-20261027.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create archive root
+        run: mkdir -p HENGCE_RESEARCH_COMPLETE_20261027
+
+      - name: Download formal frozen 3M to 1Y results
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-frozen-3m-1y-20261026
+          path: HENGCE_RESEARCH_COMPLETE_20261027/formal_frozen_3m_1y
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 40346583182
+
+      - name: Download fixed-capital round-lot results
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-frozen-fixed-capital-roundlot-20261026
+          path: HENGCE_RESEARCH_COMPLETE_20261027/fixed_capital_roundlot
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 40351684307
+
+      - name: Download ME2 original artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-me2-market-exhaustion-date-gate-20261027
+          path: HENGCE_RESEARCH_COMPLETE_20261027/me2_original_artifact
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 40359883822
+
+      - name: Download branch research package
+        uses: actions/download-artifact@v4
+        with:
+          name: HENGCE_BRANCH_RESEARCH_20261027
+          path: HENGCE_RESEARCH_COMPLETE_20261027/branch_research
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 40426908558
+
+      - name: Add research summary and integrity files
+        run: |
+          set -euo pipefail
+          A=HENGCE_RESEARCH_COMPLETE_20261027
+          printf '%s\n' \
+            '# HENGCE Research Complete Archive — 2026-10-27' \
+            '' \
+            'Complete preserved research chain for the frozen TWSE electronics rebound challenger.' \
+            '' \
+            '## Governance' \
+            '- New mechanisms validate on recent 3M first; failed 3M challengers are KILL and are not rescued with 1Y.' \
+            '- Only frozen 3M survivors may extend unchanged to 1Y.' \
+            '- Diagnostic evidence is not automatically an executable BUY rule.' \
+            '' \
+            '## Frozen selector' \
+            '- TWSE listed electronics.' \
+            '- breadth above MA20 < 50%.' \
+            '- ret3 percentile <= 20%.' \
+            '- gap percentile <= 20%.' \
+            '- MA10Dist percentile <= 20%.' \
+            '- lower_wick <= same-date base-candidate median.' \
+            '- Signal t close; entry t+1 Open; exit t+5 Close; 40bp benchmark.' \
+            '' \
+            '## Formal event-level result' \
+            '- 3M: N281 / 25 signal dates / mean +4.902411% / WR 61.5658% / PF 3.0136 / SURVIVE-FREEZE.' \
+            '- 1Y: N959 / 107 signal dates / mean +2.200477% / WR 52.2419% / PF 1.73123 / SURVIVE-FREEZE event level.' \
+            '' \
+            '## Executable fixed-capital result' \
+            '- NT$1,000,000, no compounding, 1000-share round lots, 40bp.' \
+            '- 39 trades / 14 signal days / P&L +92,555.8 / WR 66.67% / PF 1.8882378 / MDD -2.09979%.' \
+            '- Remove-best-3 signal dates P&L -27,661.8.' \
+            '- Classification: EXECUTION SURVIVE / FREEZE AS CHALLENGER; NOT FORMAL BUY.' \
+            '' \
+            '## ME2' \
+            '- Market Exhaustion Date Gate: NO SURVIVOR / KILL. No 1Y promotion.' \
+            '' \
+            '## ME3 forensic' \
+            '- lag1_base_count Spearman +0.688 all14 / +0.755 excluding Top3.' \
+            '- lag1_base_density +0.662 / +0.747.' \
+            '- lag1_signal_density +0.632 / +0.747.' \
+            '' \
+            '## ME3 challenger' \
+            '- Prior-day base density above prior-20-day median plus current density contraction.' \
+            '- 27 trades / 6 signal days / P&L +119,984.2 / PF 3.7169 / MDD -4.6302% / remove-best-3 days -17,001.8.' \
+            '- Decision: KILL. No 1Y promotion.' \
+            '' \
+            '## Overall' \
+            '- DATE / MARKET EXHAUSTION BRANCH = NO ROBUST SURVIVOR.' \
+            '- Next frontier: winner-vs-loser second-layer stock selector within the 39 executable trades, frozen trigger unchanged.' \
+            '' \
+            '## Historical-source caveat' \
+            '- Recovered TWSE electronics/type13 historical artifacts are research-grade; PIT membership, revisions and corporate actions are not independently deployment-certified.' \
+            > "$A/README.md"
+
+          printf '%s\n' \
+            'Repository: seabeen927349-hub/-hengce-live-quotes' \
+            'Branch: research/codex-full-reset-run-20261023' \
+            'Formal 3M->1Y run: 40346583182; artifact: 12661188173; sha256: 39d2330664a1c04e5e202e585456aa6cbb50173e3fc9b912e942bcef63eb4cca' \
+            'Fixed-capital run: 40351684307; artifact: 12663503906; sha256: 16230eff8b01b61452487967e802c81f7c3548af7f257111fd500a57e2372889' \
+            'ME2 run: 40359883822; artifact: 12667648779; sha256: ae821f75d6e474c68e8859350f586bdf2ed8349138f2e5822703e1d9de781b73' \
+            'Branch package run: 40426908558; artifact: 12700087337; head: 8a551e82f07481ab8211dca199668a32e48382e4; sha256: 7b6f4d1437e432fe4187903230d1a32d3e4916753cfd84296320e1fbaf5eef7b' \
+            > "$A/PROVENANCE.txt"
+
+          find "$A" -type f | sort > "$A/MANIFEST.txt"
+          (cd "$A" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload complete archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_RESEARCH_COMPLETE_20261027
+          path: HENGCE_RESEARCH_COMPLETE_20261027/
+          if-no-files-found: error
+          retention-days: 90

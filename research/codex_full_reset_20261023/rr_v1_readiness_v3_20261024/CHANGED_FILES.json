@@ -1,0 +1,27 @@
+{
+  "scope": "research/codex_full_reset_20261023/rr_v1_readiness_v3_20261024/",
+  "files": [
+    "AUTHORITY_LOCK.json",
+    "CANONICAL_MOTHER_RECONCILIATION.json",
+    "CHANGED_FILES.json",
+    "CORPORATE_ACTION_2026_EVIDENCE.jsonl",
+    "EVIDENCE_INVENTORY.json",
+    "EXECUTION_2026_EVIDENCE.jsonl",
+    "EXTERNAL_REQUESTS.json",
+    "FROZEN_MACRO_RECONCILIATION.json",
+    "IDENTITY_2026_EVIDENCE.jsonl",
+    "INPUT_SNAPSHOTS.json",
+    "PARENT_INVENTORY.json",
+    "PIT_KEY_DIFFS.jsonl",
+    "PIT_WARMUP_LINEAGE.json",
+    "READINESS_V3.json",
+    "READINESS_V3_AUDIT.json",
+    "READINESS_V3_PLAN.json",
+    "REPORT.md",
+    "SOURCE_IDENTITY_MATRIX.json",
+    "V2_2026_APPLICABILITY.json",
+    "audit.py"
+  ],
+  "all_are_new": true,
+  "existing_files_changed": []
+}

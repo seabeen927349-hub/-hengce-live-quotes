@@ -1,0 +1,33 @@
+name: HENGCE Nextday O1 Independent Event Hazard
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_o1_independent_event_hazard.py'
+      - '.github/workflows/hengce-nextday-o1-independent-event-hazard.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run O1 independent strict-nextday event hazard
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/nextday_o1_independent_event_hazard.py
+      - name: Print result
+        if: always()
+        run: test -f research/codex_full_reset_20261023/nextday_o1_independent_event_hazard_result.json && cat research/codex_full_reset_20261023/nextday_o1_independent_event_hazard_result.json || true
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-o1-independent-event-hazard
+          path: |
+            research/codex_full_reset_20261023/nextday_o1_independent_event_hazard_result.json
+            research/codex_full_reset_20261023/nextday_o1_independent_event_hazard_events.jsonl
+          if-no-files-found: ignore

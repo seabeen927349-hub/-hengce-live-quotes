@@ -1,0 +1,60 @@
+name: HENGCE Nextday T86 Challenger
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_t86_institutional_challenger.py'
+      - '.github/workflows/hengce-nextday-t86-challenger.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  t86-challenger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run fixed causal T86 challenger
+        run: |
+          set -euo pipefail
+          python -m research.codex_full_reset_20261023.nextday_t86_institutional_challenger | tee /tmp/t86-run.log
+          test -s research/codex_full_reset_20261023/nextday_t86_institutional_challenger_result.json
+      - name: Print compact gate result
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/codex_full_reset_20261023/nextday_t86_institutional_challenger_result.json')
+          if not p.exists():
+              print('T86_RESULT_MISSING')
+              raise SystemExit(0)
+          r=json.loads(p.read_text())
+          print('STATUS',r['status'])
+          print('CHAMPION',r['champion'])
+          print('COVERAGE',json.dumps(r['date_coverage'],ensure_ascii=False))
+          for n,j in r['judgment'].items():
+              print('MODEL',n)
+              print('WR20',json.dumps(j['win_rate_20bp_by_year'],ensure_ascii=False,sort_keys=True))
+              print('MEAN40',json.dumps(j['mean_return_40bp_by_year'],ensure_ascii=False,sort_keys=True))
+              print('POOLED40',j['pooled_40bp']['mean_return'])
+              print('PASS',j['strict_pass'])
+          PY
+      - name: Upload T86 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextday-t86-challenger
+          if-no-files-found: warn
+          path: |
+            research/codex_full_reset_20261023/nextday_t86_institutional_challenger_result.json
+            research/codex_full_reset_20261023/nextday_t86_institutional_challenger_events.jsonl
+            research/codex_full_reset_20261023/nextday_t86_cache_2024_2026.json
+            /tmp/t86-run.log

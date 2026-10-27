@@ -8,7 +8,26 @@ import sys
 from pathlib import Path
 
 import hengce_intraday_action_board as core
+import hengce_q017_structure_exit as q017_structure_exit
 from hengce_unified_contracts import ticker as _ticker, geometry, digest, atomic, strict_loads, ZERO_AUTHORITY
+
+
+def _effective_trade_date(base, live, explicit=None):
+    if explicit:
+        return str(explicit)
+    if isinstance(base, dict):
+        for key in ("valid_for_trade_date", "trade_date", "TradeDate"):
+            if base.get(key):
+                return str(base[key])[:10]
+    if isinstance(live, dict):
+        dates = {
+            str(r.get("quote_date"))[:10]
+            for r in live.get("data", [])
+            if isinstance(r, dict) and r.get("quote_date")
+        }
+        if len(dates) == 1:
+            return next(iter(dates))
+    return None
 
 
 def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
@@ -22,9 +41,18 @@ def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
         seen.add(name)
         if row.get('SourceProvenance') == 'Q017' and (geometry(row) is not None or row.get('FormalEntryTrigger') is not False):
             raise ValueError('Q017_GEOMETRY_AUTHORITY_VIOLATION')
+
     out = core.build(base, live, context, trade_date=trade_date, max_age_seconds=max_age_seconds, now=now)
     base_rows = base.get("rows", []) if isinstance(base, dict) else []
     evidence = {_ticker(r): r for r in base_rows if isinstance(r, dict) and _ticker(r)}
+    live_map = {
+        _ticker(r): r
+        for r in live.get("data", [])
+        if isinstance(live, dict) and isinstance(r, dict) and _ticker(r)
+    }
+    effective_trade_date = _effective_trade_date(base, live, trade_date)
+    binding_ok = out.get("binding_status") == "PASS"
+
     for row in out.get("rows", []):
         src = evidence.get(_ticker(row), {})
         row["SourceProvenance"] = src.get("SourceProvenance", "LEGACY")
@@ -37,8 +65,19 @@ def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
         row["GeometryStatus"] = "AVAILABLE" if geometry(src) is not None and src.get("SourceProvenance") != "Q017" else "UNAVAILABLE"
         row["LegacyEvidence"] = src.get("LegacyEvidence")
         row["Q017Evidence"] = src.get("Q017Evidence")
+
+        # Entry geometry remains fail-closed.  The Q017 structural overlay below
+        # is exit-only and may never create or upgrade an entry.
         if (row["GeometryStatus"] != "AVAILABLE" or not row["FormalCandidate"]) and row["FinalAction"] != "EXIT_ALL":
             row.update(FinalAction="ABSTAIN", ExecutionEligibility="ABSTAIN_GEOMETRY_UNAVAILABLE")
+
+        event = q017_structure_exit.classify(
+            src,
+            live_map.get(_ticker(row), {}),
+            effective_trade_date,
+        )
+        q017_structure_exit.apply(row, event, binding_ok)
+
     out["schema_version"] = max(2, int(out.get("schema_version") or 0))
     out["system"] = "HENGCE"
     out["module"] = "HENGCE_UNIFIED_INTRADAY_ACTION_BOARD"
@@ -47,6 +86,16 @@ def build(base, live, context, trade_date=None, max_age_seconds=480, now=None):
     out["q017_contract_status"] = base.get("q017_contract_status") if isinstance(base, dict) else None
     out["source_provenance_counts"] = base.get("source_provenance_counts") if isinstance(base, dict) else None
     out.update(ZERO_AUTHORITY)
+    out["q017_structural_exit_overlay"] = {
+        "version": "Q017_FAILED_RECLAIM_V1",
+        "scope": "ALREADY_HELD_Q017_OR_BOTH_ONLY",
+        "first_break": "STRUCTURE_WARNING_ALERT_ONLY",
+        "exit_states": ["STRUCTURE_EXIT_REBREAK", "STRUCTURE_EXIT_FAILED_RECLAIM"],
+        "pivot": "STRICT_ONE_BAR_CONFIRMED_CAUSAL",
+        "thresholds": "NONE",
+        "frozen_q017_signal_contract_changed": False,
+        "fixed_20_sessions_research_benchmark_changed": False,
+    }
     out["base_hash"] = digest(base)
     out["input_hashes"] = {"context": digest(context), "live": digest(live)}
     return out

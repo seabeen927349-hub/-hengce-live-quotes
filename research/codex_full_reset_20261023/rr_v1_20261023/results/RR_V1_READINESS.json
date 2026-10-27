@@ -1,0 +1,29 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "main_write_authorized": false,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "block_reasons": [
+    "CANONICAL_ACCUMULATED_MOTHER_REFERENCED_BUT_NOT_ACCESSIBLE",
+    "CANONICAL_20261022_PROMOTION_NOT_COMPLETE",
+    "FULL_2026_PIT_AND_WARMUP_LINEAGE_NOT_RECONCILED",
+    "FROZEN_MACRO_INPUT_NOT_CURRENT_FOR_REQUESTED_END_DATE",
+    "V2_ENTITLEMENT_IDENTITY_EXECUTION_EVIDENCE_NOT_PROVEN_FOR_2026"
+  ],
+  "data_status_is_not_model_failure": true,
+  "new_model_evaluations": 0,
+  "next_action": "STOP. Supply/reconcile the existing canonical mother and receipts, PIT/warmup and frozen macro lineage plus applicable V2 evidence, then separately review readiness. Do not substitute, tune or automatically spend the one-evaluation budget.",
+  "prior_model_evaluations": 8529,
+  "requested_interval": [
+    "2026-01-01",
+    "2026-10-22"
+  ],
+  "status": "BLOCKED_DATA_READINESS",
+  "total_model_evaluations": 8529
+}

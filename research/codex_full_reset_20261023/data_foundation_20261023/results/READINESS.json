@@ -1,0 +1,22 @@
+{
+  "authority": {
+    "broker_order_execution": false,
+    "capital_authority_twd": 0,
+    "merge_authorized": false,
+    "production_promotion": false,
+    "ranking_authority": false,
+    "research_only": true,
+    "signal_authority": false
+  },
+  "cumulative_prior_model_evaluations": 8529,
+  "hypothetical_adjusted_prices_generated": false,
+  "new_model_evaluations": 0,
+  "old_experiments_reclassified": false,
+  "reasons": [
+    "CORPORATE_ACTION_TERMS_AND_DELIVERY_NOT_COMPLETE",
+    "SECURITY_IDENTITY_CONTINUITY_NOT_COMPLETE",
+    "ORIGINAL_PUBLICATION_AND_REVISION_HISTORY_UNPROVEN",
+    "AUCTION_ALLOCATION_AND_FILL_EVIDENCE_UNAVAILABLE"
+  ],
+  "status": "BLOCKED_DATA_READINESS"
+}

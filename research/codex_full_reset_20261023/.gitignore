@@ -1,0 +1,3 @@
+__pycache__/
+continuation_20261023/results/*.lock
+results/**/*.lock

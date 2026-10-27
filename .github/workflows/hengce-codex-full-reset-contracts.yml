@@ -1,0 +1,121 @@
+name: HENGCE Full Reset Offline Contracts
+on:
+  push:
+    branches: ['research/codex-full-reset-run-20261023']
+    paths:
+      - 'research/codex_full_reset_20261023/**'
+      - '.github/workflows/hengce-codex-full-reset*.yml'
+  pull_request:
+    paths:
+      - 'research/codex_full_reset_20261023/**'
+      - '.github/workflows/hengce-codex-full-reset*.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  offline-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline synthetic contracts only - no model trials
+        run: |
+          python -B research/codex_full_reset_20261023/test_stage_b_contracts.py
+          python -B research/codex_full_reset_20261023/test_stage_c_integrity.py
+          python -B research/codex_full_reset_20261023/continuation_20261023/test_contracts.py
+          python -B research/codex_full_reset_20261023/data_foundation_20261023/test_evidence.py
+          python -B research/codex_full_reset_20261023/data_foundation_20261023/test_normalize.py
+          python -B research/codex_full_reset_20261023/data_foundation_v2_20261023/test_v2.py
+          python -B research/codex_full_reset_20261023/rr_v1_20261023/test_readiness.py
+      - name: Audit retained completed evidence offline - no model evaluation
+        run: |
+          if [ -f research/codex_full_reset_20261023/results/ARTIFACT_MANIFEST.json ]; then
+            python -B research/codex_full_reset_20261023/audit_completed_evidence.py
+          fi
+          if [ -f research/codex_full_reset_20261023/continuation_20261023/results/SUMMARY.json ]; then
+            python -B research/codex_full_reset_20261023/continuation_20261023/search.py --audit
+            python -B research/codex_full_reset_20261023/continuation_20261023/audit_checkpoint.py
+          fi
+          if [ -f research/codex_full_reset_20261023/data_foundation_20261023/results/MANIFEST.json ]; then
+            python -B research/codex_full_reset_20261023/data_foundation_20261023/audit_all.py
+          fi
+          if [ -f research/codex_full_reset_20261023/data_foundation_v2_20261023/results/READINESS_V2.json ]; then
+            python -B research/codex_full_reset_20261023/data_foundation_v2_20261023/audit.py
+          fi
+          RR_FINAL=9d140e209407035aa3c7b3df9ba8078d0d643458
+          RR_CORE=(
+            research/codex_full_reset_20261023/rr_v1_20261023/readiness.py
+            research/codex_full_reset_20261023/rr_v1_20261023/test_readiness.py
+            research/codex_full_reset_20261023/rr_v1_20261023/results
+          )
+          if ! git diff --quiet "$RR_FINAL" HEAD -- "${RR_CORE[@]}"; then
+            echo '::error::Retained RR V1 readiness evidence drifted after the frozen final head.'
+            git diff --name-status "$RR_FINAL" HEAD -- "${RR_CORE[@]}"
+            exit 1
+          fi
+          RR_TMP="$(mktemp -d)"
+          git worktree add --detach "$RR_TMP" "$RR_FINAL"
+          trap 'git worktree remove --force "$RR_TMP" >/dev/null 2>&1 || true' EXIT
+          python -B "$RR_TMP/research/codex_full_reset_20261023/rr_v1_20261023/readiness.py" --audit
+          git worktree remove --force "$RR_TMP"
+          trap - EXIT
+
+  frozen-3m-to-1y:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install validator dependencies
+        run: pip install pandas numpy scipy
+      - name: Recover frozen historical electronics artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p _frozen_artifacts/a11670479047 _frozen_artifacts/a11670339491
+          for id in 11670479047 11670339491; do
+            curl -L --fail --retry 3 \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" \
+              -o "_frozen_artifacts/${id}.zip"
+            unzip -q "_frozen_artifacts/${id}.zip" -d "_frozen_artifacts/a${id}"
+          done
+          find _frozen_artifacts -maxdepth 4 -type f -printf '%p %s bytes\n' | sort | head -200
+      - name: Run unchanged frozen signal validator
+        run: python research/codex_full_reset_20261023/frozen_3m_to_1y_20261026.py
+      - name: Run fixed NT$1m portfolio validator
+        run: python research/codex_full_reset_20261023/frozen_1m_portfolio_20261026.py
+      - name: Compare challenger with frozen NOVA6 recent-3M ledger
+        run: python research/codex_full_reset_20261023/compare_nova6_rebound_20261026.py
+      - name: Compare challenger with NOVA6 2025 audited tail
+        run: python research/codex_full_reset_20261023/compare_nova6_rebound_2025tail_20261026.py
+      - name: Audit rolling 63-session challenger stability
+        run: python research/codex_full_reset_20261023/rolling_3m_stability_20261026.py
+      - name: Discover healthy-market recent3m electronics factors
+        run: python research/codex_full_reset_20261023/healthy_market_discovery_20261026.py
+      - name: Upload frozen validation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-frozen-3m-1y-portfolio-compare-20261026
+          path: |
+            research/codex_full_reset_20261023/results/frozen_3m_1y_20261026/
+            research/codex_full_reset_20261023/results/frozen_1m_portfolio_20261026/
+            research/codex_full_reset_20261023/results/compare_nova6_rebound_20261026/
+            research/codex_full_reset_20261023/results/compare_nova6_rebound_2025tail_20261026/
+            research/codex_full_reset_20261023/results/rolling_3m_stability_20261026/
+            research/codex_full_reset_20261023/results/healthy_market_discovery_20261026/
+          if-no-files-found: warn

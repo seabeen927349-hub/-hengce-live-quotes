@@ -1,0 +1,38 @@
+name: HENGCE Nextday M1 Core Satellite
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_m1_core_satellite.py'
+      - '.github/workflows/hengce-nextday-m1-core-satellite.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  m1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run M1 core-satellite model
+        run: |
+          python -m research.codex_full_reset_20261023.nextday_m1_core_satellite | tee /tmp/m1.log
+          grep '^M1_RESULT=' /tmp/m1.log
+      - name: Upload M1 outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-m1-core-satellite
+          if-no-files-found: warn
+          path: |
+            research/codex_full_reset_20261023/nextday_m1_core_satellite_result.json
+            research/codex_full_reset_20261023/nextday_m1_core_satellite_events.jsonl

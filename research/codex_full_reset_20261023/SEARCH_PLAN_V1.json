@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "study": "HENGCE_CODEX_FULL_RESET",
+  "plan_version": "SEARCH_PLAN_V1",
+  "status": "FROZEN_BEFORE_SEARCH_RESULTS",
+  "frozen_corpus_base": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+  "research_branch": "research/codex-full-reset-run-20261023",
+  "objective": "Find a Pareto-optimal historical research model jointly strong in after-cost return and win rate, subject to sample size, drawdown, cost stress, concentration and temporal stability. Old models have no champion privilege.",
+  "historical_exposure": {
+    "years": [2023, 2024, 2025],
+    "pristine_holdout": false,
+    "label": "EXPOSED_DEVELOPMENT_VALIDATION_HISTORY",
+    "future_prospective_validation_required_before_production": true
+  },
+  "execution_semantics": {
+    "decision_time": "AFTER_TWSE_CLOSE_SIGNAL_DAY",
+    "entry": "NEXT_TWSE_TRADING_SESSION_OPEN",
+    "exit_price": "TWSE_CLOSE_AFTER_FIXED_TRADING_SESSION_HORIZON",
+    "intraday_execution_research": false,
+    "overlap": "ONE_ACTIVE_BASKET_AT_A_TIME",
+    "basket_weight": "EQUAL_WEIGHT_FOR_TOPN_GT_1",
+    "roundtrip_cost_scenarios": [0.008, 0.012, 0.016],
+    "cost_application": "SUBTRACT_ONCE_FROM_EACH_COMPLETE_POSITION_ROUNDTRIP",
+    "forced_close_at_fold_boundary": false
+  },
+  "causal_feature_rules": {
+    "signal_day_close_features_allowed": true,
+    "signal_day_outcome_or_future_open_forbidden": true,
+    "rolling_history": "STRICTLY_THROUGH_SIGNAL_DAY_CLOSE; beta estimator excludes signal-day return",
+    "macro": "LATEST_COMPLETED_PRIOR_US_SESSION_STRICTLY_BEFORE_TAIWAN_SIGNAL_DATE",
+    "membership": "EXACT_PRESERVED_PIT_DATE_TICKER_SET",
+    "corporate_action_adjustment": "UNAVAILABLE_UNLESS_PROVEN; candidates materially dependent on unproven adjustment are ineligible",
+    "institutional_margin": "NOT_IN_INITIAL_2023_2025_SEARCH_BECAUSE COMPLETE HISTORICAL PIT COVERAGE_IS_NOT_PRESERVED",
+    "microstructure": "NOT_IN_INITIAL_SEARCH_BECAUSE AUTHENTIC HISTORICAL_BOOK_QUOTE_COVERAGE_IS_NOT_PRESERVED"
+  },
+  "folds": [
+    {
+      "fold": "F1",
+      "selection_history": ["2023-01-01", "2023-12-31"],
+      "validation": ["2024-01-01", "2024-12-31"],
+      "validation_may_not_select_parameters": true
+    },
+    {
+      "fold": "F2",
+      "selection_history": ["2023-01-01", "2024-12-31"],
+      "validation": ["2025-01-01", "2025-12-31"],
+      "validation_may_not_select_parameters": true
+    }
+  ],
+  "purge_embargo": {
+    "principle": "A selection/evaluation calculation may use only trades whose complete outcome is contained inside its own period. No open trade is force-closed at a boundary.",
+    "max_horizon_sessions": 20,
+    "minimum_purge_sessions_for_future_ml_stage": 20,
+    "minimum_embargo_sessions_for_future_ml_stage": 20
+  },
+  "initial_hypothesis_families": [
+    {
+      "id": "RAW_REVERSAL",
+      "scores": ["NEG_R1", "NEG_R3", "NEG_R5"]
+    },
+    {
+      "id": "RAW_MOMENTUM",
+      "scores": ["R5", "R10", "R20"]
+    },
+    {
+      "id": "RESIDUAL_REVERSAL",
+      "scores": ["NEG_RESID1", "NEG_RESID3", "NEG_RESID5"]
+    },
+    {
+      "id": "RESIDUAL_MOMENTUM",
+      "scores": ["RESID5", "RESID10", "RESID20"]
+    },
+    {
+      "id": "VOLATILITY_NORMALIZED",
+      "scores": ["NEG_RESID1_DIV_VOL20", "R20_DIV_VOL20"]
+    },
+    {
+      "id": "BETA_WEIGHTED_RESIDUAL_REVERSAL",
+      "scores": ["BETA_TIMES_NEG_RESID1", "BETA_K10_RESID_REV", "BETA_K25_RESID_REV", "BETA_K50_RESID_REV"],
+      "note": "K25 is included only as one historical reference value, not privileged."
+    },
+    {
+      "id": "SIMPLE_RANK_ENSEMBLE",
+      "scores": ["RESID_REV1_PLUS_MOM20_RANK", "RESID_REV1_PLUS_LIQUIDITY_RANK"]
+    }
+  ],
+  "shared_parameter_grid": {
+    "minimum_avg_turnover20_twd": [0, 20000000, 50000000],
+    "top_n": [1, 3],
+    "holding_sessions": [1, 3, 5, 10, 20],
+    "market_regime": [
+      "ALL",
+      "LOCAL_M1_NEG",
+      "LOCAL_M5_LE_-0.02",
+      "LOCAL_M1_NEG_AND_M5_LE_-0.02",
+      "PRIOR_SOX1_LE_0",
+      "PRIOR_SOX5_LE_-0.03",
+      "LOCAL_SHOCK_AND_PRIOR_SOX_WEAK"
+    ]
+  },
+  "feature_definitions": {
+    "Rk": "ticker close-to-close return over k trading observations ending on signal day",
+    "MARKET_Rk": "cross-sectional median of valid PIT-member ticker Rk values on signal day",
+    "BETA60": "OLS slope of ticker daily return on electronics cross-sectional median daily return using up to 60 prior observations, min 30, excluding signal-day daily return",
+    "RESIDk": "ticker Rk minus BETA60 times MARKET_Rk",
+    "VOL20": "sample standard deviation of prior 20 ticker daily returns ending before signal-day daily return",
+    "TURNOVER20": "mean turnover_ntd of prior 20 observations ending on signal day",
+    "rank_ensemble": "mean of percentile ranks of named component scores among same-day eligible PIT members"
+  },
+  "family_selection_inside_each_fold": {
+    "selection_cost": 0.012,
+    "minimum_complete_trades": 6,
+    "minimum_active_calendar_years": 1,
+    "primary": "MAXIMIZE_AFTER_COST_COMPOUNDED_RETURN",
+    "tie_breakers": [
+      "HIGHER_WIN_RATE",
+      "LESS_NEGATIVE_MAX_DRAWDOWN",
+      "MORE_COMPLETE_TRADES",
+      "FEWER_FREE_PARAMETERS",
+      "LEXICOGRAPHIC_CONFIG_ID"
+    ],
+    "validation_data_used_for_selection": false
+  },
+  "historical_winner_eligibility_after_both_validation_folds": {
+    "minimum_total_validation_trades": 8,
+    "minimum_validation_trades_each_fold": 3,
+    "positive_compounded_return_each_fold_at_cost": 0.016,
+    "positive_total_compounded_return_at_costs": [0.008, 0.012, 0.016],
+    "remove_best_trade_still_positive_total_at_cost": 0.012,
+    "maximum_single_ticker_share_of_validation_trades": 0.5,
+    "maximum_single_trade_share_of_positive_pnl": 0.6,
+    "required_parameter_neighborhood_check": true,
+    "no_post_hoc_rescue": true
+  },
+  "pareto_dimensions": [
+    "TOTAL_VALIDATION_RETURN_AT_1.2PCT_COST",
+    "TOTAL_VALIDATION_WIN_RATE_AT_1.2PCT_COST",
+    "WORST_FOLD_RETURN_AT_1.6PCT_COST",
+    "MAX_DRAWDOWN_AT_1.2PCT_COST"
+  ],
+  "deterministic_winner_rule": [
+    "ELIGIBLE_ONLY",
+    "MAXIMIZE_WORST_FOLD_RETURN_AT_1.6PCT_COST",
+    "MAXIMIZE_TOTAL_RETURN_AT_1.2PCT_COST",
+    "MAXIMIZE_TOTAL_WIN_RATE_AT_1.2PCT_COST",
+    "MINIMIZE_ABSOLUTE_MAX_DRAWDOWN_AT_1.2PCT_COST",
+    "MINIMIZE_PARAMETER_COUNT",
+    "LEXICOGRAPHIC_MODEL_ID"
+  ],
+  "multiple_testing": {
+    "every_evaluated_config_counts": true,
+    "failures_rejects_aborts_count": true,
+    "report_family_trial_count": true,
+    "report_total_trial_count": true,
+    "bootstrap_confidence_intervals": "WHEN_SAMPLE_PERMITS",
+    "false_discovery_or_deflated_performance": "REPORT_WHEN_STATISTICALLY_MEANINGFUL; OTHERWISE INSUFFICIENT_SAMPLE",
+    "future_ml_models": "SEPARATE_STAGE_AND_BUDGET; NOT_ALLOWED_TO_LOOK_AT_CURRENT_VALIDATION_OUTCOMES_BEFORE_ITS_OWN_PLAN_FREEZE"
+  },
+  "baseline_policy": {
+    "candidate_b": "RECONSTRUCT_FROM_NEW_OFFICIAL_MOTHER_AS_A_NEW_REPRODUCTION_ATTEMPT; old aggregate numbers remain reference evidence because preserved event payload is corrupt",
+    "q017": "BEHAVIOR_OR_PERFORMANCE_BASELINE_ONLY_TO_THE_EXTENT_CAUSAL_EVENT_LEVEL_EVIDENCE_EXISTS",
+    "candidate_c": "FAILED_ABORTED_HISTORICAL_REFERENCE",
+    "baseline_failure_action": "BASELINE_REPRODUCTION_FAILED_NO_FABRICATION"
+  },
+  "authority": {
+    "research_only": true,
+    "signal_authority": false,
+    "ranking_authority": false,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "merge_authorized": false
+  }
+}

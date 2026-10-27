@@ -1,0 +1,28 @@
+name: HENGCE HR1 Any-Rise Precision Search
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/hr1_anyrise_precision_search.py'
+      - '.github/workflows/hengce-hr1-anyrise-precision.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run HR1 any-rise precision search
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/hr1_anyrise_precision_search.py
+      - name: Upload HR1 result
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-hr1-anyrise-precision
+          path: |
+            research/codex_full_reset_20261023/HR1_ANYRISE_PRECISION_RESULT_20261025.json
+            research/codex_full_reset_20261023/hr1_anyrise_champion_events.jsonl

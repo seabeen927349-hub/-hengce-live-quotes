@@ -1,0 +1,480 @@
+{
+  "source": "EXTRACTED_FROM_GITHUB_JOB_LOGS_NOT_ORIGINAL_ARTIFACT_BYTES",
+  "run_id": 39934293291,
+  "receipts": [
+    {
+      "authority": {
+        "broker_order_execution": false,
+        "capital_authority_twd": 0,
+        "production_promotion": false,
+        "ranking_authority": false,
+        "research_only": true,
+        "signal_authority": false
+      },
+      "expected_trading_dates": 243,
+      "failed_dates": 128,
+      "first_failures": [
+        {
+          "date": "2025-03-14",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-03-19",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-03-20",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-03-21",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-03-24",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-03-25",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-03-26",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-03-27",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-03-28",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-08",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-09",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-10",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-11",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-14",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-15",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-16",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-17",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-25",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-28",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2025-04-29",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 441,
+          "status": "FETCH_ERROR"
+        }
+      ],
+      "frozen_corpus_base": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+      "membership_source": {
+        "dates": 243,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2025.csv",
+        "rows": 107709,
+        "sha256": "da4a8c6deb7cad5d221d453b64e2685b771242db6ce8fc5128d11aa21cfe7e14",
+        "year": 2025
+      },
+      "mother_path": "TWSE_ELECTRONICS_DAILY_2025.csv.gz",
+      "mother_sha256": "b6e2dee77fdf369fe59ac40fcddebbbb32ecb6815df93d1a7f87169f131a2606",
+      "normalization_rule": "PINNED_MEMBERSHIP_ACQUISITION_V2_FOUR_ASCII_DIGITS",
+      "normalization_source_sha256": "76817f973b09cb319d999115c619b7388b833fa770bba09b322c2dff531e1d01",
+      "pass_dates": 115,
+      "qa_path": "TWSE_MOTHER_QA_2025.jsonl",
+      "qa_sha256": "3404a251ca0799e7d68d83b8f31076388fe6c70e8ec2eac02d625a613eb2e089",
+      "retrieval_time_utc": "2026-10-23T10:01:05.282424+00:00",
+      "rows_written": 50883,
+      "schema_version": 2,
+      "source": "TWSE MI_INDEX type=13 historical daily CSV",
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+      "stage": "B_YEARLY_OFFICIAL_MOTHER_REBUILD",
+      "status": "FAIL_CLOSED_DATE_OR_MEMBERSHIP_MISMATCH",
+      "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+      "year": 2025
+    },
+    {
+      "authority": {
+        "broker_order_execution": false,
+        "capital_authority_twd": 0,
+        "production_promotion": false,
+        "ranking_authority": false,
+        "research_only": true,
+        "signal_authority": false
+      },
+      "expected_trading_dates": 239,
+      "failed_dates": 138,
+      "first_failures": [
+        {
+          "date": "2023-03-21",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-03-22",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-03-23",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-03-24",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-03-27",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-03-28",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-03-29",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-03-30",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-03-31",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-07",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 422,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-12",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 421,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-13",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 420,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-14",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 419,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-17",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 419,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-18",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 419,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-19",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 419,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-20",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 419,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-21",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 419,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-24",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 421,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2023-04-25",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 421,
+          "status": "FETCH_ERROR"
+        }
+      ],
+      "frozen_corpus_base": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+      "membership_source": {
+        "dates": 239,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2023.csv",
+        "rows": 101024,
+        "sha256": "296f19c0c676e558007b22f12e08ba9f81045ad3706d9609b7a151974b6ece3e",
+        "year": 2023
+      },
+      "mother_path": "TWSE_ELECTRONICS_DAILY_2023.csv.gz",
+      "mother_sha256": "c17de757a8ecfcadd4ef6fa24bcb5cedbdbab3e79d0c21a54936d9483b899744",
+      "normalization_rule": "PINNED_MEMBERSHIP_ACQUISITION_V2_FOUR_ASCII_DIGITS",
+      "normalization_source_sha256": "76817f973b09cb319d999115c619b7388b833fa770bba09b322c2dff531e1d01",
+      "pass_dates": 101,
+      "qa_path": "TWSE_MOTHER_QA_2023.jsonl",
+      "qa_sha256": "f81c2e2d1bfd291e5c8c9c7abfe26d2100682bce17bfd868693c172aa1643bf8",
+      "retrieval_time_utc": "2026-10-23T10:01:27.311189+00:00",
+      "rows_written": 42674,
+      "schema_version": 2,
+      "source": "TWSE MI_INDEX type=13 historical daily CSV",
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+      "stage": "B_YEARLY_OFFICIAL_MOTHER_REBUILD",
+      "status": "FAIL_CLOSED_DATE_OR_MEMBERSHIP_MISMATCH",
+      "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+      "year": 2023
+    },
+    {
+      "authority": {
+        "broker_order_execution": false,
+        "capital_authority_twd": 0,
+        "production_promotion": false,
+        "ranking_authority": false,
+        "research_only": true,
+        "signal_authority": false
+      },
+      "expected_trading_dates": 242,
+      "failed_dates": 142,
+      "first_failures": [
+        {
+          "date": "2024-03-15",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 431,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-18",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 431,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-19",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 431,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-20",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 431,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-21",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 430,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-22",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 430,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-25",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 430,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-26",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 431,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-27",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 431,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-03-28",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 431,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-03",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-08",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-09",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-10",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-11",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-12",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-15",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-16",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-17",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        },
+        {
+          "date": "2024-04-18",
+          "error": "HTTPError:HTTP Error 307: Temporary Redirect",
+          "expected_tickers": 432,
+          "status": "FETCH_ERROR"
+        }
+      ],
+      "frozen_corpus_base": "05bf0e35fb6a88473fd4f947952ef1b6875d3f88",
+      "membership_source": {
+        "dates": 242,
+        "path": "research/e2_profit_max/membership/twse_electronics_membership_2024.csv",
+        "rows": 105016,
+        "sha256": "13c8ffe2cb6cfaaa2516c90482d0aecda933cb33ae4eb1cffbbc90e49d77bd7d",
+        "year": 2024
+      },
+      "mother_path": "TWSE_ELECTRONICS_DAILY_2024.csv.gz",
+      "mother_sha256": "c081e7863c17df2f8b7bac05b4e756713178d4f1a5c2c0e0d612971683986f15",
+      "normalization_rule": "PINNED_MEMBERSHIP_ACQUISITION_V2_FOUR_ASCII_DIGITS",
+      "normalization_source_sha256": "76817f973b09cb319d999115c619b7388b833fa770bba09b322c2dff531e1d01",
+      "pass_dates": 100,
+      "qa_path": "TWSE_MOTHER_QA_2024.jsonl",
+      "qa_sha256": "1ccb42d9ca44aade575ba44048a9e039e0129aa89c5211c4a5e02aa14a675a9b",
+      "retrieval_time_utc": "2026-10-23T10:01:43.971302+00:00",
+      "rows_written": 43282,
+      "schema_version": 2,
+      "source": "TWSE MI_INDEX type=13 historical daily CSV",
+      "source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+      "stage": "B_YEARLY_OFFICIAL_MOTHER_REBUILD",
+      "status": "FAIL_CLOSED_DATE_OR_MEMBERSHIP_MISMATCH",
+      "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+      "year": 2024
+    }
+  ]
+}

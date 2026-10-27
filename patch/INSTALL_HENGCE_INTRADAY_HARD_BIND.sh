@@ -41,9 +41,10 @@ copy_one(){
 }
 
 copy_one "$BUNDLE_ROOT/scripts/hengce_intraday_action_board.py" "$TARGET/work/hengce_intraday_action_board.py"
-for module in hengce_unified_contracts hengce_unified_candidate_adapter hengce_unified_q017_admission hengce_unified_action_board hengce_unified_runner hengce_unified_scan_display hengce_scan_once_router hengce_twse_calendar; do
+for module in hengce_unified_contracts hengce_unified_candidate_adapter hengce_unified_q017_admission hengce_q017_position_watch hengce_q017_structure_exit hengce_alert_ledger hengce_unified_action_board hengce_unified_runner hengce_unified_scan_display hengce_scan_once_router hengce_twse_calendar; do
   copy_one "$BUNDLE_ROOT/scripts/$module.py" "$TARGET/work/$module.py"
 done
+copy_one "$BUNDLE_ROOT/hengce/q017_radar/data/twse_electronics_history_2026.csv" "$TARGET/hengce/q017_radar/data/twse_electronics_history_2026.csv"
 copy_one "$BUNDLE_ROOT/scripts/RUN_INTRADAY_ACTION_BOARD.sh" "$TARGET/RUN_INTRADAY_ACTION_BOARD.sh"
 copy_one "$BUNDLE_ROOT/scripts/RUN_HENGCE_COMPLETE.sh" "$TARGET/RUN_HENGCE_COMPLETE.sh"
 copy_one "$BUNDLE_ROOT/scripts/RUN_IN_WORK_DETACHED.sh" "$TARGET/RUN_IN_WORK_DETACHED.sh"
@@ -62,6 +63,9 @@ bash -n "$TARGET/RUN_HENGCE.sh"
 python3 "$TARGET/work/hengce_intraday_action_board.py" --self-test >/dev/null
 HENGCE_ROOT="$TARGET" PYTHONPATH="$TARGET/work" python3 - <<'PY'
 import hengce_twse_calendar as c
+import hengce_q017_position_watch
+import hengce_q017_structure_exit
+import hengce_alert_ledger
 m,p,_=c.load_manifest()
 assert p.name==c.MANIFEST_NAME
 assert not c.is_trading_day('2026-10-23',m)
@@ -97,9 +101,10 @@ from datetime import datetime,timezone
 root,backup,receipt,models,expected_present=sys.argv[1:]
 rels=[
  'work/hengce_unified_contracts.py','work/hengce_unified_candidate_adapter.py','work/hengce_unified_q017_admission.py',
+ 'work/hengce_q017_position_watch.py','work/hengce_q017_structure_exit.py','work/hengce_alert_ledger.py',
  'work/hengce_unified_action_board.py','work/hengce_unified_runner.py','work/hengce_unified_scan_display.py','work/hengce_scan_once_router.py',
- 'work/hengce_twse_calendar.py','work/hengce_intraday_action_board.py','RUN_INTRADAY_ACTION_BOARD.sh','RUN_HENGCE_COMPLETE.sh',
- 'RUN_IN_WORK_DETACHED.sh','CHECK_HENGCE_RUN.sh','RUN_HENGCE.sh',
+ 'work/hengce_twse_calendar.py','work/hengce_intraday_action_board.py','hengce/q017_radar/data/twse_electronics_history_2026.csv',
+ 'RUN_INTRADAY_ACTION_BOARD.sh','RUN_HENGCE_COMPLETE.sh','RUN_IN_WORK_DETACHED.sh','CHECK_HENGCE_RUN.sh','RUN_HENGCE.sh',
  'governance/HENGCE_INTRADAY_ACTION_BOARD_CONTRACT_v1_0_20261015.json',
  'governance/TWSE_TRADING_CALENDAR_2026_v1.json','governance/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json']
 def sha(p):

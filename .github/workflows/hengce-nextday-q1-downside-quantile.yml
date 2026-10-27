@@ -1,0 +1,38 @@
+name: HENGCE Nextday Q1 Downside Quantile
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_q1_downside_quantile_basket.py'
+      - '.github/workflows/hengce-nextday-q1-downside-quantile.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  q1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run Q1 downside-quantile basket
+        run: |
+          python -m research.codex_full_reset_20261023.nextday_q1_downside_quantile_basket | tee /tmp/q1.log
+          grep '^Q1_RESULT=' /tmp/q1.log
+      - name: Upload Q1 research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-q1-downside-quantile
+          if-no-files-found: warn
+          path: |
+            research/codex_full_reset_20261023/nextday_q1_downside_quantile_basket_result.json
+            research/codex_full_reset_20261023/nextday_q1_downside_quantile_basket_events.jsonl

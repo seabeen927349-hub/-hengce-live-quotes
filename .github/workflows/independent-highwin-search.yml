@@ -1,0 +1,29 @@
+name: Independent High-Win Search
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/independent_highwin_search.py'
+      - '.github/workflows/independent-highwin-search.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run fully independent high-win search
+        run: PYTHONPATH=. python research/codex_full_reset_20261023/independent_highwin_search.py
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-highwin-search
+          path: |
+            research/codex_full_reset_20261023/INDEPENDENT_HIGHWIN_RESULT_20261025.json
+            research/codex_full_reset_20261023/independent_highwin_champion_events.jsonl
+# retrigger corrected rank-direction build

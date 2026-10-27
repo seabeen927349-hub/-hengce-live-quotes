@@ -1,0 +1,117 @@
+name: HENGCE Codex Full Reset Stage C Search
+
+on:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - '.github/workflows/hengce-codex-full-reset-stage-c.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: hengce-codex-full-reset-stage-c-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  electronic-stock-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      STAGE_B_RUN_ID: '39936974870'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Offline temporal and retention regressions
+        run: |
+          python -B research/codex_full_reset_20261023/test_stage_b_contracts.py
+          python -B research/codex_full_reset_20261023/test_stage_c_integrity.py
+      - name: Resolve pinned historical references and audit corpus
+        run: |
+          python - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          manifest=json.loads(Path('research/codex_full_reset_20261023/CORPUS_MANIFEST.json').read_text())
+          for ref in manifest['historical_fixed_refs']:
+              sha=ref['head_sha']
+              if subprocess.run(['git','cat-file','-e',sha+'^{commit}'],stderr=subprocess.DEVNULL).returncode:
+                  subprocess.run(['git','fetch','origin',sha],check=True)
+          PY
+          python -B research/codex_full_reset_20261023/corpus_snapshot_audit.py
+          python -B research/codex_full_reset_20261023/stage_a_data_audit.py
+      - name: Compile frozen searcher
+        run: python -m py_compile research/codex_full_reset_20261023/stage_c_rule_search.py
+
+      - name: Retain preregistration before any model evaluation
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-reset-preregistration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            research/codex_full_reset_20261023/results/SEARCH_PREREGISTRATION.json
+            research/codex_full_reset_20261023/METHOD_CORRECTIONS_V1.json
+            research/codex_full_reset_20261023/SEARCH_PLAN_V1.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Wait for exact Stage B run and require success
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 70); do
+            status="$(gh api repos/${GITHUB_REPOSITORY}/actions/runs/${STAGE_B_RUN_ID} --jq .status)"
+            conclusion="$(gh api repos/${GITHUB_REPOSITORY}/actions/runs/${STAGE_B_RUN_ID} --jq '.conclusion // ""')"
+            echo "Stage B run=${STAGE_B_RUN_ID} status=${status} conclusion=${conclusion}"
+            if [ "$status" = "completed" ]; then
+              test "$conclusion" = "success"
+              exit 0
+            fi
+            sleep 30
+          done
+          echo 'Stage B did not complete inside the bounded wait window' >&2
+          exit 2
+
+      - name: Download exact Stage B artifact
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/stage_b
+          gh run download "$STAGE_B_RUN_ID" --repo "$GITHUB_REPOSITORY" --name hengce-codex-full-reset-stage-b-mother --dir /tmp/stage_b
+          find /tmp/stage_b -maxdepth 2 -type f -print
+          test -f /tmp/stage_b/TWSE_ELECTRONICS_DAILY_2023_2025.csv.gz
+          test -f /tmp/stage_b/TWSE_MOTHER_RECEIPT.json
+
+      - name: Run preregistered TWSE electronics chronological search
+        run: |
+          python research/codex_full_reset_20261023/stage_c_rule_search.py \
+            --mother /tmp/stage_b/TWSE_ELECTRONICS_DAILY_2023_2025.csv.gz \
+            --mother-receipt /tmp/stage_b/TWSE_MOTHER_RECEIPT.json
+
+      - name: Print search decision
+        if: always()
+        run: |
+          echo '--- SEARCH_RUN_RECEIPT ---'
+          cat research/codex_full_reset_20261023/results/stage_c/runs/${{ github.run_id }}-${{ github.run_attempt }}/SEARCH_RUN_RECEIPT.json 2>/dev/null || true
+          echo '--- WINNER_OR_NO_WINNER ---'
+          cat research/codex_full_reset_20261023/results/stage_c/runs/${{ github.run_id }}-${{ github.run_attempt }}/WINNER_OR_NO_WINNER.json 2>/dev/null || true
+          echo '--- BASELINE_REPRODUCTION ---'
+          cat research/codex_full_reset_20261023/results/stage_c/runs/${{ github.run_id }}-${{ github.run_attempt }}/BASELINE_REPRODUCTION.json 2>/dev/null || true
+
+      - name: Upload Stage C evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-codex-full-reset-stage-c-search
+          path: research/codex_full_reset_20261023/results/stage_c/
+          if-no-files-found: warn
+          retention-days: 90
+          compression-level: 6

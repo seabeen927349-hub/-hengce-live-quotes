@@ -1,0 +1,43 @@
+name: HENGCE Nextday G1 Market Gate Residual
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/codex-full-reset-run-20261023
+    paths:
+      - 'research/codex_full_reset_20261023/nextday_g1_market_gate_residual.py'
+      - '.github/workflows/hengce-nextday-g1-market-gate-residual.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  g1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/codex-full-reset-run-20261023
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run G1 market gate residual model
+        run: |
+          python -m research.codex_full_reset_20261023.nextday_g1_market_gate_residual | tee /tmp/g1.log
+          grep '^G1_RESULT=' /tmp/g1.log
+
+      - name: Upload G1 research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-nextday-g1-market-gate-residual
+          if-no-files-found: warn
+          path: |
+            research/codex_full_reset_20261023/nextday_g1_market_gate_residual_result.json
+            research/codex_full_reset_20261023/nextday_g1_market_gate_residual_events.jsonl

@@ -1,0 +1,40 @@
+{
+  "status": "PASS_BLOCKED_EVIDENCE_ONLY",
+  "archive_sha256": "1ee83e46d8bbd259f3bae0d478cd1d8d1d61bb217bc4e7bdd6c4898ea67205e4",
+  "internal_manifest_entries_verified": 6,
+  "direct_row_scan": true,
+  "receipt_null_sets_verified": true,
+  "negative_checks": [
+    {
+      "case": "forged_row_count",
+      "result": "REJECTED_AS_EXPECTED"
+    },
+    {
+      "case": "forged_missing_ticker_set",
+      "result": "REJECTED_AS_EXPECTED"
+    }
+  ],
+  "prior_model_evaluations": 8529,
+  "new_model_evaluations": 0,
+  "total_model_evaluations": 8529,
+  "stage_b_ran": false,
+  "authority": {
+    "research_only": true,
+    "signal_authority": false,
+    "ranking_authority": false,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false,
+    "main_write_authorized": false,
+    "merge_authorized": false
+  },
+  "official_external_requests": [],
+  "canonical_input_mutated": false,
+  "raw_csv_committed_as_second_mother": false,
+  "prior_evidence_preserved": "Append-only subdirectory; existing V3 files remain unchanged.",
+  "limitations": [
+    "Canonical price/institutional/margin leg files and original raw receipts are not supplied by this bridge; no independent source-value reconstruction claimed.",
+    "Full 2026 PIT membership/security identities and pre-2026 warmup remain unproven.",
+    "10/22 promotion, current frozen macro and applicable V2 evidence remain blocked."
+  ]
+}
