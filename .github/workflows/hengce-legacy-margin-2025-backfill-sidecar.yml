@@ -1,0 +1,103 @@
+name: HENGCE Legacy 2025 Margin Backfill Sidecar
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-legacy-margin-2025-backfill-sidecar.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch 2025 TWSE MI_MARGN raw data
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/raw
+          python - <<'PY'
+          import datetime as dt, json, pathlib, time, urllib.parse, urllib.request
+
+          out = pathlib.Path('out/raw')
+          start, end = dt.date(2025,1,1), dt.date(2025,12,31)
+          manifest = []
+          headers = {
+              'User-Agent': 'Mozilla/5.0 HENGCE-Legacy-Research-Sidecar/1.0',
+              'Accept': 'application/json,text/plain,*/*',
+              'Referer': 'https://www.twse.com.tw/'
+          }
+
+          def fetch(day):
+              ds = day.strftime('%Y%m%d')
+              url = f'https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date={ds}&selectType=ALL&response=json'
+              err = None
+              for attempt in range(5):
+                  try:
+                      req = urllib.request.Request(url, headers=headers)
+                      with urllib.request.urlopen(req, timeout=30) as r:
+                          raw = r.read()
+                      obj = json.loads(raw.decode('utf-8-sig'))
+                      stat = str(obj.get('stat',''))
+                      if stat == 'OK':
+                          (out / f'MI_MARGN_{ds}.json').write_bytes(raw)
+                          return {'date':ds,'ok':True,'stat':stat,'bytes':len(raw),'url':url}
+                      return {'date':ds,'ok':False,'stat':stat,'bytes':len(raw),'url':url}
+                  except Exception as e:
+                      err = repr(e)
+                      time.sleep(1.5 * (attempt + 1))
+              return {'date':ds,'ok':False,'error':err,'url':url}
+
+          day = start
+          while day <= end:
+              if day.weekday() < 5:
+                  rec = fetch(day)
+                  manifest.append(rec)
+                  print(rec, flush=True)
+                  time.sleep(0.45)
+              day += dt.timedelta(days=1)
+
+          # One retry pass only for request failures; no-data holidays stay no-data.
+          retry_dates = [r['date'] for r in manifest if (not r.get('ok')) and r.get('error')]
+          for ds in retry_dates:
+              day = dt.datetime.strptime(ds,'%Y%m%d').date()
+              rec = fetch(day)
+              for i, old in enumerate(manifest):
+                  if old['date'] == ds:
+                      manifest[i] = rec
+                      break
+              print('RETRY', rec, flush=True)
+              time.sleep(1.0)
+
+          valid = [r for r in manifest if r.get('ok')]
+          failed_requests = [r for r in manifest if r.get('error') and not r.get('ok')]
+          summary = {
+              'artifact':'HENGCE_LEGACY_2025_MARGIN_RAW_SIDECAR',
+              'authority':'RESEARCH_DATA_TRANSPORT_ONLY_NO_MODEL_CHANGE',
+              'year':2025,
+              'weekday_attempts':len(manifest),
+              'valid_trading_dates':len(valid),
+              'failed_requests':len(failed_requests),
+              'first_valid':valid[0]['date'] if valid else None,
+              'last_valid':valid[-1]['date'] if valid else None,
+              'manifest':manifest,
+          }
+          pathlib.Path('out/manifest.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
+          print('SUMMARY', json.dumps({k:v for k,v in summary.items() if k!='manifest'}, ensure_ascii=False), flush=True)
+          if failed_requests:
+              raise SystemExit(f'network failures remain: {len(failed_requests)}')
+          if len(valid) < 220:
+              raise SystemExit(f'insufficient valid trading dates: {len(valid)}')
+          PY
+      - name: Upload raw artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_LEGACY_MARGIN_RAW_2025
+          path: out/
+          if-no-files-found: error
+          retention-days: 7
