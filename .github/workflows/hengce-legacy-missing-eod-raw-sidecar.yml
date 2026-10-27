@@ -1,4 +1,4 @@
-name: HENGCE Legacy Missing EOD Raw Sidecar
+name: HENGCE Legacy EOD Raw Sidecar
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch exact missing official TWSE raw legs
+      - name: Fetch exact official TWSE EOD legs for 2026-10-27
         id: fetch
         shell: bash
         run: |
@@ -25,13 +25,11 @@ jobs:
           import hashlib, json, time, urllib.request
           from pathlib import Path
 
-          out=Path('legacy_missing_eod_raw'); out.mkdir(exist_ok=True)
+          out=Path('legacy_eod_raw'); out.mkdir(exist_ok=True)
           specs=[
-            ('20261020','margin','https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date=20261020&selectType=ALL&response=json'),
-            ('20261022','margin','https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date=20261022&selectType=ALL&response=json'),
-            ('20261023','price','https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261023&type=ALLBUT0999&response=json'),
-            ('20261023','institutional','https://www.twse.com.tw/rwd/zh/fund/T86?date=20261023&selectType=ALLBUT0999&response=json'),
-            ('20261023','margin','https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date=20261023&selectType=ALL&response=json'),
+            ('20261027','price','https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261027&type=ALLBUT0999&response=json'),
+            ('20261027','institutional','https://www.twse.com.tw/rwd/zh/fund/T86?date=20261027&selectType=ALLBUT0999&response=json'),
+            ('20261027','margin','https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date=20261027&selectType=ALL&response=json'),
           ]
           receipt=[]; all_valid=True
           for ds,leg,url in specs:
@@ -59,7 +57,7 @@ jobs:
             except Exception as e:
               row.update(status='INVALID_JSON',parse_error=f'{type(e).__name__}:{e}'); all_valid=False
             receipt.append(row)
-          obj={'system':'HENGCE','artifact':'LEGACY_MISSING_EOD_RAW_TRANSPORT','authority':'MARKET_DATA_ONLY_NO_MODEL_RANKING_SIGNAL_CAPITAL_AUTHORITY','all_valid':all_valid,'rows':receipt}
+          obj={'system':'HENGCE','artifact':'LEGACY_EOD_RAW_TRANSPORT','target_date':'2026-10-27','authority':'MARKET_DATA_ONLY_NO_MODEL_RANKING_SIGNAL_CAPITAL_AUTHORITY','all_valid':all_valid,'rows':receipt}
           (out/'receipt.json').write_text(json.dumps(obj,ensure_ascii=False,indent=2),encoding='utf-8')
           print(json.dumps(obj,ensure_ascii=False,indent=2))
           raise SystemExit(0 if all_valid else 2)
@@ -68,7 +66,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: HENGCE_LEGACY_MISSING_EOD_RAW_20261020_22_23
-          path: legacy_missing_eod_raw/
+          name: HENGCE_LEGACY_EOD_RAW_20261027
+          path: legacy_eod_raw/
           if-no-files-found: error
           retention-days: 7
