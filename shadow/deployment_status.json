@@ -1,29 +1,28 @@
 {
   "system": "HENGCE",
   "artifact": "FULL_MARKET_INTRADAY_SHADOW_DEPLOYMENT_STATUS",
-  "generated_at_taipei": "2026-10-26T14:00:38.484774+08:00",
-  "snapshot_id": "20261026T140038+0800",
-  "status": "SHADOW_MARKET_CLOSED",
+  "generated_at_taipei": "2026-10-27T09:22:40.443234+08:00",
+  "snapshot_id": "20261027T092240+0800",
+  "status": "SHADOW_FULL_MARKET_READY",
   "authority": "SHADOW_CONTEXT_ONLY_NO_CAPITAL_AUTHORITY",
   "universe_count": 1088,
   "universe_sha256": "2e282a7495c5dcc0b82f45f289e5e526a9375e0a4eb4811631914b85b5df16c6",
   "coverage_ratio": 1.0,
-  "price_coverage_ratio": 0.9439338235294118,
+  "price_coverage_ratio": 0.0744485294117647,
   "fresh_ratio_of_covered": 1.0,
   "full_market_gate": {
     "coverage_required": 0.98,
     "fresh_ratio_required": 0.9,
     "freshness_basis": "QUOTE_TRANSPORT_FRESHNESS",
-    "pass": false,
-    "calendar_trading_day": false,
-    "calendar_reason": "TWSE_EFFECTIVE_CALENDAR_CLOSED"
+    "pass": true,
+    "calendar_trading_day": true
   },
   "provider_mix": {
     "TWSE_MIS": 1063,
     "FUGLE": 25,
     "NONE": 0
   },
-  "payload_sha256": "55e335343d52877b684d806c0a0025b3032938c379bfac87d5f03fe9a07f73ca",
+  "payload_sha256": "f0e618e8cba8f75f96ee9a0d2f550bd58f895c424602324e3856be44a3e26d32",
   "electronics_live_status": "DATA_PENDING_CURRENT_Q017_UNIVERSE",
   "electronics_member_count": 0,
   "electronics_provider_coverage_ratio": 0.0,
