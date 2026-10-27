@@ -20,10 +20,23 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: python -m pip install --disable-pip-version-check pandas numpy requests
+      - name: Apply execution-only syntax hotfix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('research/nanmao_8150/nanmao_8150_3y.py')
+          s = p.read_text(encoding='utf-8')
+          old = "((np.isclose(buy_grid.buy_dd, bd)) & (buy_grid.buy_lookback.isin([lb - 20, lb + 20]))))\n        ]"
+          new = "((np.isclose(buy_grid.buy_dd, bd)) & (buy_grid.buy_lookback.isin([lb - 20, lb + 20])))\n        ]"
+          if old not in s:
+              raise SystemExit('expected syntax fragment not found')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
       - name: Run bounded three-year validation
         run: python research/nanmao_8150/nanmao_8150_3y.py
       - name: Commit immutable research outputs
         run: |
+          git checkout -- research/nanmao_8150/nanmao_8150_3y.py
           git config user.name 'hengce-bot'
           git config user.email 'hengce-bot@users.noreply.github.com'
           git add research/nanmao_8150/output
