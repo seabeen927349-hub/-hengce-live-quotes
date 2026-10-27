@@ -1,0 +1,73 @@
+{
+  "ticker": "6415",
+  "name": "矽力*-KY",
+  "method": "buy-independent rolling-peak structural damage with recovery/reset",
+  "selected": {
+    "lookback": 60,
+    "damage": 0.16,
+    "confirm": 3,
+    "status": "PRE2026_ELIGIBLE_PLATEAU"
+  },
+  "pre2026": {
+    "n20": 36,
+    "median_hold20": -0.0482866760211319,
+    "mean_hold20": -0.009777637250566814,
+    "sell_better20_share": 0.6666666666666666,
+    "deep8_20_share": 0.6666666666666666,
+    "rebound10_20_share": 0.3055555555555556,
+    "reclaim_peak98_20_share": 0.05555555555555555,
+    "median_mae20": -0.11102892833662065,
+    "median_mfe20": 0.03586742010137289,
+    "n_2024": 17,
+    "sell_better20_share_2024": 0.5882352941176471,
+    "median_hold20_2024": -0.0388235294117647,
+    "n_2025": 19,
+    "sell_better20_share_2025": 0.7368421052631579,
+    "median_hold20_2025": -0.04909560723514217,
+    "n_2026": 0,
+    "sell_better20_share_2026": NaN,
+    "median_hold20_2026": NaN
+  },
+  "oos2026": {
+    "n20": 5,
+    "median_hold20": -0.03743315508021394,
+    "mean_hold20": -0.04559279856231999,
+    "sell_better20_share": 0.6,
+    "deep8_20_share": 0.6,
+    "rebound10_20_share": 0.2,
+    "reclaim_peak98_20_share": 0.2,
+    "median_mae20": -0.16891191709844555,
+    "median_mfe20": 0.02673796791443861,
+    "n_2024": 0,
+    "sell_better20_share_2024": NaN,
+    "median_hold20_2024": NaN,
+    "n_2025": 0,
+    "sell_better20_share_2025": NaN,
+    "median_hold20_2025": NaN,
+    "n_2026": 5,
+    "sell_better20_share_2026": 0.6,
+    "median_hold20_2026": -0.03743315508021394
+  },
+  "current": {
+    "date": "2026-10-27",
+    "open": 477.0,
+    "high": 488.0,
+    "low": 456.5,
+    "close": 478.0,
+    "volume": 6687361.0,
+    "lookback": 60,
+    "peak_adj_close": 490.0,
+    "damage_from_peak": -0.024489795918367308,
+    "sell_line": 411.59999999999997,
+    "damaged_today": false,
+    "recovery_today": false,
+    "state": "NORMAL",
+    "confirm_counter": 0
+  },
+  "authority": "FREEZE_CANDIDATE",
+  "governance": {
+    "2026_used_for_selection": false,
+    "single_stock_only": true,
+    "no_indicator_layer": true
+  }
+}
