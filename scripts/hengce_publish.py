@@ -16,7 +16,6 @@ import uuid
 import hengce_recovery_transaction as recovery
 
 # Producer write_once contracts, not a filename-based authority inference.
-# E2 history is intentionally NOT listed: it is a mutable per-date snapshot.
 IMMUTABLE_PREFIXES = (
     'hengce/q017_radar/observations/',
     'hengce/q017_radar/backup_observations/',
@@ -30,6 +29,7 @@ IMMUTABLE_PREFIXES = (
 # explicitly proven unrelated by the producer sources named in the inventory.
 TRANSPORT_ONLY = ('latest.json', 'live/**', 'shadow/**', 'hengce/electronics_live/**')
 OBSERVABILITY_ONLY = ('hengce/health/**',)
+RESEARCH_ONLY = ('hengce/e2_live/**',)
 BACKUP_WRITES = (
     'hengce/q017_radar/backup_observations/**',
     'hengce/q017_radar/backup_observation_history/**',
@@ -47,6 +47,13 @@ PRIMARY_CAPTURE_WRITES = (
     'hengce/q017_radar/observer_supervisor_primary_status.json',
     'hengce/q017_radar/observer_supervisor_attempts/*_primary.json',
 )
+Q017_DECISION_WRITES = (
+    'hengce/q017_radar/decision/**',
+    'hengce/q017_radar/decision_latest.json',
+    'hengce/q017_radar/latest.json',
+    'hengce/q017_radar/history/**',
+    'hengce/q017_radar/signal_ledger.jsonl',
+)
 PROFILES = {
     # No producer consumes health output. Exempt only that namespace, including
     # for default-profile writers; real/unknown inputs remain dependencies.
@@ -54,22 +61,23 @@ PROFILES = {
     'health-only': {'writes': ('hengce/health/latest.json',), 'unrelated': OBSERVABILITY_ONLY},
     'q017-primary-capture': {
         'writes': PRIMARY_CAPTURE_WRITES,
-        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + BACKUP_WRITES + ('hengce/e2_live/**', 'hengce/dual_engine/**'),
+        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + BACKUP_WRITES + RESEARCH_ONLY,
     },
     'q017-backup-capture': {
         'writes': BACKUP_WRITES,
-        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + (
-            'hengce/e2_live/**', 'hengce/dual_engine/**',
+        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + RESEARCH_ONLY + (
             'hengce/q017_radar/observations/**', 'hengce/q017_radar/observation_latest.json',
             'hengce/q017_radar/history/**', 'hengce/q017_radar/observer_supervisor_primary_status.json',
             'hengce/q017_radar/observer_supervisor_attempts/*_primary.json'),
     },
+    'q017-decision': {
+        'writes': Q017_DECISION_WRITES,
+        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + BACKUP_WRITES + RESEARCH_ONLY,
+    },
+    # Compatibility name only. It no longer writes or reads any dual-engine display surface.
     'q017-decision-display': {
-        'writes': ('hengce/q017_radar/decision/**', 'hengce/q017_radar/decision_latest.json',
-                   'hengce/q017_radar/latest.json', 'hengce/q017_radar/history/**',
-                   'hengce/q017_radar/signal_ledger.jsonl', 'hengce/dual_engine/latest.json'),
-        # Display reads E2 state: E2 is deliberately NOT excluded here.
-        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + BACKUP_WRITES,
+        'writes': Q017_DECISION_WRITES,
+        'unrelated': TRANSPORT_ONLY + OBSERVABILITY_ONLY + BACKUP_WRITES + RESEARCH_ONLY,
     },
 }
 
