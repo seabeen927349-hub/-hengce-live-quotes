@@ -4,10 +4,10 @@
   "artifact": "ELECTRONICS_LIVE_COVERAGE",
   "authority": "ELECTRONICS_QUOTE_CONTEXT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
   "scope": "TWSE_LISTED_ELECTRONICS_ONLY",
-  "generated_at_taipei": "2026-10-27T10:16:43.120958+08:00",
-  "snapshot_id": "20261027T101643+0800",
+  "generated_at_taipei": "2026-10-27T10:42:43.375277+08:00",
+  "snapshot_id": "20261027T104243+0800",
   "source_q017_trade_date": "2026-10-22",
-  "source_full_market_payload_sha256": "4791b9637bba8592f95e89a0c79b6a01d6b40662902358fc40113b911864b13f",
+  "source_full_market_payload_sha256": "f0d6b0478fc8d33338aa3551406c2f69cfbce0421d17b840c35cd33b9a40261d",
   "member_count": 0,
   "provider_covered_count": 0,
   "quote_fresh_count": 0,
@@ -30,5 +30,5 @@
   "capital_authority": false,
   "broker_order_execution": false,
   "rows": [],
-  "payload_sha256": "eeec49a84b4ed3ee71c0d464ff102a5f5092bee93f184f2944380dccb58e2fe1"
+  "payload_sha256": "080ec6059367e8400920cc32bbced08cd3211db9add218d2d22e328f664b70c0"
 }
