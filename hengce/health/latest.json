@@ -2,9 +2,9 @@
   "schema_version": 1,
   "system": "HENGCE",
   "module": "HENGCE_SYSTEM_HEALTH",
-  "generated_at_taipei": "2026-10-26T18:01:10.141150+08:00",
-  "evaluated_trade_date": "2026-10-26",
-  "authoritative_main_sha": "5bca8e3b17b066053b9e95e57846a6f292fec0ea",
+  "generated_at_taipei": "2026-10-27T08:39:29.879167+08:00",
+  "evaluated_trade_date": "2026-10-27",
+  "authoritative_main_sha": "0d75de51aad0d91067b945e027fe18851c8f3521",
   "health_only": true,
   "signal_authority": false,
   "ranking_authority": false,
@@ -26,26 +26,25 @@
     ],
     "workflows": {
       "q017_primary": {
-        "state": "FAIL_CLOSED",
+        "state": "DEGRADED",
         "reason_codes": [
           "SCHEDULE_SLOTS_EVALUATED"
         ],
         "file": "hengce-q017-primary-observer.yml",
         "slots": [
           {
-            "state": "FAIL_CLOSED",
+            "state": "DEGRADED",
             "reason_codes": [
-              "LATE_RUN",
-              "WORKFLOW_FAILED"
+              "LATE_RUN"
             ],
-            "expected_at_taipei": "2026-10-26T07:45:00+08:00",
+            "expected_at_taipei": "2026-10-27T07:45:00+08:00",
             "run_ids": [
-              40247208865
+              40424312002
             ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-25T23:59:51Z",
-            "run_started_at": "2026-10-25T23:59:51Z"
+            "status": "in_progress",
+            "conclusion": null,
+            "created_at": "2026-10-27T00:07:12Z",
+            "run_started_at": "2026-10-27T00:07:12Z"
           }
         ]
       },
@@ -59,17 +58,10 @@
           {
             "state": "DEGRADED",
             "reason_codes": [
-              "LATE_RUN",
-              "WORKFLOW_FAILED"
+              "MISSING_SCHEDULED_RUN"
             ],
-            "expected_at_taipei": "2026-10-26T08:15:00+08:00",
-            "run_ids": [
-              40252391967
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T01:04:26Z",
-            "run_started_at": "2026-10-26T01:04:26Z"
+            "expected_at_taipei": "2026-10-27T08:15:00+08:00",
+            "run_ids": []
           }
         ]
       },
@@ -86,186 +78,32 @@
               "LATE_RUN",
               "WORKFLOW_FAILED"
             ],
-            "expected_at_taipei": "2026-10-26T06:30:00+08:00",
+            "expected_at_taipei": "2026-10-27T06:30:00+08:00",
             "run_ids": [
-              40241955576
+              40416672196
             ],
             "status": "completed",
             "conclusion": "failure",
-            "created_at": "2026-10-25T22:49:16Z",
-            "run_started_at": "2026-10-25T22:49:16Z"
-          },
-          {
-            "state": "FAIL_CLOSED",
-            "reason_codes": [
-              "MISSING_SCHEDULED_RUN"
-            ],
-            "expected_at_taipei": "2026-10-26T08:50:00+08:00",
-            "run_ids": []
-          },
-          {
-            "state": "FAIL_CLOSED",
-            "reason_codes": [
-              "MISSING_SCHEDULED_RUN"
-            ],
-            "expected_at_taipei": "2026-10-26T09:03:00+08:00",
-            "run_ids": []
-          },
-          {
-            "state": "FAIL_CLOSED",
-            "reason_codes": [
-              "MISSING_SCHEDULED_RUN"
-            ],
-            "expected_at_taipei": "2026-10-26T09:10:00+08:00",
-            "run_ids": []
-          },
-          {
-            "state": "FAIL_CLOSED",
-            "reason_codes": [
-              "AMBIGUOUS_SCHEDULE_SLOT",
-              "WORKFLOW_FAILED"
-            ],
-            "expected_at_taipei": "2026-10-26T09:20:00+08:00",
-            "run_ids": [
-              40256776357,
-              40255792616,
-              40255390366,
-              40254575252
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T01:30:43Z",
-            "run_started_at": "2026-10-26T01:30:43Z"
-          },
-          {
-            "state": "FAIL_CLOSED",
-            "reason_codes": [
-              "MISSING_SCHEDULED_RUN"
-            ],
-            "expected_at_taipei": "2026-10-26T15:00:00+08:00",
-            "run_ids": []
-          },
-          {
-            "state": "FAIL_CLOSED",
-            "reason_codes": [
-              "WORKFLOW_FAILED"
-            ],
-            "expected_at_taipei": "2026-10-26T15:30:00+08:00",
-            "run_ids": [
-              40287590440
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T07:43:57Z",
-            "run_started_at": "2026-10-26T07:43:57Z"
-          },
-          {
-            "state": "FAIL_CLOSED",
-            "reason_codes": [
-              "AMBIGUOUS_SCHEDULE_SLOT",
-              "LATE_RUN",
-              "WORKFLOW_FAILED"
-            ],
-            "expected_at_taipei": "2026-10-26T16:00:00+08:00",
-            "run_ids": [
-              40292718024,
-              40291093650
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T08:16:14Z",
-            "run_started_at": "2026-10-26T08:16:14Z"
-          },
-          {
-            "state": "FAIL_CLOSED",
-            "reason_codes": [
-              "LATE_RUN",
-              "WORKFLOW_FAILED"
-            ],
-            "expected_at_taipei": "2026-10-26T17:00:00+08:00",
-            "run_ids": [
-              40300364588
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T09:32:35Z",
-            "run_started_at": "2026-10-26T09:32:35Z"
+            "created_at": "2026-10-26T23:00:26Z",
+            "run_started_at": "2026-10-26T23:00:26Z"
           }
         ]
       },
       "e2_backup": {
-        "state": "DEGRADED",
+        "state": "NOT_DUE",
         "reason_codes": [
           "SCHEDULE_SLOTS_EVALUATED"
         ],
         "file": "hengce-e2-morning-backup.yml",
-        "slots": [
-          {
-            "state": "DEGRADED",
-            "reason_codes": [
-              "MISSING_SCHEDULED_RUN"
-            ],
-            "expected_at_taipei": "2026-10-26T08:55:00+08:00",
-            "run_ids": []
-          },
-          {
-            "state": "DEGRADED",
-            "reason_codes": [
-              "AMBIGUOUS_SCHEDULE_SLOT",
-              "LATE_RUN",
-              "WORKFLOW_FAILED"
-            ],
-            "expected_at_taipei": "2026-10-26T09:05:00+08:00",
-            "run_ids": [
-              40255768810,
-              40254603589
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T01:31:03Z",
-            "run_started_at": "2026-10-26T01:31:03Z"
-          }
-        ]
+        "slots": []
       },
       "q017_recovery": {
-        "state": "DEGRADED",
+        "state": "NOT_DUE",
         "reason_codes": [
           "SCHEDULE_SLOTS_EVALUATED"
         ],
         "file": "hengce-q017-recovery.yml",
-        "slots": [
-          {
-            "state": "DEGRADED",
-            "reason_codes": [
-              "MISSING_SCHEDULED_RUN"
-            ],
-            "expected_at_taipei": "2026-10-26T09:02:00+08:00",
-            "run_ids": []
-          },
-          {
-            "state": "DEGRADED",
-            "reason_codes": [
-              "MISSING_SCHEDULED_RUN"
-            ],
-            "expected_at_taipei": "2026-10-26T09:04:00+08:00",
-            "run_ids": []
-          },
-          {
-            "state": "DEGRADED",
-            "reason_codes": [
-              "LATE_RUN",
-              "WORKFLOW_FAILED"
-            ],
-            "expected_at_taipei": "2026-10-26T09:06:00+08:00",
-            "run_ids": [
-              40255360830
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T01:40:24Z",
-            "run_started_at": "2026-10-26T01:40:24Z"
-          }
-        ]
+        "slots": []
       },
       "macro": {
         "state": "DEGRADED",
@@ -280,14 +118,14 @@
               "LATE_RUN",
               "WORKFLOW_FAILED"
             ],
-            "expected_at_taipei": "2026-10-26T05:45:00+08:00",
+            "expected_at_taipei": "2026-10-27T05:45:00+08:00",
             "run_ids": [
-              40238373467
+              40410592947
             ],
             "status": "completed",
             "conclusion": "failure",
-            "created_at": "2026-10-25T22:03:27Z",
-            "run_started_at": "2026-10-25T22:03:27Z"
+            "created_at": "2026-10-26T22:12:14Z",
+            "run_started_at": "2026-10-26T22:12:14Z"
           },
           {
             "state": "DEGRADED",
@@ -295,14 +133,14 @@
               "LATE_RUN",
               "WORKFLOW_FAILED"
             ],
-            "expected_at_taipei": "2026-10-26T06:15:00+08:00",
+            "expected_at_taipei": "2026-10-27T06:15:00+08:00",
             "run_ids": [
-              40240960646
+              40414458801
             ],
             "status": "completed",
             "conclusion": "failure",
-            "created_at": "2026-10-25T22:36:06Z",
-            "run_started_at": "2026-10-25T22:36:06Z"
+            "created_at": "2026-10-26T22:42:14Z",
+            "run_started_at": "2026-10-26T22:42:14Z"
           },
           {
             "state": "DEGRADED",
@@ -310,21 +148,21 @@
               "LATE_RUN",
               "WORKFLOW_FAILED"
             ],
-            "expected_at_taipei": "2026-10-26T06:45:00+08:00",
+            "expected_at_taipei": "2026-10-27T06:45:00+08:00",
             "run_ids": [
-              40243103790
+              40418132674
             ],
             "status": "completed",
             "conclusion": "failure",
-            "created_at": "2026-10-25T23:04:42Z",
-            "run_started_at": "2026-10-25T23:04:42Z"
+            "created_at": "2026-10-26T23:12:23Z",
+            "run_started_at": "2026-10-26T23:12:23Z"
           },
           {
             "state": "DEGRADED",
             "reason_codes": [
               "MISSING_SCHEDULED_RUN"
             ],
-            "expected_at_taipei": "2026-10-26T07:15:00+08:00",
+            "expected_at_taipei": "2026-10-27T07:15:00+08:00",
             "run_ids": []
           },
           {
@@ -333,64 +171,25 @@
               "AMBIGUOUS_SCHEDULE_SLOT",
               "WORKFLOW_FAILED"
             ],
-            "expected_at_taipei": "2026-10-26T07:35:00+08:00",
+            "expected_at_taipei": "2026-10-27T07:35:00+08:00",
             "run_ids": [
-              40246731719,
-              40245589700
+              40423375417,
+              40421482121
             ],
             "status": "completed",
             "conclusion": "failure",
-            "created_at": "2026-10-25T23:37:16Z",
-            "run_started_at": "2026-10-25T23:37:16Z"
+            "created_at": "2026-10-26T23:41:44Z",
+            "run_started_at": "2026-10-26T23:41:44Z"
           }
         ]
       },
       "e2_postclose": {
-        "state": "DEGRADED",
+        "state": "NOT_DUE",
         "reason_codes": [
           "SCHEDULE_SLOTS_EVALUATED"
         ],
         "file": "hengce-e2-profit-max-live.yml",
-        "slots": [
-          {
-            "state": "DEGRADED",
-            "reason_codes": [
-              "MISSING_SCHEDULED_RUN"
-            ],
-            "expected_at_taipei": "2026-10-26T15:10:00+08:00",
-            "run_ids": []
-          },
-          {
-            "state": "DEGRADED",
-            "reason_codes": [
-              "WORKFLOW_FAILED"
-            ],
-            "expected_at_taipei": "2026-10-26T15:40:00+08:00",
-            "run_ids": [
-              40288652753
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T07:54:11Z",
-            "run_started_at": "2026-10-26T07:54:11Z"
-          },
-          {
-            "state": "DEGRADED",
-            "reason_codes": [
-              "AMBIGUOUS_SCHEDULE_SLOT",
-              "WORKFLOW_FAILED"
-            ],
-            "expected_at_taipei": "2026-10-26T16:10:00+08:00",
-            "run_ids": [
-              40294884086,
-              40291704914
-            ],
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2026-10-26T08:21:32Z",
-            "run_started_at": "2026-10-26T08:21:32Z"
-          }
-        ]
+        "slots": []
       },
       "display": {
         "state": "NOT_DUE",
@@ -403,83 +202,78 @@
     }
   },
   "artifact_freshness": {
-    "state": "FAIL_CLOSED",
+    "state": "NOT_DUE",
     "reason_codes": [
       "LANES_EVALUATED"
     ],
     "lanes": {
       "q017": {
-        "state": "FAIL_CLOSED",
+        "state": "NOT_DUE",
         "reason_codes": [
-          "STALE_SOURCE_DATE"
+          "ARTIFACT_NOT_DUE"
         ],
         "path": "hengce/q017_radar/observation_latest.json",
         "source_date": "2026-10-22",
         "source_timestamp": "2026-10-22T09:01:41.119132+08:00",
-        "source_age_seconds": 377969.022018
+        "source_age_seconds": 430668.760035
       },
       "e2_morning": {
-        "state": "DEGRADED",
+        "state": "NOT_DUE",
         "reason_codes": [
-          "STALE_SOURCE_DATE"
+          "ARTIFACT_NOT_DUE"
         ],
         "path": "hengce/e2_live/morning_latest.json",
         "source_date": "2026-10-22",
         "source_timestamp": "2026-10-22T09:50:04.301538+08:00",
-        "source_age_seconds": 375065.839612
+        "source_age_seconds": 427765.577629
       },
       "eod": {
-        "state": "FAIL_CLOSED",
+        "state": "NOT_DUE",
         "reason_codes": [
-          "ARTIFACT_MISSING"
+          "ARTIFACT_NOT_DUE"
         ],
-        "path": "eod/20261026/status.json"
+        "path": "eod/20261027/status.json"
       },
       "display": {
-        "state": "DEGRADED",
+        "state": "NOT_DUE",
         "reason_codes": [
-          "DISPLAY_STALE_OR_INCOHERENT_SOURCE"
+          "ARTIFACT_NOT_DUE"
         ],
-        "q017_source_date": "2026-10-22",
-        "e2_source_date": "2026-10-22",
-        "q017_source_timestamp": "2026-10-22T09:50:04.504387+08:00",
-        "e2_source_timestamp": "2026-10-22T16:44:12.930778+08:00",
-        "minimum_evidenced_source_date": "2026-10-21",
         "path": "hengce/dual_engine/latest.json",
         "source_date": null,
         "source_timestamp": "2026-10-22T19:44:52.462029+08:00",
-        "source_age_seconds": 339377.679121
+        "source_age_seconds": 392077.417138
       }
     }
   },
   "data_readiness": {
-    "state": "PENDING_DATA",
+    "state": "NOT_DUE",
     "reason_codes": [
       "LANES_EVALUATED"
     ],
     "lanes": {
       "q017": {
-        "state": "PENDING_DATA",
+        "state": "NOT_DUE",
         "reason_codes": [
-          "CURRENT_SOURCE_UNAVAILABLE"
+          "DATA_NOT_DUE"
         ]
       },
       "e2_morning": {
-        "state": "PENDING_DATA",
+        "state": "NOT_DUE",
         "reason_codes": [
-          "CURRENT_SOURCE_UNAVAILABLE"
+          "DATA_NOT_DUE"
         ]
       },
       "eod": {
-        "state": "PENDING_DATA",
+        "state": "NOT_DUE",
         "reason_codes": [
           "SOURCE_UNAVAILABLE"
         ]
       },
       "display": {
-        "state": "PENDING_DATA",
+        "state": "NOT_DUE",
         "reason_codes": [
-          "DISPLAY_SOURCE_READINESS_ONLY"
+          "DATA_NOT_DUE"
         ]
       }
     }
@@ -512,13 +306,7 @@
         "state": "PASS",
         "reason_codes": [
           "SOURCE_AUTHORITY_BOUNDARIES_SAFE"
-        ],
-        "canonical_e2_safety": {
-          "state": "PASS",
-          "reason_codes": [
-            "SOURCE_AUTHORITY_BOUNDARIES_SAFE"
-          ]
-        }
+        ]
       },
       "canonical_e2": {
         "state": "PASS",
