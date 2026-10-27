@@ -22,44 +22,24 @@
   "margin_rows": 1061,
   "margin_sha256": "1fc187ac0e8c088b7b4a098e4c1439c91c0cd642636e6ba3217e2b0277cd1a7d",
   "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
-  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
-  "available_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ],
+  "available_legs": ["price", "institutional", "margin"],
   "pending_legs": [],
   "error_legs": [],
-  "mother_status": "PENDING",
+  "mother_status": "COMPLETE",
   "mother_promotion_required": true,
-  "mother_pending_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ],
-  "downstream_ready": false,
+  "mother_pending_legs": [],
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "af86edf28ff48b2e8c9f2743de97868893536f45e5ec4b17b7af79556ac33b42",
+  "mother_latest_date": "2026-10-27",
+  "mother_promoted_legs": ["price", "institutional", "margin"],
+  "downstream_ready": true,
   "three_leg_complete": true,
   "formal_complete_day": true,
   "status": "COMPLETE",
   "last_run_results": [
-    {
-      "leg": "price",
-      "result": "PROMOTED",
-      "rows": 1091,
-      "sha256": "c194142ca2eccb83d99f9f3f636e241a640677245630b06dbc09f7bd7e5bfb36"
-    },
-    {
-      "leg": "institutional",
-      "result": "PROMOTED",
-      "rows": 1083,
-      "sha256": "9e44ab3eea5e795d2752400cb9489224b5d8fe930ff4ad1536989db76ce58291"
-    },
-    {
-      "leg": "margin",
-      "result": "PROMOTED",
-      "rows": 1061,
-      "sha256": "1fc187ac0e8c088b7b4a098e4c1439c91c0cd642636e6ba3217e2b0277cd1a7d"
-    }
+    {"leg": "price", "result": "PROMOTED", "rows": 1091, "sha256": "c194142ca2eccb83d99f9f3f636e241a640677245630b06dbc09f7bd7e5bfb36"},
+    {"leg": "institutional", "result": "PROMOTED", "rows": 1083, "sha256": "9e44ab3eea5e795d2752400cb9489224b5d8fe930ff4ad1536989db76ce58291"},
+    {"leg": "margin", "result": "PROMOTED", "rows": 1061, "sha256": "1fc187ac0e8c088b7b4a098e4c1439c91c0cd642636e6ba3217e2b0277cd1a7d"}
   ],
-  "updated_at_taipei": "2026-10-27T23:45:21.854420+08:00"
+  "updated_at_taipei": "2026-10-27T23:47:00+08:00"
 }
