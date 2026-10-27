@@ -44,11 +44,11 @@ jobs:
             research/codex_full_reset_20261023/results/me3_cohort_exhaustion_transition_20261027; do
             [ -d "$d" ] && cp -a "$d" "$A/results/"
           done
-          cat > "$A/README_BRANCH.txt" <<'EOF'
-HENGCE branch research package 2026-10-27
-Contains exact research scripts, GitHub Actions workflows, and committed ME2/ME3 result files.
-Formal baseline artifacts are intentionally packaged separately in the outer complete archive.
-EOF
+          printf '%s\n' \
+            'HENGCE branch research package 2026-10-27' \
+            'Contains exact research scripts, GitHub Actions workflows, and committed ME2/ME3 result files.' \
+            'Formal baseline artifacts are intentionally packaged separately in the outer complete archive.' \
+            > "$A/README_BRANCH.txt"
           find "$A" -type f | sort > "$A/MANIFEST_BRANCH.txt"
       - name: Upload branch package
         uses: actions/upload-artifact@v4
