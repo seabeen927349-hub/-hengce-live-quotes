@@ -17,7 +17,6 @@ on:
       - 'scripts/hengce_q017_observer_supervisor_v2.py'
       - 'scripts/test_hengce_q017_observer_resilience_v1.py'
       - 'scripts/hengce_q017_authority_guard_v5.py'
-      - 'scripts/hengce_dual_engine_display.py'
       - '.github/workflows/hengce-q017-primary-observer.yml'
   schedule:
     # Asia/Taipei 07:45 Monday-Friday = UTC 23:45 Sunday-Thursday.
@@ -170,12 +169,7 @@ jobs:
         continue-on-error: true
         run: python scripts/hengce_q017_authority_guard_v5.py --mode check-and-repair
 
-      - name: Refresh dual-engine display
-        if: always() && steps.mode.outputs.mode == 'observe'
-        continue-on-error: true
-        run: python scripts/hengce_dual_engine_display.py
-
-      - name: Persist decision, authority and display
+      - name: Persist Q017 decision and authority
         if: always() && steps.mode.outputs.mode == 'observe'
         shell: bash
         run: |
@@ -188,7 +182,6 @@ jobs:
             hengce/q017_radar/latest.json
             hengce/q017_radar/history/
             hengce/q017_radar/signal_ledger.jsonl
-            hengce/dual_engine/latest.json
           )
           for p in "${paths[@]}"; do
             if [[ -e "$p" ]]; then
@@ -196,10 +189,10 @@ jobs:
             fi
           done
           if git diff --cached --quiet; then
-            echo 'No primary decision/display changes to persist.'
+            echo 'No primary Q017 decision/authority changes to persist.'
           else
             TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-            git commit -m "HENGCE Q017 primary decision/display ${TS}"
+            git commit -m "HENGCE Q017 primary decision/authority ${TS}"
             if ! git push origin HEAD:main; then
               git pull --rebase origin main
               git push origin HEAD:main
