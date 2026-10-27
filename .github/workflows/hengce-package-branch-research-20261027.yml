@@ -1,0 +1,59 @@
+name: HENGCE Package Branch Research 20261027
+
+on:
+  push:
+    branches:
+      - 'research/codex-full-reset-run-20261023'
+    paths:
+      - '.github/workflows/hengce-package-branch-research-20261027.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect research files
+        run: |
+          set -euo pipefail
+          A=HENGCE_BRANCH_RESEARCH_20261027
+          mkdir -p "$A/scripts" "$A/workflows" "$A/results"
+          for f in \
+            research/codex_full_reset_20261023/frozen_3m_to_1y_20261026.py \
+            research/codex_full_reset_20261023/frozen_fixed_capital_roundlot_20261026.py \
+            research/codex_full_reset_20261023/me2_market_exhaustion_date_gate_20261027.py \
+            research/codex_full_reset_20261023/me3_cohort_state_forensic_20261027.py \
+            research/codex_full_reset_20261023/me3_cohort_exhaustion_transition_20261027.py; do
+            cp "$f" "$A/scripts/"
+          done
+          for f in \
+            .github/workflows/hengce-frozen-fixed-capital-roundlot-20261026.yml \
+            .github/workflows/hengce-me2-market-exhaustion-date-gate-20261027.yml \
+            .github/workflows/hengce-me2-publish-results-20261027.yml \
+            .github/workflows/hengce-me3-cohort-state-forensic-20261027.yml \
+            .github/workflows/hengce-me3-cohort-exhaustion-transition-20261027.yml \
+            .github/workflows/hengce-package-branch-research-20261027.yml; do
+            [ -f "$f" ] && cp "$f" "$A/workflows/"
+          done
+          for d in \
+            research/codex_full_reset_20261023/results/me2_market_exhaustion_date_gate_20261027 \
+            research/codex_full_reset_20261023/results/me3_cohort_state_forensic_20261027 \
+            research/codex_full_reset_20261023/results/me3_cohort_exhaustion_transition_20261027; do
+            [ -d "$d" ] && cp -a "$d" "$A/results/"
+          done
+          cat > "$A/README_BRANCH.txt" <<'EOF'
+HENGCE branch research package 2026-10-27
+Contains exact research scripts, GitHub Actions workflows, and committed ME2/ME3 result files.
+Formal baseline artifacts are intentionally packaged separately in the outer complete archive.
+EOF
+          find "$A" -type f | sort > "$A/MANIFEST_BRANCH.txt"
+      - name: Upload branch package
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_BRANCH_RESEARCH_20261027
+          path: HENGCE_BRANCH_RESEARCH_20261027/
+          if-no-files-found: error
+          retention-days: 90
