@@ -1,0 +1,111 @@
+# HENGCE 8150 南茂 — BUY-independent SELL State V2
+
+## Verdict
+**NOT_FREEZE**
+
+## Selected pre-2026 structural state
+- Rolling peak lookback: **90 sessions**
+- Damage: **14%**
+- Confirmation: **1 consecutive closes**
+- Selection status: **PRE2026_ELIGIBLE_PLATEAU**
+
+## Pre-2026
+```json
+{
+  "n20": 11,
+  "median_hold20": -0.0806174957118353,
+  "mean_hold20": -0.04806968459762261,
+  "sell_better20_share": 0.8181818181818182,
+  "deep8_20_share": 0.5454545454545454,
+  "rebound10_20_share": 0.09090909090909091,
+  "reclaim_peak98_20_share": 0.0,
+  "median_mae20": -0.08290155440414504,
+  "median_mfe20": 0.021172638436482094,
+  "n_2023": 0,
+  "sell_better20_share_2023": NaN,
+  "median_hold20_2023": NaN,
+  "n_2024": 5,
+  "sell_better20_share_2024": 0.8,
+  "median_hold20_2024": -0.0034285714285714475,
+  "n_2025": 6,
+  "sell_better20_share_2025": 0.8333333333333334,
+  "median_hold20_2025": -0.08175952505799017,
+  "n_2026": 0,
+  "sell_better20_share_2026": NaN,
+  "median_hold20_2026": NaN
+}
+```
+
+## 2026 untouched OOS
+```json
+{
+  "n20": 11,
+  "median_hold20": 0.05351170568561869,
+  "mean_hold20": 0.07960956302076894,
+  "sell_better20_share": 0.36363636363636365,
+  "deep8_20_share": 0.6363636363636364,
+  "rebound10_20_share": 0.6363636363636364,
+  "reclaim_peak98_20_share": 0.6363636363636364,
+  "median_mae20": -0.10367892976588622,
+  "median_mfe20": 0.21186440677966112,
+  "n_2023": 0,
+  "sell_better20_share_2023": NaN,
+  "median_hold20_2023": NaN,
+  "n_2024": 0,
+  "sell_better20_share_2024": NaN,
+  "median_hold20_2024": NaN,
+  "n_2025": 0,
+  "sell_better20_share_2025": NaN,
+  "median_hold20_2025": NaN,
+  "n_2026": 11,
+  "sell_better20_share_2026": 0.36363636363636365,
+  "median_hold20_2026": 0.05351170568561869
+}
+```
+
+## Earlier 12% x 2-close idea, standardized to 60-day peak
+```json
+{
+  "lookback": 60,
+  "damage": 0.12,
+  "confirm": 2,
+  "n20": 9,
+  "median_hold20": 0.004885993485342022,
+  "mean_hold20": -0.0026325986771469356,
+  "sell_better20_share": 0.4444444444444444,
+  "deep8_20_share": 0.2222222222222222,
+  "rebound10_20_share": 0.3333333333333333,
+  "reclaim_peak98_20_share": 0.0,
+  "median_mae20": -0.040632054176072185,
+  "median_mfe20": 0.031602708803611934,
+  "n_2023": 0,
+  "sell_better20_share_2023": NaN,
+  "median_hold20_2023": NaN,
+  "n_2024": 6,
+  "sell_better20_share_2024": 0.5,
+  "median_hold20_2024": -0.010953708972442966,
+  "n_2025": 3,
+  "sell_better20_share_2025": 0.3333333333333333,
+  "median_hold20_2025": 0.004885993485342022,
+  "n_2026": 0,
+  "sell_better20_share_2026": NaN,
+  "median_hold20_2026": NaN,
+  "eligible_pre": false,
+  "eligible_neighbor_count": 0,
+  "plateau_pre": false
+}
+```
+
+## Current state through 2026-10-27
+```json
+{
+  "date": "2026-10-27",
+  "close": 97.0,
+  "lookback": 90,
+  "peak_adj_close": 128.5,
+  "damage_from_peak": -0.24513618677042803,
+  "sell_line": 110.51,
+  "consecutive_damaged_closes": 7,
+  "confirmed_sell_state": true
+}
+```
