@@ -1,0 +1,88 @@
+{
+  "system": "HENGCE",
+  "ticker": "8150",
+  "name": "南茂",
+  "scope": "single-stock-only",
+  "window": [
+    "2023-10-27",
+    "2026-10-27"
+  ],
+  "governance": {
+    "2026_used_for_selection": false,
+    "append_only_research": true,
+    "no_other_ticker_tuning": true
+  },
+  "sell": {
+    "damage": 0.08,
+    "confirm_closes": 2,
+    "rule": "while holding, after peak adjusted Close, 2 consecutive closes <= peak*(1-0.08); exit next trading-day raw Open",
+    "selection_note": "NO eligible sell rule; best shown for research only"
+  },
+  "buy_reset": {
+    "lookback": 60,
+    "drawdown": 0.15,
+    "rule": "prior 60 completed sessions highest adjusted Close; current or previous day drawdown <= -15%; today adjusted Close > prior day adjusted High; enter next trading-day raw Open",
+    "selection_note": "no robust BUY candidate; research-only best"
+  },
+  "f0": {
+    "promoted": false,
+    "status": "NOT_PROMOTED"
+  },
+  "performance": {
+    "pre2026": {
+      "n": 6,
+      "pnl": 782075.3090000004,
+      "wr": 0.5,
+      "pf": 6.415583947317406,
+      "mdd": -117200.39999999986,
+      "remove_best1": 24952.909000000218,
+      "best": 757122.4000000001,
+      "worst": -78250.19999999995,
+      "pnl_2023": 0.0,
+      "pnl_2024": -66161.79999999987,
+      "pnl_2025": 848237.1090000002,
+      "pnl_2026": 0.0
+    },
+    "oos2026": {
+      "n": 8,
+      "pnl": 998918.0000000001,
+      "wr": 0.875,
+      "pf": 17.258430989583356,
+      "mdd": -61439.99999999991,
+      "remove_best1": 796119.6000000001,
+      "best": 202798.39999999997,
+      "worst": -61439.99999999991,
+      "pnl_2023": 0.0,
+      "pnl_2024": 0.0,
+      "pnl_2025": 0.0,
+      "pnl_2026": 998918.0000000001
+    },
+    "full3y": {
+      "n": 14,
+      "pnl": 1780993.3090000001,
+      "wr": 0.7142857142857143,
+      "pf": 9.651814454073813,
+      "mdd": -117200.39999999986,
+      "remove_best1": 1023870.909,
+      "best": 757122.4000000001,
+      "worst": -78250.19999999995,
+      "pnl_2023": 0.0,
+      "pnl_2024": -66161.79999999987,
+      "pnl_2025": 848237.1090000002,
+      "pnl_2026": 998918.0000000001
+    },
+    "oos_neighbor_positive_share": 1.0
+  },
+  "current_model_state": {
+    "holding": false,
+    "pending_exit": false,
+    "pending_entry": false,
+    "entry_date": null,
+    "entry_price": null,
+    "shares": 0,
+    "peak_adj_close": null,
+    "last_date": "2026-10-27",
+    "last_close": 97.0
+  },
+  "authority": "SURVIVE_PROVISIONAL_NOT_FREEZE"
+}

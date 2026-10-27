@@ -1,0 +1,26 @@
+[
+  {
+    "Date": "2024-06-27",
+    "Amount": 1.8,
+    "Source": "Yahoo corporate-action event; TWSE remains canonical OHLC",
+    "status": "APPLIED_BACK_ADJUST",
+    "prev_close": 45.0,
+    "factor": 0.9600000000000001
+  },
+  {
+    "Date": "2025-06-27",
+    "Amount": 1.229963,
+    "Source": "Yahoo corporate-action event; TWSE remains canonical OHLC",
+    "status": "APPLIED_BACK_ADJUST",
+    "prev_close": 27.9,
+    "factor": 0.9559153046594981
+  },
+  {
+    "Date": "2026-06-29",
+    "Amount": 1.23,
+    "Source": "Yahoo corporate-action event; TWSE remains canonical OHLC",
+    "status": "APPLIED_BACK_ADJUST",
+    "prev_close": 97.5,
+    "factor": 0.9873846153846153
+  }
+]
