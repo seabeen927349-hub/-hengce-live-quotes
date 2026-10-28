@@ -1,0 +1,99 @@
+name: HENGCE original EOD ingest
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: Target TWSE date YYYY-MM-DD; blank = Taipei today
+        required: false
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-original-eod-ingest.yml'
+  schedule:
+    - cron: '0 15 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-original-eod-ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout original HENGCE vessel
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install original-vessel runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests openpyxl
+
+      - name: Resolve target date
+        id: target
+        shell: bash
+        run: |
+          set -euo pipefail
+          MANUAL='${{ inputs.date }}'
+          if [ -n "$MANUAL" ]; then
+            D="$MANUAL"
+          else
+            D="$(TZ=Asia/Taipei date '+%F')"
+          fi
+          [[ "$D" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]
+          echo "date=$D" >> "$GITHUB_OUTPUT"
+          echo "compact=${D//-/}" >> "$GITHUB_OUTPUT"
+          echo "HENGCE original vessel target=$D"
+
+      - name: Run original HENGCE incremental ingest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_eod_incremental_ingest.py --mode ingest --date '${{ steps.target.outputs.date }}'
+
+      - name: Verify original-vessel output only
+        shell: bash
+        run: |
+          set -euo pipefail
+          D='${{ steps.target.outputs.date }}'
+          C='${{ steps.target.outputs.compact }}'
+          test -f "eod/$C/status.json"
+          python - "$D" "$C" <<'PY'
+          import json,sys
+          from pathlib import Path
+          d,c=sys.argv[1:]
+          p=Path('eod')/c/'status.json'
+          x=json.loads(p.read_text(encoding='utf-8'))
+          assert x.get('target_date')==d, x
+          assert x.get('artifact')=='EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST', x
+          assert x.get('parallel_eod_tree') is False, x
+          assert x.get('second_mother') is False, x
+          assert x.get('model_authority_created') is False, x
+          print(json.dumps({k:x.get(k) for k in ('target_date','price_status','price_rows','institutional_status','institutional_rows','margin_status','margin_rows','mother_status','three_leg_complete','downstream_ready')},ensure_ascii=False))
+          PY
+
+      - name: Commit original eod tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          C='${{ steps.target.outputs.compact }}'
+          git config user.name 'hengce-original-vessel-bot'
+          git config user.email 'hengce-original-vessel-bot@users.noreply.github.com'
+          git add "eod/$C"
+          if git diff --cached --quiet; then
+            echo 'No original-vessel changes.'
+            exit 0
+          fi
+          git commit -m "HENGCE original EOD ingest ${{ steps.target.outputs.date }}"
+          git pull --rebase origin main
+          git push origin HEAD:main
