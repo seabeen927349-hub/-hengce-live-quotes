@@ -1,0 +1,204 @@
+name: HENGCE Frozen Single-Name Live Quotes
+
+"on":
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'hengce/frozen/live_symbols.json'
+      - '.github/workflows/hengce-frozen-single-name-live-quotes.yml'
+  schedule:
+    - cron: "2-57/5 1-4 * * 1-5"
+    - cron: "2-27/5 5 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-frozen-single-name-live-quotes
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch frozen single-name Fugle quotes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json, os, random, re, time, urllib.error, urllib.request
+          from datetime import datetime, timedelta
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          API_KEY=os.environ.get('FUGLE_API_KEY')
+          if not API_KEY:
+              raise SystemExit('FUGLE_API_KEY_MISSING')
+
+          TZ=ZoneInfo('Asia/Taipei')
+          CACHE_TTL_SECONDS=600
+          TRADE_IDLE_SECONDS=900
+          CONFIG=Path('hengce/frozen/live_symbols.json')
+          OUT_ROOT=Path('legacy_live')
+          QUOTE_DIR=OUT_ROOT/'quotes'
+          OUT_ROOT.mkdir(parents=True,exist_ok=True)
+          QUOTE_DIR.mkdir(parents=True,exist_ok=True)
+
+          if not CONFIG.exists():
+              raise SystemExit('FROZEN_SINGLE_NAME_CONFIG_MISSING_FAIL_CLOSED')
+          cfg=json.loads(CONFIG.read_text(encoding='utf-8'))
+          if cfg.get('policy')!='EXPLICIT_FROZEN_SINGLE_NAME_TRANSPORT':
+              raise SystemExit('FROZEN_SINGLE_NAME_POLICY_MISMATCH')
+          if cfg.get('authority')!='QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY':
+              raise SystemExit('FROZEN_SINGLE_NAME_AUTHORITY_MISMATCH')
+
+          rows=cfg.get('symbols',[])
+          symbols=[str(x.get('Ticker','')).strip() for x in rows]
+          if not symbols or len(symbols)!=len(set(symbols)):
+              raise SystemExit('FROZEN_SINGLE_NAME_EMPTY_OR_DUPLICATE')
+          bad=[x for x in symbols if not re.fullmatch(r'[1-9]\d{3}',x)]
+          if bad:
+              raise SystemExit(f'FROZEN_SINGLE_NAME_BAD_SYMBOLS:{bad}')
+
+          BASE='https://api.fugle.tw/marketdata/v1.0/stock/intraday/quote/'
+          def now_tw(): return datetime.now(TZ)
+          def market_phase(dt):
+              if dt.weekday()>=5: return 'closed'
+              m=dt.hour*60+dt.minute
+              if m<540: return 'preopen'
+              if m<=810: return 'open'
+              return 'closed'
+          def parse_ts(v):
+              if v in (None,''): return None
+              try:
+                  v=float(v)
+                  if v>=1e14: v/=1_000_000
+                  elif v>=1e11: v/=1_000
+                  return datetime.fromtimestamp(v,TZ)
+              except Exception: return None
+          def age(now,dt): return None if dt is None else max(0,int((now-dt).total_seconds()))
+          def level(v): return v[0] if isinstance(v,list) and v and isinstance(v[0],dict) else {}
+          def load_previous(symbol):
+              p=QUOTE_DIR/f'{symbol}.json'
+              if not p.exists(): return None
+              try: return json.loads(p.read_text(encoding='utf-8'))
+              except Exception: return None
+          def fetch(symbol):
+              req=urllib.request.Request(BASE+symbol,headers={
+                  'X-API-KEY':API_KEY,
+                  'Accept':'application/json',
+                  'User-Agent':'HENGCE-FROZEN-SINGLE-NAME-LIVE/1.0'})
+              for attempt in range(5):
+                  try:
+                      with urllib.request.urlopen(req,timeout=15) as r: return json.load(r)
+                  except urllib.error.HTTPError as e:
+                      if e.code in (401,403): raise RuntimeError(f'AUTH_OR_PLAN_HTTP_{e.code}')
+                      if e.code==429 and attempt==4: raise RuntimeError('RATE_LIMIT_HTTP_429')
+                      if 500<=e.code<=599 and attempt==4: raise RuntimeError(f'SERVER_HTTP_{e.code}')
+                      if e.code not in (429,) and not 500<=e.code<=599: raise
+                  except Exception:
+                      if attempt==4: raise
+                  time.sleep((2**attempt)+random.uniform(0.2,0.8))
+
+          snap=now_tw(); snapshot_id=snap.strftime('%Y%m%dT%H%M%S%z'); expires=snap+timedelta(seconds=CACHE_TTL_SECONDS)
+          records=[]; failures=[]; successful=0
+          for symbol in symbols:
+              try:
+                  row=fetch(symbol)
+                  if not isinstance(row,dict): raise RuntimeError('INVALID_RESPONSE')
+                  if str(row.get('symbol'))!=symbol: raise RuntimeError('SYMBOL_MISMATCH')
+                  name=row.get('name')
+                  if not name: raise RuntimeError('NAME_MISSING')
+                  total=row.get('total') or {}; last=row.get('lastTrade') or {}; trial=row.get('lastTrial') or {}; halt=row.get('tradingHalt') or {}
+                  bid=level(row.get('bids')); ask=level(row.get('asks'))
+                  qt=parse_ts(row.get('lastUpdated')); tt=parse_ts(last.get('time'))
+                  price=last.get('price'); prev=row.get('previousClose')
+                  chg=pct=None
+                  if price is not None and prev not in (None,0):
+                      chg=round(float(price)-float(prev),4); pct=round((float(price)/float(prev)-1)*100,4)
+                  qdate=row.get('date'); is_trial=bool(row.get('isTrial',False))
+                  rec={
+                      'schema_version':2,'snapshot_id':snapshot_id,'symbol':symbol,'company_name':name,
+                      'price':price,'previous_close':prev,'reference_price':row.get('referencePrice'),
+                      'open':row.get('openPrice'),'high':row.get('highPrice'),'low':row.get('lowPrice'),'avg_price':row.get('avgPrice'),
+                      'change':chg,'change_percent':pct,'volume':total.get('tradeVolume'),'trade_value':total.get('tradeValue'),
+                      'transactions':total.get('transaction'),'volume_at_bid':total.get('tradeVolumeAtBid'),'volume_at_ask':total.get('tradeVolumeAtAsk'),
+                      'best_bid':bid.get('price'),'best_bid_size':bid.get('size'),'best_ask':ask.get('price'),'best_ask_size':ask.get('size'),
+                      'last_trade_time':tt.isoformat() if tt else None,'trade_age_seconds':age(snap,tt),
+                      'trade_idle_warning': age(snap,tt) is not None and age(snap,tt)>TRADE_IDLE_SECONDS,
+                      'source_last_price':row.get('lastPrice'),'source_last_updated':qt.isoformat() if qt else None,'quote_age_seconds':age(snap,qt),
+                      'is_trial':is_trial,'trial_price':row.get('lastPrice') if is_trial else None,'last_trial_price':trial.get('price'),
+                      'is_halted':bool(halt.get('isHalted',False)),'is_limit_up_price':bool(row.get('isLimitUpPrice',False)),
+                      'is_limit_down_price':bool(row.get('isLimitDownPrice',False)),'is_delayed_open':bool(row.get('isDelayedOpen',False)),
+                      'is_delayed_close':bool(row.get('isDelayedClose',False)),'quote_date':qdate,
+                      'stale_at_publish':qdate!=snap.date().isoformat(),'fetch_ok':True,'fetched_at_taipei':snap.isoformat(),
+                      'cache_expires_at_taipei':expires.isoformat(),'market_phase':market_phase(snap),'source':'Fugle MarketData',
+                      'universe_version':cfg.get('version'),'transport_scope':'FROZEN_SINGLE_NAME',
+                      'transport_role':'QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY'}
+                  records.append(rec); successful+=1
+                  (QUOTE_DIR/f'{symbol}.json').write_text(json.dumps(rec,ensure_ascii=False,indent=2),encoding='utf-8')
+              except Exception as e:
+                  err=str(e); failures.append({'symbol':symbol,'error':err})
+                  old=load_previous(symbol)
+                  if old:
+                      old['fetch_ok']=False; old['stale_at_publish']=True; old['fetch_error']=err; old['last_fetch_attempt_taipei']=snap.isoformat(); records.append(old)
+              time.sleep(0.45)
+
+          if successful==0:
+              raise SystemExit('FROZEN_SINGLE_NAME_ALL_REQUESTS_FAILED')
+          status={
+              'schema_version':1,'service':'HENGCE FROZEN SINGLE-NAME LIVE QUOTES','snapshot_id':snapshot_id,
+              'generated_at_taipei':snap.isoformat(),'cache_expires_at_taipei':expires.isoformat(),
+              'market_phase':market_phase(snap),'version':cfg.get('version'),
+              'requested_count':len(symbols),'success_count':successful,'failure_count':len(failures),
+              'symbols':symbols,'failures':failures,
+              'authority':'QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY',
+              'healthy':successful==len(symbols)}
+          (OUT_ROOT/'frozen_single_name_status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('HENGCE FROZEN SINGLE-NAME SNAPSHOT',snapshot_id,successful,'/',len(symbols))
+          PY
+
+      - name: Validate 6257 transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+          cfg=json.loads(Path('hengce/frozen/live_symbols.json').read_text(encoding='utf-8'))
+          for row in cfg.get('symbols',[]):
+              symbol=str(row['Ticker'])
+              p=Path('legacy_live/quotes')/f'{symbol}.json'
+              if not p.exists(): raise SystemExit(f'FROZEN_QUOTE_MISSING:{symbol}')
+              q=json.loads(p.read_text(encoding='utf-8'))
+              if q.get('symbol')!=symbol: raise SystemExit(f'FROZEN_QUOTE_SYMBOL_MISMATCH:{symbol}')
+              if q.get('source')!='Fugle MarketData': raise SystemExit(f'FROZEN_QUOTE_SOURCE_MISMATCH:{symbol}')
+              if q.get('transport_role')!='QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY':
+                  raise SystemExit(f'FROZEN_QUOTE_AUTHORITY_MISMATCH:{symbol}')
+          print('HENGCE FROZEN SINGLE-NAME TRANSPORT VERIFIED')
+          PY
+
+      - name: Commit frozen single-name live snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-frozen-single-name-live-bot'
+          git config user.email 'hengce-frozen-single-name-live-bot@users.noreply.github.com'
+          git add legacy_live/quotes/ legacy_live/frozen_single_name_status.json
+          if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE frozen single-name live ${TS}"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
