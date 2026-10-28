@@ -1,4 +1,5 @@
 name: HENGCE original EOD ingest
+# launcher-touch: 2026-10-28T23:10+08:00
 
 on:
   workflow_dispatch:
