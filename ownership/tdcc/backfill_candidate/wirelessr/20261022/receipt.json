@@ -1,0 +1,19 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_HISTORICAL_BACKFILL_CANDIDATE",
+  "status": "COMPLETE",
+  "snapshot_date": "20261022",
+  "downloaded_at_taipei": "2026-10-29T00:24:34+08:00",
+  "source_kind": "PUBLIC_GITHUB_MIRROR_OF_TDCC_1_5",
+  "mirror_repo": "wirelessr/tdcc-opendata-archive",
+  "mirror_url": "https://raw.githubusercontent.com/wirelessr/tdcc-opendata-archive/main/snapshots/2026/2026-10-22.csv",
+  "raw_uncompressed_sha256": "df4ad0dcfa255ffb200c7662c8abfeed3f54c60d6fdacac9649554d3864b17fd",
+  "summary_sha256": "838dfd13a8df1804c5bcc384b5c63230ec8bdb28db9e822007a1cf34e52b3165",
+  "summary_rows": 2970,
+  "source_encoding": "utf-8-sig",
+  "verification": "VERIFIED_AGAINST_OFFICIAL_SUMMARY",
+  "authority": "RESEARCH_BACKFILL_ONLY_NO_CANONICAL_AUTHORITY",
+  "big400_definition": "grades 12+13+14+15",
+  "big1000_definition": "grade 15",
+  "point_in_time": "WEEKLY_SNAPSHOT_DO_NOT_FORWARD_OR_BACKFILL_AS_DAILY"
+}
