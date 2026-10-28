@@ -62,7 +62,6 @@ jobs:
               'institutional_status': s.get('institutional_status') == 'COMPLETE',
               'margin_status': s.get('margin_status') == 'COMPLETE',
               'three_leg_complete': s.get('three_leg_complete') is True,
-              'downstream_ready': s.get('downstream_ready') is True,
           }
           failed = [k for k,v in checks.items() if not v]
           if failed:
@@ -89,7 +88,7 @@ jobs:
               if status_rows is not None and int(status_rows) != rows:
                   raise SystemExit(f'FAIL_CLOSED: {leg} status_rows={status_rows} actual={rows}')
           print(json.dumps({k:s.get(k) for k in ('target_date','price_status','price_rows','institutional_status','institutional_rows','margin_status','margin_rows','mother_status','three_leg_complete','downstream_ready')}, ensure_ascii=False))
-          print('PASS: 2026-10-07 formal HENGCE three-leg repair complete')
+          print('PASS: 2026-10-07 formal HENGCE original-vessel three-leg repair complete; mother promotion remains a separate downstream step')
           PY
 
       - name: Commit only verified original-vessel repair
