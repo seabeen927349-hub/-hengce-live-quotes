@@ -1,0 +1,22 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_FOURTH_LEG_CANONICAL_INDEX",
+  "status": "ACTIVE",
+  "created_at_taipei": "2026-10-29T03:27:00+08:00",
+  "canonical_path": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/",
+  "data_vessel": "ownership/tdcc/consolidated_candidate/tdcc_fourth_leg_best_available.csv.gz",
+  "source_manifest": "ownership/tdcc/consolidated_candidate/MANIFEST.json",
+  "source_dates": "ownership/tdcc/consolidated_candidate/dates.json",
+  "rows": 122023,
+  "unique_snapshots": 81,
+  "first_snapshot": "20170721",
+  "last_snapshot": "20261022",
+  "output_sha256_uncompressed": "a79c33b99dc236f517fe31462197115f6152c0523d968be4abf2a4237af0a5fb",
+  "output_sha256_gzip": "d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f",
+  "retrieval_contract": [
+    "Always resolve TDCC fourth-leg history from /HENGCE_CANONICAL/TDCC_FOURTH_LEG/INDEX.json first.",
+    "Verify the referenced data vessel against the recorded SHA256 before downstream research use.",
+    "Do not create or silently substitute a second TDCC mother vessel.",
+    "Production/live PIT authority must be checked separately in AUTHORITY.json."
+  ]
+}
