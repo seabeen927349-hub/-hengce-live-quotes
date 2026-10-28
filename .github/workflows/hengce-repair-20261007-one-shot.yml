@@ -2,6 +2,7 @@ name: HENGCE one-shot repair 2026-10-07
 
 on:
   push:
+    branches: [main]
     paths:
       - '.github/workflows/hengce-repair-20261007-one-shot.yml'
   workflow_dispatch:
@@ -16,24 +17,32 @@ concurrency:
 jobs:
   repair:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
-      - name: Checkout formal vessel
+      - name: Checkout original HENGCE vessel
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
-      - name: Run existing HENGCE original-vessel incremental ingest
-        run: python scripts/hengce_eod_incremental_ingest.py --mode ingest --date 2026-10-07
+      - name: Install original-vessel runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests openpyxl
 
-      - name: Fail-closed verify all three legs
+      - name: Run original HENGCE incremental ingest
         shell: bash
         run: |
+          set -euo pipefail
+          python scripts/hengce_eod_incremental_ingest.py --mode ingest --date '2026-10-07'
+
+      - name: Fail-closed verify repaired original vessel
+        shell: bash
+        run: |
+          set -euo pipefail
           python - <<'PY'
           import csv, json
           from pathlib import Path
@@ -43,19 +52,24 @@ jobs:
           if not p.exists():
               raise SystemExit('FAIL_CLOSED: status.json missing')
           s = json.loads(p.read_text(encoding='utf-8'))
-          if s.get('target_date') != '2026-10-07':
-              raise SystemExit(f"FAIL_CLOSED: wrong target_date {s.get('target_date')}")
-          if s.get('three_leg_complete') is not True:
-              raise SystemExit('FAIL_CLOSED: three_leg_complete != true')
-          if s.get('formal_complete_day') is not True:
-              raise SystemExit('FAIL_CLOSED: formal_complete_day != true')
-          ov = s.get('original_vessel') or {}
-          if ov.get('status') != 'COMPLETE':
-              raise SystemExit('FAIL_CLOSED: original_vessel not COMPLETE')
-          comps = ov.get('components') or {}
+          checks = {
+              'target_date': s.get('target_date') == '2026-10-07',
+              'artifact': s.get('artifact') == 'EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST',
+              'parallel_eod_tree': s.get('parallel_eod_tree') is False,
+              'second_mother': s.get('second_mother') is False,
+              'model_authority_created': s.get('model_authority_created') is False,
+              'price_status': s.get('price_status') == 'COMPLETE',
+              'institutional_status': s.get('institutional_status') == 'COMPLETE',
+              'margin_status': s.get('margin_status') == 'COMPLETE',
+              'three_leg_complete': s.get('three_leg_complete') is True,
+              'downstream_ready': s.get('downstream_ready') is True,
+          }
+          failed = [k for k,v in checks.items() if not v]
+          if failed:
+              raise SystemExit('FAIL_CLOSED status checks: ' + ', '.join(failed) + '\n' + json.dumps(s, ensure_ascii=False, indent=2))
+
+          min_rows = {'price': 900, 'institutional': 900, 'margin': 500}
           for leg in ('price','institutional','margin'):
-              if (comps.get(leg) or {}).get('status') != 'COMPLETE':
-                  raise SystemExit(f'FAIL_CLOSED: {leg} component not COMPLETE')
               files = sorted(d.glob(f'{leg}_[1-9].csv'))
               if not files:
                   raise SystemExit(f'FAIL_CLOSED: {leg} files missing')
@@ -65,24 +79,39 @@ jobs:
                   with f.open(encoding='utf-8-sig', newline='') as fh:
                       for r in csv.DictReader(fh):
                           rows += 1
-                          if r.get('Ticker') == '6415':
+                          if (r.get('Ticker') or '').strip() == '6415':
                               has_6415 = True
-              if rows <= 0:
-                  raise SystemExit(f'FAIL_CLOSED: {leg} zero rows')
+              if rows < min_rows[leg]:
+                  raise SystemExit(f'FAIL_CLOSED: {leg} rows {rows} < {min_rows[leg]}')
               if not has_6415:
                   raise SystemExit(f'FAIL_CLOSED: 6415 missing from {leg}')
+              status_rows = s.get(f'{leg}_rows')
+              if status_rows is not None and int(status_rows) != rows:
+                  raise SystemExit(f'FAIL_CLOSED: {leg} status_rows={status_rows} actual={rows}')
+          print(json.dumps({k:s.get(k) for k in ('target_date','price_status','price_rows','institutional_status','institutional_rows','margin_status','margin_rows','mother_status','three_leg_complete','downstream_ready')}, ensure_ascii=False))
           print('PASS: 2026-10-07 formal HENGCE three-leg repair complete')
           PY
 
       - name: Commit only verified original-vessel repair
         shell: bash
         run: |
-          git config user.name 'hengce-formal-repair'
-          git config user.email 'actions@users.noreply.github.com'
+          set -euo pipefail
+          git config user.name 'hengce-original-vessel-bot'
+          git config user.email 'hengce-original-vessel-bot@users.noreply.github.com'
           git add eod/20261007
           if git diff --cached --quiet; then
-            echo 'No new repair files to commit.'
-            exit 0
+            echo 'No verified original-vessel changes.'
+          else
+            git commit -m 'HENGCE original EOD repair 2026-10-07'
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
-          git commit -m 'repair eod 2026-10-07 via formal HENGCE incremental vessel'
-          git push origin HEAD:main
+
+      - name: Upload exact repaired original-vessel bytes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_ORIGINAL_EOD_REPAIR_20261007
+          path: eod/20261007/
+          if-no-files-found: error
+          retention-days: 7
