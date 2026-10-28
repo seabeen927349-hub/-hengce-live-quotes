@@ -1,0 +1,16 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_LEGACY_NCHC_BACKFILL_CANDIDATE",
+  "status": "COMPLETE",
+  "snapshot_date": "20170721",
+  "downloaded_at_taipei": "2026-10-29T00:30:57+08:00",
+  "package_id": "ba3fdd24-d3c8-401b-ae8f-07f03ef6c379",
+  "resource_id": "569d12e6-bfe8-4c73-aedd-6491d4d35ec8",
+  "resource_name": "opendata_11452",
+  "resource_url": "https://scidm.nchc.org.tw/dataset/ba3fdd24-d3c8-401b-ae8f-07f03ef6c379/resource/569d12e6-bfe8-4c73-aedd-6491d4d35ec8/nchcproxy/opendata_11452",
+  "raw_sha256": "6d594321012f8347b57d5124c78bc548c8c0250281464ab726adc31fbfcc9f46",
+  "raw_rows": 42466,
+  "summary_rows": 2352,
+  "source_encoding": "utf-8-sig",
+  "authority": "RESEARCH_BACKFILL_ONLY_NO_CANONICAL_AUTHORITY"
+}
