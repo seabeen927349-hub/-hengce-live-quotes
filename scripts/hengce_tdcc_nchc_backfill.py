@@ -25,12 +25,16 @@ def atomic(p,b):
  finally:
   if os.path.exists(t):os.unlink(t)
 def jwrite(p,o):atomic(p,(json.dumps(o,ensure_ascii=False,indent=2)+'\n').encode())
+def normk(x):
+ s=str(x or '').replace('\ufeff','').strip().replace('佔','占').replace('％','%').replace(' ','')
+ if s.startswith('占集保庫存數比例'): return '占集保庫存數比例%'
+ return s
 def decode(raw):
  for enc in ('utf-8-sig','utf-8','cp950','big5'):
   try:
-   s=raw.decode(enc)
-   h=(s.splitlines() or [''])[0]
-   if '資料日期' in h and '證券代號' in h and '持股分級' in h:return s,enc
+   s=raw.decode(enc);h=(s.splitlines() or [''])[0]
+   hn=normk(h)
+   if '資料日期' in hn and '證券代號' in hn and '持股分級' in hn:return s,enc
   except UnicodeDecodeError:pass
  raise RuntimeError('NOT_TDCC_CSV')
 def ni(x):
@@ -38,12 +42,12 @@ def ni(x):
 def nf(x):
  s=str(x or '').replace(',','').replace('%','').strip();return 0.0 if s in ('','-','--') else float(s)
 def parse(raw):
- s,enc=decode(raw);rd=csv.DictReader(io.StringIO(s));heads=[str(x or '').replace('\ufeff','').strip() for x in (rd.fieldnames or [])]
+ s,enc=decode(raw);rd=csv.DictReader(io.StringIO(s));heads=[normk(x) for x in (rd.fieldnames or [])]
  miss=[x for x in EXPECTED if x not in heads]
- if miss:raise RuntimeError('MISSING:'+','.join(miss))
+ if miss:raise RuntimeError('MISSING:'+','.join(miss)+':HEADERS='+','.join(heads))
  rows=[]
  for z in rd:
-  r={str(k or '').replace('\ufeff','').strip():v for k,v in z.items()};ds=str(r.get('資料日期','')).strip();t=str(r.get('證券代號','')).strip();g=str(r.get('持股分級','')).strip()
+  r={normk(k):v for k,v in z.items()};ds=str(r.get('資料日期','')).strip();t=str(r.get('證券代號','')).strip();g=str(r.get('持股分級','')).strip()
   if not(ds and t and g):continue
   if not re.fullmatch(r'\d{8}',ds):continue
   rows.append((ds,t,int(g),ni(r.get('人數')),ni(r.get('股數')),nf(r.get('占集保庫存數比例%'))))
