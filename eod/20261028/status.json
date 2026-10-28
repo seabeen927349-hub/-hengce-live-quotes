@@ -41,13 +41,13 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1091,
       "sha256": "587cd284a0b6529a8331670a365e90c6462d831553f5aaf9377f3212b3feac72"
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1082,
       "sha256": "9bd1f11efe9deff0db8da395436cf6523f1e8db54f619f6c12389c9f3f87e770"
     },
@@ -57,5 +57,5 @@
       "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
     }
   ],
-  "updated_at_taipei": "2026-10-28T18:44:32.472409+08:00"
+  "updated_at_taipei": "2026-10-28T18:46:31.482260+08:00"
 }
