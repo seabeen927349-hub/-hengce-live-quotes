@@ -22,7 +22,6 @@
   "margin_rows": 1059,
   "margin_sha256": "772de55e632886dfbfda116f7ff05cf35925f2fd285168d8a5bfe94b09f0a5dc",
   "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
-  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
   "available_legs": [
     "price",
     "institutional",
@@ -30,14 +29,10 @@
   ],
   "pending_legs": [],
   "error_legs": [],
-  "mother_status": "PENDING",
+  "mother_status": "COMPLETE",
   "mother_promotion_required": true,
-  "mother_pending_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ],
-  "downstream_ready": false,
+  "mother_pending_legs": [],
+  "downstream_ready": true,
   "three_leg_complete": true,
   "formal_complete_day": true,
   "status": "COMPLETE",
@@ -61,5 +56,15 @@
       "sha256": "772de55e632886dfbfda116f7ff05cf35925f2fd285168d8a5bfe94b09f0a5dc"
     }
   ],
-  "updated_at_taipei": "2026-10-28T23:24:17.928286+08:00"
+  "updated_at_taipei": "2026-10-28T23:33:55+08:00",
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "c81ba4a668c14f00d79b130d1f55087e35ef10d5fd06fb2e01732906b7acb6eb",
+  "mother_latest_date": "2026-10-28",
+  "mother_promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "receipt_status": "COMPLETE",
+  "release_decision": "RELEASED_AFTER_MOTHER_RECEIPT_PASS"
 }
