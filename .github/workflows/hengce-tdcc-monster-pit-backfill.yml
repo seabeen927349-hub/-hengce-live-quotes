@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: hengce-tdcc-monster-v1-targeted-backfill
+  group: hengce-tdcc-monster-v1-targeted-backfill-v2
   cancel-in-progress: true
 
 jobs:
