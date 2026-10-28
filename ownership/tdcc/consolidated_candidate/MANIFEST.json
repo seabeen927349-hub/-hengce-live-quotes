@@ -1,0 +1,39 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_FOURTH_LEG_CONSOLIDATED_CANDIDATE",
+  "status": "COMPLETE",
+  "generated_at_taipei": "2026-10-29T00:36:52+08:00",
+  "rows": 122023,
+  "unique_snapshots": 81,
+  "first_snapshot": "20170721",
+  "last_snapshot": "20261022",
+  "years": [
+    "2017",
+    "2019",
+    "2020",
+    "2021",
+    "2026"
+  ],
+  "selected_source_tiers": {
+    "NCHC_RAW": 2352,
+    "NCHC_RAW_REVISE": 2446,
+    "ACCESS_DB_DERIVED": 7442,
+    "RAW_ARCHIVE": 106813,
+    "TDCC_OFFICIAL": 2970
+  },
+  "raw_loaded_source_rows": {
+    "ACCESS_DB_DERIVED": 9912,
+    "NCHC_RAW": 4798,
+    "NCHC_RAW_REVISE": 2446,
+    "RAW_ARCHIVE": 106813,
+    "RAW_ARCHIVE_VERIFIED_OFFICIAL": 2970,
+    "TDCC_OFFICIAL": 2970
+  },
+  "overlap_conflict_keys": 0,
+  "output_sha256_uncompressed": "a79c33b99dc236f517fe31462197115f6152c0523d968be4abf2a4237af0a5fb",
+  "output_sha256_gzip": "d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f",
+  "authority": "RESEARCH_BACKFILL_CANDIDATE_NO_CANONICAL_AUTHORITY",
+  "precedence": "TDCC_OFFICIAL > VERIFIED_RAW_ARCHIVE > RAW_ARCHIVE > NCHC_RAW_REVISE > NCHC_RAW > ACCESS_DB_DERIVED",
+  "pit_policy": "WEEKLY_SNAPSHOT_ONLY; DO NOT BACKFILL/FORWARD-FILL AS DAILY KNOWLEDGE",
+  "missing_fields_policy": "LEAVE_NULL_DO_NOT_RECONSTRUCT"
+}
