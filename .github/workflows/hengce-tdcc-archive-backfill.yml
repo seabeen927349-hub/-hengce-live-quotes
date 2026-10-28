@@ -1,0 +1,51 @@
+name: HENGCE TDCC Historical Archive Backfill
+
+on:
+  push:
+    paths:
+      - 'scripts/hengce_tdcc_archive_backfill.py'
+      - '.github/workflows/hengce-tdcc-archive-backfill.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-tdcc-archive-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout HENGCE vessel repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime
+        run: python -m pip install --disable-pip-version-check requests
+
+      - name: Download every currently available full-market historical snapshot
+        run: python scripts/hengce_tdcc_archive_backfill.py
+
+      - name: Commit backfill candidate only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-tdcc-backfill'
+          git config user.email 'actions@users.noreply.github.com'
+          git add ownership/tdcc/backfill_candidate/wirelessr
+          if git diff --cached --quiet; then
+            echo 'No new TDCC archive snapshots.'
+            exit 0
+          fi
+          git commit -m 'backfill downloadable TDCC historical snapshots as research candidate'
+          git push origin HEAD:main
