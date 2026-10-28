@@ -29,7 +29,7 @@ jobs:
           python-version: '3.11'
 
       - name: Run existing HENGCE original-vessel incremental ingest
-        run: python scripts/hengce_eod_incremental_ingest.py --date 2026-10-07
+        run: python scripts/hengce_eod_incremental_ingest.py --mode ingest --date 2026-10-07
 
       - name: Fail-closed verify all three legs
         shell: bash
