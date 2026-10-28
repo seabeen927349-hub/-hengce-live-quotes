@@ -1,0 +1,79 @@
+name: HENGCE TDCC Monster V1 targeted PIT backfill
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-tdcc-monster-pit-backfill.yml'
+      - 'scripts/hengce_tdcc_monster_pit_backfill.py'
+      - 'research/tdcc/monster_v1_frozen_events_20261029.csv'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-tdcc-monster-v1-targeted-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install parser dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet requests pandas lxml
+
+      - name: Run official TDCC targeted historical backfill
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_tdcc_monster_pit_backfill.py
+
+      - name: Upload raw + validated sidecar artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-tdcc-monster-v1-targeted-backfill
+          path: |
+            ownership/tdcc/backfill_candidate/monster_v1_20261029/manifest.json
+            ownership/tdcc/backfill_candidate/monster_v1_20261029/tdcc_monster_v1_pit_backfill.csv
+            ownership/tdcc/backfill_candidate/monster_v1_20261029/raw_html.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit validated COMPLETE research sidecar
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          p='ownership/tdcc/backfill_candidate/monster_v1_20261029/manifest.json'
+          x=json.load(open(p,encoding='utf-8'))
+          if x.get('status')!='COMPLETE':
+              raise SystemExit(f"FAIL_CLOSED_NOT_COMPLETE:{x.get('status')}")
+          if x.get('valid_key_count') != x.get('required_key_count'):
+              raise SystemExit('FAIL_CLOSED_COUNT_MISMATCH')
+          if x.get('authority') != 'RESEARCH_BACKFILL_CANDIDATE_NO_CANONICAL_AUTHORITY':
+              raise SystemExit('FAIL_CLOSED_BAD_AUTHORITY')
+          if x.get('monster_v1_retuned') is not False:
+              raise SystemExit('FAIL_CLOSED_MONSTER_MUTATION')
+          print(f"COMPLETE {x['valid_key_count']}/{x['required_key_count']}")
+          PY
+
+          git config user.name 'hengce-bot'
+          git config user.email 'hengce-bot@users.noreply.github.com'
+          git add ownership/tdcc/backfill_candidate/monster_v1_20261029/
+          if git diff --cached --quiet; then
+            echo 'No output changes to commit'
+            exit 0
+          fi
+          git commit -m 'data: add Monster V1 TDCC targeted historical backfill'
+          git push
