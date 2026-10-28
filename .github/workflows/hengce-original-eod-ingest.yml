@@ -92,8 +92,17 @@ jobs:
           git add "eod/$C"
           if git diff --cached --quiet; then
             echo 'No original-vessel changes.'
-            exit 0
+          else
+            git commit -m "HENGCE original EOD ingest ${{ steps.target.outputs.date }}"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
-          git commit -m "HENGCE original EOD ingest ${{ steps.target.outputs.date }}"
-          git pull --rebase origin main
-          git push origin HEAD:main
+
+      - name: Upload exact original-vessel EOD bytes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_ORIGINAL_EOD_${{ steps.target.outputs.compact }}
+          path: eod/${{ steps.target.outputs.compact }}/
+          if-no-files-found: error
+          retention-days: 7
