@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "service": "HENGCE FROZEN SINGLE-NAME LIVE QUOTES",
+  "snapshot_id": "20261028T133058+0800",
+  "generated_at_taipei": "2026-10-28T13:30:58.516184+08:00",
+  "cache_expires_at_taipei": "2026-10-28T13:40:58.516184+08:00",
+  "market_phase": "open",
+  "version": "HENGCE_FROZEN_SINGLE_NAME_LIVE_v1_20261028",
+  "requested_count": 1,
+  "success_count": 1,
+  "failure_count": 0,
+  "symbols": [
+    "6257"
+  ],
+  "failures": [],
+  "authority": "QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
+  "healthy": true
+}
