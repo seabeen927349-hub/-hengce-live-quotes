@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'ownership'/'tdcc'/'backfill_candidate'/'nchc'
 PACKAGES=[
  ('https://scidm.nchc.org.tw/api/3/action/package_show','64395e85-c0b3-4aaa-8df7-442e5ca0343a'),
- ('https://www.scidm.tw/api/3/action/package_show','ba3fdd24-d3c8-401b-ae8f-07f03ef6c379'),
+ ('https://scidm.nchc.org.tw/api/3/action/package_show','ba3fdd24-d3c8-401b-ae8f-07f03ef6c379'),
 ]
 EXPECTED=['資料日期','證券代號','持股分級','人數','股數','占集保庫存數比例%']
 COLS=['SnapshotDate','Ticker','Big400Holders','Big400Shares','Big400Pct','Big1000Holders','Big1000Shares','Big1000Pct','TotalHolders','TotalShares','AdjustmentShares','Source','RawSHA256']
