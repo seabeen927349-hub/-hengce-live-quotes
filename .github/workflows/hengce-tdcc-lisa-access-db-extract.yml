@@ -1,0 +1,131 @@
+name: HENGCE TDCC Lisa Access DB Extract
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-lisa-access-db-extract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Install mdbtools
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq mdbtools
+      - name: Download and extract public Access DB
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/tdcc_lisa ownership/tdcc/backfill_candidate/lisa_access_db
+          curl -L --fail --retry 3 -o /tmp/tdcc_lisa/access_stock_ratio.accdb \
+            https://raw.githubusercontent.com/lisa4930007/ownership_distribution_access_db/master/access_stock_ratio.accdb
+          sha256sum /tmp/tdcc_lisa/access_stock_ratio.accdb > /tmp/tdcc_lisa/db.sha256
+          mdb-tables -1 /tmp/tdcc_lisa/access_stock_ratio.accdb > /tmp/tdcc_lisa/tables.txt
+          python3 - <<'PY'
+          import csv, gzip, hashlib, json, os, re, subprocess
+          from pathlib import Path
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          db=Path('/tmp/tdcc_lisa/access_stock_ratio.accdb')
+          out=Path('ownership/tdcc/backfill_candidate/lisa_access_db')
+          out.mkdir(parents=True,exist_ok=True)
+          tables=[x.strip() for x in Path('/tmp/tdcc_lisa/tables.txt').read_text(errors='replace').splitlines() if x.strip()]
+          target=next((x for x in tables if '股權分散表' in x and x.startswith('B_')),None)
+          if not target: raise SystemExit('B_DISTRIBUTION_TABLE_NOT_FOUND:'+repr(tables))
+          raw=subprocess.check_output(['mdb-export',str(db),target])
+          (out/'B_distribution_export.csv.gz').write_bytes(gzip.compress(raw,compresslevel=9,mtime=0))
+          text=raw.decode('utf-8-sig','replace')
+          rows=list(csv.DictReader(text.splitlines()))
+          if not rows: raise SystemExit('EMPTY_B_TABLE')
+          fields=list(rows[0].keys())
+          def keynorm(x):return re.sub(r'[^a-z0-9\u4e00-\u9fff]+','',str(x).lower())
+          def pick(*tokens):
+            for f in fields:
+              n=keynorm(f)
+              if all(keynorm(t) in n for t in tokens): return f
+            return None
+          stock=pick('stock','id') or pick('股票')
+          datef=pick('date','time') or pick('日期')
+          if not stock or not datef: raise SystemExit('STOCK_DATE_COLUMNS_NOT_FOUND:'+repr(fields))
+
+          # The database was built by inserting df_[:-2] distribution percentages in order.
+          # Identify numeric distribution columns by excluding metadata and taking the ordered interval/rate fields.
+          meta={stock,datef}
+          for f in fields:
+            n=keynorm(f)
+            if any(t in n for t in ['id','total','price','created','time']) and f not in (stock,datef):meta.add(f)
+          candidates=[f for f in fields if f not in meta]
+          # Keep columns that are predominantly numeric and plausibly percentages 0..100.
+          ratecols=[]
+          for f in candidates:
+            vals=[]
+            for r in rows[:5000]:
+              s=str(r.get(f,'')).replace(',','').strip()
+              try: vals.append(float(s))
+              except: pass
+            if len(vals)>=100 and sum(0<=v<=100 for v in vals)/len(vals)>=.95:ratecols.append(f)
+          # The source importer stores df_[:-2], i.e. levels 1..15. Require at least 15 rate fields.
+          if len(ratecols)<15:
+            raise SystemExit('RATE_COLUMNS_LT15:'+repr(ratecols)+':ALL='+repr(fields))
+          ratecols=ratecols[:15]
+
+          norm=[];bad=0
+          for r in rows:
+            t=str(r.get(stock,'')).strip();d=re.sub(r'\D','',str(r.get(datef,'')))[:8]
+            if not re.fullmatch(r'[1-9]\d{3}',t) or not re.fullmatch(r'20\d{6}',d): bad+=1;continue
+            vals=[]
+            try:
+              for f in ratecols: vals.append(float(str(r.get(f,'0')).replace(',','').strip() or 0))
+            except: bad+=1;continue
+            # levels 12-15 correspond indices 11:15; level15 alone index14
+            norm.append({'SnapshotDate':d,'Ticker':t,'Big400Pct':round(sum(vals[11:15]),6),'Big1000Pct':round(vals[14],6)})
+          if len(norm)<1000: raise SystemExit(f'NORM_ROWS_TOO_SMALL:{len(norm)}')
+          # dedupe date,ticker fail-closed
+          seen=set();dups=[]
+          for r in norm:
+            k=(r['SnapshotDate'],r['Ticker'])
+            if k in seen:dups.append(k)
+            seen.add(k)
+          if dups: raise SystemExit('DUPLICATE_DATE_TICKER:'+repr(dups[:20]))
+          norm.sort(key=lambda r:(r['SnapshotDate'],r['Ticker']))
+          op=out/'lisa_access_db_big400_history.csv'
+          with op.open('w',encoding='utf-8',newline='') as f:
+            w=csv.DictWriter(f,fieldnames=['SnapshotDate','Ticker','Big400Pct','Big1000Pct']);w.writeheader();w.writerows(norm)
+          dates=sorted({r['SnapshotDate'] for r in norm})
+          sha=lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          report={
+            'system':'HENGCE','artifact':'TDCC_LISA_ACCESS_DB_BACKFILL_CANDIDATE','status':'COMPLETE',
+            'source_repo':'lisa4930007/ownership_distribution_access_db','source_file':'access_stock_ratio.accdb',
+            'source_db_sha256':hashlib.sha256(db.read_bytes()).hexdigest(),'table':target,
+            'source_columns':fields,'interpreted_rate_columns_ordered_levels_1_to_15':ratecols,
+            'normalized_rows':len(norm),'bad_rows_skipped':bad,'snapshot_count':len(dates),
+            'first_snapshot':dates[0],'last_snapshot':dates[-1],
+            'normalized_sha256':sha(op),'generated_at_taipei':datetime.now(ZoneInfo('Asia/Taipei')).replace(microsecond=0).isoformat(),
+            'available_metrics':['Big400Pct','Big1000Pct'],
+            'unavailable_metrics':['Big400Holders','Big400Shares','Big1000Holders','Big1000Shares'],
+            'authority':'RESEARCH_BACKFILL_ONLY_NO_CANONICAL_AUTHORITY',
+            'method_note':'Original project importer inserted distribution percentages from source levels 1..15 in order; Big400=sum levels12-15, Big1000=level15. No holder/share counts are reconstructed.'
+          }
+          (out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          (out/'dates.json').write_text(json.dumps(dates,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(report,ensure_ascii=False))
+          PY
+      - name: Commit extracted research backfill
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-tdcc-backfill'
+          git config user.email 'actions@users.noreply.github.com'
+          git add ownership/tdcc/backfill_candidate/lisa_access_db
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'extract downloadable TDCC Access DB history as research candidate'
+          git push origin HEAD:main
