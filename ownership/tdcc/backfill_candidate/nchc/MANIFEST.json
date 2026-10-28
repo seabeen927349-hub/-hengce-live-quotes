@@ -1,7 +1,7 @@
 {
   "system": "HENGCE",
   "artifact": "TDCC_NCHC_BACKFILL_MANIFEST",
-  "generated_at_taipei": "2026-10-29T00:28:24+08:00",
+  "generated_at_taipei": "2026-10-29T00:29:34+08:00",
   "status": "PASS",
   "valid_resources": 2,
   "failed_resources": 1,
@@ -13,7 +13,7 @@
       "artifact": "TDCC_LEGACY_NCHC_BACKFILL_CANDIDATE",
       "status": "COMPLETE",
       "snapshot_date": "20191018",
-      "downloaded_at_taipei": "2026-10-29T00:28:20+08:00",
+      "downloaded_at_taipei": "2026-10-29T00:29:28+08:00",
       "package_id": "64395e85-c0b3-4aaa-8df7-442e5ca0343a",
       "resource_id": "faf11d3a-a00f-4d30-b34f-305bed045516",
       "resource_name": "集保戶股權分散表",
@@ -29,7 +29,7 @@
       "artifact": "TDCC_LEGACY_NCHC_BACKFILL_CANDIDATE",
       "status": "COMPLETE",
       "snapshot_date": "20191018",
-      "downloaded_at_taipei": "2026-10-29T00:28:23+08:00",
+      "downloaded_at_taipei": "2026-10-29T00:29:30+08:00",
       "package_id": "64395e85-c0b3-4aaa-8df7-442e5ca0343a",
       "resource_id": "73eafd49-765e-4e9a-9c86-febaa001189d",
       "resource_name": "集保戶股權分散表_nchc_revise",
@@ -44,7 +44,9 @@
   "failures": [
     {
       "package": "ba3fdd24-d3c8-401b-ae8f-07f03ef6c379",
-      "error": "PACKAGE:SSLError:HTTPSConnectionPool(host='www.scidm.tw', port=443): Max retries exceeded with url: /api/3/action/package_show?id=ba3fdd24-d3c8-401b-ae8f-07f03ef6c379 (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.scidm.tw'. (_ssl.c:1010)\")))"
+      "resource_id": "569d12e6-bfe8-4c73-aedd-6491d4d35ec8",
+      "url": "https://scidm.nchc.org.tw/dataset/ba3fdd24-d3c8-401b-ae8f-07f03ef6c379/resource/569d12e6-bfe8-4c73-aedd-6491d4d35ec8/nchcproxy/opendata_11452",
+      "error": "RuntimeError:MISSING:占集保庫存數比例%"
     }
   ],
   "authority": "RESEARCH_BACKFILL_ONLY"
