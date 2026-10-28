@@ -1,0 +1,24 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_ORIGINAL_VESSEL_LEG_RECEIPT",
+  "target_date": "2026-10-28",
+  "leg": "margin",
+  "status": "COMPLETE",
+  "rows": 1061,
+  "sha256": "ff47ed01eec675ae4c3ff7e08fb25f56005480d02930fb73ab0fb243a7218b31",
+  "source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
+  "files": [
+    "margin_1.csv",
+    "margin_2.csv",
+    "margin_3.csv",
+    "margin_4.csv",
+    "margin_5.csv",
+    "margin_6.csv",
+    "margin_7.csv",
+    "margin_8.csv",
+    "margin_9.csv"
+  ],
+  "promoted_at_taipei": "2026-10-28T23:14:46.276718+08:00",
+  "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
+  "model_authority_created": false
+}
