@@ -1,0 +1,5 @@
+{
+  "status": "HTTP_ERROR",
+  "code": 403,
+  "body": "{\"message\":\"Forbidden\",\"statusCode\":403}"
+}
