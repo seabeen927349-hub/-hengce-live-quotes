@@ -1,0 +1,54 @@
+name: HENGCE TDCC Fugle Capability Test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-fugle-capability-test.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Test one historical TDCC request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, urllib.parse, urllib.request, urllib.error
+          from pathlib import Path
+          key=os.environ.get('FUGLE_API_KEY')
+          if not key: raise SystemExit('FUGLE_API_KEY_MISSING')
+          symbol='6415'
+          q=urllib.parse.urlencode({'from':'2025-11-01','to':'2026-10-28','sort':'asc'})
+          url=f'https://api.fugle.tw/marketdata/v1.0/stock/ownership/tdcc-distribution/{symbol}?{q}'
+          req=urllib.request.Request(url,headers={'X-API-KEY':key,'Accept':'application/json','User-Agent':'HENGCE-TDCC-CAPABILITY/1.0'})
+          out=Path('ownership/tdcc/fugle_capability_test.json')
+          out.parent.mkdir(parents=True,exist_ok=True)
+          try:
+            with urllib.request.urlopen(req,timeout=30) as r:
+              body=json.load(r)
+              hdr={k:v for k,v in r.headers.items() if k.lower().startswith('x-ratelimit') or k.lower() in ('retry-after',)}
+              rec={'status':'PASS','symbol':symbol,'data_count':len(body.get('data') or []),'first_date':(body.get('data') or [{}])[0].get('date') if body.get('data') else None,'last_date':(body.get('data') or [{}])[-1].get('date') if body.get('data') else None,'response_type':body.get('type'),'exchange':body.get('exchange'),'market':body.get('market'),'rate_headers':hdr}
+          except urllib.error.HTTPError as e:
+            rec={'status':'HTTP_ERROR','code':e.code,'body':e.read().decode('utf-8','replace')[:2000]}
+          out.write_text(json.dumps(rec,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(rec,ensure_ascii=False))
+          PY
+      - name: Commit test result
+        shell: bash
+        run: |
+          git config user.name 'hengce-tdcc-backfill'
+          git config user.email 'actions@users.noreply.github.com'
+          git add ownership/tdcc/fugle_capability_test.json
+          git commit -m 'record Fugle TDCC capability test' || exit 0
+          git push origin HEAD:main
