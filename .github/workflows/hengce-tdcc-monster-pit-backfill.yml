@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/hengce-tdcc-monster-pit-backfill.yml'
       - 'scripts/hengce_tdcc_monster_pit_backfill.py'
+      - 'scripts/hengce_tdcc_monster_pit_backfill_runner.py'
       - 'research/tdcc/monster_v1_frozen_events_20261029.csv'
   workflow_dispatch:
 
@@ -35,7 +36,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/hengce_tdcc_monster_pit_backfill.py
+          python scripts/hengce_tdcc_monster_pit_backfill_runner.py
 
       - name: Upload raw + validated sidecar artifact
         if: always()
