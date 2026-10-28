@@ -1,0 +1,88 @@
+name: HENGCE one-shot repair 2026-10-07
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-repair-20261007-one-shot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-repair-20261007-one-shot
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout formal vessel
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run existing HENGCE original-vessel incremental ingest
+        run: python scripts/hengce_eod_incremental_ingest.py --date 2026-10-07
+
+      - name: Fail-closed verify all three legs
+        shell: bash
+        run: |
+          python - <<'PY'
+          import csv, json
+          from pathlib import Path
+
+          d = Path('eod/20261007')
+          p = d / 'status.json'
+          if not p.exists():
+              raise SystemExit('FAIL_CLOSED: status.json missing')
+          s = json.loads(p.read_text(encoding='utf-8'))
+          if s.get('target_date') != '2026-10-07':
+              raise SystemExit(f"FAIL_CLOSED: wrong target_date {s.get('target_date')}")
+          if s.get('three_leg_complete') is not True:
+              raise SystemExit('FAIL_CLOSED: three_leg_complete != true')
+          if s.get('formal_complete_day') is not True:
+              raise SystemExit('FAIL_CLOSED: formal_complete_day != true')
+          ov = s.get('original_vessel') or {}
+          if ov.get('status') != 'COMPLETE':
+              raise SystemExit('FAIL_CLOSED: original_vessel not COMPLETE')
+          comps = ov.get('components') or {}
+          for leg in ('price','institutional','margin'):
+              if (comps.get(leg) or {}).get('status') != 'COMPLETE':
+                  raise SystemExit(f'FAIL_CLOSED: {leg} component not COMPLETE')
+              files = sorted(d.glob(f'{leg}_[1-9].csv'))
+              if not files:
+                  raise SystemExit(f'FAIL_CLOSED: {leg} files missing')
+              rows = 0
+              has_6415 = False
+              for f in files:
+                  with f.open(encoding='utf-8-sig', newline='') as fh:
+                      for r in csv.DictReader(fh):
+                          rows += 1
+                          if r.get('Ticker') == '6415':
+                              has_6415 = True
+              if rows <= 0:
+                  raise SystemExit(f'FAIL_CLOSED: {leg} zero rows')
+              if not has_6415:
+                  raise SystemExit(f'FAIL_CLOSED: 6415 missing from {leg}')
+          print('PASS: 2026-10-07 formal HENGCE three-leg repair complete')
+          PY
+
+      - name: Commit only verified original-vessel repair
+        shell: bash
+        run: |
+          git config user.name 'hengce-formal-repair'
+          git config user.email 'actions@users.noreply.github.com'
+          git add eod/20261007
+          if git diff --cached --quiet; then
+            echo 'No new repair files to commit.'
+            exit 0
+          fi
+          git commit -m 'repair eod 2026-10-07 via formal HENGCE incremental vessel'
+          git push origin HEAD:main
