@@ -9,6 +9,6 @@
   "dxy_5d": 0.0036844174149890385,
   "rows": 207,
   "stale_days": 1,
-  "refreshed_at_taipei": "2026-10-29T07:18:10.773898+08:00",
+  "refreshed_at_taipei": "2026-10-29T07:46:52.805379+08:00",
   "causal_rule": "completed weekday sessions strictly before Taiwan trade date; weekend/current pseudo-bars excluded"
 }
