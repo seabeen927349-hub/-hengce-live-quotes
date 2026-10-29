@@ -1,0 +1,43 @@
+name: HENGCE TDCC Historical Date Catalog Probe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-date-catalog-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests
+      - name: Read official TDCC historical date options
+        shell: python
+        run: |
+          import re,requests,json
+          url='https://www.tdcc.com.tw/portal/zh/smWeb/qryStock'
+          s=requests.Session()
+          s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-DATE-CATALOG/1.0','Accept-Language':'zh-TW,zh;q=0.9'})
+          r=s.get(url,timeout=45,verify=False)
+          r.raise_for_status()
+          html=r.text
+          vals=sorted(set(re.findall(r'<option[^>]+value=["\'](20\d{6})["\']',html)))
+          y2025=[x for x in vals if x.startswith('2025')]
+          y2026=[x for x in vals if x.startswith('2026')]
+          print('TDCC_DATE_OPTIONS_TOTAL',len(vals))
+          print('TDCC_2025_DATE_COUNT',len(y2025))
+          print('TDCC_2025_DATES',json.dumps(y2025,ensure_ascii=False))
+          print('TDCC_2026_DATE_COUNT',len(y2026))
+          print('TDCC_2026_DATES',json.dumps(y2026,ensure_ascii=False))
+          if not y2025:
+              raise SystemExit('NO_2025_OPTIONS_FOUND_FAIL_CLOSED')
