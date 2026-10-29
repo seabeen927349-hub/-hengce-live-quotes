@@ -1,0 +1,66 @@
+{
+  "system": "HENGCE",
+  "artifact": "MONSTER_V2_RECENT3M_VALIDATION",
+  "date": "2026-10-29",
+  "status": "PHASE1_PARTIAL_SURVIVE_NO_PRODUCTION_AUTHORITY",
+  "challenger": "MONSTER_V2_HUMAN_LIFECYCLE",
+  "benchmark": "MONSTER_BUY_V1_FROZEN_RESEARCH_CANDIDATE",
+  "window": {
+    "activation_events_from": "2026-07-22",
+    "daily_data_through": "2026-10-28",
+    "tdcc_latest_snapshot": "2026-10-22",
+    "monster_v1_activation_events": 11
+  },
+  "s1_watch": {
+    "operationalization": "eligible weekly TDCC transition with margin_change < 0 and dBig1000 > 0; PIT availability = ReferenceDate + 7 calendar days",
+    "event_recall": {
+      "within_5_trading_days_before_activation": "5/11",
+      "within_10_trading_days_before_activation": "8/11",
+      "within_20_trading_days_before_activation": "9/11"
+    },
+    "row_level_recent3m": {
+      "eligible_transition_rows": 14163,
+      "eligible_monster20_rate": 0.0026830473769681564,
+      "watch_rows": 3118,
+      "watch_unique_tickers": 833,
+      "watch_monster20_rate": 0.003527902501603592,
+      "enrichment_vs_eligible": 1.314886398163465
+    },
+    "decision": "SURVIVE_AS_WATCH_RADAR_NOT_BUY"
+  },
+  "whale_surprise_rank": {
+    "definition": "cross-sectional percentile rank of dBig1000 within the same TDCC snapshot",
+    "role": "RANKING_ONLY",
+    "auc_within_s1_for_activation_within_20_trading_days": 0.7545571583228486,
+    "descriptive_recent_s1_top_quintile": {
+      "note": "quintile is descriptive, not a hard threshold",
+      "rows": 625,
+      "activation_rows_within_20_trading_days": 6,
+      "rate": 0.0096
+    },
+    "decision": "SURVIVE_AS_PRIORITY_RANKING_ONLY"
+  },
+  "s2_capture_confirmation": {
+    "test_operationalization": "after an S1 WATCH, wait for the next observable weekly TDCC transition and require Big1000 not to unwind (next dBig1000 >= 0)",
+    "event_recall_before_activation_within_20_trading_days": "5/11",
+    "observed_lead_character": "typically 0-2 trading days before activation among captured recent examples",
+    "row_level_recent3m_activation20_rate": 0.0036231884057971015,
+    "comparison_to_s1_watch_rate": 0.003527902501603592,
+    "decision": "REJECT_AS_HARD_GATE_KEEP_AS_CONFIRMATORY_STATE",
+    "reason": "Weekly ownership reporting resolves too slowly; market activation can occur before a second ownership snapshot becomes PIT-eligible. Requiring S2 would destroy useful recall and lead time with little precision gain."
+  },
+  "state_machine_observability_rule": {
+    "rule": "Observed state sequence may skip S2_CAPTURE in real time when S3_ACTIVATION occurs before the next TDCC confirmation. S2 remains a confidence/confirmation state, not a mandatory prerequisite for BUY research.",
+    "no_future_data": true,
+    "no_backfill": true
+  },
+  "current_v2_decision": {
+    "watch": "SURVIVE",
+    "capture_hard_gate": "REJECT",
+    "capture_confirmatory_label": "KEEP",
+    "activation": "CONTINUE_USING_FROZEN_MONSTER_V1_CORE_PLUS_F4_TIMING_GOVERNANCE_UNTIL_V2_ACTIVATION_CHALLENGER_IS_INDEPENDENTLY_VALIDATED",
+    "production_promotion": false,
+    "one_year_validation": false,
+    "reason_no_1y": "The recent-3M WATCH layer survives, but the full WATCH->BUY->HOLD->SELL lifecycle has not yet demonstrated superior executable performance; do not use 1Y to rescue or complete an unfinished 3M challenger."
+  }
+}
