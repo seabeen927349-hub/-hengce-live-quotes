@@ -1,0 +1,41 @@
+name: HENGCE TDCC 2025 Retention Boundary Probe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-2025-retention-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Probe 2025 TDCC historical retention boundary with two liquid sentinels
+        shell: python
+        run: |
+          import json,sys
+          sys.path.insert(0,'scripts')
+          import hengce_tdcc_2026_jan_apr_backfill as b
+          dates=['20250905','20250912','20250919','20250926','20251003','20251009','20251017','20251023','20251031','20251107','20251114','20251121','20251128','20251205','20251212','20251219','20251226']
+          tickers=['1101','2330']
+          out=[]
+          for d in dates:
+              row={'date':d,'tickers':{}}
+              for t in tickers:
+                  state,payload,raw=b.fetch_classified(d,t)
+                  row['tickers'][t]={'state':state,'raw_sha256':payload.get('RawSHA256') if isinstance(payload,dict) else None,'error':payload.get('error') if isinstance(payload,dict) else None}
+              row['live']=all(v['state']=='VALID' for v in row['tickers'].values())
+              out.append(row)
+              print('RETENTION_PROBE',json.dumps(row,ensure_ascii=False),flush=True)
+          print('RETENTION_PROBE_SUMMARY',json.dumps(out,ensure_ascii=False))
