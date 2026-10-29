@@ -1,0 +1,62 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_SHADOW_NOWCAST_V0",
+  "date": "2026-10-29",
+  "status": "FROZEN_RESEARCH_CHALLENGER_NO_PRODUCTION_AUTHORITY",
+  "purpose": "Use already-known daily PRICE/INSTITUTIONAL/MARGIN path to estimate the direction of the next not-yet-published weekly TDCC ownership snapshot without synthesizing daily TDCC data.",
+  "governance": {
+    "source_policy": "FOUR_LEG_ORIGINAL_VESSEL_ONLY",
+    "tdcc": "WEEKLY_PIT_ONLY",
+    "no_daily_tdcc_synthesis": true,
+    "no_future_tdcc_backfill": true,
+    "missing_or_stale_required_leg": "FAIL_CLOSED",
+    "recent_3m_first": true,
+    "no_1y_rescue": true,
+    "production_authority": false,
+    "trading_authority": false
+  },
+  "targets": {
+    "ABSORB": "next weekly dBig1000 > 0",
+    "RELEASE": "next weekly dBig400 < 0 AND dBig1000 < 0"
+  },
+  "timing": {
+    "training_example": "For transition Snapshot(t-1)->Snapshot(t), features use only daily data after Snapshot(t-1) through the nowcast cutoff; labels are learned only after Snapshot(t) becomes PIT-eligible.",
+    "live_shadow": "At any cutoff before the target snapshot reference date, use daily data since the latest observed TDCC reference date. Never use daily observations after the target snapshot date.",
+    "publication_lag": "TDCC remains weekly; nowcast predicts direction before publication and is not a replacement for the official snapshot."
+  },
+  "model": {
+    "family": "two independent standardized logistic regressions",
+    "outputs": ["AbsorbProbability", "ReleaseProbability", "AbsorbPercentile", "ReleasePercentile"],
+    "hard_trade_signal": false,
+    "hard_state_threshold": false,
+    "reason": "V0 is a shadow probability/ranking layer. Threshold promotion requires independent OOS evidence."
+  },
+  "features": [
+    "interval_return",
+    "minimum_price_drawdown",
+    "recovery_from_interval_low",
+    "margin_change",
+    "minimum_margin_change",
+    "foreign_net_over_volume",
+    "trust_net_over_volume",
+    "total_institutional_net_over_volume",
+    "return_on_totalnet_sell_days",
+    "positive_price_days_while_totalnet_and_foreignnet_sell",
+    "legacy_bridge_count",
+    "price_damage_per_institutional_sell_intensity",
+    "turnover_change_vs_equal_pre_interval_window",
+    "daily_return_volatility"
+  ],
+  "explicit_non_rules": [
+    "No static Big400Pct/Big1000Pct hard rule.",
+    "No AbsorbProbability or ReleaseProbability threshold is a BUY/SELL rule in V0.",
+    "No web/manual/alternate-source TDCC input.",
+    "Do not infer beneficial owner, operator identity, or manipulation intent.",
+    "Do not patch the daily mother with predicted ownership."
+  ],
+  "integration": {
+    "monster_v2_watch": "Shadow ABSORB can rank/annotate S1 WATCH before the next official TDCC release.",
+    "monster_v2_handoff": "Shadow RELEASE can warn that ownership may be moving outward before the next official TDCC release.",
+    "confirmation": "Official TDCC remains authoritative; shadow state is replaced/verified when the next snapshot becomes PIT-eligible."
+  }
+}
