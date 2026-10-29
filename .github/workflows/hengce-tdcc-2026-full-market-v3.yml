@@ -1,0 +1,165 @@
+name: HENGCE TDCC 2026 Full-Market V3
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-2026-full-market-v3.yml'
+      - 'scripts/hengce_tdcc_2026_full_market_runner.py'
+      - 'scripts/hengce_tdcc_2026_jan_apr_backfill.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-tdcc-2026-full-market-v3
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Validate HENGCE candidate universe directly from parent mother
+        shell: python
+        run: |
+          import sys
+          sys.path.insert(0,'scripts')
+          import hengce_tdcc_2026_full_market_runner as r
+          x=r.load_candidates_from_parent()
+          assert len(x)==3091
+          assert len(set(x))==3091
+          print('HENGCE_TDCC_V3_PREFLIGHT_PASS',len(x),x[0],x[-1])
+
+  fetch:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        refdate:
+          - '20260102'
+          - '20260109'
+          - '20260116'
+          - '20260123'
+          - '20260130'
+          - '20260206'
+          - '20260213'
+          - '20260226'
+          - '20260306'
+          - '20260313'
+          - '20260320'
+          - '20260327'
+          - '20260402'
+          - '20260410'
+          - '20260417'
+          - '20260424'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Run formal HENGCE TDCC historical vessel
+        run: python scripts/hengce_tdcc_2026_full_market_runner.py --date '${{ matrix.refdate }}' --workers 4
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tdcc-v3-${{ matrix.refdate }}
+          path: ownership/tdcc/backfill_candidate/full_market_2026_jan_apr/${{ matrix.refdate }}/
+          retention-days: 30
+
+  promote:
+    needs: fetch
+    if: ${{ always() && needs.fetch.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tdcc-v3-*
+          path: _tdcc_v3_download
+      - name: Normalize and validate all 16 snapshots
+        shell: python
+        run: |
+          import csv,hashlib,json,pathlib,shutil,sys
+          dates=['20260102','20260109','20260116','20260123','20260130','20260206','20260213','20260226','20260306','20260313','20260320','20260327','20260402','20260410','20260417','20260424']
+          dl=pathlib.Path('_tdcc_v3_download')
+          root=pathlib.Path('ownership/tdcc/backfill_candidate/full_market_2026_jan_apr')
+          root.mkdir(parents=True,exist_ok=True)
+          rows=[]; date_counts={}; no_data_counts={}; bad=[]
+          for d in dates:
+              src=dl/f'tdcc-v3-{d}'
+              dst=root/d
+              if not src.exists():
+                  bad.append([d,'MISSING_ARTIFACT']); continue
+              if dst.exists(): shutil.rmtree(dst)
+              shutil.copytree(src,dst)
+              p=dst/'manifest.json'
+              if not p.exists():
+                  bad.append([d,'MISSING_MANIFEST']); continue
+              m=json.loads(p.read_text())
+              if m.get('status')!='COMPLETE' or m.get('candidate_rows')!=3091 or m.get('resolved_candidates')!=3091 or m.get('invalid_rows')!=0:
+                  bad.append([d,'MANIFEST_GATE',m]); continue
+              with (dst/'tdcc_ownership_4d.csv').open(encoding='utf-8',newline='') as f: valid=list(csv.DictReader(f))
+              with (dst/'explicit_no_data.csv').open(encoding='utf-8',newline='') as f: nodata=list(csv.DictReader(f))
+              if len(valid)!=m['valid_rows'] or len(nodata)!=m['explicit_no_data_rows'] or len(valid)+len(nodata)!=3091:
+                  bad.append([d,'ROW_COUNT_GATE',len(valid),len(nodata),m]); continue
+              vk=[r['Ticker'] for r in valid]; nk=[r['Ticker'] for r in nodata]
+              if len(vk)!=len(set(vk)) or len(nk)!=len(set(nk)) or set(vk)&set(nk) or len(set(vk)|set(nk))!=3091:
+                  bad.append([d,'CANDIDATE_RESOLUTION_GATE']); continue
+              pct_bad=[]
+              for r in valid:
+                  try: b400=float(r['Big400Pct']); b1000=float(r['Big1000Pct'])
+                  except Exception: pct_bad.append([r.get('Ticker'),'PARSE']); continue
+                  if not (0<=b1000<=b400<=100): pct_bad.append([r.get('Ticker'),b400,b1000])
+              if pct_bad:
+                  bad.append([d,'PCT_GATE',pct_bad[:20]]); continue
+              date_counts[d]=len(valid); no_data_counts[d]=len(nodata); rows.extend(valid)
+          if bad:
+              print(json.dumps(bad,ensure_ascii=False,indent=2)); sys.exit(2)
+          keys={(r['SnapshotDate'],r['Ticker']) for r in rows}
+          if len(keys)!=len(rows): raise SystemExit('DUPLICATE_SNAPSHOT_TICKER_KEYS')
+          out=root/'tdcc_2026_jan_apr_full_market_backfill.csv'
+          with out.open('w',encoding='utf-8',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+          receipt={
+            'system':'HENGCE','artifact':'TDCC_2026_JAN_APR_FULL_MARKET_BACKFILL_RECEIPT','version':'V3',
+            'status':'COMPLETE','dates':dates,'snapshot_count':16,'candidate_universe_rows':3091,
+            'resolved_candidate_queries':3091*16,'invalid_queries':0,'rows':len(rows),'unique_keys':len(keys),
+            'date_counts':date_counts,'explicit_no_data_counts':no_data_counts,
+            'summary_sha256':hashlib.sha256(out.read_bytes()).hexdigest(),
+            'source':'TDCC_OFFICIAL_HISTORICAL_STOCK_DATE_QUERY',
+            'candidate_source':'HENGCE_VALIDATED_TDCC_PARENT_MOTHER_UNION_3091',
+            'candidate_parent_gzip_sha256':'d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f',
+            'candidate_union_sha256':'70229d9b1bcef321deaad73b96fcb65c84227e30d173cd0b20a7e7e524a52936',
+            'fresh_token_per_query':True,'token_reuse':False,
+            'authority':'RESEARCH_BACKFILL_CANDIDATE_NO_CANONICAL_AUTHORITY',
+            'pit_authority':'HISTORICAL_PIT_PROXY_RESEARCH_ONLY',
+            'no_forward_fill':True,'no_reconstruction':True,'technical_fallback':'PROHIBITED'
+          }
+          (root/'manifest.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(receipt,ensure_ascii=False,indent=2))
+      - name: Commit only after full V3 integrity PASS
+        shell: bash
+        run: |
+          git config user.name 'hengce-tdcc-backfill'
+          git config user.email 'actions@users.noreply.github.com'
+          git add ownership/tdcc/backfill_candidate/full_market_2026_jan_apr
+          git commit -m 'data: complete HENGCE TDCC 2026 Jan-Apr full-market V3'
+          git push origin HEAD:main
