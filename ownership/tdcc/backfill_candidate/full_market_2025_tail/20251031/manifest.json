@@ -1,0 +1,43 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_2025_TAIL_FULL_MARKET_WEEKLY_BACKFILL_DATE",
+  "status": "COMPLETE",
+  "reference_date": "20251031",
+  "date_liveness_preflight": [
+    {
+      "ticker": "1101",
+      "state": "VALID",
+      "raw_sha256": "5e71abd31cc1b2c57437c28829958e4ec6d932bbc3db144ea9558da6e907a9f1",
+      "error": null
+    },
+    {
+      "ticker": "2330",
+      "state": "VALID",
+      "raw_sha256": "01e0f1a560935f528d7a831d87e88c8efa0fb475b3eaae8bd2dc6db42d171487",
+      "error": null
+    }
+  ],
+  "candidate_universe": "HENGCE_TDCC_HISTORICAL_UNION_3091",
+  "candidate_rows": 3091,
+  "candidate_union_sha256": "70229d9b1bcef321deaad73b96fcb65c84227e30d173cd0b20a7e7e524a52936",
+  "candidate_parent_gzip_sha256": "d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f",
+  "valid_rows": 2883,
+  "explicit_no_data_rows": 208,
+  "resolved_candidates": 3091,
+  "invalid_rows": 0,
+  "retrieved_at_taipei": "2026-10-29T12:35:26+08:00",
+  "query_workers": 6,
+  "fresh_token_per_query": true,
+  "token_reuse": "PROHIBITED_BY_VERIFIED_HENGCE_PROBE_FALSE_NO_DATA_RISK",
+  "source": "TDCC official historical qryStock endpoint",
+  "parser": "existing verified HENGCE ordinal parser",
+  "summary_sha256": "911670a6de7ce1db7548767523c20a18bcfde755511bcdd7dc178fc7a40b2520",
+  "explicit_no_data_sha256": "ca4841176e27b23b21256c70608f47f7c652ad2f24c663441acd70cfa66815c1",
+  "raw_html_zip_sha256": "5f718731faf354f659f776048b7ce1b5b706f7c36857b4f26b4670a3980f8009",
+  "raw_html_zip_bytes": 48112044,
+  "authority": "RESEARCH_BACKFILL_CANDIDATE_NO_CANONICAL_AUTHORITY",
+  "pit_authority": "HISTORICAL_PIT_PROXY_RESEARCH_ONLY",
+  "no_forward_fill": true,
+  "no_reconstruction": true,
+  "technical_fallback": "PROHIBITED"
+}

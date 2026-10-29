@@ -1,0 +1,43 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_2025_TAIL_FULL_MARKET_WEEKLY_BACKFILL_DATE",
+  "status": "COMPLETE",
+  "reference_date": "20251128",
+  "date_liveness_preflight": [
+    {
+      "ticker": "1101",
+      "state": "VALID",
+      "raw_sha256": "8f66f56e1548e72e38e086b4d230c388ccbf955e8cb87727a8cc6965992d1e0d",
+      "error": null
+    },
+    {
+      "ticker": "2330",
+      "state": "VALID",
+      "raw_sha256": "c2c026fef11aa872a0008aa6d0b65c22990bd06267076c33445885b96a238a1c",
+      "error": null
+    }
+  ],
+  "candidate_universe": "HENGCE_TDCC_HISTORICAL_UNION_3091",
+  "candidate_rows": 3091,
+  "candidate_union_sha256": "70229d9b1bcef321deaad73b96fcb65c84227e30d173cd0b20a7e7e524a52936",
+  "candidate_parent_gzip_sha256": "d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f",
+  "valid_rows": 2896,
+  "explicit_no_data_rows": 195,
+  "resolved_candidates": 3091,
+  "invalid_rows": 0,
+  "retrieved_at_taipei": "2026-10-29T12:35:20+08:00",
+  "query_workers": 6,
+  "fresh_token_per_query": true,
+  "token_reuse": "PROHIBITED_BY_VERIFIED_HENGCE_PROBE_FALSE_NO_DATA_RISK",
+  "source": "TDCC official historical qryStock endpoint",
+  "parser": "existing verified HENGCE ordinal parser",
+  "summary_sha256": "907fbf494e1a350f509696393a94e53cede1702ae52fb476bbeffecf24c9f696",
+  "explicit_no_data_sha256": "8f20105d18ccb789f2b32b6898bc6948d56630711646d61cc33a5306fef4d088",
+  "raw_html_zip_sha256": "c14a2eed349a4d70d756ad2302e93656e86060fb760f5c03c3e4df1f87a2f9e2",
+  "raw_html_zip_bytes": 48122632,
+  "authority": "RESEARCH_BACKFILL_CANDIDATE_NO_CANONICAL_AUTHORITY",
+  "pit_authority": "HISTORICAL_PIT_PROXY_RESEARCH_ONLY",
+  "no_forward_fill": true,
+  "no_reconstruction": true,
+  "technical_fallback": "PROHIBITED"
+}

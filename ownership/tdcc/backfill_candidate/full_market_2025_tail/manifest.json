@@ -1,0 +1,185 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_2025_TAIL_FULL_MARKET_BACKFILL_RECEIPT",
+  "version": "V1",
+  "status": "COMPLETE",
+  "dates": [
+    "20251031",
+    "20251107",
+    "20251114",
+    "20251121",
+    "20251128",
+    "20251205",
+    "20251212",
+    "20251219",
+    "20251226"
+  ],
+  "snapshot_count": 9,
+  "candidate_universe_rows": 3091,
+  "resolved_candidate_queries": 27819,
+  "invalid_queries": 0,
+  "rows": 26038,
+  "unique_keys": 26038,
+  "date_counts": {
+    "20251031": 2883,
+    "20251107": 2883,
+    "20251114": 2887,
+    "20251121": 2896,
+    "20251128": 2896,
+    "20251205": 2897,
+    "20251212": 2898,
+    "20251219": 2898,
+    "20251226": 2900
+  },
+  "explicit_no_data_counts": {
+    "20251031": 208,
+    "20251107": 208,
+    "20251114": 204,
+    "20251121": 195,
+    "20251128": 195,
+    "20251205": 194,
+    "20251212": 193,
+    "20251219": 193,
+    "20251226": 191
+  },
+  "date_liveness_preflights": {
+    "20251031": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "5e71abd31cc1b2c57437c28829958e4ec6d932bbc3db144ea9558da6e907a9f1",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "01e0f1a560935f528d7a831d87e88c8efa0fb475b3eaae8bd2dc6db42d171487",
+        "error": null
+      }
+    ],
+    "20251107": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "357c797c8156cb2ac371893648be2975bd8bd570129eb6345973548d02c223d0",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "a58a13ae580dec3d6a3fd93b995739db01c0979c4463b2de5eae22a5ffd468d0",
+        "error": null
+      }
+    ],
+    "20251114": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "00ecd88232941ffe9ef467d5bcc3e25c1fe0566212d037bb6ff05b6127bff7fa",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "05d1be56ef994fc5fd546494cce57cb4530107612f07c45b455fa92556aa231e",
+        "error": null
+      }
+    ],
+    "20251121": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "3a955068c457a8d7a34c4e63a168840651627954be22349671bf61e346f19a5e",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "8d3402f4a0a5e80f71901d67cc7f43904301265840efbb48a1e10a018cc03c82",
+        "error": null
+      }
+    ],
+    "20251128": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "8f66f56e1548e72e38e086b4d230c388ccbf955e8cb87727a8cc6965992d1e0d",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "c2c026fef11aa872a0008aa6d0b65c22990bd06267076c33445885b96a238a1c",
+        "error": null
+      }
+    ],
+    "20251205": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "0e9a6dfb99df5553630bee5860f940eb21ca71dae0531c870c6e499ca8f9013b",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "2a185472edbbf135ccaba5cbe25ebba6aaabacea2bc6ea204ac8d47e175afb18",
+        "error": null
+      }
+    ],
+    "20251212": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "99e42bbbc4b2d3d6aab0ce3013cc83877dddefedb886d6be5b7ba11da0ea654c",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "136e70e6a642ace6f3ac150bbc57d41a9f0dbb2504f0f27af9586a8ba28e6bee",
+        "error": null
+      }
+    ],
+    "20251219": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "1454da3abbf6610b25336487462a6078fa4385deb5eb66a8f82cb445f8e3ddcb",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "ce2fae3255c0306c380a2b76f3fdddbd7fb75183a581af2e04fa8da8e869bf7d",
+        "error": null
+      }
+    ],
+    "20251226": [
+      {
+        "ticker": "1101",
+        "state": "VALID",
+        "raw_sha256": "2fc4529e00d749125f878c648e99eddf5a9935f0e681d9867b0897b2b01e9aab",
+        "error": null
+      },
+      {
+        "ticker": "2330",
+        "state": "VALID",
+        "raw_sha256": "a807f912e8efb3c222095f6964a3473c9c32d8e71124f0769186e2c18011bfa8",
+        "error": null
+      }
+    ]
+  },
+  "summary_sha256": "788f1784355ccb7ffbfa03617f588bf1705bdb83a2e32058a968dd74f981c236",
+  "source": "TDCC_OFFICIAL_HISTORICAL_STOCK_DATE_QUERY",
+  "candidate_source": "HENGCE_VALIDATED_TDCC_PARENT_MOTHER_UNION_3091",
+  "candidate_parent_gzip_sha256": "d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f",
+  "candidate_union_sha256": "70229d9b1bcef321deaad73b96fcb65c84227e30d173cd0b20a7e7e524a52936",
+  "fresh_token_per_query": true,
+  "token_reuse": false,
+  "authority": "RESEARCH_BACKFILL_CANDIDATE_NO_CANONICAL_AUTHORITY",
+  "pit_authority": "HISTORICAL_PIT_PROXY_RESEARCH_ONLY",
+  "no_forward_fill": true,
+  "no_reconstruction": true,
+  "technical_fallback": "PROHIBITED"
+}
