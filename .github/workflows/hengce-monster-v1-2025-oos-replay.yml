@@ -6,6 +6,7 @@ on:
       - research/monster-v1-2025-oos-vessel
     paths:
       - 'scripts/hengce_monster_v1_2025_oos_replay.py'
+      - 'scripts/hengce_monster_v1_2025_oos_replay_runner.py'
       - '.github/workflows/hengce-monster-v1-2025-oos-replay.yml'
   workflow_dispatch:
 
@@ -26,7 +27,7 @@ jobs:
       - name: Run vessel-locked frozen reconstruction and 2025 OOS
         run: |
           set -euo pipefail
-          python scripts/hengce_monster_v1_2025_oos_replay.py \
+          python scripts/hengce_monster_v1_2025_oos_replay_runner.py \
             --start 2025-06-02 \
             --validation-end 2026-10-05 \
             --oos-start 2025-10-31 \
