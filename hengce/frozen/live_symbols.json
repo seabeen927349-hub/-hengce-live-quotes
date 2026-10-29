@@ -1,10 +1,16 @@
 {
   "system": "HENGCE",
   "artifact": "FROZEN_SINGLE_NAME_LIVE_SYMBOLS",
-  "version": "HENGCE_FROZEN_SINGLE_NAME_LIVE_v2_20261029",
+  "version": "HENGCE_FROZEN_SINGLE_NAME_LIVE_v3_20261029",
   "authority": "QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
   "policy": "EXPLICIT_FROZEN_SINGLE_NAME_TRANSPORT",
   "symbols": [
+    {
+      "Ticker": "3042",
+      "Name": "晶技",
+      "production_authority": "SEPARATE_FROZEN_SINGLE_NAME_MODULE",
+      "frozen_core": "/HENGCE/3042/PRODUCTION/HENGCE_3042_FROZEN_V1_20261027/FROZEN_SPEC.json"
+    },
     {
       "Ticker": "6257",
       "Name": "矽格",
