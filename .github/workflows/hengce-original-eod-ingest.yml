@@ -1,5 +1,5 @@
 name: HENGCE original EOD ingest
-# launcher-touch: 2026-10-28T23:10+08:00
+# launcher-touch: 2026-10-29-retry-partial-promotion
 
 on:
   workflow_dispatch:
