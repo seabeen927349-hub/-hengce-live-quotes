@@ -1,0 +1,164 @@
+name: HENGCE TDCC 2025 Tail Full-Market
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-2025-tail-full-market.yml'
+      - 'scripts/hengce_tdcc_2025_tail_backfill.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-tdcc-2025-tail-full-market
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Validate frozen 3,091 universe and 2025 date liveness
+        shell: python
+        run: |
+          import sys
+          sys.path.insert(0,'scripts')
+          import hengce_tdcc_2025_tail_backfill as r
+          x=r.load_candidates_from_parent()
+          assert len(x)==3091 and len(set(x))==3091
+          # Earliest and latest frozen tail dates must both still be query-live.
+          for d in ('20251031','20251226'):
+              proof=r.date_preflight(d)
+              assert all(p['state']=='VALID' for p in proof), proof
+              print('DATE_LIVE',d,proof)
+          print('HENGCE_TDCC_2025_TAIL_PREFLIGHT_PASS',len(x),x[0],x[-1])
+
+  fetch:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        refdate:
+          - '20251031'
+          - '20251107'
+          - '20251114'
+          - '20251121'
+          - '20251128'
+          - '20251205'
+          - '20251212'
+          - '20251219'
+          - '20251226'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Run formal HENGCE TDCC 2025 tail vessel
+        run: python scripts/hengce_tdcc_2025_tail_backfill.py --date '${{ matrix.refdate }}' --workers 6
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tdcc-2025-tail-${{ matrix.refdate }}
+          path: ownership/tdcc/backfill_candidate/full_market_2025_tail/${{ matrix.refdate }}/
+          retention-days: 30
+
+  promote:
+    needs: fetch
+    if: ${{ always() && needs.fetch.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tdcc-2025-tail-*
+          path: _tdcc_2025_tail_download
+      - name: Normalize and validate all 9 snapshots
+        shell: python
+        run: |
+          import csv,hashlib,json,pathlib,shutil,sys
+          dates=['20251031','20251107','20251114','20251121','20251128','20251205','20251212','20251219','20251226']
+          dl=pathlib.Path('_tdcc_2025_tail_download')
+          root=pathlib.Path('ownership/tdcc/backfill_candidate/full_market_2025_tail')
+          root.mkdir(parents=True,exist_ok=True)
+          rows=[]; date_counts={}; no_data_counts={}; preflights={}; bad=[]
+          for d in dates:
+              src=dl/f'tdcc-2025-tail-{d}'
+              dst=root/d
+              if not src.exists():
+                  bad.append([d,'MISSING_ARTIFACT']); continue
+              if dst.exists(): shutil.rmtree(dst)
+              shutil.copytree(src,dst)
+              p=dst/'manifest.json'
+              if not p.exists():
+                  bad.append([d,'MISSING_MANIFEST']); continue
+              m=json.loads(p.read_text())
+              if m.get('status')!='COMPLETE' or m.get('candidate_rows')!=3091 or m.get('resolved_candidates')!=3091 or m.get('invalid_rows')!=0:
+                  bad.append([d,'MANIFEST_GATE',m]); continue
+              pf=m.get('date_liveness_preflight') or []
+              if len(pf)!=2 or any(x.get('state')!='VALID' for x in pf):
+                  bad.append([d,'DATE_LIVENESS_GATE',pf]); continue
+              with (dst/'tdcc_ownership_4d.csv').open(encoding='utf-8',newline='') as f: valid=list(csv.DictReader(f))
+              with (dst/'explicit_no_data.csv').open(encoding='utf-8',newline='') as f: nodata=list(csv.DictReader(f))
+              if len(valid)!=m['valid_rows'] or len(nodata)!=m['explicit_no_data_rows'] or len(valid)+len(nodata)!=3091:
+                  bad.append([d,'ROW_COUNT_GATE',len(valid),len(nodata),m]); continue
+              vk=[r['Ticker'] for r in valid]; nk=[r['Ticker'] for r in nodata]
+              if len(vk)!=len(set(vk)) or len(nk)!=len(set(nk)) or set(vk)&set(nk) or len(set(vk)|set(nk))!=3091:
+                  bad.append([d,'CANDIDATE_RESOLUTION_GATE']); continue
+              pct_bad=[]
+              for r in valid:
+                  try: b400=float(r['Big400Pct']); b1000=float(r['Big1000Pct'])
+                  except Exception: pct_bad.append([r.get('Ticker'),'PARSE']); continue
+                  if not (0<=b1000<=b400<=100): pct_bad.append([r.get('Ticker'),b400,b1000])
+              if pct_bad:
+                  bad.append([d,'PCT_GATE',pct_bad[:20]]); continue
+              date_counts[d]=len(valid); no_data_counts[d]=len(nodata); preflights[d]=pf; rows.extend(valid)
+          if bad:
+              print(json.dumps(bad,ensure_ascii=False,indent=2)); sys.exit(2)
+          keys={(r['SnapshotDate'],r['Ticker']) for r in rows}
+          if len(keys)!=len(rows): raise SystemExit('DUPLICATE_SNAPSHOT_TICKER_KEYS')
+          out=root/'tdcc_2025_tail_full_market_backfill.csv'
+          with out.open('w',encoding='utf-8',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+          receipt={
+            'system':'HENGCE','artifact':'TDCC_2025_TAIL_FULL_MARKET_BACKFILL_RECEIPT','version':'V1',
+            'status':'COMPLETE','dates':dates,'snapshot_count':len(dates),'candidate_universe_rows':3091,
+            'resolved_candidate_queries':3091*len(dates),'invalid_queries':0,'rows':len(rows),'unique_keys':len(keys),
+            'date_counts':date_counts,'explicit_no_data_counts':no_data_counts,'date_liveness_preflights':preflights,
+            'summary_sha256':hashlib.sha256(out.read_bytes()).hexdigest(),
+            'source':'TDCC_OFFICIAL_HISTORICAL_STOCK_DATE_QUERY',
+            'candidate_source':'HENGCE_VALIDATED_TDCC_PARENT_MOTHER_UNION_3091',
+            'candidate_parent_gzip_sha256':'d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f',
+            'candidate_union_sha256':'70229d9b1bcef321deaad73b96fcb65c84227e30d173cd0b20a7e7e524a52936',
+            'fresh_token_per_query':True,'token_reuse':False,
+            'authority':'RESEARCH_BACKFILL_CANDIDATE_NO_CANONICAL_AUTHORITY',
+            'pit_authority':'HISTORICAL_PIT_PROXY_RESEARCH_ONLY',
+            'no_forward_fill':True,'no_reconstruction':True,'technical_fallback':'PROHIBITED'
+          }
+          (root/'manifest.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(receipt,ensure_ascii=False,indent=2))
+      - name: Commit only after full 2025-tail integrity PASS
+        shell: bash
+        run: |
+          git config user.name 'hengce-tdcc-backfill'
+          git config user.email 'actions@users.noreply.github.com'
+          git add ownership/tdcc/backfill_candidate/full_market_2025_tail
+          git commit -m 'data: complete HENGCE TDCC 2025 tail full-market V1'
+          git push origin HEAD:main
