@@ -1,0 +1,138 @@
+{
+  "system": "HENGCE",
+  "artifact": "MONSTER_V2_HUMAN_LIFECYCLE",
+  "version": "V2.0_STATE_MACHINE_FROZEN_RESEARCH_CHALLENGER",
+  "date": "2026-10-29",
+  "status": "FROZEN_RESEARCH_CHALLENGER_NO_PRODUCTION_AUTHORITY",
+  "parent_benchmark": "MONSTER_BUY_V1_FROZEN_RESEARCH_CANDIDATE",
+  "parent_mutated": false,
+  "purpose": "Detect ownership capture early, buy only when capture becomes price activation, hold while control remains intact, and exit when controlled inventory releases without repair.",
+  "core_principle": "STATE_FIRST_INDICATOR_SECOND",
+  "governance": {
+    "monster_v1_immutable": true,
+    "no_retroactive_edit_of_v1": true,
+    "no_production_authority": true,
+    "no_trading_authority": true,
+    "recent_3m_first": true,
+    "promote_to_1y_only_if_recent_3m_survives": true,
+    "do_not_use_1y_to_rescue_failed_3m": true,
+    "no_threshold_search_to_increase_sample": true,
+    "no_future_tdcc_backfill": true,
+    "tdcc_frequency": "WEEKLY_PIT_ONLY",
+    "missing_or_stale_required_leg": "FAIL_CLOSED",
+    "source_governance": "FOUR_LEG_ORIGINAL_VESSEL_ONLY"
+  },
+  "state_machine": [
+    {
+      "state": "S0_RESET",
+      "meaning": "No durable ownership displacement evidence.",
+      "action": "IGNORE"
+    },
+    {
+      "state": "S1_WATCH",
+      "meaning": "Potential strong inventory acquisition while fragile leverage exits.",
+      "action": "WATCH",
+      "research_evidence": [
+        "Margin decreases over the eligible ownership interval",
+        "Big1000 increases",
+        "Whale Surprise Rank = cross-sectional abnormality of dBig1000; ranking only, not BUY threshold"
+      ]
+    },
+    {
+      "state": "S2_CAPTURE",
+      "meaning": "Acquired inventory persists through another observable stress/ownership transition; one-shot absorption is insufficient.",
+      "action": "ARMED_NOT_BUY",
+      "requirements": [
+        "Ownership persistence or repeated defensive response",
+        "No failed immediate ownership repair",
+        "Weak-hand exit remains visible or has not been fully reversed"
+      ]
+    },
+    {
+      "state": "S3_ACTIVATION",
+      "meaning": "Captured supply begins changing price formation: selling pressure no longer causes proportional price damage and marginal demand returns.",
+      "action": "BUY_RESEARCH",
+      "inherited_observable_proxies": [
+        "MONSTER_V1 supply absorption",
+        "Bridge Absorption",
+        "Controlled Re-Leverage",
+        "Repricing confirmation"
+      ],
+      "human_interpretation": [
+        "Supply Damage Failure",
+        "Old weak leverage removed",
+        "New marginal demand returns before leverage becomes dominant"
+      ]
+    },
+    {
+      "state": "S4_CONTROLLED_MARKUP",
+      "meaning": "Control remains intact while price is repriced by incremental demand against compressed available supply.",
+      "action": "HOLD",
+      "exit_not_triggered_by": [
+        "Fixed holding days",
+        "Acquisition slowing",
+        "Price being high by itself"
+      ]
+    },
+    {
+      "state": "S5_HANDOFF",
+      "meaning": "Crowd/liquidity demand expands while strong inventory begins moving outward.",
+      "action": "SELL_WATCH",
+      "observable_pattern": [
+        "Price up",
+        "Margin up",
+        "Big400 down",
+        "Big1000 down",
+        "Share count stable"
+      ]
+    },
+    {
+      "state": "S6_RELEASE",
+      "meaning": "Handoff is not repaired; strong inventory continues to leave or fails to reconcentrate.",
+      "action": "SELL_RESEARCH",
+      "repair_logic": {
+        "repair_success": "dBig400 >= +0.5pp AND dBig1000 >= 0 AND share_stable",
+        "failed_repair": "continued distribution, fragmented, or neutral/mixed after prior Handoff"
+      }
+    },
+    {
+      "state": "S7_CLEANSE_OR_NEW_CONTROL",
+      "meaning": "Weak inventory may be flushed again or a new controller may emerge; lifecycle can restart.",
+      "action": "RESET_AND_REASSESS"
+    }
+  ],
+  "research_primitives": {
+    "ownership_level": "Context only; Big400Pct/Big1000Pct are not assumed to equal strength.",
+    "ownership_change": "Primary evidence of displacement; dBig1000 and dBig400 are interpreted by state.",
+    "whale_surprise_rank": "Cross-sectional rank of dBig1000 within the same snapshot; WATCH prioritization only.",
+    "holder_memory": "Repeated response under stress is more informative than static concentration.",
+    "supply_damage_failure": "Selling pressure persists while marginal price damage falls; Bridge remains the inherited validated proxy until a separate response-function challenger is predeclared.",
+    "controlled_releverage": "Day-level demand can return while 20-session margin stock remains below prior level; this is activation, not mania.",
+    "crowd_substitution": "Leverage/holder demand rises while strong inventory releases; interpreted as handoff/distribution risk."
+  },
+  "explicit_non_rules": [
+    "Big400 up is not a BUY rule.",
+    "Big1000 up is not a BUY rule.",
+    "Whale Surprise Rank is not a BUY rule.",
+    "One defense event is not CONTROL.",
+    "Accumulation slowing is not SELL.",
+    "Fixed 20/40/60-day holding is not part of V2 lifecycle execution.",
+    "Do not infer identity, beneficial owner, or manipulation intent from aggregate data.",
+    "Do not alter MONSTER V1 P97/P90/Bridge/CRL thresholds inside V1."
+  ],
+  "validation_plan": {
+    "phase_1": "Recent 3 months only.",
+    "primary_questions": [
+      "Does S1 WATCH materially increase the conditional probability of later S3 ACTIVATION versus the same eligible universe?",
+      "Does S2 CAPTURE improve precision versus S1 without destroying useful lead time?",
+      "Does S3 ACTIVATION preserve or improve MONSTER V1 post-entry 20/40/60-day behavior while entering no later on average?",
+      "Does S5->S6 RELEASE improve exit timing versus fixed horizon and versus F4 veto-only handling?"
+    ],
+    "lead_time_metric": "Trading days from first WATCH to first ACTIVATION.",
+    "capture_metric": "Probability of repeated defensive ownership response at next eligible stress transition.",
+    "buy_metrics": ["5d", "10d", "20d", "40d", "60d", "WR", "median", "MAE", "MFE", "40bp cost"],
+    "exit_metrics": ["capital preservation", "post-exit drawdown avoided", "premature-exit rate", "repair false-positive rate"],
+    "promotion_rule": "Only if recent 3M shows stable, executable advantage with no rule relaxation; then freeze unchanged and validate 1Y.",
+    "failure_rule": "If recent 3M does not improve lifecycle detection/execution, reject V2 and keep V1 benchmark."
+  }
+}
