@@ -1,0 +1,44 @@
+name: HENGCE TDCC 2025 Response-Date Authenticity Probe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-2025-response-date-auth-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Prove requested historical date is the returned selected date
+        shell: python
+        run: |
+          import io,json,re,sys
+          sys.path.insert(0,'scripts')
+          import hengce_tdcc_2026_jan_apr_backfill as b
+          tests=['20250801','20250905','20251023','20251226','20260102']
+          for d in tests:
+              state,payload,raw=b.fetch_classified(d,'2330')
+              html=raw.decode('utf-8',errors='replace') if raw else ''
+              # Capture date option(s) that the returned HTML marks selected.
+              selected=[]
+              pats=[
+                  r'<option[^>]*value=["\'](20\d{6})["\'][^>]*selected[^>]*>',
+                  r'<option[^>]*selected[^>]*value=["\'](20\d{6})["\'][^>]*>',
+              ]
+              for p in pats: selected.extend(re.findall(p,html,re.I))
+              selected=sorted(set(selected))
+              # Also show whether requested value is present anywhere in returned form.
+              present=bool(re.search(r'value=["\']'+re.escape(d)+r'["\']',html))
+              print('DATE_AUTH',json.dumps({'requested':d,'state':state,'selected_dates':selected,'requested_value_present':present,'big400':payload.get('Big400Pct') if isinstance(payload,dict) else None,'big1000':payload.get('Big1000Pct') if isinstance(payload,dict) else None,'raw_sha256':payload.get('RawSHA256') if isinstance(payload,dict) else None},ensure_ascii=False),flush=True)
