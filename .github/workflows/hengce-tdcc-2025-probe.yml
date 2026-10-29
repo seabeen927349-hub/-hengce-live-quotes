@@ -1,0 +1,35 @@
+name: HENGCE TDCC 2025 Late Snapshot Probe
+
+on:
+  push:
+    branches:
+      - research/monster-v1-2025-oos-vessel
+    paths:
+      - 'scripts/hengce_tdcc_2025_availability_probe.py'
+      - '.github/workflows/hengce-tdcc-2025-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install parser dependencies
+        run: python -m pip install --quiet requests pandas lxml
+      - name: Run official TDCC late-2025 availability probe
+        run: python scripts/hengce_tdcc_2025_availability_probe.py
+      - name: Upload probe evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_TDCC_2025_LATE_PROBE
+          path: out/tdcc_2025_probe/
+          if-no-files-found: warn
+          retention-days: 14
