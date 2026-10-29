@@ -2,16 +2,18 @@
 """HENGCE 2026 TDCC Jan-Apr historical weekly backfill.
 
 Blood-vessel rules:
-- TWSE official MI_INDEX is the date-specific listed-stock universe.
+- TWSE official MI_INDEX supplies the listed-stock universe.
+- If a TDCC snapshot date is a TWSE non-trading day, use only the nearest PRIOR
+  verified TWSE trading day (never a future date) and persist UniverseAsOfDate.
 - TDCC official historical qryStock is the only ownership source.
 - Reuse the already-verified HENGCE TDCC ordinal parser.
 - Preserve TWSE universe raw JSON, TDCC raw HTML ZIP, response hashes.
-- Fail closed; never forward-fill, reconstruct, or use technical fallback.
+- Fail closed; never forward-fill ownership, reconstruct, or use technical fallback.
 """
 from __future__ import annotations
 import argparse, csv, hashlib, io, json, re, threading, time, zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 import requests
@@ -42,14 +44,10 @@ def sha256_bytes(b: bytes) -> str:
 def now_tw() -> str:
     return datetime.now(TZ).replace(microsecond=0).isoformat()
 
-def fetch_twse_universe(ref: str):
-    r=requests.get(TWSE_URL, params={"date":ref,"type":"ALLBUT0999","response":"json"},
-                   timeout=60, headers={"User-Agent":"Mozilla/5.0 HENGCE-TWSE-UNIVERSE/1.0"})
-    r.raise_for_status()
-    raw=r.content
-    obj=r.json()
+def parse_twse_universe(raw: bytes, requested_date: str):
+    obj=json.loads(raw.decode("utf-8-sig"))
     if obj.get("stat") not in (None,"OK"):
-        raise RuntimeError(f"TWSE_UNIVERSE_STAT:{obj.get('stat')}")
+        return None, obj.get("stat")
     found={}
     for t in obj.get("tables",[]):
         fields=[str(x).strip() for x in t.get("fields",[])]
@@ -57,21 +55,41 @@ def fetch_twse_universe(ref: str):
             continue
         ci=fields.index("證券代號"); ni=fields.index("證券名稱")
         for row in t.get("data",[]):
-            if len(row)<=max(ci,ni): continue
+            if len(row)<=max(ci,ni):
+                continue
             ticker=str(row[ci]).strip()
             name=str(row[ni]).strip()
             if re.fullmatch(r"[1-9]\d{3}",ticker):
                 found[ticker]=name
     rows=[{"Ticker":k,"Name":found[k]} for k in sorted(found)]
     if len(rows)<900:
-        raise RuntimeError(f"TWSE_UNIVERSE_TOO_SMALL:{ref}:{len(rows)}")
-    return raw, rows
+        return None, f"TWSE_UNIVERSE_TOO_SMALL:{requested_date}:{len(rows)}"
+    return rows, None
+
+def fetch_twse_universe(ref: str):
+    ref_date=datetime.strptime(ref,"%Y%m%d").date()
+    probes=[]
+    for lag in range(0,15):
+        asof=(ref_date-timedelta(days=lag)).strftime("%Y%m%d")
+        r=requests.get(
+            TWSE_URL,
+            params={"date":asof,"type":"ALLBUT0999","response":"json"},
+            timeout=60,
+            headers={"User-Agent":"Mozilla/5.0 HENGCE-TWSE-UNIVERSE/1.1"},
+        )
+        r.raise_for_status()
+        rows, err=parse_twse_universe(r.content,asof)
+        probes.append({"date":asof,"sha256":sha256_bytes(r.content),"error":err})
+        if rows is not None:
+            return r.content, rows, asof, probes
+    raise RuntimeError(f"TWSE_PRIOR_TRADING_UNIVERSE_NOT_FOUND:{ref}:{probes}")
 
 def write_csv(path: Path, rows: list[dict], cols: list[str]):
     s=io.StringIO(newline="")
     w=csv.DictWriter(s,fieldnames=cols,lineterminator="\n")
     w.writeheader()
-    for r in rows: w.writerow({c:r.get(c,"") for c in cols})
+    for r in rows:
+        w.writerow({c:r.get(c,"") for c in cols})
     path.write_text(s.getvalue(),encoding="utf-8")
 
 def worker_session():
@@ -119,15 +137,21 @@ def main():
     out.mkdir(parents=True,exist_ok=True)
     retrieved=now_tw()
 
-    universe_raw, universe=fetch_twse_universe(ref)
+    universe_raw, universe, universe_asof, universe_probes=fetch_twse_universe(ref)
     (out/"twse_universe_raw.json").write_bytes(universe_raw)
+    (out/"twse_universe_probes.json").write_text(
+        json.dumps(universe_probes,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+    )
     write_csv(out/"twse_universe.csv",universe,["Ticker","Name"])
 
     rows=[]; invalid=[]; completed=0
     zpath=out/"raw_html.zip"
     with zipfile.ZipFile(zpath,"w",zipfile.ZIP_DEFLATED,compresslevel=6) as z:
         with ThreadPoolExecutor(max_workers=args.workers,thread_name_prefix=f"tdcc-{ref}") as ex:
-            futures={ex.submit(fetch_security,ref,r["Ticker"],r["Name"],retrieved):(r["Ticker"],r["Name"]) for r in universe}
+            futures={
+                ex.submit(fetch_security,ref,r["Ticker"],r["Name"],retrieved):(r["Ticker"],r["Name"])
+                for r in universe
+            }
             for fut in as_completed(futures):
                 ticker,name=futures[fut]
                 try:
@@ -143,7 +167,10 @@ def main():
                 else:
                     invalid.append(payload)
                 if completed==1 or completed%100==0 or completed==len(universe):
-                    print(f"[{ref}] {completed}/{len(universe)} valid={len(rows)} invalid={len(invalid)}",flush=True)
+                    print(
+                        f"[{ref}] universe_asof={universe_asof} {completed}/{len(universe)} "
+                        f"valid={len(rows)} invalid={len(invalid)}",flush=True
+                    )
 
     rows.sort(key=lambda x:x["Ticker"])
     invalid.sort(key=lambda x:x["Ticker"])
@@ -155,9 +182,13 @@ def main():
         "system":"HENGCE","artifact":"TDCC_2026_JAN_APR_WEEKLY_BACKFILL_DATE",
         "status":status,"reference_date":ref,
         "universe_source":"TWSE official MI_INDEX through HENGCE source family",
+        "universe_as_of_date":universe_asof,
+        "universe_lag_days":(datetime.strptime(ref,"%Y%m%d").date()-datetime.strptime(universe_asof,"%Y%m%d").date()).days,
+        "universe_rule":"SAME_DAY_ELSE_NEAREST_PRIOR_VERIFIED_TRADING_DAY; NEVER_FUTURE",
         "universe_rows":len(universe),
         "universe_sha256":sha256_bytes((out/"twse_universe.csv").read_bytes()),
         "universe_raw_sha256":sha256_bytes(universe_raw),
+        "universe_probe_sha256":sha256_bytes((out/"twse_universe_probes.json").read_bytes()),
         "valid_rows":len(rows),"invalid_rows":len(invalid),
         "retrieved_at_taipei":retrieved,"query_workers":args.workers,
         "source":"TDCC official historical qryStock endpoint",
