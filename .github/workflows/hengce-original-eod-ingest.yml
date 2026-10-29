@@ -1,5 +1,5 @@
 name: HENGCE original EOD ingest
-# launcher-touch: 2026-10-29-mother-promotion-verify
+# launcher-touch: 2026-10-29-pit-identity-final-verify
 
 on:
   workflow_dispatch:
