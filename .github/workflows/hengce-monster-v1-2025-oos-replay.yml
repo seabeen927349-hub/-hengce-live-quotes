@@ -22,8 +22,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install replay dependency
-        run: python -m pip install --disable-pip-version-check 'pandas==2.3.3'
+      - name: Install replay dependencies
+        run: python -m pip install --disable-pip-version-check 'pandas==2.3.3' 'requests>=2.32,<3'
       - name: Run vessel-locked frozen reconstruction and 2025 OOS
         run: |
           set -euo pipefail
