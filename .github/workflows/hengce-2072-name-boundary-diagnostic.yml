@@ -1,0 +1,42 @@
+name: HENGCE 2072 name-boundary diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-2072-name-boundary-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests openpyxl
+      - name: Query official original vessel for 2072 historical listed short name
+        shell: bash
+        run: |
+          set -euo pipefail
+          for D in 2026-08-25 2026-08-26 2026-08-27 2026-09-29 2026-10-06 2026-10-07 2026-10-08 2026-10-22 2026-10-27 2026-10-28 2026-10-29; do
+            echo "=== $D ==="
+            python scripts/hengce_eod_incremental_ingest.py --mode ingest --date "$D" >/tmp/ingest.json
+            C="${D//-/}"
+            python - "$D" "$C" <<'PY'
+          import csv,glob,sys
+          d,c=sys.argv[1:]
+          for leg in ('price','institutional','margin'):
+              found=[]
+              for p in sorted(glob.glob(f'eod/{c}/{leg}_[1-9].csv')):
+                  with open(p,encoding='utf-8-sig',newline='') as f:
+                      for r in csv.DictReader(f):
+                          if r.get('Ticker')=='2072':
+                              found.append(r.get('Name'))
+              print(f'{d} {leg}: {found[0] if found else "NO_ROW"}')
+          PY
+          done
