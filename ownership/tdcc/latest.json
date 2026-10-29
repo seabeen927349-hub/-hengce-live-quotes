@@ -1,12 +1,10 @@
 {
   "system": "HENGCE",
   "artifact": "TDCC_OWNERSHIP_LATEST_POINTER",
-  "status": "COMPLETE",
+  "status": "UNCHANGED",
   "snapshot_date": "20261022",
-  "observed_at_taipei": "2026-10-29T00:08:24+08:00",
+  "checked_at_taipei": "2026-10-30T00:19:04+08:00",
   "source_sha256": "df4ad0dcfa255ffb200c7662c8abfeed3f54c60d6fdacac9649554d3864b17fd",
-  "summary_sha256": "0fa37fc19bd8a602773e6f7cdc17e8643bf4d85848b71d08daf1d76328413cad",
-  "summary_rows": 2970,
   "snapshot_path": "ownership/tdcc/20261022",
   "source": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
   "model_authority_created": false
