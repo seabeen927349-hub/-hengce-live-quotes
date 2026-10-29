@@ -1,7 +1,7 @@
 {
   "system": "HENGCE",
   "artifact": "FROZEN_SINGLE_NAME_LIVE_SYMBOLS",
-  "version": "HENGCE_FROZEN_SINGLE_NAME_LIVE_v1_20261028",
+  "version": "HENGCE_FROZEN_SINGLE_NAME_LIVE_v2_20261029",
   "authority": "QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
   "policy": "EXPLICIT_FROZEN_SINGLE_NAME_TRANSPORT",
   "symbols": [
@@ -10,6 +10,13 @@
       "Name": "矽格",
       "production_authority": "VALIDATED_PRODUCTION_SINGLE_NAME_DAILY_CLOSE",
       "frozen_core": "/HENGCE/6257/PRODUCTION/HENGCE_6257_FROZEN_V1_20261028/FROZEN_SPEC.json"
+    },
+    {
+      "Ticker": "6782",
+      "Name": "視陽",
+      "production_authority": "RESEARCH_ONLY_NO_PRODUCTION_AUTHORITY",
+      "frozen_core": "MONSTER_BUY_V1_FROZEN_RESEARCH_CANDIDATE",
+      "research_wrapper": "MONSTER_V1_F4_GUARD_V1"
     }
   ]
 }
