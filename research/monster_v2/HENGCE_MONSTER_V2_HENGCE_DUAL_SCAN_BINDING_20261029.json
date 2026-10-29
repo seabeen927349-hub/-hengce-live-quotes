@@ -13,43 +13,19 @@
   "must_not_mutate_v0_11_1": true,
   "must_emit_even_when_blocked": true,
   "blocked_behavior": "顯示 FAIL_CLOSED、資料日期與原因，不得省略",
-  "states_zh": {
-    "S0": "無異常／重置",
-    "S1": "大戶異常吸籌觀察",
-    "S2": "籌碼控制確認中",
-    "S3": "吸籌完成、開始發動",
-    "S4": "籌碼鎖定、主升段",
-    "S5": "疑似開始派發",
-    "S6": "派發確認、控制權鬆動",
-    "S7": "洗盤／重新換手"
-  },
-  "actions_zh": {
-    "S0": "忽略",
-    "S1": "觀察",
-    "S2": "準備，不買",
-    "S3": "買進（研究狀態）",
-    "S4": "續抱（研究狀態）",
-    "S5": "賣出警戒",
-    "S6": "賣出（研究狀態）",
-    "S7": "重新判斷"
-  },
-  "labels_zh": {
-    "WhaleSurpriseRank": "大戶異常增持排名",
-    "ShadowAbsorb": "大戶吸籌影子",
-    "ShadowRelease": "大戶派發影子",
-    "SupplyDamageFailure": "賣壓失效",
-    "ControlledReLeverage": "受控資金回流",
-    "Handoff": "籌碼交接／派發",
-    "Repair": "籌碼回補",
-    "FailedRepair": "回補失敗",
-    "Activation": "發動",
-    "ControlledMarkup": "控制型主升段"
-  },
-  "governance": {
-    "source": "FOUR_LEG_ORIGINAL_VESSEL_ONLY",
-    "weekly_tdcc_pit_only": true,
-    "shadow_does_not_write_daily_tdcc": true,
-    "no_threshold_retune": true,
-    "no_authority_escalation": true
+  "states_zh": {"S0":"無異常／重置","S1":"大戶異常吸籌觀察","S2":"籌碼控制確認中","S3":"吸籌完成、開始發動","S4":"籌碼鎖定、主升段","S5":"疑似開始派發","S6":"派發確認、控制權鬆動","S7":"洗盤／重新換手"},
+  "actions_zh": {"S0":"忽略","S1":"觀察","S2":"準備，不買","S3":"買進（研究狀態）","S4":"續抱（研究狀態）","S5":"賣出警戒","S6":"賣出（研究狀態）","S7":"重新判斷"},
+  "labels_zh": {"WhaleSurpriseRank":"大戶異常增持排名","ShadowAbsorb":"大戶吸籌影子","ShadowRelease":"大戶派發影子","SupplyDamageFailure":"賣壓失效","ControlledReLeverage":"受控資金回流","Handoff":"籌碼交接／派發","Repair":"籌碼回補","FailedRepair":"回補失敗","Activation":"發動","ControlledMarkup":"控制型主升段"},
+  "governance": {"source":"FOUR_LEG_ORIGINAL_VESSEL_ONLY","weekly_tdcc_pit_only":true,"shadow_does_not_write_daily_tdcc":true,"no_threshold_retune":true,"no_authority_escalation":true},
+  "existing_vessel_binding": {
+    "binding": "/HENGCE/Production/HENGCE_DUAL_SCAN_EXISTING_VESSEL_BINDING_V1.json",
+    "PRICE": "HENGCE_EOD_ORIGINAL_VESSEL",
+    "INSTITUTIONAL": "HENGCE_EOD_ORIGINAL_VESSEL",
+    "MARGIN": "HENGCE_EOD_ORIGINAL_VESSEL",
+    "TDCC": "HENGCE_TDCC_OWNERSHIP_VESSEL",
+    "intraday_quote": "HENGCE LEGACY V3 LIVE QUOTES",
+    "intraday_quote_role": "即時價格／成交註記與 Shadow 路徑觀察；不可取代正式四腿、不可寫入每日 TDCC、不可單獨觸發買賣狀態",
+    "universe_membership_hard_bind": true,
+    "fail_closed": true
   }
 }
