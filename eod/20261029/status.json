@@ -1,0 +1,65 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST",
+  "target_date": "2026-10-29",
+  "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
+  "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+  "parallel_eod_tree": false,
+  "second_mother": false,
+  "model_authority_created": false,
+  "price_status": "COMPLETE",
+  "price_date": "2026-10-29",
+  "price_rows": 1091,
+  "price_sha256": "501c705c4ae11aceaa30ac9248e129c21b324045dd1f7472d089667fb4859ab7",
+  "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+  "institutional_status": "COMPLETE",
+  "institutional_date": "2026-10-29",
+  "institutional_rows": 1077,
+  "institutional_sha256": "ea1846942b15e2de35538bbf41376c6fa713f09050e46d472326f81b76a09630",
+  "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86",
+  "margin_status": "COMPLETE",
+  "margin_date": "2026-10-29",
+  "margin_rows": 1061,
+  "margin_sha256": "0d391d6eb7b9914ff7dd13506e810b2d577b870a1451c8e93c3e55440e06acfa",
+  "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
+  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
+  "available_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "pending_legs": [],
+  "error_legs": [],
+  "mother_status": "PENDING",
+  "mother_promotion_required": true,
+  "mother_pending_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "downstream_ready": false,
+  "three_leg_complete": true,
+  "formal_complete_day": true,
+  "status": "COMPLETE",
+  "last_run_results": [
+    {
+      "leg": "price",
+      "result": "PROMOTED",
+      "rows": 1091,
+      "sha256": "501c705c4ae11aceaa30ac9248e129c21b324045dd1f7472d089667fb4859ab7"
+    },
+    {
+      "leg": "institutional",
+      "result": "PROMOTED",
+      "rows": 1077,
+      "sha256": "ea1846942b15e2de35538bbf41376c6fa713f09050e46d472326f81b76a09630"
+    },
+    {
+      "leg": "margin",
+      "result": "PROMOTED",
+      "rows": 1061,
+      "sha256": "0d391d6eb7b9914ff7dd13506e810b2d577b870a1451c8e93c3e55440e06acfa"
+    }
+  ],
+  "updated_at_taipei": "2026-10-29T21:25:36.463372+08:00"
+}

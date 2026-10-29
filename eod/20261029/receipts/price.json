@@ -1,0 +1,24 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_ORIGINAL_VESSEL_LEG_RECEIPT",
+  "target_date": "2026-10-29",
+  "leg": "price",
+  "status": "COMPLETE",
+  "rows": 1091,
+  "sha256": "501c705c4ae11aceaa30ac9248e129c21b324045dd1f7472d089667fb4859ab7",
+  "source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+  "files": [
+    "price_1.csv",
+    "price_2.csv",
+    "price_3.csv",
+    "price_4.csv",
+    "price_5.csv",
+    "price_6.csv",
+    "price_7.csv",
+    "price_8.csv",
+    "price_9.csv"
+  ],
+  "promoted_at_taipei": "2026-10-29T21:25:34.826338+08:00",
+  "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
+  "model_authority_created": false
+}
