@@ -1,0 +1,112 @@
+{
+  "system": "HENGCE",
+  "research_module": "T4_OR1_OWNERSHIP_ROTATION_TRANSFER_FINGERPRINT",
+  "status": "PREDECLARED_RESEARCH_ONLY",
+  "production_authority": false,
+  "predeclared_before_2025_oos_readout": true,
+  "monster_v1_mutated": false,
+  "purpose": "Classify who supplies stock, whether visible institutions absorb it, where TDCC ownership migrates, and whether ownership rotation strengthens or reverses. No continuous score is authorized.",
+  "data_contract": {
+    "three_leg_source": "HENGCE original vessel / canonical Historical Mother semantics",
+    "tdcc_source": "existing HENGCE official TDCC targeted historical vessel/parser",
+    "historical_tdcc_authority": "RETROSPECTIVE_PIT_PROXY_RESEARCH_ONLY",
+    "tdcc_pit_proxy": "ReferenceDate + 7 calendar days <= EventDate",
+    "minimum_pit_eligible_tdcc_snapshots": 3,
+    "weekly_only": true,
+    "forward_fill": false,
+    "backfill_as_daily_knowledge": false,
+    "missing_required_input": "FAIL_CLOSED_EVENT"
+  },
+  "derived_ownership": {
+    "Mid400to1000Shares": "Big400Shares - Big1000Shares",
+    "Mid400to1000Holders": "Big400Holders - Big1000Holders",
+    "warning": "TDCC bucket changes are ownership-threshold migration, not accounting purchase flow."
+  },
+  "interval_selection": {
+    "snapshots": "latest three PIT-proxy-eligible weekly snapshots A < B < C before/on event eligibility cutoff",
+    "prior_interval": "A -> B",
+    "current_interval": "B -> C",
+    "rotation_requires": "both intervals"
+  },
+  "current_topology_precedence": [
+    {
+      "state": "WHALE_CONCENTRATION",
+      "definition": "dBig1000Shares > 0 AND dMid400to1000Shares < 0"
+    },
+    {
+      "state": "FRESH_MID_BROADENING",
+      "definition": "dBig400Shares > 0 AND dMid400to1000Shares > 0 AND dMid400to1000Holders >= 0"
+    },
+    {
+      "state": "WHALE_FRAGMENTATION_TO_MID",
+      "definition": "dBig400Shares <= 0 AND dMid400to1000Shares > 0"
+    },
+    {
+      "state": "BIG400_DISTRIBUTION",
+      "definition": "dBig400Shares < 0 AND dMid400to1000Shares <= 0"
+    },
+    {
+      "state": "MIXED_STATIC",
+      "definition": "all remaining finite cases"
+    }
+  ],
+  "rotation_direction": {
+    "NEG_TO_POS": "prior dMid400to1000Shares <= 0 AND current dMid400to1000Shares > 0",
+    "POS_TO_POS": "prior dMid400to1000Shares > 0 AND current dMid400to1000Shares > 0",
+    "POS_TO_NEG": "prior dMid400to1000Shares > 0 AND current dMid400to1000Shares <= 0",
+    "NEG_TO_NEG": "prior dMid400to1000Shares <= 0 AND current dMid400to1000Shares <= 0",
+    "healthy_direction_candidates": ["NEG_TO_POS", "POS_TO_POS"],
+    "warning_direction_candidates": ["POS_TO_NEG", "NEG_TO_NEG"]
+  },
+  "funding_flow": {
+    "margin_market_net_shares": "SUM((MarginBuy - MarginSell) * 1000) over current TDCC interval trading days",
+    "margin_cash_repayment_shares": "SUM(MarginCashRepayment * 1000) over current TDCC interval trading days",
+    "margin_market_supply": "margin_market_net_shares < 0",
+    "margin_market_demand": "margin_market_net_shares > 0",
+    "t86_total_net_shares": "SUM(TotalNet) over current TDCC interval trading days",
+    "t86_visible_absorption": "t86_total_net_shares > 0",
+    "t86_no_visible_absorption": "t86_total_net_shares <= 0",
+    "visible_receiver_diagnostic": "compare ForeignNet, TrustNet and dealer proxy/DealerNet without treating any TDCC bucket as identical to a T86 identity"
+  },
+  "price_context": {
+    "current_interval_price_return": "Close(C) / Close(B) - 1",
+    "weak_or_absorbed": "current_interval_price_return <= 0",
+    "already_repricing": "current_interval_price_return > 0"
+  },
+  "predeclared_fingerprints": [
+    {
+      "state": "CLEAN_MID_ABSORPTION",
+      "definition": "weak_or_absorbed AND margin_market_supply AND t86_visible_absorption AND current_topology == FRESH_MID_BROADENING"
+    },
+    {
+      "state": "VISIBLE_SPONSOR_STATIC",
+      "definition": "weak_or_absorbed AND margin_market_supply AND t86_visible_absorption AND current dMid400to1000Shares > 0 AND current dMid400to1000Holders == 0"
+    },
+    {
+      "state": "HIDDEN_CASH_IGNITION",
+      "definition": "weak_or_absorbed AND margin_market_net_shares <= 0 AND t86_no_visible_absorption AND current_topology == FRESH_MID_BROADENING AND current dMid400to1000Holders > 0"
+    },
+    {
+      "state": "WHALE_ABSORPTION_WARNING",
+      "definition": "weak_or_absorbed AND margin_market_supply AND t86_visible_absorption AND current_topology == WHALE_CONCENTRATION"
+    },
+    {
+      "state": "ROTATION_REVERSAL_WARNING",
+      "definition": "rotation_direction == POS_TO_NEG"
+    },
+    {
+      "state": "PERSISTENT_CONCENTRATION_WARNING",
+      "definition": "rotation_direction == NEG_TO_NEG AND current_topology == WHALE_CONCENTRATION"
+    }
+  ],
+  "validation_policy": {
+    "event_universe": "Frozen Monster BUY V1 events only; T4 never creates or deletes Monster signals during this test.",
+    "primary_horizons_sessions": [20, 40, 60],
+    "execution_cost_bp": 40,
+    "report": ["n", "win_rate", "mean", "median", "MAE", "MFE"],
+    "small_sample_rule": "Report as research candidate only; do not freeze a fingerprint from tiny n.",
+    "no_oos_retuning": true,
+    "no_threshold_relaxation": true,
+    "no_continuous_score": true
+  }
+}
