@@ -1,0 +1,42 @@
+name: HENGCE TDCC Historical Bulk Probe
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-historical-bulk-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Probe official TDCC Open Data historical query semantics
+        shell: python
+        run: |
+          import csv,hashlib,io,requests
+          urls={
+            'base':'https://opendata.tdcc.com.tw/getOD.ashx?id=1-5',
+            'hist_bulk':'https://opendata.tdcc.com.tw/getOD.ashx?id=1-5&dataDate=20260424',
+            'hist_one':'https://opendata.tdcc.com.tw/getOD.ashx?id=1-5&dataDate=20260424&securityId=2330',
+            'hist_date_alt':'https://opendata.tdcc.com.tw/getOD.ashx?id=1-5&date=20260424',
+          }
+          for k,u in urls.items():
+            r=requests.get(u,timeout=60,headers={'User-Agent':'Mozilla/5.0 HENGCE-TDCC-BULK-PROBE/1.0'})
+            print('PROBE',k,'STATUS',r.status_code,'BYTES',len(r.content),'SHA',hashlib.sha256(r.content).hexdigest())
+            text=r.content.decode('utf-8-sig',errors='replace')
+            lines=text.splitlines()
+            print('HEAD',repr(lines[:3]))
+            try:
+              rows=list(csv.reader(io.StringIO(text)))
+              header=rows[0] if rows else []
+              date_idx=next((i for i,h in enumerate(header) if '資料日期' in h),None)
+              sec_idx=next((i for i,h in enumerate(header) if '證券代號' in h),None)
+              dates=sorted({row[date_idx] for row in rows[1:] if date_idx is not None and len(row)>date_idx})
+              secs=sorted({row[sec_idx] for row in rows[1:] if sec_idx is not None and len(row)>sec_idx})
+              print('PARSED',k,'ROWS',max(len(rows)-1,0),'DATES',dates[:10],'DATE_COUNT',len(dates),'SEC_COUNT',len(secs),'HAS2330',('2330' in secs))
+            except Exception as e:
+              print('PARSE_ERROR',k,type(e).__name__,str(e))
