@@ -1,16 +1,17 @@
 {
   "schema_version": 1,
   "service": "HENGCE FROZEN SINGLE-NAME LIVE QUOTES",
-  "snapshot_id": "20261029T112830+0800",
-  "generated_at_taipei": "2026-10-29T11:28:30.931700+08:00",
-  "cache_expires_at_taipei": "2026-10-29T11:38:30.931700+08:00",
+  "snapshot_id": "20261029T115904+0800",
+  "generated_at_taipei": "2026-10-29T11:59:04.581914+08:00",
+  "cache_expires_at_taipei": "2026-10-29T12:09:04.581914+08:00",
   "market_phase": "open",
-  "version": "HENGCE_FROZEN_SINGLE_NAME_LIVE_v1_20261028",
-  "requested_count": 1,
-  "success_count": 1,
+  "version": "HENGCE_FROZEN_SINGLE_NAME_LIVE_v2_20261029",
+  "requested_count": 2,
+  "success_count": 2,
   "failure_count": 0,
   "symbols": [
-    "6257"
+    "6257",
+    "6782"
   ],
   "failures": [],
   "authority": "QUOTE_TRANSPORT_ONLY_NO_RANKING_SIGNAL_CAPITAL_AUTHORITY",
