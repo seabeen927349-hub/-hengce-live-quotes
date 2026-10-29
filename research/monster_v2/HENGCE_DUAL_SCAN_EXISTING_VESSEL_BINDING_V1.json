@@ -1,0 +1,36 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_DUAL_SCAN_EXISTING_VESSEL_BINDING_V1",
+  "date": "2026-10-29",
+  "status": "ACTIVE_EXISTING_VESSELS_ONLY",
+  "applies_to": ["HENGCE CONTROL / RETAIL CORE V0.11.1", "MONSTER V2 — HUMAN LIFECYCLE"],
+  "download_vessels": {
+    "PRICE": "HENGCE_EOD_ORIGINAL_VESSEL",
+    "INSTITUTIONAL": "HENGCE_EOD_ORIGINAL_VESSEL",
+    "MARGIN": "HENGCE_EOD_ORIGINAL_VESSEL",
+    "TDCC": "HENGCE_TDCC_OWNERSHIP_VESSEL",
+    "policy": "ORIGINAL_VESSEL_ONLY",
+    "daily_three_leg_alignment": "SAME_FORMAL_COMPLETE_DATE_REQUIRED",
+    "tdcc_alignment": "LATEST_OFFICIAL_RELEASE_SAFE_WEEKLY_SNAPSHOT",
+    "tdcc_daily_forward_fill": false,
+    "manual_web_alternate_source": "REJECT",
+    "failure_policy": "FAIL_CLOSED"
+  },
+  "intraday_quote_vessel": {
+    "service": "HENGCE LEGACY V3 LIVE QUOTES",
+    "pipeline": "Fugle -> GitHub Actions -> Cloudflare Worker -> HENGCE ingest",
+    "workflow": ".github/workflows/hengce-legacy-live-quotes.yml",
+    "universe_path": "hengce/legacy/live_universe.json",
+    "status_path": "legacy_live/status.json",
+    "quote_path_template": "legacy_live/quotes/{ticker}.json",
+    "universe_policy": "DAILY_ACTION_BOARD_ROWS_HARD_BIND",
+    "authority": "INTRADAY_QUOTE_TRANSPORT_ONLY_NO_RANKING_RECOMPUTE",
+    "membership_rule": "PER_TICKER_HARD_BIND_ONLY",
+    "stale_or_fetch_failure": "FAIL_CLOSED_INTRADAY_FIELD_ONLY_NO_ALTERNATE_SOURCE",
+    "V0.11.1_role": "intraday price/volume annotation and mark-to-market only",
+    "MONSTER_V2_role": "intraday price/volume annotation and Shadow path observation only; no synthetic TDCC or official lifecycle transition"
+  },
+  "authority": {"full_market_trading_authority": "NONE", "no_authority_escalation": true},
+  "model_rules_mutated": false,
+  "thresholds_retuned": false
+}
