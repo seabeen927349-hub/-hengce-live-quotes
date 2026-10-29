@@ -1,0 +1,42 @@
+name: HENGCE TDCC Token Reuse Probe
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-token-reuse-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Probe same-token repeated historical POSTs
+        shell: python
+        run: |
+          import requests,sys
+          sys.path.insert(0,'scripts')
+          import hengce_tdcc_monster_pit_backfill_runner as vr
+          m=vr.m
+          s=requests.Session()
+          s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-TOKEN-PROBE/1.0','Referer':m.ENDPOINT})
+          token=m.get_token(s)
+          print('TOKEN_OBTAINED',bool(token), 'LEN',len(token))
+          for ticker in ['2330','6415','6782','1101','9999']:
+            data={'SYNCHRONIZER_TOKEN':token,'SYNCHRONIZER_URI':'/portal/zh/smWeb/qryStock','method':'submit','firDate':'20260424','scaDate':'20260424','sqlMethod':'StockNo','stockNo':ticker,'stockName':''}
+            r=s.post(m.ENDPOINT,data=data,timeout=60,verify=False)
+            print('POST',ticker,'STATUS',r.status_code,'BYTES',len(r.content),'NO_DATA',('查無此資料' in r.text),'HAS_TABLE',('占集保庫存數比例' in r.text))
+            if '查無此資料' not in r.text:
+              try:
+                sm=vr.fixed_summarize_table(m.find_data_table(r.text)[0])
+                print('PARSED',ticker,sm['Big400Pct'],sm['Big1000Pct'])
+              except Exception as e:
+                print('PARSE_ERROR',ticker,type(e).__name__,str(e))
