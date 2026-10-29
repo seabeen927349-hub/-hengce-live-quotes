@@ -1,0 +1,58 @@
+{
+  "system": "HENGCE",
+  "artifact": "MONSTER_V2_SHADOW_INTEGRATION_RECENT3M",
+  "date": "2026-10-29",
+  "status": "PARTIAL_SURVIVE_RESEARCH_ONLY",
+  "governance": {
+    "recent_3m_first": true,
+    "no_threshold_tuning": true,
+    "no_1y_rescue": true,
+    "production_authority": false,
+    "trading_authority": false
+  },
+  "release_integration": {
+    "monster_events": 11,
+    "signal_day_continuous_ranking": {
+      "negative_5d_auc": 0.4667,
+      "negative_10d_auc": 0.6667,
+      "negative_20d_auc": 0.7857,
+      "negative_20d_mature_n": 9,
+      "negative_20d_negative_cases": 2,
+      "interpretation": "Directionally useful at 10/20d but sample is too small for a hard exit rule; 5d timing is not reliable."
+    },
+    "failed_repair_case_study": {
+      "failed_repair_cases": 3,
+      "caught_high_before_official_confirmation": 2,
+      "missed": 1,
+      "examples": [
+        {"ticker":"2360","name":"致茂","failed_repair_reference":"2026-08-28","shadow_release_percentile_day2":0.8721,"day3":0.9319,"day4":0.9347,"snapshot_day":0.8961},
+        {"ticker":"2478","name":"大毅","failed_repair_reference":"2026-09-11","shadow_release_percentile_day2":0.8281,"day3":0.8153,"day4":0.8134,"snapshot_day":0.8824},
+        {"ticker":"6271","name":"同欣電","failed_repair_reference":"2026-08-21","shadow_release_percentile_day4":0.2252,"snapshot_day":0.3355,"result":"MISS"}
+      ],
+      "repair_control_example": {"ticker":"2305","name":"全友","repair_reference":"2026-09-18","strong_reconcentration":true,"shadow_release_percentile_day4":0.3899,"snapshot_day":0.3456}
+    },
+    "decision": "PROMOTE_ONLY_TO_EARLY_SELL_WATCH_ANNOTATION",
+    "explicit_not": ["not SELL", "not F4 replacement", "not hard percentile threshold"],
+    "confirmation": "Official TDCC/F4 remains authoritative for RELEASE confirmation."
+  },
+  "absorb_integration": {
+    "monster_events": 11,
+    "observation": "A single high Shadow Absorb percentile in the prior 20 trading days is too common to act as ARMED confirmation.",
+    "persistence_check": {
+      "median_market_percentile_of_top20_absorb_day_count": 0.5957,
+      "median_market_percentile_of_mean_absorb_rank": 0.5941,
+      "interpretation": "Only modest enrichment; insufficient to promote Shadow Absorb from WATCH ranking to ARMED state."
+    },
+    "decision": "KEEP_AS_WATCH_PRIORITY_ANNOTATION_ONLY",
+    "explicit_not": ["not BUY", "not ARMED hard gate", "not CAPTURE confirmation"]
+  },
+  "monster_v2_state_update": {
+    "S1_WATCH": "official TDCC WATCH plus optional Shadow Absorb priority annotation",
+    "S2_CAPTURE": "confirmatory only; official ownership persistence preferred",
+    "S3_ACTIVATION": "unchanged benchmark: Monster V1 activation logic pending independent V2 challenger",
+    "S4_CONTROLLED_MARKUP": "unchanged",
+    "S5_HANDOFF": "may be preceded by SHADOW_RELEASE_EARLY_WARNING",
+    "S6_RELEASE": "requires official F4/TDCC confirmation; shadow alone cannot trigger SELL"
+  },
+  "next_step": "Forward/OOS shadow annotation only. Collect new lifecycle events without retuning thresholds; evaluate whether early Shadow Release reduces avoidable drawdown while controlling premature SELL-WATCH false positives."
+}
