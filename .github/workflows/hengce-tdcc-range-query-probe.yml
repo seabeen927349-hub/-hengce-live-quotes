@@ -19,31 +19,31 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --disable-pip-version-check requests pandas lxml
-      - name: Probe official TDCC historical date-range response
+      - name: Inspect official TDCC range-query data table
         shell: python
         run: |
-          import io,re,requests,pandas as pd,sys
+          import io,requests,pandas as pd,sys
           sys.path.insert(0,'scripts')
           import hengce_tdcc_monster_pit_backfill_runner as vr
           m=vr.m
           for ticker in ['2330','6415','1101']:
             s=requests.Session()
-            s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-RANGE-PROBE/1.0','Referer':m.ENDPOINT})
+            s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-RANGE-PROBE/1.1','Referer':m.ENDPOINT})
             token=m.get_token(s)
             data={'SYNCHRONIZER_TOKEN':token,'SYNCHRONIZER_URI':'/portal/zh/smWeb/qryStock','method':'submit','firDate':'20260102','scaDate':'20260424','sqlMethod':'StockNo','stockNo':ticker,'stockName':''}
             r=s.post(m.ENDPOINT,data=data,timeout=60,verify=False)
             print('TICKER',ticker,'STATUS',r.status_code,'BYTES',len(r.content),'NO_DATA',('查無此資料' in r.text))
-            dates=sorted(set(re.findall(r'2026[01]\d[0-3]\d',r.text)))
-            print('DATES_IN_HTML',ticker,dates,'COUNT',len(dates))
+            tabs=pd.read_html(io.StringIO(r.text))
+            print('TABLE_COUNT',len(tabs))
+            for i,t in enumerate(tabs):
+              t=t.copy()
+              t.columns=[vr.m.flatten_col(c) for c in t.columns]
+              print('TABLE',i,'ROWS',len(t),'COLS',list(t.columns))
+              print(t.head(40).astype(str).to_string(index=False)[:9000])
             try:
-              tabs=pd.read_html(io.StringIO(r.text))
-              print('TABLES',ticker,len(tabs))
-              for i,t in enumerate(tabs):
-                cols=[' '.join(map(str,c)).strip() if isinstance(c,tuple) else str(c).strip() for c in t.columns]
-                vals=' '.join(t.astype(str).head(30).to_numpy().ravel().tolist())
-                ds=sorted(set(re.findall(r'2026[01]\d[0-3]\d',vals)))
-                if ds or any('資料日期' in c or '持股' in c or '分級' in c for c in cols):
-                  print('TABLE',i,'ROWS',len(t),'COLS',cols,'DATES',ds[:30])
-                  print(t.head(25).to_string(index=False)[:6000])
+              dt,diag=m.find_data_table(r.text)
+              dt=dt.copy(); dt.columns=[vr.m.flatten_col(c) for c in dt.columns]
+              sm=vr.fixed_summarize_table(dt)
+              print('FIRST_DATA_TABLE_SUMMARY',ticker,sm)
             except Exception as e:
-              print('PARSE_ERROR',ticker,type(e).__name__,str(e))
+              print('SUMMARY_ERROR',ticker,type(e).__name__,str(e))
