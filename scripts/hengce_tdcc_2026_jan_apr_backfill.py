@@ -9,7 +9,8 @@ Blood-vessel rules:
 - Fail closed; never forward-fill, reconstruct, or use technical fallback.
 """
 from __future__ import annotations
-import argparse, csv, hashlib, io, json, re, time, zipfile
+import argparse, csv, hashlib, io, json, re, threading, time, zipfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -33,6 +34,7 @@ COLS = [
     "Big1000Holders","Big1000Shares","Big1000Pct",
     "TotalHolders","TotalShares","ResponseSHA256","Source","PITAuthority"
 ]
+_TLS = threading.local()
 
 def sha256_bytes(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
@@ -72,13 +74,47 @@ def write_csv(path: Path, rows: list[dict], cols: list[str]):
     for r in rows: w.writerow({c:r.get(c,"") for c in cols})
     path.write_text(s.getvalue(),encoding="utf-8")
 
+def worker_session():
+    s=getattr(_TLS,"session",None)
+    if s is None:
+        s=requests.Session()
+        s.headers.update({
+            "User-Agent":"Mozilla/5.0 HENGCE-TDCC-2026-BACKFILL/1.1",
+            "Referer":m.ENDPOINT,
+            "Accept-Language":"zh-TW,zh;q=0.9,en;q=0.5",
+        })
+        _TLS.session=s
+    return s
+
+def fetch_security(ref: str, ticker: str, name: str, retrieved: str):
+    try:
+        raw, text, sm=m.fetch_one(worker_session(),ticker,ref)
+        row={
+            "ReferenceDate":ref,"Ticker":ticker,"Name":name,
+            "RetrievedAtTaipei":retrieved,
+            "Big400Holders":sm["Big400Holders"],"Big400Shares":sm["Big400Shares"],
+            "Big400Pct":sm["Big400Pct"],"Big1000Holders":sm["Big1000Holders"],
+            "Big1000Shares":sm["Big1000Shares"],"Big1000Pct":sm["Big1000Pct"],
+            "TotalHolders":sm["TotalHolders"],"TotalShares":sm["TotalShares"],
+            "ResponseSHA256":sha256_bytes(raw),"Source":m.ENDPOINT,
+            "PITAuthority":"HISTORICAL_PIT_PROXY_RESEARCH_ONLY",
+        }
+        time.sleep(0.05)
+        return True,row,raw
+    except Exception as e:
+        return False,{"ReferenceDate":ref,"Ticker":ticker,"Name":name,
+                      "error":f"{type(e).__name__}:{e}"},None
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--date",required=True)
+    ap.add_argument("--workers",type=int,default=4)
     args=ap.parse_args()
     ref=args.date.replace("-","")
     if ref not in ALLOWED_DATES:
         raise SystemExit(f"DATE_NOT_IN_FROZEN_2026_GAP_SET:{ref}")
+    if not 1 <= args.workers <= 8:
+        raise SystemExit(f"WORKERS_OUT_OF_RANGE:{args.workers}")
     out=OUT_ROOT/ref
     out.mkdir(parents=True,exist_ok=True)
     retrieved=now_tw()
@@ -87,38 +123,30 @@ def main():
     (out/"twse_universe_raw.json").write_bytes(universe_raw)
     write_csv(out/"twse_universe.csv",universe,["Ticker","Name"])
 
-    session=requests.Session()
-    session.headers.update({
-        "User-Agent":"Mozilla/5.0 HENGCE-TDCC-2026-BACKFILL/1.0",
-        "Referer":m.ENDPOINT,
-        "Accept-Language":"zh-TW,zh;q=0.9,en;q=0.5",
-    })
-    rows=[]; invalid=[]
+    rows=[]; invalid=[]; completed=0
     zpath=out/"raw_html.zip"
     with zipfile.ZipFile(zpath,"w",zipfile.ZIP_DEFLATED,compresslevel=6) as z:
-        for i,r in enumerate(universe,1):
-            ticker=r["Ticker"]; name=r["Name"]
-            if i==1 or i%100==0:
-                print(f"[{ref}] {i}/{len(universe)} {ticker}",flush=True)
-            try:
-                raw, text, sm=m.fetch_one(session,ticker,ref)
-                h=sha256_bytes(raw)
-                z.writestr(f"{ticker}.html",raw)
-                rows.append({
-                    "ReferenceDate":ref,"Ticker":ticker,"Name":name,
-                    "RetrievedAtTaipei":retrieved,
-                    "Big400Holders":sm["Big400Holders"],"Big400Shares":sm["Big400Shares"],
-                    "Big400Pct":sm["Big400Pct"],"Big1000Holders":sm["Big1000Holders"],
-                    "Big1000Shares":sm["Big1000Shares"],"Big1000Pct":sm["Big1000Pct"],
-                    "TotalHolders":sm["TotalHolders"],"TotalShares":sm["TotalShares"],
-                    "ResponseSHA256":h,"Source":m.ENDPOINT,
-                    "PITAuthority":"HISTORICAL_PIT_PROXY_RESEARCH_ONLY",
-                })
-            except Exception as e:
-                invalid.append({"ReferenceDate":ref,"Ticker":ticker,"Name":name,
-                                "error":f"{type(e).__name__}:{e}"})
-            time.sleep(0.08)
+        with ThreadPoolExecutor(max_workers=args.workers,thread_name_prefix=f"tdcc-{ref}") as ex:
+            futures={ex.submit(fetch_security,ref,r["Ticker"],r["Name"],retrieved):(r["Ticker"],r["Name"]) for r in universe}
+            for fut in as_completed(futures):
+                ticker,name=futures[fut]
+                try:
+                    ok,payload,raw=fut.result()
+                except Exception as e:
+                    ok=False; raw=None
+                    payload={"ReferenceDate":ref,"Ticker":ticker,"Name":name,
+                             "error":f"FUTURE_{type(e).__name__}:{e}"}
+                completed+=1
+                if ok:
+                    rows.append(payload)
+                    z.writestr(f"{ticker}.html",raw)
+                else:
+                    invalid.append(payload)
+                if completed==1 or completed%100==0 or completed==len(universe):
+                    print(f"[{ref}] {completed}/{len(universe)} valid={len(rows)} invalid={len(invalid)}",flush=True)
 
+    rows.sort(key=lambda x:x["Ticker"])
+    invalid.sort(key=lambda x:x["Ticker"])
     cpath=out/"tdcc_ownership_4d.csv"
     write_csv(cpath,rows,COLS)
     (out/"invalid.json").write_text(json.dumps(invalid,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
@@ -131,7 +159,7 @@ def main():
         "universe_sha256":sha256_bytes((out/"twse_universe.csv").read_bytes()),
         "universe_raw_sha256":sha256_bytes(universe_raw),
         "valid_rows":len(rows),"invalid_rows":len(invalid),
-        "retrieved_at_taipei":retrieved,
+        "retrieved_at_taipei":retrieved,"query_workers":args.workers,
         "source":"TDCC official historical qryStock endpoint",
         "parser":"existing verified HENGCE ordinal parser",
         "summary_sha256":sha256_bytes(cpath.read_bytes()),
