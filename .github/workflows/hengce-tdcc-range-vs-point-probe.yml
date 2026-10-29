@@ -1,0 +1,40 @@
+name: HENGCE TDCC Range vs Point Probe
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-range-vs-point-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Compare range and point summaries
+        shell: python
+        run: |
+          import requests,sys,hashlib
+          sys.path.insert(0,'scripts')
+          import hengce_tdcc_monster_pit_backfill_runner as vr
+          m=vr.m
+          def query(ticker,a,b):
+            s=requests.Session(); s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-RANGE-COMPARE/1.0','Referer':m.ENDPOINT})
+            tok=m.get_token(s)
+            data={'SYNCHRONIZER_TOKEN':tok,'SYNCHRONIZER_URI':'/portal/zh/smWeb/qryStock','method':'submit','firDate':a,'scaDate':b,'sqlMethod':'StockNo','stockNo':ticker,'stockName':''}
+            r=s.post(m.ENDPOINT,data=data,timeout=60,verify=False); r.raise_for_status()
+            if '查無此資料' in r.text: return {'NO_DATA':True,'sha':hashlib.sha256(r.content).hexdigest()}
+            sm=vr.fixed_summarize_table(m.find_data_table(r.text)[0])
+            return {'NO_DATA':False,'sha':hashlib.sha256(r.content).hexdigest(),'Big400Pct':sm['Big400Pct'],'Big1000Pct':sm['Big1000Pct'],'Big400Shares':sm['Big400Shares'],'Big1000Shares':sm['Big1000Shares']}
+          for t in ['2330','6415','1101']:
+            print('TICKER',t)
+            for label,a,b in [('POINT_START','20260102','20260102'),('POINT_END','20260424','20260424'),('RANGE','20260102','20260424')]:
+              print(label,query(t,a,b))
