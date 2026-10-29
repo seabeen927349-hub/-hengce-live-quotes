@@ -1,0 +1,43 @@
+name: HENGCE Monster V1 2025 OOS Vessel Replay
+
+on:
+  push:
+    branches:
+      - research/monster-v1-2025-oos-vessel
+    paths:
+      - 'scripts/hengce_monster_v1_2025_oos_replay.py'
+      - '.github/workflows/hengce-monster-v1-2025-oos-replay.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install replay dependency
+        run: python -m pip install --disable-pip-version-check 'pandas==2.3.3'
+      - name: Run vessel-locked frozen reconstruction and 2025 OOS
+        run: |
+          set -euo pipefail
+          python scripts/hengce_monster_v1_2025_oos_replay.py \
+            --start 2025-06-02 \
+            --validation-end 2026-10-05 \
+            --oos-start 2025-10-31 \
+            --oos-end 2025-12-26 \
+            --workers 4 \
+            --out out/monster_v1_2025_oos
+      - name: Upload research evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_MONSTER_V1_2025_OOS_VESSEL_REPLAY
+          path: out/monster_v1_2025_oos/
+          if-no-files-found: warn
+          retention-days: 14
