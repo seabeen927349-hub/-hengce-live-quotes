@@ -1,0 +1,49 @@
+name: HENGCE TDCC OpenData Historical-Date Probe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-opendata-historical-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests
+      - name: Probe official TDCC OpenData date parameters and verify returned CSV date
+        shell: python
+        run: |
+          import csv,hashlib,io,json,requests
+          base='https://opendata.tdcc.com.tw/getOD.ashx'
+          tests=['20250103','20250425','20250801','20250905','20251023','20251031','20251226','20260102']
+          s=requests.Session(); s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-OFFICIAL-OPENDATA-PROBE/1.0'})
+          for d in tests:
+              for filtered in (True,False):
+                  params={'id':'1-5','dataDate':d}
+                  if filtered: params['securityId']='2330'
+                  r=s.get(base,params=params,timeout=60)
+                  raw=r.content
+                  rec={'requested':d,'filtered_2330':filtered,'http':r.status_code,'content_type':r.headers.get('content-type'),'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+                  try:
+                      text=raw.decode('utf-8-sig')
+                      rows=list(csv.DictReader(io.StringIO(text)))
+                      date_key=next((k for k in (rows[0].keys() if rows else []) if '資料日期' in k),None)
+                      sec_key=next((k for k in (rows[0].keys() if rows else []) if '證券代號' in k),None)
+                      dates=sorted({(x.get(date_key) or '').strip() for x in rows}) if date_key else []
+                      secs=sorted({(x.get(sec_key) or '').strip() for x in rows}) if sec_key else []
+                      rec.update({'rows':len(rows),'returned_dates':dates[:20],'returned_date_count':len(dates),'returned_security_sample':secs[:10],'returned_security_count':len(secs),'requested_date_exact':dates==[d],'requested_security_present':('2330' in secs) if filtered else None})
+                  except Exception as e:
+                      rec['parse_error']=f'{type(e).__name__}:{e}'
+                      rec['prefix']=raw[:200].decode('utf-8',errors='replace')
+                  print('OPENDATA_DATE_PROBE',json.dumps(rec,ensure_ascii=False),flush=True)
