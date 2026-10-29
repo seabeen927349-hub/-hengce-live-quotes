@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "service": "HENGCE FROZEN SINGLE-NAME LIVE QUOTES",
-  "snapshot_id": "20261029T115904+0800",
-  "generated_at_taipei": "2026-10-29T11:59:04.581914+08:00",
-  "cache_expires_at_taipei": "2026-10-29T12:09:04.581914+08:00",
+  "snapshot_id": "20261029T122106+0800",
+  "generated_at_taipei": "2026-10-29T12:21:06.951959+08:00",
+  "cache_expires_at_taipei": "2026-10-29T12:31:06.951959+08:00",
   "market_phase": "open",
   "version": "HENGCE_FROZEN_SINGLE_NAME_LIVE_v2_20261029",
   "requested_count": 2,
