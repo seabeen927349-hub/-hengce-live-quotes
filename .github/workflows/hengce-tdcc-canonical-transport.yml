@@ -1,0 +1,63 @@
+name: HENGCE TDCC Canonical Transport
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-canonical-transport.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transport:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout validated V3 commit
+        uses: actions/checkout@v4
+        with:
+          ref: b2c4e1d3b7c527d051ba45c7a9990fdcd786fab1
+
+      - name: Verify exact aggregate and build deterministic gzip
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC='ownership/tdcc/backfill_candidate/full_market_2026_jan_apr/tdcc_2026_jan_apr_full_market_backfill.csv'
+          EXPECTED='9b11d3164c92d1bc1013173e5bb3c8f83416a281d78ca1c4aa3422a7c4557de6'
+          ACTUAL="$(sha256sum "$SRC" | awk '{print $1}')"
+          test "$ACTUAL" = "$EXPECTED"
+          mkdir -p transport
+          python - <<'PY'
+          import gzip, hashlib, json, pathlib
+          src = pathlib.Path('ownership/tdcc/backfill_candidate/full_market_2026_jan_apr/tdcc_2026_jan_apr_full_market_backfill.csv')
+          out = pathlib.Path('transport/TDCC_2026_JAN_APR_FULL_MARKET_V3_CANONICAL.csv.gz')
+          raw = src.read_bytes()
+          expected = '9b11d3164c92d1bc1013173e5bb3c8f83416a281d78ca1c4aa3422a7c4557de6'
+          raw_sha = hashlib.sha256(raw).hexdigest()
+          if raw_sha != expected:
+              raise SystemExit(f'RAW SHA MISMATCH {raw_sha}')
+          gz = gzip.compress(raw, compresslevel=9, mtime=0)
+          out.write_bytes(gz)
+          manifest = {
+              'status': 'PASS',
+              'source_commit': 'b2c4e1d3b7c527d051ba45c7a9990fdcd786fab1',
+              'source_path': str(src),
+              'raw_bytes': len(raw),
+              'raw_sha256': raw_sha,
+              'gzip_bytes': len(gz),
+              'gzip_sha256': hashlib.sha256(gz).hexdigest(),
+              'gzip_mtime': 0,
+              'transport_only': True,
+              'data_changed': False,
+          }
+          pathlib.Path('transport/transport_manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(manifest, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload exact canonical transport artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-tdcc-2026-canonical-transport-b2c4e1d
+          path: transport/
+          if-no-files-found: error
+          retention-days: 7
