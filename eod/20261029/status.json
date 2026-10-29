@@ -56,9 +56,9 @@
       "sha256": "0d391d6eb7b9914ff7dd13506e810b2d577b870a1451c8e93c3e55440e06acfa"
     }
   ],
-  "updated_at_taipei": "2026-10-29T21:35:47.646675+08:00",
+  "updated_at_taipei": "2026-10-29T22:00:13.482322+08:00",
   "mother_receipt": "receipts/mother.json",
-  "mother_sha256": "64d2922e56187807b5b34df107c4a494ae4af5085cfce665a982c4da1db8d7bb",
+  "mother_sha256": "580718e8cf789a978a8cacea597ea78d07853031ca9156f973be5a8bb6791d90",
   "mother_latest_date": "2026-10-29",
   "mother_promoted_legs": [
     "price",
