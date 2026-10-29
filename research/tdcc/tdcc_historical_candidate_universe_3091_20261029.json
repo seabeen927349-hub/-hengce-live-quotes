@@ -1,0 +1,18 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_HISTORICAL_CANDIDATE_UNIVERSE_3091_20261029",
+  "status": "FROZEN_RESEARCH_UNIVERSE",
+  "rows": 3091,
+  "unique_4digit_tickers": 3091,
+  "source": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/tdcc_fourth_leg_best_available.csv.gz",
+  "source_sha256_gzip": "d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f",
+  "source_unique_tickers": 3091,
+  "candidate_csv_sha256": "70229d9b1bcef321deaad73b96fcb65c84227e30d173cd0b20a7e7e524a52936",
+  "rule": "UNION_OF_ALL_4DIGIT_TICKERS_ALREADY_OBSERVED_IN_VALIDATED_HENGCE_TDCC_HISTORY; includes official 20261022 component via consolidated vessel",
+  "purpose": "candidate superset for official TDCC historical stock/date queries",
+  "explicit_tdcc_no_data": "RESOLVED_AS_NOT_PRESENT_FOR_REFERENCE_DATE; NOT_SYNTHESIZED",
+  "network_or_parse_error": "FAIL_CLOSED",
+  "no_forward_fill": true,
+  "no_reconstruction": true,
+  "technical_fallback": "PROHIBITED"
+}
