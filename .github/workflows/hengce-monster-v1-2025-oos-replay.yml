@@ -42,3 +42,5 @@ jobs:
           path: out/monster_v1_2025_oos/
           if-no-files-found: warn
           retention-days: 14
+
+# rerun marker: dependency fix + 2026-only reconstruction scope
