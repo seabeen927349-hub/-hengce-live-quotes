@@ -1,0 +1,41 @@
+{
+  "system": "HENGCE",
+  "artifact": "T4_OR1_LATE_2025_OOS_PREDECLARATION",
+  "authority": "RESEARCH_ONLY_NO_PRODUCTION_AUTHORITY",
+  "locked_before_oos_results": true,
+  "oos_window": ["2025-10-31", "2025-12-26"],
+  "monster_v1": {
+    "mutated": false,
+    "identity_provenance": "PASS_40_OF_40_BY_EXISTING_STRICT_R1_MOTHER_PLUS_FROZEN_BRIDGE_CRL_GATES"
+  },
+  "tdcc_pit": {
+    "snapshot_dates": ["2025-10-31","2025-11-07","2025-11-14","2025-11-21","2025-11-28","2025-12-05","2025-12-12","2025-12-19","2025-12-26"],
+    "availability_probe": "PASS_9_OF_9_VERIFIED_ORDINAL_PARSER",
+    "eligibility": "ReferenceDate + 7 calendar days <= EventDate",
+    "minimum_eligible_snapshots": 2,
+    "forward_fill": false,
+    "same_or_future_snapshot_use": "FORBIDDEN"
+  },
+  "flow_interval": "(snap0, snap1]",
+  "price_interval": "snap0 close to snap1 close",
+  "margin_supply_definition": "max(0, sum(MarginSell-MarginBuy)*1000)",
+  "t4_or1": {
+    "mutated": false,
+    "base_stage": "price_ret_pct < 0 AND margin_market_supply_shares > 0 AND inst_total > 0",
+    "CLEAN_MID_RELAY": "base_stage AND d_MidS > 0 AND d_MidH >= 0 AND d_Big1000S <= 0",
+    "WHALE_ABSORPTION": "base_stage AND d_MidS < 0 AND d_Big1000S > 0",
+    "otherwise": "OTHER"
+  },
+  "outcomes": {
+    "entry": "next trading day open",
+    "round_trip_cost": 0.004,
+    "primary_horizons": [20,40],
+    "diagnostic_horizons": [5,10,60]
+  },
+  "governance": [
+    "No thresholds may be added or loosened after seeing 2025 outcomes.",
+    "Zero OOS signals is a valid no-sample result and does not authorize widening the rule.",
+    "Any event with fewer than two PIT-eligible TDCC snapshots is FAIL_CLOSED.",
+    "This partial OOS cannot create production authority regardless of outcome."
+  ]
+}
