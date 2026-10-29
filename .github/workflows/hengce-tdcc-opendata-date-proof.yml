@@ -1,0 +1,64 @@
+name: HENGCE TDCC OpenData Date Proof
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hengce-tdcc-opendata-date-proof.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests
+      - name: Query official TDCC OpenData and persist exact returned dates
+        shell: python
+        run: |
+          import csv,hashlib,io,json,pathlib,requests
+          base='https://opendata.tdcc.com.tw/getOD.ashx'
+          dates=['20250103','20250425','20250801','20251023','20251031','20251226','20260102']
+          tickers=['1101','2330']
+          s=requests.Session(); s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-TDCC-OFFICIAL-DATE-PROOF/1.0'})
+          results=[]
+          for d in dates:
+            for ticker in tickers:
+              rec={'requested':d,'ticker':ticker}
+              try:
+                r=s.get(base,params={'id':'1-5','dataDate':d,'securityId':ticker},timeout=30)
+                raw=r.content
+                rec.update({'http':r.status_code,'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest(),'content_type':r.headers.get('content-type')})
+                text=raw.decode('utf-8-sig',errors='strict')
+                rows=list(csv.DictReader(io.StringIO(text)))
+                keys=list(rows[0].keys()) if rows else []
+                dk=next((k for k in keys if '資料日期' in k),None)
+                sk=next((k for k in keys if '證券代號' in k),None)
+                dates_ret=sorted({(x.get(dk) or '').strip() for x in rows}) if dk else []
+                secs=sorted({(x.get(sk) or '').strip() for x in rows}) if sk else []
+                rec.update({'rows':len(rows),'returned_dates':dates_ret,'returned_securities':secs,'date_exact':dates_ret==[d],'security_exact':secs==[ticker]})
+              except Exception as e:
+                rec['error']=f'{type(e).__name__}:{e}'
+              results.append(rec)
+          proof={'system':'HENGCE','artifact':'TDCC_OFFICIAL_OPENDATA_HISTORICAL_DATE_PROOF','endpoint':base,'results':results,'all_old_2025_exact':all(x.get('date_exact') and x.get('security_exact') for x in results if x['requested']<'20251031')}
+          p=pathlib.Path('ownership/tdcc/probes/tdcc_opendata_historical_date_proof_20261029.json')
+          p.parent.mkdir(parents=True,exist_ok=True)
+          p.write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(proof,ensure_ascii=False,indent=2))
+      - name: Commit proof
+        shell: bash
+        run: |
+          git config user.name 'hengce-tdcc-probe'
+          git config user.email 'actions@users.noreply.github.com'
+          git add ownership/tdcc/probes/tdcc_opendata_historical_date_proof_20261029.json
+          git commit -m 'data: record TDCC official OpenData historical-date proof'
+          git push origin HEAD:main
