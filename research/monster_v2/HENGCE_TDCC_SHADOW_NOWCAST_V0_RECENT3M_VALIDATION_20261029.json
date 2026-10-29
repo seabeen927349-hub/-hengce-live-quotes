@@ -1,0 +1,68 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_SHADOW_NOWCAST_V0_RECENT3M_VALIDATION",
+  "date": "2026-10-29",
+  "status": "SURVIVE_RESEARCH_CHALLENGER_NO_PRODUCTION_AUTHORITY",
+  "window": {
+    "tdcc_transitions": "2026-07-24 through 2026-10-22",
+    "daily_data_through": "2026-10-28",
+    "universe": "aligned 2026 HENGCE daily mother x weekly TDCC transitions",
+    "row_count_full_interval": 15135,
+    "unique_tickers": 1090
+  },
+  "targets": {
+    "ABSORB": "dBig1000 > 0",
+    "RELEASE": "dBig400 < 0 AND dBig1000 < 0"
+  },
+  "expanding_oos_full_interval": {
+    "ABSORB": {
+      "static_ownership_auc": 0.5037,
+      "daily_human_path_auc": 0.6101,
+      "daily_human_path_brier": 0.2283
+    },
+    "RELEASE": {
+      "static_ownership_auc": 0.5120,
+      "daily_human_path_auc": 0.6673,
+      "daily_human_path_brier": 0.1723
+    },
+    "interpretation": "The daily price/funding/institutional path contains materially more information about the next ownership direction than static Big400/Big1000 levels."
+  },
+  "feature_family_oos_auc": {
+    "ABSORB": {
+      "price_path": 0.5798,
+      "funding_only": 0.5172,
+      "institutional": 0.5974,
+      "absorption_path": 0.5481,
+      "human_all": 0.6101
+    },
+    "RELEASE": {
+      "price_path": 0.6082,
+      "funding_only": 0.4922,
+      "institutional": 0.6442,
+      "absorption_path": 0.6246,
+      "human_all": 0.6673
+    }
+  },
+  "daily_partial_nowcast_expanding_oos_auc": {
+    "day1": {"ABSORB": 0.5577, "RELEASE": 0.5893, "typical_trading_days_remaining": 4},
+    "day2": {"ABSORB": 0.5838, "RELEASE": 0.6367, "typical_trading_days_remaining": 3},
+    "day3": {"ABSORB": 0.6042, "RELEASE": 0.6577, "typical_trading_days_remaining": 2},
+    "day4": {"ABSORB": 0.6181, "RELEASE": 0.6727, "typical_trading_days_remaining": 1},
+    "day5_or_snapshot_day": {"ABSORB": 0.6172, "RELEASE": 0.6938, "typical_trading_days_remaining": 0}
+  },
+  "top20_percentile_oos_enrichment": {
+    "day1": {"ABSORB_base": 0.3864, "ABSORB_top20": 0.4708, "RELEASE_base": 0.2450, "RELEASE_top20": 0.3484},
+    "day2": {"ABSORB_base": 0.3864, "ABSORB_top20": 0.5133, "RELEASE_base": 0.2450, "RELEASE_top20": 0.3950},
+    "day3": {"ABSORB_base": 0.3864, "ABSORB_top20": 0.5430, "RELEASE_base": 0.2450, "RELEASE_top20": 0.4175},
+    "day4": {"ABSORB_base": 0.3862, "ABSORB_top20": 0.5487, "RELEASE_base": 0.2449, "RELEASE_top20": 0.4411},
+    "day5_or_snapshot_day": {"ABSORB_base": 0.3934, "ABSORB_top20": 0.5424, "RELEASE_base": 0.2461, "RELEASE_top20": 0.4613}
+  },
+  "decision": {
+    "ABSORB_shadow": "SURVIVE",
+    "RELEASE_shadow": "SURVIVE_STRONGER_THAN_ABSORB",
+    "hard_thresholds": "NOT_PROMOTED",
+    "trade_authority": false,
+    "one_year_validation": false,
+    "next_step": "Integrate as a shadow annotation into Monster V2 recent-3M lifecycle research, then test whether using the shadow state before official TDCC improves activation timing and release/exit timing without threshold tuning."
+  }
+}
