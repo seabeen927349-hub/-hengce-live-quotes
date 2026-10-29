@@ -12,13 +12,13 @@ permissions:
 
 concurrency:
   group: hengce-tdcc-2026-jan-apr-backfill-v1
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   fetch:
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 8
       matrix:
         refdate:
           - '20260102'
