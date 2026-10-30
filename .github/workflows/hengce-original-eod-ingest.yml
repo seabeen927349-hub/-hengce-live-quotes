@@ -1,5 +1,5 @@
 name: HENGCE original EOD ingest
-# launcher-touch: 2026-10-30-original-vessel-1030-margin-persist
+# launcher-touch: 2026-10-30-canonical-mother-receipt-sync
 
 on:
   workflow_dispatch:
