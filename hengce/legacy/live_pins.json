@@ -1,0 +1,9 @@
+{
+  "system": "HENGCE",
+  "artifact": "TWSE_ELECTRONICS_LIVE_PINS",
+  "asof": "2026-10-29",
+  "source_run_id": "HENGCE_FULL_SCAN_20261029_2228_V22",
+  "policy": "PIN_ONLY_IF_TWSE_LISTED_ELECTRONICS",
+  "symbols": ["6278", "3029", "2493", "8213", "3042", "6257", "6415"],
+  "note": "Pins are quote-transport priority only. Runtime validates each symbol against TWSE listed-company industry codes 24-31. Non-matching pins are dropped fail-closed."
+}
