@@ -1,4 +1,4 @@
-name: HENGCE Legacy V3 Live Quotes
+name: HENGCE TWSE Electronics 100 Live Quotes
 
 "on":
   workflow_dispatch:
@@ -15,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: hengce-legacy-v3-live-quotes
+  group: hengce-twse-electronics100-live-quotes
   cancel-in-progress: true
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch legacy lifecycle-bound Fugle quotes
+      - name: Fetch TWSE electronics100 Fugle quotes
         shell: bash
         run: |
           set -euo pipefail
@@ -48,6 +48,10 @@ jobs:
           TZ=ZoneInfo('Asia/Taipei')
           CACHE_TTL_SECONDS=600
           TRADE_IDLE_SECONDS=900
+          REQUEST_GAP_SECONDS=1.20
+          POLICY='TWSE_LISTED_ELECTRONICS_100_HARD_BIND'
+          SCOPE='TWSE_LISTED_ELECTRONICS_ONLY'
+          ALLOWED_INDUSTRY={'24','25','26','27','28','29','30','31'}
           UNIVERSE_PATH=Path('hengce/legacy/live_universe.json')
           OUT_ROOT=Path('legacy_live')
           QUOTE_DIR=OUT_ROOT/'quotes'
@@ -55,25 +59,31 @@ jobs:
           QUOTE_DIR.mkdir(parents=True,exist_ok=True)
 
           if not UNIVERSE_PATH.exists():
-              raise SystemExit('LEGACY_LIVE_UNIVERSE_MISSING_FAIL_CLOSED')
+              raise SystemExit('LIVE_UNIVERSE_MISSING_FAIL_CLOSED')
           raw=UNIVERSE_PATH.read_bytes()
           universe=json.loads(raw.decode('utf-8'))
-          if universe.get('policy')!='DAILY_ACTION_BOARD_ROWS_HARD_BIND':
-              raise SystemExit('LEGACY_UNIVERSE_POLICY_MISMATCH')
+          if universe.get('policy')!=POLICY:
+              raise SystemExit('ELECTRONICS100_UNIVERSE_POLICY_MISMATCH')
+          if universe.get('scope')!=SCOPE:
+              raise SystemExit('ELECTRONICS100_UNIVERSE_SCOPE_MISMATCH')
           source_run_id=str(universe.get('source_run_id') or '')
-          if not source_run_id.startswith('HENGCE_V3_SCAN_'):
-              raise SystemExit('LEGACY_SOURCE_RUN_NOT_V3')
+          if not source_run_id.startswith('HENGCE_TWSE_ELECTRONICS100_'):
+              raise SystemExit('ELECTRONICS100_SOURCE_RUN_MISMATCH')
           symbols=[str(x).strip() for x in universe.get('symbols',[])]
-          if not symbols or len(symbols)!=len(set(symbols)):
-              raise SystemExit('LEGACY_UNIVERSE_EMPTY_OR_DUPLICATE')
+          if len(symbols)!=100 or len(symbols)!=len(set(symbols)):
+              raise SystemExit('ELECTRONICS100_UNIVERSE_MUST_BE_EXACTLY_100_UNIQUE')
           bad=[x for x in symbols if not re.fullmatch(r'[1-9]\d{3}',x)]
           if bad:
-              raise SystemExit(f'LEGACY_BAD_SYMBOLS:{bad[:10]}')
-          if int(universe.get('requested_count',-1))!=len(symbols):
-              raise SystemExit('LEGACY_UNIVERSE_COUNT_MISMATCH')
-          row_symbols=[str(r.get('Ticker')) for r in universe.get('rows',[]) if r.get('Ticker')]
+              raise SystemExit(f'ELECTRONICS100_BAD_SYMBOLS:{bad[:10]}')
+          rows=universe.get('rows',[])
+          row_symbols=[str(r.get('Ticker')) for r in rows if r.get('Ticker')]
           if row_symbols!=symbols:
-              raise SystemExit('LEGACY_ROWS_SYMBOL_ORDER_MISMATCH')
+              raise SystemExit('ELECTRONICS100_ROWS_SYMBOL_ORDER_MISMATCH')
+          bad_scope=[r for r in rows if r.get('market')!='TWSE' or str(r.get('industry_code')) not in ALLOWED_INDUSTRY]
+          if bad_scope:
+              raise SystemExit(f'NON_TWSE_ELECTRONICS_MEMBER:{bad_scope[:3]}')
+          if int(universe.get('requested_count',-1))!=100:
+              raise SystemExit('ELECTRONICS100_REQUESTED_COUNT_MISMATCH')
 
           universe_sha=hashlib.sha256(raw).hexdigest()
           universe_version=universe.get('version')
@@ -102,23 +112,48 @@ jobs:
               if not p.exists(): return None
               try: return json.loads(p.read_text(encoding='utf-8'))
               except Exception: return None
+
           def fetch(symbol):
-              req=urllib.request.Request(BASE+symbol,headers={'X-API-KEY':API_KEY,'Accept':'application/json','User-Agent':'HENGCE-LEGACY-V3-LIVE/1.0'})
+              req=urllib.request.Request(
+                  BASE+symbol,
+                  headers={
+                      'X-API-KEY':API_KEY,
+                      'Accept':'application/json',
+                      'User-Agent':'HENGCE-TWSE-ELECTRONICS100-LIVE/1.0'
+                  }
+              )
               for attempt in range(4):
                   try:
-                      with urllib.request.urlopen(req,timeout=15) as r: return json.load(r)
+                      with urllib.request.urlopen(req,timeout=15) as r:
+                          return json.load(r)
                   except urllib.error.HTTPError as e:
-                      if e.code in (401,403): raise RuntimeError(f'AUTH_OR_PLAN_HTTP_{e.code}')
-                      if e.code==429 and attempt==3: raise RuntimeError('RATE_LIMIT_HTTP_429')
-                      if 500<=e.code<=599 and attempt==3: raise RuntimeError(f'SERVER_HTTP_{e.code}')
-                      if e.code not in (429,) and not 500<=e.code<=599: raise
+                      if e.code in (401,403):
+                          raise RuntimeError(f'AUTH_OR_PLAN_HTTP_{e.code}')
+                      if e.code==429:
+                          if attempt==3:
+                              raise RuntimeError('RATE_LIMIT_HTTP_429')
+                          retry_after=e.headers.get('Retry-After') if e.headers else None
+                          try:
+                              wait=max(float(retry_after), 3.0*(attempt+1)) if retry_after else 3.0*(attempt+1)
+                          except Exception:
+                              wait=3.0*(attempt+1)
+                          time.sleep(wait+random.uniform(0.2,0.8))
+                          continue
+                      if 500<=e.code<=599:
+                          if attempt==3:
+                              raise RuntimeError(f'SERVER_HTTP_{e.code}')
+                          time.sleep((2**attempt)+random.uniform(0.2,0.8))
+                          continue
+                      raise
                   except Exception:
                       if attempt==3: raise
-                  time.sleep((2**attempt)+random.uniform(0.2,0.8))
+                      time.sleep((2**attempt)+random.uniform(0.2,0.8))
 
-          snap=now_tw(); snapshot_id=snap.strftime('%Y%m%dT%H%M%S%z'); expires=snap+timedelta(seconds=CACHE_TTL_SECONDS)
+          snap=now_tw()
+          snapshot_id=snap.strftime('%Y%m%dT%H%M%S%z')
+          expires=snap+timedelta(seconds=CACHE_TTL_SECONDS)
           records=[]; failures=[]; successful=0
-          for symbol in symbols:
+          for idx,symbol in enumerate(symbols):
               try:
                   row=fetch(symbol)
                   if not isinstance(row,dict): raise RuntimeError('INVALID_RESPONSE')
@@ -131,10 +166,11 @@ jobs:
                   price=last.get('price'); prev=row.get('previousClose')
                   chg=pct=None
                   if price is not None and prev not in (None,0):
-                      chg=round(float(price)-float(prev),4); pct=round((float(price)/float(prev)-1)*100,4)
+                      chg=round(float(price)-float(prev),4)
+                      pct=round((float(price)/float(prev)-1)*100,4)
                   qdate=row.get('date'); is_trial=bool(row.get('isTrial',False))
                   rec={
-                      'schema_version':2,'snapshot_id':snapshot_id,'symbol':symbol,'company_name':name,
+                      'schema_version':3,'snapshot_id':snapshot_id,'symbol':symbol,'company_name':name,
                       'price':price,'previous_close':prev,'reference_price':row.get('referencePrice'),
                       'open':row.get('openPrice'),'high':row.get('highPrice'),'low':row.get('lowPrice'),'avg_price':row.get('avgPrice'),
                       'change':chg,'change_percent':pct,'volume':total.get('tradeVolume'),'trade_value':total.get('tradeValue'),
@@ -147,37 +183,46 @@ jobs:
                       'is_halted':bool(halt.get('isHalted',False)),'is_limit_up_price':bool(row.get('isLimitUpPrice',False)),
                       'is_limit_down_price':bool(row.get('isLimitDownPrice',False)),'is_delayed_open':bool(row.get('isDelayedOpen',False)),
                       'is_delayed_close':bool(row.get('isDelayedClose',False)),'quote_date':qdate,
-                      'stale_at_publish':qdate!=snap.date().isoformat(),'fetch_ok':True,'fetched_at_taipei':snap.isoformat(),
+                      'stale_at_publish':qdate!=snap.date().isoformat(),'fetch_ok':True,'fetched_at_taipei':now_tw().isoformat(),
                       'cache_expires_at_taipei':expires.isoformat(),'market_phase':market_phase(snap),'source':'Fugle MarketData',
-                      'universe_version':universe_version,'universe_source_run_id':source_run_id}
+                      'universe_scope':SCOPE,'universe_version':universe_version,'universe_source_run_id':source_run_id
+                  }
                   records.append(rec); successful+=1
                   (QUOTE_DIR/f'{symbol}.json').write_text(json.dumps(rec,ensure_ascii=False,indent=2),encoding='utf-8')
               except Exception as e:
                   err=str(e); failures.append({'symbol':symbol,'error':err})
                   old=load_previous(symbol)
                   if old:
-                      old['fetch_ok']=False; old['stale_at_publish']=True; old['fetch_error']=err; old['last_fetch_attempt_taipei']=snap.isoformat(); records.append(old)
-              time.sleep(0.45)
+                      old['fetch_ok']=False
+                      old['stale_at_publish']=True
+                      old['fetch_error']=err
+                      old['last_fetch_attempt_taipei']=now_tw().isoformat()
+                      records.append(old)
+              if idx < len(symbols)-1:
+                  time.sleep(REQUEST_GAP_SECONDS+random.uniform(0.02,0.12))
 
-          if successful==0: raise SystemExit('LEGACY_ALL_REQUESTS_FAILED')
+          if successful==0:
+              raise SystemExit('ELECTRONICS100_ALL_REQUESTS_FAILED')
           payload={
-              'schema_version':2,'service':'HENGCE LEGACY V3 LIVE QUOTES','snapshot_id':snapshot_id,
-              'generated_at_taipei':snap.isoformat(),'cache_expires_at_taipei':expires.isoformat(),'cache_ttl_seconds':CACHE_TTL_SECONDS,
-              'market_phase':market_phase(snap),'universe_policy':'DAILY_ACTION_BOARD_ROWS_HARD_BIND','universe_version':universe_version,
+              'schema_version':3,'service':'HENGCE TWSE ELECTRONICS 100 LIVE QUOTES','snapshot_id':snapshot_id,
+              'generated_at_taipei':now_tw().isoformat(),'cache_expires_at_taipei':expires.isoformat(),'cache_ttl_seconds':CACHE_TTL_SECONDS,
+              'market_phase':market_phase(snap),'universe_policy':POLICY,'universe_scope':SCOPE,'universe_version':universe_version,
               'universe_target_date':universe_target_date,'universe_source_run_id':source_run_id,'universe_sha256':universe_sha,
               'requested_count':len(symbols),'success_count':successful,'failure_count':len(failures),
               'stale_count':sum(bool(x.get('stale_at_publish')) for x in records),'trial_count':sum(bool(x.get('is_trial')) for x in records),
               'halted_count':sum(bool(x.get('is_halted')) for x in records),'failures':failures,'data':records,
-              'authority':'LEGACY_INTRADAY_QUOTE_TRANSPORT_ONLY_NO_RANKING_RECOMPUTE'}
+              'request_gap_seconds':REQUEST_GAP_SECONDS,
+              'authority':'INTRADAY_QUOTE_TRANSPORT_ONLY_NO_MODEL_RANKING_AUTHORITY'
+          }
           status={k:v for k,v in payload.items() if k!='data'}
-          status['healthy']=successful>0
+          status['healthy']=successful>=98 and payload['stale_count']<=2
           Path('legacy_latest.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
           (OUT_ROOT/'active.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
           (OUT_ROOT/'status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
-          print('HENGCE LEGACY SNAPSHOT',snapshot_id,successful,'/',len(symbols),source_run_id)
+          print('HENGCE TWSE ELECTRONICS100 SNAPSHOT',snapshot_id,successful,'/',len(symbols),source_run_id)
           PY
 
-      - name: Validate legacy V3 hard-bind
+      - name: Validate TWSE electronics100 hard bind
         shell: bash
         run: |
           set -euo pipefail
@@ -189,24 +234,30 @@ jobs:
           expected=[str(x) for x in universe.get('symbols',[])]
           actual=[str(x.get('symbol')) for x in latest.get('data',[])]
           failed={str(x.get('symbol')) for x in latest.get('failures',[])}
-          if latest.get('requested_count')!=len(expected): raise SystemExit('LEGACY_REQUESTED_COUNT_MISMATCH')
-          if latest.get('universe_source_run_id')!=universe.get('source_run_id'): raise SystemExit('LEGACY_SOURCE_RUN_MISMATCH')
-          if latest.get('universe_policy')!='DAILY_ACTION_BOARD_ROWS_HARD_BIND': raise SystemExit('LEGACY_POLICY_MISMATCH')
+          if latest.get('requested_count')!=100 or len(expected)!=100:
+              raise SystemExit('ELECTRONICS100_REQUESTED_COUNT_MISMATCH')
+          if latest.get('universe_source_run_id')!=universe.get('source_run_id'):
+              raise SystemExit('ELECTRONICS100_SOURCE_RUN_MISMATCH')
+          if latest.get('universe_policy')!='TWSE_LISTED_ELECTRONICS_100_HARD_BIND':
+              raise SystemExit('ELECTRONICS100_POLICY_MISMATCH')
+          if latest.get('universe_scope')!='TWSE_LISTED_ELECTRONICS_ONLY':
+              raise SystemExit('ELECTRONICS100_SCOPE_MISMATCH')
           silent=[x for x in expected if x not in actual and x not in failed]
-          if silent: raise SystemExit(f'LEGACY_SILENT_MISSING:{silent[:10]}')
-          print('HENGCE LEGACY V3 HARD-BIND VERIFIED',latest.get('requested_count'),latest.get('success_count'),latest.get('failure_count'))
+          if silent:
+              raise SystemExit(f'ELECTRONICS100_SILENT_MISSING:{silent[:10]}')
+          print('HENGCE TWSE ELECTRONICS100 HARD-BIND VERIFIED',latest.get('requested_count'),latest.get('success_count'),latest.get('failure_count'))
           PY
 
-      - name: Commit isolated legacy live snapshot
+      - name: Commit isolated live snapshot
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'hengce-legacy-v3-live-bot'
-          git config user.email 'hengce-legacy-v3-live-bot@users.noreply.github.com'
+          git config user.name 'hengce-electronics100-live-bot'
+          git config user.email 'hengce-electronics100-live-bot@users.noreply.github.com'
           git add legacy_latest.json legacy_live/
           if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "HENGCE legacy V3 live ${TS} hard-bind"
+          git commit -m "HENGCE TWSE electronics100 live ${TS}"
           if ! git push origin HEAD:main; then
             git pull --rebase origin main
             git push origin HEAD:main
