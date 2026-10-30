@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "Q017_MORNING_MACRO_CACHE",
+  "trade_date": "2026-10-30",
+  "generated_at_taipei": "2026-10-30T08:04:39.506781+08:00",
+  "status": "PASS",
+  "authority": "Q017_PREMARKET_INPUT_CACHE_ONLY_NOT_MARKET_OBSERVATION",
+  "causal_policy": "SOX_AND_DXY_COMPLETED_SESSIONS_STRICTLY_BEFORE_TAIWAN_TRADE_DATE",
+  "sox_status": {
+    "status": "PASS",
+    "source": "Nasdaq ExportHistory/SOX",
+    "latest_session": "2026-10-29",
+    "rows": 208,
+    "stale_days": 1,
+    "refreshed_at_taipei": "2026-10-30T08:04:39.260322+08:00"
+  },
+  "sox_features": {
+    "session": "2026-10-29",
+    "sox_1d": -0.014190437332421313,
+    "sox_5d": 0.07325968806487393
+  },
+  "dxy_status": {
+    "status": "PASS",
+    "source": "Yahoo Finance chart query1.finance.yahoo.com / DX-Y.NYB",
+    "symbol": "DX-Y.NYB",
+    "latest_session": "2026-10-29",
+    "latest_close": 101.87799835205078,
+    "five_sessions_back": "2026-10-22",
+    "five_sessions_back_close": 101.61000061035156,
+    "dxy_5d": 0.0026375134345970608,
+    "rows": 208,
+    "stale_days": 1,
+    "refreshed_at_taipei": "2026-10-30T08:04:39.261696+08:00",
+    "causal_rule": "completed weekday sessions strictly before Taiwan trade date; weekend/current pseudo-bars excluded"
+  },
+  "files": {
+    "sox_csv": "hengce/q017_radar/data/sox_2026.csv",
+    "sox_csv_sha256": "7aa312fb82cda35dc70b95ed201e58ee16dff20f98a3c0be7df15a57dd3fda69",
+    "dxy_csv": "hengce/q017_radar/data/dxy_2026.csv",
+    "dxy_csv_sha256": "9a434fc4387ecd8eac1e6b234b430f28891b1e9597a8466621c72c364ee7d40a"
+  },
+  "observation_policy": {
+    "contains_0901_quotes": false,
+    "may_be_prepared_before_market_open": true,
+    "cannot_substitute_for_q017_0901_observation": true
+  },
+  "cache_sha256": "949c78a7927645281b67f8111dbdf8645990410a1c948b45b089575b5728cefd"
+}
