@@ -1,0 +1,74 @@
+name: HENGCE TWSE Electronics 100 Universe
+
+"on":
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'hengce/legacy/live_pins.json'
+      - 'scripts/hengce_build_twse_electronics100_universe.py'
+      - '.github/workflows/hengce-electronics100-universe.yml'
+  schedule:
+    - cron: '50 0 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-twse-electronics100-universe
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build official TWSE-listed electronics 100 universe
+        run: python3 scripts/hengce_build_twse_electronics100_universe.py
+
+      - name: Validate hard scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('hengce/legacy/live_universe.json')
+          obj=json.loads(p.read_text(encoding='utf-8'))
+          allowed={'24','25','26','27','28','29','30','31'}
+          assert obj.get('policy')=='TWSE_LISTED_ELECTRONICS_100_HARD_BIND'
+          assert obj.get('scope')=='TWSE_LISTED_ELECTRONICS_ONLY'
+          assert obj.get('requested_count')==100
+          symbols=[str(x) for x in obj.get('symbols',[])]
+          rows=obj.get('rows',[])
+          assert len(symbols)==100 and len(set(symbols))==100
+          assert len(rows)==100
+          assert [str(r.get('Ticker')) for r in rows]==symbols
+          bad=[r for r in rows if r.get('market')!='TWSE' or str(r.get('industry_code')) not in allowed]
+          if bad:
+              raise SystemExit('NON_TWSE_ELECTRONICS_MEMBER:'+str(bad[:3]))
+          print('TWSE ELECTRONICS100 HARD SCOPE PASS', len(symbols), obj.get('valid_pins'))
+          PY
+
+      - name: Commit universe if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-electronics100-bot'
+          git config user.email 'hengce-electronics100-bot@users.noreply.github.com'
+          git add hengce/legacy/live_universe.json
+          if git diff --cached --quiet; then
+            echo 'No universe change.'
+            exit 0
+          fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE TWSE electronics100 universe ${TS}"
+          if ! git push origin HEAD:main; then
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
