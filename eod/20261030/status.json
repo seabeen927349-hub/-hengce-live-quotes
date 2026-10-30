@@ -14,7 +14,6 @@
   "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
   "institutional_status": "COMPLETE",
   "margin_status": "COMPLETE",
-  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
   "available_legs": [
     "price",
     "institutional",
@@ -22,14 +21,10 @@
   ],
   "pending_legs": [],
   "error_legs": [],
-  "mother_status": "PENDING",
+  "mother_status": "COMPLETE",
   "mother_promotion_required": true,
-  "mother_pending_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ],
-  "downstream_ready": false,
+  "mother_pending_legs": [],
+  "downstream_ready": true,
   "three_leg_complete": true,
   "formal_complete_day": true,
   "status": "COMPLETE",
@@ -48,12 +43,12 @@
     },
     {
       "leg": "margin",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1061,
       "sha256": "f2ee5070cf2797c0124c4108814d3ec65f275ce3d91e4f95885b718f3e33d251"
     }
   ],
-  "updated_at_taipei": "2026-10-30T22:09:53.508485+08:00",
+  "updated_at_taipei": "2026-10-30T22:22:00.706648+08:00",
   "institutional_date": "2026-10-30",
   "institutional_rows": 1079,
   "institutional_sha256": "afdfdf979ab4989f1c737faca447a2bae4bdf3f2ab04e155b085ea88b8303a1a",
@@ -61,5 +56,13 @@
   "margin_date": "2026-10-30",
   "margin_rows": 1061,
   "margin_sha256": "f2ee5070cf2797c0124c4108814d3ec65f275ce3d91e4f95885b718f3e33d251",
-  "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN"
+  "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "2879ebb756c524dbefa4c47258d58fd6fa138aefcced3c7abb3d46634070651b",
+  "mother_latest_date": "2026-10-30",
+  "mother_promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ]
 }
