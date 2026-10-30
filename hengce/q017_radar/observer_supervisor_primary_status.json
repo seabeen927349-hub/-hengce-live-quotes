@@ -3,8 +3,8 @@
   "system": "HENGCE",
   "module": "Q017_OBSERVER_SUPERVISOR",
   "lane": "primary",
-  "trade_date": "2026-10-28",
-  "generated_at_taipei": "2026-10-28T09:00:45.002482+08:00",
+  "trade_date": "2026-10-30",
+  "generated_at_taipei": "2026-10-30T09:00:45.002456+08:00",
   "state": "PREPARED_MODEL_FAIL_CLOSED",
   "authority": "INFRASTRUCTURE_DIAGNOSTIC_ONLY_NO_RANKING_AUTHORITY",
   "strict_observation_window": "09:01:00-09:01:59.999999 Asia/Taipei",
@@ -29,776 +29,776 @@
     {
       "phase": "MACRO_CACHE_BIND",
       "attempt": 1,
-      "started_at_taipei": "2026-10-28T08:10:20.029565+08:00",
-      "finished_at_taipei": "2026-10-28T08:10:20.416943+08:00",
+      "started_at_taipei": "2026-10-30T08:14:17.775929+08:00",
+      "finished_at_taipei": "2026-10-30T08:14:18.102244+08:00",
       "result": "FALLBACK",
       "error_type": "RuntimeError",
-      "error": "ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_CACHE",
       "attempt": 2,
-      "started_at_taipei": "2026-10-28T08:10:20.417432+08:00",
-      "finished_at_taipei": "2026-10-28T08:10:20.417514+08:00",
+      "started_at_taipei": "2026-10-30T08:14:18.102798+08:00",
+      "finished_at_taipei": "2026-10-30T08:14:18.102890+08:00",
       "result": "MISS_OR_INVALID",
       "error_type": "FileNotFoundError",
-      "error": "/home/runner/work/-hengce-live-quotes/-hengce-live-quotes/hengce/q017_radar/prewarm_snapshots/20261028_q017_model.json"
+      "error": "/home/runner/work/-hengce-live-quotes/-hengce-live-quotes/hengce/q017_radar/prewarm_snapshots/20261030_q017_model.json"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 3,
-      "started_at_taipei": "2026-10-28T08:30:00.001165+08:00",
-      "finished_at_taipei": "2026-10-28T08:30:01.440433+08:00",
+      "started_at_taipei": "2026-10-30T08:30:00.001225+08:00",
+      "finished_at_taipei": "2026-10-30T08:30:01.373848+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 4,
-      "started_at_taipei": "2026-10-28T08:31:01.441944+08:00",
-      "finished_at_taipei": "2026-10-28T08:31:02.625218+08:00",
+      "started_at_taipei": "2026-10-30T08:31:01.375349+08:00",
+      "finished_at_taipei": "2026-10-30T08:31:02.557546+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 5,
-      "started_at_taipei": "2026-10-28T08:32:02.626671+08:00",
-      "finished_at_taipei": "2026-10-28T08:32:03.770954+08:00",
+      "started_at_taipei": "2026-10-30T08:32:02.559008+08:00",
+      "finished_at_taipei": "2026-10-30T08:32:03.686128+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 6,
-      "started_at_taipei": "2026-10-28T08:33:03.772469+08:00",
-      "finished_at_taipei": "2026-10-28T08:33:04.846321+08:00",
+      "started_at_taipei": "2026-10-30T08:33:03.687824+08:00",
+      "finished_at_taipei": "2026-10-30T08:33:04.854163+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 7,
-      "started_at_taipei": "2026-10-28T08:34:04.847859+08:00",
-      "finished_at_taipei": "2026-10-28T08:34:06.186980+08:00",
+      "started_at_taipei": "2026-10-30T08:34:04.855709+08:00",
+      "finished_at_taipei": "2026-10-30T08:34:06.038419+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 8,
-      "started_at_taipei": "2026-10-28T08:35:06.188532+08:00",
-      "finished_at_taipei": "2026-10-28T08:35:07.364664+08:00",
+      "started_at_taipei": "2026-10-30T08:35:06.039988+08:00",
+      "finished_at_taipei": "2026-10-30T08:35:07.360855+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 9,
-      "started_at_taipei": "2026-10-28T08:36:07.366432+08:00",
-      "finished_at_taipei": "2026-10-28T08:36:08.664260+08:00",
+      "started_at_taipei": "2026-10-30T08:36:07.362869+08:00",
+      "finished_at_taipei": "2026-10-30T08:36:08.545270+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 10,
-      "started_at_taipei": "2026-10-28T08:37:08.665906+08:00",
-      "finished_at_taipei": "2026-10-28T08:37:09.798028+08:00",
+      "started_at_taipei": "2026-10-30T08:37:08.546899+08:00",
+      "finished_at_taipei": "2026-10-30T08:37:09.771880+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 11,
-      "started_at_taipei": "2026-10-28T08:38:09.799621+08:00",
-      "finished_at_taipei": "2026-10-28T08:38:11.027862+08:00",
+      "started_at_taipei": "2026-10-30T08:38:09.773473+08:00",
+      "finished_at_taipei": "2026-10-30T08:38:11.137212+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 12,
-      "started_at_taipei": "2026-10-28T08:39:11.029525+08:00",
-      "finished_at_taipei": "2026-10-28T08:39:12.402787+08:00",
+      "started_at_taipei": "2026-10-30T08:39:11.139025+08:00",
+      "finished_at_taipei": "2026-10-30T08:39:12.454306+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 13,
-      "started_at_taipei": "2026-10-28T08:40:12.404449+08:00",
-      "finished_at_taipei": "2026-10-28T08:40:13.727263+08:00",
+      "started_at_taipei": "2026-10-30T08:40:12.455936+08:00",
+      "finished_at_taipei": "2026-10-30T08:40:13.571407+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 14,
-      "started_at_taipei": "2026-10-28T08:41:13.728930+08:00",
-      "finished_at_taipei": "2026-10-28T08:41:15.040390+08:00",
+      "started_at_taipei": "2026-10-30T08:41:13.573069+08:00",
+      "finished_at_taipei": "2026-10-30T08:41:16.108643+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 15,
-      "started_at_taipei": "2026-10-28T08:42:15.042045+08:00",
-      "finished_at_taipei": "2026-10-28T08:42:16.488509+08:00",
+      "started_at_taipei": "2026-10-30T08:42:16.110334+08:00",
+      "finished_at_taipei": "2026-10-30T08:42:17.381126+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 16,
-      "started_at_taipei": "2026-10-28T08:43:16.490200+08:00",
-      "finished_at_taipei": "2026-10-28T08:43:17.812089+08:00",
+      "started_at_taipei": "2026-10-30T08:43:17.382804+08:00",
+      "finished_at_taipei": "2026-10-30T08:43:19.836806+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 17,
-      "started_at_taipei": "2026-10-28T08:44:17.813823+08:00",
-      "finished_at_taipei": "2026-10-28T08:44:18.952110+08:00",
+      "started_at_taipei": "2026-10-30T08:44:19.838464+08:00",
+      "finished_at_taipei": "2026-10-30T08:44:20.999282+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 18,
-      "started_at_taipei": "2026-10-28T08:45:18.953824+08:00",
-      "finished_at_taipei": "2026-10-28T08:45:20.214532+08:00",
+      "started_at_taipei": "2026-10-30T08:45:21.000959+08:00",
+      "finished_at_taipei": "2026-10-30T08:45:22.211745+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 19,
-      "started_at_taipei": "2026-10-28T08:45:40.216257+08:00",
-      "finished_at_taipei": "2026-10-28T08:45:41.572122+08:00",
+      "started_at_taipei": "2026-10-30T08:45:42.301717+08:00",
+      "finished_at_taipei": "2026-10-30T08:45:43.595479+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 20,
-      "started_at_taipei": "2026-10-28T08:46:01.573991+08:00",
-      "finished_at_taipei": "2026-10-28T08:46:03.046851+08:00",
+      "started_at_taipei": "2026-10-30T08:46:03.597309+08:00",
+      "finished_at_taipei": "2026-10-30T08:46:04.741317+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 21,
-      "started_at_taipei": "2026-10-28T08:46:23.048606+08:00",
-      "finished_at_taipei": "2026-10-28T08:46:24.157828+08:00",
+      "started_at_taipei": "2026-10-30T08:46:24.769908+08:00",
+      "finished_at_taipei": "2026-10-30T08:46:25.812217+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 22,
-      "started_at_taipei": "2026-10-28T08:46:44.159644+08:00",
-      "finished_at_taipei": "2026-10-28T08:46:45.283195+08:00",
+      "started_at_taipei": "2026-10-30T08:46:45.814047+08:00",
+      "finished_at_taipei": "2026-10-30T08:46:46.827916+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 23,
-      "started_at_taipei": "2026-10-28T08:47:05.284994+08:00",
-      "finished_at_taipei": "2026-10-28T08:47:06.339786+08:00",
+      "started_at_taipei": "2026-10-30T08:47:06.829733+08:00",
+      "finished_at_taipei": "2026-10-30T08:47:07.938246+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 24,
-      "started_at_taipei": "2026-10-28T08:47:26.341668+08:00",
-      "finished_at_taipei": "2026-10-28T08:47:27.527780+08:00",
+      "started_at_taipei": "2026-10-30T08:47:27.940004+08:00",
+      "finished_at_taipei": "2026-10-30T08:47:29.187725+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 25,
-      "started_at_taipei": "2026-10-28T08:47:47.529648+08:00",
-      "finished_at_taipei": "2026-10-28T08:47:48.655858+08:00",
+      "started_at_taipei": "2026-10-30T08:47:49.189709+08:00",
+      "finished_at_taipei": "2026-10-30T08:47:50.319957+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 26,
-      "started_at_taipei": "2026-10-28T08:48:08.657654+08:00",
-      "finished_at_taipei": "2026-10-28T08:48:09.878431+08:00",
+      "started_at_taipei": "2026-10-30T08:48:10.321887+08:00",
+      "finished_at_taipei": "2026-10-30T08:48:11.875739+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 27,
-      "started_at_taipei": "2026-10-28T08:48:29.880312+08:00",
-      "finished_at_taipei": "2026-10-28T08:48:31.133694+08:00",
+      "started_at_taipei": "2026-10-30T08:48:31.877692+08:00",
+      "finished_at_taipei": "2026-10-30T08:48:32.966853+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 28,
-      "started_at_taipei": "2026-10-28T08:48:51.135575+08:00",
-      "finished_at_taipei": "2026-10-28T08:48:52.583622+08:00",
+      "started_at_taipei": "2026-10-30T08:48:52.968744+08:00",
+      "finished_at_taipei": "2026-10-30T08:48:54.078693+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 29,
-      "started_at_taipei": "2026-10-28T08:49:12.585537+08:00",
-      "finished_at_taipei": "2026-10-28T08:49:13.717823+08:00",
+      "started_at_taipei": "2026-10-30T08:49:14.080724+08:00",
+      "finished_at_taipei": "2026-10-30T08:49:15.407287+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 30,
-      "started_at_taipei": "2026-10-28T08:49:33.719707+08:00",
-      "finished_at_taipei": "2026-10-28T08:49:34.824980+08:00",
+      "started_at_taipei": "2026-10-30T08:49:35.409362+08:00",
+      "finished_at_taipei": "2026-10-30T08:49:36.571196+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 31,
-      "started_at_taipei": "2026-10-28T08:49:54.827097+08:00",
-      "finished_at_taipei": "2026-10-28T08:49:56.131176+08:00",
+      "started_at_taipei": "2026-10-30T08:49:56.573332+08:00",
+      "finished_at_taipei": "2026-10-30T08:49:57.764900+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 45.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 32,
-      "started_at_taipei": "2026-10-28T08:50:16.133179+08:00",
-      "finished_at_taipei": "2026-10-28T08:50:17.215646+08:00",
+      "started_at_taipei": "2026-10-30T08:50:17.766943+08:00",
+      "finished_at_taipei": "2026-10-30T08:50:20.016534+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 33,
-      "started_at_taipei": "2026-10-28T08:50:37.217603+08:00",
-      "finished_at_taipei": "2026-10-28T08:50:38.332630+08:00",
+      "started_at_taipei": "2026-10-30T08:50:40.018472+08:00",
+      "finished_at_taipei": "2026-10-30T08:50:41.142259+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 34,
-      "started_at_taipei": "2026-10-28T08:50:58.334650+08:00",
-      "finished_at_taipei": "2026-10-28T08:50:59.520946+08:00",
+      "started_at_taipei": "2026-10-30T08:51:01.144283+08:00",
+      "finished_at_taipei": "2026-10-30T08:51:02.266998+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 35,
-      "started_at_taipei": "2026-10-28T08:51:19.522892+08:00",
-      "finished_at_taipei": "2026-10-28T08:51:20.668747+08:00",
+      "started_at_taipei": "2026-10-30T08:51:22.269001+08:00",
+      "finished_at_taipei": "2026-10-30T08:51:23.350227+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 36,
-      "started_at_taipei": "2026-10-28T08:51:40.670835+08:00",
-      "finished_at_taipei": "2026-10-28T08:51:41.922328+08:00",
+      "started_at_taipei": "2026-10-30T08:51:43.352355+08:00",
+      "finished_at_taipei": "2026-10-30T08:51:44.438693+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 37,
-      "started_at_taipei": "2026-10-28T08:52:01.924413+08:00",
-      "finished_at_taipei": "2026-10-28T08:52:03.294134+08:00",
+      "started_at_taipei": "2026-10-30T08:52:04.441210+08:00",
+      "finished_at_taipei": "2026-10-30T08:52:05.537704+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 38,
-      "started_at_taipei": "2026-10-28T08:52:23.296196+08:00",
-      "finished_at_taipei": "2026-10-28T08:52:24.590267+08:00",
+      "started_at_taipei": "2026-10-30T08:52:25.539768+08:00",
+      "finished_at_taipei": "2026-10-30T08:52:26.923615+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 39,
-      "started_at_taipei": "2026-10-28T08:52:44.592317+08:00",
-      "finished_at_taipei": "2026-10-28T08:52:45.779034+08:00",
+      "started_at_taipei": "2026-10-30T08:52:46.925811+08:00",
+      "finished_at_taipei": "2026-10-30T08:52:48.112727+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 40,
-      "started_at_taipei": "2026-10-28T08:53:05.781105+08:00",
-      "finished_at_taipei": "2026-10-28T08:53:06.928980+08:00",
+      "started_at_taipei": "2026-10-30T08:53:08.114832+08:00",
+      "finished_at_taipei": "2026-10-30T08:53:09.282242+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 41,
-      "started_at_taipei": "2026-10-28T08:53:26.931060+08:00",
-      "finished_at_taipei": "2026-10-28T08:53:28.095312+08:00",
+      "started_at_taipei": "2026-10-30T08:53:29.284305+08:00",
+      "finished_at_taipei": "2026-10-30T08:53:30.340200+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 42,
-      "started_at_taipei": "2026-10-28T08:53:48.097591+08:00",
-      "finished_at_taipei": "2026-10-28T08:53:49.157978+08:00",
+      "started_at_taipei": "2026-10-30T08:53:50.342506+08:00",
+      "finished_at_taipei": "2026-10-30T08:53:51.492562+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 43,
-      "started_at_taipei": "2026-10-28T08:54:09.160134+08:00",
-      "finished_at_taipei": "2026-10-28T08:54:10.347367+08:00",
+      "started_at_taipei": "2026-10-30T08:54:11.494843+08:00",
+      "finished_at_taipei": "2026-10-30T08:54:12.597937+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 44,
-      "started_at_taipei": "2026-10-28T08:54:30.349557+08:00",
-      "finished_at_taipei": "2026-10-28T08:54:31.519807+08:00",
+      "started_at_taipei": "2026-10-30T08:54:32.600074+08:00",
+      "finished_at_taipei": "2026-10-30T08:54:34.009779+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 45,
-      "started_at_taipei": "2026-10-28T08:54:51.521936+08:00",
-      "finished_at_taipei": "2026-10-28T08:54:53.007589+08:00",
+      "started_at_taipei": "2026-10-30T08:54:54.015026+08:00",
+      "finished_at_taipei": "2026-10-30T08:54:55.149585+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 46,
-      "started_at_taipei": "2026-10-28T08:55:13.009839+08:00",
-      "finished_at_taipei": "2026-10-28T08:55:14.072703+08:00",
+      "started_at_taipei": "2026-10-30T08:55:15.228224+08:00",
+      "finished_at_taipei": "2026-10-30T08:55:16.574577+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 47,
-      "started_at_taipei": "2026-10-28T08:55:34.074914+08:00",
-      "finished_at_taipei": "2026-10-28T08:55:35.296853+08:00",
+      "started_at_taipei": "2026-10-30T08:55:36.576794+08:00",
+      "finished_at_taipei": "2026-10-30T08:55:37.780856+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 48,
-      "started_at_taipei": "2026-10-28T08:55:55.299041+08:00",
-      "finished_at_taipei": "2026-10-28T08:55:56.575080+08:00",
+      "started_at_taipei": "2026-10-30T08:55:57.783167+08:00",
+      "finished_at_taipei": "2026-10-30T08:55:59.020494+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 49,
-      "started_at_taipei": "2026-10-28T08:56:16.577306+08:00",
-      "finished_at_taipei": "2026-10-28T08:56:17.642263+08:00",
+      "started_at_taipei": "2026-10-30T08:56:19.023359+08:00",
+      "finished_at_taipei": "2026-10-30T08:56:20.257857+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 50,
-      "started_at_taipei": "2026-10-28T08:56:37.644459+08:00",
-      "finished_at_taipei": "2026-10-28T08:56:38.727154+08:00",
+      "started_at_taipei": "2026-10-30T08:56:40.260189+08:00",
+      "finished_at_taipei": "2026-10-30T08:56:41.300707+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 51,
-      "started_at_taipei": "2026-10-28T08:56:58.729380+08:00",
-      "finished_at_taipei": "2026-10-28T08:56:59.849182+08:00",
+      "started_at_taipei": "2026-10-30T08:57:01.302995+08:00",
+      "finished_at_taipei": "2026-10-30T08:57:02.388884+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 52,
-      "started_at_taipei": "2026-10-28T08:57:19.851378+08:00",
-      "finished_at_taipei": "2026-10-28T08:57:21.171491+08:00",
+      "started_at_taipei": "2026-10-30T08:57:22.391307+08:00",
+      "finished_at_taipei": "2026-10-30T08:57:23.444026+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 53,
-      "started_at_taipei": "2026-10-28T08:57:41.173934+08:00",
-      "finished_at_taipei": "2026-10-28T08:57:42.240138+08:00",
+      "started_at_taipei": "2026-10-30T08:57:43.446476+08:00",
+      "finished_at_taipei": "2026-10-30T08:57:44.508589+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 20.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 54,
-      "started_at_taipei": "2026-10-28T08:58:02.242432+08:00",
-      "finished_at_taipei": "2026-10-28T08:58:03.335782+08:00",
+      "started_at_taipei": "2026-10-30T08:58:04.510920+08:00",
+      "finished_at_taipei": "2026-10-30T08:58:05.743957+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 8.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 55,
-      "started_at_taipei": "2026-10-28T08:58:23.338001+08:00",
-      "finished_at_taipei": "2026-10-28T08:58:24.420483+08:00",
+      "started_at_taipei": "2026-10-30T08:58:25.746352+08:00",
+      "finished_at_taipei": "2026-10-30T08:58:26.917536+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 8.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 56,
-      "started_at_taipei": "2026-10-28T08:58:44.422789+08:00",
-      "finished_at_taipei": "2026-10-28T08:58:45.765271+08:00",
+      "started_at_taipei": "2026-10-30T08:58:46.919930+08:00",
+      "finished_at_taipei": "2026-10-30T08:58:47.979218+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 8.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 57,
-      "started_at_taipei": "2026-10-28T08:59:05.767612+08:00",
-      "finished_at_taipei": "2026-10-28T08:59:06.877791+08:00",
+      "started_at_taipei": "2026-10-30T08:59:07.981616+08:00",
+      "finished_at_taipei": "2026-10-30T08:59:09.026215+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 8.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 58,
-      "started_at_taipei": "2026-10-28T08:59:26.880130+08:00",
-      "finished_at_taipei": "2026-10-28T08:59:28.230718+08:00",
+      "started_at_taipei": "2026-10-30T08:59:29.028681+08:00",
+      "finished_at_taipei": "2026-10-30T08:59:30.168931+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 8.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 59,
-      "started_at_taipei": "2026-10-28T08:59:48.233081+08:00",
-      "finished_at_taipei": "2026-10-28T08:59:49.330716+08:00",
+      "started_at_taipei": "2026-10-30T08:59:50.171360+08:00",
+      "finished_at_taipei": "2026-10-30T08:59:51.405981+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 8.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 60,
-      "started_at_taipei": "2026-10-28T09:00:09.333092+08:00",
-      "finished_at_taipei": "2026-10-28T09:00:10.477174+08:00",
+      "started_at_taipei": "2026-10-30T09:00:11.408374+08:00",
+      "finished_at_taipei": "2026-10-30T09:00:12.687421+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 4.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 61,
-      "started_at_taipei": "2026-10-28T09:00:15.479561+08:00",
-      "finished_at_taipei": "2026-10-28T09:00:16.536382+08:00",
+      "started_at_taipei": "2026-10-30T09:00:17.689851+08:00",
+      "finished_at_taipei": "2026-10-30T09:00:18.778317+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 4.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 62,
-      "started_at_taipei": "2026-10-28T09:00:21.538808+08:00",
-      "finished_at_taipei": "2026-10-28T09:00:22.629201+08:00",
+      "started_at_taipei": "2026-10-30T09:00:23.780800+08:00",
+      "finished_at_taipei": "2026-10-30T09:00:24.973864+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 4.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 63,
-      "started_at_taipei": "2026-10-28T09:00:27.631626+08:00",
-      "finished_at_taipei": "2026-10-28T09:00:28.671454+08:00",
+      "started_at_taipei": "2026-10-30T09:00:29.976300+08:00",
+      "finished_at_taipei": "2026-10-30T09:00:31.155062+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 4.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 64,
-      "started_at_taipei": "2026-10-28T09:00:33.674003+08:00",
-      "finished_at_taipei": "2026-10-28T09:00:34.732997+08:00",
+      "started_at_taipei": "2026-10-30T09:00:36.157775+08:00",
+      "finished_at_taipei": "2026-10-30T09:00:37.295583+08:00",
       "result": "RETRYABLE_FAIL",
       "timeout_seconds": 4.0,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     },
     {
       "phase": "PREWARM_LIVE",
       "attempt": 65,
-      "started_at_taipei": "2026-10-28T09:00:39.735480+08:00",
-      "finished_at_taipei": "2026-10-28T09:00:40.866625+08:00",
+      "started_at_taipei": "2026-10-30T09:00:42.298046+08:00",
+      "finished_at_taipei": "2026-10-30T09:00:43.440991+08:00",
       "result": "RETRYABLE_FAIL",
-      "timeout_seconds": 4.0,
+      "timeout_seconds": 2.701954,
       "valid_candidate_retained": false,
       "retained_candidate_source": null,
       "error_type": "RuntimeError",
-      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261027"
+      "error": "PREWARM_CHILD_FAIL:RuntimeError:ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261029"
     }
   ],
   "formal_buy_count": 0,
