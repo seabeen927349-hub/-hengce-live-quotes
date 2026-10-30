@@ -1,0 +1,24 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_ORIGINAL_VESSEL_LEG_RECEIPT",
+  "target_date": "2026-10-30",
+  "leg": "institutional",
+  "status": "COMPLETE",
+  "rows": 1079,
+  "sha256": "afdfdf979ab4989f1c737faca447a2bae4bdf3f2ab04e155b085ea88b8303a1a",
+  "source": "https://www.twse.com.tw/rwd/zh/fund/T86",
+  "files": [
+    "institutional_1.csv",
+    "institutional_2.csv",
+    "institutional_3.csv",
+    "institutional_4.csv",
+    "institutional_5.csv",
+    "institutional_6.csv",
+    "institutional_7.csv",
+    "institutional_8.csv",
+    "institutional_9.csv"
+  ],
+  "promoted_at_taipei": "2026-10-30T16:47:23.152231+08:00",
+  "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
+  "model_authority_created": false
+}
