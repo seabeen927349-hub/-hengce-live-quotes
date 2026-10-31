@@ -1,0 +1,36 @@
+name: IF07 Export Pinned PIT Membership
+
+on:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - '.github/workflows/if07-export-pinned-membership.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export exact pinned membership bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          C=f5abef555d9174e3919a9dca52e9bfb07351e02e
+          git show "$C:research/e2_profit_max/membership/twse_electronics_membership_2023.csv" > out/twse_electronics_membership_2023.csv
+          git show "$C:research/e2_profit_max/membership/twse_electronics_membership_2024.csv" > out/twse_electronics_membership_2024.csv
+          echo '296f19c0c676e558007b22f12e08ba9f81045ad3706d9609b7a151974b6ece3e  out/twse_electronics_membership_2023.csv' | sha256sum -c -
+          echo '13c8ffe2cb6cfaaa2516c90482d0aecda933cb33ae4eb1cffbbc90e49d77bd7d  out/twse_electronics_membership_2024.csv' | sha256sum -c -
+          sha256sum out/* > out/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: if07-pinned-pit-membership-${{ github.run_id }}
+          path: out/
+          if-no-files-found: error
+          retention-days: 90
