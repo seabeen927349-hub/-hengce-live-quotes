@@ -1,0 +1,38 @@
+{
+  "system": "HENGCE",
+  "artifact": "IF07_AUTHORITY_RECOVERY_STATE",
+  "date": "2026-10-31",
+  "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+  "status": "EXECUTION_BLOCKED",
+  "blocker": "AUTHORITY_ARTIFACT_MISSING",
+  "data_blocked": false,
+  "model_fail": false,
+  "pit_data_capability": "PASS",
+  "preregistration": "FROZEN",
+  "stage_a": "PASS",
+  "stage_b": "PREPARED_NOT_EXECUTED",
+  "forward_returns": "SEALED",
+  "validation": "NOT_OPENED",
+  "production_trading_authority": "NONE",
+  "new_source_exploration": "CLOSED",
+  "only_legal_next_step": "RECOVER_ORIGINAL_STAGE_A_ACTIONS_ARTIFACT_ONLY",
+  "forbidden": [
+    "RERUN_STAGE_A",
+    "RECONSTRUCT_187_FROM_COUNTS_OR_SYMBOL_POOL",
+    "CHANGE_OR_SUPPLEMENT_SAMPLE",
+    "QUERY_T57",
+    "SEARCH_TIMESTAMP_PROXY",
+    "EXPAND_ACQUISITION",
+    "OPEN_FORWARD_RETURNS",
+    "MODIFY_IF07_V0_1_PREREGISTRATION"
+  ],
+  "expected_original_source": {
+    "workflow_run_id": 41176211171,
+    "workflow_head_sha": "5c7122c5fa9d64e3fa5604be83cfae0a706c40d1",
+    "artifact_id": 13032993979,
+    "artifact_name": "if07-stage-a-accounting-upper-bound-v0-2-no-returns",
+    "artifact_zip_sha256": "2366448ec259065df5e2a515a11bb9fbf0a5c40b806607f6ac1edce0385ee782",
+    "expected_rows_file": "IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json",
+    "expected_audit_file": "IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json"
+  }
+}
