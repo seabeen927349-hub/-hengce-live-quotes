@@ -1,0 +1,162 @@
+name: HENGCE Escape TWSE Full Market Fugle
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 1-4 * * 1-5"
+    - cron: "0-30/5 5 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-escape-twse-full-market-fugle
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch Fugle TSE common-stock snapshot and industry map
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import hashlib, json, os, re, time, urllib.error, urllib.parse, urllib.request
+          from datetime import datetime, timedelta
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          API_KEY=os.environ.get('FUGLE_API_KEY')
+          if not API_KEY:
+              raise SystemExit('FUGLE_API_KEY_MISSING')
+
+          TZ=ZoneInfo('Asia/Taipei')
+          BASE='https://api.fugle.tw/marketdata/v1.0/stock'
+          OUT=Path('escape_live')
+          OUT.mkdir(parents=True,exist_ok=True)
+          SNAPSHOT_URL=BASE+'/snapshot/quotes/TSE?type=COMMONSTOCK'
+          TICKERS_URL=BASE+'/intraday/tickers?type=EQUITY&exchange=TWSE&market=TSE'
+
+          def fetch_json(url):
+              req=urllib.request.Request(url,headers={
+                  'X-API-KEY':API_KEY,
+                  'Accept':'application/json',
+                  'User-Agent':'HENGCE-ESCAPE-TWSE-FULL-MARKET/2.4.7'
+              })
+              for attempt in range(4):
+                  try:
+                      with urllib.request.urlopen(req,timeout=20) as r:
+                          return json.load(r)
+                  except urllib.error.HTTPError as e:
+                      if e.code in (401,403): raise RuntimeError(f'AUTH_OR_PLAN_HTTP_{e.code}')
+                      if e.code==429:
+                          if attempt==3: raise RuntimeError('RATE_LIMIT_HTTP_429')
+                          wait=float(e.headers.get('Retry-After') or 3*(attempt+1))
+                          time.sleep(max(wait,3*(attempt+1))); continue
+                      if 500<=e.code<=599 and attempt<3:
+                          time.sleep(2**attempt); continue
+                      raise
+                  except Exception:
+                      if attempt==3: raise
+                      time.sleep(2**attempt)
+
+          now=datetime.now(TZ)
+          snap=fetch_json(SNAPSHOT_URL)
+          tick=fetch_json(TICKERS_URL)
+
+          if snap.get('market')!='TSE': raise SystemExit('SNAPSHOT_MARKET_NOT_TSE')
+          rows=snap.get('data')
+          if not isinstance(rows,list) or len(rows)<800: raise SystemExit(f'SNAPSHOT_INCOMPLETE_COUNT:{0 if not isinstance(rows,list) else len(rows)}')
+          tickrows=tick.get('data')
+          if not isinstance(tickrows,list) or len(tickrows)<800: raise SystemExit(f'TICKERS_INCOMPLETE_COUNT:{0 if not isinstance(tickrows,list) else len(tickrows)}')
+
+          industry={str(x.get('symbol')):x.get('industry') for x in tickrows if x.get('symbol')}
+          seen=set(); data=[]; rejected=[]
+          for r in rows:
+              symbol=str(r.get('symbol') or '').strip()
+              if not re.fullmatch(r'[1-9]\d{3}',symbol):
+                  rejected.append(symbol); continue
+              if symbol in seen: raise SystemExit(f'DUPLICATE_SYMBOL:{symbol}')
+              seen.add(symbol)
+              rec={
+                  'symbol':symbol,'name':r.get('name'),'industry':industry.get(symbol),
+                  'open':r.get('openPrice'),'high':r.get('highPrice'),'low':r.get('lowPrice'),
+                  'close':r.get('closePrice'),'last_price':r.get('lastPrice'),
+                  'change':r.get('change'),'change_percent':r.get('changePercent'),
+                  'trade_volume':r.get('tradeVolume'),'trade_value':r.get('tradeValue'),
+                  'last_updated':r.get('lastUpdated')
+              }
+              data.append(rec)
+          if len(data)<800: raise SystemExit(f'COMMON_STOCK_4D_FILTER_TOO_SMALL:{len(data)}')
+
+          data.sort(key=lambda x:x['symbol'])
+          symbols=[x['symbol'] for x in data]
+          universe_sha=hashlib.sha256(('\n'.join(symbols)+'\n').encode()).hexdigest()
+          payload={
+              'schema_version':1,
+              'service':'HENGCE Escape TWSE Full Market Fugle',
+              'generated_at_taipei':now.isoformat(),
+              'quote_date':snap.get('date'),
+              'snapshot_time':snap.get('time'),
+              'market':'TSE','exchange':'TWSE','security_scope':'COMMONSTOCK','tpex_included':False,
+              'source':'Fugle MarketData snapshot/quotes/TSE?type=COMMONSTOCK + intraday/tickers',
+              'requested_mode':'WHOLE_MARKET_SNAPSHOT',
+              'common_stock_count':len(data),
+              'industry_mapped_count':sum(x.get('industry') is not None for x in data),
+              'rejected_non_4d_count':len(rejected),
+              'universe_sha256':universe_sha,
+              'authority':'INTRADAY_MARKET_CONTEXT_AND_ESCAPE_MONITOR_ONLY_NO_FORMAL_EOD_OR_RANKING_AUTHORITY',
+              'data':data
+          }
+          raw=json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()
+          payload['payload_sha256']=hashlib.sha256(raw).hexdigest()
+          status={k:v for k,v in payload.items() if k!='data'}
+          status['healthy']=len(data)>=800 and payload['industry_mapped_count']>=int(len(data)*0.90)
+
+          (OUT/'twse_common_snapshot.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
+          (OUT/'twse_common_status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('HENGCE ESCAPE TWSE COMMON SNAPSHOT',payload['quote_date'],payload['snapshot_time'],len(data),universe_sha,status['healthy'])
+          PY
+
+      - name: Validate fail-closed scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json,re
+          from pathlib import Path
+          p=json.loads(Path('escape_live/twse_common_snapshot.json').read_text(encoding='utf-8'))
+          if p.get('market')!='TSE' or p.get('exchange')!='TWSE' or p.get('security_scope')!='COMMONSTOCK':
+              raise SystemExit('SCOPE_MISMATCH')
+          if p.get('tpex_included') is not False:
+              raise SystemExit('TPEX_MUST_BE_EXCLUDED')
+          rows=p.get('data',[])
+          if len(rows)<800: raise SystemExit('FULL_MARKET_COUNT_TOO_SMALL')
+          symbols=[str(x.get('symbol')) for x in rows]
+          if len(symbols)!=len(set(symbols)): raise SystemExit('DUPLICATE_SYMBOLS')
+          bad=[s for s in symbols if not re.fullmatch(r'[1-9]\d{3}',s)]
+          if bad: raise SystemExit(f'BAD_SYMBOLS:{bad[:10]}')
+          print('HENGCE ESCAPE TWSE FULL-MARKET SCOPE VERIFIED',len(symbols))
+          PY
+
+      - name: Commit isolated escape snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-escape-live-bot'
+          git config user.email 'hengce-escape-live-bot@users.noreply.github.com'
+          git add escape_live/
+          if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE escape TWSE full-market Fugle ${TS}"
+          git push
