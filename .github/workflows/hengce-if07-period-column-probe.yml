@@ -1,0 +1,37 @@
+name: HENGCE IF07 Period Column Probe No Returns
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - 'research/selection_core_rebuild/if07_period_column_probe.py'
+      - '.github/workflows/hengce-if07-period-column-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/selection-core-rebuild-20261031
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check requests pandas lxml
+      - name: Probe Q2 Q3 Q4 period columns — no returns
+        run: python research/selection_core_rebuild/if07_period_column_probe.py
+      - name: Show receipt
+        run: cat research/selection_core_rebuild/generated/IF07_PERIOD_COLUMN_PROBE.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: if07-period-column-probe
+          path: research/selection_core_rebuild/generated/IF07_PERIOD_COLUMN_PROBE.json
+          if-no-files-found: error
