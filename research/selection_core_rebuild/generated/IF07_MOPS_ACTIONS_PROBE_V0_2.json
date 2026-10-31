@@ -1,11 +1,11 @@
 {
   "system": "HENGCE",
   "artifact": "IF07_MOPS_GITHUB_ACTIONS_CAPABILITY_PROBE_V0_2",
-  "generated_at_utc": "2026-10-31T05:20:11.626361+00:00",
+  "generated_at_utc": "2026-10-31T05:23:49.715684+00:00",
   "research_only": true,
   "contains_price_or_forward_return_data": false,
   "engineering_change_from_v0_1": "Removed false-negative dependency on literal header '公司代號'; added aggregate cash-flow endpoint and parsed-table evidence.",
-  "overall": "PASS",
+  "overall": "FAIL",
   "probes": [
     {
       "name": "MOPS_2023Q1_LISTED_AGGREGATE_INCOME",
@@ -19,10 +19,10 @@
         "year": "112",
         "season": "01"
       },
-      "requested_at_utc": "2026-10-31T05:19:46.286412+00:00",
+      "requested_at_utc": "2026-10-31T05:23:39.980141+00:00",
       "http_status": 200,
       "bytes": 1481753,
-      "sha256_utf8": "efb9dc33c610c5f118f714d7a396b7bc38cc43724ac2308fb8479e289ce155c4",
+      "sha256_utf8": "b1464b01e300369f218ec9199b307f859cb1a0925ec6af8345d546115d7d9f9e",
       "required_markers": {
         "2330": true,
         "2454": true,
@@ -290,10 +290,10 @@
         "year": "112",
         "season": "01"
       },
-      "requested_at_utc": "2026-10-31T05:19:56.494540+00:00",
+      "requested_at_utc": "2026-10-31T05:23:42.935296+00:00",
       "http_status": 200,
       "bytes": 1253047,
-      "sha256_utf8": "23c221b250b757165d2b6df6fb2fa72824bfc00b28202bfc050e384de905ccee",
+      "sha256_utf8": "cc898ea33500b8bd9ee11e141479bbff5b2cd51220fd8dbbffbf6308e406f125",
       "required_markers": {
         "2330": true,
         "2454": true,
@@ -616,10 +616,10 @@
         "year": "112",
         "season": "01"
       },
-      "requested_at_utc": "2026-10-31T05:20:03.832186+00:00",
+      "requested_at_utc": "2026-10-31T05:23:46.175772+00:00",
       "http_status": 200,
       "bytes": 492245,
-      "sha256_utf8": "d894565aec662786a7ed4d7d6f988215d14d738d8d2852d52e3bc4f821ee6e04",
+      "sha256_utf8": "db22fa44eed1e6897eff560f255ebb1a22b83566b3b1daa9a0f69336f6af95a0",
       "required_markers": {
         "2330": true,
         "2454": true,
@@ -749,16 +749,10 @@
         "seamon": "",
         "mtype": "A"
       },
-      "requested_at_utc": "2026-10-31T05:20:10.891855+00:00",
-      "http_status": 200,
-      "bytes": 7869,
-      "sha256_decoded": "894f7f650f5dec63b03f51f494c75d397d75bb37d34c4e778cc4c03e99173d08",
-      "markers": {
-        "202301_2330_AI1.pdf": true,
-        "112/05/12": true
-      },
-      "target_row_text": "2330 112 年 第一季 財務報告書 IFRSs合併財報 202301_2330_AI1.pdf 9,910,198 112/05/12 13:51:34 無",
-      "status": "PASS"
+      "requested_at_utc": "2026-10-31T05:23:49.515907+00:00",
+      "status": "FAIL",
+      "error_type": "ConnectionError",
+      "error": "HTTPSConnectionPool(host='doc.twse.com.tw', port=443): Max retries exceeded with url: /server-java/t57sb01?step=1&colorchg=1&co_id=2330&year=112&seamon=&mtype=A (Caused by NameResolutionError(\"HTTPSConnection(host='doc.twse.com.tw', port=443): Failed to resolve 'doc.twse.com.tw' ([Errno -2] Name or service not known)\"))"
     }
   ]
 }
