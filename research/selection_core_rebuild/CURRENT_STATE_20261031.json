@@ -8,7 +8,8 @@
     "challenger": "NOT_YET_DEFINED",
     "trading_authority": "NONE",
     "production_promotion": false,
-    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY"
+    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
+    "new_candidate_forward_return_inspected": false
   },
   "legacy": {
     "V6": "NOVELTY_REFERENCE_ONLY_DO_NOT_REVIVE",
@@ -20,27 +21,65 @@
     "factors": ["resid_rev", "mom20", "skip5_60", "liquidity", "lowvol"],
     "weights": [0.20, 0.25, 0.30, 0.05, 0.20]
   },
-  "latest_novelty_gate": {
+  "latest_candidate_novelty_gate": {
     "candidate": "CROSS_STOCK_CAPITAL_SHARE_MIGRATION_DRAFT",
-    "status": "NOVELTY_GATE_FAIL",
+    "status": "FAIL",
+    "verdict": "NOVELTY_GATE_FAIL",
     "forward_return_test_executed": false,
     "preregistered": false,
     "rescue_tuning_allowed": false,
     "git_branch": "research/selection-core-rebuild-20261031",
     "git_path": "research/selection_core_rebuild/HENGCE_CAPITAL_SHARE_MIGRATION_NOVELTY_GATE_20261031.md"
   },
+  "latest_information_family_gate": {
+    "overall": "PASS",
+    "verdict": "PASS_WITH_DATA_ACQUISITION_BLOCKERS",
+    "forward_return_test_executed": false,
+    "challenger_defined": false,
+    "git_path": "research/selection_core_rebuild/HENGCE_ORTHOGONAL_CAPABILITY_NOVELTY_GATE_20261031.md",
+    "families": {
+      "IF_07_FUNDAMENTAL_QUALITY": {
+        "novelty": "PASS",
+        "data_capability": "INCONCLUSIVE",
+        "reason": "credible source families exist, but reproducible 2023-2026 company-quarter PIT availability panel is not yet persisted"
+      },
+      "IF_08_EXPECTATION_REVISION": {
+        "novelty": "PASS",
+        "data_capability": "DATA_BLOCKED",
+        "reason": "no verified genuine historical consensus/revision source in mother, Library, or current Fugle content specs"
+      },
+      "IF_09_FIRM_NETWORK_LEAD_LAG": {
+        "novelty": "PASS",
+        "data_capability": "DATA_BLOCKED",
+        "reason": "no defensible PIT customer-vendor relationship graph; broad industry peer proxies are forbidden by graveyard evidence"
+      },
+      "IF_10_STRUCTURED_CORPORATE_EVENTS": {
+        "novelty": "PASS",
+        "data_capability": "INCONCLUSIVE",
+        "reason": "official timestamped event infrastructure exists, but reproducible 2023-2026 bulk panel/taxonomy/revision handling is not yet persisted"
+      }
+    }
+  },
   "data_lanes": {
-    "broker_microstructure_control": "DATA_BLOCKED",
-    "fugle_historical_content_path": "DATA_BLOCKED",
+    "canonical_mother_orthogonal_fields": "DATA_BLOCKED",
+    "fugle_historical_content_connector": "DATA_BLOCKED",
+    "fugle_historical_content_connector_detail": "content specs exposed but get_content returned empty payloads for 2330 FCNT000091/FCNT000052/FCNT000001; do not infer provider-level absence",
     "earnings_quality_R014": "INCONCLUSIVE",
+    "structured_events": "INCONCLUSIVE",
+    "expectation_revision": "DATA_BLOCKED",
+    "firm_network_supply_chain": "DATA_BLOCKED",
+    "broker_microstructure_control": "DATA_BLOCKED",
     "pressure_response_R019": "PROSPECTIVE_ACTIVATION_ONLY_PREDICTIVE_UNKNOWN"
   },
-  "next_legal_step": "ORTHOGONAL_INFORMATION_FAMILY_CAPABILITY_AND_NOVELTY_GATE_BEFORE_PREREGISTRATION",
+  "next_legal_step": "ACQUIRE_AND_FREEZE_PIT_INPUT_PANEL_BEFORE_CHALLENGER_PREREGISTRATION",
+  "priority_lane": "IF_07_FUNDAMENTAL_QUALITY_EARNINGS_QUALITY",
+  "fallback_acquisition_lane": "IF_10_STRUCTURED_CORPORATE_EVENTS",
   "forbidden_next_steps": [
     "REVIVE_V6_OR_V43_AS_NEW_CORE",
     "RESCUE_CAPITAL_SHARE_MIGRATION",
     "PRICE_VOLUME_RETUNING_AS_NEW_SMART_MONEY_ALPHA",
     "ESCAPE_ALPHA_INJECTION",
-    "FORWARD_RETURN_BEFORE_PREREGISTRATION"
+    "FORWARD_RETURN_BEFORE_PREREGISTRATION",
+    "SILENT_SUBSTITUTION_OF_QUARTER_END_FOR_FILING_OR_AVAILABILITY_DATE"
   ]
 }
