@@ -1,0 +1,756 @@
+{
+  "system": "HENGCE",
+  "artifact": "IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS",
+  "generated_at_utc": "2026-10-31T06:36:45.125105+00:00",
+  "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+  "contains_price_or_forward_return_data": false,
+  "status": "PASS_NO_RETURN_STAGE_A",
+  "formal_pit_universe_applied": false,
+  "upload_timestamp_applied": false,
+  "signal_date_applied": false,
+  "acquisition_superset_count": 445,
+  "current_periods": [
+    "2022Q4",
+    "2023Q1",
+    "2023Q2",
+    "2023Q3",
+    "2023Q4",
+    "2024Q1",
+    "2024Q2",
+    "2024Q3"
+  ],
+  "required_bulk_periods": [
+    "2021Q4",
+    "2022Q1",
+    "2022Q2",
+    "2022Q3",
+    "2022Q4",
+    "2023Q1",
+    "2023Q2",
+    "2023Q3",
+    "2023Q4",
+    "2024Q1",
+    "2024Q2",
+    "2024Q3"
+  ],
+  "pair_attempt_count": 3560,
+  "pair_attempts_by_period": {
+    "2022Q4": 445,
+    "2023Q1": 445,
+    "2023Q2": 445,
+    "2023Q3": 445,
+    "2023Q4": 445,
+    "2024Q1": 445,
+    "2024Q2": 445,
+    "2024Q3": 445
+  },
+  "accounting_pair_available_count": 2853,
+  "accounting_pair_available_by_period": {
+    "2022Q4": 350,
+    "2023Q1": 347,
+    "2023Q2": 355,
+    "2023Q3": 357,
+    "2023Q4": 346,
+    "2024Q1": 359,
+    "2024Q2": 364,
+    "2024Q3": 375
+  },
+  "accounting_6of6_pre_metadata_candidate_count": 187,
+  "accounting_6of6_pre_metadata_candidate_unique_tickers": 128,
+  "accounting_6of6_pre_metadata_candidate_by_period": {
+    "2022Q4": 41,
+    "2023Q1": 23,
+    "2023Q2": 27,
+    "2023Q3": 23,
+    "2023Q4": 19,
+    "2024Q1": 17,
+    "2024Q2": 22,
+    "2024Q3": 15
+  },
+  "sample_sufficiency_upper_bound_verdict": "UPPER_BOUND_SUFFICIENT_TO_CONTINUE_EXACT_METADATA_GATE",
+  "minimum_required_events": 80,
+  "minimum_required_unique_tickers": 40,
+  "signal_date_minimum_not_yet_assessable": 20,
+  "later_gates_can_only_remove_candidates": true,
+  "correction_policy": "Quarterly official MOPS correction list is used only for consolidated-report early exclusion; individual-only corrections do not shrink the upper bound. Final t57 exact-無 remains mandatory in Stage B.",
+  "correction_receipts": [
+    {
+      "year": 2021,
+      "quarter": 4,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 97382,
+      "sha256": "a8d47274e8833b68458252d8199f80d0676c99488292ad5823c005437fb8103a",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 193,
+      "consolidated_corrected_count": 95,
+      "consolidated_corrected_in_acquisition_scope": 35
+    },
+    {
+      "year": 2022,
+      "quarter": 1,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 35731,
+      "sha256": "5295ab7cea561c50a305bfeec6a114ac470f18f2bbae698a61b872f80b46210b",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 62,
+      "consolidated_corrected_count": 53,
+      "consolidated_corrected_in_acquisition_scope": 26
+    },
+    {
+      "year": 2022,
+      "quarter": 2,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 50533,
+      "sha256": "70c29fc8ca4eba61ae79182c3ca5bce0f98983feb5bf3bc16a0e91ad775deb62",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 69,
+      "consolidated_corrected_count": 62,
+      "consolidated_corrected_in_acquisition_scope": 26
+    },
+    {
+      "year": 2022,
+      "quarter": 3,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 42597,
+      "sha256": "d8d076a6f6d2aa7b4688beec928c587480693300d5061d16dc6658fbad4b9bd6",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 59,
+      "consolidated_corrected_count": 52,
+      "consolidated_corrected_in_acquisition_scope": 24
+    },
+    {
+      "year": 2022,
+      "quarter": 4,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 113379,
+      "sha256": "136f820befddb1c99af03955f8289ff26ba5caad46dd44fb5f8089e4d9cdb7e1",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 209,
+      "consolidated_corrected_count": 92,
+      "consolidated_corrected_in_acquisition_scope": 30
+    },
+    {
+      "year": 2023,
+      "quarter": 1,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 62322,
+      "sha256": "d0e0b83b19449535e6e35dd1fb4e38c0ce28a448776cefefb237bf8fcaf9415f",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 78,
+      "consolidated_corrected_count": 63,
+      "consolidated_corrected_in_acquisition_scope": 29
+    },
+    {
+      "year": 2023,
+      "quarter": 2,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 48564,
+      "sha256": "371f7578eb0ec667ce75b8516ad156190e62e8e383b82dea88984cb6c6e50f5f",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 73,
+      "consolidated_corrected_count": 57,
+      "consolidated_corrected_in_acquisition_scope": 17
+    },
+    {
+      "year": 2023,
+      "quarter": 3,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 40573,
+      "sha256": "644d891258c4e9ece22f059e4b97bdcc5edf8f67229b62bb0d62f6553cec471e",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 60,
+      "consolidated_corrected_count": 45,
+      "consolidated_corrected_in_acquisition_scope": 16
+    },
+    {
+      "year": 2023,
+      "quarter": 4,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 125704,
+      "sha256": "7fea489617656070b01dfa8b4cec0ade71eedca9f32563c7d8406f98339c6720",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 225,
+      "consolidated_corrected_count": 95,
+      "consolidated_corrected_in_acquisition_scope": 29
+    },
+    {
+      "year": 2024,
+      "quarter": 1,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 32291,
+      "sha256": "5d61decef2b2987d77155e8ee1eeca83d60cc9a9c41fbd96ca703b03f881b6a4",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 57,
+      "consolidated_corrected_count": 41,
+      "consolidated_corrected_in_acquisition_scope": 15
+    },
+    {
+      "year": 2024,
+      "quarter": 2,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 39352,
+      "sha256": "759f7138fcd9fafa6bd0096177879346d82665ed859550a9dfdebbc07f195c5e",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 72,
+      "consolidated_corrected_count": 57,
+      "consolidated_corrected_in_acquisition_scope": 25
+    },
+    {
+      "year": 2024,
+      "quarter": 3,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 30103,
+      "sha256": "8f6cae907516d62915743a554f334a5170fc1c75dc50c30312211f5fe6e18f1a",
+      "security_or_rate_blocked": false,
+      "structurally_valid": true,
+      "issuer_row_count": 51,
+      "consolidated_corrected_count": 39,
+      "consolidated_corrected_in_acquisition_scope": 16
+    }
+  ],
+  "bulk_receipts": [
+    {
+      "year": 2021,
+      "quarter": 4,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 121862516,
+      "sha256": "0cc1a4067b177f6f9611d9df5db804e92077876b8571cbdcc73c0e14171107f7",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1600,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 2545,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2021Q4.html",
+          "bytes": 1778560,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4107-2021Q4.html",
+          "bytes": 507023,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2021Q4.html",
+          "bytes": 462305,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1600
+    },
+    {
+      "year": 2022,
+      "quarter": 1,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 73782085,
+      "sha256": "e6f3ceeb5133ec9ebebb9a46cbec67c55218d1a01ac71ac380d64b8489340f81",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1591,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 1828,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2022Q1.html",
+          "bytes": 1704605,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4111-2022Q1.html",
+          "bytes": 436774,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2022Q1.html",
+          "bytes": 401530,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1591
+    },
+    {
+      "year": 2022,
+      "quarter": 2,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 101557386,
+      "sha256": "ce9a85f0fba8af17f387cf59cf766fa47bbb2c81c54e2bcf18a5546db6c263e6",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1585,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 2487,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2022Q2.html",
+          "bytes": 1824375,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4108-2022Q2.html",
+          "bytes": 510282,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2022Q2.html",
+          "bytes": 453615,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1585
+    },
+    {
+      "year": 2022,
+      "quarter": 3,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 80757728,
+      "sha256": "a44e0c84c6e73ff598051792c36f53b7ec76e5a846fecabd00b915c39e30f1f8",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1595,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 1838,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2022Q3.html",
+          "bytes": 1901763,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4120-2022Q3.html",
+          "bytes": 788325,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2022Q3.html",
+          "bytes": 457126,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1595
+    },
+    {
+      "year": 2022,
+      "quarter": 4,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 123720673,
+      "sha256": "26e72f11b4229c4a64a759de98dc872cefd29c2f5daa59459638ce2fc80cec5d",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1621,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 2605,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2022Q4.html",
+          "bytes": 1944923,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4137-2022Q4.html",
+          "bytes": 717653,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2022Q4.html",
+          "bytes": 461131,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1621
+    },
+    {
+      "year": 2023,
+      "quarter": 1,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 74465121,
+      "sha256": "ed0cd5a9e75d522b2e4213d0b22cf66ba1494375055c3288dc88fc8ea3888d70",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1596,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 1860,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2023Q1.html",
+          "bytes": 1814194,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4142-2023Q1.html",
+          "bytes": 461999,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2023Q1.html",
+          "bytes": 405618,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1596
+    },
+    {
+      "year": 2023,
+      "quarter": 2,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 104067076,
+      "sha256": "3cef4f482acc1c095ba0b2e665b4b24f156c08a5060dd2170483121f9f21eb8a",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1599,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 2545,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2023Q2.html",
+          "bytes": 1967010,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4147-2023Q2.html",
+          "bytes": 451331,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2023Q2.html",
+          "bytes": 456256,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1599
+    },
+    {
+      "year": 2023,
+      "quarter": 3,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 81869324,
+      "sha256": "b73cac36e71e083d54fe9be711b4745154e7106779cad4a155c740b56b22b155",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1623,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 1885,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2023Q3.html",
+          "bytes": 2015396,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4164-2023Q3.html",
+          "bytes": 775694,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2023Q3.html",
+          "bytes": 466389,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1623
+    },
+    {
+      "year": 2023,
+      "quarter": 4,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 126398643,
+      "sha256": "3ac6ec7770dcddbcab6eadedb4e13c37b9c8ce7a2bb2259b2b9099fbe6184d68",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1643,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 2663,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2023Q4.html",
+          "bytes": 2006134,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4402-2023Q4.html",
+          "bytes": 442297,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2023Q4.html",
+          "bytes": 471567,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1643
+    },
+    {
+      "year": 2024,
+      "quarter": 1,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 77075750,
+      "sha256": "7e019d4ff3d1bbb6cc4d3ce2a41438d2c2f33c32ddd109492abaf8f6c14102ab",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1670,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 1923,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2024Q1.html",
+          "bytes": 1991079,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4306-2024Q1.html",
+          "bytes": 946010,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2024Q1.html",
+          "bytes": 416227,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1670
+    },
+    {
+      "year": 2024,
+      "quarter": 2,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 107410673,
+      "sha256": "5ddb6654aa387b81cf3ebabbc5ecfb0fabc71fe4f0aff6362e6b1c64f8358bd0",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1667,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 2613,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2024Q2.html",
+          "bytes": 2101155,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4304-2024Q2.html",
+          "bytes": 494096,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2024Q2.html",
+          "bytes": 448666,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1667
+    },
+    {
+      "year": 2024,
+      "quarter": 3,
+      "attempt": 1,
+      "http_status": 200,
+      "bytes": 85393481,
+      "sha256": "2e737f7c384cc441f7ad15f5fcf767ccb3d0ddb0d9e46b1893897caf1e4ca52c",
+      "content_type": "application/x-zip-compressed; charset=iso-8859-1",
+      "content_length_header": null,
+      "zip_magic": true,
+      "transport_validation_version": "CENTRAL_DIRECTORY_PLUS_MEMBER_READ_V0_2",
+      "central_directory_valid": true,
+      "matched_consolidated_member_count": 1694,
+      "sample_member_reads_pass": true,
+      "zip_member_count": 1947,
+      "sample_member_reads": [
+        {
+          "name": "tifrs-fr1-m1-ci-cr-1101-2024Q3.html",
+          "bytes": 2183773,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-4432-2024Q3.html",
+          "bytes": 523272,
+          "ixbrl_marker": true
+        },
+        {
+          "name": "tifrs-fr1-m1-ci-cr-9962-2024Q3.html",
+          "bytes": 452748,
+          "ixbrl_marker": true
+        }
+      ],
+      "accepted": true,
+      "consolidated_member_count": 1694
+    }
+  ],
+  "parse_stats_by_period": {
+    "2021Q4": {
+      "fast_pass": 373,
+      "crosschecked": 3,
+      "correction_excluded": 35,
+      "member_missing": 34,
+      "parse_fail": 3
+    },
+    "2022Q1": {
+      "fast_pass": 380,
+      "crosschecked": 3,
+      "correction_excluded": 26,
+      "member_missing": 35,
+      "parse_fail": 4
+    },
+    "2022Q2": {
+      "fast_pass": 382,
+      "crosschecked": 3,
+      "correction_excluded": 26,
+      "member_missing": 33,
+      "parse_fail": 4
+    },
+    "2022Q3": {
+      "fast_pass": 383,
+      "crosschecked": 3,
+      "correction_excluded": 24,
+      "member_missing": 34,
+      "parse_fail": 4
+    },
+    "2022Q4": {
+      "fast_pass": 382,
+      "crosschecked": 3,
+      "correction_excluded": 30,
+      "member_missing": 29,
+      "parse_fail": 4
+    },
+    "2023Q1": {
+      "fast_pass": 376,
+      "crosschecked": 3,
+      "member_missing": 36,
+      "correction_excluded": 29,
+      "parse_fail": 4
+    },
+    "2023Q2": {
+      "fast_pass": 387,
+      "crosschecked": 3,
+      "member_missing": 37,
+      "correction_excluded": 17,
+      "parse_fail": 4
+    },
+    "2023Q3": {
+      "fast_pass": 391,
+      "crosschecked": 3,
+      "member_missing": 34,
+      "correction_excluded": 16,
+      "parse_fail": 4
+    },
+    "2023Q4": {
+      "fast_pass": 377,
+      "crosschecked": 3,
+      "member_missing": 35,
+      "correction_excluded": 29,
+      "parse_fail": 4
+    },
+    "2024Q1": {
+      "fast_pass": 401,
+      "crosschecked": 3,
+      "member_missing": 25,
+      "correction_excluded": 15,
+      "parse_fail": 4
+    },
+    "2024Q2": {
+      "fast_pass": 390,
+      "crosschecked": 3,
+      "correction_excluded": 25,
+      "member_missing": 25,
+      "parse_fail": 5
+    },
+    "2024Q3": {
+      "fast_pass": 400,
+      "crosschecked": 3,
+      "correction_excluded": 16,
+      "member_missing": 24,
+      "parse_fail": 5
+    }
+  },
+  "parser_crosscheck_mismatch_count": 0,
+  "exclusion_reason_counts": {
+    "PRIOR_CONSOLIDATED_CORRECTION_LISTED": 161,
+    "CURRENT_CONSOLIDATED_CORRECTION_LISTED": 177,
+    "CURRENT_ACCOUNTING_UNAVAILABLE:CONSOLIDATED_MEMBER_MISSING_OR_AMBIGUOUS": 241,
+    "PRIOR_ACCOUNTING_UNAVAILABLE:CONSOLIDATED_MEMBER_MISSING_OR_AMBIGUOUS": 89,
+    "CURRENT_ACCOUNTING_UNAVAILABLE:FAST_AMBIGUOUS:Inventory:130X:values=[];SLOW_CODE_COUNT:Inventory:130X:0": 31,
+    "PRIOR_ACCOUNTING_UNAVAILABLE:FAST_AMBIGUOUS:AR:1170:values=[];SLOW_CODE_COUNT:AR:1170:0": 1,
+    "NONPOSITIVE_DENOMINATOR:prior Revenue_YTD": 4,
+    "CURRENT_ACCOUNTING_UNAVAILABLE:FAST_AMBIGUOUS:AR:1170:values=[];SLOW_CODE_COUNT:AR:1170:0": 2,
+    "NONPOSITIVE_DENOMINATOR:prior Inventory": 1
+  },
+  "forward_return_lock": "CLOSED",
+  "next_legal_step": "STAGE_B_T57_EXACT_METADATA_ONLY_FOR_ACCOUNTING_6OF6_CANDIDATES"
+}
