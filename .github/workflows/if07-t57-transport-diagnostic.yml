@@ -1,0 +1,46 @@
+name: IF07 t57 Transport Diagnostic
+
+on:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - '.github/workflows/if07-t57-transport-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Single official t57 request only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, urllib.parse, urllib.request
+          base='https://doc.twse.com.tw/server-java/t57sb01'
+          params={'step':'1','colorchg':'1','co_id':'2301','year':'111','seamon':'','mtype':'A'}
+          url=base+'?'+urllib.parse.urlencode(params)
+          req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 HENGCE-IF07-transport-diagnostic/0.1','Accept-Language':'zh-TW,zh;q=0.9'})
+          try:
+              with urllib.request.urlopen(req,timeout=30) as r:
+                  b=r.read()
+                  txt=b.decode('big5',errors='replace')
+                  out={
+                    'url':url,
+                    'http_status':r.status,
+                    'bytes':len(b),
+                    'sha256':hashlib.sha256(b).hexdigest(),
+                    'has_page_title':'電子資料查詢作業' in txt,
+                    'has_upload_header':'上傳日期' in txt,
+                    'has_rate_marker':'查詢過量' in txt,
+                    'has_access_denied':'access denied' in txt.lower(),
+                    'body_prefix':' '.join(txt.split())[:500],
+                  }
+          except Exception as e:
+              out={'url':url,'error':f'{type(e).__name__}:{e}'}
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
