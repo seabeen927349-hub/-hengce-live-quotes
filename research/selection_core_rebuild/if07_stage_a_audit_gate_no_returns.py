@@ -66,8 +66,8 @@ MIN_UNIQUE_TICKERS = 40
 # signal dates do not legally exist until the exact metadata gate has passed.
 
 # Forbidden outcome-bearing keys. Matching is normalized to lowercase and ignores
-# spaces/hyphens. We check KEYS, not free-text values, so audit prose containing
-# words such as "returns" does not create a false positive.
+# punctuation. Governance-only boundary markers are legal only at their exact
+# frozen no-return values and are explicitly exempted below.
 FORBIDDEN_KEY_FRAGMENTS = (
     "forwardreturn",
     "futurereturn",
@@ -96,12 +96,22 @@ def normalize_key(s: Any) -> str:
     return "".join(ch for ch in str(s).lower() if ch.isalnum())
 
 
+def is_legal_outcome_boundary_marker(normalized_key: str, value: Any) -> bool:
+    if normalized_key == "containspriceorforwardreturndata":
+        return value is False
+    if normalized_key == "forwardreturnlock":
+        return value == "CLOSED"
+    return False
+
+
 def walk_forbidden_keys(obj: Any, path: str = "$") -> list[str]:
     hits: list[str] = []
     if isinstance(obj, dict):
         for k, v in obj.items():
             nk = normalize_key(k)
-            if any(fragment in nk for fragment in FORBIDDEN_KEY_FRAGMENTS):
+            if is_legal_outcome_boundary_marker(nk, v):
+                pass
+            elif any(fragment in nk for fragment in FORBIDDEN_KEY_FRAGMENTS):
                 hits.append(f"{path}.{k}")
             hits.extend(walk_forbidden_keys(v, f"{path}.{k}"))
     elif isinstance(obj, list):
@@ -197,6 +207,14 @@ def main() -> int:
     raw_rows = load_json(args.rows)
     audit = load_json(args.audit)
     rows = extract_rows(raw_rows)
+
+    # Explicit root boundary must remain outcome-blind.
+    if not isinstance(raw_rows, dict) or raw_rows.get("contains_price_or_forward_return_data") is not False:
+        failures.append("ROWS_ARTIFACT_NO_RETURN_BOUNDARY_INVALID")
+    if not isinstance(audit, dict) or audit.get("contains_price_or_forward_return_data") is not False:
+        failures.append("AUDIT_ARTIFACT_NO_RETURN_BOUNDARY_INVALID")
+    if isinstance(audit, dict) and audit.get("forward_return_lock") != "CLOSED":
+        failures.append("AUDIT_FORWARD_RETURN_LOCK_NOT_CLOSED")
 
     forbidden_hits = walk_forbidden_keys(raw_rows) + walk_forbidden_keys(audit)
     if forbidden_hits:
