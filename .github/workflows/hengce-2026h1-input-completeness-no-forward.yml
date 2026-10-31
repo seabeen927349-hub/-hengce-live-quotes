@@ -21,7 +21,7 @@ jobs:
           set -euo pipefail
           mkdir -p out/raw/t86 out/raw/margin
           python3 <<'PY'
-          import csv, datetime as dt, hashlib, json, math, pathlib, time, urllib.request
+          import csv, hashlib, json, pathlib, time, urllib.request
           from concurrent.futures import ThreadPoolExecutor, as_completed
           from collections import defaultdict
 
@@ -29,196 +29,178 @@ jobs:
           OUT=pathlib.Path('out')
           STOCK=ROOT/'hengce/q017_radar/data/twse_electronics_history_2026.csv'
           START='2026-01-01'; END='2026-06-30'
-          H={'User-Agent':'Mozilla/5.0 HENGCE-2026H1-Input-Audit/1.0','Accept':'application/json,text/plain,*/*','Referer':'https://www.twse.com.tw/'}
+          H={'User-Agent':'Mozilla/5.0 HENGCE-2026H1-Input-Audit/1.1','Accept':'application/json,text/plain,*/*','Referer':'https://www.twse.com.tw/'}
 
           def norm_date(s):
-              s=str(s).strip().replace('-', '/')
-              p=s.split('/')
+              p=str(s).strip().replace('-', '/').split('/')
               if len(p)!=3: raise ValueError(s)
               y,m,d=map(int,p)
               if y<1911: y+=1911
               return f'{y:04d}-{m:02d}-{d:02d}'
 
-          def asnum(x):
+          def num(x):
               s=str(x).strip().replace(',','')
-              if s in ('','--','---','X','nan','None'): return None
+              if s in ('','--','---','X','nan','None','-'): return None
               try: return float(s)
               except: return None
 
-          # 1) Official TAIEX trading-date authority for 2026H1.
+          # Official 2026H1 trading-date authority.
           official=[]; taiex_manifest=[]
           for m in range(1,7):
               ds=f'2026{m:02d}01'
               url=f'https://www.twse.com.tw/indicesReport/MI_5MINS_HIST?date={ds}&response=json'
-              req=urllib.request.Request(url,headers=H)
-              with urllib.request.urlopen(req,timeout=30) as r: raw=r.read()
+              with urllib.request.urlopen(urllib.request.Request(url,headers=H),timeout=30) as r: raw=r.read()
               obj=json.loads(raw.decode('utf-8-sig'))
-              if str(obj.get('stat','')).upper()!='OK': raise SystemExit(f'TAIEX_BAD_STAT {ds} {obj.get("stat")}')
-              fields=[str(x).strip() for x in obj.get('fields',[])]
-              di=next(i for i,f in enumerate(fields) if f in ('日期','Date'))
-              dates=[norm_date(row[di]) for row in (obj.get('data') or [])]
-              official.extend(d for d in dates if START<=d<=END)
-              taiex_manifest.append({'month':ds[:6],'rows':len(dates),'sha256':hashlib.sha256(raw).hexdigest(),'url':url})
-          official=sorted(set(official))
-          if len(official)!=116 or official[-1] != END:
-              raise SystemExit(f'OFFICIAL_CALENDAR_UNEXPECTED count={len(official)} last={official[-1] if official else None}')
-          official_set=set(official)
+              if str(obj.get('stat','')).upper()!='OK': raise SystemExit(f'TAIEX_BAD_STAT {ds}')
+              fs=[str(x).strip() for x in obj.get('fields',[])]
+              di=next(i for i,f in enumerate(fs) if f in ('日期','Date'))
+              dd=[norm_date(row[di]) for row in (obj.get('data') or [])]
+              official.extend(d for d in dd if START<=d<=END)
+              taiex_manifest.append({'month':ds[:6],'rows':len(dd),'sha256':hashlib.sha256(raw).hexdigest(),'url':url})
+          official=sorted(set(official)); O=set(official)
+          if len(official)!=116 or official[-1]!=END: raise SystemExit(f'OFFICIAL_CALENDAR_UNEXPECTED {len(official)}')
 
-          # 2) Checked-in 2026 electronics membership/OHLCV source.
+          # Checked-in electronics membership/OHLCV. Missing cells are classified, not auto-fatal.
+          bydate=defaultdict(dict); dup=[]; non4=[]; no_trade=[]; true_price_anomaly=[]
           if not STOCK.exists(): raise SystemExit(f'STOCK_FILE_MISSING {STOCK}')
           stock_sha=hashlib.sha256(STOCK.read_bytes()).hexdigest()
-          bydate=defaultdict(dict); dup=[]; malformed=[]; non4=[]; critical_missing=[]
           with STOCK.open(encoding='utf-8-sig',newline='') as f:
               rd=csv.DictReader(f)
-              required={'date','ticker','open','high','low','close','volume_shares','turnover_ntd'}
-              missing_cols=sorted(required-set(rd.fieldnames or []))
-              if missing_cols: raise SystemExit(f'STOCK_SCHEMA_MISSING {missing_cols}')
+              need={'date','ticker','open','high','low','close','volume_shares','turnover_ntd'}
+              miss=sorted(need-set(rd.fieldnames or []))
+              if miss: raise SystemExit(f'STOCK_SCHEMA_MISSING {miss}')
               for ln,row in enumerate(rd,start=2):
                   d=str(row['date']).strip()
-                  if not (START<=d<=END): continue
+                  if not START<=d<=END: continue
                   t=str(row['ticker']).strip()
                   if not (len(t)==4 and t.isdigit()):
                       non4.append({'line':ln,'date':d,'ticker':t}); continue
-                  key=(d,t)
                   if t in bydate[d]: dup.append({'line':ln,'date':d,'ticker':t})
-                  vals={k:asnum(row.get(k)) for k in ('open','high','low','close','volume_shares','turnover_ntd')}
-                  miss=[k for k,v in vals.items() if v is None]
-                  if miss: critical_missing.append({'line':ln,'date':d,'ticker':t,'fields':miss})
+                  vals={k:num(row.get(k)) for k in ('open','high','low','close','volume_shares','turnover_ntd')}
+                  missing=[k for k,v in vals.items() if v is None]
+                  if missing:
+                      v=vals['volume_shares']; tv=vals['turnover_ntd']
+                      # TWSE may carry an eligible security with no trade/price that day.
+                      if vals['close'] is None and (v in (None,0.0)) and (tv in (None,0.0)):
+                          no_trade.append({'line':ln,'date':d,'ticker':t,'fields':missing})
+                      else:
+                          true_price_anomaly.append({'line':ln,'date':d,'ticker':t,'fields':missing,'values':vals})
                   bydate[d][t]=vals
           stock_dates=set(bydate)
-          stock_missing_dates=sorted(official_set-stock_dates)
-          stock_extra_dates=sorted(stock_dates-official_set)
+          stock_missing_dates=sorted(O-stock_dates); stock_extra_dates=sorted(stock_dates-O)
 
-          # Generic official fetch for T86 and MI_MARGN.
-          def fetch_json(date,leg):
-              ds=date.replace('-','')
+          def urls(ds,leg):
               if leg=='t86':
-                  url=f'https://www.twse.com.tw/rwd/zh/fund/T86?date={ds}&selectType=ALLBUT0999&response=json'
-              else:
-                  url=f'https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date={ds}&selectType=ALL&response=json'
-              err=None
-              for a in range(1,4):
-                  try:
-                      req=urllib.request.Request(url,headers=H)
-                      with urllib.request.urlopen(req,timeout=25) as r: raw=r.read()
-                      obj=json.loads(raw.decode('utf-8-sig'))
-                      stat=str(obj.get('stat','')).upper()
-                      apid=str(obj.get('date','')).strip()
-                      if stat!='OK' or apid!=ds:
-                          raise RuntimeError(f'stat={stat} api_date={apid}')
-                      return {'ok':True,'date':date,'leg':leg,'url':url,'raw':raw,'obj':obj}
-                  except Exception as e:
-                      err=f'{type(e).__name__}:{e}'; time.sleep(a)
-              return {'ok':False,'date':date,'leg':leg,'url':url,'error':err}
+                  return [
+                    f'https://www.twse.com.tw/rwd/zh/fund/T86?date={ds}&selectType=ALLBUT0999&response=json',
+                    f'https://www.twse.com.tw/fund/T86?date={ds}&selectType=ALLBUT0999&response=json']
+              return [
+                f'https://www.twse.com.tw/exchangeReport/MI_MARGN?date={ds}&selectType=ALL&response=json',
+                f'https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date={ds}&selectType=ALL&response=json',
+                f'https://www.twse.com.tw/marginTrading/MI_MARGN?date={ds}&selectType=ALL&response=json']
 
+          def fetch(date,leg):
+              ds=date.replace('-',''); errors=[]
+              for url in urls(ds,leg):
+                  for a in range(3):
+                      try:
+                          req=urllib.request.Request(url,headers=H)
+                          with urllib.request.urlopen(req,timeout=25) as r: raw=r.read()
+                          obj=json.loads(raw.decode('utf-8-sig'))
+                          stat=str(obj.get('stat','')).upper(); apid=str(obj.get('date','')).strip()
+                          if stat!='OK' or apid!=ds: raise RuntimeError(f'stat={stat} api_date={apid}')
+                          return {'ok':True,'date':date,'leg':leg,'url':url,'raw':raw,'obj':obj}
+                      except Exception as e:
+                          errors.append(f'{url}::{type(e).__name__}:{e}'); time.sleep(0.8*(a+1))
+              return {'ok':False,'date':date,'leg':leg,'errors':errors}
+
+          # Lower concurrency to avoid treating TWSE throttling/redirects as missing data.
           tasks=[]
-          with ThreadPoolExecutor(max_workers=8) as ex:
-              futs=[ex.submit(fetch_json,d,leg) for d in official for leg in ('t86','margin')]
-              done=0
-              for fut in as_completed(futs):
-                  r=fut.result(); done+=1; tasks.append(r)
-                  if done%20==0 or done==len(futs): print(f'FETCH {done}/{len(futs)}',flush=True)
-          tasks.sort(key=lambda x:(x['date'],x['leg']))
+          with ThreadPoolExecutor(max_workers=3) as ex:
+              futs=[ex.submit(fetch,d,leg) for d in official for leg in ('t86','margin')]
+              for n,fut in enumerate(as_completed(futs),start=1):
+                  tasks.append(fut.result())
+                  if n%20==0 or n==len(futs): print(f'FETCH {n}/{len(futs)}',flush=True)
+          tasks.sort(key=lambda r:(r['date'],r['leg']))
 
-          leg_sets={'t86':{},'margin':{}}
-          leg_manifest=[]; fetch_fail=[]; parse_fail=[]
-
-          def tables_from(obj):
+          def all_tables(obj):
               out=[]
-              if isinstance(obj.get('tables'),list):
-                  for tb in obj['tables']:
-                      if isinstance(tb,dict): out.append((tb.get('fields') or [],tb.get('data') or []))
-              if obj.get('fields') is not None and obj.get('data') is not None:
-                  out.append((obj.get('fields') or [],obj.get('data') or []))
+              ts=obj.get('tables')
+              if isinstance(ts,list):
+                  for tb in ts:
+                      if isinstance(tb,dict) and isinstance(tb.get('data'),list):
+                          out.append((str(tb.get('title','')),tb.get('fields') or [],tb.get('data') or []))
+              if isinstance(obj.get('data'),list): out.append((str(obj.get('title','')),obj.get('fields') or [],obj.get('data') or []))
               return out
 
-          def extract_codes(obj, leg):
-              codes=set(); matched_tables=[]
-              for fields,data in tables_from(obj):
+          CODE_ALIASES=('證券代號','股票代號','代號','Code')
+          def extract_valid_codes(obj,leg):
+              codes=set(); seen=[]
+              for title,fields,data in all_tables(obj):
                   fs=[str(x).strip() for x in fields]
-                  ci=next((i for i,f in enumerate(fs) if f in ('證券代號','股票代號','Code')),None)
+                  ci=next((i for i,f in enumerate(fs) if f in CODE_ALIASES),None)
                   if ci is None: continue
-                  # Require the table to actually be the relevant security-level table.
                   if leg=='t86':
-                      relevant=any(('三大法人' in f) or ('外陸資' in f) or ('外資' in f) or ('投信' in f) for f in fs)
+                      vi=next((i for i,f in enumerate(fs) if '三大法人買賣超股數' in f),None)
+                      if vi is None: continue
                   else:
-                      relevant=any('融資' in f for f in fs)
-                  if not relevant: continue
+                      # Official MI_MARGN per-security table may use generic repeated headings.
+                      today=[i for i,f in enumerate(fs) if '今日餘額' in f]
+                      vi=today[0] if today else (6 if len(fs)>6 else None)
+                      if vi is None: continue
                   n0=len(codes)
                   for row in data:
-                      if ci < len(row):
-                          c=str(row[ci]).strip()
-                          if len(c)==4 and c.isdigit(): codes.add(c)
-                  matched_tables.append({'fields':fs,'rows':len(data),'new_codes':len(codes)-n0})
-              return codes,matched_tables
+                      if not isinstance(row,list) or max(ci,vi)>=len(row): continue
+                      c=str(row[ci]).strip()
+                      if len(c)==4 and c.isdigit() and num(row[vi]) is not None: codes.add(c)
+                  seen.append({'title':title,'fields':fs,'rows':len(data),'new_valid_codes':len(codes)-n0,'value_index':vi})
+              return codes,seen
 
+          leg_sets={'t86':{},'margin':{}}; manifest=[]; fetch_fail=[]; parse_fail=[]
           for r in tasks:
               if not r['ok']:
-                  fetch_fail.append({k:r[k] for k in ('date','leg','url','error')}); continue
-              ds=r['date'].replace('-','')
-              p=OUT/'raw'/r['leg']/f'{ds}.json'; p.write_bytes(r['raw'])
-              codes,tables=extract_codes(r['obj'],r['leg'])
-              if not codes:
-                  parse_fail.append({'date':r['date'],'leg':r['leg'],'reason':'NO_SECURITY_CODES','tables_seen':tables})
+                  fetch_fail.append({'date':r['date'],'leg':r['leg'],'errors':r['errors']}); continue
+              ds=r['date'].replace('-',''); (OUT/'raw'/r['leg']/f'{ds}.json').write_bytes(r['raw'])
+              codes,seen=extract_valid_codes(r['obj'],r['leg'])
+              if not codes: parse_fail.append({'date':r['date'],'leg':r['leg'],'keys':sorted(r['obj'].keys()),'tables_seen':seen})
               leg_sets[r['leg']][r['date']]=codes
-              leg_manifest.append({'date':r['date'],'leg':r['leg'],'bytes':len(r['raw']),'sha256':hashlib.sha256(r['raw']).hexdigest(),'codes':len(codes),'tables':tables,'url':r['url']})
+              manifest.append({'date':r['date'],'leg':r['leg'],'codes_with_required_value':len(codes),'sha256':hashlib.sha256(r['raw']).hexdigest(),'url':r['url'],'tables':seen})
 
-          # 3) Exact date coverage + cross-leg stock coverage. No scores or outcomes.
           rows=[]
           for d in official:
               U=set(bydate.get(d,{})); T=leg_sets['t86'].get(d,set()); M=leg_sets['margin'].get(d,set())
-              rows.append({
-                'date':d,'universe_4digit':len(U),'t86_codes':len(T),'margin_codes':len(M),
-                'universe_in_t86':len(U&T),'universe_in_margin':len(U&M),'universe_in_both':len(U&T&M),
-                't86_match_ratio':round(len(U&T)/len(U),6) if U else None,
-                'margin_match_ratio':round(len(U&M)/len(U),6) if U else None,
-                'both_match_ratio':round(len(U&T&M)/len(U),6) if U else None,
-                'missing_t86_count':len(U-T),'missing_margin_count':len(U-M)
-              })
+              # Signal-price usable means close and volume are both present.
+              P={t for t,v in bydate.get(d,{}).items() if v['close'] is not None and v['volume_shares'] is not None}
+              rows.append({'date':d,'universe_4digit':len(U),'price_signal_usable':len(P),'t86_valid':len(T),'margin_valid':len(M),
+                'signal_usable_all3':len(P&T&M),'t86_match_ratio':round(len(U&T)/len(U),6) if U else None,
+                'margin_match_ratio':round(len(U&M)/len(U),6) if U else None,'all3_ratio':round(len(P&T&M)/len(U),6) if U else None})
           with (OUT/'daily_coverage.csv').open('w',encoding='utf-8',newline='') as f:
-              fields=list(rows[0])
-              w=csv.DictWriter(f,fieldnames=fields); w.writeheader(); w.writerows(rows)
+              w=csv.DictWriter(f,fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
 
-          exact_date_legs={
-            'price_membership': sorted(stock_dates)==official,
-            't86': sorted(leg_sets['t86'])==official,
-            'margin': sorted(leg_sets['margin'])==official,
-          }
-          mins={
-            'universe_rows_min':min(r['universe_4digit'] for r in rows),
-            'universe_rows_max':max(r['universe_4digit'] for r in rows),
-            't86_match_ratio_min':min(r['t86_match_ratio'] for r in rows if r['t86_match_ratio'] is not None),
-            'margin_match_ratio_min':min(r['margin_match_ratio'] for r in rows if r['margin_match_ratio'] is not None),
-            'both_match_ratio_min':min(r['both_match_ratio'] for r in rows if r['both_match_ratio'] is not None),
-          }
-          totals={k:sum(r[k] for r in rows) for k in ('universe_4digit','universe_in_t86','universe_in_margin','universe_in_both','missing_t86_count','missing_margin_count')}
+          exact={'price_membership_dates':sorted(stock_dates)==official,'t86_dates':sorted(leg_sets['t86'])==official,'margin_dates':sorted(leg_sets['margin'])==official}
           receipt={
-            'system':'HENGCE','artifact':'HENGCE_2026H1_INPUT_COMPLETENESS_NO_FORWARD',
-            'authority':'SIGNAL_SIDE_DATA_AUDIT_ONLY_NO_MODEL_NO_FORWARD_RETURN',
+            'system':'HENGCE','artifact':'HENGCE_2026H1_INPUT_COMPLETENESS_NO_FORWARD_V2','authority':'SIGNAL_SIDE_DATA_AUDIT_ONLY_NO_MODEL_NO_FORWARD_RETURN',
             'range':[START,END],'official_trading_dates':len(official),'first_date':official[0],'last_date':official[-1],
-            'stock_file':str(STOCK),'stock_file_sha256':stock_sha,
-            'stock_missing_official_dates':stock_missing_dates,'stock_extra_nonofficial_dates':stock_extra_dates,
-            'stock_duplicate_date_ticker_count':len(dup),'stock_critical_missing_ohlcv_count':len(critical_missing),
-            'stock_non4digit_rows_excluded_count':len(non4),
-            'fetch_failures':fetch_fail,'parse_failures':parse_fail,'exact_date_coverage':exact_date_legs,
-            'daily_minima':mins,'aggregate_counts':totals,
-            'taiex_manifest':taiex_manifest,'leg_manifest':leg_manifest,
-            'new_rs_forward_return_fields_read':False,'new_rs_outcomes_computed':False,
-            'model_scores_computed':False,'prereg_changed':False
-          }
+            'stock_file':str(STOCK),'stock_file_sha256':stock_sha,'stock_missing_official_dates':stock_missing_dates,'stock_extra_nonofficial_dates':stock_extra_dates,
+            'stock_duplicate_date_ticker_count':len(dup),'stock_no_trade_or_suspension_rows':len(no_trade),'stock_true_price_anomaly_rows':len(true_price_anomaly),
+            'stock_non4digit_rows_excluded_count':len(non4),'fetch_failures':fetch_fail,'parse_failures':parse_fail,'exact_date_coverage':exact,
+            'daily_minima':{'universe_min':min(r['universe_4digit'] for r in rows),'universe_max':max(r['universe_4digit'] for r in rows),
+              'price_signal_usable_min':min(r['price_signal_usable'] for r in rows),'t86_valid_min':min(r['t86_valid'] for r in rows),'margin_valid_min':min(r['margin_valid'] for r in rows),
+              'signal_usable_all3_min':min(r['signal_usable_all3'] for r in rows),'t86_match_ratio_min':min(r['t86_match_ratio'] for r in rows),'margin_match_ratio_min':min(r['margin_match_ratio'] for r in rows),'all3_ratio_min':min(r['all3_ratio'] for r in rows)},
+            'aggregate_signal_usable_all3':sum(r['signal_usable_all3'] for r in rows),'taiex_manifest':taiex_manifest,'leg_manifest':manifest,
+            'new_rs_forward_return_fields_read':False,'new_rs_outcomes_computed':False,'model_scores_computed':False,'prereg_changed':False}
           (OUT/'receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          (OUT/'stock_anomalies.json').write_text(json.dumps({'duplicates':dup,'critical_missing':critical_missing,'non4digit':non4},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          (OUT/'stock_anomalies.json').write_text(json.dumps({'no_trade_or_suspension':no_trade,'true_price_anomaly':true_price_anomaly,'non4digit':non4,'duplicates':dup},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           print(json.dumps({k:v for k,v in receipt.items() if k not in ('taiex_manifest','leg_manifest')},ensure_ascii=False,indent=2),flush=True)
-
-          # Transport/date completeness is a hard audit result. Per-stock margin absence is reported, not imputed.
-          hard_ok=(not stock_missing_dates and not stock_extra_dates and not dup and not critical_missing and not fetch_fail and not parse_fail and all(exact_date_legs.values()))
-          if not hard_ok: raise SystemExit('2026H1_INPUT_DATE_OR_TRANSPORT_INCOMPLETE')
+          # Date/transport/schema must close. Legitimate per-security no-trade/margin absence is quantified, never imputed.
+          hard_ok=(not stock_missing_dates and not stock_extra_dates and not dup and not true_price_anomaly and not fetch_fail and not parse_fail and all(exact.values()))
+          if not hard_ok: raise SystemExit('2026H1_INPUT_AUDIT_NOT_CLOSED')
           PY
       - name: Upload 2026H1 completeness audit
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: HENGCE_2026H1_INPUT_COMPLETENESS_NO_FORWARD
+          name: HENGCE_2026H1_INPUT_COMPLETENESS_NO_FORWARD_V2
           path: out/
           if-no-files-found: error
           retention-days: 7
