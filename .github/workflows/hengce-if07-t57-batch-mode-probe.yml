@@ -1,0 +1,36 @@
+name: HENGCE IF07 T57 Batch Mode Probe No Returns
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - 'research/selection_core_rebuild/if07_t57_batch_mode_probe.py'
+      - '.github/workflows/hengce-if07-t57-batch-mode-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/selection-core-rebuild-20261031
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests beautifulsoup4 lxml
+      - name: Probe t57 market-wide quarter query — no returns
+        run: python research/selection_core_rebuild/if07_t57_batch_mode_probe.py
+      - name: Show receipt
+        run: cat research/selection_core_rebuild/generated/IF07_T57_BATCH_MODE_PROBE.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: if07-t57-batch-mode-probe
+          path: research/selection_core_rebuild/generated/IF07_T57_BATCH_MODE_PROBE.json
+          if-no-files-found: error
