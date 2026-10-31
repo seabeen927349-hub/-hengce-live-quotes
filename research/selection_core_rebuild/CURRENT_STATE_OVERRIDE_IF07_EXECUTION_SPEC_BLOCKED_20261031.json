@@ -1,0 +1,59 @@
+{
+  "system": "HENGCE",
+  "artifact": "CURRENT_STATE_OVERRIDE_IF07_EXECUTION_SPEC_BLOCKED_20261031",
+  "date": "2026-10-31",
+  "precedence": "FOR_IF07_EXECUTION_STATUS_THIS_OVERRIDE_AND_HENGCE_IF07_AUTHORITY_CHAIN_CORRECTION_20261031_SUPERSEDE_STALE_CURRENT_STATE_20261031_JSON",
+  "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+  "formal_state": "EXECUTION_SPEC_BLOCKED",
+  "blocking_stage": "STAGE_B_METADATA_TRANSPORT_MECHANICS",
+  "controlling_blocker": "FROZEN_STAGE_B_CONTRACT_DOES_NOT_UNIQUELY_DEFINE_TIMEOUT_DNS_RETRY_TRANSPORT_HANDLING",
+  "forward_returns": "SEALED_NOT_OPENED",
+  "validation": "NOT_OPENED",
+  "production_trading_authority": "NONE",
+  "selection_rules_changed": false,
+  "thresholds_changed": false,
+  "candidate_authority_changed": false,
+  "formal_stage_b_run": {
+    "github_run_id": 41187903523,
+    "github_sha": "c355edbd898a714cb7ddaacd0c1bd94d90433306",
+    "artifact_id": 13037134822,
+    "artifact_name": "if07-stage-b-v0-2-41187903523-attempt-1",
+    "artifact_zip_sha256": "5aeb35c84b95350e17cf594f1bd86a7c1cae52f644bb190c1c9126d98c4d0674",
+    "candidate_events": 187,
+    "candidate_unique_tickers": 128,
+    "official_t57_requests": 128,
+    "official_t57_retries": 0,
+    "resolved_stage_b_pass_events": 92,
+    "excluded_events": 95,
+    "transport_rate_limit_fail_closed_events": 68,
+    "transport_timeout_under_specified_events": 16,
+    "transport_dns_under_specified_events": 11
+  },
+  "invalid_predecessor_run": {
+    "github_run_id": 41185962038,
+    "state": "INVALID_FOR_FORMAL_RESEARCH_EXECUTION_BUG",
+    "inadmissible_sample_events": 186,
+    "reason": "UNFROZEN_RETRY_BACKOFF_BEHAVIOR"
+  },
+  "secondary_execution_spec_gaps": [
+    "N3_RANDOM_MECHANICS_UNDER_SPECIFIED",
+    "BOOTSTRAP_CI_MECHANICS_UNDER_SPECIFIED"
+  ],
+  "secondary_gap_note": "These are real but do not control because the legal Stage B sample is unresolved first.",
+  "model_fail": false,
+  "data_blocked": false,
+  "governance_execution_spec_failure": true,
+  "next_legal_step": "STOP_V0_1_NO_RETURN_OPENING. Any future test of the economic hypothesis requires a separately versioned challenger/execution contract frozen before any newly affected forward-return inspection.",
+  "forbidden": [
+    "OPEN_DISCOVERY_RETURNS_UNDER_V0_1",
+    "OPEN_VALIDATION_RETURNS_UNDER_V0_1",
+    "USE_92_EVENT_SAMPLE_AS_FORMALLY_RESOLVED",
+    "USE_186_EVENT_INVALID_RETRY_SAMPLE",
+    "ADD_TIMEOUT_DNS_RETRY_RULES_IN_PLACE_TO_V0_1",
+    "ADD_N3_OR_BOOTSTRAP_MECHANICS_IN_PLACE_TO_V0_1",
+    "RESCUE_RETUNE_OR_REINTERPRET_V0_1",
+    "PRODUCTION_PROMOTION"
+  ],
+  "authority_chain_correction": "research/selection_core_rebuild/HENGCE_IF07_AUTHORITY_CHAIN_CORRECTION_20261031.md",
+  "authority_chain_correction_commit": "196603fd0cc3f6315dd05e8eee7c275d8501689f"
+}
