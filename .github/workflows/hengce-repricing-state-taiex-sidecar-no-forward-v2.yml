@@ -48,7 +48,7 @@ jobs:
           def fetch_one(ym):
               y,m=ym
               ds=f'{y:04d}{m:02d}01'
-              url=f'https://www.twse.com.tw/rwd/zh/indicesReport/MI_5MINS_HIST?date={ds}&response=json'
+              url=f'https://www.twse.com.tw/indicesReport/MI_5MINS_HIST?date={ds}&response=json'
               err=None
               for attempt in range(3):
                   try:
@@ -105,7 +105,7 @@ jobs:
           summary={
             'artifact':'HENGCE_REPRICING_STATE_TAIEX_SIDECAR_NO_FORWARD_V2',
             'authority':'RG_INPUT_ONLY_RESEARCH_NO_FORWARD_RETURNS',
-            'transport_change_only_from_v1':'bounded_concurrency_6_timeout15s_retries3_job20m',
+            'transport_change_only_from_v1':'bounded_concurrency_6_timeout15s_retries3_job20m_plus_validated_official_endpoint',
             'source':'TWSE MI_5MINS_HIST official retrospective archive',
             'requested_months':len(months),'successful_months':len(manifest),'failed_months':0,
             'rows_raw':len(records),'unique_dates':len(dates),'duplicate_same_value_rows':dup,
