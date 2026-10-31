@@ -1,0 +1,23 @@
+{
+  "system": "HENGCE",
+  "artifact": "TDCC_OWNERSHIP_ORIGINAL_VESSEL_RECEIPT",
+  "status": "COMPLETE",
+  "snapshot_date": "20261030",
+  "observed_at_taipei": "2026-10-31T23:57:43+08:00",
+  "source": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
+  "source_owner": "TDCC",
+  "source_dataset": "1-5 集保戶股權分散表",
+  "source_encoding": "utf-8-sig",
+  "source_rows": 69887,
+  "stock_4d_tickers": 2971,
+  "summary_rows": 2971,
+  "source_sha256": "18b34f6eeb80229941f51200558fcc3fec9d405e9b7eb47aceca377e9f18f184",
+  "summary_sha256": "91e523a5439c7cbf98b67ea5dc8a20b7665530bfb4f04ef41bbb0b7610c77ab0",
+  "big400_definition": "holding grades 12+13+14+15 (>=400,001 shares)",
+  "big1000_definition": "holding grade 15 (>=1,000,001 shares)",
+  "snapshot_frequency": "WEEKLY_TDCC_LAST_BUSINESS_DAY",
+  "download_frequency": "DAILY_CHECK_IDEMPOTENT",
+  "same_date_revision_policy": "FAIL_CLOSED_MANUAL_REVIEW",
+  "point_in_time_policy": "USE_OBSERVED_AT; DO_NOT BACKFILL INTO EARLIER DAILY STATES",
+  "model_authority_created": false
+}
