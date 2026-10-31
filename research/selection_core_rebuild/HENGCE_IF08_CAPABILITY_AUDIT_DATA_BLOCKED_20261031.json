@@ -1,0 +1,110 @@
+{
+  "system": "HENGCE",
+  "artifact": "IF08_EXPECTATION_REVISION_DATA_CAPABILITY_AUDIT",
+  "date": "2026-10-31",
+  "authority_head": "3d10798028928be6caa93f3f2b33c300c420eb41",
+  "branch": "research/selection-core-rebuild-20261031",
+  "formal_state": "DATA_BLOCKED",
+  "scope": "Bounded capability audit of current HENGCE mother, Library retrieval and exposed Fugle content capabilities; not proof that all commercial providers lack data.",
+  "stages": {
+    "DATA_CAPABILITY_AUDIT": "DATA_BLOCKED",
+    "PIT_SAFETY_AUDIT": "NOT_PASSED_REQUIRED_HISTORY_AND_VINTAGES_UNVERIFIED",
+    "NOVELTY_GATE": "NOT_REACHED_UPSTREAM_BLOCKED"
+  },
+  "evidence": {
+    "mother": {
+      "library_file_id": "libfile_fd13d82114cc8191bd8351d21615e5b3",
+      "version": "13",
+      "inspection": "Parsed header only; no return analysis",
+      "columns": [
+        "Date",
+        "Ticker",
+        "Name",
+        "Volume",
+        "Turnover",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Margin_MarginBalance",
+        "ForeignNet",
+        "TrustNet",
+        "TotalNet"
+      ],
+      "expectation_fields": false
+    },
+    "library": {
+      "searches": [
+        "HENGCE mother consensus expectation revision",
+        "HENGCE Fugle capability",
+        "analyst consensus PIT",
+        "mother (title)",
+        "consensus (title)",
+        "預期 (title)",
+        "guidance (title)",
+        "分析師 (title)",
+        "analyst consensus",
+        "財測 修正"
+      ],
+      "finding": "No verified historical PIT consensus/revision dataset resolved. Searches returned governance/ledger references, not a usable input panel. Search absence is not exhaustive proof of nonexistence."
+    },
+    "prior_audit": {
+      "path": "research/selection_core_rebuild/HENGCE_ORTHOGONAL_CAPABILITY_NOVELTY_GATE_20261031.md",
+      "finding": "Previously IF08 DATA_BLOCKED; conceptual family novelty PASS is not current data/PIT admission."
+    },
+    "fugle": {
+      "spec_inventory": "Queried this session; no dedicated historical analyst consensus / forecast revision spec exposed. Account-wide unexposed paid entitlements are not proven absent.",
+      "probe": {
+        "contentSpecId": "FCNT000004",
+        "params": {
+          "symbol_id": "2330"
+        },
+        "retrieval_observed_at_utc": "2026-10-31T10:22:12.520Z",
+        "retrieval_time_note": "Audit observation time; not source availability time.",
+        "record_count": 12,
+        "returned_timestamp_range": [
+          "2026-08-11 19:38:43",
+          "2026-10-29 14:05:38"
+        ],
+        "fields": [
+          "_id",
+          "symbol_id",
+          "name",
+          "timestamp",
+          "title",
+          "url",
+          "descs"
+        ],
+        "finding": "Nonempty timestamped material announcements. 2026-10-15 15:21:38 announcement includes forward 2026Q4 company revenue/margin guidance; this is genuine expectation content, NOT analyst consensus and NOT by itself a same-period revision history.",
+        "limitations": [
+          "Single-symbol default response is not a verified historical research panel.",
+          "No same-target-period old/new expectation pair verified.",
+          "No timestamp timezone/first-public-availability semantics verified independently.",
+          "No historical correction/deletion/vintage preservation contract verified.",
+          "No contributor-level or consensus composition history exposed.",
+          "Coverage and survivorship across frozen universe not verified."
+        ]
+      }
+    }
+  },
+  "pit_requirements_unmet": [
+    "Same issuer/metric/fiscal target period and consistent units/currency for prior and revised expectations",
+    "Original public availability timestamp and timezone for each vintage",
+    "Retention of original values across corrections; no backfilled latest estimates",
+    "Historical coverage and reproducible provenance sufficient for the frozen universe"
+  ],
+  "proxy_decision": "ONLY_PROXY_AVAILABLE_REJECT applies to proposed price/volume/flow/margin/broker/TDCC or realized-fundamental substitutes; none constructed. Overall DATA_BLOCKED chosen because genuine guidance content exists but admissible revision history is unverified.",
+  "locks": {
+    "challenger": "NOT_DEFINED",
+    "IF08_forward_returns": "NOT_OPENED",
+    "IF07_state": "EXECUTION_SPEC_BLOCKED",
+    "IF07_forward_returns": "SEALED_NOT_OPENED",
+    "validation": "NOT_OPENED",
+    "production_trading_authority": "NONE",
+    "threshold_changes": false,
+    "IF07_rescue": false
+  },
+  "stop": "STOP_DATA_ENGINEERING_NO_CHALLENGER_NO_RETURN_TEST",
+  "reopen_only_if": "An actually obtainable historical expectation/revision dataset with same-period prior/revised vintages, source provenance and verifiable availability timestamps is supplied; repeat capability then PIT then novelty. Do not reopen merely on vendor marketing or a proxy.",
+  "limitations": "No assertion of statistical alpha, model failure, exhaustive Library absence, or universal Fugle paid-product absence. No new information family selected."
+}
