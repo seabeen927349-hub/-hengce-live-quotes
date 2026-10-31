@@ -3,6 +3,10 @@
 
 Reads frozen account-code rows and uses XBRL context periods instead of heavy
 pandas.read_html. It ignores market prices and returns.
+
+Control note: the 2454 2024Q2 income-statement controls are YTD Jan-Jun values,
+not the single-quarter Apr-Jun values. This follows the already-frozen
+HENGCE_IF07_PERIOD_COLUMN_SEMANTICS_PROOF_20261031.md and the V0.1 preregistration.
 """
 from __future__ import annotations
 import datetime as dt, json, math, re
@@ -19,7 +23,7 @@ FLOW={'Revenue_YTD','COGS_YTD','OperatingIncome_YTD','CFO_YTD'}
 QEND={1:'03-31',2:'06-30',3:'09-30',4:'12-31'}
 CONTROLS={
  ('2330',2023,1):{'Revenue_YTD':508632973.0,'COGS_YTD':222132581.0,'OperatingIncome_YTD':231238157.0,'CFO_YTD':385244745.0,'AR':147715125.0,'Inventory':216067981.0,'Assets':5045844348.0,'Liabilities':1952946750.0},
- ('2454',2024,2):{'Revenue_YTD':127271121.0,'COGS_YTD':65134699.0,'OperatingIncome_YTD':24956016.0,'CFO_YTD':75144111.0,'AR':45889387.0,'Inventory':53578351.0,'Assets':681374287.0,'Liabilities':290750665.0},
+ ('2454',2024,2):{'Revenue_YTD':260729268.0,'COGS_YTD':128692316.0,'OperatingIncome_YTD':57135880.0,'CFO_YTD':75144111.0,'AR':45889387.0,'Inventory':53578351.0,'Assets':681374287.0,'Liabilities':290750665.0},
 }
 
 def local(tag:Any)->str:
@@ -34,7 +38,6 @@ def parse_num(s:str, sign:str|None=None)->float|None:
  if not x or x in {'-','--'}: return None
  neg=False
  if x.startswith('(') and x.endswith(')'): neg=True; x=x[1:-1]
- # retain digits / decimal / leading sign only; visible iXBRL numbers may contain decorations
  x=re.sub(r'[^0-9.+-]','',x)
  try: v=float(x)
  except Exception: return None
@@ -85,7 +88,6 @@ def parse(content:bytes,year:int,q:int):
    hits=[f for f in fs if f['ctx']['start']==start and f['ctx']['end']==end]
   else:
    hits=[f for f in fs if f['ctx']['instant']==end]
-  # dedupe identical value/context/name representations
   uniq=[]; seen=set()
   for f in hits:
    key=(f['contextref'],f['value'],f['name'])
@@ -97,7 +99,7 @@ def parse(content:bytes,year:int,q:int):
  return vals,{'status':'PASS','context_count':len(ctx),'evidence':evidence}
 
 def main():
- s=requests.Session(); s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-IF07-fast-parser-probe/0.1','Referer':'https://mopsov.twse.com.tw/mops/web/t203sb01'})
+ s=requests.Session(); s.headers.update({'User-Agent':'Mozilla/5.0 HENGCE-IF07-fast-parser-probe/0.2','Referer':'https://mopsov.twse.com.tw/mops/web/t203sb01'})
  results=[]
  for (ticker,year,q),expected in CONTROLS.items():
   p={'functionName':'t164sb01','step':'9','co_id':ticker,'year':year,'season':q,'report_id':'C'}
@@ -106,7 +108,7 @@ def main():
   checks={k:(vals is not None and vals.get(k)==v) for k,v in expected.items()}
   results.append({'ticker':ticker,'year':year,'quarter':q,'http_status':r.status_code,'bytes':len(r.content),'parser':audit,'values':vals,'expected':expected,'exact_checks':checks,'all_exact':all(checks.values())})
  overall=all(x['all_exact'] for x in results)
- obj={'system':'HENGCE','artifact':'IF07_FAST_IXBRL_CONTEXT_PARSER_PROBE','generated_at_utc':dt.datetime.now(dt.timezone.utc).isoformat(),'contains_price_or_forward_return_data':False,'results':results,'overall':overall,'verdict':'PASS' if overall else 'FAIL'}
+ obj={'system':'HENGCE','artifact':'IF07_FAST_IXBRL_CONTEXT_PARSER_PROBE_V0_2','generated_at_utc':dt.datetime.now(dt.timezone.utc).isoformat(),'contains_price_or_forward_return_data':False,'control_oracle':'Q2/Q3/Q4 flow fields use explicit Jan-1-to-quarter-end YTD semantics','results':results,'overall':overall,'verdict':'PASS' if overall else 'FAIL'}
  OUT.write_text(json.dumps(obj,ensure_ascii=False,indent=2),encoding='utf-8')
  print(json.dumps({'verdict':obj['verdict'],'results':[{'ticker':x['ticker'],'all_exact':x['all_exact'],'parser_status':x['parser']['status'],'values':x['values']} for x in results]},ensure_ascii=False))
 if __name__=='__main__': main()
