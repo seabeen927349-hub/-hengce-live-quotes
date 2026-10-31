@@ -1,0 +1,10 @@
+繼續衡策 Selection Core rebuild。先讀 research/selection-core-rebuild-20261031 分支下的 research/selection_core_rebuild/READ_FIRST_HENGCE_SELECTION_CORE_HANDOFF_20261031.md 與 CURRENT_STATE_20261031.json。
+
+硬規則：
+1. 不回到 V6/V43；它們只作 frozen novelty/reference。
+2. Cross-stock capital-share migration 已 NOVELTY_GATE_FAIL，禁止救援、換窗口或偷看 forward return。
+3. Challenger 仍 NOT_YET_DEFINED。
+4. 先做真正正交資訊家族的 capability + novelty gate：優先 Earnings Quality（若 filing-date-aware 2023–2026 panel 確實存在），其次 genuine expectation revision、firm-network supply-chain lead-lag、structured corporate events。
+5. 新候選必須先 preregister 且確認持久化，再准看 forward return。
+6. 對照 N0/N1/N2/N3；最後仍需最新3M正收益＋足夠交易＋跨循環＋TAIEX＋有限資金 portfolio proof。
+7. 資料拿不到就 DATA_BLOCKED，絕不捏造成功。
