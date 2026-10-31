@@ -1,28 +1,17 @@
-繼續衡策 Selection Core rebuild。先讀 research/selection-core-rebuild-20261031 分支下：
-1. research/selection_core_rebuild/HENGCE_IF07_AUTHORITY_CHAIN_CORRECTION_20261031.md
-2. research/selection_core_rebuild/CURRENT_STATE_OVERRIDE_IF07_EXECUTION_SPEC_BLOCKED_20261031.json
-3. research/selection_core_rebuild/READ_FIRST_HENGCE_SELECTION_CORE_HANDOFF_20261031.md
-4. research/selection_core_rebuild/CURRENT_STATE_20261031.json
+繼續衡策 Selection Core rebuild。先讀 research/selection-core-rebuild-20261031 分支：
+1. research/selection_core_rebuild/HANDOFF_IF08_20261031/00_READ_FIRST.md
+2. research/selection_core_rebuild/HENGCE_IF07_AUTHORITY_CHAIN_CORRECTION_20261031.md
+3. research/selection_core_rebuild/CURRENT_STATE_OVERRIDE_IF07_EXECUTION_SPEC_BLOCKED_20261031.json
 
-若舊 CURRENT_STATE_20261031.json 與前兩份衝突，IF-07 執行狀態以前兩份最新 correction / override 為準。
+IF-07 V0.1 已封存為 EXECUTION_SPEC_BLOCKED；forward returns 仍 SEALED_NOT_OPENED。不得用 92-event 或 186-event 樣本做績效判斷，不得原地補 timeout/DNS/retry/N3/bootstrap 規則，不得救 V0.1。
 
-目前正式狀態：
-- Challenger = IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1
-- V0.1 = EXECUTION_SPEC_BLOCKED
-- controlling blocker = Stage B metadata transport mechanics under-specified
-- formal no-retry Stage B run = 41187903523；92 events resolved/pass，但其中 timeout/DNS 失敗事件的永久排除規則沒有事前凍結，因此 92-event sample 不得視為正式 resolved sample
-- run 41185962038 = INVALID_FOR_FORMAL_RESEARCH_EXECUTION_BUG；其 186-event sample 禁止作為正式研究樣本
-- forward returns = SEALED_NOT_OPENED
-- validation = NOT_OPENED
-- production/trading authority = NONE
-- N3 random mechanics / bootstrap CI mechanics 也 under-specified，但屬 secondary blockers；不得跳過 Stage B blocker 去補它們
+現在正式切到 IF-08 EXPECTATION REVISION。
+第一階段只做：DATA_CAPABILITY_AUDIT -> PIT_SAFETY_AUDIT -> NOVELTY_GATE。
+先盤點現有 HENGCE mother / Library / Fugle paid capabilities 是否存在真正歷史、PIT-safe、timestamped 的 expectation/revision data，例如 analyst EPS/revenue consensus revision、forecast/target revision、management guidance revision、或 earnings surprise relative to timestamped prior consensus。
 
-硬規則：
-1. 不准在 V0.1 原地新增 timeout、DNS、retry/backoff、N3 PRNG、bootstrap 規則。
-2. 不准開 V0.1 Discovery / Validation forward returns。
-3. 不准用 92-event 或 186-event 樣本做績效判斷。
-4. 不准把 EXECUTION_SPEC_BLOCKED 說成 MODEL_FAIL 或 DATA_BLOCKED。
-5. 不回到 V6/V43；它們只作 frozen novelty/reference。
-6. Capital-share migration 仍為 NOVELTY_GATE_FAIL，禁止救援。
-7. 若未來要繼續測 IF-07 經濟假說，必須建立新的 separately versioned challenger / execution contract，並在任何 newly affected forward return inspection 前先凍結 transport + N3 + bootstrap mechanics；不得 silent mutation V0.1。
-8. 任何新版本仍須遵守原 Selection Core hard gates：latest3M、足夠交易頻率/資金效率、finite-capital portfolio、TAIEX、cross-cycle、weak/bear、no production promotion from event means alone。
+禁止用價格、momentum、成交量、法人流、融資、券商 activity、TDCC 或價格反應偽裝成 expectation revision。
+
+如果只有 proxy：ONLY_PROXY_AVAILABLE_REJECT。拿不到真正資料：DATA_BLOCKED。不要花整天造 proxy。
+如果 capability + novelty PASS，再只定義一個簡單 challenger；在任何 forward return 前先完整凍結 transport failure handling、N3 PRNG/sampling/order/statistic、bootstrap replicate/seed/resampling/CI method，然後 preregister。
+
+硬規則：不回 V6/V43；capital-share migration 仍 NOVELTY_GATE_FAIL；Escape 無 Selection alpha authority；Discovery fail 即 KILL，Validation 不開；禁止 post-hoc rescue。
