@@ -10,6 +10,8 @@ BASELINE=60
 MIN_BASELINE=40
 SEVERE=0.90
 MODERATE=0.80
+METRIC_CONTRACT_VERSION='HENGCE_ESCAPE_METRIC_CONTRACT_V1'
+METRIC_CONTRACT_SHA256='1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281'
 
 METRICS={
   'foreign_relative_flow_5': ('low', 'negative'),
@@ -49,6 +51,7 @@ def empirical_adverse(series, idx, direction):
     if len(hist)<MIN_BASELINE or not finite(series[idx]): return None
     cur=float(series[idx])
     if direction=='low':
+        # adverse score 1 when current is at/below almost all prior values
         rank=sum(1 for x in hist if x>=cur)/len(hist)
     else:
         rank=sum(1 for x in hist if x<=cur)/len(hist)
@@ -81,6 +84,8 @@ def sha(obj):
     return hashlib.sha256(b).hexdigest()
 
 def detect(packet):
+    if packet.get('metric_contract_version') != METRIC_CONTRACT_VERSION or packet.get('metric_contract_sha256') != METRIC_CONTRACT_SHA256:
+        return {'status':'UNVERIFIED','reason':'METRIC_CONTRACT_MISMATCH','required_version':METRIC_CONTRACT_VERSION,'required_sha256':METRIC_CONTRACT_SHA256}
     gate=packet.get('data_gate',{})
     for k in ('freshness_pass','integrity_pass','pit_pass','universe_pass'):
         if not gate.get(k,False):
@@ -112,6 +117,7 @@ def detect(packet):
     ev['vulnerability_leverage_confirmed']=persist(moderate_flags['vulnerability_leverage_score_raw'],3,5)
     ev['internal_structure_confirmed']=persist(moderate_flags['internal_structure_score_raw'],3,5)
     ev['price_flow_divergence_confirmed']=persist(moderate_flags['price_flow_divergence_score_raw'],3,5)
+    # five consecutive recovery observations, not merely 3-of-5
     r=[a and b for a,b in zip(severe_flags['price_recovery_score_raw'],severe_flags['flow_reentry_score_raw'])]
     ev['recovery_5_consecutive_confirmed']=len(r)>=5 and all(r[-5:])
     fam={}
@@ -125,7 +131,9 @@ def detect(packet):
       'severe_adverse_percentile':SEVERE,'moderate_adverse_percentile':MODERATE,
       'events':ev,'family_scores':fam,'metric_adverse_scores':scores,
       'metrics_history_hash':sha(hist),
-      'manual_event_input_accepted':False
+      'manual_event_input_accepted':False,
+      'metric_contract_version':METRIC_CONTRACT_VERSION,
+      'metric_contract_sha256':METRIC_CONTRACT_SHA256
     }
 
 def main():
