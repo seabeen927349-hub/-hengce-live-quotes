@@ -1,10 +1,28 @@
-繼續衡策 Selection Core rebuild。先讀 research/selection-core-rebuild-20261031 分支下的 research/selection_core_rebuild/READ_FIRST_HENGCE_SELECTION_CORE_HANDOFF_20261031.md 與 CURRENT_STATE_20261031.json。
+繼續衡策 Selection Core rebuild。先讀 research/selection-core-rebuild-20261031 分支下：
+1. research/selection_core_rebuild/HENGCE_IF07_AUTHORITY_CHAIN_CORRECTION_20261031.md
+2. research/selection_core_rebuild/CURRENT_STATE_OVERRIDE_IF07_EXECUTION_SPEC_BLOCKED_20261031.json
+3. research/selection_core_rebuild/READ_FIRST_HENGCE_SELECTION_CORE_HANDOFF_20261031.md
+4. research/selection_core_rebuild/CURRENT_STATE_20261031.json
+
+若舊 CURRENT_STATE_20261031.json 與前兩份衝突，IF-07 執行狀態以前兩份最新 correction / override 為準。
+
+目前正式狀態：
+- Challenger = IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1
+- V0.1 = EXECUTION_SPEC_BLOCKED
+- controlling blocker = Stage B metadata transport mechanics under-specified
+- formal no-retry Stage B run = 41187903523；92 events resolved/pass，但其中 timeout/DNS 失敗事件的永久排除規則沒有事前凍結，因此 92-event sample 不得視為正式 resolved sample
+- run 41185962038 = INVALID_FOR_FORMAL_RESEARCH_EXECUTION_BUG；其 186-event sample 禁止作為正式研究樣本
+- forward returns = SEALED_NOT_OPENED
+- validation = NOT_OPENED
+- production/trading authority = NONE
+- N3 random mechanics / bootstrap CI mechanics 也 under-specified，但屬 secondary blockers；不得跳過 Stage B blocker 去補它們
 
 硬規則：
-1. 不回到 V6/V43；它們只作 frozen novelty/reference。
-2. Cross-stock capital-share migration 已 NOVELTY_GATE_FAIL，禁止救援、換窗口或偷看 forward return。
-3. Challenger 仍 NOT_YET_DEFINED。
-4. 先做真正正交資訊家族的 capability + novelty gate：優先 Earnings Quality（若 filing-date-aware 2023–2026 panel 確實存在），其次 genuine expectation revision、firm-network supply-chain lead-lag、structured corporate events。
-5. 新候選必須先 preregister 且確認持久化，再准看 forward return。
-6. 對照 N0/N1/N2/N3；最後仍需最新3M正收益＋足夠交易＋跨循環＋TAIEX＋有限資金 portfolio proof。
-7. 資料拿不到就 DATA_BLOCKED，絕不捏造成功。
+1. 不准在 V0.1 原地新增 timeout、DNS、retry/backoff、N3 PRNG、bootstrap 規則。
+2. 不准開 V0.1 Discovery / Validation forward returns。
+3. 不准用 92-event 或 186-event 樣本做績效判斷。
+4. 不准把 EXECUTION_SPEC_BLOCKED 說成 MODEL_FAIL 或 DATA_BLOCKED。
+5. 不回到 V6/V43；它們只作 frozen novelty/reference。
+6. Capital-share migration 仍為 NOVELTY_GATE_FAIL，禁止救援。
+7. 若未來要繼續測 IF-07 經濟假說，必須建立新的 separately versioned challenger / execution contract，並在任何 newly affected forward return inspection 前先凍結 transport + N3 + bootstrap mechanics；不得 silent mutation V0.1。
+8. 任何新版本仍須遵守原 Selection Core hard gates：latest3M、足夠交易頻率/資金效率、finite-capital portfolio、TAIEX、cross-cycle、weak/bear、no production promotion from event means alone。
