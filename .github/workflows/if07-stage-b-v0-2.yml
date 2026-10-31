@@ -1,0 +1,147 @@
+name: IF07 Stage B V0.2 Frozen-Contract Restoration
+
+on:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - '.github/workflows/if07-stage-b-v0-2.yml'
+
+permissions:
+  contents: read
+
+env:
+  EXPECTED_STAGE_A_ROWS_SHA256: 64ea76312f99413965edc8ca9797864ef04d3ba8c2cee1f47bf950ffa9fa3bfb
+  MEMBERSHIP_PARENT_COMMIT: f5abef555d9174e3919a9dca52e9bfb07351e02e
+
+jobs:
+  stage_b_v0_2_no_return:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact execution commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install execution dependencies
+        run: python -m pip install --disable-pip-version-check requests==2.32.5 beautifulsoup4==4.14.2 lxml==6.0.2
+
+      - name: Verify exact frozen Stage A authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          P='research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json'
+          ACTUAL="$(sha256sum "$P" | awk '{print $1}')"
+          echo "stage_a_rows_sha256=$ACTUAL"
+          test "$ACTUAL" = "$EXPECTED_STAGE_A_ROWS_SHA256"
+
+      - name: Re-run frozen offline admission gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/if07-stage-b-v0-2"
+          python research/selection_core_rebuild/if07_stage_b_candidate_manifest_gate_no_network.py \
+            research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json \
+            --out "$RUNNER_TEMP/if07-stage-b-v0-2/IF07_STAGE_B_EXACT_METADATA_REQUEST_MANIFEST_NO_RETURNS.json"
+          python - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ['RUNNER_TEMP'])/'if07-stage-b-v0-2/IF07_STAGE_B_EXACT_METADATA_REQUEST_MANIFEST_NO_RETURNS.json'
+          o=json.loads(p.read_text(encoding='utf-8'))
+          assert o['verdict']=='PASS_STAGE_B_MANIFEST_ADMISSION_NO_NETWORK'
+          assert o['candidate_count']==187
+          assert o['unique_candidate_tickers']==128
+          assert o['request_count']==187
+          assert o['input_stage_a_rows_sha256']==os.environ['EXPECTED_STAGE_A_ROWS_SHA256']
+          print(json.dumps({k:o[k] for k in ('verdict','candidate_count','unique_candidate_tickers','request_count','input_stage_a_rows_sha256')},ensure_ascii=False,indent=2))
+          PY
+
+      - name: Materialize pinned PIT membership authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/if07-membership"
+          for Y in 2023 2024 2025; do
+            git show "$MEMBERSHIP_PARENT_COMMIT:research/e2_profit_max/membership/twse_electronics_membership_${Y}.csv" > "$RUNNER_TEMP/if07-membership/twse_electronics_membership_${Y}.csv"
+          done
+          echo '296f19c0c676e558007b22f12e08ba9f81045ad3706d9609b7a151974b6ece3e  '"$RUNNER_TEMP/if07-membership/twse_electronics_membership_2023.csv" | sha256sum -c -
+          echo '13c8ffe2cb6cfaaa2516c90482d0aecda933cb33ae4eb1cffbbc90e49d77bd7d  '"$RUNNER_TEMP/if07-membership/twse_electronics_membership_2024.csv" | sha256sum -c -
+          echo 'da4a8c6deb7cad5d221d453b64e2685b771242db6ce8fc5128d11aa21cfe7e14  '"$RUNNER_TEMP/if07-membership/twse_electronics_membership_2025.csv" | sha256sum -c -
+
+      - name: Execute exact Stage B once-per-ticker zero-retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/selection_core_rebuild/if07_stage_b_exact_metadata_executor_v0_2.py \
+            --manifest "$RUNNER_TEMP/if07-stage-b-v0-2/IF07_STAGE_B_EXACT_METADATA_REQUEST_MANIFEST_NO_RETURNS.json" \
+            --stage-a-rows research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json \
+            --sessions research/selection_core_rebuild/IF07_CANONICAL_TRADING_SESSIONS_2022_2026.json \
+            --membership-2023 "$RUNNER_TEMP/if07-membership/twse_electronics_membership_2023.csv" \
+            --membership-2024 "$RUNNER_TEMP/if07-membership/twse_electronics_membership_2024.csv" \
+            --membership-2025 "$RUNNER_TEMP/if07-membership/twse_electronics_membership_2025.csv" \
+            --out-dir "$RUNNER_TEMP/if07-stage-b-v0-2"
+
+      - name: Re-read and assert no-return audit boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ['RUNNER_TEMP'])/'if07-stage-b-v0-2/IF07_STAGE_B_V0_2_NO_RETURN_AUDIT.json'
+          o=json.loads(p.read_text(encoding='utf-8'))
+          assert o['candidate_authority_count']==187
+          assert o['candidate_authority_unique_tickers']==128
+          assert o['official_t57_request_count']==128
+          assert o['official_t57_retry_count']==0
+          assert o['selection_rules_changed'] is False
+          assert o['forward_returns_inspected'] is False
+          print(json.dumps(o,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Add immutable run identity and final checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'if07-stage-b-v0-2'
+          receipt={
+            'system':'HENGCE',
+            'artifact':'IF07_STAGE_B_V0_2_RUN_IDENTITY_RECEIPT',
+            'challenger':'IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1',
+            'formal_predecessor_run_41185962038':'INVALID_FOR_FORMAL_RESEARCH_EXECUTION_BUG',
+            'github_repository':os.environ.get('GITHUB_REPOSITORY'),
+            'github_run_id':os.environ.get('GITHUB_RUN_ID'),
+            'github_run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
+            'github_sha':os.environ.get('GITHUB_SHA'),
+            'github_ref':os.environ.get('GITHUB_REF'),
+            'stage_a_rows_sha256':os.environ['EXPECTED_STAGE_A_ROWS_SHA256'],
+            'executor_git_blob_sha':subprocess.check_output(['git','rev-parse','HEAD:research/selection_core_rebuild/if07_stage_b_exact_metadata_executor_v0_2.py'],text=True).strip(),
+            'admission_gate_git_blob_sha':subprocess.check_output(['git','rev-parse','HEAD:research/selection_core_rebuild/if07_stage_b_candidate_manifest_gate_no_network.py'],text=True).strip(),
+            'prereg_git_blob_sha':subprocess.check_output(['git','rev-parse','HEAD:research/selection_core_rebuild/HENGCE_IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1_PREREG_20261031.md'],text=True).strip(),
+            'implementation_contract_git_blob_sha':subprocess.check_output(['git','rev-parse','HEAD:research/selection_core_rebuild/HENGCE_IF07_V0_1_IMPLEMENTATION_CONTRACT_20261031.md'],text=True).strip(),
+            'stage_b_contract_git_blob_sha':subprocess.check_output(['git','rev-parse','HEAD:research/selection_core_rebuild/HENGCE_IF07_STAGE_B_EXACT_METADATA_EXECUTION_CONTRACT_20261031.md'],text=True).strip(),
+            'governance_addendum_git_blob_sha':subprocess.check_output(['git','rev-parse','HEAD:research/selection_core_rebuild/HENGCE_IF07_PRE_UNSEAL_GOVERNANCE_ADDENDUM_V0_1_20261031.md'],text=True).strip(),
+          }
+          (root/'RUN_IDENTITY.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2),encoding='utf-8')
+          files=[]
+          for p in sorted(root.rglob('*')):
+            if p.is_file() and p.name!='FINAL_CHECKSUMS.json':
+              b=p.read_bytes(); files.append({'path':str(p.relative_to(root)),'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b)})
+          (root/'FINAL_CHECKSUMS.json').write_text(json.dumps({'files':files},ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(receipt,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Upload complete raw Stage B v0.2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: if07-stage-b-v0-2-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/if07-stage-b-v0-2/
+          if-no-files-found: error
+          retention-days: 90
