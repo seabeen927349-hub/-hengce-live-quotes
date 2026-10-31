@@ -1,24 +1,17 @@
 #!/usr/bin/env python3
 """HENGCE IF-07 V0.1 — Stage B candidate-manifest admission gate (NO NETWORK).
 
-Purpose
--------
-Prepare the already-frozen Stage A 6/6 candidates for the exact t57 metadata
-stage without reacquiring data, inferring identities, inspecting market outcomes,
-or changing any research rule.
+This program performs zero HTTP/network access. It accepts only the already-produced
+Stage A rows artifact and verifies the frozen Stage A V0.2 handoff before emitting
+an outcome-blind request manifest for the future exact t57 metadata executor.
 
-This program performs ZERO HTTP/network access. It accepts only a Stage A rows
-artifact whose internal candidate population matches the frozen, already-produced
-Stage A V0.2 result:
-  - 3,560 company-quarter rows
-  - 187 accounting 6/6 pre-metadata candidates
-  - 128 unique candidate tickers
-  - candidate period counts 41/23/27/23/19/17/22/15
+Frozen Stage A identity/count invariants:
+- 3,560 company-quarter rows
+- 187 accounting 6/6 pre-metadata candidates
+- 128 unique candidate tickers
+- candidate period counts 41/23/27/23/19/17/22/15
 
-It then emits a deterministic, outcome-blind request manifest containing only
-identity/provenance fields needed by the future exact-metadata executor.
-
-It DOES NOT query t57, map signal dates, test PIT electronics membership, inspect
+It does not query t57, map signal dates, test PIT electronics membership, inspect
 prices/returns, or authorize Discovery returns.
 """
 from __future__ import annotations
@@ -44,11 +37,8 @@ EXPECTED_CANDIDATES_BY_PERIOD = {
     "2024Q2": 22,
     "2024Q3": 15,
 }
-EXPECTED_CURRENT_PERIODS = tuple(EXPECTED_CANDIDATES_BY_PERIOD)
 CHALLENGER = "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1"
 
-# These Stage A invariants are part of the frozen handoff. A candidate must have
-# no market outcome and no timestamp/signal/PIT membership applied yet.
 CONDITION_FIELDS = (
     "D_CASH_ge_0",
     "AR_GAP_ge_0",
@@ -58,7 +48,9 @@ CONDITION_FIELDS = (
     "D_LEV_le_0",
 )
 
-# Key-level guard against accidentally admitting an outcome-contaminated artifact.
+# Guard against outcome contamination. The Stage A artifact's own explicit
+# boundary marker `contains_price_or_forward_return_data=false` is legal and is
+# separately validated by load_rows(); it must not self-trigger this scanner.
 FORBIDDEN_KEY_FRAGMENTS = (
     "forwardreturn",
     "futurereturn",
@@ -73,6 +65,7 @@ FORBIDDEN_KEY_FRAGMENTS = (
     "mae",
     "mfe",
 )
+LEGAL_BOUNDARY_KEY = "containspriceorforwardreturndata"
 
 
 def sha256_bytes(b: bytes) -> str:
@@ -88,7 +81,9 @@ def scan_forbidden_keys(obj: Any, path: str = "$") -> list[str]:
     if isinstance(obj, dict):
         for k, v in obj.items():
             nk = norm_key(k)
-            if any(fragment in nk for fragment in FORBIDDEN_KEY_FRAGMENTS):
+            if nk == LEGAL_BOUNDARY_KEY and v is False:
+                pass
+            elif any(fragment in nk for fragment in FORBIDDEN_KEY_FRAGMENTS):
                 hits.append(f"{path}.{k}")
             hits.extend(scan_forbidden_keys(v, f"{path}.{k}"))
     elif isinstance(obj, list):
@@ -175,24 +170,23 @@ def main() -> int:
     candidates: list[dict[str, Any]] = []
     seen_all_pairs: set[tuple[str, str]] = set()
     duplicate_all_pairs: list[str] = []
-    unresolved_periods = 0
+    unresolved_identity_rows = 0
 
     for row in rows:
         ticker = ticker_of(row)
         period = period_of(row)
         if not ticker or period is None:
-            unresolved_periods += 1
+            unresolved_identity_rows += 1
             continue
         pair = (ticker, period)
         if pair in seen_all_pairs:
             duplicate_all_pairs.append(f"{ticker}:{period}")
         seen_all_pairs.add(pair)
-
         if row.get("accounting_6of6_pre_metadata_candidate") is True:
             candidates.append(row)
 
-    if unresolved_periods:
-        failures.append(f"UNRESOLVED_TICKER_OR_PERIOD_ROWS:{unresolved_periods}")
+    if unresolved_identity_rows:
+        failures.append(f"UNRESOLVED_TICKER_OR_PERIOD_ROWS:{unresolved_identity_rows}")
     if duplicate_all_pairs:
         failures.append("DUPLICATE_TICKER_PERIOD_ROWS:" + ",".join(duplicate_all_pairs[:50]))
 
@@ -212,6 +206,11 @@ def main() -> int:
         )
 
     request_rows: list[dict[str, Any]] = []
+    required_accounting = (
+        "Revenue_YTD", "COGS_YTD", "OperatingIncome_YTD", "CFO_YTD",
+        "AR", "Inventory", "Assets", "Liabilities",
+    )
+
     for row in candidates:
         ticker = ticker_of(row)
         period = period_of(row)
@@ -242,10 +241,6 @@ def main() -> int:
         if not isinstance(cur, dict) or not isinstance(prior, dict):
             failures.append(f"CANDIDATE_ACCOUNTING_PAYLOAD_MISSING:{ticker}:{period}")
             continue
-        required_accounting = (
-            "Revenue_YTD", "COGS_YTD", "OperatingIncome_YTD", "CFO_YTD",
-            "AR", "Inventory", "Assets", "Liabilities",
-        )
         if any(k not in cur or not is_finite_number(cur[k]) for k in required_accounting):
             failures.append(f"CURRENT_ACCOUNTING_INVALID:{ticker}:{period}")
             continue
@@ -281,7 +276,7 @@ def main() -> int:
             "stage_a_candidate": True,
         })
 
-    # Deterministic ordering. No ranking or alpha information is introduced.
+    # Deterministic identity order only. No ranking or alpha information is introduced.
     request_rows.sort(key=lambda x: (x["fiscal_year"], x["quarter"], x["ticker"]))
 
     if len(request_rows) != EXPECTED_CANDIDATES and not failures:
@@ -289,7 +284,11 @@ def main() -> int:
             f"REQUEST_ROW_COUNT_INTERNAL_MISMATCH:{len(request_rows)}!={EXPECTED_CANDIDATES}"
         )
 
-    verdict = "PASS_STAGE_B_MANIFEST_ADMISSION_NO_NETWORK" if not failures else "FAIL_CANDIDATE_MANIFEST_ADMISSION"
+    verdict = (
+        "PASS_STAGE_B_MANIFEST_ADMISSION_NO_NETWORK"
+        if not failures else
+        "FAIL_CANDIDATE_MANIFEST_ADMISSION"
+    )
 
     result = {
         "system": "HENGCE",
@@ -321,8 +320,8 @@ def main() -> int:
         "failures": failures,
         "next_legal_step": (
             "EXACT_T57_METADATA_EXECUTION_FOR_THIS_REQUEST_MANIFEST_ONLY"
-            if not failures
-            else "STOP_DO_NOT_QUERY_T57_FROM_THIS_MANIFEST"
+            if not failures else
+            "STOP_DO_NOT_QUERY_T57_FROM_THIS_MANIFEST"
         ),
     }
 
