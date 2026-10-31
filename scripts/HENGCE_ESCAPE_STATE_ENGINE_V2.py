@@ -51,7 +51,10 @@ def evaluate(p):
 
     formal_flow_allowed = phase in {"EOD_FORMAL", "OWNERSHIP_WEEKLY", "NEXT_DAY_RECONCILIATION"}
 
-    fam = p.get("family_scores", {})
+    det = p.get("detector_output", {})
+    if det.get("status") != "PASS_DETECTOR" or det.get("detector_version") != "HENGCE_ESCAPE_FEATURE_DETECTOR_V1":
+        return _fail("DETECTOR_NOT_VERIFIED", p)
+    fam = det.get("family_scores", {})
     valid_scores = {k: float(v) for k, v in fam.items() if isinstance(v, (int, float)) and 0 <= float(v) <= 100}
     if not all(k in valid_scores for k in REQUIRED_FAMILIES):
         return _fail([f"MISSING_REQUIRED_FAMILY:{k}" for k in REQUIRED_FAMILIES if k not in valid_scores], p)
@@ -59,7 +62,7 @@ def evaluate(p):
         return _fail(f"INSUFFICIENT_VALID_FAMILIES:{len(valid_scores)}", p)
     escape_pressure = sum(valid_scores.values()) / len(valid_scores)
 
-    ev = p.get("events", {})
+    ev = det.get("events", {})
     vulnerability_count = sum(bool(ev.get(k, False)) for k in (
         "vulnerability_crowding_confirmed", "vulnerability_leverage_confirmed",
         "internal_structure_confirmed", "price_flow_divergence_confirmed"))
@@ -109,10 +112,8 @@ def evaluate(p):
     rebound_without_reentry = bool(p.get("prior_level", 0) >= 3 and _bool(ev, "price_recovery_confirmed") and not _bool(ev, "flow_reentry_confirmed"))
     recovery_confirmed = _bool(ev, "recovery_5_consecutive_confirmed") and _bool(ev, "flow_reentry_confirmed")
     prior = p.get("prior_level")
-    hysteresis_applied = False
     if isinstance(prior, int) and prior > level and not recovery_confirmed:
         level = prior
-        hysteresis_applied = True
 
     prev_pressure = _num(p, "escape_pressure_5d_ago")
     velocity = None if prev_pressure is None else escape_pressure - prev_pressure
@@ -140,14 +141,15 @@ def evaluate(p):
         "broad_price_damage": damage,
         "rebound_without_reentry": rebound_without_reentry,
         "recovery_confirmed": recovery_confirmed,
-        "deescalation_hysteresis_applied": hysteresis_applied,
+        "deescalation_hysteresis_applied": isinstance(prior, int) and prior > level and not recovery_confirmed,
         "formal_flow_state_allowed": formal_flow_allowed,
         "trading_authority": "NONE",
         "notes": [
             "PRECONDITION is not an exit signal.",
             "TotalNet is aggregate corroboration, never an independent second institutional channel.",
             "Institutional net flow is not automatically equivalent to AUM allocation change.",
-            "State is primary; Escape Pressure is secondary diagnostic only."
+            "State is primary; Escape Pressure is secondary diagnostic only.",
+            "Event booleans are accepted only from HENGCE_ESCAPE_FEATURE_DETECTOR_V1, not manual input."
         ]
     }
 
