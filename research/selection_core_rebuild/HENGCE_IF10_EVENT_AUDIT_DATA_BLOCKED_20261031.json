@@ -1,0 +1,219 @@
+{
+  "date_taipei": "2026-10-31",
+  "authority_head": "79fc0147a93ce2eb0817c489ae6bb4d912ed2dd4",
+  "branch": "research/selection-core-rebuild-20261031",
+  "scope": "Bounded audit of currently obtainable existing sources; no exhaustive global absence claim.",
+  "locks": {
+    "IF07": "EXECUTION_SPEC_BLOCKED",
+    "IF08": "DATA_BLOCKED",
+    "IF07_IF08_rescue": false,
+    "V6_V43_resurrection": false,
+    "capital_share_migration_resurrection": false,
+    "Escape_selection_alpha_authority": "NONE",
+    "challenger": "NOT_DEFINED",
+    "IF09_IF10_forward_returns": "FORBIDDEN_NOT_INSPECTED",
+    "preregistration": "NOT_STARTED",
+    "production_authority": "NONE",
+    "threshold_retuning": false
+  },
+  "artifact": "IF10_BOUNDED_EVENT_DATA_AUDIT",
+  "verdict": "DATA_BLOCKED",
+  "controlling_blockers": [
+    "HISTORICAL_PANEL_RETRIEVAL_NOT_DEMONSTRATED",
+    "HISTORICAL_ORIGINAL_VERSION_RECONSTRUCTION_UNVERIFIED",
+    "FIRST_PUBLIC_AVAILABILITY_AND_TIMEZONE_NOT_VERIFIED"
+  ],
+  "stages": {
+    "EVENT_DATA_CAPABILITY_AUDIT": "DATA_BLOCKED",
+    "PIT_SAFETY_AUDIT": "DATA_BLOCKED_NOT_VERIFIABLE",
+    "EVENT_TAXONOMY_FEASIBILITY_AUDIT": "INCONCLUSIVE_NOT_ADMITTED",
+    "NOVELTY_GATE": "NOT_REACHED_UPSTREAM_BLOCKED"
+  },
+  "pit_fail_not_asserted": "No evidence proves timestamp is merely ingestion time. Missing provenance does not justify asserting PIT_FAIL; fail closed as DATA_BLOCKED.",
+  "source_inventory": {
+    "mother": "v13 schema contains no original corporate-event text/timing panel.",
+    "library": {
+      "inspected_headers_only": [
+        {
+          "id": "libfile_1263d40a3fc48191a01bf8e8cda0fabe",
+          "name": "event_category_causal_second_pass_20261005.csv",
+          "header": "index,Ticker,date,cats,n,r2,r5,r10"
+        },
+        {
+          "id": "libfile_cc63ddfa58648191b7db58d6a6758024",
+          "name": "event_information_first_pass_20261005.csv",
+          "header": "index,Ticker,EventDate,SignalDate,n_ann,f2,f5,f10,Date,ret5,v20"
+        }
+      ],
+      "finding": "Derived event/return artifacts are not source-text/vintage archives. Only headers read; outcome rows were not opened. Their existence cannot establish PIT source capability."
+    },
+    "research": "Prior orthogonal gate explicitly lacked historical bulk event panel and revision handling; no new verified original event archive resolved."
+  },
+  "fugle_probe": {
+    "contentSpecId": "FCNT000004",
+    "exposed_required": [
+      "symbol_id"
+    ],
+    "exposed_optional": [
+      "timestamp_start",
+      "target_id"
+    ],
+    "sampling": {
+      "source": "hengce/live_universe.json at authority head",
+      "rule": "Sort its 77 symbol IDs lexicographically and use zero-based positions [0,15,30,45,60,76]. Lock before event fetch. No selection by known companies, events, returns or rank.",
+      "symbols": [
+        "1101",
+        "2375",
+        "3042",
+        "4977",
+        "6805",
+        "8996"
+      ],
+      "limitation": "Legacy live list is not frozen TWSE_LISTED_ELECTRONICS_PIT_DAILY universe; selected solely for multi-issuer API/schema smoke audit. Does not prove universe coverage."
+    },
+    "default_responses": [
+      {
+        "symbol": "1101",
+        "count": 12,
+        "earliest": "2026-07-09 18:42:53",
+        "latest": "2026-10-13 14:01:44"
+      },
+      {
+        "symbol": "2375",
+        "count": 12,
+        "earliest": "2026-05-25 16:00:16",
+        "latest": "2026-08-26 16:03:46"
+      },
+      {
+        "symbol": "3042",
+        "count": 12,
+        "earliest": "2026-08-03 15:09:33",
+        "latest": "2026-10-15 13:58:25"
+      },
+      {
+        "symbol": "4977",
+        "count": 12,
+        "earliest": "2026-08-20 17:32:03",
+        "latest": "2026-10-27 16:37:27"
+      },
+      {
+        "symbol": "6805",
+        "count": 12,
+        "earliest": "2026-07-27 13:42:01",
+        "latest": "2026-10-30 16:45:27"
+      },
+      {
+        "symbol": "8996",
+        "count": 12,
+        "earliest": "2026-08-11 19:24:21",
+        "latest": "2026-10-20 14:30:55"
+      }
+    ],
+    "metrics": {
+      "rows": 72,
+      "unique_ids": 72,
+      "unique_urls": 72,
+      "timestamp_matches_url": 72,
+      "earliest": "2026-05-25 16:00:16",
+      "latest": "2026-10-30 16:45:27"
+    },
+    "history_probes": [
+      {
+        "params": {
+          "symbol_id": "1101",
+          "timestamp_start": "2023-01-01 00:00:00"
+        },
+        "result": "ERROR_INVALID_ARGUMENT_NO_DATA_OR_SERVICE_UNAVAILABLE"
+      },
+      {
+        "params": {
+          "symbol_id": "1101",
+          "timestamp_start": "2026-07-09 18:42:53",
+          "target_id": "6a4f7bd39e92b0f406dab217"
+        },
+        "result": "ONE_MATCHING_EVENT_ONLY_NOT_OLDER_PAGE"
+      },
+      {
+        "params": {
+          "symbol_id": "4977",
+          "timestamp_start": "2026-08-20 17:32:03",
+          "target_id": "6a86ca969e92b0f406f0d9dc"
+        },
+        "result": "ONE_MATCHING_EVENT_ONLY_NOT_OLDER_PAGE"
+      },
+      {
+        "params": {
+          "symbol_id": "1101",
+          "timestamp_start": "2026-07-09 18:42:53"
+        },
+        "result": "ERROR_INVALID_ARGUMENT_NO_DATA_OR_SERVICE_UNAVAILABLE"
+      },
+      {
+        "params": {
+          "symbol_id": "4977",
+          "timestamp_start": "2026-08-20 17:32:03"
+        },
+        "result": "ERROR_INVALID_ARGUMENT_NO_DATA_OR_SERVICE_UNAVAILABLE"
+      }
+    ],
+    "history_probe_caveat": "Parameter names are exposed, but format/cursor semantics are undocumented in the returned spec. These failed bounded probes do not prove history is absent or that only 12 records exist. No guessed alternate encodings or retry/backfill engineering pursued.",
+    "request_count": 11
+  },
+  "capability_matrix": {
+    "earliest_queryable_date": "UNKNOWN; observed sample minimum only 2026-05-25 16:00:16",
+    "latest_queryable_date": "UNKNOWN; observed sample maximum only 2026-10-30 16:45:27",
+    "default_limit": "All six defaults return 12; fixed cap suspected, not proven",
+    "historical_panel": "NOT_DEMONSTRATED",
+    "universe_coverage": "UNKNOWN; 6/6 sampled issuers nonempty, not population coverage",
+    "event_counts": "12 returned per sampled issuer; total historical counts unknown",
+    "timestamp_field": "Present second-resolution string without timezone offset",
+    "timestamp_timezone": "NOT_DOCUMENTED_OR_VERIFIED",
+    "first_public_availability": "72/72 timestamp strings agree with spoke_date/spoke_time in returned MOPS URL; internal consistency only, not independent proof of first availability",
+    "source_url_event_id": "72 distinct IDs and URLs; two target-ID probes retain matching event. Long-term stability/versioning unproven",
+    "correction": "Standalone correction and supplement announcements observed; no structured supersedes/version/withdrawal chain in row schema",
+    "duplicates": "No duplicate IDs/URLs in 72-row default sample; cross-publication duplicate semantics unknown",
+    "withdrawal_deletion_replacement": "Not documented or verified",
+    "original_text": "title + descs field labels/content returned; text as fetched preserved in evidence snapshot, original historical versions not proven",
+    "batch_retrieval": "Mechanical per-symbol calls possible; historical pagination/completeness and population retrieval not proven"
+  },
+  "pit_details": {
+    "availability_before_signal": "Required but not established for historical original payloads",
+    "intraday_after_close": "Timestamp strings can distinguish clock times; verified timezone, first-public semantics and a frozen decision cutoff/session rule still absent. No signal_date generated.",
+    "weekend_holiday": "Need verified publication time plus official session calendar and predefined cutoff mapping; none inferred from calendar dates or shifted to midnight.",
+    "correction_handling": "Would require immutable original plus later correction linked at its own availability time; a later correction must not overwrite earlier state.",
+    "duplicate_handling": "Would require stable identity and deterministic duplicate policy; not implemented or deemed proven.",
+    "later_edited_text": "Historical original text reconstruction cannot be established from current API snapshot.",
+    "prohibited_time_proxies_used": false
+  },
+  "taxonomy_feasibility": {
+    "assessment": "Some source templates support deterministic literal field checks in principle. Full scalable taxonomy is not demonstrated and is not admitted as PASS.",
+    "observable_fields": [
+      "_id",
+      "symbol_id",
+      "name",
+      "timestamp",
+      "title",
+      "url",
+      "descs[].title",
+      "descs[].content"
+    ],
+    "example": "Asset acquisition/disposal announcements expose asset nature, transaction amount, purpose, counterpart and prior-announcement fields. A capex-purpose acquisition may overlap acquisition and capacity expansion, so category uniqueness is not inherent.",
+    "possible_fail_closed_design_only": "For a future separate contract, accept exactly one fully satisfied structural template; zero or multiple matches => EXCLUDE. No precedence learned from outcomes. This audit does not freeze a category set or create signals.",
+    "excluded_from_IF10_novelty": [
+      "Guidance/expectation-revision content already scoped in IF08",
+      "Accounting-quality/financial-level changes already scoped in IF07",
+      "Attention/disposition disclosures triggered by price/volume behavior",
+      "Price/volume/flow/broker-based event strength",
+      "Sentiment scoring"
+    ],
+    "manual_scalability": "Not demonstrated that every category requires subjective labor, so TAXONOMY_NOT_MECHANICALLY_SCALABLE is not asserted as fact. Historical source/PIT blockers stop work before classifier engineering."
+  },
+  "novelty": {
+    "formal": "NOT_REACHED",
+    "conceptual": "Corporate-event content/type/timing can be a distinct primitive; this conceptual distinction does not establish current gate PASS or statistical orthogonality.",
+    "signal_defined": false,
+    "price_reaction_proxy_used": false,
+    "financial_or_expectation_family_repackaged": false
+  },
+  "stop": "STOP_NO_DATA_ENGINEERING_RESCUE_NO_CHALLENGER_PREREGISTRATION_WAIT_FOR_USER"
+}

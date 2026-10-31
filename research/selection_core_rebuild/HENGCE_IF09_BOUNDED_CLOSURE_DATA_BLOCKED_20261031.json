@@ -1,0 +1,55 @@
+{
+  "date_taipei": "2026-10-31",
+  "authority_head": "79fc0147a93ce2eb0817c489ae6bb4d912ed2dd4",
+  "branch": "research/selection-core-rebuild-20261031",
+  "scope": "Bounded audit of currently obtainable existing sources; no exhaustive global absence claim.",
+  "locks": {
+    "IF07": "EXECUTION_SPEC_BLOCKED",
+    "IF08": "DATA_BLOCKED",
+    "IF07_IF08_rescue": false,
+    "V6_V43_resurrection": false,
+    "capital_share_migration_resurrection": false,
+    "Escape_selection_alpha_authority": "NONE",
+    "challenger": "NOT_DEFINED",
+    "IF09_IF10_forward_returns": "FORBIDDEN_NOT_INSPECTED",
+    "preregistration": "NOT_STARTED",
+    "production_authority": "NONE",
+    "threshold_retuning": false
+  },
+  "artifact": "IF09_BOUNDED_CLOSURE_AUDIT",
+  "verdict": "DATA_BLOCKED",
+  "reason_code": "TRUE_FIRM_NETWORK_MAPPING_ABSENT",
+  "reason_scope": "No defensible firm-level historical PIT network was found or directly obtainable within the audited existing sources.",
+  "evidence": {
+    "mother": {
+      "id": "libfile_fd13d82114cc8191bd8351d21615e5b3",
+      "version": "13",
+      "inspected": "header only",
+      "finding": "Date,Ticker,Name,Volume,Turnover,Open,High,Low,Close,Margin_MarginBalance,ForeignNet,TrustNet,TotalNet; no relation endpoints, direction, effective dates or historical vintages."
+    },
+    "ledger": {
+      "id": "libfile_3838487b8e7081918e9fc17524f62d34",
+      "name": "HENGCE_RESEARCH_LEDGER_v1_9_20261007.xlsx",
+      "selection": "Latest result of title search sorted modified_at descending.",
+      "Q001": "Requires defensible company-to-company supplier/customer mapping and exact no-lookahead event timing.",
+      "R011_R012": "KILL AS ENGINE / CONTEXT ONLY; true relationship-level information required. Broad-industry and peer-average relabeling forbidden.",
+      "legacy_production_claims": "Superseded by current Selection Core governance; not imported."
+    },
+    "library": "Targeted content/title searches for supplier/customer mapping, network, supply and 供應鏈 did not resolve an admissible relationship panel. Negative search is bounded evidence, not exhaustive absence proof.",
+    "fugle": "Full exposed content-spec list has no supplier/customer edge dataset or historical relationship validity/PIT-state spec.",
+    "research_artifacts": {
+      "tree": "Recursive Git tree complete (truncated=false), filename inventory of network/supply/event/ledger artifacts reviewed.",
+      "prior_gate": "HENGCE_ORTHOGONAL_CAPABILITY_NOVELTY_GATE_20261031.md already records no defensible PIT firm network."
+    }
+  },
+  "required_fields": {
+    "company_to_company_mapping": "ABSENT_IN_VERIFIED_INPUTS",
+    "directed_upstream_downstream_edges": "ABSENT_IN_VERIFIED_INPUTS",
+    "relationship_effective_validity_dates": "ABSENT_IN_VERIFIED_INPUTS",
+    "PIT_historical_state": "UNVERIFIED_UNAVAILABLE",
+    "no_lookahead_timing": "UNVERIFIED_UNAVAILABLE"
+  },
+  "decision": "CLOSE_IF09_AND_PROCEED_ONLY_TO_IF10_CAPABILITY_AUDIT",
+  "forbidden_substitutes_used": false,
+  "manual_network_construction": false
+}
