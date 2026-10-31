@@ -1,0 +1,77 @@
+name: HENGCE Repricing State No-Forward Input Preflight
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-repricing-state-preflight-no-forward.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit frozen inputs without forward returns
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          HIST_URL='https://raw.githubusercontent.com/seabeen927349-hub/-hengce-live-quotes/research/codex-full-reset-run-20261023/research/codex_full_reset_20261023/results/stage_b/TWSE_ELECTRONICS_DAILY_2023_2025.csv.gz'
+          V43_URL='https://raw.githubusercontent.com/seabeen927349-hub/-hengce-live-quotes/research/codex-full-reset-run-20261023/research/codex_full_reset_20261023/ranking_v43_expanding_regime_icir_result.json'
+          curl -fL --retry 3 --retry-delay 2 "$HIST_URL" -o out/hist.csv.gz
+          curl -fL --retry 3 --retry-delay 2 "$V43_URL" -o out/v43.json
+          python - <<'PY'
+          import csv,gzip,hashlib,json,pathlib
+          hist=pathlib.Path('out/hist.csv.gz')
+          expected='e3012612fcf3c38c05f5c7defdf7160a0de481db21ca6381ab53178091ad3f6b'
+          h=hashlib.sha256(hist.read_bytes()).hexdigest()
+          if h!=expected: raise SystemExit(f'HIST_SHA_MISMATCH {h}')
+          with gzip.open(hist,'rt',encoding='utf-8-sig',newline='') as fh:
+              r=csv.DictReader(fh); header=r.fieldnames or []
+              required={'date','ticker','open','close','turnover_ntd'}
+              missing=sorted(required-set(header))
+              volume_candidates=[x for x in header if 'vol' in x.lower() or 'share' in x.lower()]
+              n=0; dates=set(); first=None; last=None
+              for row in r:
+                  d=(row.get('date') or '').strip()
+                  n+=1
+                  if d:
+                      dates.add(d); first=d if first is None else min(first,d); last=d if last is None else max(last,d)
+          v=json.loads(pathlib.Path('out/v43.json').read_text(encoding='utf-8'))
+          wl=v.get('weight_log') or []
+          weight_dates=[str(x.get('signal_date')) for x in wl if x.get('signal_date')]
+          five={'resid_rev','mom20','skip5_60','liquidity','lowvol'}
+          weights_ok=all(set((x.get('weights') or {}).keys())==five for x in wl) if wl else False
+          out={
+            'artifact':'HENGCE_REPRICING_STATE_NO_FORWARD_INPUT_PREFLIGHT',
+            'authority':'RESEARCH_ONLY_NO_FORWARD_RETURN_ACCESS',
+            'historical_panel':{
+              'sha256':h,'sha256_matches_frozen_receipt':h==expected,'header':header,
+              'required_price_fields_missing':missing,'volume_candidates':volume_candidates,
+              'rows':n,'unique_dates':len(dates),'first_date':first,'last_date':last
+            },
+            'frozen_v43_weight_log':{
+              'entries':len(wl),'first_signal_date':min(weight_dates) if weight_dates else None,
+              'last_signal_date':max(weight_dates) if weight_dates else None,'five_factor_weight_keys_exact':weights_ok
+            },
+            'forward_return_fields_read':False,
+            'new_rs_outcomes_computed':False
+          }
+          pathlib.Path('out/preflight.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          if missing: raise SystemExit('PRICE_SCHEMA_BLOCKED')
+          if not volume_candidates: raise SystemExit('VOLUME_SCHEMA_BLOCKED')
+          if not wl or not weights_ok: raise SystemExit('V43_WEIGHT_LOG_BLOCKED')
+          PY
+      - name: Upload preflight artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_REPRICING_STATE_NO_FORWARD_INPUT_PREFLIGHT
+          path: out/preflight.json
+          if-no-files-found: warn
+          retention-days: 7
