@@ -71,22 +71,20 @@ Interpretation:
 - this is `CONNECTOR_RETRIEVAL_BLOCKED`, **not** evidence that Fugle or the paid account lacks the underlying history;
 - no returned coverage may be invented.
 
-### 4. Official TWSE / MOPS capability audit
+### 4. Official-source capability audit
 
-Verified official sources show:
-- TWSE OpenAPI exposes listed-company financial statement tables including comprehensive income and balance sheet data;
-- current comprehensive-income payload contains report date, fiscal year, quarter, company code/name, revenue, cost, gross profit, operating expenses, operating profit and EPS;
-- MOPS exposes historical financial-report interfaces for quarterly income statement, balance sheet and cash-flow statement, plus historical material-information search;
-- the MOPS material-information data model includes publication date/time, company code/name, subject, applicable clause, fact date and explanation.
+Verified on 2026-10-31:
+- TWSE OpenAPI documents listed-company financial-statement endpoints including comprehensive income and balance sheet tables;
+- the live `上市公司綜合損益表(一般業)` payload includes `出表日期`, fiscal year, quarter, company code/name, revenue, cost, gross profit, operating expenses, operating profit and EPS;
+- TWSE OpenAPI also documents `上市公司每日重大訊息`;
+- MOPS exposes financial-report sections and both current and historical material-information search interfaces; current material-information listings visibly include company code/name, publication time and subject;
+- Securities and Exchange Act Article 36 requires Q1/Q2/Q3 financial reports within 45 days after quarter-end and annual financial reports within three months after fiscal year-end.
 
-Point-in-time timing law verified:
-- Securities and Exchange Act Article 36 requires Q1/Q2/Q3 financial reports within 45 days after quarter-end;
-- annual financial reports are due within three months after fiscal year-end.
-
-Important limitation:
-- the current TWSE OpenAPI `出表日期` is a table output date, not sufficient proof of each company’s actual filing timestamp;
-- no company-quarter filing-time panel has yet been persisted into the HENGCE corpus in this rebuild;
-- therefore no historical earnings-quality challenger may be tested yet.
+Important limitations:
+- `出表日期` in the live TWSE OpenAPI table is the table output date and is **not** sufficient proof of each company’s actual filing timestamp;
+- a historical bulk quarterly-statement acquisition path with company-specific filing/availability timestamps has not yet been verified and persisted in HENGCE;
+- a historical bulk material-event panel with stable taxonomy, deduplication and revision handling has not yet been persisted in HENGCE;
+- therefore neither IF-07 nor IF-10 is data-capability PASS yet.
 
 ## Family-by-family gate
 
@@ -101,15 +99,15 @@ Reason:
 Data-capability verdict: `INCONCLUSIVE`
 
 Why not PASS yet:
-- required fields have a credible official/Fugle acquisition path;
+- required fields have credible source families in Fugle and official financial-report infrastructure;
 - however a reproducible 2023-2026 company-quarter panel with a verified `filing_date` or defensible `availability_date` has not yet been persisted and re-read;
 - Fugle connector retrieval is currently blocked;
 - current official OpenAPI snapshots alone do not establish historical company-specific availability time.
 
 Legal next action for IF-07:
-1. build raw official MOPS quarterly statement snapshots for 2023-2026;
-2. retain company-quarter, report period, source retrieval provenance and revision/version handling;
-3. acquire actual filing timestamp where possible;
+1. identify and verify an official historical quarterly-statement acquisition path for 2023-2026;
+2. retain company-quarter, report period, source provenance and revision/version handling;
+3. acquire actual filing/announcement timestamp where possible;
 4. if actual filing timestamp cannot be acquired, do **not** silently substitute quarter-end. A conservative statutory-deadline availability convention may only be used if separately frozen in the preregistration before any forward-return test;
 5. verify fields required by the frozen R-014 acquisition contract: OCF/CFO, CFO/revenue, receivables and growth, inventory and growth, gross margin, operating margin, assets, liabilities, capex/FCF where available.
 
@@ -159,11 +157,11 @@ Reason:
 Data-capability verdict: `INCONCLUSIVE`
 
 Positive evidence:
-- official MOPS exposes historical material-information search;
-- official material-information schema contains publication date/time and fact date, which can support no-lookahead event timing.
+- TWSE OpenAPI documents listed-company daily material-information data;
+- MOPS visibly exposes historical material-information search and publication time in current material-information listings.
 
 Remaining blocker:
-- a reproducible 2023-2026 historical bulk event panel with stable event taxonomy, deduplication and revision handling has not yet been persisted and re-read inside HENGCE.
+- a reproducible 2023-2026 historical bulk event panel with stable event taxonomy, exact event-time handling, deduplication and revision handling has not yet been persisted and re-read inside HENGCE.
 
 Legal next action:
 - acquire and freeze the raw event panel first;
@@ -184,8 +182,8 @@ Current Selection Core state remains:
 - new-candidate forward return inspected: `NO`
 
 Priority after this gate:
-1. IF-07 Earnings Quality — highest priority because novelty passes and the official raw financial-statement path is real, but PIT availability must be locked first;
-2. IF-10 Structured Corporate Events — second acquisition lane because official timestamped event infrastructure exists, but historical bulk persistence/taxonomy is not yet locked;
+1. IF-07 Earnings Quality — highest priority because novelty passes and credible source families exist, but historical PIT availability must be proven first;
+2. IF-10 Structured Corporate Events — second acquisition lane because timestamped official event infrastructure exists, but historical bulk persistence/taxonomy is not yet locked;
 3. IF-08 Expectation Revision — remain `DATA_BLOCKED` until a genuine consensus/revision source exists;
 4. IF-09 firm-network Lead-Lag — remain `DATA_BLOCKED` until a defensible firm-level relationship map exists.
 
@@ -194,7 +192,7 @@ Priority after this gate:
 `ACQUIRE_AND_FREEZE_PIT_INPUT_PANEL_BEFORE_CHALLENGER_PREREGISTRATION`
 
 Specifically:
-- first attempt IF-07 official MOPS 2023-2026 quarterly statement + availability panel;
+- first verify and acquire IF-07 historical quarterly statements plus a defensible availability-time panel;
 - if the required PIT timing cannot be made reproducible, record `DATA_BLOCKED` or `INCONCLUSIVE` and do not manufacture a challenger;
 - only after one orthogonal family is both novel and data-capable may a challenger definition be written;
 - persist and re-read that preregistration before any 5/10/20/40/60-session forward-return calculation or any null comparison.
