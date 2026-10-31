@@ -6,14 +6,11 @@ name: HENGCE IF07 MOPS Capability Probe
     branches:
       - research/selection-core-rebuild-20261031
     paths:
-      - 'research/selection_core_rebuild/if07_mops_actions_probe.py'
-      - 'research/selection_core_rebuild/if07_mops_actions_probe_v0_2.py'
-      - 'research/selection_core_rebuild/if07_original_filing_gate_probe.py'
-      - 'research/selection_core_rebuild/if07_ixbrl_table_probe.py'
+      - 'research/selection_core_rebuild/if07_xbrl_bulk_page_probe.py'
       - '.github/workflows/hengce-if07-mops-capability-probe.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: hengce-if07-mops-capability-probe
@@ -22,13 +19,13 @@ concurrency:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Checkout research branch
         uses: actions/checkout@v4
         with:
           ref: research/selection-core-rebuild-20261031
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -36,43 +33,17 @@ jobs:
           python-version: '3.12'
 
       - name: Install probe dependencies
-        run: python -m pip install --disable-pip-version-check requests pandas lxml beautifulsoup4
+        run: python -m pip install --disable-pip-version-check requests lxml beautifulsoup4
 
-      - name: Run MOPS capability probe V0.2 — no returns
-        run: python research/selection_core_rebuild/if07_mops_actions_probe_v0_2.py
+      - name: Probe official MOPS XBRL bulk page — no returns
+        run: python research/selection_core_rebuild/if07_xbrl_bulk_page_probe.py
 
-      - name: Run original-filing correction gate probe — no returns
-        run: python research/selection_core_rebuild/if07_original_filing_gate_probe.py
+      - name: Show receipt
+        run: cat research/selection_core_rebuild/generated/IF07_XBRL_BULK_PAGE_PROBE.json
 
-      - name: Run direct iXBRL table and ebook scope probe — no returns
-        run: python research/selection_core_rebuild/if07_ixbrl_table_probe.py
-
-      - name: Show receipts
-        run: |
-          cat research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
-          cat research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json
-          cat research/selection_core_rebuild/generated/IF07_IXBRL_TABLE_PROBE.json
-
-      - name: Upload receipt artifacts
+      - name: Upload receipt artifact
         uses: actions/upload-artifact@v4
         with:
-          name: if07-mops-capability-probes
-          path: |
-            research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
-            research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json
-            research/selection_core_rebuild/generated/IF07_IXBRL_TABLE_PROBE.json
+          name: if07-xbrl-bulk-page-probe
+          path: research/selection_core_rebuild/generated/IF07_XBRL_BULK_PAGE_PROBE.json
           if-no-files-found: error
-
-      - name: Persist receipts to research branch
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'hengce-if07-research-bot'
-          git config user.email 'hengce-if07-research-bot@users.noreply.github.com'
-          git add research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json research/selection_core_rebuild/generated/IF07_IXBRL_TABLE_PROBE.json
-          if git diff --cached --quiet; then
-            echo 'No receipt change.'
-            exit 0
-          fi
-          git commit -m 'research: persist IF-07 iXBRL table probe receipts'
-          git push origin HEAD:research/selection-core-rebuild-20261031
