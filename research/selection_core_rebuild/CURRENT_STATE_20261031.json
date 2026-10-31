@@ -4,7 +4,7 @@
   "date": "2026-10-31",
   "language": "zh-TW",
   "selection_core": {
-    "state": "IF07_PREREGISTERED_NO_RETURN_PANEL_BUILD_IN_PROGRESS",
+    "state": "IF07_STAGE_A_PASS_NO_RETURN_STAGE_B_INPUT_LIST_NOT_PERSISTED",
     "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
     "challenger_status": "PREREGISTERED_NOT_YET_RETURN_TESTED",
     "trading_authority": "NONE",
@@ -26,20 +26,56 @@
   },
   "if07": {
     "novelty": "PASS",
-    "source_data_capability": "PASS",
+    "source_data_capability": "PASS_DATA_BLOCKED_NO",
+    "data_acquisition_expansion": "CLOSED",
     "challenger_id": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
     "preregistration": "research/selection_core_rebuild/HENGCE_IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1_PREREG_20261031.md",
     "implementation_contract": "research/selection_core_rebuild/HENGCE_IF07_V0_1_IMPLEMENTATION_CONTRACT_20261031.md",
+    "pre_return_erratum": "research/selection_core_rebuild/HENGCE_IF07_V0_1_PRE_RETURN_IMPLEMENTATION_ERRATUM_20261031.md",
+    "data_sufficiency_gate": "research/selection_core_rebuild/HENGCE_IF07_PIT_DATA_SUFFICIENCY_GATE_20261031.md",
+    "stage_a_result": "research/selection_core_rebuild/HENGCE_IF07_STAGE_A_V0_2_NO_RETURN_GATE_RESULT_20261031.md",
     "preregistration_persisted_and_reread": true,
     "forward_return_inspected": false,
-    "official_bulk_ixbrl_acquisition": "PASS",
-    "official_bulk_ixbrl_protocol_proof": "research/selection_core_rebuild/HENGCE_IF07_OFFICIAL_BULK_IXBRL_PROTOCOL_PROOF_20261031.md",
-    "direct_ixbrl_parse_capability": "PASS",
-    "direct_ixbrl_parse_proof": "research/selection_core_rebuild/HENGCE_IF07_DIRECT_IXBRL_TABLE_PROOF_20261031.md",
-    "period_column_semantics": "PASS",
-    "period_column_proof": "research/selection_core_rebuild/HENGCE_IF07_PERIOD_COLUMN_SEMANTICS_PROOF_20261031.md",
-    "current_timestamp_problem": "RESOLVING_BULK_ZIP_MEMBER_TIMESTAMP_VS_VERIFIED_UPLOAD_TIMESTAMP",
+    "timestamp_proxy_research": "CLOSED_REJECTED_SHORTCUTS_MUST_NOT_BE_REOPENED",
+    "exact_upload_timestamp_authority": "TWSE_T57SB01_上傳日期_ONLY",
     "fugle_connector": "DATA_BLOCKED_NOT_PROVIDER_ABSENCE"
+  },
+  "stage_a_no_return": {
+    "status": "PASS_NO_RETURN_STAGE_A",
+    "workflow_run_id": 41176211171,
+    "job_id": 124464189390,
+    "builder_step": "SUCCESS",
+    "workflow_level_conclusion": "FAILURE_PERSISTENCE_STEP_ONLY",
+    "persistence_failure": "NON_FAST_FORWARD_BRANCH_RACE",
+    "run_checkout_sha": "5c7122c5fa9d64e3fa5604be83cfae0a706c40d1",
+    "concurrent_remote_commit_sha": "e799947a24b6352d88d1a563595d297897d42a6f",
+    "runner_local_receipt_commit_unpushed": "f691935a",
+    "pair_attempt_count": 3560,
+    "accounting_pair_available_count": 2853,
+    "accounting_6of6_pre_metadata_candidate_count": 187,
+    "accounting_6of6_pre_metadata_candidate_unique_tickers": 128,
+    "candidate_by_period": {
+      "2022Q4": 41,
+      "2023Q1": 23,
+      "2023Q2": 27,
+      "2023Q3": 23,
+      "2023Q4": 19,
+      "2024Q1": 17,
+      "2024Q2": 22,
+      "2024Q3": 15
+    },
+    "parser_crosscheck_mismatch_count": 0,
+    "minimum_required_events": 80,
+    "minimum_required_unique_tickers": 40,
+    "sample_sufficiency_upper_bound_verdict": "UPPER_BOUND_SUFFICIENT_TO_CONTINUE_EXACT_METADATA_GATE",
+    "formal_pit_universe_applied": false,
+    "upload_timestamp_applied": false,
+    "signal_date_applied": false,
+    "actions_artifact_id": 13032993979,
+    "actions_artifact_sha256": "2366448ec259065df5e2a515a11bb9fbf0a5c40b806607f6ac1edce0385ee782",
+    "actions_artifact_downloaded_after_user_stop": false,
+    "candidate_identity_list_persisted_on_branch": false,
+    "discovery_returns_authorized": false
   },
   "metadata_artifacts": {
     "blank_year_v0_1": {
@@ -50,7 +86,7 @@
     },
     "year_scope_probe": {
       "status": "COMPLETED_DIAGNOSTIC",
-      "finding": "Explicit-year queries work for some tickers but t57sb01 rate-limits the runner with 查詢過量; t57sb01 is not accepted as the sole scalable metadata authority."
+      "finding": "All-market scalable indexing is rate-limited, but exact company-quarter t57sb01 上傳日期 remains the frozen Stage B authority for accounting candidates; unresolved candidate metadata must fail closed."
     }
   },
   "pit_universe": {
@@ -68,18 +104,28 @@
   },
   "forward_return_lock": {
     "new_challenger_forward_return_inspected": false,
-    "discovery_returns_allowed_only_after_no_return_panel_audit_and_count_integrity_gates": true,
+    "state": "CLOSED",
+    "discovery_returns_allowed_only_after_exact_metadata_signal_date_pit_universe_and_no_return_panel_integrity_gates": true,
     "validation_returns_forbidden_until_discovery_pass": true
   },
-  "next_legal_step": "COMPLETE_PIT_TIMESTAMP_AUTHORITY -> BUILD_IF07_DISCOVERY_ACCOUNTING_PANEL_NO_RETURNS -> JOIN_CANONICAL_SIGNAL_DATE_ELECTRONICS_MEMBERSHIP -> PERSIST_AND_REREAD_COUNT_ONLY_AUDIT",
+  "user_stop_rule": {
+    "no_further_data_downloads_or_acquisition_expansion": true,
+    "stage_a_rerun_for_persistence_only": "FORBIDDEN",
+    "existing_actions_artifact_download_after_stop": "NOT_PERFORMED"
+  },
+  "next_legal_step": "STAGE_B_T57_EXACT_METADATA_ONLY_FOR_THE_FROZEN_187_STAGE_A_CANDIDATES, BUT DO_NOT START FROM AN INFERRED_OR_REGENERATED LIST; CANDIDATE IDENTITIES ARE NOT PERSISTED ON BRANCH AND THE EXISTING ACTIONS ARTIFACT HAS NOT BEEN DOWNLOADED UNDER THE USER STOP RULE",
   "forbidden_next_steps": [
     "REVIVE_V6_OR_V43_AS_NEW_CORE",
     "RESCUE_CAPITAL_SHARE_MIGRATION",
     "PRICE_VOLUME_RETUNING_AS_NEW_SMART_MONEY_ALPHA",
     "ESCAPE_ALPHA_INJECTION",
+    "REOPEN_TIMESTAMP_PROXY_RESEARCH",
+    "EXPAND_DATA_SOURCE_FAMILIES",
+    "RERUN_STAGE_A_MERELY_TO_REPAIR_RECEIPT_PERSISTENCE",
     "USE_INVALID_IF07_METADATA_INDEX_V0_1_AS_PANEL_INPUT",
     "USE_ANNUAL_TICKER_UNION_AS_FORMAL_PIT_UNIVERSE",
-    "ATTACH_DISCOVERY_RETURNS_BEFORE_NO_RETURN_PANEL_AUDIT",
+    "INFER_OR_RECONSTRUCT_187_CANDIDATE_IDENTITIES_FROM_COUNTS",
+    "ATTACH_DISCOVERY_RETURNS_BEFORE_STAGE_B_AND_PIT_PANEL_INTEGRITY_GATES",
     "OPEN_VALIDATION_RETURNS_BEFORE_DISCOVERY_PASS",
     "MUTATE_IF07_V0_1_AFTER_RETURN_INSPECTION"
   ]
