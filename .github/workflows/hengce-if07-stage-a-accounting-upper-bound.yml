@@ -1,0 +1,83 @@
+name: HENGCE IF07 Stage A Accounting Upper Bound No Returns
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - 'research/selection_core_rebuild/if07_stage_a_accounting_upper_bound_builder.py'
+      - 'research/selection_core_rebuild/IF07_DISCOVERY_ACCOUNTING_ACQUISITION_SUPERSET_2022_2024.json'
+      - '.github/workflows/hengce-if07-stage-a-accounting-upper-bound.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-if07-stage-a-accounting-upper-bound
+  cancel-in-progress: false
+
+jobs:
+  stage-a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/selection-core-rebuild-20261031
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install parser dependencies
+        run: python -m pip install --disable-pip-version-check requests lxml beautifulsoup4 pandas
+
+      - name: Build Stage A accounting upper bound — strictly no returns
+        id: build
+        continue-on-error: true
+        run: python research/selection_core_rebuild/if07_stage_a_accounting_upper_bound_builder.py
+
+      - name: Show no-return audit if materialized
+        if: always()
+        shell: bash
+        run: |
+          if [ -f research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json ]; then
+            cat research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json
+          else
+            echo 'NO_AUDIT_FILE_MATERIALIZED'
+          fi
+
+      - name: Upload Stage A artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: if07-stage-a-accounting-upper-bound-no-returns
+          path: |
+            research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json
+            research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json
+          if-no-files-found: warn
+          compression-level: 6
+
+      - name: Persist materialized Stage A receipts to research branch
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-if07-stage-a-bot'
+          git config user.email 'hengce-if07-stage-a-bot@users.noreply.github.com'
+          git add research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json 2>/dev/null || true
+          git add research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo 'No Stage A receipt files to persist.'
+            exit 0
+          fi
+          git commit -m 'research: persist IF-07 Stage A no-return accounting upper bound'
+          git push origin HEAD:research/selection-core-rebuild-20261031
+
+      - name: Propagate builder failure after evidence capture
+        if: steps.build.outcome != 'success'
+        run: exit 1
