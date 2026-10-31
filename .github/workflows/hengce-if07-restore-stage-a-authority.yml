@@ -1,0 +1,102 @@
+name: HENGCE IF07 Restore Stage A Authority Artifact
+
+on:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - .github/workflows/hengce-if07-restore-stage-a-authority.yml
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  restore-authority-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout current research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/selection-core-rebuild-20261031
+          fetch-depth: 0
+
+      - name: Download exact existing Stage A artifact only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api \
+            -H 'Accept: application/vnd.github+json' \
+            /repos/${{ github.repository }}/actions/artifacts/13032993979/zip \
+            > /tmp/if07-stage-a-original.zip
+          echo '2366448ec259065df5e2a515a11bb9fbf0a5c40b806607f6ac1edce0385ee782  /tmp/if07-stage-a-original.zip' | sha256sum -c -
+          mkdir -p /tmp/if07-stage-a-original
+          unzip -q /tmp/if07-stage-a-original.zip -d /tmp/if07-stage-a-original
+          test "$(find /tmp/if07-stage-a-original -maxdepth 1 -type f | wc -l)" -eq 2
+          test -f /tmp/if07-stage-a-original/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json
+          test -f /tmp/if07-stage-a-original/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json
+          echo '64ea76312f99413965edc8ca9797864ef04d3ba8c2cee1f47bf950ffa9fa3bfb  /tmp/if07-stage-a-original/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json' | sha256sum -c -
+          echo 'abdfa1d7e689ab96d50f6f5f93282ecd311330ce55c54e15a83700364aa3815b  /tmp/if07-stage-a-original/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json' | sha256sum -c -
+
+      - name: Verify original no-return Stage A identity and frozen counts
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, collections, pathlib
+          p=pathlib.Path('/tmp/if07-stage-a-original')
+          rows_doc=json.loads((p/'IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json').read_text())
+          audit=json.loads((p/'IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json').read_text())
+          assert rows_doc.get('artifact') == 'IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS'
+          assert rows_doc.get('contains_price_or_forward_return_data') is False
+          assert audit.get('artifact') == 'IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS'
+          assert audit.get('status') == 'PASS_NO_RETURN_STAGE_A'
+          rows=rows_doc['rows']
+          assert len(rows) == 3560
+          c=[r for r in rows if r.get('accounting_6of6_pre_metadata_candidate') is True]
+          assert len(c) == 187
+          assert len({str(r['ticker']) for r in c}) == 128
+          expected={'2022Q4':41,'2023Q1':23,'2023Q2':27,'2023Q3':23,'2023Q4':19,'2024Q1':17,'2024Q2':22,'2024Q3':15}
+          got=collections.Counter(f"{int(r['fiscal_year'])}Q{int(r['quarter'])}" for r in c)
+          assert dict(got) == expected
+          pairs=[(str(r['ticker']),int(r['fiscal_year']),int(r['quarter'])) for r in rows]
+          assert len(pairs) == len(set(pairs))
+          conds=('D_CASH_ge_0','AR_GAP_ge_0','INV_GAP_ge_0','D_GM_ge_0','D_OM_ge_0','D_LEV_le_0')
+          assert all(isinstance(r.get('conditions'),dict) and all(r['conditions'].get(k) is True for k in conds) for r in c)
+          assert audit.get('pair_attempt_count') == 3560
+          assert audit.get('accounting_6of6_pre_metadata_candidate_count') == 187
+          assert audit.get('accounting_6of6_pre_metadata_candidate_unique_tickers') == 128
+          assert audit.get('accounting_6of6_pre_metadata_candidate_by_period') == expected
+          assert audit.get('parser_crosscheck_mismatch_count') == 0
+          print('ORIGINAL_STAGE_A_AUTHORITY_VERIFIED')
+          PY
+
+      - name: Persist exact original files without transformation
+        run: |
+          set -euo pipefail
+          mkdir -p research/selection_core_rebuild/generated
+          cp --preserve=mode,timestamps /tmp/if07-stage-a-original/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json research/selection_core_rebuild/generated/
+          cp --preserve=mode,timestamps /tmp/if07-stage-a-original/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json research/selection_core_rebuild/generated/
+          echo '64ea76312f99413965edc8ca9797864ef04d3ba8c2cee1f47bf950ffa9fa3bfb  research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json' | sha256sum -c -
+          echo 'abdfa1d7e689ab96d50f6f5f93282ecd311330ce55c54e15a83700364aa3815b  research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json' | sha256sum -c -
+
+      - name: Commit recovered authority artifact and push safely
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-if07-authority-recovery-bot'
+          git config user.email 'hengce-if07-authority-recovery-bot@users.noreply.github.com'
+          git add research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json
+          git add research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json
+          git commit -m 'research: recover original IF07 Stage A authority artifact'
+          git pull --rebase origin research/selection-core-rebuild-20261031
+          git push origin HEAD:research/selection-core-rebuild-20261031
+
+      - name: Fetch remote branch and verify persisted bytes
+        run: |
+          set -euo pipefail
+          git fetch origin research/selection-core-rebuild-20261031
+          git show origin/research/selection-core-rebuild-20261031:research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json > /tmp/remote_rows.json
+          git show origin/research/selection-core-rebuild-20261031:research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json > /tmp/remote_audit.json
+          echo '64ea76312f99413965edc8ca9797864ef04d3ba8c2cee1f47bf950ffa9fa3bfb  /tmp/remote_rows.json' | sha256sum -c -
+          echo 'abdfa1d7e689ab96d50f6f5f93282ecd311330ce55c54e15a83700364aa3815b  /tmp/remote_audit.json' | sha256sum -c -
+          echo 'REMOTE_AUTHORITY_BYTES_VERIFIED'
