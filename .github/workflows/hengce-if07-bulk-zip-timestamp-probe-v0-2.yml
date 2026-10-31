@@ -1,0 +1,36 @@
+name: HENGCE IF07 Bulk ZIP Timestamp Probe V0.2 No Returns
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - 'research/selection_core_rebuild/if07_bulk_zip_timestamp_probe_v0_2.py'
+      - '.github/workflows/hengce-if07-bulk-zip-timestamp-probe-v0-2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/selection-core-rebuild-20261031
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests
+      - name: Compare ZIP member timestamps with verified upload timestamps V0.2 — no returns
+        run: python research/selection_core_rebuild/if07_bulk_zip_timestamp_probe_v0_2.py
+      - name: Show receipt
+        run: cat research/selection_core_rebuild/generated/IF07_BULK_ZIP_TIMESTAMP_PROBE_V0_2.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: if07-bulk-zip-timestamp-probe-v0-2
+          path: research/selection_core_rebuild/generated/IF07_BULK_ZIP_TIMESTAMP_PROBE_V0_2.json
+          if-no-files-found: error
