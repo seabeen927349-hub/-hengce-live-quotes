@@ -4,8 +4,9 @@
   "date": "2026-10-31",
   "language": "zh-TW",
   "selection_core": {
-    "state": "BASELINE_NULL_LOCKED_CHALLENGER_NOT_YET_DEFINED",
-    "challenger": "NOT_YET_DEFINED",
+    "state": "IF07_PREREGISTERED_PANEL_BUILD_REQUIRED",
+    "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+    "challenger_status": "PREREGISTERED_NOT_YET_RETURN_TESTED",
     "trading_authority": "NONE",
     "production_promotion": false,
     "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
@@ -17,10 +18,6 @@
     "CONTROL_RETAIL_V0_11_1": "FROZEN_LIFECYCLE_EXIT_BENCHMARK_ONLY",
     "MONSTER_BUY_V1": "FROZEN_LONG_HORIZON_EVENT_BENCHMARK_ONLY"
   },
-  "v6_exact": {
-    "factors": ["resid_rev", "mom20", "skip5_60", "liquidity", "lowvol"],
-    "weights": [0.20, 0.25, 0.30, 0.05, 0.20]
-  },
   "latest_candidate_novelty_gate": {
     "candidate": "CROSS_STOCK_CAPITAL_SHARE_MIGRATION_DRAFT",
     "status": "FAIL",
@@ -28,58 +25,42 @@
     "forward_return_test_executed": false,
     "preregistered": false,
     "rescue_tuning_allowed": false,
-    "git_branch": "research/selection-core-rebuild-20261031",
     "git_path": "research/selection_core_rebuild/HENGCE_CAPITAL_SHARE_MIGRATION_NOVELTY_GATE_20261031.md"
   },
-  "latest_information_family_gate": {
-    "overall": "PASS",
+  "orthogonal_family_gate": {
     "verdict": "PASS_WITH_DATA_ACQUISITION_BLOCKERS",
-    "forward_return_test_executed": false,
-    "challenger_defined": false,
-    "git_path": "research/selection_core_rebuild/HENGCE_ORTHOGONAL_CAPABILITY_NOVELTY_GATE_20261031.md",
-    "families": {
-      "IF_07_FUNDAMENTAL_QUALITY": {
-        "novelty": "PASS",
-        "data_capability": "INCONCLUSIVE",
-        "reason": "credible source families exist, but reproducible 2023-2026 company-quarter PIT availability panel is not yet persisted"
-      },
-      "IF_08_EXPECTATION_REVISION": {
-        "novelty": "PASS",
-        "data_capability": "DATA_BLOCKED",
-        "reason": "no verified genuine historical consensus/revision source in mother, Library, or current Fugle content specs"
-      },
-      "IF_09_FIRM_NETWORK_LEAD_LAG": {
-        "novelty": "PASS",
-        "data_capability": "DATA_BLOCKED",
-        "reason": "no defensible PIT customer-vendor relationship graph; broad industry peer proxies are forbidden by graveyard evidence"
-      },
-      "IF_10_STRUCTURED_CORPORATE_EVENTS": {
-        "novelty": "PASS",
-        "data_capability": "INCONCLUSIVE",
-        "reason": "official timestamped event infrastructure exists, but reproducible 2023-2026 bulk panel/taxonomy/revision handling is not yet persisted"
-      }
-    }
+    "git_path": "research/selection_core_rebuild/HENGCE_ORTHOGONAL_CAPABILITY_NOVELTY_GATE_20261031.md"
   },
-  "data_lanes": {
-    "canonical_mother_orthogonal_fields": "DATA_BLOCKED",
-    "fugle_historical_content_connector": "DATA_BLOCKED",
-    "fugle_historical_content_connector_detail": "content specs exposed but get_content returned empty payloads for 2330 FCNT000091/FCNT000052/FCNT000001; do not infer provider-level absence",
-    "earnings_quality_R014": "INCONCLUSIVE",
-    "structured_events": "INCONCLUSIVE",
-    "expectation_revision": "DATA_BLOCKED",
-    "firm_network_supply_chain": "DATA_BLOCKED",
-    "broker_microstructure_control": "DATA_BLOCKED",
-    "pressure_response_R019": "PROSPECTIVE_ACTIVATION_ONLY_PREDICTIVE_UNKNOWN"
+  "if07_capability": {
+    "novelty": "PASS",
+    "data_capability": "PASS",
+    "pit_timestamp_source": "TWSE_ELECTRONIC_REPORT_UPLOAD_TIMESTAMP",
+    "machine_readable_statements": "MOPS_DOM_HTML_TABLES",
+    "fugle_connector": "DATA_BLOCKED",
+    "proof_path": "research/selection_core_rebuild/HENGCE_IF07_EARNINGS_QUALITY_PIT_CAPABILITY_PROOF_20261031.md"
   },
-  "next_legal_step": "ACQUIRE_AND_FREEZE_PIT_INPUT_PANEL_BEFORE_CHALLENGER_PREREGISTRATION",
-  "priority_lane": "IF_07_FUNDAMENTAL_QUALITY_EARNINGS_QUALITY",
-  "fallback_acquisition_lane": "IF_10_STRUCTURED_CORPORATE_EVENTS",
+  "active_preregistration": {
+    "id": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+    "path": "research/selection_core_rebuild/HENGCE_IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1_PREREG_20261031.md",
+    "persisted": true,
+    "re_read_verified": true,
+    "primary_horizon_sessions": 20,
+    "discovery": "2023-01-01/2024-12-31",
+    "validation": "2025-01-01/2026-10-31",
+    "validation_open_allowed": false
+  },
+  "next_legal_step": "BUILD_IF07_PIT_ACCOUNTING_EVENT_PANEL_WITHOUT_RETURNS",
+  "forward_return_lock": {
+    "discovery_returns_allowed_only_after_panel_audit": true,
+    "validation_returns_forbidden_until_discovery_pass": true
+  },
   "forbidden_next_steps": [
     "REVIVE_V6_OR_V43_AS_NEW_CORE",
     "RESCUE_CAPITAL_SHARE_MIGRATION",
     "PRICE_VOLUME_RETUNING_AS_NEW_SMART_MONEY_ALPHA",
     "ESCAPE_ALPHA_INJECTION",
-    "FORWARD_RETURN_BEFORE_PREREGISTRATION",
-    "SILENT_SUBSTITUTION_OF_QUARTER_END_FOR_FILING_OR_AVAILABILITY_DATE"
+    "ATTACH_RETURNS_BEFORE_IF07_PANEL_SCHEMA_COVERAGE_PROVENANCE_AUDIT",
+    "OPEN_VALIDATION_RETURNS_BEFORE_DISCOVERY_PASS",
+    "MUTATE_IF07_V0_1_AFTER_RETURN_INSPECTION"
   ]
 }
