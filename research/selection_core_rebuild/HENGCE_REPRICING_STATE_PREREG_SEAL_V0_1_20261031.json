@@ -1,0 +1,58 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_REPRICING_STATE_PREREG_SEAL",
+  "version": "V0_1_20261031",
+  "research_lane": "REPRICING_STATE_SELECTION_CORE",
+  "status": "PREREG_COMPLETE_FORWARD_RETURNS_SEALED",
+  "authority_bootstrap_head_before_lane": "243248d58aa5fb053e1cd7ec5bcc2f528730594f",
+  "primitive_decomposition": {
+    "path": "research/selection_core_rebuild/HENGCE_REPRICING_STATE_INFORMATION_PRIMITIVES_V0_1_20261031.md",
+    "freeze_commit": "927b5cf8d59d8a22d950c02e4c100ead358a1796"
+  },
+  "preregistration": {
+    "path": "research/selection_core_rebuild/HENGCE_REPRICING_STATE_M0_M3_PREREG_V0_1_20261031.md",
+    "freeze_commit": "b912b11a65b9e87cb791f05f9a4023bbe114253c",
+    "git_blob_sha": "b6c0e413c8d85f524af5ebf26961e38da33fcaed"
+  },
+  "models": [
+    "RS_M0_SA",
+    "RS_M1_SA_LT",
+    "RS_M2_REGIME",
+    "RS_M3_ALPHA_PERSISTENCE"
+  ],
+  "frozen_nulls": [
+    "N0_CROSS_SECTION_EW",
+    "N1_MOM20_TOPK",
+    "N2_REV5_BOTTOMK",
+    "N3_RANDOM_MATCHED"
+  ],
+  "hard_boundaries": {
+    "v43_rescue": false,
+    "monster_v1_rescue": false,
+    "direct_model_merge": false,
+    "inherit_p97_p90_bridge_crl": false,
+    "silent_retuning": false,
+    "escape_selection_authority": false,
+    "trading_authority": false,
+    "production_authority": false
+  },
+  "forward_return_state": {
+    "new_rs_candidate_forward_return_table_opened_before_seal": false,
+    "new_rs_model_outcome_computed_before_seal": false,
+    "discovery": "SEALED",
+    "validation": "SEALED",
+    "latest_3m": "SEALED_FOR_RS_OUTCOME_TESTING"
+  },
+  "next_legal_steps": [
+    "NO_FORWARD_RETURN implementation/PIT/completeness audit",
+    "label-free novelty gate",
+    "persist feature-panel hashes and novelty verdict",
+    "only after PASS: explicit Discovery unseal"
+  ],
+  "fail_states": [
+    "NOVELTY_GATE_FAIL",
+    "DATA_BLOCKED",
+    "EXECUTION_SPEC_BLOCKED",
+    "FAIL"
+  ]
+}
