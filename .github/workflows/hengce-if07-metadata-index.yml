@@ -1,0 +1,48 @@
+name: HENGCE IF07 Metadata Index No Returns
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/selection-core-rebuild-20261031
+    paths:
+      - 'research/selection_core_rebuild/if07_metadata_index_builder.py'
+      - 'research/selection_core_rebuild/IF07_ELECTRONICS_ACQUISITION_TICKER_UNION_2022_2026.json'
+      - 'research/selection_core_rebuild/IF07_CANONICAL_TRADING_SESSIONS_2022_2026.json'
+      - '.github/workflows/hengce-if07-metadata-index.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-metadata-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/selection-core-rebuild-20261031
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check requests beautifulsoup4 lxml
+      - name: Build official electronic-report metadata index — no returns
+        run: python research/selection_core_rebuild/if07_metadata_index_builder.py
+      - name: Show count-only summary
+        run: |
+          python - <<'PY'
+          import json
+          p='research/selection_core_rebuild/generated/IF07_METADATA_INDEX_2022_2026.json'
+          x=json.load(open(p,encoding='utf-8'))
+          for k in ['acquisition_ticker_count','ticker_fetch_error_count','report_row_count','correction_exact_none_count','duplicate_or_ambiguous_company_quarter_count','current_prior_exact_none_pair_count','signal_date_resolved_pair_count','signal_date_coverage_blocked_count']:
+              print(k, x[k])
+          print('pairs_by_yq', x['pair_count_by_year_quarter'])
+          print('resolved_by_yq', x['signal_date_resolved_by_year_quarter'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: if07-metadata-index-2022-2026
+          path: research/selection_core_rebuild/generated/IF07_METADATA_INDEX_2022_2026.json
+          if-no-files-found: error
