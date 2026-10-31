@@ -4,13 +4,23 @@
   "date": "2026-10-31",
   "language": "zh-TW",
   "selection_core": {
-    "state": "IF07_STAGE_A_PASS_NO_RETURN_STAGE_B_PREPARED_NOT_EXECUTED_INPUT_LIST_NOT_PERSISTED",
+    "state": "IF07_STAGE_A_AUTHORITY_RECOVERED_STAGE_B_PREPARED_NOT_EXECUTED_USER_STOP",
     "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
     "challenger_status": "PREREGISTERED_NOT_YET_RETURN_TESTED",
     "trading_authority": "NONE",
     "production_promotion": false,
     "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY",
     "new_candidate_forward_return_inspected": false
+  },
+  "formal_status": {
+    "pit_data_capability": "PASS",
+    "preregistration": "FROZEN",
+    "stage_a": "PASS",
+    "stage_b": "PREPARED_NOT_EXECUTED",
+    "forward_returns": "SEALED_NOT_OPENED",
+    "validation": "NOT_OPENED",
+    "production_trading_authority": "NONE",
+    "new_data_source_exploration": "CLOSED"
   },
   "legacy": {
     "V6": "NOVELTY_REFERENCE_ONLY_DO_NOT_REVIVE",
@@ -35,24 +45,25 @@
     "data_sufficiency_gate": "research/selection_core_rebuild/HENGCE_IF07_PIT_DATA_SUFFICIENCY_GATE_20261031.md",
     "stage_a_result": "research/selection_core_rebuild/HENGCE_IF07_STAGE_A_V0_2_NO_RETURN_GATE_RESULT_20261031.md",
     "stage_b_contract": "research/selection_core_rebuild/HENGCE_IF07_STAGE_B_EXACT_METADATA_EXECUTION_CONTRACT_20261031.md",
+    "stage_b_candidate_authority": "research/selection_core_rebuild/HENGCE_IF07_STAGE_B_CANDIDATE_AUTHORITY_20261031.json",
     "stage_b_manifest_gate": "research/selection_core_rebuild/if07_stage_b_candidate_manifest_gate_no_network.py",
     "stage_a_offline_audit_gate": "research/selection_core_rebuild/if07_stage_a_audit_gate_no_returns.py",
     "preregistration_persisted_and_reread": true,
+    "preregistration_modified_during_recovery": false,
     "forward_return_inspected": false,
     "timestamp_proxy_research": "CLOSED_REJECTED_SHORTCUTS_MUST_NOT_BE_REOPENED",
     "exact_upload_timestamp_authority": "TWSE_T57SB01_上傳日期_ONLY",
+    "t57_retrieval_after_authority_recovery": "NOT_STARTED",
     "fugle_connector": "DATA_BLOCKED_NOT_PROVIDER_ABSENCE"
   },
   "stage_a_no_return": {
     "status": "PASS_NO_RETURN_STAGE_A",
     "workflow_run_id": 41176211171,
     "job_id": 124464189390,
-    "builder_step": "SUCCESS",
-    "workflow_level_conclusion": "FAILURE_PERSISTENCE_STEP_ONLY",
-    "persistence_failure": "NON_FAST_FORWARD_BRANCH_RACE",
     "run_checkout_sha": "5c7122c5fa9d64e3fa5604be83cfae0a706c40d1",
-    "concurrent_remote_commit_sha": "e799947a24b6352d88d1a563595d297897d42a6f",
-    "runner_local_receipt_commit_unpushed": "f691935a",
+    "builder_step": "SUCCESS",
+    "original_workflow_level_conclusion": "FAILURE_PERSISTENCE_STEP_ONLY",
+    "original_persistence_failure": "NON_FAST_FORWARD_BRANCH_RACE",
     "pair_attempt_count": 3560,
     "accounting_pair_available_count": 2853,
     "accounting_6of6_pre_metadata_candidate_count": 187,
@@ -68,42 +79,65 @@
       "2024Q3": 15
     },
     "parser_crosscheck_mismatch_count": 0,
-    "minimum_required_events": 80,
-    "minimum_required_unique_tickers": 40,
     "sample_sufficiency_upper_bound_verdict": "UPPER_BOUND_SUFFICIENT_TO_CONTINUE_EXACT_METADATA_GATE",
     "formal_pit_universe_applied": false,
     "upload_timestamp_applied": false,
     "signal_date_applied": false,
-    "actions_artifact_id": 13032993979,
-    "actions_artifact_sha256": "2366448ec259065df5e2a515a11bb9fbf0a5c40b806607f6ac1edce0385ee782",
-    "actions_artifact_downloaded_after_user_stop": false,
-    "candidate_identity_list_persisted_on_branch": false,
     "discovery_returns_authorized": false
+  },
+  "authority_recovery": {
+    "historical_blocked_receipt": "research/selection_core_rebuild/HENGCE_IF07_AUTHORITY_RECOVERY_STATE_20261031.json",
+    "previous_status": "EXECUTION_BLOCKED / AUTHORITY_ARTIFACT_MISSING",
+    "current_status": "AUTHORITY_ARTIFACT_RECOVERED_VERIFIED_FROZEN",
+    "data_blocked": false,
+    "model_fail": false,
+    "source_actions_artifact": {
+      "artifact_id": 13032993979,
+      "artifact_name": "if07-stage-a-accounting-upper-bound-v0-2-no-returns",
+      "artifact_zip_sha256": "2366448ec259065df5e2a515a11bb9fbf0a5c40b806607f6ac1edce0385ee782"
+    },
+    "recovery_workflow_run_id": 41178473411,
+    "recovery_job_id": 124470820559,
+    "recovery_job_conclusion": "success",
+    "recovery_workflow_definition_commit": "41ee74ebd8da75be8b2a6d8321a3c3572654655c",
+    "recovered_files_commit": "106692af641964c326116527f07b70e3e139d4d5",
+    "remote_fetch_back_checksum_verification": "PASS",
+    "new_research_data_acquired": false,
+    "stage_a_rerun_performed": false,
+    "candidate_reconstruction_performed": false
+  },
+  "stage_b_candidate_authority": {
+    "status": "FROZEN_SOLE_AUTHORITY",
+    "authority_declaration": "research/selection_core_rebuild/HENGCE_IF07_STAGE_B_CANDIDATE_AUTHORITY_20261031.json",
+    "separate_original_187_only_manifest_existed": false,
+    "authority_semantics": "The exact original Stage A rows JSON is the authority because it contains the original candidate flags; no derived 187-only replacement is authority.",
+    "rows_path": "research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json",
+    "rows_file_sha256": "64ea76312f99413965edc8ca9797864ef04d3ba8c2cee1f47bf950ffa9fa3bfb",
+    "rows_git_blob_sha": "6d201a70627e03c2fa704c070210c04ba9435046",
+    "audit_path": "research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json",
+    "audit_file_sha256": "abdfa1d7e689ab96d50f6f5f93282ecd311330ce55c54e15a83700364aa3815b",
+    "audit_git_blob_sha": "dc8b7d3e7114842522e0f398ae41c2b07fe84bc3",
+    "candidate_identity_rule": "Only original rows with accounting_6of6_pre_metadata_candidate == true in the exact hashed rows file above may enter Stage B.",
+    "candidate_count": 187,
+    "unique_tickers": 128,
+    "alternative_candidate_source_allowed": false,
+    "sample_change_allowed": false
   },
   "stage_b_preparation": {
     "status": "PREPARED_NOT_EXECUTED",
-    "manifest_admission_network_access": false,
-    "manifest_admission_expected_total_rows": 3560,
-    "manifest_admission_expected_candidates": 187,
-    "manifest_admission_expected_unique_tickers": 128,
-    "manifest_admission_requires_exact_period_distribution": true,
-    "identity_inference_or_reconstruction_allowed": false,
+    "manifest_admission_executed": false,
     "exact_t57_retrieval_started": false,
     "signal_date_mapping_started": false,
     "pit_membership_gate_started": false,
     "discovery_returns_authorized": false,
-    "blocker": "EXACT_STAGE_A_ROWS_IDENTITY_MANIFEST_NOT_PERSISTED_ON_BRANCH_AND_EXISTING_ACTIONS_ARTIFACT_NOT_DOWNLOADED_UNDER_USER_STOP_RULE"
+    "execution_stop_reason": "USER_EXPLICITLY_ORDERED_DO_NOT_PROCEED_INTO_STAGE_B_AFTER_AUTHORITY_RECOVERY"
   },
   "metadata_artifacts": {
     "blank_year_v0_1": {
       "artifact": "IF07_METADATA_INDEX_2022_2026",
       "status": "INVALID_FOR_PANEL_INPUT",
-      "reason": "TWSE electronic-book t57sb01 returned 查詢過量 and intermittent DNS failures on Actions; only 69 of 468 acquisition tickers had any parsed metadata rows. The apparent 794 current/prior pairs are coverage-biased and are permanently forbidden as panel input.",
+      "reason": "Coverage-biased due to rate limiting / transport failures; permanently forbidden as panel input.",
       "forward_return_used": false
-    },
-    "year_scope_probe": {
-      "status": "COMPLETED_DIAGNOSTIC",
-      "finding": "All-market scalable indexing is rate-limited, but exact company-quarter t57sb01 上傳日期 remains the frozen Stage B authority for accounting candidates; unresolved candidate metadata must fail closed."
     }
   },
   "pit_universe": {
@@ -121,17 +155,24 @@
   },
   "forward_return_lock": {
     "new_challenger_forward_return_inspected": false,
-    "state": "CLOSED",
-    "discovery_returns_allowed_only_after_exact_metadata_signal_date_pit_universe_and_no_return_panel_integrity_gates": true,
+    "state": "SEALED_CLOSED",
+    "discovery_returns_allowed_only_after_stage_b_and_remaining_no_return_integrity_gates": true,
     "validation_returns_forbidden_until_discovery_pass": true
   },
   "user_stop_rule": {
-    "no_further_data_downloads_or_acquisition_expansion": true,
-    "stage_a_rerun_for_persistence_only": "FORBIDDEN",
-    "existing_actions_artifact_download_after_stop": "NOT_PERFORMED",
-    "t57_candidate_metadata_retrieval_after_stop": "NOT_PERFORMED"
+    "no_new_data_downloads_or_acquisition_expansion": true,
+    "existing_actions_artifact_recovery_only_exception_completed": true,
+    "stage_a_rerun": "FORBIDDEN",
+    "candidate_reconstruction": "FORBIDDEN",
+    "sample_change_or_rescreen": "FORBIDDEN",
+    "t57_query_now": "FORBIDDEN",
+    "timestamp_proxy_search": "FORBIDDEN",
+    "forward_return_open": "FORBIDDEN",
+    "preregistration_mutation": "FORBIDDEN",
+    "stage_b_execution_now": "STOP_BY_USER"
   },
-  "next_legal_step": "WAIT_FOR_EXACT_FROZEN_STAGE_A_ROWS_MANIFEST_TO_BECOME_LAWFULLY_AVAILABLE; THEN RUN_OFFLINE_STAGE_B_MANIFEST_ADMISSION; ONLY_AFTER_PASS MAY EXACT_T57_METADATA_BE_QUERIED_FOR_THOSE_IDENTITIES. DO_NOT INFER, REGENERATE, DOWNLOAD, OR OPEN RETURNS UNDER CURRENT STOP RULE.",
+  "current_blocker": "NONE_FOR_AUTHORITY_RECOVERY; EXECUTION_HALTED_BY_USER_BEFORE_STAGE_B",
+  "next_legal_step": "NONE_NOW. STOP. WHEN USER EXPLICITLY RESUMES STAGE_B, FIRST RUN THE PREPARED OFFLINE ADMISSION GATE AGAINST THE EXACT FROZEN ROWS AUTHORITY; DO NOT QUERY T57 OR OPEN RETURNS BEFORE THAT GATE PASSES.",
   "forbidden_next_steps": [
     "REVIVE_V6_OR_V43_AS_NEW_CORE",
     "RESCUE_CAPITAL_SHARE_MIGRATION",
@@ -139,14 +180,14 @@
     "ESCAPE_ALPHA_INJECTION",
     "REOPEN_TIMESTAMP_PROXY_RESEARCH",
     "EXPAND_DATA_SOURCE_FAMILIES",
-    "RERUN_STAGE_A_MERELY_TO_REPAIR_RECEIPT_PERSISTENCE",
-    "DOWNLOAD_EXISTING_STAGE_A_ACTIONS_ARTIFACT_UNDER_CURRENT_USER_STOP_RULE",
-    "QUERY_T57_UNDER_CURRENT_USER_STOP_RULE",
+    "RERUN_STAGE_A",
+    "INFER_OR_RECONSTRUCT_187_CANDIDATE_IDENTITIES",
+    "CREATE_DERIVED_187_ONLY_FILE_AND_CALL_IT_ORIGINAL_AUTHORITY",
     "USE_INVALID_IF07_METADATA_INDEX_V0_1_AS_PANEL_INPUT",
     "USE_ANNUAL_TICKER_UNION_AS_FORMAL_PIT_UNIVERSE",
-    "INFER_OR_RECONSTRUCT_187_CANDIDATE_IDENTITIES_FROM_COUNTS",
+    "QUERY_T57_BEFORE_USER_RESUMES_STAGE_B_AND_ADMISSION_PASSES",
     "ATTACH_DISCOVERY_RETURNS_BEFORE_STAGE_B_AND_PIT_PANEL_INTEGRITY_GATES",
     "OPEN_VALIDATION_RETURNS_BEFORE_DISCOVERY_PASS",
-    "MUTATE_IF07_V0_1_AFTER_RETURN_INSPECTION"
+    "MUTATE_IF07_V0_1_PREREGISTRATION"
   ]
 }
