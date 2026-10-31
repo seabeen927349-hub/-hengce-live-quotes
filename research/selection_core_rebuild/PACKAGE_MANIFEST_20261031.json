@@ -1,0 +1,24 @@
+{
+  "package": "HENGCE_SELECTION_CORE_HANDOFF_20261031",
+  "date": "2026-10-31",
+  "repository": "seabeen927349-hub/-hengce-live-quotes",
+  "branch": "research/selection-core-rebuild-20261031",
+  "folder": "research/selection_core_rebuild",
+  "files": [
+    "READ_FIRST_HENGCE_SELECTION_CORE_HANDOFF_20261031.md",
+    "CURRENT_STATE_20261031.json",
+    "NEXT_CHAT_COMMAND_20261031.txt",
+    "HENGCE_CAPITAL_SHARE_MIGRATION_NOVELTY_GATE_20261031.md"
+  ],
+  "selection_core_state": "BASELINE_NULL_LOCKED_CHALLENGER_NOT_YET_DEFINED",
+  "challenger": "NOT_YET_DEFINED",
+  "latest_novelty_verdict": "CROSS_STOCK_CAPITAL_SHARE_MIGRATION_DRAFT=NOVELTY_GATE_FAIL",
+  "forward_return_test_for_latest_draft": false,
+  "authority": {
+    "research_only": true,
+    "capital_authority_twd": 0,
+    "broker_order_execution": false,
+    "production_promotion": false
+  },
+  "next_legal_step": "ORTHOGONAL_INFORMATION_FAMILY_CAPABILITY_AND_NOVELTY_GATE_BEFORE_PREREGISTRATION"
+}
