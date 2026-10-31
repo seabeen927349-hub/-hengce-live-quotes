@@ -8,6 +8,7 @@ name: HENGCE IF07 MOPS Capability Probe
     paths:
       - 'research/selection_core_rebuild/if07_mops_actions_probe.py'
       - 'research/selection_core_rebuild/if07_mops_actions_probe_v0_2.py'
+      - 'research/selection_core_rebuild/if07_original_filing_gate_probe.py'
       - '.github/workflows/hengce-if07-mops-capability-probe.yml'
 
 permissions:
@@ -39,26 +40,33 @@ jobs:
       - name: Run MOPS capability probe V0.2 — no returns
         run: python research/selection_core_rebuild/if07_mops_actions_probe_v0_2.py
 
-      - name: Show receipt
-        run: cat research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
+      - name: Run original-filing correction gate probe — no returns
+        run: python research/selection_core_rebuild/if07_original_filing_gate_probe.py
 
-      - name: Upload receipt artifact
+      - name: Show receipts
+        run: |
+          cat research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
+          cat research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json
+
+      - name: Upload receipt artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: if07-mops-actions-probe-v0-2
-          path: research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
+          name: if07-mops-capability-and-original-filing-probes
+          path: |
+            research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
+            research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json
           if-no-files-found: error
 
-      - name: Persist receipt to research branch
+      - name: Persist receipts to research branch
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'hengce-if07-research-bot'
           git config user.email 'hengce-if07-research-bot@users.noreply.github.com'
-          git add research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
+          git add research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json
           if git diff --cached --quiet; then
             echo 'No receipt change.'
             exit 0
           fi
-          git commit -m 'research: persist IF-07 MOPS capability receipt v0.2'
+          git commit -m 'research: persist IF-07 original filing gate receipts'
           git push origin HEAD:research/selection-core-rebuild-20261031
