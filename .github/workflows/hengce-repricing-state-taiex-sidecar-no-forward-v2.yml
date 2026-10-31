@@ -1,0 +1,131 @@
+name: HENGCE Repricing State TAIEX Sidecar No Forward V2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hengce-repricing-state-taiex-sidecar-no-forward-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  taiex:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch official TWSE TAIEX history with bounded concurrent transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/raw
+          python - <<'PY'
+          import csv, datetime as dt, hashlib, json, pathlib, time, urllib.request
+          from concurrent.futures import ThreadPoolExecutor, as_completed
+
+          out=pathlib.Path('out')
+          rawdir=out/'raw'
+          headers={'User-Agent':'Mozilla/5.0 HENGCE-Repricing-State-Research/1.0','Accept':'application/json,text/plain,*/*','Referer':'https://www.twse.com.tw/'}
+
+          months=[]
+          y,m=2022,9
+          while (y,m) <= (2026,6):
+              months.append((y,m))
+              m+=1
+              if m==13: y+=1; m=1
+
+          def norm_date(s):
+              s=str(s).strip().replace('-', '/')
+              p=s.split('/')
+              if len(p)!=3: raise ValueError(f'bad date {s}')
+              yy=int(p[0]); mm=int(p[1]); dd=int(p[2])
+              if yy<1911: yy+=1911
+              return f'{yy:04d}-{mm:02d}-{dd:02d}'
+
+          def num(s): return float(str(s).replace(',','').strip())
+
+          def fetch_one(ym):
+              y,m=ym
+              ds=f'{y:04d}{m:02d}01'
+              url=f'https://www.twse.com.tw/rwd/zh/indicesReport/MI_5MINS_HIST?date={ds}&response=json'
+              err=None
+              for attempt in range(3):
+                  try:
+                      req=urllib.request.Request(url,headers=headers)
+                      with urllib.request.urlopen(req,timeout=15) as r: raw=r.read()
+                      obj=json.loads(raw.decode('utf-8-sig'))
+                      if str(obj.get('stat',''))!='OK': raise RuntimeError(f"stat={obj.get('stat')}")
+                      fields=[str(x).strip() for x in obj.get('fields',[])]
+                      date_idx=next((i for i,f in enumerate(fields) if f in ('日期','Date')),None)
+                      close_idx=next((i for i,f in enumerate(fields) if f in ('收盤指數','Closing Index')),None)
+                      if date_idx is None or close_idx is None: raise RuntimeError(f'FIELDS_BLOCKED {fields}')
+                      rows=[]
+                      for row in obj.get('data') or []:
+                          rows.append((norm_date(row[date_idx]),num(row[close_idx])))
+                      return {'month':f'{y:04d}-{m:02d}','ok':True,'rows':rows,'raw':raw,'url':url,'fields':fields}
+                  except Exception as e:
+                      err=repr(e); time.sleep(1.0*(attempt+1))
+              return {'month':f'{y:04d}-{m:02d}','ok':False,'error':err,'url':url}
+
+          records=[]; manifest=[]; failed=[]
+          with ThreadPoolExecutor(max_workers=6) as ex:
+              futs={ex.submit(fetch_one,ym):ym for ym in months}
+              done=0
+              for fut in as_completed(futs):
+                  rec=fut.result(); done+=1
+                  if rec.get('ok'):
+                      ym=rec['month'].replace('-','')
+                      rp=rawdir/f'MI_5MINS_HIST_{ym}.json'
+                      rp.write_bytes(rec['raw'])
+                      for d,c in rec['rows']: records.append((d,c,rec['month'],rec['url']))
+                      manifest.append({'month':rec['month'],'ok':True,'rows':len(rec['rows']),'bytes':len(rec['raw']),'sha256':hashlib.sha256(rec['raw']).hexdigest(),'url':rec['url'],'fields':rec['fields']})
+                  else:
+                      failed.append(rec); manifest.append(rec)
+                  print(f"TAIEX progress {done}/{len(months)} month={rec['month']} ok={rec.get('ok')} failures={len(failed)}",flush=True)
+
+          manifest.sort(key=lambda x:x['month'])
+          if failed:
+              (out/'partial_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+              raise SystemExit(f'TAIEX_MONTH_FETCH_FAILURES count={len(failed)} failures={failed}')
+
+          bydate={}; dup=0
+          for d,c,month,url in records:
+              if d in bydate:
+                  dup+=1
+                  if bydate[d][0] != c: raise SystemExit(f'TAIEX_CONFLICT_DUP {d}')
+              else: bydate[d]=(c,month,url)
+          dates=sorted(bydate)
+          with (out/'taiex_close.csv').open('w',encoding='utf-8',newline='') as f:
+              w=csv.writer(f); w.writerow(['Date','TAIEX_Close','SourceMonth','SourceURL'])
+              for d in dates: w.writerow([d,bydate[d][0],bydate[d][1],bydate[d][2]])
+          pre2023=sum(1 for d in dates if d<'2023-01-01')
+          through_val=sum(1 for d in dates if d<='2026-06-30')
+          yearly={str(y):sum(1 for d in dates if d.startswith(str(y)+'-')) for y in range(2022,2027)}
+          summary={
+            'artifact':'HENGCE_REPRICING_STATE_TAIEX_SIDECAR_NO_FORWARD_V2',
+            'authority':'RG_INPUT_ONLY_RESEARCH_NO_FORWARD_RETURNS',
+            'transport_change_only_from_v1':'bounded_concurrency_6_timeout15s_retries3_job20m',
+            'source':'TWSE MI_5MINS_HIST official retrospective archive',
+            'requested_months':len(months),'successful_months':len(manifest),'failed_months':0,
+            'rows_raw':len(records),'unique_dates':len(dates),'duplicate_same_value_rows':dup,
+            'first_date':dates[0] if dates else None,'last_date':dates[-1] if dates else None,
+            'pre_2023_sessions':pre2023,'has_at_least_63_pre_2023_sessions':pre2023>=63,
+            'sessions_through_validation_cutoff':through_val,'yearly_counts':yearly,
+            'csv_sha256':hashlib.sha256((out/'taiex_close.csv').read_bytes()).hexdigest(),
+            'manifest':manifest,
+            'new_rs_forward_return_fields_read':False,'new_rs_outcomes_computed':False
+          }
+          (out/'taiex_sidecar_receipt.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({k:v for k,v in summary.items() if k!='manifest'},ensure_ascii=False,indent=2),flush=True)
+          if pre2023<63: raise SystemExit('TAIEX_RG_WARMUP_BLOCKED')
+          if not dates or dates[-1]<'2026-06-30': raise SystemExit('TAIEX_VALIDATION_COVERAGE_BLOCKED')
+          PY
+      - name: Upload TAIEX sidecar
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_REPRICING_STATE_TAIEX_SIDECAR_NO_FORWARD_V2
+          path: out/
+          if-no-files-found: error
+          retention-days: 7
