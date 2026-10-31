@@ -1,0 +1,46 @@
+{
+  "system": "HENGCE",
+  "artifact": "SELECTION_CORE_NEW_CHAT_HANDOFF_STATE",
+  "date": "2026-10-31",
+  "language": "zh-TW",
+  "selection_core": {
+    "state": "BASELINE_NULL_LOCKED_CHALLENGER_NOT_YET_DEFINED",
+    "challenger": "NOT_YET_DEFINED",
+    "trading_authority": "NONE",
+    "production_promotion": false,
+    "universe": "TWSE_LISTED_ELECTRONICS_PIT_DAILY"
+  },
+  "legacy": {
+    "V6": "NOVELTY_REFERENCE_ONLY_DO_NOT_REVIVE",
+    "V43": "EXPOSED_HISTORICAL_REFERENCE_ONLY",
+    "CONTROL_RETAIL_V0_11_1": "FROZEN_LIFECYCLE_EXIT_BENCHMARK_ONLY",
+    "MONSTER_BUY_V1": "FROZEN_LONG_HORIZON_EVENT_BENCHMARK_ONLY"
+  },
+  "v6_exact": {
+    "factors": ["resid_rev", "mom20", "skip5_60", "liquidity", "lowvol"],
+    "weights": [0.20, 0.25, 0.30, 0.05, 0.20]
+  },
+  "latest_novelty_gate": {
+    "candidate": "CROSS_STOCK_CAPITAL_SHARE_MIGRATION_DRAFT",
+    "status": "NOVELTY_GATE_FAIL",
+    "forward_return_test_executed": false,
+    "preregistered": false,
+    "rescue_tuning_allowed": false,
+    "git_branch": "research/selection-core-rebuild-20261031",
+    "git_path": "research/selection_core_rebuild/HENGCE_CAPITAL_SHARE_MIGRATION_NOVELTY_GATE_20261031.md"
+  },
+  "data_lanes": {
+    "broker_microstructure_control": "DATA_BLOCKED",
+    "fugle_historical_content_path": "DATA_BLOCKED",
+    "earnings_quality_R014": "INCONCLUSIVE",
+    "pressure_response_R019": "PROSPECTIVE_ACTIVATION_ONLY_PREDICTIVE_UNKNOWN"
+  },
+  "next_legal_step": "ORTHOGONAL_INFORMATION_FAMILY_CAPABILITY_AND_NOVELTY_GATE_BEFORE_PREREGISTRATION",
+  "forbidden_next_steps": [
+    "REVIVE_V6_OR_V43_AS_NEW_CORE",
+    "RESCUE_CAPITAL_SHARE_MIGRATION",
+    "PRICE_VOLUME_RETUNING_AS_NEW_SMART_MONEY_ALPHA",
+    "ESCAPE_ALPHA_INJECTION",
+    "FORWARD_RETURN_BEFORE_PREREGISTRATION"
+  ]
+}
