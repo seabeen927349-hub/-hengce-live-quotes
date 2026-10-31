@@ -9,6 +9,7 @@ name: HENGCE IF07 MOPS Capability Probe
       - 'research/selection_core_rebuild/if07_mops_actions_probe.py'
       - 'research/selection_core_rebuild/if07_mops_actions_probe_v0_2.py'
       - 'research/selection_core_rebuild/if07_original_filing_gate_probe.py'
+      - 'research/selection_core_rebuild/if07_ixbrl_table_probe.py'
       - '.github/workflows/hengce-if07-mops-capability-probe.yml'
 
 permissions:
@@ -21,7 +22,7 @@ concurrency:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - name: Checkout research branch
         uses: actions/checkout@v4
@@ -43,18 +44,23 @@ jobs:
       - name: Run original-filing correction gate probe — no returns
         run: python research/selection_core_rebuild/if07_original_filing_gate_probe.py
 
+      - name: Run direct iXBRL table and ebook scope probe — no returns
+        run: python research/selection_core_rebuild/if07_ixbrl_table_probe.py
+
       - name: Show receipts
         run: |
           cat research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
           cat research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json
+          cat research/selection_core_rebuild/generated/IF07_IXBRL_TABLE_PROBE.json
 
       - name: Upload receipt artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: if07-mops-capability-and-original-filing-probes
+          name: if07-mops-capability-probes
           path: |
             research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json
             research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json
+            research/selection_core_rebuild/generated/IF07_IXBRL_TABLE_PROBE.json
           if-no-files-found: error
 
       - name: Persist receipts to research branch
@@ -63,10 +69,10 @@ jobs:
           set -euo pipefail
           git config user.name 'hengce-if07-research-bot'
           git config user.email 'hengce-if07-research-bot@users.noreply.github.com'
-          git add research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json
+          git add research/selection_core_rebuild/generated/IF07_MOPS_ACTIONS_PROBE_V0_2.json research/selection_core_rebuild/generated/IF07_ORIGINAL_FILING_GATE_PROBE.json research/selection_core_rebuild/generated/IF07_IXBRL_TABLE_PROBE.json
           if git diff --cached --quiet; then
             echo 'No receipt change.'
             exit 0
           fi
-          git commit -m 'research: persist IF-07 original filing gate receipts'
+          git commit -m 'research: persist IF-07 iXBRL table probe receipts'
           git push origin HEAD:research/selection-core-rebuild-20261031
