@@ -1,0 +1,131 @@
+{
+  "system": "HENGCE",
+  "artifact": "IF07_MOPS_GITHUB_ACTIONS_CAPABILITY_PROBE",
+  "generated_at_utc": "2026-10-31T05:16:55.769579+00:00",
+  "research_only": true,
+  "contains_price_or_forward_return_data": false,
+  "preregistered_challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+  "overall": "FAIL",
+  "security_blocked_probe_count": 0,
+  "interpretation": "PASS means the Actions runner can reach and verify all four official source paths. FAIL is a data-acquisition/transport result only; it is not an alpha or hypothesis failure.",
+  "probes": [
+    {
+      "name": "MOPS_2023Q1_LISTED_AGGREGATE_INCOME",
+      "method": "POST",
+      "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb04",
+      "params": {
+        "encodeURIComponent": "1",
+        "step": "1",
+        "firstin": "1",
+        "off": "1",
+        "TYPEK": "sii",
+        "year": "112",
+        "season": "01"
+      },
+      "requested_at_utc": "2026-10-31T05:16:23.007260+00:00",
+      "http_status": 200,
+      "final_url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb04",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 1481753,
+      "sha256_utf8": "02d79bb6ab5d83a8ec3d730e002f1c3e618d1904c6b89165cb9c3d3299b64c4e",
+      "security_blocked": false,
+      "expected_markers": {
+        "公司代號": false,
+        "2330": true,
+        "2454": true,
+        "營業收入": true
+      },
+      "all_expected_markers_present": false,
+      "body_prefix": "\n\n\n<html>\n<head>\n\t<title>公開資訊觀測站</title>\n\t\n\t\n\t<link href=\"css/css2.css\" rel=\"stylesheet\" type=\"text/css\" Media=\"Screen\"/> \n\t\n\t<script type=\"text/javascript\" src=\"js/mops2.js\"></script>\n\t\n\t\n\t\n</head>\n\n<body>\n\n\n<div id=\"div01\" >\n<form action='/mops/web/ajax_t163sb04'  method='post' onsubmit='return false;' name='fm'>\r\n<table class='noBorder' style='margin-right:0px !important; margin-left:0px !important;'><tr class='reportCont'><td style='text-align:center !important;'><h2>上市公司第一季資料</h2></td></tr>",
+      "status": "FAIL"
+    },
+    {
+      "name": "MOPS_2023Q1_LISTED_AGGREGATE_BALANCE",
+      "method": "POST",
+      "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+      "params": {
+        "encodeURIComponent": "1",
+        "step": "1",
+        "firstin": "1",
+        "off": "1",
+        "TYPEK": "sii",
+        "year": "112",
+        "season": "01"
+      },
+      "requested_at_utc": "2026-10-31T05:16:50.428267+00:00",
+      "http_status": 200,
+      "final_url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 1253047,
+      "sha256_utf8": "31bf5ae294896abddfff04924050388f1f1477c145d6e880f6a03d465478c120",
+      "security_blocked": false,
+      "expected_markers": {
+        "公司代號": false,
+        "2330": true,
+        "2454": true,
+        "資產總計": true
+      },
+      "all_expected_markers_present": false,
+      "body_prefix": "\n\n\n<html>\n<head>\n\t<title>公開資訊觀測站</title>\n\t\n\t\n\t<link href=\"css/css2.css\" rel=\"stylesheet\" type=\"text/css\" Media=\"Screen\"/> \n\t\n\t<script type=\"text/javascript\" src=\"js/mops2.js\"></script>\n\t\n\t\n\t\n</head>\n\n<body>\n\n\n<div id=\"div01\" >\n<form action='/mops/web/ajax_t163sb05'  method='post' onsubmit='return false;' name='fm'>\r\n<table class='noBorder' style='margin-right:0px !important; margin-left:0px !important;'><tr class='reportCont'><td style='text-align:center !important;'><h2>上市公司第一季資料</h2></td></tr>",
+      "status": "FAIL"
+    },
+    {
+      "name": "MOPS_2330_2023Q1_CASH_FLOW",
+      "method": "POST",
+      "url": "https://mopsov.twse.com.tw/mops/web/ajax_t164sb05",
+      "params": {
+        "encodeURIComponent": "1",
+        "step": "1",
+        "firstin": "1",
+        "off": "1",
+        "TYPEK": "sii",
+        "co_id": "2330",
+        "year": "112",
+        "season": "01"
+      },
+      "requested_at_utc": "2026-10-31T05:16:54.030557+00:00",
+      "http_status": 200,
+      "final_url": "https://mopsov.twse.com.tw/mops/web/ajax_t164sb05",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 24427,
+      "sha256_utf8": "0f5a5530a2b42b8f683eba7d1b2ff31983086ba3eb72eadb5e53e0a14909b37f",
+      "security_blocked": false,
+      "expected_markers": {
+        "2330": true,
+        "營業活動": true,
+        "現金流": true
+      },
+      "all_expected_markers_present": true,
+      "body_prefix": "\n\n\n<html>\n<head>\n\t<title>公開資訊觀測站</title>\n\t\n\t\n\t<link href=\"css/css2.css\" rel=\"stylesheet\" type=\"text/css\" Media=\"Screen\"/> \n\t\n\t<script type=\"text/javascript\" src=\"js/mops2.js\"></script>\n\t\n\t\n\t\n</head>\n\n<body>\n\n\n<div id=\"div01\" >\n<center>\r\n<h2 align='center'><font color='blue'>合併現金流量表</font></h2>\r\n<h4 align='center'><font color='blue'>本資料由台積電公司提供</font></h4>\r\n<table class='noBorder' align='center''><tr><td><font color='red' size='2'>「投資人若需了解更詳細資訊可至<a target='_blank' style='color:violet;font-size:sm",
+      "status": "PASS"
+    },
+    {
+      "name": "TWSE_EBOOK_2330_2023_UPLOAD_METADATA",
+      "method": "GET",
+      "url": "https://doc.twse.com.tw/server-java/t57sb01",
+      "params": {
+        "step": "1",
+        "colorchg": "1",
+        "co_id": "2330",
+        "year": "112",
+        "seamon": "",
+        "mtype": "A"
+      },
+      "requested_at_utc": "2026-10-31T05:16:55.025159+00:00",
+      "http_status": 200,
+      "final_url": "https://doc.twse.com.tw/server-java/t57sb01?step=1&colorchg=1&co_id=2330&year=112&seamon=&mtype=A",
+      "content_type": "text/html;charset=big5",
+      "bytes": 7869,
+      "sha256_utf8": "894f7f650f5dec63b03f51f494c75d397d75bb37d34c4e778cc4c03e99173d08",
+      "security_blocked": false,
+      "expected_markers": {
+        "2330": true,
+        "202301_2330_AI1.pdf": true,
+        "112/05/12": true
+      },
+      "all_expected_markers_present": true,
+      "body_prefix": "<html><head><title>電子資料查詢作業</title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=big5\"><link rel='stylesheet' href='/ppp.css' type='text/css'></head><body>\r\n<style text='text/css'>\r\n<!--\r\n\t TH{color:#000099;font-weight:normal;font-size:10pt}\r\n-->\r\n</style>\r\n<script>\r\nfunction readfile(kind,coid,filename)\r\n{\r\n\tvar f = document.forms[0];\r\n\tf.step.value = 9;\r\n\tf.kind.value = kind;\r\n\tf.co_id.value = coid;\r\n\tf.filename.value = filename;\r\n\tf.submit();\r\n}\r\nvar win = null;\r\nfunction readfil",
+      "status": "PASS"
+    }
+  ]
+}
