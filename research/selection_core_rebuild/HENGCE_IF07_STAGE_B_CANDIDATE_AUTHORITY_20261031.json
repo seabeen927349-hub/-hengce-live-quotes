@@ -1,0 +1,83 @@
+{
+  "system": "HENGCE",
+  "artifact": "IF07_STAGE_B_CANDIDATE_AUTHORITY",
+  "date": "2026-10-31",
+  "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+  "status": "AUTHORITY_RECOVERED_VERIFIED_FROZEN",
+  "authority_scope": "STAGE_B_CANDIDATE_IDENTITIES_ONLY",
+  "important_semantics": "No separate original 187-only manifest existed in the source Actions artifact. The exact original Stage A rows JSON is the authority artifact because it contains the original accounting_6of6_pre_metadata_candidate flags. This declaration does not copy, reconstruct, infer, rerank, rescreen, or replace those 187 identities.",
+  "source_stage_a": {
+    "workflow_run_id": 41176211171,
+    "job_id": 124464189390,
+    "run_checkout_sha": "5c7122c5fa9d64e3fa5604be83cfae0a706c40d1",
+    "actions_artifact_id": 13032993979,
+    "actions_artifact_name": "if07-stage-a-accounting-upper-bound-v0-2-no-returns",
+    "actions_artifact_zip_sha256": "2366448ec259065df5e2a515a11bb9fbf0a5c40b806607f6ac1edce0385ee782",
+    "stage_a_status": "PASS_NO_RETURN_STAGE_A"
+  },
+  "recovered_original_rows_authority": {
+    "branch": "research/selection-core-rebuild-20261031",
+    "path": "research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS.json",
+    "file_sha256": "64ea76312f99413965edc8ca9797864ef04d3ba8c2cee1f47bf950ffa9fa3bfb",
+    "git_blob_sha": "6d201a70627e03c2fa704c070210c04ba9435046",
+    "byte_size": 4779933,
+    "artifact_id_inside_json": "IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_NO_RETURNS",
+    "contains_price_or_forward_return_data": false,
+    "total_rows": 3560,
+    "candidate_flag_field": "accounting_6of6_pre_metadata_candidate",
+    "candidate_count": 187,
+    "unique_candidate_tickers": 128,
+    "candidate_by_period": {
+      "2022Q4": 41,
+      "2023Q1": 23,
+      "2023Q2": 27,
+      "2023Q3": 23,
+      "2023Q4": 19,
+      "2024Q1": 17,
+      "2024Q2": 22,
+      "2024Q3": 15
+    },
+    "duplicate_ticker_period_rows": 0,
+    "all_candidate_six_conditions_true": true
+  },
+  "recovered_original_audit_receipt": {
+    "branch": "research/selection-core-rebuild-20261031",
+    "path": "research/selection_core_rebuild/generated/IF07_STAGE_A_ACCOUNTING_UPPER_BOUND_AUDIT_NO_RETURNS.json",
+    "file_sha256": "abdfa1d7e689ab96d50f6f5f93282ecd311330ce55c54e15a83700364aa3815b",
+    "git_blob_sha": "dc8b7d3e7114842522e0f398ae41c2b07fe84bc3",
+    "byte_size": 21589,
+    "audit_status": "PASS_NO_RETURN_STAGE_A",
+    "parser_crosscheck_mismatch_count": 0
+  },
+  "recovery_provenance": {
+    "recovery_workflow_definition_commit": "41ee74ebd8da75be8b2a6d8321a3c3572654655c",
+    "recovery_workflow_run_id": 41178473411,
+    "recovery_job_id": 124470820559,
+    "recovery_job_conclusion": "success",
+    "recovered_files_commit": "106692af641964c326116527f07b70e3e139d4d5",
+    "remote_fetch_back_checksum_verification": "PASS",
+    "transformation_of_recovered_bytes": "NONE"
+  },
+  "stage_b_candidate_authority_law": {
+    "sole_allowed_candidate_source": "recovered_original_rows_authority.path at exact file_sha256 above",
+    "candidate_identity_rule": "Only rows whose original accounting_6of6_pre_metadata_candidate value is exactly true in that exact hashed file are Stage B candidates.",
+    "derived_or_reconstructed_187_only_manifest_allowed": false,
+    "alternative_candidate_source_allowed": false,
+    "sample_change_allowed": false,
+    "rerun_stage_a_allowed": false
+  },
+  "research_state_after_recovery": {
+    "pit_data_capability": "PASS",
+    "preregistration": "FROZEN_UNCHANGED",
+    "stage_a": "PASS",
+    "stage_b": "PREPARED_NOT_EXECUTED",
+    "stage_b_admission_executed": false,
+    "t57_queried_after_recovery": false,
+    "forward_returns": "SEALED_NOT_OPENED",
+    "validation": "NOT_OPENED",
+    "production_trading_authority": "NONE",
+    "new_data_source_exploration": "CLOSED",
+    "authority_artifact_missing_blocker": "CLEARED_BY_EXACT_ORIGINAL_RECOVERY",
+    "user_requested_stop_after_recovery": true
+  }
+}
