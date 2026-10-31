@@ -1,0 +1,81 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_IF07_STAGE_B_EXECUTION_SPEC_BLOCKED_20261031",
+  "date": "2026-10-31",
+  "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+  "formal_state": "EXECUTION_SPEC_BLOCKED",
+  "forward_returns_state": "SEALED_NOT_OPENED",
+  "validation_state": "NOT_OPENED",
+  "production_authority": "NONE",
+  "selection_rules_changed": false,
+  "thresholds_changed": false,
+  "candidate_authority_changed": false,
+  "governance_rules_changed": false,
+  "formal_stage_b_run": {
+    "github_run_id": 41187903523,
+    "github_run_attempt": 1,
+    "github_sha": "c355edbd898a714cb7ddaacd0c1bd94d90433306",
+    "workflow_conclusion": "success",
+    "artifact_id": 13037134822,
+    "artifact_name": "if07-stage-b-v0-2-41187903523-attempt-1",
+    "artifact_zip_sha256": "5aeb35c84b95350e17cf594f1bd86a7c1cae52f644bb190c1c9126d98c4d0674",
+    "stage_a_rows_sha256": "64ea76312f99413965edc8ca9797864ef04d3ba8c2cee1f47bf950ffa9fa3bfb",
+    "executor_git_blob_sha": "dae51c36b54d742a0bb378974270523736b6a69d",
+    "admission_gate_git_blob_sha": "0c9261a858947f36a4cb233d2b9e69f7ca5718d9",
+    "prereg_git_blob_sha": "4dd87057f78cbd8be7c889602d261b5038b79672",
+    "implementation_contract_git_blob_sha": "8e77add357cba25785d324d6568f798c06801aa4",
+    "stage_b_contract_git_blob_sha": "e437260d7365b14347e330868d175a4d1268531a",
+    "governance_addendum_git_blob_sha": "25d87ae6ad9370050fae1cf1e896fb68ba206d25"
+  },
+  "raw_artifact_checksums": {
+    "IF07_STAGE_B_V0_2_NO_RETURN_AUDIT.json": "8c7b37a18252b9009b4c2793fde715f011d4743e90d09e28f7412fbceb213756",
+    "IF07_STAGE_B_V0_2_T57_RAW_INDEX_NO_RETURNS.json": "91eb2c272470831a3401a0921b07e155f936705ae14b6595aa1dd4163bccb60e",
+    "IF07_STAGE_B_V0_2_NO_RETURN_EVENT_PANEL.json": "e355b68a121984641889e4f22e89f5f6fa7b1bca36bad1c7f1621a262b35119c",
+    "RUN_IDENTITY.json": "62ff00e94af338d32a78b84c53b5d97595f44b8532e4100a950a9a6da2a0f19a",
+    "FINAL_CHECKSUMS.json": "fab01df59f0bfeaaf296fa5f10c5585cce02bbec851204e0e689de01d98a2deb"
+  },
+  "stage_b_observed_raw_counts": {
+    "candidate_events": 187,
+    "candidate_unique_tickers": 128,
+    "official_t57_requests": 128,
+    "official_t57_retries": 0,
+    "resolved_tickers": 56,
+    "unresolved_or_rate_limited_tickers": 72,
+    "resolved_stage_b_pass_events": 92,
+    "excluded_events": 95,
+    "resolved_discovery_unique_tickers": 56,
+    "resolved_discovery_distinct_signal_dates": 55
+  },
+  "transport_breakdown": {
+    "official_rate_limit": {
+      "tickers": 52,
+      "candidate_events": 68,
+      "evidence": "HTTP 200 official t57 body contained exact marker 查詢過量，請稍後再查詢!",
+      "frozen_treatment": "FAIL_CLOSED"
+    },
+    "connect_timeout_45_seconds": {
+      "tickers": 11,
+      "candidate_events": 16,
+      "evidence": "requests ConnectTimeout / ConnectTimeoutError with connect timeout=45",
+      "frozen_treatment": "UNSPECIFIED_MECHANICAL_CUTOFF"
+    },
+    "dns_name_resolution_error": {
+      "tickers": 9,
+      "candidate_events": 11,
+      "evidence": "requests ConnectionError caused by NameResolutionError",
+      "frozen_treatment": "UNSPECIFIED_TRANSPORT_FAILURE"
+    }
+  },
+  "blocked_reason": "The frozen Stage B contract explicitly fail-closes official rate-limited metadata, but it does not mechanically define an HTTP connection-timeout duration or a rule that a transient DNS failure permanently removes a candidate. The v0.2 executor used timeout=45, and that cutoff materially bound 11 tickers / 16 candidate-events; another 9 tickers / 11 candidate-events failed at DNS resolution. Treating those 27 events as permanently missing would add an unfrozen execution rule and change the return-tested sample. Under the user's explicit rule 9, execution must stop instead of filling that rule ad hoc.",
+  "non_authoritative_workflow_internal_judgment": {
+    "value": "PASS_AUTHORIZE_DISCOVERY_RETURNS",
+    "reason_not_accepted": "It was calculated after excluding all transport failures, including 27 candidate-events whose exclusion depends on an unfrozen transport-failure rule. Therefore it has no formal authority."
+  },
+  "formal_judgment": "EXECUTION_SPEC_BLOCKED",
+  "next_legal_step": "STOP. DO NOT OPEN DISCOVERY RETURNS. A future continuation requires an authority-valid resolution of the mechanically unspecified transport-failure handling without inspecting forward returns or changing Selection V0.1.",
+  "invalid_predecessor": {
+    "github_run_id": 41185962038,
+    "state": "INVALID_FOR_FORMAL_RESEARCH_EXECUTION_BUG",
+    "reason": "introduced unfrozen retry/backoff behavior before results were accepted"
+  }
+}
