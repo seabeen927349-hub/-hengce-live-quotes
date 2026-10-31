@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   preflight:
@@ -17,13 +18,26 @@ jobs:
       - uses: actions/checkout@v4
       - name: Audit frozen inputs without forward returns
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          mkdir -p out
+          mkdir -p out/v43
           HIST_URL='https://raw.githubusercontent.com/seabeen927349-hub/-hengce-live-quotes/research/codex-full-reset-run-20261023/research/codex_full_reset_20261023/results/stage_b/TWSE_ELECTRONICS_DAILY_2023_2025.csv.gz'
-          V43_URL='https://raw.githubusercontent.com/seabeen927349-hub/-hengce-live-quotes/research/codex-full-reset-run-20261023/research/codex_full_reset_20261023/ranking_v43_expanding_regime_icir_result.json'
+          V43_ARTIFACT_ID='12543027978'
           curl -fL --retry 3 --retry-delay 2 "$HIST_URL" -o out/hist.csv.gz
-          curl -fL --retry 3 --retry-delay 2 "$V43_URL" -o out/v43.json
+          curl -fL --retry 3 --retry-delay 2 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${V43_ARTIFACT_ID}" \
+            -o out/v43_artifact_metadata.json
+          curl -fL --retry 3 --retry-delay 2 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${V43_ARTIFACT_ID}/zip" \
+            -o out/v43.zip
+          unzip -q out/v43.zip -d out/v43
+          find out/v43 -maxdepth 4 -type f -print | sort
           python - <<'PY'
           import csv,gzip,hashlib,json,pathlib
           hist=pathlib.Path('out/hist.csv.gz')
@@ -41,24 +55,48 @@ jobs:
                   n+=1
                   if d:
                       dates.add(d); first=d if first is None else min(first,d); last=d if last is None else max(last,d)
-          v=json.loads(pathlib.Path('out/v43.json').read_text(encoding='utf-8'))
+          meta=json.loads(pathlib.Path('out/v43_artifact_metadata.json').read_text(encoding='utf-8'))
+          json_files=sorted(pathlib.Path('out/v43').rglob('*.json'))
+          jsonl_files=sorted(pathlib.Path('out/v43').rglob('*.jsonl'))
+          result_candidates=[p for p in json_files if 'v43' in p.name.lower() and 'result' in p.name.lower()]
+          if not result_candidates:
+              result_candidates=[p for p in json_files if 'result' in p.name.lower()]
+          if not result_candidates: raise SystemExit('V43_RESULT_JSON_NOT_FOUND_IN_FROZEN_ARTIFACT')
+          result_path=result_candidates[0]
+          v=json.loads(result_path.read_text(encoding='utf-8'))
           wl=v.get('weight_log') or []
-          weight_dates=[str(x.get('signal_date')) for x in wl if x.get('signal_date')]
           five={'resid_rev','mom20','skip5_60','liquidity','lowvol'}
-          weights_ok=all(set((x.get('weights') or {}).keys())==five for x in wl) if wl else False
+          def wdict(x):
+              for k in ('weights','factor_weights','w'):
+                  if isinstance(x.get(k),dict): return x[k]
+              return {}
+          weight_dates=[str(x.get('signal_date') or x.get('date')) for x in wl if (x.get('signal_date') or x.get('date'))]
+          weights_ok=all(set(wdict(x).keys())==five for x in wl) if wl else False
+          event_summary=[]
+          for p in jsonl_files:
+              lines=p.read_text(encoding='utf-8').splitlines()
+              first_obj=json.loads(lines[0]) if lines else {}
+              event_summary.append({'file':str(p.relative_to('out/v43')),'lines':len(lines),'first_keys':sorted(first_obj.keys())})
           out={
             'artifact':'HENGCE_REPRICING_STATE_NO_FORWARD_INPUT_PREFLIGHT',
-            'authority':'RESEARCH_ONLY_NO_FORWARD_RETURN_ACCESS',
+            'authority':'RESEARCH_ONLY_NO_NEW_RS_FORWARD_RETURN_ACCESS',
             'historical_panel':{
               'sha256':h,'sha256_matches_frozen_receipt':h==expected,'header':header,
               'required_price_fields_missing':missing,'volume_candidates':volume_candidates,
               'rows':n,'unique_dates':len(dates),'first_date':first,'last_date':last
             },
-            'frozen_v43_weight_log':{
-              'entries':len(wl),'first_signal_date':min(weight_dates) if weight_dates else None,
-              'last_signal_date':max(weight_dates) if weight_dates else None,'five_factor_weight_keys_exact':weights_ok
+            'frozen_v43_artifact':{
+              'artifact_id':meta.get('id'),'name':meta.get('name'),'digest':meta.get('digest'),
+              'expired':meta.get('expired'),'result_file':str(result_path.relative_to('out/v43')),
+              'result_top_level_keys':sorted(v.keys()),
+              'weight_log_entries':len(wl),'first_weight_date':min(weight_dates) if weight_dates else None,
+              'last_weight_date':max(weight_dates) if weight_dates else None,
+              'weight_record_keys':sorted(wl[0].keys()) if wl else [],
+              'weight_dict_keys':sorted(wdict(wl[0]).keys()) if wl else [],
+              'five_factor_weight_keys_exact':weights_ok,
+              'jsonl_files':event_summary
             },
-            'forward_return_fields_read':False,
+            'forward_return_fields_read_for_new_rs':False,
             'new_rs_outcomes_computed':False
           }
           pathlib.Path('out/preflight.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
