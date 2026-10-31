@@ -4,7 +4,7 @@
   "date": "2026-10-31",
   "language": "zh-TW",
   "selection_core": {
-    "state": "IF07_PREREGISTERED_PANEL_BUILD_REQUIRED",
+    "state": "IF07_PREREGISTERED_NO_RETURN_PANEL_BUILD_IN_PROGRESS",
     "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
     "challenger_status": "PREREGISTERED_NOT_YET_RETURN_TESTED",
     "trading_authority": "NONE",
@@ -18,48 +18,68 @@
     "CONTROL_RETAIL_V0_11_1": "FROZEN_LIFECYCLE_EXIT_BENCHMARK_ONLY",
     "MONSTER_BUY_V1": "FROZEN_LONG_HORIZON_EVENT_BENCHMARK_ONLY"
   },
-  "latest_candidate_novelty_gate": {
-    "candidate": "CROSS_STOCK_CAPITAL_SHARE_MIGRATION_DRAFT",
-    "status": "FAIL",
-    "verdict": "NOVELTY_GATE_FAIL",
-    "forward_return_test_executed": false,
-    "preregistered": false,
+  "capital_share_migration": {
+    "status": "NOVELTY_GATE_FAIL",
     "rescue_tuning_allowed": false,
-    "git_path": "research/selection_core_rebuild/HENGCE_CAPITAL_SHARE_MIGRATION_NOVELTY_GATE_20261031.md"
+    "forward_return_test_executed": false,
+    "path": "research/selection_core_rebuild/HENGCE_CAPITAL_SHARE_MIGRATION_NOVELTY_GATE_20261031.md"
   },
-  "orthogonal_family_gate": {
-    "verdict": "PASS_WITH_DATA_ACQUISITION_BLOCKERS",
-    "git_path": "research/selection_core_rebuild/HENGCE_ORTHOGONAL_CAPABILITY_NOVELTY_GATE_20261031.md"
-  },
-  "if07_capability": {
+  "if07": {
     "novelty": "PASS",
-    "data_capability": "PASS",
-    "pit_timestamp_source": "TWSE_ELECTRONIC_REPORT_UPLOAD_TIMESTAMP",
-    "machine_readable_statements": "MOPS_DOM_HTML_TABLES",
-    "fugle_connector": "DATA_BLOCKED",
-    "proof_path": "research/selection_core_rebuild/HENGCE_IF07_EARNINGS_QUALITY_PIT_CAPABILITY_PROOF_20261031.md"
+    "source_data_capability": "PASS",
+    "challenger_id": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
+    "preregistration": "research/selection_core_rebuild/HENGCE_IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1_PREREG_20261031.md",
+    "implementation_contract": "research/selection_core_rebuild/HENGCE_IF07_V0_1_IMPLEMENTATION_CONTRACT_20261031.md",
+    "preregistration_persisted_and_reread": true,
+    "forward_return_inspected": false,
+    "official_bulk_ixbrl_acquisition": "PASS",
+    "official_bulk_ixbrl_protocol_proof": "research/selection_core_rebuild/HENGCE_IF07_OFFICIAL_BULK_IXBRL_PROTOCOL_PROOF_20261031.md",
+    "direct_ixbrl_parse_capability": "PASS",
+    "direct_ixbrl_parse_proof": "research/selection_core_rebuild/HENGCE_IF07_DIRECT_IXBRL_TABLE_PROOF_20261031.md",
+    "period_column_semantics": "PASS",
+    "period_column_proof": "research/selection_core_rebuild/HENGCE_IF07_PERIOD_COLUMN_SEMANTICS_PROOF_20261031.md",
+    "current_timestamp_problem": "RESOLVING_BULK_ZIP_MEMBER_TIMESTAMP_VS_VERIFIED_UPLOAD_TIMESTAMP",
+    "fugle_connector": "DATA_BLOCKED_NOT_PROVIDER_ABSENCE"
   },
-  "active_preregistration": {
-    "id": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
-    "path": "research/selection_core_rebuild/HENGCE_IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1_PREREG_20261031.md",
-    "persisted": true,
-    "re_read_verified": true,
-    "primary_horizon_sessions": 20,
+  "metadata_artifacts": {
+    "blank_year_v0_1": {
+      "artifact": "IF07_METADATA_INDEX_2022_2026",
+      "status": "INVALID_FOR_PANEL_INPUT",
+      "reason": "TWSE electronic-book t57sb01 returned 查詢過量 and intermittent DNS failures on Actions; only 69 of 468 acquisition tickers had any parsed metadata rows. The apparent 794 current/prior pairs are coverage-biased and are permanently forbidden as panel input.",
+      "forward_return_used": false
+    },
+    "year_scope_probe": {
+      "status": "COMPLETED_DIAGNOSTIC",
+      "finding": "Explicit-year queries work for some tickers but t57sb01 rate-limits the runner with 查詢過量; t57sb01 is not accepted as the sole scalable metadata authority."
+    }
+  },
+  "pit_universe": {
+    "formal_authority": "CANONICAL_DAILY_TWSE_ELECTRONICS_ARCHIVE_SIGNAL_DATE_ROW_PRESENCE",
+    "acquisition_superset": "research/selection_core_rebuild/IF07_ELECTRONICS_ACQUISITION_TICKER_UNION_2022_2026.json",
+    "acquisition_superset_has_pit_authority": false,
+    "trading_sessions": "research/selection_core_rebuild/IF07_CANONICAL_TRADING_SESSIONS_2022_2026.json",
+    "canonical_2026_coverage_end": "2026-10-27"
+  },
+  "research_split": {
+    "split_key": "signal_date",
     "discovery": "2023-01-01/2024-12-31",
     "validation": "2025-01-01/2026-10-31",
-    "validation_open_allowed": false
+    "important_boundary": "2024Q4 filings normally signal in 2025 and therefore belong to Validation, not Discovery."
   },
-  "next_legal_step": "BUILD_IF07_PIT_ACCOUNTING_EVENT_PANEL_WITHOUT_RETURNS",
   "forward_return_lock": {
-    "discovery_returns_allowed_only_after_panel_audit": true,
+    "new_challenger_forward_return_inspected": false,
+    "discovery_returns_allowed_only_after_no_return_panel_audit_and_count_integrity_gates": true,
     "validation_returns_forbidden_until_discovery_pass": true
   },
+  "next_legal_step": "COMPLETE_PIT_TIMESTAMP_AUTHORITY -> BUILD_IF07_DISCOVERY_ACCOUNTING_PANEL_NO_RETURNS -> JOIN_CANONICAL_SIGNAL_DATE_ELECTRONICS_MEMBERSHIP -> PERSIST_AND_REREAD_COUNT_ONLY_AUDIT",
   "forbidden_next_steps": [
     "REVIVE_V6_OR_V43_AS_NEW_CORE",
     "RESCUE_CAPITAL_SHARE_MIGRATION",
     "PRICE_VOLUME_RETUNING_AS_NEW_SMART_MONEY_ALPHA",
     "ESCAPE_ALPHA_INJECTION",
-    "ATTACH_RETURNS_BEFORE_IF07_PANEL_SCHEMA_COVERAGE_PROVENANCE_AUDIT",
+    "USE_INVALID_IF07_METADATA_INDEX_V0_1_AS_PANEL_INPUT",
+    "USE_ANNUAL_TICKER_UNION_AS_FORMAL_PIT_UNIVERSE",
+    "ATTACH_DISCOVERY_RETURNS_BEFORE_NO_RETURN_PANEL_AUDIT",
     "OPEN_VALIDATION_RETURNS_BEFORE_DISCOVERY_PASS",
     "MUTATE_IF07_V0_1_AFTER_RETURN_INSPECTION"
   ]
