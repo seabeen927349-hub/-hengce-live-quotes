@@ -18,12 +18,15 @@ LEVELS = {
 PRIMITIVE = ("foreign", "trust", "dealer")
 REQUIRED_FAMILIES = ("FLOW_PROPAGATION", "FLOW_BREADTH", "PRICE_DAMAGE")
 
+
 def _bool(d, key, default=False):
     return bool(d.get(key, default))
+
 
 def _num(d, key):
     v = d.get(key)
     return float(v) if isinstance(v, (int, float)) else None
+
 
 def _fail(reason, p=None):
     return {
@@ -38,6 +41,7 @@ def _fail(reason, p=None):
         "asof_taipei": (p or {}).get("asof_taipei"),
     }
 
+
 def evaluate(p):
     gate = p.get("data_gate", {})
     required_gate = ("freshness_pass", "integrity_pass", "pit_pass", "universe_pass")
@@ -49,11 +53,14 @@ def evaluate(p):
     if phase not in {"INTRADAY", "CLOSE_PRELIM", "EOD_FORMAL", "OWNERSHIP_WEEKLY", "NEXT_DAY_RECONCILIATION"}:
         return _fail("INVALID_PHASE", p)
 
+    # Intraday may warn on price/liquidity only; it may never create a formal flow state.
     formal_flow_allowed = phase in {"EOD_FORMAL", "OWNERSHIP_WEEKLY", "NEXT_DAY_RECONCILIATION"}
 
     det = p.get("detector_output", {})
     if det.get("status") != "PASS_DETECTOR" or det.get("detector_version") != "HENGCE_ESCAPE_FEATURE_DETECTOR_V1":
         return _fail("DETECTOR_NOT_VERIFIED", p)
+    if det.get("metric_contract_version") != "HENGCE_ESCAPE_METRIC_CONTRACT_V1" or det.get("metric_contract_sha256") != "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281":
+        return _fail("METRIC_CONTRACT_NOT_VERIFIED", p)
     fam = det.get("family_scores", {})
     valid_scores = {k: float(v) for k, v in fam.items() if isinstance(v, (int, float)) and 0 <= float(v) <= 100}
     if not all(k in valid_scores for k in REQUIRED_FAMILIES):
@@ -75,6 +82,7 @@ def evaluate(p):
     aggregate = formal_flow_allowed and _bool(ev, "totalnet_negative_flow_confirmed")
     flow_breadth = formal_flow_allowed and _bool(ev, "flow_breadth_confirmed")
     migration = formal_flow_allowed and _bool(ev, "capital_migration_confirmed")
+    # TotalNet is not independent: either a second primitive channel confirms, or aggregate needs two independent non-channel families.
     second = first and (n_primitive >= 2 or (aggregate and flow_breadth and migration))
 
     medium = formal_flow_allowed and _bool(ev, "medium_window_flow_confirmed")
@@ -113,6 +121,7 @@ def evaluate(p):
     recovery_confirmed = _bool(ev, "recovery_5_consecutive_confirmed") and _bool(ev, "flow_reentry_confirmed")
     prior = p.get("prior_level")
     if isinstance(prior, int) and prior > level and not recovery_confirmed:
+        # Hysteresis: do not silently de-escalate on a single cleaner print.
         level = prior
 
     prev_pressure = _num(p, "escape_pressure_5d_ago")
@@ -149,9 +158,11 @@ def evaluate(p):
             "TotalNet is aggregate corroboration, never an independent second institutional channel.",
             "Institutional net flow is not automatically equivalent to AUM allocation change.",
             "State is primary; Escape Pressure is secondary diagnostic only.",
-            "Event booleans are accepted only from HENGCE_ESCAPE_FEATURE_DETECTOR_V1, not manual input."
+            "Event booleans are accepted only from HENGCE_ESCAPE_FEATURE_DETECTOR_V1, not manual input.",
+            "Detector metrics must match HENGCE_ESCAPE_METRIC_CONTRACT_V1 hash 1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281."
         ]
     }
+
 
 def main():
     if len(sys.argv) != 2:
