@@ -4,7 +4,7 @@
   "date": "2026-10-31",
   "language": "zh-TW",
   "selection_core": {
-    "state": "IF07_STAGE_A_PASS_NO_RETURN_STAGE_B_INPUT_LIST_NOT_PERSISTED",
+    "state": "IF07_STAGE_A_PASS_NO_RETURN_STAGE_B_PREPARED_NOT_EXECUTED_INPUT_LIST_NOT_PERSISTED",
     "challenger": "IF07_EARNINGS_QUALITY_ZERO_RED_FLAG_V0_1",
     "challenger_status": "PREREGISTERED_NOT_YET_RETURN_TESTED",
     "trading_authority": "NONE",
@@ -34,6 +34,9 @@
     "pre_return_erratum": "research/selection_core_rebuild/HENGCE_IF07_V0_1_PRE_RETURN_IMPLEMENTATION_ERRATUM_20261031.md",
     "data_sufficiency_gate": "research/selection_core_rebuild/HENGCE_IF07_PIT_DATA_SUFFICIENCY_GATE_20261031.md",
     "stage_a_result": "research/selection_core_rebuild/HENGCE_IF07_STAGE_A_V0_2_NO_RETURN_GATE_RESULT_20261031.md",
+    "stage_b_contract": "research/selection_core_rebuild/HENGCE_IF07_STAGE_B_EXACT_METADATA_EXECUTION_CONTRACT_20261031.md",
+    "stage_b_manifest_gate": "research/selection_core_rebuild/if07_stage_b_candidate_manifest_gate_no_network.py",
+    "stage_a_offline_audit_gate": "research/selection_core_rebuild/if07_stage_a_audit_gate_no_returns.py",
     "preregistration_persisted_and_reread": true,
     "forward_return_inspected": false,
     "timestamp_proxy_research": "CLOSED_REJECTED_SHORTCUTS_MUST_NOT_BE_REOPENED",
@@ -77,6 +80,20 @@
     "candidate_identity_list_persisted_on_branch": false,
     "discovery_returns_authorized": false
   },
+  "stage_b_preparation": {
+    "status": "PREPARED_NOT_EXECUTED",
+    "manifest_admission_network_access": false,
+    "manifest_admission_expected_total_rows": 3560,
+    "manifest_admission_expected_candidates": 187,
+    "manifest_admission_expected_unique_tickers": 128,
+    "manifest_admission_requires_exact_period_distribution": true,
+    "identity_inference_or_reconstruction_allowed": false,
+    "exact_t57_retrieval_started": false,
+    "signal_date_mapping_started": false,
+    "pit_membership_gate_started": false,
+    "discovery_returns_authorized": false,
+    "blocker": "EXACT_STAGE_A_ROWS_IDENTITY_MANIFEST_NOT_PERSISTED_ON_BRANCH_AND_EXISTING_ACTIONS_ARTIFACT_NOT_DOWNLOADED_UNDER_USER_STOP_RULE"
+  },
   "metadata_artifacts": {
     "blank_year_v0_1": {
       "artifact": "IF07_METADATA_INDEX_2022_2026",
@@ -111,9 +128,10 @@
   "user_stop_rule": {
     "no_further_data_downloads_or_acquisition_expansion": true,
     "stage_a_rerun_for_persistence_only": "FORBIDDEN",
-    "existing_actions_artifact_download_after_stop": "NOT_PERFORMED"
+    "existing_actions_artifact_download_after_stop": "NOT_PERFORMED",
+    "t57_candidate_metadata_retrieval_after_stop": "NOT_PERFORMED"
   },
-  "next_legal_step": "STAGE_B_T57_EXACT_METADATA_ONLY_FOR_THE_FROZEN_187_STAGE_A_CANDIDATES, BUT DO_NOT START FROM AN INFERRED_OR_REGENERATED LIST; CANDIDATE IDENTITIES ARE NOT PERSISTED ON BRANCH AND THE EXISTING ACTIONS ARTIFACT HAS NOT BEEN DOWNLOADED UNDER THE USER STOP RULE",
+  "next_legal_step": "WAIT_FOR_EXACT_FROZEN_STAGE_A_ROWS_MANIFEST_TO_BECOME_LAWFULLY_AVAILABLE; THEN RUN_OFFLINE_STAGE_B_MANIFEST_ADMISSION; ONLY_AFTER_PASS MAY EXACT_T57_METADATA_BE_QUERIED_FOR_THOSE_IDENTITIES. DO_NOT INFER, REGENERATE, DOWNLOAD, OR OPEN RETURNS UNDER CURRENT STOP RULE.",
   "forbidden_next_steps": [
     "REVIVE_V6_OR_V43_AS_NEW_CORE",
     "RESCUE_CAPITAL_SHARE_MIGRATION",
@@ -122,6 +140,8 @@
     "REOPEN_TIMESTAMP_PROXY_RESEARCH",
     "EXPAND_DATA_SOURCE_FAMILIES",
     "RERUN_STAGE_A_MERELY_TO_REPAIR_RECEIPT_PERSISTENCE",
+    "DOWNLOAD_EXISTING_STAGE_A_ACTIONS_ARTIFACT_UNDER_CURRENT_USER_STOP_RULE",
+    "QUERY_T57_UNDER_CURRENT_USER_STOP_RULE",
     "USE_INVALID_IF07_METADATA_INDEX_V0_1_AS_PANEL_INPUT",
     "USE_ANNUAL_TICKER_UNION_AS_FORMAL_PIT_UNIVERSE",
     "INFER_OR_RECONSTRUCT_187_CANDIDATE_IDENTITIES_FROM_COUNTS",
