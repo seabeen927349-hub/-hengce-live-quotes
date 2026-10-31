@@ -3,7 +3,7 @@
 Date frozen: 2026-10-31  
 Research lane: `REPRICING_STATE_SELECTION_CORE`  
 Parent primitive freeze commit: `927b5cf8d59d8a22d950c02e4c100ead358a1796`  
-Status at creation: `PREREGISTERED_FORWARD_RETURNS_STILL_SEALED`  
+Status at freeze: `PREREGISTERED_FORWARD_RETURNS_STILL_SEALED`  
 Selection authority: `RESEARCH_ONLY`  
 Trading / production authority: `NONE`
 
@@ -13,7 +13,7 @@ This preregistration defines a **new challenger family**. It does not revive V43
 
 V43 and MONSTER BUY V1 remain frozen anatomical references only.
 
-Before this file is committed:
+Before this preregistration is frozen:
 
 - no Repricing State candidate forward-return table has been opened;
 - no Repricing State M0/M1/M2/M3 outcome has been computed;
@@ -21,7 +21,7 @@ Before this file is committed:
 - no P97/P90/Bridge/Controlled-Re-Leverage rule is inherited;
 - no V43 `0.05` ICIR stabilizer, `0.90` shrink, V6 weight, Top3 rule, H20 schedule, or risk scaler is inherited.
 
-Any later change to a score formula, window, selected count, tie-break, missingness rule, null implementation, bootstrap implementation, regime mapping, AP update rule, execution rule, or decision gate requires a new version **before** looking at the affected outcomes. V0.1 may not be silently edited or rescued.
+Any later change to a score formula, window, selected count, tie-break, missingness rule, null implementation, bootstrap implementation, regime mapping, AP update rule, execution rule, sample split, or decision gate requires a new separately versioned preregistration **before** looking at the affected outcomes. V0.1 may not be silently edited or rescued.
 
 ## 1. Governing authority
 
@@ -58,11 +58,19 @@ Abbreviations used below:
 - `RG(t)` = continuous TAIEX regime in `(-1,1)`;
 - `AP_SA(t)`, `AP_LT(t)` = expanding prior-only alpha-persistence estimates, available only after their underlying horizon labels are fully matured before `t`.
 
-All mid-ranks are:
+All same-date mid-ranks are:
 
 `u = (rank_ascending - 0.5) / N`
 
 with average ranks for exact value ties. Therefore every valid `u` lies strictly inside `(0,1)`.
+
+Implementation clarifications frozen here before outcomes:
+
+- one-day stock return inside `SA_raw` is close-to-close return;
+- the same-date residual is that stock one-day return minus the median valid one-day return of the same RS eligible electronics cross-section;
+- `RG` denominator uses fixed `epsilon_machine = 2^-52 = 2.220446049250313e-16`;
+- standard Spearman correlation means Pearson correlation of average ranks;
+- a date-level Spearman IC is valid only with at least 5 stocks with finite feature and matured outcome values and non-zero rank variance in both vectors; otherwise that date-level IC is `MISSING_IC`, never zero.
 
 Ticker tie-break is used only after final model scores tie: ascending four-digit ticker code.
 
@@ -106,7 +114,7 @@ Rationale classification: `NEW_PRE_RETURN_EVALUATION_GEOMETRY`, not inherited fr
 
 Every model selects the five highest final scores. Exact final-score ties are broken by ascending ticker.
 
-The daily top-5 surface is the research Selection output. Portfolio overlap / capital occupancy is handled separately in §13 and may suppress execution without changing the Selection score or rank.
+The daily top-5 surface is the research Selection output. Portfolio overlap / capital occupancy is handled separately in §14 and may suppress execution without changing the Selection score or rank.
 
 ## 6. RS-M0 — Supply Absorption only
 
@@ -173,11 +181,12 @@ For each feature `f ∈ {uSA, uLT}` and horizon `H ∈ {5,10,20,40,60}`:
 2. the entire H-session label is inadmissible until its exit session is fully observable;
 3. for current signal date `t`, an IC observation may enter training only if its exit date is strictly earlier than `t`;
 4. current-date, overlapping-unmatured, future, revised-later, or censored labels are never used;
-5. no same-regime sample filter is used.
+5. no same-regime sample filter is used;
+6. the date-level IC validity law in §3 applies; invalid ICs are omitted, not replaced by zero.
 
 For a horizon with at least one admissible historical IC observation:
 
-`MeanIC_f,H(t) = arithmetic mean of all admissible prior ICs at H`
+`MeanIC_f,H(t) = arithmetic mean of all admissible prior valid ICs at H`
 
 AP becomes active only when **all five horizons** have at least one admissible `MeanIC` for both features.
 
@@ -303,7 +312,47 @@ This preregistration freezes the previously underspecified random mechanics **be
 
 No other RNG, stream ordering, sampling library, or lucky random draw is permitted.
 
-## 12. Forward-return and reporting geometry — frozen
+## 12. Historical split / model-selection chronology — frozen
+
+The RS lane uses a strict chronology so validation cannot select a different model after Discovery disappointment.
+
+### 12.1 Discovery
+
+Signal dates:
+
+`2023-01-01 <= signal_date <= 2024-12-31`
+
+All four frozen RS models and N0/N1/N2/N3 are evaluated once after the novelty/execution gates pass.
+
+Apply §16 to nominate at most one **Discovery nominee**. If no RS model survives, V0.1 is `FAIL` and Validation is not used to rescue it.
+
+If required PIT institutional or margin data do not support this Discovery panel, state = `DATA_BLOCKED`. Do not replace the window with a later easier period.
+
+### 12.2 Validation
+
+Signal dates:
+
+`2025-01-01 <= signal_date <= 2026-06-30`
+
+The exact Discovery nominee and unchanged rules are tested. All frozen ablations may be reported diagnostically, but **Validation may not switch the nominee** to a different M0/M1/M2/M3 variant.
+
+The Discovery nominee must independently pass the same null-survival gate in §16.1 on Validation. If it fails, `REPRICING_STATE_SELECTION_CORE_V0_1 = FAIL`; no rescue model is promoted from the Validation table.
+
+If required PIT data cannot support the Validation panel, state = `DATA_BLOCKED`.
+
+### 12.3 Recency audit
+
+After a Validation pass, run the inherited latest-63-TWSE-session audit ending at the evaluation cutoff. This audit is a gate, not a model-selection window.
+
+Late-2026 outcomes may not be used to change the Discovery nominee.
+
+### 12.4 Prospective evidence
+
+Signals strictly after the V0.1 preregistration freeze are prospective evidence. Prospective results may validate or falsify the frozen nominee but may not mutate V0.1.
+
+Historical Discovery/Validation remain exposed-history research even though the RS formulas were frozen before their RS outcomes were opened. They are not mislabeled as pristine OOS.
+
+## 13. Forward-return and reporting geometry — frozen
 
 Forward returns remain sealed until §10 novelty PASS and a pre-return execution audit confirms implementation parity with this document.
 
@@ -314,8 +363,15 @@ When legally unsealed:
 - exits = close after 5 / 10 / 20 / 40 / 60 TWSE sessions from entry according to the frozen trading-session calendar;
 - round-trip cost = exactly 40 bp total for all challenger/null basket net returns;
 - no technical stop, take-profit, dynamic exit, or alternate holding rule is allowed;
-- missing entry/exit/path needed for a required metric = fail closed, never synthetic;
-- all M0/M1/M2/M3 and null comparisons use the same matched signal dates for each reported comparison.
+- missing entry/exit/path needed for a required metric = fail closed, never synthetic.
+
+Pairwise outcome missingness rule:
+
+- for any specific model-vs-null or model-vs-model comparison at horizon H, a signal date is included only when every constituent needed for both compared date-level baskets has a valid H outcome;
+- otherwise that date is excluded from that paired comparison and logged with the exact missing-outcome reason;
+- no missing outcome is replaced, carried forward, or assigned zero;
+- counts of excluded dates are mandatory;
+- no model may claim superiority using a different unreported comparison-date set.
 
 ### Primary research horizon
 
@@ -341,7 +397,7 @@ Required reporting for every model follows the frozen null contract and includes
 - trade count / frequency / capital utilization / capital efficiency at portfolio stage;
 - TAIEX-relative and cross-cycle evidence before promotion.
 
-## 13. Portfolio overlap and finite-capital mechanics — frozen
+## 14. Portfolio overlap and finite-capital mechanics — frozen
 
 For promotion-oriented portfolio replay, use the existing HENGCE fixed-capital convention:
 
@@ -361,7 +417,7 @@ Latest-3M uses the frozen 63-TWSE-session convention. For this RS challenger, la
 
 Latest-3M finite-capital net PnL must be `> 0`, and contemporaneous TAIEX excess must be `> 0`; otherwise the promotion gate fails. Strong-market latest-3M net PnL `<= 0` is a KILL condition under inherited governance.
 
-## 14. Bootstrap mechanics — frozen before outcomes
+## 15. Bootstrap mechanics — frozen before outcomes
 
 The inference unit is a **signal date block**: all names in a model/null basket on the same signal date remain together.
 
@@ -393,11 +449,11 @@ Deterministic resampling:
 
 No BCa/basic/studentized alternative may be selected after outcomes.
 
-## 15. Complexity / model-selection gates — frozen
+## 16. Complexity / model-selection gates — frozen
 
 This ladder is evaluated once. It is not a tournament in which the best-looking return is automatically selected.
 
-### 15.1 Independent null-survival gate for each Mk
+### 16.1 Independent null-survival gate for each Mk
 
 A model `Mk` can be called `NULL_SURVIVOR` only if, at H20:
 
@@ -407,37 +463,40 @@ A model `Mk` can be called `NULL_SURVIVOR` only if, at H20:
 4. mean excess versus N1 is positive in at least 3 of the 5 mandatory horizons;
 5. no required result is invalidated by PIT / missingness / implementation failure.
 
-N2 remains mandatory reporting but is not a promotion hurdle because it is an intentionally opposite simple reversal comparator rather than the principal positive-selection null.
+N2 remains mandatory reporting but is not a survival hurdle because it is an intentionally opposite simple reversal comparator rather than the principal positive-selection null.
 
-### 15.2 Incremental complexity gate
+### 16.2 Incremental complexity gate
 
 A more complex RS model may supersede the immediately preceding model only if:
 
 1. H20 mean date-level excess versus the immediate predecessor is `> 0`;
 2. the frozen 95% bootstrap CI lower endpoint for that H20 incremental excess is `> 0`;
 3. incremental mean excess is positive in at least 3 of 5 horizons;
-4. the more complex model independently passes §15.1.
+4. the more complex model independently passes §16.1.
 
 M3's incremental comparison is computed on `M3_AP_ACTIVE` dates for the AP-specific claim, with a separate all-date comparison also reported.
 
 If a complex model passes nulls but does not pass its incremental gate, complexity is not rewarded: retain the simpler surviving model.
 
-If an intermediate model fails but a later frozen model passes, the later model is still reported; it may become the candidate only if it passes its own null gate **and** has positive H20 mean excess versus every simpler RS model, with the immediate-predecessor CI condition above also satisfied. No formula may be changed to rescue the chain.
+If an intermediate model fails but a later frozen model passes, the later model is still reported; it may become the Discovery nominee only if it passes its own null gate **and** has positive H20 mean excess versus every simpler RS model, with the immediate-predecessor CI condition above also satisfied. No formula may be changed to rescue the chain.
 
-### 15.3 Final research choice
+### 16.3 Discovery nominee
 
-Among models meeting all applicable gates, choose the **simplest** model not statistically dominated under §15.2.
+Among models meeting all applicable Discovery gates, choose the **simplest** model not statistically dominated under §16.2.
 
-If none survive: `REPRICING_STATE_SELECTION_CORE_V0_1 = FAIL`.
+The nominee identity is then frozen before Validation is inspected. Validation failure kills V0.1; Validation cannot select a replacement model.
+
+If none survive Discovery: `REPRICING_STATE_SELECTION_CORE_V0_1 = FAIL`.
 
 No “near pass” creates authority.
 
-## 16. Regime / cross-cycle / recent-3M promotion law
+## 17. Regime / cross-cycle / recent-3M promotion law
 
 Research survival is not production promotion.
 
-Before any future promotion claim, the selected frozen RS model must additionally satisfy inherited governance:
+Before any future promotion claim, the frozen Discovery nominee must additionally satisfy inherited governance:
 
+- Validation pass under §12.2;
 - latest-3M finite-capital PnL positive;
 - adequate actual trade count and signal-date frequency;
 - positive capital efficiency;
@@ -446,18 +505,20 @@ Before any future promotion claim, the selected frozen RS model must additionall
 - cross-cycle evidence extending as far toward 2018–2026 as the required PIT data can legitimately support;
 - cost / remove-best / concentration robustness;
 - no dependence on one or a few lucky trades;
-- clean forward/OOS evidence after freeze.
+- clean prospective forward/OOS evidence after freeze.
 
-Current known historical margin capability is incomplete. If the required PIT margin history cannot support the mandated cross-cycle test, final promotion remains `DATA_BLOCKED`; historical gaps may not be fabricated or filled by a different feature.
+Current known historical margin capability is incomplete. If the required PIT margin history cannot support the mandated Discovery, Validation, or cross-cycle test, the legal result is `DATA_BLOCKED`; historical gaps may not be fabricated or filled by a different feature.
 
-## 17. Prohibited post-unseal actions
+## 18. Prohibited post-unseal actions
 
 After the first RS forward-return computation, V0.1 forbids:
 
 - changing 20/5/63-session primitive windows;
+- changing `epsilon_machine`;
 - changing K=5;
 - changing score transforms or regime direction;
-- changing AP horizon set, averaging, activation or fallback;
+- changing AP horizon set, IC validity, averaging, activation or fallback;
+- changing Discovery / Validation windows;
 - introducing P97/P90/Bridge/CRL or any Monster gate;
 - importing V43 weights, ICIR stabilizer, shrink or score;
 - threshold search / quantile search / top-k search;
@@ -466,18 +527,19 @@ After the first RS forward-return computation, V0.1 forbids:
 - changing the null population;
 - changing N3 / bootstrap mechanics;
 - redefining primary horizon after seeing results;
+- switching the Discovery nominee after Validation failure;
 - adding a new feature because one known winner was missed;
 - reclassifying failure as success through a new metric.
 
 A failed V0.1 may motivate a genuinely new, separately preregistered V0.2 hypothesis, but V0.1 remains failed and immutable.
 
-## 18. Legal next step after this commit
+## 19. Legal next step after this commit
 
 1. persist and re-read this exact preregistration;
 2. run a **no-forward-return** implementation / PIT / completeness audit;
 3. run the label-free novelty gate in §10;
 4. persist the novelty verdict and feature-panel hashes;
-5. only if novelty = PASS and execution audit = PASS, explicitly unseal the first RS forward-return evaluation;
+5. only if novelty = PASS and execution audit = PASS, explicitly unseal Discovery forward-return evaluation;
 6. otherwise stop as `NOVELTY_GATE_FAIL`, `DATA_BLOCKED`, or `EXECUTION_SPEC_BLOCKED`.
 
 At this commit, forward returns remain sealed.
