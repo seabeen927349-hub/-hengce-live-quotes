@@ -1,0 +1,291 @@
+name: HENGCE Prospective TDCC First Observed
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-prospective-tdcc-first-observed
+  cancel-in-progress: false
+
+jobs:
+  tdcc-first-observed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: research/loss-forensics-20261101
+
+      - name: Poll official TDCC endpoint and preserve immutable provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import csv, hashlib, io, json, os, re, urllib.request
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          TZ=ZoneInfo('Asia/Taipei')
+          ENDPOINT='https://opendata.tdcc.com.tw/getOD.ashx?id=1-5'
+          ROOT=Path('research/loss_forensics/prospective_live/tdcc')
+          PAYLOADS=ROOT/'payloads'
+          FIRST=ROOT/'first_observed'
+          ATTEMPTS=ROOT/'attempts'
+          for p in (PAYLOADS,FIRST,ATTEMPTS):
+              p.mkdir(parents=True,exist_ok=True)
+
+          def now_tw():
+              return datetime.now(TZ)
+
+          def normalize_date(value):
+              if value is None:
+                  return None
+              s=str(value).strip()
+              m=re.fullmatch(r'(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})',s)
+              if m:
+                  y,mo,d=map(int,m.groups())
+                  if 1900<=y<=2100:
+                      try:
+                          return datetime(y,mo,d).date().isoformat()
+                      except ValueError:
+                          return None
+              m=re.fullmatch(r'(\d{2,3})[-/.](\d{1,2})[-/.](\d{1,2})',s)
+              if m:
+                  ry,mo,d=map(int,m.groups())
+                  y=1911+ry
+                  try:
+                      return datetime(y,mo,d).date().isoformat()
+                  except ValueError:
+                      return None
+              digits=re.sub(r'\D','',s)
+              if len(digits)==8:
+                  y,mo,d=int(digits[:4]),int(digits[4:6]),int(digits[6:8])
+                  if 1900<=y<=2100:
+                      try:
+                          return datetime(y,mo,d).date().isoformat()
+                      except ValueError:
+                          return None
+              if len(digits)==7:
+                  ry,mo,d=int(digits[:3]),int(digits[3:5]),int(digits[5:7])
+                  try:
+                      return datetime(1911+ry,mo,d).date().isoformat()
+                  except ValueError:
+                      return None
+              return None
+
+          request_started=now_tw()
+          req=urllib.request.Request(ENDPOINT,headers={
+              'Accept':'text/csv,text/plain,*/*',
+              'User-Agent':'HENGCE-PROSPECTIVE-TDCC-FIRST-OBSERVED/1.0'
+          })
+          http_error=None
+          body=None
+          headers={}
+          status=None
+          try:
+              with urllib.request.urlopen(req,timeout=30) as r:
+                  body=r.read()
+                  response_received=now_tw()
+                  status=getattr(r,'status',None)
+                  headers={
+                      'date':r.headers.get('Date'),
+                      'last_modified':r.headers.get('Last-Modified'),
+                      'etag':r.headers.get('ETag'),
+                      'content_type':r.headers.get('Content-Type'),
+                      'content_length':r.headers.get('Content-Length')
+                  }
+          except Exception as e:
+              response_received=now_tw()
+              http_error=repr(e)
+
+          attempt_stamp=response_received.strftime('%Y%m%dT%H%M%S%f%z')
+          attempt_dir=ATTEMPTS/response_received.strftime('%Y')/response_received.strftime('%m')/response_received.strftime('%d')
+          attempt_dir.mkdir(parents=True,exist_ok=True)
+          run_id=os.environ.get('GITHUB_RUN_ID') or 'LOCAL'
+          run_attempt=os.environ.get('GITHUB_RUN_ATTEMPT') or '0'
+          attempt_id=f'TDCC_{attempt_stamp}_RUN{run_id}_A{run_attempt}'
+
+          if body is None:
+              attempt={
+                  'schema_version':1,
+                  'attempt_id':attempt_id,
+                  'endpoint':ENDPOINT,
+                  'request_started_at_taipei':request_started.isoformat(),
+                  'response_received_at_taipei':response_received.isoformat(),
+                  'http_status':status,
+                  'http_error':http_error,
+                  'payload_sha256':None,
+                  'snapshot_reference_date':None,
+                  'reference_date_candidates':[],
+                  'new_payload_first_observed':False,
+                  'historical_latency_status':'DATA_BLOCKED',
+                  'prospective_live_latency_status':'COLLECTING',
+                  'authority':'SHADOW_PROSPECTIVE_AVAILABILITY_RESEARCH_ONLY_NO_TRADING_AUTHORITY'
+              }
+              (attempt_dir/f'{attempt_id}.json').write_text(json.dumps(attempt,ensure_ascii=False,indent=2),encoding='utf-8')
+              raise SystemExit(f'TDCC_POLL_FAILED:{http_error}')
+
+          sha=hashlib.sha256(body).hexdigest()
+
+          decoded=None
+          decoded_encoding=None
+          for enc in ('utf-8-sig','utf-8','cp950','big5'):
+              try:
+                  decoded=body.decode(enc)
+                  decoded_encoding=enc
+                  break
+              except UnicodeDecodeError:
+                  pass
+
+          reference_dates=[]
+          header=[]
+          if decoded is not None:
+              try:
+                  rows=list(csv.reader(io.StringIO(decoded)))
+                  if rows:
+                      header=[str(x).strip() for x in rows[0]]
+                      date_idx=None
+                      for i,h in enumerate(header):
+                          hh=re.sub(r'\s+','',h)
+                          if hh in ('資料日期','日期','資料年月日') or '資料日期' in hh:
+                              date_idx=i
+                              break
+                      candidates=[]
+                      for row in rows[1:]:
+                          if not row:
+                              continue
+                          vals=[]
+                          if date_idx is not None and date_idx<len(row):
+                              vals.append(row[date_idx])
+                          elif row:
+                              vals.append(row[0])
+                          for value in vals:
+                              d=normalize_date(value)
+                              if d:
+                                  candidates.append(d)
+                      reference_dates=sorted(set(candidates))
+              except Exception:
+                  reference_dates=[]
+
+          snapshot_reference_date=reference_dates[0] if len(reference_dates)==1 else None
+          first_meta=FIRST/f'{sha}.json'
+          raw_path=PAYLOADS/f'{sha}.csv'
+          is_new=not first_meta.exists()
+
+          if is_new:
+              raw_path.write_bytes(body)
+              first_observed={
+                  'schema_version':1,
+                  'payload_sha256':sha,
+                  'endpoint':ENDPOINT,
+                  'request_started_at_taipei':request_started.isoformat(),
+                  'first_observed_at_taipei':response_received.isoformat(),
+                  'first_observed_at_utc':response_received.astimezone(timezone.utc).isoformat(),
+                  'snapshot_reference_date':snapshot_reference_date,
+                  'reference_date_candidates':reference_dates,
+                  'decoded_encoding':decoded_encoding,
+                  'csv_header':header,
+                  'http_status':status,
+                  'http_date':headers.get('date'),
+                  'http_last_modified':headers.get('last_modified'),
+                  'http_etag':headers.get('etag'),
+                  'official_published_at':None,
+                  'publication_provenance_status':'OFFICIAL_PUBLICATION_TIMESTAMP_NOT_INDEPENDENTLY_PROVEN',
+                  'availability_semantics':'HENGCE_FIRST_OBSERVED_PUBLIC_ENDPOINT_RECEIPT_NOT_OFFICIAL_PUBLISHED_AT',
+                  'github_run_id':os.environ.get('GITHUB_RUN_ID'),
+                  'github_run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
+                  'github_sha_at_run_start':os.environ.get('GITHUB_SHA'),
+                  'prospective_protocol_commit':'08497a8106ac6acd8799a4fe256eb102dca2bb9c',
+                  'historical_latency_status':'DATA_BLOCKED',
+                  'prospective_live_latency_status':'COLLECTING',
+                  'authority':'SHADOW_PROSPECTIVE_AVAILABILITY_RESEARCH_ONLY_NO_TRADING_AUTHORITY'
+              }
+              first_meta.write_text(json.dumps(first_observed,ensure_ascii=False,indent=2),encoding='utf-8')
+
+          attempt={
+              'schema_version':1,
+              'attempt_id':attempt_id,
+              'endpoint':ENDPOINT,
+              'request_started_at_taipei':request_started.isoformat(),
+              'response_received_at_taipei':response_received.isoformat(),
+              'http_status':status,
+              'http_error':None,
+              'http_date':headers.get('date'),
+              'http_last_modified':headers.get('last_modified'),
+              'http_etag':headers.get('etag'),
+              'payload_sha256':sha,
+              'snapshot_reference_date':snapshot_reference_date,
+              'reference_date_candidates':reference_dates,
+              'new_payload_first_observed':is_new,
+              'first_observed_record':str(first_meta),
+              'official_published_at':None,
+              'historical_latency_status':'DATA_BLOCKED',
+              'prospective_live_latency_status':'COLLECTING',
+              'authority':'SHADOW_PROSPECTIVE_AVAILABILITY_RESEARCH_ONLY_NO_TRADING_AUTHORITY'
+          }
+          (attempt_dir/f'{attempt_id}.json').write_text(json.dumps(attempt,ensure_ascii=False,indent=2),encoding='utf-8')
+
+          current={
+              'schema_version':1,
+              'endpoint':ENDPOINT,
+              'last_poll_received_at_taipei':response_received.isoformat(),
+              'payload_sha256':sha,
+              'snapshot_reference_date':snapshot_reference_date,
+              'reference_date_candidates':reference_dates,
+              'first_observed_record':str(first_meta),
+              'official_published_at':None,
+              'publication_provenance_status':'OFFICIAL_PUBLICATION_TIMESTAMP_NOT_INDEPENDENTLY_PROVEN',
+              'historical_latency_status':'DATA_BLOCKED',
+              'prospective_live_latency_status':'COLLECTING'
+          }
+          (ROOT/'current.json').write_text(json.dumps(current,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('TDCC PROSPECTIVE POLL',sha,'reference=',snapshot_reference_date,'candidates=',reference_dates,'new=',is_new)
+          PY
+
+      - name: Validate immutable first-observed evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('research/loss_forensics/prospective_live/tdcc')
+          current=json.loads((root/'current.json').read_text(encoding='utf-8'))
+          sha=current['payload_sha256']
+          raw=root/'payloads'/f'{sha}.csv'
+          meta=root/'first_observed'/f'{sha}.json'
+          if not raw.exists() or not meta.exists():
+              raise SystemExit('TDCC_IMMUTABLE_EVIDENCE_MISSING')
+          if hashlib.sha256(raw.read_bytes()).hexdigest()!=sha:
+              raise SystemExit('TDCC_RAW_HASH_MISMATCH')
+          m=json.loads(meta.read_text(encoding='utf-8'))
+          if m.get('payload_sha256')!=sha or not m.get('first_observed_at_taipei'):
+              raise SystemExit('TDCC_FIRST_OBSERVED_META_INVALID')
+          if m.get('official_published_at') is not None:
+              raise SystemExit('TDCC_OFFICIAL_PUBLICATION_MUST_NOT_BE_INFERRED')
+          if m.get('historical_latency_status')!='DATA_BLOCKED' or m.get('prospective_live_latency_status')!='COLLECTING':
+              raise SystemExit('LATENCY_STATUS_SEPARATION_VIOLATION')
+          print('TDCC FIRST-OBSERVED EVIDENCE VERIFIED',sha,m.get('first_observed_at_taipei'))
+          PY
+
+      - name: Commit TDCC prospective provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-prospective-live-bot'
+          git config user.email 'hengce-prospective-live-bot@users.noreply.github.com'
+          git add research/loss_forensics/prospective_live/tdcc/
+          if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
+          TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
+          git commit -m "HENGCE prospective TDCC first-observed ${TS}"
+          git pull --rebase origin "research/loss-forensics-20261101"
+          git push origin HEAD:research/loss-forensics-20261101
