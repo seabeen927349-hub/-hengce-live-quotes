@@ -1,0 +1,86 @@
+{
+  "contract_id": "HENGCE_LITERATURE_GATE_CONTRACT_v1",
+  "effective_date": "2026-11-02",
+  "scope": "GLOBAL_ALL_HENGCE_RESEARCH",
+  "default_state": "LITERATURE_REVIEW_ONLY",
+  "fail_closed": true,
+  "required_gate_file": "LITERATURE_GATE.json",
+  "required_before": [
+    "MODEL_VERSION_CREATION",
+    "FEATURE_FAMILY_CREATION",
+    "FACTOR_DESIGN",
+    "THRESHOLD_DESIGN",
+    "RANKING_RULE_DESIGN",
+    "ENTRY_EXIT_RULE_DESIGN",
+    "REGIME_RULE_DESIGN",
+    "TARGET_RETURN_INSPECTION_FOR_DISCOVERY",
+    "BACKTEST_NEW_HYPOTHESIS",
+    "PARAMETER_TUNING",
+    "CANDIDATE_ACCEPTANCE",
+    "PROMOTION"
+  ],
+  "allowed_pre_gate": [
+    "LITERATURE_DISCOVERY",
+    "FULL_TEXT_READING",
+    "EVIDENCE_EXTRACTION",
+    "BIBLIOGRAPHIC_VERIFICATION",
+    "DATA_ACQUISITION",
+    "DATA_CLEANING",
+    "DATA_LINEAGE_CHECK",
+    "CAPABILITY_AUDIT_WITHOUT_TARGET_DISCOVERY",
+    "EVIDENCE_MAP_BUILD",
+    "REPLICATION_PLANNING_WITHOUT_UNSEEN_TARGET_RETURN_INSPECTION"
+  ],
+  "required_fields": [
+    "topic_id",
+    "topic_title",
+    "literature_review_complete",
+    "literature_status",
+    "scope_definition",
+    "search_boundary",
+    "canonical_ledger_reference",
+    "canonical_ledger_version",
+    "full_read_count",
+    "partial_count",
+    "found_only_count",
+    "supportive_evidence_reviewed",
+    "counterevidence_reviewed",
+    "null_results_reviewed",
+    "limitations_recorded",
+    "identification_threats_recorded",
+    "abstracts_not_promoted_to_full_read",
+    "saturation_assessment",
+    "unresolved_material_conflicts",
+    "reviewer",
+    "review_date",
+    "no_model_or_backtest_preceded_gate"
+  ],
+  "pass_conditions": {
+    "literature_review_complete": true,
+    "literature_status": "PASS",
+    "supportive_evidence_reviewed": true,
+    "counterevidence_reviewed": true,
+    "null_results_reviewed": true,
+    "limitations_recorded": true,
+    "identification_threats_recorded": true,
+    "abstracts_not_promoted_to_full_read": true,
+    "no_model_or_backtest_preceded_gate": true,
+    "full_read_count_min": 1
+  },
+  "contamination_rule": {
+    "if_model_first_work_exists": "PRE_LITERATURE_CONTAMINATED",
+    "retroactive_clean_certification_allowed": false,
+    "fresh_preregistered_path_required": true
+  },
+  "downstream_authority": {
+    "literature_pass_grants": "PREREGISTRATION_ALLOWED_ONLY",
+    "production_authority": false,
+    "capital_authority": 0,
+    "holdout_access": false,
+    "candidate_acceptance": false
+  },
+  "amendment": {
+    "weakening_requires_explicit_human_authorization": true,
+    "silent_override_forbidden": true
+  }
+}
