@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-01",
+  "repo": "seabeen927349-hub/-hengce-live-quotes",
+  "branch": "research/loss-forensics-20261101",
+  "status": "PREOUTCOME_CLOSED_NO_RESIDUAL_NOVELTY",
+  "formal_weight": 0,
+  "production_authority": "NONE",
+  "trading_authority": "NONE",
+  "new_family_forward_outcomes_opened": false,
+  "governance": {
+    "no_outcome_before_prereg": true,
+    "no_silent_retuning": true,
+    "no_legacy_family_rescue": true,
+    "native_tdcc_bucket_history_required_for_reopen": true,
+    "transaction_cost_proxy_not_authorized_after_participation_failure": true
+  },
+  "capability": {
+    "tdcc_canonical_rows": 122023,
+    "tdcc_snapshots": 81,
+    "tdcc_tickers": 3091,
+    "tdcc_reference_span": ["2017-07-21", "2026-10-22"],
+    "small400_exact_complement_valid_rows": 112221,
+    "small400_exact_complement_valid_rate": 0.9197,
+    "native_bucket_raw_authority_confirmed_at_least": ["2026-10-22"],
+    "historical_native_bucket_longitudinal_status": "DATA_BLOCKED",
+    "mother_rows": 1024443,
+    "mother_margin_nonnull_rows_2026": 207075,
+    "mother_margin_dates_2026": 198,
+    "mother_margin_tickers_2026": 1065,
+    "fugle_adjusted_history_runtime": "EMPTY_OBJECT_IN_THIS_RUN",
+    "fugle_broker_gini_runtime": "EMPTY_OBJECT_IN_THIS_RUN",
+    "fugle_main_broker_runtime": "EMPTY_OBJECT_IN_THIS_RUN"
+  },
+  "families": {
+    "G1_PARTICIPATION_FOMO_DIFFUSION": {
+      "aggregate_fallback": "REJECT_OVERLAP_NO_OUTCOME_UNSEAL",
+      "native_bucket_version": "DATA_BLOCKED",
+      "primary_reason": "aggregate feature is an exact nonlinear transform of TotalHolders/TotalShares/Big400 holder-share primitives and is strongly explained by baseline inputs"
+    },
+    "G2_BREAK_EVEN_SUPPLY": {
+      "status": "DATA_BLOCKED_NOT_AUTHORIZED_FOR_PREREG",
+      "primary_reason": "transaction-cost/inventory-pressure proxy is sequence-gated behind an incremental participation layer; adjusted-price runtime was also not recovered"
+    },
+    "G3_LOSS_PRESSURE_FORCED_SELLING": {
+      "status": "PARTIAL_CAPABILITY_REDUCE_SCOPE_NOT_AUTHORIZED_FOR_PREREG",
+      "narrow_state": "DELEVERAGING_SYNCHRONY_INPUT_MEASURABLE_ONLY",
+      "narrow_state_prevalence": 0.0742,
+      "primary_reason": "full psychology semantics require participation/cost-pressure layers; narrow state is only nonlinear geometry of existing price-margin-turnover inputs"
+    },
+    "G4_MARGINAL_BUYER_EXHAUSTION": {
+      "status": "REJECT_OVERLAP_NO_PREREG",
+      "primary_reason": "holder-level/growth are TotalHolders transforms and absorption-mismatch reuses the rejected G1 aggregate structure"
+    }
+  },
+  "frozen_conclusion": "NO_RESIDUAL_NOVELTY_WITH_CURRENT_AUTHORIZED_AGGREGATE_INPUTS",
+  "outcome_gate": "CLOSED",
+  "reopen_only_if": [
+    "longitudinal native TDCC bucket holder-count plus shares with PIT provenance becomes available",
+    "independent broker/branch concentration or Gini time series becomes reliably retrievable with stable PIT provenance",
+    "another participant-positioning source not algebraically recoverable from current TotalHolders/Big400/price/turnover/margin primitives becomes available"
+  ],
+  "audit_files": [
+    "research/loss_forensics/group_psychology/PARTICIPATION_DIFFUSION_CAPABILITY_NOVELTY_AUDIT_20261101.md",
+    "research/loss_forensics/group_psychology/G3_LOSS_PRESSURE_FORCED_SELLING_CAPABILITY_AUDIT_20261101.md",
+    "research/loss_forensics/group_psychology/G2_G4_RESIDUAL_NOVELTY_CLOSURE_20261101.md"
+  ]
+}
