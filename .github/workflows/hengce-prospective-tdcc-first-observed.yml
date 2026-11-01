@@ -3,7 +3,9 @@ name: HENGCE Prospective TDCC First Observed
 "on":
   workflow_dispatch:
   schedule:
-    - cron: "*/10 * * * *"
+    # Offset from round 10-minute boundaries so scheduler congestion cannot
+    # be confused with collector failure.
+    - cron: "3,13,23,33,43,53 * * * *"
 
 permissions:
   contents: write
@@ -18,11 +20,44 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - name: Checkout
+      - name: Checkout frozen research ledger branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: research/loss-forensics-20261101
+
+      - name: Record scheduler trigger provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json, os
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          root=Path('research/loss_forensics/prospective_live/tdcc')
+          root.mkdir(parents=True,exist_ok=True)
+          now=datetime.now(ZoneInfo('Asia/Taipei'))
+          state={
+              'schema_version':2,
+              'observed_at_taipei':now.isoformat(),
+              'github_event_name':os.environ.get('GITHUB_EVENT_NAME'),
+              'github_run_id':os.environ.get('GITHUB_RUN_ID'),
+              'github_run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
+              'github_workflow':os.environ.get('GITHUB_WORKFLOW'),
+              'github_workflow_ref':os.environ.get('GITHUB_WORKFLOW_REF'),
+              'github_ref_at_trigger':os.environ.get('GITHUB_REF'),
+              'github_sha_at_trigger':os.environ.get('GITHUB_SHA'),
+              'expected_schedule_cron':'3,13,23,33,43,53 * * * *',
+              'schedule_proof':os.environ.get('GITHUB_EVENT_NAME')=='schedule',
+              'collector_status':'TRIGGERED_NOT_YET_POLLED',
+              'authority':'SCHEDULER_TRANSPORT_PROVENANCE_ONLY_NO_TRADING_AUTHORITY'
+          }
+          (root/'scheduler_state.json').write_text(
+              json.dumps(state,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('SCHEDULER_TRIGGER',state['github_event_name'],state['github_run_id'])
+          PY
 
       - name: Poll official TDCC endpoint and preserve immutable provenance
         shell: bash
@@ -61,9 +96,8 @@ jobs:
               m=re.fullmatch(r'(\d{2,3})[-/.](\d{1,2})[-/.](\d{1,2})',s)
               if m:
                   ry,mo,d=map(int,m.groups())
-                  y=1911+ry
                   try:
-                      return datetime(y,mo,d).date().isoformat()
+                      return datetime(1911+ry,mo,d).date().isoformat()
                   except ValueError:
                       return None
               digits=re.sub(r'\D','',s)
@@ -85,7 +119,7 @@ jobs:
           request_started=now_tw()
           req=urllib.request.Request(ENDPOINT,headers={
               'Accept':'text/csv,text/plain,*/*',
-              'User-Agent':'HENGCE-PROSPECTIVE-TDCC-FIRST-OBSERVED/1.0'
+              'User-Agent':'HENGCE-PROSPECTIVE-TDCC-FIRST-OBSERVED/2.0'
           })
           http_error=None
           body=None
@@ -112,26 +146,49 @@ jobs:
           attempt_dir.mkdir(parents=True,exist_ok=True)
           run_id=os.environ.get('GITHUB_RUN_ID') or 'LOCAL'
           run_attempt=os.environ.get('GITHUB_RUN_ATTEMPT') or '0'
+          event_name=os.environ.get('GITHUB_EVENT_NAME')
           attempt_id=f'TDCC_{attempt_stamp}_RUN{run_id}_A{run_attempt}'
+
+          common={
+              'schema_version':2,
+              'attempt_id':attempt_id,
+              'endpoint':ENDPOINT,
+              'request_started_at_taipei':request_started.isoformat(),
+              'response_received_at_taipei':response_received.isoformat(),
+              'github_event_name':event_name,
+              'github_run_id':os.environ.get('GITHUB_RUN_ID'),
+              'github_run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
+              'github_workflow_ref':os.environ.get('GITHUB_WORKFLOW_REF'),
+              'github_ref_at_trigger':os.environ.get('GITHUB_REF'),
+              'github_sha_at_trigger':os.environ.get('GITHUB_SHA'),
+              'schedule_proof':event_name=='schedule',
+              'expected_schedule_cron':'3,13,23,33,43,53 * * * *',
+              'official_published_at':None,
+              'historical_latency_status':'DATA_BLOCKED',
+              'prospective_live_latency_status':'COLLECTING',
+              'authority':'SHADOW_PROSPECTIVE_AVAILABILITY_RESEARCH_ONLY_NO_TRADING_AUTHORITY'
+          }
 
           if body is None:
               attempt={
-                  'schema_version':1,
-                  'attempt_id':attempt_id,
-                  'endpoint':ENDPOINT,
-                  'request_started_at_taipei':request_started.isoformat(),
-                  'response_received_at_taipei':response_received.isoformat(),
+                  **common,
                   'http_status':status,
                   'http_error':http_error,
                   'payload_sha256':None,
                   'snapshot_reference_date':None,
                   'reference_date_candidates':[],
-                  'new_payload_first_observed':False,
-                  'historical_latency_status':'DATA_BLOCKED',
-                  'prospective_live_latency_status':'COLLECTING',
-                  'authority':'SHADOW_PROSPECTIVE_AVAILABILITY_RESEARCH_ONLY_NO_TRADING_AUTHORITY'
+                  'new_payload_first_observed':False
               }
-              (attempt_dir/f'{attempt_id}.json').write_text(json.dumps(attempt,ensure_ascii=False,indent=2),encoding='utf-8')
+              (attempt_dir/f'{attempt_id}.json').write_text(
+                  json.dumps(attempt,ensure_ascii=False,indent=2),encoding='utf-8')
+              state=json.loads((ROOT/'scheduler_state.json').read_text(encoding='utf-8'))
+              state.update({
+                  'collector_status':'POLL_FAILED',
+                  'http_error':http_error,
+                  'last_poll_received_at_taipei':response_received.isoformat()
+              })
+              (ROOT/'scheduler_state.json').write_text(
+                  json.dumps(state,ensure_ascii=False,indent=2),encoding='utf-8')
               raise SystemExit(f'TDCC_POLL_FAILED:{http_error}')
 
           sha=hashlib.sha256(body).hexdigest()
@@ -184,10 +241,8 @@ jobs:
           if is_new:
               raw_path.write_bytes(body)
               first_observed={
-                  'schema_version':1,
+                  **common,
                   'payload_sha256':sha,
-                  'endpoint':ENDPOINT,
-                  'request_started_at_taipei':request_started.isoformat(),
                   'first_observed_at_taipei':response_received.isoformat(),
                   'first_observed_at_utc':response_received.astimezone(timezone.utc).isoformat(),
                   'snapshot_reference_date':snapshot_reference_date,
@@ -198,25 +253,15 @@ jobs:
                   'http_date':headers.get('date'),
                   'http_last_modified':headers.get('last_modified'),
                   'http_etag':headers.get('etag'),
-                  'official_published_at':None,
                   'publication_provenance_status':'OFFICIAL_PUBLICATION_TIMESTAMP_NOT_INDEPENDENTLY_PROVEN',
                   'availability_semantics':'HENGCE_FIRST_OBSERVED_PUBLIC_ENDPOINT_RECEIPT_NOT_OFFICIAL_PUBLISHED_AT',
-                  'github_run_id':os.environ.get('GITHUB_RUN_ID'),
-                  'github_run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
-                  'github_sha_at_run_start':os.environ.get('GITHUB_SHA'),
-                  'prospective_protocol_commit':'08497a8106ac6acd8799a4fe256eb102dca2bb9c',
-                  'historical_latency_status':'DATA_BLOCKED',
-                  'prospective_live_latency_status':'COLLECTING',
-                  'authority':'SHADOW_PROSPECTIVE_AVAILABILITY_RESEARCH_ONLY_NO_TRADING_AUTHORITY'
+                  'prospective_protocol_commit':'08497a8106ac6acd8799a4fe256eb102dca2bb9c'
               }
-              first_meta.write_text(json.dumps(first_observed,ensure_ascii=False,indent=2),encoding='utf-8')
+              first_meta.write_text(
+                  json.dumps(first_observed,ensure_ascii=False,indent=2),encoding='utf-8')
 
           attempt={
-              'schema_version':1,
-              'attempt_id':attempt_id,
-              'endpoint':ENDPOINT,
-              'request_started_at_taipei':request_started.isoformat(),
-              'response_received_at_taipei':response_received.isoformat(),
+              **common,
               'http_status':status,
               'http_error':None,
               'http_date':headers.get('date'),
@@ -226,29 +271,43 @@ jobs:
               'snapshot_reference_date':snapshot_reference_date,
               'reference_date_candidates':reference_dates,
               'new_payload_first_observed':is_new,
-              'first_observed_record':str(first_meta),
-              'official_published_at':None,
-              'historical_latency_status':'DATA_BLOCKED',
-              'prospective_live_latency_status':'COLLECTING',
-              'authority':'SHADOW_PROSPECTIVE_AVAILABILITY_RESEARCH_ONLY_NO_TRADING_AUTHORITY'
+              'first_observed_record':str(first_meta)
           }
-          (attempt_dir/f'{attempt_id}.json').write_text(json.dumps(attempt,ensure_ascii=False,indent=2),encoding='utf-8')
+          (attempt_dir/f'{attempt_id}.json').write_text(
+              json.dumps(attempt,ensure_ascii=False,indent=2),encoding='utf-8')
 
           current={
-              'schema_version':1,
+              'schema_version':2,
               'endpoint':ENDPOINT,
               'last_poll_received_at_taipei':response_received.isoformat(),
               'payload_sha256':sha,
               'snapshot_reference_date':snapshot_reference_date,
               'reference_date_candidates':reference_dates,
               'first_observed_record':str(first_meta),
+              'github_event_name':event_name,
+              'github_run_id':os.environ.get('GITHUB_RUN_ID'),
+              'schedule_proof':event_name=='schedule',
               'official_published_at':None,
               'publication_provenance_status':'OFFICIAL_PUBLICATION_TIMESTAMP_NOT_INDEPENDENTLY_PROVEN',
               'historical_latency_status':'DATA_BLOCKED',
               'prospective_live_latency_status':'COLLECTING'
           }
-          (ROOT/'current.json').write_text(json.dumps(current,ensure_ascii=False,indent=2),encoding='utf-8')
-          print('TDCC PROSPECTIVE POLL',sha,'reference=',snapshot_reference_date,'candidates=',reference_dates,'new=',is_new)
+          (ROOT/'current.json').write_text(
+              json.dumps(current,ensure_ascii=False,indent=2),encoding='utf-8')
+
+          state=json.loads((ROOT/'scheduler_state.json').read_text(encoding='utf-8'))
+          state.update({
+              'collector_status':'POLL_SUCCEEDED',
+              'last_poll_received_at_taipei':response_received.isoformat(),
+              'http_status':status,
+              'payload_sha256':sha,
+              'snapshot_reference_date':snapshot_reference_date,
+              'new_payload_first_observed':is_new
+          })
+          (ROOT/'scheduler_state.json').write_text(
+              json.dumps(state,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('TDCC PROSPECTIVE POLL',sha,'reference=',snapshot_reference_date,
+                'candidates=',reference_dates,'new=',is_new,'event=',event_name)
           PY
 
       - name: Validate immutable first-observed evidence
@@ -277,15 +336,19 @@ jobs:
           print('TDCC FIRST-OBSERVED EVIDENCE VERIFIED',sha,m.get('first_observed_at_taipei'))
           PY
 
-      - name: Commit TDCC prospective provenance
+      - name: Commit TDCC scheduler and prospective provenance
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'hengce-prospective-live-bot'
           git config user.email 'hengce-prospective-live-bot@users.noreply.github.com'
           git add research/loss_forensics/prospective_live/tdcc/
-          if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
+          if git diff --cached --quiet; then
+            echo 'No TDCC provenance changes.'
+            exit 0
+          fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "HENGCE prospective TDCC first-observed ${TS}"
+          git commit -m "HENGCE prospective TDCC scheduler/provenance ${TS}"
           git pull --rebase origin "research/loss-forensics-20261101"
           git push origin HEAD:research/loss-forensics-20261101
