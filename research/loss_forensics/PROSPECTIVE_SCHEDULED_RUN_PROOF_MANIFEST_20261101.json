@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "audit_date": "2026-11-01",
+  "research_branch": "research/loss-forensics-20261101",
+  "research_head_at_deployment_audit_start": "365cc032ca11d9067c6c88d724a593131f1d78b1",
+  "default_branch": "main",
+  "historical_latency": "DATA_BLOCKED",
+  "prospective_live_latency": "COLLECTING",
+  "fugle": {
+    "frozen_definition_commit": "966a4fbb8051034ced6cdedf7f0a6f4267aad3a8",
+    "workflow": ".github/workflows/hengce-escape-twse-full-market-fugle.yml",
+    "main_deployment_commit": "9708f018db282ec4ddaa745c392d8ead54d65093",
+    "deployment_routing_delta_only": [
+      "actions/checkout ref fixed to research/loss-forensics-20261101",
+      "git pull target fixed to research/loss-forensics-20261101",
+      "git push target fixed to research/loss-forensics-20261101"
+    ],
+    "manual_dispatch": {
+      "status": "NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED",
+      "run_id": null,
+      "event": null,
+      "artifact_commit": null,
+      "reason": "Available GitHub connector exposes workflow reads/reruns but no start-workflow-dispatch action; no authenticated browser profile was available. No substitute trigger was used."
+    },
+    "scheduled_run": {
+      "status": "NOT_VERIFIED",
+      "run_id": null,
+      "event": null,
+      "artifact_commit": null,
+      "observation_path": null,
+      "reason": "NO_EVENT_EQUALS_SCHEDULE_RUN_AND_LEDGER_ARTIFACT_VERIFIED. Audit date 2026-11-01 is Sunday while the frozen Fugle cron runs Monday-Friday."
+    }
+  },
+  "tdcc": {
+    "frozen_definition_commit": "95812e5cb4c2f828edfecaa6327c88f750ba52d5",
+    "workflow": ".github/workflows/hengce-prospective-tdcc-first-observed.yml",
+    "main_deployment_commit": "32d2e7f4dd10276941e966dc4dea83fb40b0092f",
+    "deployment_routing_delta_only": [
+      "actions/checkout ref fixed to research/loss-forensics-20261101",
+      "git pull target fixed to research/loss-forensics-20261101",
+      "git push target fixed to research/loss-forensics-20261101"
+    ],
+    "manual_dispatch": {
+      "status": "NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED",
+      "run_id": null,
+      "event": null,
+      "artifact_commit": null,
+      "reason": "Available GitHub connector exposes workflow reads/reruns but no start-workflow-dispatch action; no authenticated browser profile was available. No substitute trigger was used."
+    },
+    "scheduled_run": {
+      "status": "NOT_VERIFIED",
+      "run_id": null,
+      "event": null,
+      "artifact_commit": null,
+      "poll_attempt_path": null,
+      "payload_sha256": null,
+      "first_observed_at_taipei": null,
+      "reason": "NO_EVENT_EQUALS_SCHEDULE_RUN_AND_LEDGER_ARTIFACT_VERIFIED_AT_AUDIT_TIME"
+    }
+  },
+  "ledger_evidence_at_audit": {
+    "post_protocol_fugle_observations_verified": 0,
+    "post_protocol_tdcc_payloads_verified": 0,
+    "prospective_live_directory_contents_verified": [
+      "EVENT_LEDGER_SCHEMA_V1.json",
+      "README.md"
+    ]
+  },
+  "prospective_unattended_deployment": "NOT_ESTABLISHED",
+  "upgrade_gate": {
+    "required_status": "VERIFIED_SCHEDULED_COLLECTION",
+    "conditions_all_required": [
+      "GitHub run metadata proves event=schedule",
+      "collector run succeeds",
+      "new immutable observation or TDCC poll artifact is written to research branch",
+      "artifact commit SHA is recorded and verified",
+      "run is not workflow_dispatch or rerun",
+      "artifact is not backfilled and actual-known timestamps are not backdated"
+    ],
+    "manual_dispatch_alone_can_upgrade": false
+  },
+  "authority": {
+    "fugle_live": "SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY",
+    "production_authority": "NONE",
+    "trading_authority": "NONE"
+  }
+}
