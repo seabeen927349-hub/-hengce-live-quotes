@@ -5,32 +5,67 @@ Status: ACTIVE RESEARCH / NO TRADING AUTHORITY
 ## Bootstrap authority
 Repo: `seabeen927349-hub/-hengce-live-quotes`
 Branch: `research/loss-forensics-20261101`
-Original parent head before handoff folder: `6633c1b2cee2db424d10168f6a4d022b1eaa2c41`
 
 At next-chat start, check current branch head. If the branch advanced, use the newest head, but do not silently override the governance below.
+
+## CURRENT AUTHORITY — MUST READ FIRST
+Before any new analysis, read these current-state files:
+
+1. `research/loss_forensics/CURRENT_STATE_DSP_FUGLE_LIVE_TRANSPORT_VERIFIED_20261101.json`
+2. `research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json`
+3. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
+
+These three files jointly define the current state.
+
+## Critical current distinction
+Two research states must remain separate:
+
+- `HISTORICAL_ACTUAL_PUBLICATION_LATENCY = DATA_BLOCKED`
+  Historical h=1 actual-market-known latency is NOT validated because exact TDCC publication provenance and other PIT provenance remain incomplete. Do not reinterpret the old median-3-sessions result as true market-known lead time.
+
+- `PROSPECTIVE_CURRENT100_LIVE_TRANSPORT = VERIFIED / COLLECTING`
+  Fugle free/basic Developer API has been verified for the bounded current100 universe using per-symbol `/stock/intraday/quote/{symbol}` requests.
+  Proof: 100 requested / 100 success / 0 failure; transport healthy.
+  The verification run occurred on Sunday 2026-11-01 and correctly returned 2026-10-30 quote dates as stale rather than pretending Sunday was a market day.
+
+## Fugle current decision
+Do NOT expand the active realtime universe to all Taiwan stocks now.
+Do NOT purchase the paid Developer plan solely to regain full-market snapshot access now.
+
+Current priority is:
+
+`VERIFIED_CURRENT100_FUGLE_TRANSPORT -> SHADOW_EARLY_WARNING -> PROSPECTIVE FALSE-NEGATIVE / FALSE-POSITIVE / REPAIR / CONTROL-DIORATION TRACKING`
+
+Expansion beyond current100 is only reconsidered if prospective errors show that missing cross-sector or destination-capital context is a material and repeated source of false negatives or false positives.
+
+The live Fugle layer is strictly:
+`SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY`
+
+It must not be converted directly into BUY/SELL, exact-price prediction, production authority, or a new model family.
 
 ## MANDATORY DRIFT LOCK
 Before ANY analysis, modeling, factor discovery, forward-outcome inspection, threshold change, or case reinterpretation, read:
 
 `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
 
-This is hard governance. If a proposed step conflicts with the drift lock, the step must stop.
-
-Required scope lock after reading:
-`Execute frozen Pass 3, then corrected Pass 4; no new model family, no retuning, no exact-price drift, accept failure.`
+This is hard governance. If a proposed step conflicts with the drift lock, stop.
 
 ## Objective
-Continue Loss Forensics as a **Dynamic State Probability Engine**.
+Continue Loss Forensics as a **Dynamic State Probability Engine / capital-preservation early-warning research program**.
 Do not return to exact-price prediction, fixed Bull/Bear scoring, V43 rescue, Monster rescue, Selection Core rescue, or single-ticker storytelling.
 
-Primary outputs when eventually calibrated:
+The practical objective is not model worship. The user goal is:
+
+> reduce the chance of becoming the last liquidity provider/holder when stronger capital is already withdrawing or transferring risk.
+
+Capital preservation matters more than exact-price prediction.
+
+Primary future outputs, only when calibrated:
 - P(CONTINUATION)
 - P(REPAIR)
 - P(CONTROL_LOSS)
 - P(SYSTEMIC_SHOCK)
 - ABSTAIN / NO_EDGE
-
-The target is state-transition diagnosis and recognition latency, not exact top/bottom prices.
 
 ## User research doctrine
 - All legitimately obtainable data may be used.
@@ -41,13 +76,12 @@ The target is state-transition diagnosis and recognition latency, not exact top/
 ## Current exclusions
 For current mechanism research and interpretive examples, exclude **6415** and **3042** as primary anchors/examples. Do not let them define architecture.
 
-## Must-read files, in order
-1. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
-2. `research/loss_forensics/DYNAMIC_STATE_PROBABILITY_ENGINE_CHARTER_V1_20261101.md`
-3. `research/loss_forensics/STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md`
-4. `research/loss_forensics/PASS4_INCREMENTAL_TARGET_CORRECTION_20261101.md`
-5. `research/loss_forensics/PASS3_PARTIAL_FINDINGS_REPAIR_VELOCITY_PRICING_POWER_20261101.md`
-6. `research/loss_forensics/PASS4_QUADRANT_STRESS_TEST_FLOW_PRICE_OWNERSHIP_20261101.md`
+## Must-read supporting files
+1. `research/loss_forensics/DYNAMIC_STATE_PROBABILITY_ENGINE_CHARTER_V1_20261101.md`
+2. `research/loss_forensics/STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md`
+3. `research/loss_forensics/PASS4_INCREMENTAL_TARGET_CORRECTION_20261101.md`
+4. `research/loss_forensics/PASS3_PARTIAL_FINDINGS_REPAIR_VELOCITY_PRICING_POWER_20261101.md`
+5. `research/loss_forensics/PASS4_QUADRANT_STRESS_TEST_FLOW_PRICE_OWNERSHIP_20261101.md`
 
 Also retrieve existing validated artifacts when needed:
 - `HENGCE_HIDDEN_CONTROLLER_CONTROL_HOOK_V1_REPORT.md`
@@ -56,9 +90,8 @@ Also retrieve existing validated artifacts when needed:
 - `HENGCE_OPERATOR_IDENTITY_CONFLICT_ATLAS_V1_20261029.md`
 - `HENGCE_OPERATOR_BUY_SELL_BEHAVIOR_MAP_V0_20261029.md`
 
-## Strongest validated evidence
+## Existing validated base
 ### CONTROL durability
-Existing CONTROL V1 target: when strong-holder ownership rises at snapshot t, does next TDCC retain at least the pre-build ownership level?
 Strict expanding time-order OOS (2026-06-26 through 2026-10-16):
 - AUC 0.694
 - confidence >=0.70 -> 84.56% next-snapshot retention
@@ -67,111 +100,73 @@ Strict expanding time-order OOS (2026-06-26 through 2026-10-16):
 This predicts ownership durability, not stock return.
 
 ### HOOK / release deterioration
-`CONTROL FULL + HOOK READY`
-- 5d mean -2.83%, median -2.05%, positive 33.7%
-- 10d mean -4.20%, median -3.95%, positive 30.8%
-
 `CONTROL FULL + HOOK READY + dBig400 < 0`
 - OOS 52 events
-- 5d mean -3.07%, median -3.41%
 - 10d mean -5.91%, median -5.42%, positive 22.5%
 - 40d median -7.52%
 
-Existing architecture is stronger for lifecycle/exit recognition than exact entry timing.
+### Pass 3 final
+No new Pass 3 family promoted. CORE_LOOSENING, BRIDGE/DESTINATION_PRELOAD and PROFESSIONAL_FLOW all retain formal weight 0. No rescue is authorized.
 
-### Negative baseline
-Nine-year price/liquidity-only preliminary out-of-time discrimination was weak (roughly AUC 0.51–0.55 depending on target/model). Do not rescue price-pattern-only research by tuning.
+### Corrected Pass 4 h=1
+Snapshot-reference-date layer showed genuine OOS incremental evidence, but true actual-publication latency remains DATA_BLOCKED. Do not overclaim actual lead time.
 
-## Current structural findings — not probability-promoted
-1. One fracture is not enough: Big400 outflow, Big1000 decline, institutional selling or one breakdown cannot stand alone.
-2. Same strong-holder inflow can be DURABLE REPAIR, BRIDGE RELOAD, or NEW CONTROL TAKEOVER.
-3. `Big1000 down + Mid up` alone has formal weight 0: it may be parking/inventory elasticity; only progression into broader leakage matters.
-4. Raw professional flow is insufficient. Candidate economic unit:
-   `VISIBLE FLOW x PRICE RESPONSE x OWNERSHIP RESPONSE x LEVERAGE QUALITY`.
-5. Structural quadrants:
-   - selling + resilient price + ownership repair/strengthening + leverage contained -> ABSORPTION_CANDIDATE
-   - selling + resilient price + ownership leakage / weak-hand financing -> DISTRIBUTION_WITH_PRICE_SUPPORT
-   - buying + positive response + durable ownership + contained leverage -> SPONSORSHIP_EFFECTIVE
-   - buying + weak/collapsing response + ownership leakage -> SPONSORSHIP_INEFFECTIVE
-6. These are hypotheses only until held-out numeric validation.
+## Prospective live evidence collection
+From now on, preserve true known-at timestamps wherever possible:
+- observation generated time
+- Fugle source lastUpdated
+- last trade time
+- TDCC snapshot reference date
+- TDCC first-observed/publication time
+- sector effective time
+- regime input availability time
+- CONTROL/HOOK known-at time
+- h=1 evidence known-at time
+- next ownership confirmation known-at time
 
-## Critical Repair Velocity correction
-Do NOT build another model merely predicting next-snapshot ownership durability. CONTROL V1 already does this.
+The prospective question is:
 
-The legitimate incremental target is **recognition latency**:
+> Can current100 live evidence help identify control deterioration earlier without excessive false alarms, using only information truly available at observation time?
 
-> After FIRST_FRACTURE or apparent repair/reload at ownership snapshot t, can daily and cross-stock evidence available AFTER t becomes known but BEFORE t+1 TDCC distinguish DURABLE_REPAIR from BRIDGE_RELOAD / FAILED_REPAIR earlier than CONTROL confirmation?
+Track false negatives, false positives, repair outcomes and control-deterioration outcomes prospectively.
 
-Any new value must come from earlier recognition, not duplicate next-snapshot retention classification.
+## Fugle transport proof
+Main branch output files:
+- `escape_live/electronics100_status.json`
+- `escape_live/electronics100_snapshot.json`
 
-Candidate early evidence:
-- normalized professional flow after t
-- market/sector/regime-adjusted residual price response
-- source leverage quality / margin path
-- destination preload already observable at t
-- destination daily sponsor flow / relative strength after t
-- optional source-out / destination-in execution mirror
+Verified main proof commit:
+`90565cbf6871cf67e7f4a6990e9bd9c4a8811e6a`
 
-## Frozen Pass 3 task
-Execute `STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md` exactly as preregistered.
-No threshold retuning after viewing forward labels.
+Verified status:
+- requested_count = 100
+- success_count = 100
+- failure_count = 0
+- healthy_transport = true
+- quote_dates = 2026-10-30
+- stale_count_vs_run_date = 100
+- fresh_market_day = false
 
-Compare:
-- BASE = CONTROL + HOOK
-- BASE + CORE_LOOSENING
-- BASE + BRIDGE / DESTINATION_PRELOAD
-- BASE + PROFESSIONAL_FLOW corroboration
+The stale state was expected because the proof run occurred on Sunday 2026-11-01.
 
-Primary metrics:
-- held-out Brier score
-- held-out log loss
-- calibration / reliability
-- coverage / abstention
-- AUC secondary
-
-Promotion rule: if a new family does not improve held-out probability quality without material calibration damage, formal weight = 0.
-
-## Corrected Pass 4 task
-After Pass 3, test the incremental pre-TDCC classifier:
-- predictors may use only data available from t availability through before t+1 TDCC;
-- t+1 ownership is future label only;
-- no future destination reconcentration may leak into predictors;
-- compare probability quality against CONTROL+HOOK available at t;
-- explicitly measure recognition-latency gain in trading days.
-
-Potential flow-price implementation:
-1. normalize professional flow by volume;
-2. remove market/sector/regime price component using earlier data only;
-3. calculate out-of-time residual price response;
-4. interact with ownership state at t and leverage quality;
-5. test Brier/log-loss/calibration improvement.
-Avoid unstable return/net-flow ratios near zero flow.
-
-## Compute status at handoff
-The previous chat's local Python, visible Python, and later container execution repeatedly returned system-level `ClientError` during the final numeric phase.
-Therefore:
-- Pass 3 full-sample numeric test is NOT completed.
-- Pass 4 incremental probability/latency test is NOT completed.
-- No new Brier/log-loss/calibration improvement is claimed.
-If compute works in the new chat, execute the frozen tests directly. If compute remains unavailable, mark DATA_BLOCKED and do not invent results.
+## Full-market realtime status
+The paid whole-market snapshot endpoint returned `AUTH_OR_PLAN_HTTP_403` on the current Basic plan.
+This is not a blocker for current100.
+Do not treat it as a reason to expand scope or buy a paid plan without evidence that current100 coverage is insufficient.
 
 ## Non-negotiable governance
-The detailed prohibition list is in `03_RESEARCH_DRIFT_LOCK.md` and is binding.
-At minimum:
 - Facts, inference, and causality must remain separated.
 - Retrieval failure != data absence.
 - Corporate-action effects must be adjusted/censored.
-- TDCC reference date != knowledge date; preserve availability semantics.
+- TDCC reference date != knowledge date.
 - Foreign/trust/dealer are observable vehicles, not beneficial-owner identity.
-- Same playbook or baton timing != same person.
-- Level C identity requires independent broker/account/legal evidence.
-- Retrospective labels cannot be presented as live signals.
 - No silent retuning or post-hoc threshold hunting.
 - A probability requires held-out calibration; raw weighted scores are not probabilities.
 - ABSTAIN / NO_EDGE is valid and preferred to fake precision.
-- New primary model families may not interrupt the frozen Pass 3 -> corrected Pass 4 sequence.
+- Live Fugle data are SHADOW evidence only until prospective validation supports promotion.
+- Do not expand universe merely because more data are technically accessible.
 
 ## Next action
-Do not spend the first turn re-explaining the architecture.
-Read the drift lock, state the scope lock, verify compute/data, and execute Pass 3. If successful, immediately continue to corrected Pass 4 recognition-latency validation.
-If the work begins drifting, stop and reread `03_RESEARCH_DRIFT_LOCK.md` before proceeding.
+Do not re-open broad factor discovery and do not expand to full Taiwan realtime coverage.
+Use the verified current100 Fugle transport to build/maintain the prospective shadow evidence ledger and preserve true availability timestamps.
+Historical actual-publication latency remains DATA_BLOCKED until missing provenance is genuinely filled.
