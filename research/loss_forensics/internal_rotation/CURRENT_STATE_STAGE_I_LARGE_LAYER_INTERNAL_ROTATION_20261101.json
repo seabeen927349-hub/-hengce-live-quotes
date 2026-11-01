@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-01",
+  "research_family": "STAGE_I_LARGE_LAYER_INTERNAL_ROTATION_V1",
+  "status": "EXPLORATORY_WEAK",
+  "formal_weight": 0,
+  "production_authority": "NONE",
+  "trading_authority": "NONE",
+  "anti_rescue_lock": true,
+  "preregistration_commit": "2d16de583f436d0a0450ce8c010cf4f1f4d6e63a",
+  "results_commit": "b7aa3ed916f7c86257c4696a2f10a1911541300f",
+  "cohort": {
+    "n": 368,
+    "event_sha256": "b42ca061bd51d62ebeb4ab4fd128b371260d02a871f2e9f9cf85f904078b4920",
+    "parent_503_sha256": "f03abb00e164ac16868274f866f0bb4eba30b0dca0e86257fd5d8573448348e3",
+    "stable_1pct_n": 364,
+    "dBig400_max_mismatch_pp": 4.440892098500626e-16
+  },
+  "mechanism_counts_all": {
+    "TOP_TO_MID_HANDOFF": 167,
+    "COHERENT_EXIT": 149,
+    "MID_EXIT_TOP_ACCUM": 42,
+    "BOUNDARY_TIE": 10
+  },
+  "outcome": {
+    "name": "FWD20_MDD_LOSS",
+    "ok_before_ownership_integrity": 309,
+    "corporate_action_censored": 55,
+    "right_censored": 4,
+    "primary_evaluable_n": 305,
+    "model_complete_n": 288
+  },
+  "heldout": {
+    "n": 193,
+    "date_blocks": 22,
+    "start_t0": "2026-04-02",
+    "end_t0": "2026-09-11",
+    "base_mae": 0.08830015354931112,
+    "test_mae": 0.08787912362535355,
+    "base_rmse": 0.11287888859406749,
+    "test_rmse": 0.11247176286680852,
+    "delta_mae_test_minus_base": -0.00042102992395756655,
+    "delta_rmse_test_minus_base": -0.00040712572725896956,
+    "aggregate_gate_both_improve": true
+  },
+  "structural_diagnostic": {
+    "standardized_internal_offset_coef": -0.009451226048612541,
+    "hc3_ci95": [-0.020713536562512905, 0.0018110844652878232],
+    "hc3_p": 0.10000822820779297,
+    "ticker_cluster_ci95": [-0.021240326158792233, 0.002337874061567151],
+    "ticker_cluster_p": 0.11610923844343726,
+    "raw_0_to_1_offset_coef": -0.02866702727072582
+  },
+  "chronology": {
+    "split_date": "2026-05-29",
+    "early_standardized_coef": 0.0012069803234434119,
+    "late_standardized_coef": -0.016619177125940104,
+    "early_heldout_test_worse": true,
+    "late_heldout_test_better": true
+  },
+  "robustness": {
+    "top_ticker": "2408",
+    "top_ticker_n": 7,
+    "remove_top_ticker_both_metrics_improve": true,
+    "top_t0_date": "2026-03-27",
+    "top_t0_date_n": 27,
+    "remove_top_date_both_metrics_improve": true
+  },
+  "verdict_reason": "Direction and aggregate held-out gate are favorable, but effect size is small, adjusted uncertainty includes zero, and chronological support is concentrated in the later block. Therefore evidence is weak exploratory structure only, not calibrated or promotable.",
+  "next_allowed_step": "Prospective actual-known validation only. Any materially different historical test requires a new preregistration; V1 may not be retuned or rescued."
+}
