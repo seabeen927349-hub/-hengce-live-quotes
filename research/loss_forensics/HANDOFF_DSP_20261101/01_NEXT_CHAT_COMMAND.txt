@@ -3,26 +3,60 @@
 先 bootstrap GitHub：
 repo `seabeen927349-hub/-hengce-live-quotes`
 branch `research/loss-forensics-20261101`
-目前 handoff commit 至少為 `8ac0d9ed67c7548f282413c31e9360581729dccf`；若 branch head 已前進，以最新 head 為準，但不得靜默覆寫既有治理。
+若 branch head 已前進，以最新 head 為準，但不得靜默覆寫既有治理。
 
-先讀：
+在任何分析、建模、找新因子、看 forward outcomes 或重新解釋案例之前，必須依序讀：
 1. `research/loss_forensics/HANDOFF_DSP_20261101/00_READ_FIRST.md`
-2. `research/loss_forensics/DYNAMIC_STATE_PROBABILITY_ENGINE_CHARTER_V1_20261101.md`
-3. `research/loss_forensics/STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md`
-4. `research/loss_forensics/PASS3_PARTIAL_FINDINGS_REPAIR_VELOCITY_PRICING_POWER_20261101.md`
-5. `research/loss_forensics/PASS4_QUADRANT_STRESS_TEST_FLOW_PRICE_OWNERSHIP_20261101.md`
-6. `research/loss_forensics/PASS4_INCREMENTAL_TARGET_CORRECTION_20261101.md`
+2. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
+3. `research/loss_forensics/DYNAMIC_STATE_PROBABILITY_ENGINE_CHARTER_V1_20261101.md`
+4. `research/loss_forensics/STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md`
+5. `research/loss_forensics/PASS4_INCREMENTAL_TARGET_CORRECTION_20261101.md`
+6. `research/loss_forensics/PASS3_PARTIAL_FINDINGS_REPAIR_VELOCITY_PRICING_POWER_20261101.md`
+7. `research/loss_forensics/PASS4_QUADRANT_STRESS_TEST_FLOW_PRICE_OWNERSHIP_20261101.md`
 
-目前研究排除 6415、3042 作為主要案例/錨點。不要回到單一高點價格、固定 Bull/Bear Score、V43/Monster rescue，也不要重新講整套架構後才開始做。
+讀完後先做 scope lock：
+`Execute frozen Pass 3, then corrected Pass 4; no new model family, no retuning, no exact-price drift, accept failure.`
 
-核心任務：
+若無法遵守上述 scope，停止研究，不得自行改題。
+
+目前研究排除 6415、3042 作為主要案例/錨點。不要回到單一高點價格、固定 Bull/Bear Score、V43/Monster rescue、Selection Core rescue，也不要重新講整套架構後才開始做。
+
+核心任務只有兩個：
+
 A. 先執行已 preregister 的 Pass 3 全樣本時間序檢驗，不得看完 forward outcomes 再改門檻。
-BASE = CONTROL+HOOK；依序比較加入 Core Loosening、Bridge/Destination Preload、Professional Flow corroboration 後，held-out Brier/log-loss/calibration 是否真正改善。沒有改善就 formal weight=0。
+BASE = CONTROL+HOOK；依序比較加入 Core Loosening、Bridge/Destination Preload、Professional Flow corroboration 後，held-out Brier/log-loss/calibration 是否真正改善。沒有改善就 formal weight=0，不准救。
 
-B. 接著執行修正後的 Pass 4。不要重做 CONTROL 的 next-snapshot durability；真正 incremental target 是 recognition latency：在 t+1 TDCC 出來前，只用 t availability 後到 t+1 前可見的 daily flow、market/sector-adjusted price response、leverage quality、destination preload / execution mirror，提早分辨 DURABLE_REPAIR vs BRIDGE_RELOAD / FAILED_REPAIR。
+B. Pass 3 完成後才執行 corrected Pass 4。不要重做 CONTROL 的 next-snapshot durability；真正 incremental target 是 recognition latency：在 t+1 TDCC 出來前，只用 t availability 後到 t+1 前可見的 daily flow、market/sector-adjusted price response、leverage quality、destination preload / execution mirror，提早分辨 DURABLE_REPAIR vs BRIDGE_RELOAD / FAILED_REPAIR。
 
-C. 請明確回報 recognition latency 能提早幾個交易日，以及 Brier/log-loss/calibration 是否改善；如果沒有改善，直接判定失敗，不准救模型。
+Pass 4 必須同時回報：
+1. recognition latency 能提早幾個交易日；
+2. held-out Brier 是否改善；
+3. held-out log-loss 是否改善；
+4. calibration 是否惡化；
+5. coverage / abstention；
+6. 若無改善，直接 FAILED / formal weight=0。
 
-上一個對話的 local Python、visible Python 與 container 都持續出現 system-level `ClientError`，所以 Pass 3/4 的新數值證明尚未完成。若新對話運算恢復，直接做檢驗；若仍故障，不得假造結果。
+禁止事項以 `03_RESEARCH_DRIFT_LOCK.md` 為準，尤其禁止：
+- exact-price drift
+- 固定 Bull/Bear score
+- 新模型家族插隊
+- silent retuning / threshold hunting
+- future leakage
+- 單一案例當證明
+- raw flow 直接當 controller
+- Big400/Big1000 單一變化直接下 BUY/SELL
+- narrative rescue
+- raw score 冒充 probability
+- retrieval failure 當 data absence
+
+上一個對話的 local Python、visible Python 與 container 都持續出現 system-level `ClientError`，所以 Pass 3/4 的新數值證明尚未完成。若新對話運算恢復，直接做 frozen tests；若仍故障，標記 DATA_BLOCKED，不得假造結果，也不得拿案例替代全樣本驗證。
 
 既有已驗證、可作 BASE：CONTROL OOS AUC 0.694；confidence>=0.80 next-snapshot retention 88.79%；`CONTROL FULL + HOOK READY + dBig400<0` 的 OOS 52 events，10d mean -5.91%、median -5.42%、positive 22.5%。這些只回答既定 behavioral targets，不得偷換成普遍漲跌準確率。
+
+成功定義：
+- 新 family 改善 held-out probability quality 且縮短 recognition latency -> 才可 promote；
+- 只改善解釋、不改善 probability -> diagnostic only / weight 0；
+- 失敗 -> reject；
+- runtime/data 無法測 -> DATA_BLOCKED。
+
+以上四種結果都可接受；唯一不可接受的是為了成功而改規則。
