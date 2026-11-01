@@ -1,172 +1,160 @@
 # HENGCE Dynamic State Probability Engine — New Chat Handoff
-Date: 2026-11-01
-Status: ACTIVE RESEARCH / NO TRADING AUTHORITY
+
+Date: 2026-11-01  
+Status: ACTIVE RESEARCH / SHADOW DATA ONLY / NO PRODUCTION OR TRADING AUTHORITY
 
 ## Bootstrap authority
-Repo: `seabeen927349-hub/-hengce-live-quotes`
-Branch: `research/loss-forensics-20261101`
 
-At next-chat start, check current branch head. If the branch advanced, use the newest head, but do not silently override the governance below.
+Repo: `seabeen927349-hub/-hengce-live-quotes`  
+Research branch: `research/loss-forensics-20261101`
 
-## CURRENT AUTHORITY — MUST READ FIRST
-Before any new analysis, read these current-state files:
+At every new-chat start, verify the latest research branch head. If the branch advanced because a prospective collector wrote evidence, use the newest head but do not silently change the governance below.
 
-1. `research/loss_forensics/CURRENT_STATE_DSP_FUGLE_LIVE_TRANSPORT_VERIFIED_20261101.json`
-2. `research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json`
-3. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
+## CURRENT AUTHORITY — READ FIRST
 
-These three files jointly define the current state.
+Read in this order before analysis or status promotion:
 
-## Critical current distinction
-Two research states must remain separate:
+1. `research/loss_forensics/CURRENT_STATE_DSP_PROSPECTIVE_LIVE_COLLECTING_20261101.json`
+2. `research/loss_forensics/PROSPECTIVE_LIVE_COLLECTOR_DEPLOYMENT_AUDIT_20261101.md`
+3. `research/loss_forensics/PROSPECTIVE_SCHEDULED_RUN_PROOF_MANIFEST_20261101.json`
+4. `research/loss_forensics/PASS4_FROZEN_EXECUTABLE_BINDING_AUDIT_20261101.md`
+5. `research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json`
+6. `research/loss_forensics/CURRENT_STATE_DSP_FUGLE_LIVE_TRANSPORT_VERIFIED_20261101.json`
+7. `research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md`
+8. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
 
-- `HISTORICAL_ACTUAL_PUBLICATION_LATENCY = DATA_BLOCKED`
-  Historical h=1 actual-market-known latency is NOT validated because exact TDCC publication provenance and other PIT provenance remain incomplete. Do not reinterpret the old median-3-sessions result as true market-known lead time.
+## Eight states that must remain separate
 
-- `PROSPECTIVE_CURRENT100_LIVE_TRANSPORT = VERIFIED / COLLECTING`
-  Fugle free/basic Developer API has been verified for the bounded current100 universe using per-symbol `/stock/intraday/quote/{symbol}` requests.
-  Proof: 100 requested / 100 success / 0 failure; transport healthy.
-  The verification run occurred on Sunday 2026-11-01 and correctly returned 2026-10-30 quote dates as stale rather than pretending Sunday was a market day.
+- `HISTORICAL_LATENCY = DATA_BLOCKED`
+- `PROSPECTIVE_LIVE_LATENCY = COLLECTING`
+- `FUGLE_TRANSPORT = VERIFIED_100/100/0_SHADOW_ONLY`
+- `TDCC_FIRST_OBSERVED = COLLECTOR_DEPLOYED_PENDING_FIRST_VERIFIED_OBSERVATION`
+- `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
+- `INTERPRETER_BINDING = INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`
+- `PRODUCTION_AUTHORITY = NONE`
+- `TRADING_AUTHORITY = NONE`
 
-## Fugle current decision
-Do NOT expand the active realtime universe to all Taiwan stocks now.
-Do NOT purchase the paid Developer plan solely to regain full-market snapshot access now.
+Do not merge these into a generic statement that “the system works.”
 
-Current priority is:
+## Historical latency remains blocked
 
-`VERIFIED_CURRENT100_FUGLE_TRANSPORT -> SHADOW_EARLY_WARNING -> PROSPECTIVE FALSE-NEGATIVE / FALSE-POSITIVE / REPAIR / CONTROL-DIORATION TRACKING`
+The old corrected Pass 4 median 3 sessions means only:
 
-Expansion beyond current100 is only reconsidered if prospective errors show that missing cross-sector or destination-capital context is a material and repeated source of false negatives or false positives.
+`h=1 checkpoint -> next TDCC snapshot reference date`
 
-The live Fugle layer is strictly:
+It is **not** verified publication latency and is **not** verified market-known latency. Live transport or prospective deployment cannot retroactively validate historical availability. Historical rerun requires a separate new preregistration if exact historical provenance is later recovered.
+
+## Fugle transport authority
+
+Verified bounded fact:
+- current100
+- single-symbol `/intraday/quote/{symbol}`
+- 100 requested / 100 success / 0 failure
+
+Authority remains:
+
 `SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY`
 
-It must not be converted directly into BUY/SELL, exact-price prediction, production authority, or a new model family.
+6415 and 3042 may remain members of the transport universe but may not be reinstated as primary research examples or architecture anchors.
 
-## MANDATORY DRIFT LOCK
-Before ANY analysis, modeling, factor discovery, forward-outcome inspection, threshold change, or case reinterpretation, read:
+## Prospective collector deployment — definition is on main, execution is not yet proven
 
-`research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
+Frozen Fugle collector source:
+- `966a4fbb8051034ced6cdedf7f0a6f4267aad3a8`
 
-This is hard governance. If a proposed step conflicts with the drift lock, stop.
+Default-branch Fugle deployment:
+- `9708f018db282ec4ddaa745c392d8ead54d65093`
 
-## Objective
-Continue Loss Forensics as a **Dynamic State Probability Engine / capital-preservation early-warning research program**.
-Do not return to exact-price prediction, fixed Bull/Bear scoring, V43 rescue, Monster rescue, Selection Core rescue, or single-ticker storytelling.
+Frozen TDCC collector source:
+- `95812e5cb4c2f828edfecaa6327c88f750ba52d5`
 
-The practical objective is not model worship. The user goal is:
+Default-branch TDCC deployment:
+- `32d2e7f4dd10276941e966dc4dea83fb40b0092f`
 
-> reduce the chance of becoming the last liquidity provider/holder when stronger capital is already withdrawing or transferring risk.
+The only deployment delta is branch routing: workflows are defined on `main` so GitHub cron can see them, but checkout/pull/push target `research/loss-forensics-20261101`. Universe, endpoints, rate-limit, timestamp, hash, protocol, authority, schema and append-only semantics remain frozen.
 
-Capital preservation matters more than exact-price prediction.
+### Important deployment status
 
-Primary future outputs, only when calibrated:
-- P(CONTINUATION)
-- P(REPAIR)
-- P(CONTROL_LOSS)
-- P(SYSTEMIC_SHOCK)
-- ABSTAIN / NO_EDGE
+Manual smoke dispatch was **not executed** in the deployment audit because the available GitHub connector exposed no start-workflow-dispatch action and there was no authenticated browser profile. No alternative trigger was relabeled as manual dispatch.
 
-## User research doctrine
-- All legitimately obtainable data may be used.
-- The user does not require a model if evidence does not support one.
-- Failure is acceptable; fabricated success, silent retuning, threshold rescue and hindsight masquerading as live knowledge are not.
-- Traditional Chinese for user-facing discussion.
+At the audit write, no new post-protocol Fugle observation or TDCC payload/attempt artifact had appeared. No run was proven with `event = schedule` plus a matching artifact commit.
 
-## Current exclusions
-For current mechanism research and interpretive examples, exclude **6415** and **3042** as primary anchors/examples. Do not let them define architecture.
+Therefore:
 
-## Must-read supporting files
-1. `research/loss_forensics/DYNAMIC_STATE_PROBABILITY_ENGINE_CHARTER_V1_20261101.md`
-2. `research/loss_forensics/STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md`
-3. `research/loss_forensics/PASS4_INCREMENTAL_TARGET_CORRECTION_20261101.md`
-4. `research/loss_forensics/PASS3_PARTIAL_FINDINGS_REPAIR_VELOCITY_PRICING_POWER_20261101.md`
-5. `research/loss_forensics/PASS4_QUADRANT_STRESS_TEST_FLOW_PRICE_OWNERSHIP_20261101.md`
+`UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
 
-Also retrieve existing validated artifacts when needed:
-- `HENGCE_HIDDEN_CONTROLLER_CONTROL_HOOK_V1_REPORT.md`
-- `current100_ownership_intervals_audit.csv`
-- `HENGCE_BRIDGE_RELOAD_MARGINAL_CONTROL_CAPITAL_ATLAS_V0_20261029.md`
-- `HENGCE_OPERATOR_IDENTITY_CONFLICT_ATLAS_V1_20261029.md`
-- `HENGCE_OPERATOR_BUY_SELL_BEHAVIOR_MAP_V0_20261029.md`
+Do not upgrade to `VERIFIED_SCHEDULED_COLLECTION` merely because the workflow files are on `main`.
 
-## Existing validated base
-### CONTROL durability
-Strict expanding time-order OOS (2026-06-26 through 2026-10-16):
-- AUC 0.694
-- confidence >=0.70 -> 84.56% next-snapshot retention
-- confidence >=0.80 -> 88.79%
-- confidence >=0.90 -> 93.51%
-This predicts ownership durability, not stock return.
+Required upgrade proof for each collector:
+1. GitHub run metadata says `event = schedule`;
+2. run succeeds;
+3. new immutable ledger artifact lands on research branch;
+4. artifact commit SHA is verified;
+5. run was not dispatch/rerun;
+6. no backfill/backdating.
 
-### HOOK / release deterioration
-`CONTROL FULL + HOOK READY + dBig400 < 0`
-- OOS 52 events
-- 10d mean -5.91%, median -5.42%, positive 22.5%
-- 40d median -7.52%
+Manual dispatch alone never satisfies the unattended gate.
 
-### Pass 3 final
-No new Pass 3 family promoted. CORE_LOOSENING, BRIDGE/DESTINATION_PRELOAD and PROFESSIONAL_FLOW all retain formal weight 0. No rescue is authorized.
+## Prospective known-at ledger doctrine
 
-### Corrected Pass 4 h=1
-Snapshot-reference-date layer showed genuine OOS incremental evidence, but true actual-publication latency remains DATA_BLOCKED. Do not overclaim actual lead time.
+The live question is:
 
-## Prospective live evidence collection
-From now on, preserve true known-at timestamps wherever possible:
-- observation generated time
-- Fugle source lastUpdated
-- last trade time
-- TDCC snapshot reference date
-- TDCC first-observed/publication time
-- sector effective time
-- regime input availability time
-- CONTROL/HOOK known-at time
-- h=1 evidence known-at time
-- next ownership confirmation known-at time
+> What did HENGCE first know, at what time, from which exact source/payload?
 
-The prospective question is:
+Not:
 
-> Can current100 live evidence help identify control deterioration earlier without excessive false alarms, using only information truly available at observation time?
+> Looking back, what should HENGCE have known then?
 
-Track false negatives, false positives, repair outcomes and control-deterioration outcomes prospectively.
+Preserve, when genuinely observable:
+- observation generated timestamp;
+- Fugle source `lastUpdated`;
+- individual quote/trade timestamp;
+- TDCC snapshot reference date;
+- TDCC exact-payload first-observed receipt time;
+- TDCC official publication timestamp only with independent exact proof;
+- sector classification/effective timestamp;
+- regime-input actual availability timestamp;
+- CONTROL/HOOK actual-known time;
+- h=1 evidence actual-known time;
+- next ownership confirmation actual-known time.
 
-## Fugle transport proof
-Main branch output files:
-- `escape_live/electronics100_status.json`
-- `escape_live/electronics100_snapshot.json`
+Reference date never substitutes for availability time. Unknown stays null. Do not backdate.
 
-Verified main proof commit:
-`90565cbf6871cf67e7f4a6990e9bd9c4a8811e6a`
+## Frozen Pass 4 interpreter — NOT BOUND
 
-Verified status:
-- requested_count = 100
-- success_count = 100
-- failure_count = 0
-- healthy_transport = true
-- quote_dates = 2026-10-30
-- stale_count_vs_run_date = 100
-- fresh_market_day = false
+The exact executable provenance search found governance/report-level method definitions and reproducibility hashes, but did not recover all artifacts required for exact replay. In particular, exact executable preprocessing/model/refit provenance and exact row-level OOS replay artifacts were not recovered.
 
-The stale state was expected because the proof run occurred on Sunday 2026-11-01.
+Therefore:
 
-## Full-market realtime status
-The paid whole-market snapshot endpoint returned `AUTH_OR_PLAN_HTTP_403` on the current Basic plan.
-This is not a blocker for current100.
-Do not treat it as a reason to expand scope or buy a paid plan without evidence that current100 coverage is insufficient.
+`INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`
 
-## Non-negotiable governance
-- Facts, inference, and causality must remain separated.
-- Retrieval failure != data absence.
-- Corporate-action effects must be adjusted/censored.
-- TDCC reference date != knowledge date.
-- Foreign/trust/dealer are observable vehicles, not beneficial-owner identity.
-- No silent retuning or post-hoc threshold hunting.
-- A probability requires held-out calibration; raw weighted scores are not probabilities.
-- ABSTAIN / NO_EDGE is valid and preferred to fake precision.
-- Live Fugle data are SHADOW evidence only until prospective validation supports promotion.
-- Do not expand universe merely because more data are technically accessible.
+Until all binding gates are satisfied and the historical frozen metrics are reproduced from exact provenance, formal outputs are forbidden:
+- h=1 probability;
+- h=1 classification;
+- CONTROL_LOSS probability;
+- calibrated early-warning probability;
+- BUY / SELL.
+
+Allowed label:
+
+`SHADOW_DATA_COLLECTING / INTERPRETER_NOT_BOUND`
+
+Do not reconstruct Pass 4 approximately from prose. Do not substitute source-only diagnostic. Do not retrain a look-alike HGB.
+
+## Frozen Pass 4 protections
+
+No changes are authorized to:
+- coefficients/model semantics;
+- thresholds;
+- labels;
+- gates;
+- calibration procedure;
+- live-outcome-driven tuning.
+
+Pass 3 is not to be rerun or rescued in this thread. No new factor/model research is authorized by the current task.
 
 ## Next action
-Do not re-open broad factor discovery and do not expand to full Taiwan realtime coverage.
-Use the verified current100 Fugle transport to build/maintain the prospective shadow evidence ledger and preserve true availability timestamps.
-Historical actual-publication latency remains DATA_BLOCKED until missing provenance is genuinely filled.
+
+First inspect whether the prospective ledger has genuinely advanced after the deployment commits. If so, verify run provenance and artifact immutability before changing any status. If no valid scheduled proof exists, leave `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`.
+
+Separately, leave Pass 4 interpreter unbound unless exact pre-existing provenance is recovered and all ten binding gates pass. A missing executable is an acceptable failure; an approximate replacement is not.
