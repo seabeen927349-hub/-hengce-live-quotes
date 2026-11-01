@@ -16,6 +16,21 @@ Production authority: **NONE**
 - frozen Pass 4 coefficients / thresholds / labels / gates remain unchanged.
 - no live-outcome retuning is authorized or performed.
 
+## Deployment state terminology
+
+Two deployment fields are intentionally separate and must never be substituted for each other:
+
+- `DEPLOYMENT_ENGINEERING_STATE = DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF`
+  - operational descriptor only;
+  - means the frozen workflow definitions are deployed to default branch `main` with routing back to the research branch;
+  - does **not** prove unattended execution has occurred.
+
+- `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
+  - formal authority field;
+  - remains unchanged until the scheduled-run proof gate is satisfied.
+
+Therefore, `DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF` is never a replacement value for `UNATTENDED_DEPLOYMENT`.
+
 ## A1. Fugle prospective collector deployment
 
 Frozen collector source:
@@ -92,15 +107,19 @@ For Fugle specifically, 2026-11-01 is Sunday while the frozen cron is Monday-Fri
 
 Accordingly:
 
-`prospective_unattended_deployment = NOT_ESTABLISHED`
+`DEPLOYMENT_ENGINEERING_STATE = DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF`
 
-The fact that scheduler-active definitions now exist on `main` is **deployment preparation**, not proof that unattended collection has executed successfully.
+but formal authority remains:
+
+`UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
+
+The fact that scheduler-active definitions now exist on `main` proves deployment preparation/placement only. It does not prove unattended execution.
 
 ## Upgrade gate
 
-The status may change to:
+The formal authority may change to:
 
-`VERIFIED_SCHEDULED_COLLECTION`
+`UNATTENDED_DEPLOYMENT = VERIFIED_SCHEDULED_COLLECTION`
 
 only after all of the following are verified for the relevant collector:
 1. GitHub run metadata proves `event = schedule`;
@@ -125,10 +144,11 @@ Until binding succeeds, h=1 probability/classification and calibrated control-lo
 ## Final deployment state
 
 - collector definitions on default branch: `DEPLOYED_WITH_ROUTING_ONLY_DELTA`
+- deployment engineering state: `DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF`
 - evidence destination: `research/loss-forensics-20261101`
 - manual smoke test: `NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED`
 - scheduled-run proof: `NOT_VERIFIED`
-- unattended deployment: `NOT_ESTABLISHED`
+- unattended deployment authority: `NOT_ESTABLISHED`
 - historical latency: `DATA_BLOCKED`
 - prospective live latency: `COLLECTING`
 - production authority: `NONE`
