@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "attempt_id": "TDCC_20261101T154203258988+0800_RUN41285804038_A1",
+  "endpoint": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
+  "request_started_at_taipei": "2026-11-01T15:42:00.473760+08:00",
+  "response_received_at_taipei": "2026-11-01T15:42:03.258988+08:00",
+  "github_event_name": "schedule",
+  "github_run_id": "41285804038",
+  "github_run_attempt": "1",
+  "github_workflow_ref": "seabeen927349-hub/-hengce-live-quotes/.github/workflows/hengce-prospective-tdcc-first-observed.yml@refs/heads/main",
+  "github_ref_at_trigger": "refs/heads/main",
+  "github_sha_at_trigger": "54cd5cd7e117a4c863254b0e4a0bd3eb3c12d9b8",
+  "schedule_proof": true,
+  "expected_schedule_cron": "3,13,23,33,43,53 * * * *",
+  "official_published_at": null,
+  "historical_latency_status": "DATA_BLOCKED",
+  "prospective_live_latency_status": "COLLECTING",
+  "authority": "SHADOW_PROSPECTIVE_AVAILABILITY_RESEARCH_ONLY_NO_TRADING_AUTHORITY",
+  "payload_sha256": "18b34f6eeb80229941f51200558fcc3fec9d405e9b7eb47aceca377e9f18f184",
+  "first_observed_at_taipei": "2026-11-01T15:42:03.258988+08:00",
+  "first_observed_at_utc": "2026-11-01T07:42:03.258988+00:00",
+  "snapshot_reference_date": "2026-10-30",
+  "reference_date_candidates": [
+    "2026-10-30"
+  ],
+  "decoded_encoding": "utf-8-sig",
+  "csv_header": [
+    "資料日期",
+    "證券代號",
+    "持股分級",
+    "人數",
+    "股數",
+    "占集保庫存數比例%"
+  ],
+  "http_status": 200,
+  "http_date": "Sun, 01 Nov 2026 07:42:01 GMT",
+  "http_last_modified": null,
+  "http_etag": null,
+  "publication_provenance_status": "OFFICIAL_PUBLICATION_TIMESTAMP_NOT_INDEPENDENTLY_PROVEN",
+  "availability_semantics": "HENGCE_FIRST_OBSERVED_PUBLIC_ENDPOINT_RECEIPT_NOT_OFFICIAL_PUBLISHED_AT",
+  "prospective_protocol_commit": "08497a8106ac6acd8799a4fe256eb102dca2bb9c"
+}

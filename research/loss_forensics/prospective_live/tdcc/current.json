@@ -1,0 +1,18 @@
+{
+  "schema_version": 2,
+  "endpoint": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
+  "last_poll_received_at_taipei": "2026-11-01T15:42:03.258988+08:00",
+  "payload_sha256": "18b34f6eeb80229941f51200558fcc3fec9d405e9b7eb47aceca377e9f18f184",
+  "snapshot_reference_date": "2026-10-30",
+  "reference_date_candidates": [
+    "2026-10-30"
+  ],
+  "first_observed_record": "research/loss_forensics/prospective_live/tdcc/first_observed/18b34f6eeb80229941f51200558fcc3fec9d405e9b7eb47aceca377e9f18f184.json",
+  "github_event_name": "schedule",
+  "github_run_id": "41285804038",
+  "schedule_proof": true,
+  "official_published_at": null,
+  "publication_provenance_status": "OFFICIAL_PUBLICATION_TIMESTAMP_NOT_INDEPENDENTLY_PROVEN",
+  "historical_latency_status": "DATA_BLOCKED",
+  "prospective_live_latency_status": "COLLECTING"
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "observed_at_taipei": "2026-11-01T15:42:00.389480+08:00",
+  "github_event_name": "schedule",
+  "github_run_id": "41285804038",
+  "github_run_attempt": "1",
+  "github_workflow": "HENGCE Prospective TDCC First Observed",
+  "github_workflow_ref": "seabeen927349-hub/-hengce-live-quotes/.github/workflows/hengce-prospective-tdcc-first-observed.yml@refs/heads/main",
+  "github_ref_at_trigger": "refs/heads/main",
+  "github_sha_at_trigger": "54cd5cd7e117a4c863254b0e4a0bd3eb3c12d9b8",
+  "expected_schedule_cron": "3,13,23,33,43,53 * * * *",
+  "schedule_proof": true,
+  "collector_status": "POLL_SUCCEEDED",
+  "authority": "SCHEDULER_TRANSPORT_PROVENANCE_ONLY_NO_TRADING_AUTHORITY",
+  "last_poll_received_at_taipei": "2026-11-01T15:42:03.258988+08:00",
+  "http_status": 200,
+  "payload_sha256": "18b34f6eeb80229941f51200558fcc3fec9d405e9b7eb47aceca377e9f18f184",
+  "snapshot_reference_date": "2026-10-30",
+  "new_payload_first_observed": true
+}
