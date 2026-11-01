@@ -1,0 +1,74 @@
+{
+  "system": "HENGCE",
+  "artifact": "LOSS_FORENSICS_OOS_CANDIDATE_ARM_CARD",
+  "version": "v1",
+  "candidate_id": "UNASSIGNED",
+  "arm_status": "NOT_ARMED",
+  "arm_frozen_at_taipei": null,
+  "formal_oos_start_date": null,
+  "candidate_definition": {
+    "hypothesis": null,
+    "event_definition": null,
+    "eligible_universe_rule": null,
+    "exclusions": [],
+    "control_construction": null,
+    "primary_endpoint": null,
+    "primary_horizon_trading_days": null,
+    "expected_direction": null,
+    "null_value": null,
+    "minimum_practical_effect": null
+  },
+  "executable_binding": {
+    "extractor_path": null,
+    "extractor_blob_sha1": null,
+    "deterministic_query_or_config_path": null,
+    "deterministic_query_or_config_blob_sha1": null,
+    "binding_status": "MISSING"
+  },
+  "input_provenance_binding": {
+    "required_inputs": [],
+    "actual_availability_contract_frozen": false,
+    "unknown_actual_known_at_blocks_event": true
+  },
+  "outcome_binding": {
+    "t1_definition": null,
+    "t5_definition": null,
+    "t20_definition": null,
+    "corporate_action_handling": null,
+    "missing_price_handling": null,
+    "halt_handling": null,
+    "delisting_handling": null,
+    "benchmark_or_control_return_rule": null
+  },
+  "statistical_binding": {
+    "primary_test": null,
+    "confidence_interval_method": null,
+    "clustering_unit": null,
+    "matching_or_control_method": null,
+    "chronological_stability_rule": "EXPECTED_SIGN_IN_AT_LEAST_3_OF_4_BLOCKS",
+    "multiple_testing_policy": "SECONDARY_ENDPOINTS_CANNOT_RESCUE_PRIMARY",
+    "optional_stopping_forbidden": true
+  },
+  "collector_binding": {
+    "required_collectors": [],
+    "collector_versions_frozen": false
+  },
+  "arm_gates": {
+    "candidate_definition_frozen": false,
+    "executable_bound": false,
+    "input_provenance_bound": false,
+    "outcome_rule_frozen": false,
+    "statistical_plan_frozen": false,
+    "universe_rule_frozen": false,
+    "collector_identity_frozen": false,
+    "no_counted_outcome_peeking_used_to_tune_semantics": false,
+    "trading_authority_none": true,
+    "arm_manifest_complete": false
+  },
+  "authority": {
+    "production_authority": "NONE",
+    "trading_authority": "NONE",
+    "formal_weight": 0
+  },
+  "fail_closed_reason": "CANDIDATE_SEMANTICS_AND_EXECUTABLE_NOT_YET_FROZEN_FORMAL_OOS_CLOCK_MUST_NOT_START"
+}
