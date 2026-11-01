@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "service": "HENGCE Escape Electronics100 Fugle Basic",
+  "generated_at_taipei": "2026-11-01T12:46:22.769520+08:00",
+  "market": "TSE",
+  "exchange": "TWSE",
+  "security_scope": "TWSE_LISTED_ELECTRONICS_100_HARD_BIND",
+  "tpex_included": false,
+  "source": "Fugle MarketData intraday/quote/{symbol}",
+  "requested_mode": "FREE_TIER_RATE_LIMITED_SINGLE_SYMBOL_QUOTES",
+  "rate_limit_design": "1.10s nominal start-to-start spacing; <=60/min target",
+  "universe_version": "HENGCE_TWSE_ELECTRONICS100_20261030",
+  "universe_sha256": "bce001fbe3fe69aaa1bb89b4ffe631c85c058ef9549a303af0181c5183adc812",
+  "requested_count": 100,
+  "success_count": 100,
+  "failure_count": 0,
+  "quote_dates": [
+    "2026-10-30"
+  ],
+  "stale_quote_count_vs_today": 100,
+  "failures": [],
+  "authority": "SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY",
+  "payload_sha256": "ad31b02517a6f42aecc8cf15c7bbbb0abb5ad641cd9615b93dd19401b4b0bfef",
+  "healthy_transport": true,
+  "fresh_market_day": false
+}
