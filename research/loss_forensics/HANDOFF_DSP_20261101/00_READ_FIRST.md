@@ -5,13 +5,23 @@ Status: ACTIVE RESEARCH / NO TRADING AUTHORITY
 ## Bootstrap authority
 Repo: `seabeen927349-hub/-hengce-live-quotes`
 Branch: `research/loss-forensics-20261101`
-Parent head before this handoff folder: `6633c1b2cee2db424d10168f6a4d022b1eaa2c41`
+Original parent head before handoff folder: `6633c1b2cee2db424d10168f6a4d022b1eaa2c41`
 
 At next-chat start, check current branch head. If the branch advanced, use the newest head, but do not silently override the governance below.
 
+## MANDATORY DRIFT LOCK
+Before ANY analysis, modeling, factor discovery, forward-outcome inspection, threshold change, or case reinterpretation, read:
+
+`research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
+
+This is hard governance. If a proposed step conflicts with the drift lock, the step must stop.
+
+Required scope lock after reading:
+`Execute frozen Pass 3, then corrected Pass 4; no new model family, no retuning, no exact-price drift, accept failure.`
+
 ## Objective
 Continue Loss Forensics as a **Dynamic State Probability Engine**.
-Do not return to exact-price prediction, fixed Bull/Bear scoring, V43 rescue, Monster rescue, or single-ticker storytelling.
+Do not return to exact-price prediction, fixed Bull/Bear scoring, V43 rescue, Monster rescue, Selection Core rescue, or single-ticker storytelling.
 
 Primary outputs when eventually calibrated:
 - P(CONTINUATION)
@@ -31,12 +41,13 @@ The target is state-transition diagnosis and recognition latency, not exact top/
 ## Current exclusions
 For current mechanism research and interpretive examples, exclude **6415** and **3042** as primary anchors/examples. Do not let them define architecture.
 
-## Must-read files
-1. `research/loss_forensics/DYNAMIC_STATE_PROBABILITY_ENGINE_CHARTER_V1_20261101.md`
-2. `research/loss_forensics/STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md`
-3. `research/loss_forensics/PASS3_PARTIAL_FINDINGS_REPAIR_VELOCITY_PRICING_POWER_20261101.md`
-4. `research/loss_forensics/PASS4_QUADRANT_STRESS_TEST_FLOW_PRICE_OWNERSHIP_20261101.md`
-5. `research/loss_forensics/PASS4_INCREMENTAL_TARGET_CORRECTION_20261101.md`
+## Must-read files, in order
+1. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
+2. `research/loss_forensics/DYNAMIC_STATE_PROBABILITY_ENGINE_CHARTER_V1_20261101.md`
+3. `research/loss_forensics/STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md`
+4. `research/loss_forensics/PASS4_INCREMENTAL_TARGET_CORRECTION_20261101.md`
+5. `research/loss_forensics/PASS3_PARTIAL_FINDINGS_REPAIR_VELOCITY_PRICING_POWER_20261101.md`
+6. `research/loss_forensics/PASS4_QUADRANT_STRESS_TEST_FLOW_PRICE_OWNERSHIP_20261101.md`
 
 Also retrieve existing validated artifacts when needed:
 - `HENGCE_HIDDEN_CONTROLLER_CONTROL_HOOK_V1_REPORT.md`
@@ -142,9 +153,11 @@ Therefore:
 - Pass 3 full-sample numeric test is NOT completed.
 - Pass 4 incremental probability/latency test is NOT completed.
 - No new Brier/log-loss/calibration improvement is claimed.
-If compute works in the new chat, execute the frozen tests directly. If compute remains unavailable, do not invent results.
+If compute works in the new chat, execute the frozen tests directly. If compute remains unavailable, mark DATA_BLOCKED and do not invent results.
 
 ## Non-negotiable governance
+The detailed prohibition list is in `03_RESEARCH_DRIFT_LOCK.md` and is binding.
+At minimum:
 - Facts, inference, and causality must remain separated.
 - Retrieval failure != data absence.
 - Corporate-action effects must be adjusted/censored.
@@ -156,6 +169,9 @@ If compute works in the new chat, execute the frozen tests directly. If compute 
 - No silent retuning or post-hoc threshold hunting.
 - A probability requires held-out calibration; raw weighted scores are not probabilities.
 - ABSTAIN / NO_EDGE is valid and preferred to fake precision.
+- New primary model families may not interrupt the frozen Pass 3 -> corrected Pass 4 sequence.
 
 ## Next action
-Do not spend the first turn re-explaining the architecture. Bootstrap authority, verify compute/data, and execute Pass 3. If successful, immediately continue to corrected Pass 4 recognition-latency validation.
+Do not spend the first turn re-explaining the architecture.
+Read the drift lock, state the scope lock, verify compute/data, and execute Pass 3. If successful, immediately continue to corrected Pass 4 recognition-latency validation.
+If the work begins drifting, stop and reread `03_RESEARCH_DRIFT_LOCK.md` before proceeding.
