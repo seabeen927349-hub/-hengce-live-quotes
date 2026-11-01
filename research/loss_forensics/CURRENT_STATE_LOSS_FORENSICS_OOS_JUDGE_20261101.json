@@ -1,0 +1,73 @@
+{
+  "system": "HENGCE",
+  "artifact": "CURRENT_STATE_LOSS_FORENSICS_OOS_JUDGE",
+  "version": "v1",
+  "state_date": "2026-11-01",
+  "state": "PREARMED_DATA_COLLECTING",
+  "candidate_id": "UNASSIGNED",
+  "arm_status": "NOT_ARMED",
+  "formal_oos_start_date": null,
+  "raw_prospective_collection_allowed": true,
+  "formal_oos_clock_started": false,
+  "progress": {
+    "valid_formal_trading_days": 0,
+    "target_valid_formal_trading_days": 60,
+    "maximum_collection_trading_days_if_event_scarcity": 90,
+    "valid_event_count": 0,
+    "minimum_valid_events": 120,
+    "distinct_event_dates": 0,
+    "minimum_distinct_event_dates": 24,
+    "distinct_event_symbols": 0,
+    "minimum_distinct_event_symbols": 30,
+    "max_single_event_date_share_observed": null,
+    "max_single_symbol_share_observed": null,
+    "valid_day_integrity_share": null,
+    "t1_matured_count": 0,
+    "t5_matured_count": 0,
+    "t20_matured_count": 0
+  },
+  "integrity": {
+    "data_integrity_status": "PREARM_NOT_ELIGIBLE_FOR_FORMAL_DAY_COUNT",
+    "append_only_violation_count": 0,
+    "timestamp_provenance_violation_count": 0,
+    "universe_integrity_violation_count": 0,
+    "forbidden_semantic_rule_change_count": 0,
+    "backdating_violation_count": 0,
+    "authority_hash_validation": "PENDING_VALIDATOR_EXECUTION"
+  },
+  "checkpoint": {
+    "day20_operational_review_due": false,
+    "day60_judgment_eligibility_due": false,
+    "bounded_extension_active": false,
+    "bounded_extension_reason": null,
+    "final_primary_endpoint_maturity_reached": false,
+    "formal_evaluation_executed": false,
+    "formal_evaluation_execution_count": 0
+  },
+  "conclusion": {
+    "formal_conclusion": "NONE",
+    "formal_weight": 0,
+    "pass_candidate": false,
+    "validated": false,
+    "reason": "FORMAL_OOS_NOT_ARMED"
+  },
+  "frozen_authority": {
+    "historical_latency": "DATA_BLOCKED",
+    "prospective_live_latency": "COLLECTING",
+    "interpreter_binding": "DATA_BLOCKED_EXACT_EXECUTABLE_PROVENANCE_NOT_RECOVERED",
+    "production_authority": "NONE",
+    "trading_authority": "NONE",
+    "formal_h1_probability_allowed": false,
+    "formal_h1_classification_allowed": false,
+    "formal_control_loss_probability_allowed": false,
+    "calibrated_early_warning_probability_allowed": false
+  },
+  "next_required_action": "FREEZE_ONE_EXACT_CANDIDATE_DEFINITION_AND_SHA_BOUND_EXECUTABLE_THEN_PASS_ALL_ARM_GATES_BEFORE_FORMAL_DAY1",
+  "bootstrap_order": [
+    "research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md",
+    "research/loss_forensics/LOSS_FORENSICS_PROSPECTIVE_OOS_EVALUATION_PREREGISTRATION_20261101.md",
+    "research/loss_forensics/LOSS_FORENSICS_OOS_GOVERNANCE_LOCK_20261101.json",
+    "research/loss_forensics/CURRENT_STATE_LOSS_FORENSICS_OOS_JUDGE_20261101.json",
+    "research/loss_forensics/LOSS_FORENSICS_OOS_CANDIDATE_ARM_CARD_20261101.json"
+  ]
+}
