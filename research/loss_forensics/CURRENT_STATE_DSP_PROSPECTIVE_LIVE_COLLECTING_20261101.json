@@ -16,10 +16,17 @@
     "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
     "FUGLE_TRANSPORT": "VERIFIED_100_REQUESTED_100_SUCCESS_0_FAILURE_SHADOW_ONLY",
     "TDCC_FIRST_OBSERVED": "COLLECTOR_DEPLOYED_PENDING_FIRST_VERIFIED_OBSERVATION",
+    "DEPLOYMENT_ENGINEERING_STATE": "DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF",
     "UNATTENDED_DEPLOYMENT": "NOT_ESTABLISHED",
     "INTERPRETER_BINDING": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
     "PRODUCTION_AUTHORITY": "NONE",
     "TRADING_AUTHORITY": "NONE"
+  },
+  "status_semantics": {
+    "DEPLOYMENT_ENGINEERING_STATE": "NON_AUTHORITY_OPERATIONAL_DESCRIPTOR_ONLY",
+    "UNATTENDED_DEPLOYMENT": "FORMAL_AUTHORITY_FIELD_REQUIRING_SCHEDULE_PROOF",
+    "deployment_engineering_state_may_substitute_for_unattended_authority": false,
+    "deployed_workflow_definition_alone_proves_unattended_execution": false
   },
   "latency_semantics": {
     "historical_median_3_sessions": "SNAPSHOT_REFERENCE_DATE_ONLY_NOT_REAL_PUBLICATION_OR_MARKET_KNOWN_LATENCY",
@@ -63,6 +70,8 @@
     "repository_default_branch": "main",
     "research_evidence_branch": "research/loss-forensics-20261101",
     "collector_definitions_deployed_to_main": true,
+    "deployment_engineering_state": "DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF",
+    "deployment_engineering_state_is_authority": false,
     "routing_design": "DEFAULT_BRANCH_SCHEDULE_DEFINITION_CHECKS_OUT_AND_PUSHES_RESEARCH_BRANCH",
     "fugle_main_deployment_commit": "9708f018db282ec4ddaa745c392d8ead54d65093",
     "tdcc_main_deployment_commit": "32d2e7f4dd10276941e966dc4dea83fb40b0092f",
@@ -138,6 +147,7 @@
     "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
     "FUGLE_TRANSPORT": "VERIFIED_SHADOW_ONLY",
     "TDCC_FIRST_OBSERVED": "PENDING_VERIFIED_ARTIFACT",
+    "DEPLOYMENT_ENGINEERING_STATE": "DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF",
     "UNATTENDED_DEPLOYMENT": "NOT_ESTABLISHED",
     "INTERPRETER_BINDING": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
     "PRODUCTION_AUTHORITY": "NONE",
