@@ -1,0 +1,99 @@
+{
+  "as_of": "2026-11-01",
+  "research_family": "OWNERSHIP_PRICE_REPAIR_LEAD_LAG",
+  "stage": "H",
+  "status": "STRUCTURAL_SUPPORTED_NOT_CALIBRATED",
+  "production_authority": "NONE",
+  "formal_weight": 0,
+  "parent_preregistration": "research/loss_forensics/repair_lead_lag/OWNERSHIP_PRICE_REPAIR_LEAD_LAG_PREREGISTRATION_V1_20261101.md",
+  "execution_lock": "research/loss_forensics/repair_lead_lag/STAGE_H_H1_H2_H3_EXECUTION_LOCK_20261101.md",
+  "results": "research/loss_forensics/repair_lead_lag/STAGE_H_OWNERSHIP_PRICE_REPAIR_LEAD_LAG_RESULTS_20261101.md",
+  "population": {
+    "complete_down_legs_excluding_3042_6415": 503,
+    "fracture_events": 368,
+    "event_503_sha256": "f03abb00e164ac16868274f866f0bb4eba30b0dca0e86257fd5d8573448348e3",
+    "cohort_368_sha256": "b42ca061bd51d62ebeb4ab4fd128b371260d02a871f2e9f9cf85f904078b4920"
+  },
+  "primary_window": {
+    "ok": 330,
+    "corporate_action_censored": 37,
+    "right_censored": 1,
+    "sequence_states": {
+      "OWNERSHIP_FIRST": 2,
+      "PRICE_FIRST": 12,
+      "COARSE_TIE": 51,
+      "OWNERSHIP_ONLY": 15,
+      "PRICE_ONLY": 109,
+      "NEITHER": 141
+    },
+    "h1": {
+      "OWN": {"loss": 4, "n": 17, "rate": 0.23529411764705882},
+      "PRICE": {"loss": 51, "n": 121, "rate": 0.4214876033057851},
+      "direction_supported": true,
+      "adjusted_complete_case_n": 88,
+      "adjusted_own_n": 8,
+      "adjusted_price_n": 80,
+      "adjusted_price_vs_own_or": 4.533322775396396,
+      "adjusted_or_ci95": [0.5069126030224469, 40.54153568759793],
+      "adjusted_p": 0.17631787869545645
+    },
+    "h2": {
+      "OWN": {"leak_first": 8, "n": 17, "rate": 0.47058823529411764},
+      "PRICE": {"leak_first": 82, "n": 121, "rate": 0.6776859504132231},
+      "direction_supported": true
+    }
+  },
+  "secondary_window": {
+    "ok": 304,
+    "corporate_action_censored": 63,
+    "right_censored": 1,
+    "sequence_states": {
+      "OWNERSHIP_FIRST": 11,
+      "PRICE_FIRST": 37,
+      "COARSE_TIE": 62,
+      "OWNERSHIP_ONLY": 8,
+      "PRICE_ONLY": 101,
+      "NEITHER": 85
+    },
+    "h1": {
+      "OWN": {"loss": 7, "n": 19, "rate": 0.3684210526315789},
+      "PRICE": {"loss": 63, "n": 138, "rate": 0.45652173913043476},
+      "direction_supported": true
+    },
+    "h2": {
+      "OWN": {"leak_first": 9, "n": 19, "rate": 0.47368421052631576},
+      "PRICE": {"leak_first": 90, "n": 137, "rate": 0.656934306569343},
+      "direction_supported": true,
+      "directional_right_censored": 1
+    }
+  },
+  "h3": {
+    "eligible_n": 187,
+    "heldout_n": 115,
+    "heldout_dates": 14,
+    "eligible_sequence_states": {
+      "NEITHER": 76,
+      "PRICE_ONLY": 70,
+      "COARSE_TIE": 28,
+      "PRICE_FIRST": 8,
+      "OWNERSHIP_ONLY": 5,
+      "OWNERSHIP_FIRST": 0
+    },
+    "base_brier": 0.2456916699929362,
+    "test_brier": 0.24476850024499758,
+    "base_logloss": 0.6883785868378723,
+    "test_logloss": 0.6862071871702133,
+    "base_auc": 0.6010981912144703,
+    "test_auc": 0.6064276485788114,
+    "aggregate_gate_pass": true,
+    "dates_both_metrics_improved": 7,
+    "later_half_worsened": true
+  },
+  "governance_conclusion": [
+    "No rule or threshold rescue.",
+    "No production or trading promotion.",
+    "Do not treat RepairLeadLag as calibrated alpha.",
+    "Retain as structural explanatory candidate only.",
+    "Next formal validation belongs to future post-prereg Stage P evidence."
+  ]
+}
