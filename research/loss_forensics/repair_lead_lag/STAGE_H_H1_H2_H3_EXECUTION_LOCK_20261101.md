@@ -41,7 +41,7 @@ Primary outcome: at the next valid TDCC snapshot after sequence observability, f
 
 Primary report:
 1. raw next-snapshot ControlLoss rate by sequence state and by OWN vs PRICE group;
-2. continuous-covariate adjusted logistic diagnostic using only the preregistered PIT covariate families available before the outcome: initial Big400 fracture magnitude, initial Big1000 change, holder-fragmentation change, margin/leverage change, pre-t0 20-session volatility, pre-t0 20-session median traded value, peak-to-trough price drawdown, and electronics-regime return. No outcome-derived binning or cutpoint search.
+2. continuous-covariate adjusted logistic diagnostic using only the preregistered PIT covariate families available before the outcome: initial Big400 fracture magnitude, initial Big1000 change, holder-fragmentation change, margin/leverage change, pre-t0 20-session volatility, pre-t0 20-session median traded value, price drawdown at t0 versus PX_BASE, and electronics-regime return. No outcome-derived binning or cutpoint search.
 
 H1 direction: OWN group must have lower subsequent broad-control-loss probability than PRICE group. Otherwise H1 is not supported.
 
