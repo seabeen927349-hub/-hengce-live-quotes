@@ -1,0 +1,112 @@
+{
+  "date": "2026-11-01",
+  "research_object": "Dynamic State Probability Engine / Loss Forensics",
+  "branch": "research/loss-forensics-20261101",
+  "results_commit_before_state_file": "20cc74b7c39897c07992de5ec9b215bf78949856",
+  "trading_authority": "NONE",
+  "scope_exclusions": ["6415", "3042"],
+  "governance": {
+    "pass3_pit_semantics": "expanding PIT history per frozen preregistration",
+    "pass4_base": "CONTROL + HOOK; current100 strict-time replication because historical per-event original-V1 probabilities are unavailable",
+    "no_silent_retuning": true,
+    "old_trailing25_execution_status": "SUPERSEDED_DIAGNOSTIC_ONLY",
+    "old_control_only_pass4_execution_status": "SUPERSEDED_DIAGNOSTIC_ONLY"
+  },
+  "pass3": {
+    "status": "COMPLETE",
+    "evidence_status": "VALIDATED_OOS_NULL_PROMOTION",
+    "oos_period": ["2026-06-26", "2026-10-08"],
+    "oos_n": 229,
+    "coverage": 1.0,
+    "abstention": 0.0,
+    "base": {
+      "brier": 0.18438959822405057,
+      "logloss": 0.5512810104262474,
+      "ece10": 0.03697530181831543,
+      "auc_secondary": 0.6549570647931304
+    },
+    "families": {
+      "CORE_LOOSENING": {
+        "status": "FAILED",
+        "formal_weight": 0,
+        "brier": 0.19329198489115232,
+        "logloss": 0.5706730341756241
+      },
+      "BRIDGE_DESTINATION_PRELOAD": {
+        "status": "FAILED",
+        "formal_weight": 0,
+        "brier": 0.1891195113559049,
+        "logloss": 0.5626452061506334
+      },
+      "PROFESSIONAL_FLOW": {
+        "status": "FAILED_TEMPORAL_ROBUSTNESS",
+        "formal_weight": 0,
+        "brier": 0.18193285792363803,
+        "logloss": 0.5459660269079023,
+        "note": "aggregate improves but early chronological block worsens"
+      }
+    },
+    "final_decision": "NO_NEW_PASS3_FAMILY_PROMOTED"
+  },
+  "pass4": {
+    "status": "COMPLETE",
+    "target": "pre-t+1 recognition latency for next-snapshot durability",
+    "oos_period": ["2026-06-26", "2026-10-16"],
+    "oos_n": 334,
+    "coverage": 1.0,
+    "abstention": 0.0,
+    "base_control_hook": {
+      "brier": 0.12135455431155281,
+      "logloss": 0.39957385114153826,
+      "ece10": 0.029481739405829738,
+      "auc_secondary": 0.6495524525599713
+    },
+    "h1": {
+      "status": "VALIDATED_OOS",
+      "qualifies": true,
+      "brier": 0.11664642835592536,
+      "logloss": 0.3777559377738179,
+      "ece10": 0.022256253004138905,
+      "auc_secondary": 0.7276763336913712,
+      "median_remaining_trading_sessions_to_next_snapshot": 3.0,
+      "mean_remaining_trading_sessions_to_next_snapshot": 2.697604790419162
+    },
+    "h2": {
+      "status": "FAILED_CALIBRATION_DAMAGE",
+      "qualifies": false,
+      "brier": 0.10814772129061602,
+      "logloss": 0.3422239921675736,
+      "ece10": 0.05366928086370239,
+      "ece_delta_vs_base": 0.02418754145787265
+    },
+    "h3": {
+      "status": "VALIDATED_OOS_BUT_LATER",
+      "qualifies": true,
+      "brier": 0.10483636425125649,
+      "logloss": 0.33698317209005835,
+      "ece10": 0.031929686212245956,
+      "median_remaining_trading_sessions_to_next_snapshot": 1.0
+    },
+    "earliest_validated_recognition_point": "h=1 trading day after t",
+    "validated_latency_gain": "median 3 trading sessions before next ownership snapshot date",
+    "source_only_h1_diagnostic": {
+      "status": "POST_PRIMARY_DIAGNOSTIC_NOT_MODEL_REPLACEMENT",
+      "brier": 0.1162257311012522,
+      "logloss": 0.378293445640024,
+      "ece10": 0.015176219748535506,
+      "auc_secondary": 0.7235230934479054,
+      "interpretation": "supports genuine source-side post-t flow/residual-price/leverage information rather than destination-edge missingness artifact"
+    }
+  },
+  "final_research_state": {
+    "pass3_new_snapshot_families": "REJECTED_FOR_FORMAL_WEIGHT",
+    "pre_tdcc_recognition_latency_layer": "VALIDATED_OOS_CURRENT100_SHADOW_ONLY",
+    "production_promotion": false,
+    "next_step_requires_new_preregistration": true
+  },
+  "authoritative_result_files": [
+    "research/loss_forensics/PASS3_FROZEN_EXECUTION_FINAL_EXPANDING_PIT_20261101.md",
+    "research/loss_forensics/PASS4_CORRECTED_RECOGNITION_LATENCY_FINAL_20261101.md",
+    "research/loss_forensics/PASS3_PASS4_GOVERNANCE_SUPERSEDENCE_20261101.md"
+  ]
+}
