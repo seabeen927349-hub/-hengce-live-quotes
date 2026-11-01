@@ -1,0 +1,64 @@
+name: HENGCE Literature-First Research Gate
+
+on:
+  pull_request:
+    paths:
+      - 'research/**'
+      - 'governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md'
+      - 'governance/HENGCE_LITERATURE_GATE_CONTRACT_v1.json'
+      - 'governance/LITERATURE_GATE_TEMPLATE_v1.json'
+      - 'governance/literature_gate_check.py'
+      - '.github/workflows/hengce-literature-first-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  literature-first-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate governance contract is readable
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('governance/HENGCE_LITERATURE_GATE_CONTRACT_v1.json')
+          c = json.loads(p.read_text(encoding='utf-8'))
+          assert c['fail_closed'] is True
+          assert c['scope'] == 'GLOBAL_ALL_HENGCE_RESEARCH'
+          assert c['required_gate_file'] == 'LITERATURE_GATE.json'
+          assert c['pass_conditions']['literature_review_complete'] is True
+          assert c['pass_conditions']['literature_status'] == 'PASS'
+          assert c['pass_conditions']['counterevidence_reviewed'] is True
+          assert c['pass_conditions']['null_results_reviewed'] is True
+          assert c['pass_conditions']['no_model_or_backtest_preceded_gate'] is True
+          print('contract assertions: PASS')
+          PY
+
+      - name: Fail closed on model/research-construction changes without literature PASS
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          python -B governance/literature_gate_check.py pr-scan --base "$BASE_SHA" --head "$HEAD_SHA"
+
+      - name: Governance-only manual validation
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          set -euo pipefail
+          python -B governance/literature_gate_check.py --help
+          echo 'Manual workflow confirms validator/contract load. Topic gates are validated on PR diff or explicitly with: python governance/literature_gate_check.py validate research/<topic>/LITERATURE_GATE.json'
