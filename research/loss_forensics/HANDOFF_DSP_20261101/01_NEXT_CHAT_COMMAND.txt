@@ -2,79 +2,74 @@
 
 先 bootstrap GitHub：
 repo `seabeen927349-hub/-hengce-live-quotes`
-branch `research/loss-forensics-20261101`
+research branch `research/loss-forensics-20261101`
 若 branch head 已前進，以最新 head 為準，但不得靜默覆寫既有治理。
 
-在任何分析、建模、擴張 universe、看 forward outcomes 或重新解釋案例之前，必須先讀：
+先讀：
 1. `research/loss_forensics/HANDOFF_DSP_20261101/00_READ_FIRST.md`
-2. `research/loss_forensics/CURRENT_STATE_DSP_FUGLE_LIVE_TRANSPORT_VERIFIED_20261101.json`
-3. `research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json`
-4. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
+2. `research/loss_forensics/CURRENT_STATE_DSP_PROSPECTIVE_LIVE_COLLECTING_20261101.json`
+3. `research/loss_forensics/PROSPECTIVE_LIVE_COLLECTOR_DEPLOYMENT_AUDIT_20261101.md`
+4. `research/loss_forensics/PROSPECTIVE_SCHEDULED_RUN_PROOF_MANIFEST_20261101.json`
+5. `research/loss_forensics/PASS4_FROZEN_EXECUTABLE_BINDING_AUDIT_20261101.md`
+6. `research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json`
+7. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
 
-先接受目前正式狀態：
+接受 frozen state，不准重解釋：
+- `HISTORICAL_LATENCY = DATA_BLOCKED`
+- `PROSPECTIVE_LIVE_LATENCY = COLLECTING`
+- historical median 3 sessions 只代表 snapshot-reference-date latency，不是真實 publication / market-known latency。
+- `FUGLE_TRANSPORT = VERIFIED 100 requested / 100 success / 0 failure / SHADOW ONLY`
+- `TDCC_FIRST_OBSERVED = collector deployed, first verified prospective artifact pending`
+- `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
+- `INTERPRETER_BINDING = INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`
+- `PRODUCTION_AUTHORITY = NONE`
+- `TRADING_AUTHORITY = NONE`
 
-- Pass 3 已完成，沒有任何新 family 晉級；CORE_LOOSENING、BRIDGE/DESTINATION_PRELOAD、PROFESSIONAL_FLOW formal weight 全部維持 0，不准救。
-- Corrected Pass 4 h=1 的 snapshot-reference-date layer 有 OOS 增量證據，但不能宣稱 true actual-publication latency 已驗證。
-- `HISTORICAL_ACTUAL_PUBLICATION_LATENCY = DATA_BLOCKED`。
-- Fugle 免費 Developer API current100 transport 已實測 VERIFIED：100 requested / 100 success / 0 failure / healthy_transport=true。
-- proof output 在 main：`escape_live/electronics100_status.json` 與 `escape_live/electronics100_snapshot.json`。
-- proof main commit：`90565cbf6871cf67e7f4a6990e9bd9c4a8811e6a`。
-- 驗證日在 2026-11-01 星期日，所以 quote_date=2026-10-30、100 檔 stale 是正確行為，不是失敗。
-- paid whole-market snapshot endpoint 在 Basic plan 回 `AUTH_OR_PLAN_HTTP_403`；這不構成 current100 blocker。
-- production authority 仍然是 NONE。
-- 6415、3042 仍不得作為目前主要案例/研究錨點。
+default branch main 已有兩個 frozen prospective collector 的 scheduler deployment：
+- Fugle deployment commit `9708f018db282ec4ddaa745c392d8ead54d65093`
+- TDCC deployment commit `32d2e7f4dd10276941e966dc4dea83fb40b0092f`
 
-現在的優先任務不是擴模型，也不是擴全台股 realtime universe。
+main 上的差異只准是 branch routing：checkout / pull / push 指向 `research/loss-forensics-20261101`。不准改 universe、API endpoint、rate-limit、timestamp、hash、protocol、authority、schema 或 append-only semantics。
 
-唯一優先：
+下一輪第一優先不是新模型，也不是 historical rescue，而是查 prospective ledger 是否已真正開始累積：
+- `research/loss_forensics/prospective_live/observations/`
+- `research/loss_forensics/prospective_live/tdcc/attempts/`
+- `research/loss_forensics/prospective_live/tdcc/payloads/`
+- `research/loss_forensics/prospective_live/tdcc/first_observed/`
 
-`VERIFIED_CURRENT100_FUGLE_TRANSPORT -> PROSPECTIVE SHADOW EARLY WARNING -> TRUE KNOWN-AT TIMESTAMP LEDGER`
+如果有新資料：
+1. 找對應 GitHub Actions run；
+2. 必須證明 `event = schedule`；
+3. 核對 run 成功；
+4. 核對 artifact 真實落 research branch；
+5. 核對 artifact commit SHA；
+6. 核對不是 workflow_dispatch / rerun；
+7. 核對沒有 backfill、overwrite、backdate actual_known_at；
+8. 更新 `PROSPECTIVE_SCHEDULED_RUN_PROOF_MANIFEST_20261101.json`。
 
-從現在開始，以 current100 為界收集 prospective shadow evidence，真實保存每次 observation 的 known-at 時間：
-- observation generated timestamp
-- Fugle source lastUpdated
-- last trade time
-- TDCC snapshot reference date
-- TDCC actual first-observed/publication timestamp（能真正觀測時才記）
-- sector effective timestamp
-- regime input availability timestamp
-- CONTROL/HOOK known-at time
-- h=1 evidence known-at time
-- next ownership confirmation known-at time
+只有上述 schedule proof 成立，才准把該 collector 的 scheduled status 升級。只有 user 定義的 unattended gate 被完整證明，才准把：
+`UNATTENDED_DEPLOYMENT = VERIFIED_SCHEDULED_COLLECTION`。
 
-研究目的只有：
+manual dispatch 成功本身不夠。若 manual smoke test 仍沒做，而且工具已能真正 dispatch workflow，可以各 dispatch 一次，核對 timestamp / hash / append-only path / authority；但不准把 manual run 冒充 schedule proof。
 
-**在不大量誤殺正常 repair 的前提下，current100 live evidence 是否能比 ownership confirmation 更早辨認 control deterioration，降低成為最後承接者的風險。**
+Pass 4 binding 方面：目前 repo provenance 不足，禁止近似重建。除非找到 pre-existing exact executable provenance 並通過全部十個 gate，否則維持：
+`INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`。
 
-必須 prospective 追蹤：
-- false negatives
-- false positives
-- durable repair outcomes
-- failed repair / control deterioration outcomes
-- actual recognition latency
-- abstention / no-edge cases
+不准：
+- 從 prose 重建近似 Pass 4；
+- 重訓一個看起來相同的 classifier；
+- 用 source-only diagnostic 取代 frozen h=1；
+- 輸出正式 h=1 probability / classification；
+- 輸出 CONTROL_LOSS probability / calibrated early warning probability；
+- 轉 BUY / SELL；
+- 修改 frozen coefficients / thresholds / labels / gates / calibration；
+- 看 live outcome 後 silent retune；
+- 重跑 Pass 3；
+- 救 historical latency；
+- 讓 6415、3042重新成為主要案例或架構錨點。
 
-Fugle current100 可作 SHADOW evidence，但：
-- 不准改 frozen Pass 4 coefficients/thresholds/labels/gates
-- 不准看 live outcome 後 silent retune
-- 不准直接轉 BUY/SELL
-- 不准升 production
-- 不准把 raw bid/ask 或單一 flow 變成獨立 signal
-- 不准因 live transport 成功就回頭宣稱 historical latency 已驗證
+允許狀態只有：
+`SHADOW_DATA_COLLECTING / INTERPRETER_NOT_BOUND`
+直到 exact binding 真正成立。
 
-暫不擴 Fugle 到全台股 realtime，也暫不為 full-market snapshot 升級付費 Developer plan。
-只有當 prospective current100 的錯誤分析反覆顯示「缺少跨產業/資金目的地 context」是 false negative 或 false positive 的主要來源時，才重新評估擴張 universe。
-
-全市場慢層 context 可繼續使用既有 TWSE/TPEx EOD、breadth、sector/capital-relocation 資料，不要求 Fugle 即時掃全市場。
-
-核心治理：
-- 不追求漂亮模型
-- 不追求精確高低點
-- 不把解釋包裝成預測
-- 不把 raw score 包裝成 probability
-- 不為成功而改規則
-- 不知道時可以 ABSTAIN / NO EDGE
-- 研究失敗可以接受
-
-下一對話不要重新跑 Pass 3，也不要把主要時間花在 historical latency rescue。
-先讀最新 authority，然後接續 current100 prospective shadow evidence / timestamp ledger 的建置與檢查。
+若 scheduled collection 尚未被真正證明，就誠實維持 NOT_ESTABLISHED；若 executable 找不到，就維持 PENDING。不要為了完整而補規則、補時間、補模型或宣稱 production ready。
