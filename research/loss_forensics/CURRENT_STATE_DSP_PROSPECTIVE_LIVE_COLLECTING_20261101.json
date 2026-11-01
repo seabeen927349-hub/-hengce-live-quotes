@@ -4,26 +4,28 @@
   "state_date": "2026-11-01",
   "branch": "research/loss-forensics-20261101",
   "authority_bootstrap": {
-    "user_supplied_branch_head_at_start": "77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8",
-    "verified_branch_head_at_start": "77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8",
-    "verified_parent": "a899174ca07b2831740365fb02b8c87c7eecff89",
+    "user_supplied_latest_research_head": "365cc032ca11d9067c6c88d724a593131f1d78b1",
+    "verified_research_head_at_turn_start": "365cc032ca11d9067c6c88d724a593131f1d78b1",
     "historical_current_state": "research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json",
+    "prospective_protocol": "research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md",
     "historical_governance_superseded": false,
-    "transport_commit_may_override_historical_governance": false
+    "transport_or_deployment_may_retrovalidate_historical_latency": false
   },
-  "authority": {
-    "trading_authority": "NONE",
-    "production_authority": "NONE",
-    "formal_model_retuning_authorized": false,
-    "formal_new_model_authorized": false,
-    "buy_sell_conversion_authorized": false,
-    "live_outcome_driven_rule_change_authorized": false
-  },
-  "latency_states": {
+  "status_matrix": {
     "HISTORICAL_LATENCY": "DATA_BLOCKED",
     "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
-    "historical_median_3_sessions_semantics": "SNAPSHOT_REFERENCE_DATE_ONLY_NOT_REAL_PUBLICATION_OR_MARKET_RECOGNITION_LATENCY",
-    "live_transport_success_retrovalidates_historical_latency": false
+    "FUGLE_TRANSPORT": "VERIFIED_100_REQUESTED_100_SUCCESS_0_FAILURE_SHADOW_ONLY",
+    "TDCC_FIRST_OBSERVED": "COLLECTOR_DEPLOYED_PENDING_FIRST_VERIFIED_OBSERVATION",
+    "UNATTENDED_DEPLOYMENT": "NOT_ESTABLISHED",
+    "INTERPRETER_BINDING": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
+    "PRODUCTION_AUTHORITY": "NONE",
+    "TRADING_AUTHORITY": "NONE"
+  },
+  "latency_semantics": {
+    "historical_median_3_sessions": "SNAPSHOT_REFERENCE_DATE_ONLY_NOT_REAL_PUBLICATION_OR_MARKET_KNOWN_LATENCY",
+    "reference_date_may_substitute_for_availability_time": false,
+    "historical_latency_rescue_authorized": false,
+    "historical_reopen_requires_separate_new_preregistration": true
   },
   "fugle_transport": {
     "endpoint_pattern": "/intraday/quote/{symbol}",
@@ -32,114 +34,113 @@
     "verified_success": 100,
     "verified_failure": 0,
     "authority": "SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY",
-    "transport_commit": "77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8",
-    "prospective_collector_definition_commit": "966a4fbb8051034ced6cdedf7f0a6f4267aad3a8",
+    "transport_authority_commit": "77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8",
+    "frozen_prospective_definition_commit": "966a4fbb8051034ced6cdedf7f0a6f4267aad3a8",
+    "default_branch_deployment_commit": "9708f018db282ec4ddaa745c392d8ead54d65093",
+    "main_routing_delta_only": true,
     "immutable_observation_path": "research/loss_forensics/prospective_live/observations/YYYY/MM/DD/",
-    "per_symbol_timestamps_captured_by_definition": [
-      "request_started_at_taipei",
-      "response_received_at_taipei",
-      "source_last_updated",
-      "last_trade_time",
-      "quote_date"
-    ],
-    "per_symbol_exact_response_hash_captured": true
+    "append_only_required": true,
+    "backdating_actual_known_at_allowed": false,
+    "formal_ranking_authority": false,
+    "buy_sell_authority": false
   },
-  "tdcc_prospective_collector": {
+  "tdcc_first_observed": {
     "official_endpoint": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
-    "collector_definition_commit": "95812e5cb4c2f828edfecaa6327c88f750ba52d5",
+    "frozen_definition_commit": "95812e5cb4c2f828edfecaa6327c88f750ba52d5",
+    "default_branch_deployment_commit": "32d2e7f4dd10276941e966dc4dea83fb40b0092f",
+    "main_routing_delta_only": true,
     "raw_payload_content_addressed": true,
-    "first_observed_record_immutable": true,
+    "exact_sha256_required": true,
     "poll_attempts_preserved": true,
+    "first_observed_record_immutable": true,
     "snapshot_reference_date_separate_from_availability_time": true,
     "first_observed_semantics": "HENGCE_COLLECTOR_RECEIPT_TIME_CONSERVATIVE_PUBLIC_BY_UPPER_BOUND",
-    "official_published_at_semantics": "NULL_UNLESS_INDEPENDENTLY_PROVEN_FOR_EXACT_PAYLOAD",
-    "http_last_modified_auto_promoted_to_official_publication": false
+    "official_published_at": "NULL_UNLESS_INDEPENDENT_EXACT_PROOF",
+    "http_last_modified_auto_promoted_to_official_publication": false,
+    "first_verified_observation_present_at_state_write": false
+  },
+  "deployment": {
+    "repository_default_branch": "main",
+    "research_evidence_branch": "research/loss-forensics-20261101",
+    "collector_definitions_deployed_to_main": true,
+    "routing_design": "DEFAULT_BRANCH_SCHEDULE_DEFINITION_CHECKS_OUT_AND_PUSHES_RESEARCH_BRANCH",
+    "fugle_main_deployment_commit": "9708f018db282ec4ddaa745c392d8ead54d65093",
+    "tdcc_main_deployment_commit": "32d2e7f4dd10276941e966dc4dea83fb40b0092f",
+    "manual_dispatch_fugle": "NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED",
+    "manual_dispatch_tdcc": "NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED",
+    "scheduled_run_event_equals_schedule_verified_fugle": false,
+    "scheduled_run_event_equals_schedule_verified_tdcc": false,
+    "post_protocol_fugle_observations_verified_at_audit": 0,
+    "post_protocol_tdcc_payloads_verified_at_audit": 0,
+    "prospective_unattended_deployment": "NOT_ESTABLISHED",
+    "upgrade_rule": "ONLY_AFTER_EVENT_EQUALS_SCHEDULE_PLUS_SUCCESS_PLUS_NEW_IMMUTABLE_LEDGER_ARTIFACT_PLUS_VERIFIED_ARTIFACT_COMMIT_PLUS_NO_BACKFILL",
+    "manual_dispatch_alone_sufficient_for_upgrade": false,
+    "deployment_audit_file": "research/loss_forensics/PROSPECTIVE_LIVE_COLLECTOR_DEPLOYMENT_AUDIT_20261101.md",
+    "scheduled_run_proof_manifest": "research/loss_forensics/PROSPECTIVE_SCHEDULED_RUN_PROOF_MANIFEST_20261101.json"
   },
   "prospective_timestamp_contract": {
     "observation_generated_timestamp": "REQUIRED_WHEN_RUN_EXISTS",
     "fugle_source_last_updated_timestamp": "PRESERVE_SOURCE_VALUE",
-    "individual_quote_trade_timestamp": "PRESERVE_SOURCE_VALUE",
-    "tdcc_snapshot_reference_date": "SEPARATE_REFERENCE_FIELD",
-    "tdcc_first_observed_timestamp": "IMMUTABLE_COLLECTOR_RECEIPT_FIELD",
+    "individual_quote_or_trade_timestamp": "PRESERVE_SOURCE_VALUE",
+    "tdcc_snapshot_reference_date": "SEPARATE_REFERENCE_FIELD_NOT_AVAILABILITY",
+    "tdcc_actual_first_observed_timestamp": "IMMUTABLE_COLLECTOR_RECEIPT_FIELD",
     "tdcc_official_publication_timestamp": "NULL_UNLESS_INDEPENDENTLY_PROVEN",
-    "sector_classification_timestamp": "OBSERVED_AT_CAPTURED",
+    "sector_classification_observed_timestamp": "PRESERVE_WHEN_CAPTURED",
     "sector_effective_timestamp": "NULL_UNLESS_INDEPENDENTLY_PROVEN",
     "regime_input_actual_availability_timestamp": "REQUIRED_FOR_FORMAL_REGIME_USE_ELSE_NULL",
-    "control_hook_actual_known_at": "MAX_REQUIRED_INPUT_AVAILABILITY_ONLY_WHEN_ALL_PROVEN_ELSE_NULL",
-    "h1_actual_known_at": "MAX_REQUIRED_INPUT_AVAILABILITY_ONLY_WHEN_ALL_PROVEN_ELSE_NULL",
-    "next_ownership_confirmation_actual_known_at": "ACTUAL_FIRST_OBSERVED_OR_INDEPENDENTLY_PROVEN_PUBLICATION_TIME_NOT_REFERENCE_DATE"
+    "control_hook_actual_known_at": "MAX_REQUIRED_INPUT_AVAILABILITY_ONLY_WHEN_ALL_REQUIRED_PROVEN_ELSE_NULL",
+    "h1_actual_known_at": "MAX_REQUIRED_INPUT_AVAILABILITY_ONLY_WHEN_ALL_REQUIRED_PROVEN_ELSE_NULL",
+    "next_ownership_confirmation_actual_known_at": "ACTUAL_FIRST_OBSERVED_OR_INDEPENDENT_EXACT_PUBLICATION_TIME_NOT_REFERENCE_DATE"
   },
-  "interpreter": {
-    "binding_status": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
-    "exact_frozen_pass4_executable_identified_on_branch": false,
+  "interpreter_binding": {
+    "status": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
+    "binding_audit_file": "research/loss_forensics/PASS4_FROZEN_EXECUTABLE_BINDING_AUDIT_20261101.md",
+    "final_pass4_authority_commit": "20cc74b7c39897c07992de5ec9b215bf78949856",
+    "exact_executable_identified": false,
+    "exact_preprocessing_state_identified": false,
+    "exact_model_or_deterministic_refit_package_identified": false,
+    "exact_row_level_oos_population_artifact_identified": false,
+    "exact_historical_replay_completed": false,
+    "final_metrics_reproduced_from_exact_provenance": false,
     "approximate_reconstruction_from_prose_allowed": false,
     "source_only_diagnostic_substitution_allowed": false,
-    "formal_h1_probability_output_allowed_before_binding": false,
-    "formal_h1_classification_output_allowed_before_binding": false,
-    "pass4_coefficients_or_thresholds_change_allowed": false
+    "formal_h1_probability_output_allowed": false,
+    "formal_h1_classification_output_allowed": false,
+    "formal_control_loss_probability_allowed": false,
+    "calibrated_early_warning_probability_allowed": false,
+    "allowed_label_until_bound": "SHADOW_DATA_COLLECTING / INTERPRETER_NOT_BOUND"
   },
-  "sector": {
-    "current_universe_has_industry_code": true,
-    "universe_generation_timestamp_available": true,
-    "per_security_effective_from_provenance_established": false,
-    "rule": "PRESERVE_OBSERVED_CLASSIFICATION_AND_SOURCE; EFFECTIVE_FROM_NULL_UNLESS PROVEN"
+  "frozen_pass4_protection": {
+    "coefficients_change_allowed": false,
+    "thresholds_change_allowed": false,
+    "labels_change_allowed": false,
+    "gates_change_allowed": false,
+    "calibration_change_allowed": false,
+    "live_outcome_silent_retune_allowed": false,
+    "new_model_research_this_turn": false,
+    "source_only_diagnostic_promoted": false
   },
-  "regime": {
-    "frozen_definition_and_complete_actual_input_availability_bound": false,
-    "formal_regime_output_allowed_now": false,
-    "fallback_or_new_regime_rule_allowed": false
+  "research_scope_controls": {
+    "primary_anchor_6415_allowed": false,
+    "primary_anchor_3042_allowed": false,
+    "6415_3042_may_remain_transport_universe_members": true,
+    "new_factor_search_authorized": false,
+    "pass3_rerun_authorized": false,
+    "historical_latency_rescue_authorized": false
   },
-  "prospective_outcomes": {
-    "collect": [
-      "evidence",
-      "state_transition",
-      "false_alarm",
-      "miss",
-      "repair_outcome",
-      "next_ownership_confirmation_actual_known_at",
-      "measured_recognition_lead_lag_after_valid_resolution"
-    ],
-    "unknown_is_zero": false,
-    "outcome_resolution_semantics": "APPEND_ONLY_AFTER_CONFIRMATION_ACTUALLY_OBSERVED"
-  },
-  "prospective_ledger": {
-    "protocol_file": "research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md",
-    "protocol_commit": "08497a8106ac6acd8799a4fe256eb102dca2bb9c",
-    "schema_file": "research/loss_forensics/prospective_live/EVENT_LEDGER_SCHEMA_V1.json",
-    "schema_commit": "b7dec4eee4e7c647be218d3750658f3d4514f523",
-    "readme_file": "research/loss_forensics/prospective_live/README.md",
-    "readme_commit": "505c3298444c97e5c4d9dabf520d13d6cf373abd",
-    "deployment_audit_file": "research/loss_forensics/PROSPECTIVE_LIVE_COLLECTOR_DEPLOYMENT_AUDIT_20261101.md",
-    "deployment_audit_commit": "ce19362ea8478c9a33ff0ddbb722ee789a049ecd",
-    "append_only_required": true,
-    "backdating_actual_known_at_allowed": false,
-    "reference_date_as_availability_allowed": false
-  },
-  "deployment": {
-    "repository_default_branch": "main",
-    "collector_definitions_branch": "research/loss-forensics-20261101",
-    "workflow_dispatch_available": true,
-    "schedule_entries_present_on_research_branch": true,
-    "unattended_scheduler_execution_proven_on_research_branch": false,
-    "reason": "GitHub scheduled workflows execute from the default branch; workflow definitions only on the research branch do not prove unattended collection.",
-    "post_protocol_eligible_fugle_observations_verified_at_state_write": 0,
-    "post_protocol_eligible_tdcc_first_observed_payloads_verified_at_state_write": 0,
-    "phase_status_interpretation": "COLLECTING_IS_THE_FROZEN_PROSPECTIVE_RESEARCH_PHASE; IT_IS_NOT A CLAIM OF AN ACTIVE UNATTENDED SCHEDULER"
-  },
-  "historical_reopen_rule": {
-    "historical_tdcc_publication_provenance_recovered": false,
-    "historical_rerun_allowed_under_current_prospective_protocol": false,
-    "new_historical_preregistration_required": true,
-    "until_then": "HISTORICAL_LATENCY_DATA_BLOCKED"
+  "authority_artifacts_this_turn": {
+    "scheduled_run_proof_manifest_commit": "c2b83a458e05a5672ba18db8dcd61f6d2384a66b",
+    "pass4_binding_audit_commit": "65684c5f788a4d62174a9e6b2c66d128fa69968a",
+    "updated_deployment_audit_commit": "67488828a70ab2a25e84911227c629fdcf927c7f"
   },
   "final_research_state": {
-    "historical_latency": "DATA_BLOCKED",
-    "prospective_live_latency": "COLLECTING",
-    "prospective_collector": "DEFINED_AND_FROZEN_ON_RESEARCH_BRANCH",
-    "prospective_unattended_deployment": "NOT_ESTABLISHED",
-    "interpreter_binding": "PENDING_FROZEN_EXECUTABLE",
-    "historical_latency_validated_by_live_transport": false,
-    "production_promotion": false,
-    "trading_promotion": false
+    "HISTORICAL_LATENCY": "DATA_BLOCKED",
+    "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
+    "FUGLE_TRANSPORT": "VERIFIED_SHADOW_ONLY",
+    "TDCC_FIRST_OBSERVED": "PENDING_VERIFIED_ARTIFACT",
+    "UNATTENDED_DEPLOYMENT": "NOT_ESTABLISHED",
+    "INTERPRETER_BINDING": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
+    "PRODUCTION_AUTHORITY": "NONE",
+    "TRADING_AUTHORITY": "NONE"
   }
 }
