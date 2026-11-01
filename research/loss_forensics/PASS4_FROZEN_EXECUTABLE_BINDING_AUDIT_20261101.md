@@ -6,13 +6,13 @@ Scope: exact provenance recovery only; no model redesign, no refit rescue, no li
 
 ## Decision
 
-`INTERPRETER_BINDING_STATUS = INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`
+`INTERPRETER_BINDING_STATUS = DATA_BLOCKED_EXACT_EXECUTABLE_PROVENANCE_NOT_RECOVERED`
 
-The exact executable provenance that produced the frozen corrected Pass 4 final results was **not recovered from the current repository evidence**. No approximate interpreter is bound.
+The exact executable provenance that produced the frozen corrected Pass 4 final results was **not recovered from the repository evidence searched in this audit**. The prior `INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE` wording is superseded because the bounded provenance-recovery audit is complete and gates 1–9 are not all satisfiable from recovered artifacts. This is a fail-closed research state, not a model failure and not permission to reconstruct an approximation.
 
-Allowed state until exact provenance is recovered:
+Allowed state until exact pre-existing provenance is independently recovered:
 
-`SHADOW_DATA_COLLECTING / INTERPRETER_NOT_BOUND`
+`SHADOW_DATA_COLLECTING / INTERPRETER_NOT_BOUND / DATA_BLOCKED`
 
 Forbidden formal outputs remain:
 - h=1 probability;
@@ -57,7 +57,7 @@ Findings:
 1. The frozen model class and hyperparameters are documented.
 2. Chronological expanding-OOS and chronological Platt-calibration rules are documented at governance/report level.
 3. The final h=1 cutoff and allowed semantic evidence bundle are documented.
-4. No separately versioned serialized HGB state, calibrator state, exact executable script/notebook, exact frozen feature matrix, or row-level final prediction table was found in the current tree.
+4. No separately versioned serialized HGB state, calibrator state, exact executable script/notebook, exact frozen feature matrix, or row-level final prediction table was found in the searched repository evidence.
 5. The two Pass 4 result commits inspected (`8d40f5957644ea1a44c23e19a781977676074ecb` and final `20cc74b7c39897c07992de5ec9b215bf78949856`) commit report artifacts, not the executable/model/prediction payloads required for exact replay.
 6. The final report itself states that original historical V1 per-event probabilities were unavailable and that the comparison BASE was a strict-time current100 replication. This makes exact provenance discipline more, not less, important.
 
@@ -76,7 +76,7 @@ Findings:
 | 9 | reproduce Brier/log-loss/ECE/AUC to tolerance | `NOT_RUN_EXACT_PROVENANCE_MISSING` |
 | 10 | no live-outcome rule changes | `PASS` — no coefficient, threshold, label, gate, feature, calibration or outcome-driven change was made in this audit |
 
-Because all ten gates are required and gates 1-9 are not all satisfied, binding is prohibited.
+Because all ten gates are required and gates 1-9 are not all satisfied, binding is prohibited and the bounded audit is closed as `DATA_BLOCKED_EXACT_EXECUTABLE_PROVENANCE_NOT_RECOVERED`.
 
 ## Explicit non-actions
 
@@ -90,11 +90,13 @@ This audit did **not**:
 
 ## Reopen condition
 
-Binding may be reconsidered only if pre-existing exact provenance is recovered, such as a contemporaneous script/notebook plus exact feature/event artifacts, serialized state, or a deterministic refit package sufficient to satisfy all ten gates and reproduce the frozen metrics without live-outcome changes.
+This fail-closed state may be reopened only if **pre-existing exact provenance** is recovered, such as a contemporaneous script/notebook plus exact feature/event artifacts, serialized state, or a deterministic refit package sufficient to satisfy all ten gates and reproduce the frozen metrics without live-outcome changes.
+
+A new approximation, reconstructed implementation, live-outcome retune, or prose-derived clone does **not** satisfy the reopen condition and would require a separate preregistered research track.
 
 Until then:
 
-`INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`
+`DATA_BLOCKED_EXACT_EXECUTABLE_PROVENANCE_NOT_RECOVERED`
 
 Production authority: **NONE**  
 Trading authority: **NONE**
