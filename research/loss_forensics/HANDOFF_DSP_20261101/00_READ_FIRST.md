@@ -23,18 +23,33 @@ Read in this order before analysis or status promotion:
 7. `research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md`
 8. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
 
-## Eight states that must remain separate
+## States that must remain separate
 
 - `HISTORICAL_LATENCY = DATA_BLOCKED`
 - `PROSPECTIVE_LIVE_LATENCY = COLLECTING`
 - `FUGLE_TRANSPORT = VERIFIED_100/100/0_SHADOW_ONLY`
 - `TDCC_FIRST_OBSERVED = COLLECTOR_DEPLOYED_PENDING_FIRST_VERIFIED_OBSERVATION`
+- `DEPLOYMENT_ENGINEERING_STATE = DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF`
 - `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
 - `INTERPRETER_BINDING = INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`
 - `PRODUCTION_AUTHORITY = NONE`
 - `TRADING_AUTHORITY = NONE`
 
 Do not merge these into a generic statement that “the system works.”
+
+### Deployment terminology hard lock
+
+`DEPLOYMENT_ENGINEERING_STATE` is a non-authority operational descriptor only.
+
+`DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF` means only that the frozen collector workflow definitions have been placed on default branch `main` with routing back to the research ledger.
+
+It does **not** mean unattended execution has been proven.
+
+The formal authority field remains:
+
+`UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
+
+until the scheduled-run proof gate passes. Never substitute the engineering descriptor into the formal authority field.
 
 ## Historical latency remains blocked
 
@@ -79,7 +94,11 @@ Manual smoke dispatch was **not executed** in the deployment audit because the a
 
 At the audit write, no new post-protocol Fugle observation or TDCC payload/attempt artifact had appeared. No run was proven with `event = schedule` plus a matching artifact commit.
 
-Therefore:
+Therefore the engineering state is:
+
+`DEPLOYMENT_ENGINEERING_STATE = DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF`
+
+while the formal unattended authority remains:
 
 `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
 
