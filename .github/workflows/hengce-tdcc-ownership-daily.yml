@@ -139,5 +139,12 @@ jobs:
           fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
           git commit -m "HENGCE TDCC canonical vessel evidence ${TS}"
+
+          # Same-payload checks intentionally leave transient current/attempt
+          # observations outside the evidence commit. Clear them only after the
+          # evidence commit so pull --rebase cannot be blocked by expected local state.
+          git restore --worktree -- ownership/tdcc || true
+          git clean -fd -- ownership/tdcc
+
           git pull --rebase origin main
           git push origin HEAD:main
