@@ -1,0 +1,111 @@
+{
+  "date": "2026-11-01",
+  "research_object": "Dynamic State Probability Engine / Loss Forensics — actual-availability control-deterioration recognition",
+  "branch": "research/loss-forensics-20261101",
+  "parent_authority_commit": "7e4815e2c479173519d79f220acc01048db0b938",
+  "trading_authority": "NONE",
+  "production_authority": "NONE",
+  "scope_exclusions": ["6415", "3042"],
+  "accepted_prior_authority": {
+    "pass3": {
+      "status": "COMPLETE",
+      "decision": "NO_NEW_PASS3_FAMILY_PROMOTED",
+      "CORE_LOOSENING_formal_weight": 0,
+      "BRIDGE_DESTINATION_PRELOAD_formal_weight": 0,
+      "PROFESSIONAL_FLOW_formal_weight": 0,
+      "rescue_authorized": false
+    },
+    "pass4_h1": {
+      "status": "VALIDATED_OOS_SNAPSHOT_REFERENCE_DATE_LATENCY_ONLY",
+      "interpretation": "recognition-latency layer, not BUY/SELL and not exact-price prediction",
+      "actual_publication_latency_validated": false
+    }
+  },
+  "current_study": {
+    "question": "Can source-side post-t professional flow x PIT residual price response x leverage quality identify control deterioration before actual ownership confirmation availability without excessive false alarms?",
+    "preregistration": {
+      "file": "research/loss_forensics/ACTUAL_AVAILABILITY_CONTROL_DETERIORATION_PREREGISTRATION_20261101.md",
+      "commit": "91d785b9e9aaae1367bf1cbb8c73e61bb2c16e95",
+      "status": "FROZEN_BEFORE_FORMAL_FORWARD_LABEL_ACCESS"
+    },
+    "availability_audit": {
+      "file": "research/loss_forensics/ACTUAL_AVAILABILITY_AUDIT_20261101.md",
+      "commit": "a3d9e3777f7d5246bb4b38ab5fcd3d1ce618e03b",
+      "status": "DATA_BLOCKED",
+      "blocking_reasons": [
+        "TDCC historical per-snapshot exact first-publication timestamps are not preserved/verified to preregistered A_t/A_t1 semantics",
+        "wirelessr archive first-observed commits are contemporaneous upper bounds but do not prove exact earliest TDCC publication time",
+        "canonical daily source-side rows lack historical per-field publication/retrieval timestamps; official schedules only provide conservative constraints",
+        "PIT sector membership effective-date/source provenance is incomplete for the frozen residual-response definition",
+        "PIT regime rule/state provenance chain is incomplete for all OOS rows"
+      ]
+    },
+    "provenance_manifest": {
+      "file": "research/loss_forensics/ACTUAL_AVAILABILITY_PROVENANCE_MANIFEST_20261101.csv",
+      "commit": "78f3f5ad05215348c5b1bf2515feeeae791d2dbc",
+      "rows": 18,
+      "semantics": "CONTEMPORANEOUS_ARCHIVE_UPPER_BOUND_ONLY_NOT_EXACT_A_t"
+    },
+    "execution": {
+      "file": "research/loss_forensics/ACTUAL_AVAILABILITY_CONTROL_DETERIORATION_EXECUTION_20261101.md",
+      "commit": "207033409b78bc6deb81d439fe4597352c076ef0",
+      "status": "DATA_BLOCKED_BEFORE_FORMAL_FORWARD_LABEL_ACCESS",
+      "formal_forward_labels_opened": false,
+      "availability_eligible_oos_set_constructed": false,
+      "metrics": {
+        "brier": null,
+        "log_loss": null,
+        "ece": null,
+        "auc_secondary": null,
+        "sensitivity_recall": null,
+        "false_negative_rate": null,
+        "specificity": null,
+        "false_positive_rate": null,
+        "recognition_latency_distribution": null,
+        "coverage": null,
+        "abstention": null
+      }
+    },
+    "failure_cases": {
+      "file": "research/loss_forensics/ACTUAL_AVAILABILITY_FAILURE_CASES_20261101.md",
+      "commit": "399c895fa08b20b3bcd16ce0d577a5fde9cc9077",
+      "type": "DATA_PROVENANCE_BLOCKERS_NOT_MODEL_ERROR_CASES"
+    },
+    "false_negatives": {
+      "file": "research/loss_forensics/ACTUAL_AVAILABILITY_FALSE_NEGATIVES_20261101.csv",
+      "commit": "046e577dba5669baf1b2a0e5391a0b0373176be0",
+      "status": "NOT_COMPUTED",
+      "reason": "DATA_BLOCKED before availability-eligible scoring; zero must not be inferred"
+    },
+    "false_positives": {
+      "file": "research/loss_forensics/ACTUAL_AVAILABILITY_FALSE_POSITIVES_20261101.csv",
+      "commit": "1e1641676d9afbfb688abdb8d94ff28521e0b682",
+      "status": "NOT_COMPUTED",
+      "reason": "DATA_BLOCKED before availability-eligible scoring; zero must not be inferred"
+    }
+  },
+  "final_research_state": {
+    "evidence_status": "DATA_BLOCKED",
+    "pass3_new_snapshot_families": "REJECTED_FOR_FORMAL_WEIGHT",
+    "pass4_h1_snapshot_reference_date_layer": "VALIDATED_OOS_CURRENT100_SHADOW_ONLY",
+    "pass4_h1_actual_publication_availability_layer": "NOT_VALIDATED_DATA_BLOCKED",
+    "source_side_family_formal_promotion": false,
+    "destination_family_status": "SECONDARY_AUDIT_ONLY_NO_RESCUE",
+    "production_promotion": false,
+    "formal_model_retuning_authorized": false,
+    "formal_new_model_authorized": false
+  },
+  "unblock_rule": {
+    "same_preregistration_may_resume_if": "only missing provenance is filled without changing event population, labels, predictor semantics, thresholds, gates, blocks, minimum sample or abstention rules",
+    "new_preregistration_required_if": "any definition, threshold, residual specification, label, success gate or research family is changed"
+  },
+  "authoritative_files": [
+    "research/loss_forensics/ACTUAL_AVAILABILITY_CONTROL_DETERIORATION_PREREGISTRATION_20261101.md",
+    "research/loss_forensics/ACTUAL_AVAILABILITY_AUDIT_20261101.md",
+    "research/loss_forensics/ACTUAL_AVAILABILITY_PROVENANCE_MANIFEST_20261101.csv",
+    "research/loss_forensics/ACTUAL_AVAILABILITY_CONTROL_DETERIORATION_EXECUTION_20261101.md",
+    "research/loss_forensics/ACTUAL_AVAILABILITY_FAILURE_CASES_20261101.md",
+    "research/loss_forensics/ACTUAL_AVAILABILITY_FALSE_NEGATIVES_20261101.csv",
+    "research/loss_forensics/ACTUAL_AVAILABILITY_FALSE_POSITIVES_20261101.csv"
+  ]
+}
