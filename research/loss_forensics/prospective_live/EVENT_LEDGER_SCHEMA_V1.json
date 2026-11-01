@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hengce://loss-forensics/prospective-live/event-ledger-v1",
+  "title": "HENGCE Prospective Actual-Availability Event Ledger V1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "cohort",
+    "observation_id",
+    "observation_generated_at_taipei",
+    "authority",
+    "historical_latency_status",
+    "prospective_live_latency_status",
+    "transport",
+    "sector",
+    "ownership",
+    "regime",
+    "control_hook",
+    "h1_early_evidence",
+    "next_ownership_confirmation",
+    "resolution"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "cohort": {"const": "PROSPECTIVE_ACTUAL_AVAILABILITY_V1"},
+    "observation_id": {"type": "string", "minLength": 1},
+    "observation_generated_at_taipei": {"type": "string", "format": "date-time"},
+    "observation_generated_at_utc": {"type": ["string", "null"], "format": "date-time"},
+    "github_run_id": {"type": ["string", "null"]},
+    "github_run_attempt": {"type": ["string", "null"]},
+    "authority": {"const": "SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY"},
+    "historical_latency_status": {"const": "DATA_BLOCKED"},
+    "prospective_live_latency_status": {"const": "COLLECTING"},
+    "transport": {
+      "type": "object",
+      "required": ["source", "requested_count", "success_count", "failure_count", "symbols"],
+      "properties": {
+        "source": {"const": "Fugle MarketData intraday/quote/{symbol}"},
+        "requested_count": {"type": "integer"},
+        "success_count": {"type": "integer"},
+        "failure_count": {"type": "integer"},
+        "payload_sha256": {"type": ["string", "null"]},
+        "symbols": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["symbol", "request_started_at_taipei", "response_received_at_taipei", "source_last_updated", "last_trade_time", "raw_quote_sha256"],
+            "properties": {
+              "symbol": {"type": "string"},
+              "request_started_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+              "response_received_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+              "source_last_updated": {"type": ["string", "null"]},
+              "last_trade_time": {"type": ["string", "null"]},
+              "quote_date": {"type": ["string", "null"]},
+              "raw_quote_sha256": {"type": ["string", "null"]},
+              "last_price": {"type": ["number", "integer", "null"]},
+              "trade_volume": {"type": ["number", "integer", "null"]},
+              "trade_value": {"type": ["number", "integer", "null"]}
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "sector": {
+      "type": "object",
+      "required": ["universe_version", "classification_source", "classification_observed_at_taipei", "effective_from", "provenance_status"],
+      "properties": {
+        "universe_version": {"type": ["string", "null"]},
+        "classification_source": {"type": ["string", "null"]},
+        "classification_observed_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+        "effective_from": {"type": ["string", "null"]},
+        "provenance_status": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "ownership": {
+      "type": "object",
+      "required": ["snapshot_reference_date", "first_observed_at_taipei", "official_published_at", "raw_payload_sha256", "availability_semantics"],
+      "properties": {
+        "snapshot_reference_date": {"type": ["string", "null"]},
+        "first_observed_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+        "official_published_at": {"type": ["string", "null"], "format": "date-time"},
+        "raw_payload_sha256": {"type": ["string", "null"]},
+        "availability_semantics": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "regime": {
+      "type": "object",
+      "required": ["definition_version", "state", "computed_at_taipei", "actual_known_at_taipei", "inputs", "provenance_status"],
+      "properties": {
+        "definition_version": {"type": ["string", "null"]},
+        "state": {"type": ["string", "null"]},
+        "computed_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+        "actual_known_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "value", "source", "actual_available_at_taipei"],
+            "properties": {
+              "name": {"type": "string"},
+              "value": {},
+              "source": {"type": ["string", "null"]},
+              "actual_available_at_taipei": {"type": ["string", "null"], "format": "date-time"}
+            },
+            "additionalProperties": true
+          }
+        },
+        "provenance_status": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "control_hook": {
+      "type": "object",
+      "required": ["state", "actual_known_at_taipei", "provenance_status"],
+      "properties": {
+        "state": {"type": ["string", "number", "integer", "boolean", "null"]},
+        "actual_known_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+        "provenance_status": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "h1_early_evidence": {
+      "type": "object",
+      "required": ["interpreter_binding_status", "probability", "classification", "actual_known_at_taipei", "provenance_status"],
+      "properties": {
+        "interpreter_binding_status": {"type": "string"},
+        "probability": {"type": ["number", "null"]},
+        "classification": {"type": ["string", "null"]},
+        "actual_known_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+        "provenance_status": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "next_ownership_confirmation": {
+      "type": "object",
+      "required": ["snapshot_reference_date", "first_observed_at_taipei", "official_published_at", "raw_payload_sha256", "actual_known_at_taipei"],
+      "properties": {
+        "snapshot_reference_date": {"type": ["string", "null"]},
+        "first_observed_at_taipei": {"type": ["string", "null"], "format": "date-time"},
+        "official_published_at": {"type": ["string", "null"], "format": "date-time"},
+        "raw_payload_sha256": {"type": ["string", "null"]},
+        "actual_known_at_taipei": {"type": ["string", "null"], "format": "date-time"}
+      },
+      "additionalProperties": true
+    },
+    "resolution": {
+      "type": "object",
+      "required": ["resolved", "control_deterioration", "durable_repair", "false_alarm", "miss", "recognition_lead_seconds", "resolution_record_id"],
+      "properties": {
+        "resolved": {"type": "boolean"},
+        "control_deterioration": {"type": ["boolean", "null"]},
+        "durable_repair": {"type": ["boolean", "null"]},
+        "false_alarm": {"type": ["boolean", "null"]},
+        "miss": {"type": ["boolean", "null"]},
+        "recognition_lead_seconds": {"type": ["number", "integer", "null"]},
+        "resolution_record_id": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
