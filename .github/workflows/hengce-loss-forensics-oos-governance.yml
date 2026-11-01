@@ -1,0 +1,60 @@
+name: HENGCE Loss Forensics OOS Governance Lock
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/loss-forensics-oos-judge-20261101
+      - research/loss-forensics-20261101
+    paths:
+      - 'research/loss_forensics/LOSS_FORENSICS_PROSPECTIVE_OOS_EVALUATION_PREREGISTRATION_20261101.md'
+      - 'research/loss_forensics/LOSS_FORENSICS_OOS_GOVERNANCE_LOCK_20261101.json'
+      - 'research/loss_forensics/LOSS_FORENSICS_OOS_CANDIDATE_ARM_CARD_20261101.json'
+      - 'research/loss_forensics/CURRENT_STATE_LOSS_FORENSICS_OOS_JUDGE_20261101.json'
+      - 'research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md'
+      - 'scripts/hengce_loss_forensics_oos_governance_validate.py'
+      - '.github/workflows/hengce-loss-forensics-oos-governance.yml'
+  pull_request:
+    paths:
+      - 'research/loss_forensics/LOSS_FORENSICS_PROSPECTIVE_OOS_EVALUATION_PREREGISTRATION_20261101.md'
+      - 'research/loss_forensics/LOSS_FORENSICS_OOS_GOVERNANCE_LOCK_20261101.json'
+      - 'research/loss_forensics/LOSS_FORENSICS_OOS_CANDIDATE_ARM_CARD_20261101.json'
+      - 'research/loss_forensics/CURRENT_STATE_LOSS_FORENSICS_OOS_JUDGE_20261101.json'
+      - 'research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md'
+      - 'scripts/hengce_loss_forensics_oos_governance_validate.py'
+      - '.github/workflows/hengce-loss-forensics-oos-governance.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  governance-fail-closed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: Compile validator
+        run: python3 -m py_compile scripts/hengce_loss_forensics_oos_governance_validate.py
+
+      - name: Validate frozen governance and current state
+        run: python3 scripts/hengce_loss_forensics_oos_governance_validate.py
+
+      - name: Assert no accidental authority escalation strings in state/ARM
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('research/loss_forensics')
+          for name in ['LOSS_FORENSICS_OOS_CANDIDATE_ARM_CARD_20261101.json','CURRENT_STATE_LOSS_FORENSICS_OOS_JUDGE_20261101.json']:
+              obj=json.loads((root/name).read_text(encoding='utf-8'))
+              text=json.dumps(obj,ensure_ascii=False)
+              if '"trading_authority": "NONE"' not in text:
+                  raise SystemExit(f'TRADING_AUTHORITY_GUARD_MISSING:{name}')
+              if '"production_authority": "NONE"' not in text:
+                  raise SystemExit(f'PRODUCTION_AUTHORITY_GUARD_MISSING:{name}')
+          print('HENGCE OOS AUTHORITY ESCALATION GUARD PASS')
+          PY
