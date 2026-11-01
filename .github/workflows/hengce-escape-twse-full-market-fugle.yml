@@ -32,7 +32,7 @@ jobs:
           set -euo pipefail
           python3 <<'PY'
           import hashlib, json, os, random, re, time, urllib.error, urllib.request
-          from datetime import datetime
+          from datetime import datetime, timezone
           from pathlib import Path
           from zoneinfo import ZoneInfo
 
@@ -43,8 +43,15 @@ jobs:
           TZ=ZoneInfo('Asia/Taipei')
           CONFIG=Path('hengce/legacy/live_universe.json')
           OUT=Path('escape_live')
+          LEDGER_ROOT=Path('research/loss_forensics/prospective_live/observations')
           OUT.mkdir(parents=True,exist_ok=True)
           BASE='https://api.fugle.tw/marketdata/v1.0/stock/intraday/quote/'
+
+          # Frozen prospective availability protocol.
+          PROTOCOL_COMMIT='08497a8106ac6acd8799a4fe256eb102dca2bb9c'
+          COHORT='PROSPECTIVE_ACTUAL_AVAILABILITY_V1'
+          AUTHORITY='SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY'
+          INTERPRETER_BINDING='INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE'
 
           # Free/basic plan is documented at 60 HTTP calls/minute.
           # 1.10 s nominal spacing is ~54.5 calls/min before request latency,
@@ -70,16 +77,28 @@ jobs:
           if set(rows_by_symbol)!=set(symbols):
               raise SystemExit('ELECTRONICS100_ROWS_SYMBOL_SET_MISMATCH')
 
+          def iso_now_taipei():
+              return datetime.now(TZ).isoformat()
+
           def fetch_quote(symbol):
               req=urllib.request.Request(BASE+symbol,headers={
                   'X-API-KEY':API_KEY,
                   'Accept':'application/json',
-                  'User-Agent':'HENGCE-ESCAPE-ELECTRONICS100-BASIC/1.0'
+                  'User-Agent':'HENGCE-ESCAPE-ELECTRONICS100-BASIC/2.0-PROSPECTIVE-PIT'
               })
               for attempt in range(4):
+                  request_started=iso_now_taipei()
                   try:
                       with urllib.request.urlopen(req,timeout=15) as r:
-                          return json.load(r)
+                          body=r.read()
+                          response_received=iso_now_taipei()
+                          headers={
+                              'date':r.headers.get('Date'),
+                              'last_modified':r.headers.get('Last-Modified'),
+                              'etag':r.headers.get('ETag')
+                          }
+                          q=json.loads(body.decode('utf-8'))
+                          return q,body,request_started,response_received,headers,attempt+1
                   except urllib.error.HTTPError as e:
                       if e.code in (401,403):
                           raise RuntimeError(f'AUTH_OR_PLAN_HTTP_{e.code}')
@@ -100,7 +119,7 @@ jobs:
                           raise
                       time.sleep((2**attempt)+random.uniform(0.2,0.6))
 
-          now=datetime.now(TZ)
+          collection_started=datetime.now(TZ)
           data=[]
           failures=[]
           last_call_started=None
@@ -113,7 +132,7 @@ jobs:
               last_call_started=time.monotonic()
 
               try:
-                  q=fetch_quote(symbol)
+                  q,raw_body,request_started,response_received,http_headers,attempt_count=fetch_quote(symbol)
                   if not isinstance(q,dict):
                       raise RuntimeError('INVALID_RESPONSE_TYPE')
                   if str(q.get('symbol') or '')!=symbol:
@@ -152,6 +171,13 @@ jobs:
                       'best_bid':bids[0] if bids else None,
                       'best_ask':asks[0] if asks else None,
                       'last_updated':q.get('lastUpdated'),
+                      'request_started_at_taipei':request_started,
+                      'response_received_at_taipei':response_received,
+                      'raw_quote_sha256':hashlib.sha256(raw_body).hexdigest(),
+                      'http_date':http_headers.get('date'),
+                      'http_last_modified':http_headers.get('last_modified'),
+                      'http_etag':http_headers.get('etag'),
+                      'request_attempt_count':attempt_count,
                       'is_trial':q.get('isTrial'),
                       'is_delayed_open':q.get('isDelayedOpen'),
                       'is_delayed_close':q.get('isDelayedClose'),
@@ -159,7 +185,11 @@ jobs:
                   }
                   data.append(rec)
               except Exception as e:
-                  failures.append({'symbol':symbol,'error':str(e)})
+                  failures.append({
+                      'symbol':symbol,
+                      'error':str(e),
+                      'failed_at_taipei':iso_now_taipei()
+                  })
 
           success_count=len(data)
           if success_count==0:
@@ -168,16 +198,18 @@ jobs:
           if success_count<MIN_SUCCESS_COUNT:
               raise SystemExit(f'ELECTRONICS100_TOO_MANY_FAILURES:{success_count}/100:{failures[:5]}')
 
+          generated=datetime.now(TZ)
           data_by_symbol={x['symbol']:x for x in data}
           ordered=[data_by_symbol[s] for s in symbols if s in data_by_symbol]
           universe_sha=hashlib.sha256(('\n'.join(symbols)+'\n').encode()).hexdigest()
           quote_dates=sorted({str(x.get('quote_date')) for x in ordered if x.get('quote_date')})
-          stale_count=sum(1 for x in ordered if x.get('quote_date')!=now.date().isoformat())
+          stale_count=sum(1 for x in ordered if x.get('quote_date')!=generated.date().isoformat())
 
           payload={
-              'schema_version':2,
+              'schema_version':3,
               'service':'HENGCE Escape Electronics100 Fugle Basic',
-              'generated_at_taipei':now.isoformat(),
+              'collection_started_at_taipei':collection_started.isoformat(),
+              'generated_at_taipei':generated.isoformat(),
               'market':'TSE',
               'exchange':'TWSE',
               'security_scope':'TWSE_LISTED_ELECTRONICS_100_HARD_BIND',
@@ -186,6 +218,8 @@ jobs:
               'requested_mode':'FREE_TIER_RATE_LIMITED_SINGLE_SYMBOL_QUOTES',
               'rate_limit_design':'1.10s nominal start-to-start spacing; <=60/min target',
               'universe_version':cfg.get('version'),
+              'universe_generated_at_taipei':cfg.get('generated_at_taipei'),
+              'membership_source':cfg.get('membership_source'),
               'universe_sha256':universe_sha,
               'requested_count':100,
               'success_count':success_count,
@@ -193,7 +227,8 @@ jobs:
               'quote_dates':quote_dates,
               'stale_quote_count_vs_today':stale_count,
               'failures':failures,
-              'authority':'SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY',
+              'authority':AUTHORITY,
+              'prospective_protocol_commit':PROTOCOL_COMMIT,
               'data':ordered
           }
           raw=json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()
@@ -204,10 +239,115 @@ jobs:
 
           (OUT/'electronics100_snapshot.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
           (OUT/'electronics100_status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
-          print('HENGCE ELECTRONICS100 FUGLE BASIC',success_count,'/100','quote_dates=',quote_dates,'stale=',stale_count)
+
+          run_id=os.environ.get('GITHUB_RUN_ID')
+          run_attempt=os.environ.get('GITHUB_RUN_ATTEMPT')
+          github_sha=os.environ.get('GITHUB_SHA')
+          obs_stamp=generated.strftime('%Y%m%dT%H%M%S%f%z')
+          observation_id=f'FUGLE100_{obs_stamp}_RUN{run_id or "LOCAL"}_A{run_attempt or "0"}'
+          obs_dir=LEDGER_ROOT/generated.strftime('%Y')/generated.strftime('%m')/generated.strftime('%d')
+          obs_dir.mkdir(parents=True,exist_ok=True)
+
+          transport_symbols=[]
+          for x in ordered:
+              transport_symbols.append({
+                  'symbol':x.get('symbol'),
+                  'name':x.get('name'),
+                  'industry_code':x.get('industry'),
+                  'request_started_at_taipei':x.get('request_started_at_taipei'),
+                  'response_received_at_taipei':x.get('response_received_at_taipei'),
+                  'source_last_updated':x.get('last_updated'),
+                  'last_trade_time':x.get('last_trade_time'),
+                  'quote_date':x.get('quote_date'),
+                  'raw_quote_sha256':x.get('raw_quote_sha256'),
+                  'last_price':x.get('last_price'),
+                  'trade_volume':x.get('trade_volume'),
+                  'trade_value':x.get('trade_value'),
+                  'http_date':x.get('http_date'),
+                  'http_last_modified':x.get('http_last_modified'),
+                  'http_etag':x.get('http_etag')
+              })
+
+          obs={
+              'schema_version':1,
+              'cohort':COHORT,
+              'observation_id':observation_id,
+              'observation_generated_at_taipei':generated.isoformat(),
+              'observation_generated_at_utc':generated.astimezone(timezone.utc).isoformat(),
+              'collection_started_at_taipei':collection_started.isoformat(),
+              'github_run_id':run_id,
+              'github_run_attempt':run_attempt,
+              'github_sha_at_run_start':github_sha,
+              'prospective_protocol_commit':PROTOCOL_COMMIT,
+              'authority':AUTHORITY,
+              'historical_latency_status':'DATA_BLOCKED',
+              'prospective_live_latency_status':'COLLECTING',
+              'transport':{
+                  'source':'Fugle MarketData intraday/quote/{symbol}',
+                  'requested_count':100,
+                  'success_count':success_count,
+                  'failure_count':len(failures),
+                  'failures':failures,
+                  'payload_sha256':payload.get('payload_sha256'),
+                  'symbols':transport_symbols
+              },
+              'sector':{
+                  'universe_version':cfg.get('version'),
+                  'classification_source':cfg.get('membership_source'),
+                  'classification_observed_at_taipei':generated.isoformat(),
+                  'effective_from':None,
+                  'provenance_status':'OBSERVED_CURRENT_UNIVERSE_CLASSIFICATION_EFFECTIVE_FROM_UNKNOWN',
+                  'per_symbol':[{'symbol':x.get('symbol'),'industry_code':x.get('industry')} for x in ordered]
+              },
+              'ownership':{
+                  'snapshot_reference_date':None,
+                  'first_observed_at_taipei':None,
+                  'official_published_at':None,
+                  'raw_payload_sha256':None,
+                  'availability_semantics':'NOT_JOINED_AT_FUGLE_COLLECTION_TIME_SEE_TDCC_LEDGER'
+              },
+              'regime':{
+                  'definition_version':None,
+                  'state':None,
+                  'computed_at_taipei':None,
+                  'actual_known_at_taipei':None,
+                  'inputs':[],
+                  'provenance_status':'PENDING_FROZEN_REGIME_DEFINITION_AND_ACTUAL_INPUT_AVAILABILITY'
+              },
+              'control_hook':{
+                  'state':None,
+                  'actual_known_at_taipei':None,
+                  'provenance_status':'PENDING_EXACT_FROZEN_INTERPRETER_AND_REQUIRED_INPUT_AVAILABILITY'
+              },
+              'h1_early_evidence':{
+                  'interpreter_binding_status':INTERPRETER_BINDING,
+                  'probability':None,
+                  'classification':None,
+                  'actual_known_at_taipei':None,
+                  'provenance_status':'NOT_SCORED_NO_APPROXIMATE_RECONSTRUCTION_ALLOWED'
+              },
+              'next_ownership_confirmation':{
+                  'snapshot_reference_date':None,
+                  'first_observed_at_taipei':None,
+                  'official_published_at':None,
+                  'raw_payload_sha256':None,
+                  'actual_known_at_taipei':None
+              },
+              'resolution':{
+                  'resolved':False,
+                  'control_deterioration':None,
+                  'durable_repair':None,
+                  'false_alarm':None,
+                  'miss':None,
+                  'recognition_lead_seconds':None,
+                  'resolution_record_id':None
+              }
+          }
+          (obs_dir/f'{observation_id}.json').write_text(json.dumps(obs,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('HENGCE ELECTRONICS100 FUGLE BASIC',success_count,'/100','quote_dates=',quote_dates,'stale=',stale_count,'observation_id=',observation_id)
           PY
 
-      - name: Validate fail-closed electronics100 scope
+      - name: Validate fail-closed electronics100 scope and prospective ledger
         shell: bash
         run: |
           set -euo pipefail
@@ -234,17 +374,34 @@ jobs:
               raise SystemExit(f'BAD_SYMBOLS:{bad[:10]}')
           if p.get('authority')!='SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY':
               raise SystemExit('AUTHORITY_MISMATCH')
-          print('HENGCE ELECTRONICS100 FREE-TIER SCOPE VERIFIED',len(returned))
+          for row in rows:
+              for k in ('request_started_at_taipei','response_received_at_taipei','raw_quote_sha256'):
+                  if not row.get(k):
+                      raise SystemExit(f'PROSPECTIVE_TIMESTAMP_OR_HASH_MISSING:{row.get("symbol")}:{k}')
+          obs=list(Path('research/loss_forensics/prospective_live/observations').glob('*/*/*/*.json'))
+          if not obs:
+              raise SystemExit('PROSPECTIVE_OBSERVATION_NOT_WRITTEN')
+          latest=max(obs,key=lambda x:x.stat().st_mtime_ns)
+          o=json.loads(latest.read_text(encoding='utf-8'))
+          if o.get('historical_latency_status')!='DATA_BLOCKED' or o.get('prospective_live_latency_status')!='COLLECTING':
+              raise SystemExit('LATENCY_STATUS_SEPARATION_VIOLATION')
+          h1=o.get('h1_early_evidence') or {}
+          if h1.get('interpreter_binding_status')!='INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE':
+              raise SystemExit('INTERPRETER_BINDING_STATUS_MISMATCH')
+          if h1.get('probability') is not None or h1.get('classification') is not None:
+              raise SystemExit('UNAUTHORIZED_H1_SCORE_PRESENT')
+          print('HENGCE ELECTRONICS100 PROSPECTIVE PIT VERIFIED',len(returned),latest)
           PY
 
-      - name: Commit isolated electronics100 shadow snapshot
+      - name: Commit isolated electronics100 shadow snapshot and immutable prospective observation
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'hengce-escape-live-bot'
           git config user.email 'hengce-escape-live-bot@users.noreply.github.com'
-          git add escape_live/electronics100_snapshot.json escape_live/electronics100_status.json
+          git add escape_live/electronics100_snapshot.json escape_live/electronics100_status.json research/loss_forensics/prospective_live/observations/
           if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "HENGCE escape electronics100 Fugle basic ${TS}"
+          git commit -m "HENGCE prospective Fugle current100 observation ${TS}"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin HEAD:${GITHUB_REF_NAME}
