@@ -1,0 +1,145 @@
+{
+  "system": "HENGCE",
+  "research_thread": "DSP_LOSS_FORENSICS_PROSPECTIVE_ACTUAL_AVAILABILITY",
+  "state_date": "2026-11-01",
+  "branch": "research/loss-forensics-20261101",
+  "authority_bootstrap": {
+    "user_supplied_branch_head_at_start": "77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8",
+    "verified_branch_head_at_start": "77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8",
+    "verified_parent": "a899174ca07b2831740365fb02b8c87c7eecff89",
+    "historical_current_state": "research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json",
+    "historical_governance_superseded": false,
+    "transport_commit_may_override_historical_governance": false
+  },
+  "authority": {
+    "trading_authority": "NONE",
+    "production_authority": "NONE",
+    "formal_model_retuning_authorized": false,
+    "formal_new_model_authorized": false,
+    "buy_sell_conversion_authorized": false,
+    "live_outcome_driven_rule_change_authorized": false
+  },
+  "latency_states": {
+    "HISTORICAL_LATENCY": "DATA_BLOCKED",
+    "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
+    "historical_median_3_sessions_semantics": "SNAPSHOT_REFERENCE_DATE_ONLY_NOT_REAL_PUBLICATION_OR_MARKET_RECOGNITION_LATENCY",
+    "live_transport_success_retrovalidates_historical_latency": false
+  },
+  "fugle_transport": {
+    "endpoint_pattern": "/intraday/quote/{symbol}",
+    "scope": "current100",
+    "verified_requested": 100,
+    "verified_success": 100,
+    "verified_failure": 0,
+    "authority": "SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY",
+    "transport_commit": "77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8",
+    "prospective_collector_definition_commit": "966a4fbb8051034ced6cdedf7f0a6f4267aad3a8",
+    "immutable_observation_path": "research/loss_forensics/prospective_live/observations/YYYY/MM/DD/",
+    "per_symbol_timestamps_captured_by_definition": [
+      "request_started_at_taipei",
+      "response_received_at_taipei",
+      "source_last_updated",
+      "last_trade_time",
+      "quote_date"
+    ],
+    "per_symbol_exact_response_hash_captured": true
+  },
+  "tdcc_prospective_collector": {
+    "official_endpoint": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
+    "collector_definition_commit": "95812e5cb4c2f828edfecaa6327c88f750ba52d5",
+    "raw_payload_content_addressed": true,
+    "first_observed_record_immutable": true,
+    "poll_attempts_preserved": true,
+    "snapshot_reference_date_separate_from_availability_time": true,
+    "first_observed_semantics": "HENGCE_COLLECTOR_RECEIPT_TIME_CONSERVATIVE_PUBLIC_BY_UPPER_BOUND",
+    "official_published_at_semantics": "NULL_UNLESS_INDEPENDENTLY_PROVEN_FOR_EXACT_PAYLOAD",
+    "http_last_modified_auto_promoted_to_official_publication": false
+  },
+  "prospective_timestamp_contract": {
+    "observation_generated_timestamp": "REQUIRED_WHEN_RUN_EXISTS",
+    "fugle_source_last_updated_timestamp": "PRESERVE_SOURCE_VALUE",
+    "individual_quote_trade_timestamp": "PRESERVE_SOURCE_VALUE",
+    "tdcc_snapshot_reference_date": "SEPARATE_REFERENCE_FIELD",
+    "tdcc_first_observed_timestamp": "IMMUTABLE_COLLECTOR_RECEIPT_FIELD",
+    "tdcc_official_publication_timestamp": "NULL_UNLESS_INDEPENDENTLY_PROVEN",
+    "sector_classification_timestamp": "OBSERVED_AT_CAPTURED",
+    "sector_effective_timestamp": "NULL_UNLESS_INDEPENDENTLY_PROVEN",
+    "regime_input_actual_availability_timestamp": "REQUIRED_FOR_FORMAL_REGIME_USE_ELSE_NULL",
+    "control_hook_actual_known_at": "MAX_REQUIRED_INPUT_AVAILABILITY_ONLY_WHEN_ALL_PROVEN_ELSE_NULL",
+    "h1_actual_known_at": "MAX_REQUIRED_INPUT_AVAILABILITY_ONLY_WHEN_ALL_PROVEN_ELSE_NULL",
+    "next_ownership_confirmation_actual_known_at": "ACTUAL_FIRST_OBSERVED_OR_INDEPENDENTLY_PROVEN_PUBLICATION_TIME_NOT_REFERENCE_DATE"
+  },
+  "interpreter": {
+    "binding_status": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
+    "exact_frozen_pass4_executable_identified_on_branch": false,
+    "approximate_reconstruction_from_prose_allowed": false,
+    "source_only_diagnostic_substitution_allowed": false,
+    "formal_h1_probability_output_allowed_before_binding": false,
+    "formal_h1_classification_output_allowed_before_binding": false,
+    "pass4_coefficients_or_thresholds_change_allowed": false
+  },
+  "sector": {
+    "current_universe_has_industry_code": true,
+    "universe_generation_timestamp_available": true,
+    "per_security_effective_from_provenance_established": false,
+    "rule": "PRESERVE_OBSERVED_CLASSIFICATION_AND_SOURCE; EFFECTIVE_FROM_NULL_UNLESS PROVEN"
+  },
+  "regime": {
+    "frozen_definition_and_complete_actual_input_availability_bound": false,
+    "formal_regime_output_allowed_now": false,
+    "fallback_or_new_regime_rule_allowed": false
+  },
+  "prospective_outcomes": {
+    "collect": [
+      "evidence",
+      "state_transition",
+      "false_alarm",
+      "miss",
+      "repair_outcome",
+      "next_ownership_confirmation_actual_known_at",
+      "measured_recognition_lead_lag_after_valid_resolution"
+    ],
+    "unknown_is_zero": false,
+    "outcome_resolution_semantics": "APPEND_ONLY_AFTER_CONFIRMATION_ACTUALLY_OBSERVED"
+  },
+  "prospective_ledger": {
+    "protocol_file": "research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md",
+    "protocol_commit": "08497a8106ac6acd8799a4fe256eb102dca2bb9c",
+    "schema_file": "research/loss_forensics/prospective_live/EVENT_LEDGER_SCHEMA_V1.json",
+    "schema_commit": "b7dec4eee4e7c647be218d3750658f3d4514f523",
+    "readme_file": "research/loss_forensics/prospective_live/README.md",
+    "readme_commit": "505c3298444c97e5c4d9dabf520d13d6cf373abd",
+    "deployment_audit_file": "research/loss_forensics/PROSPECTIVE_LIVE_COLLECTOR_DEPLOYMENT_AUDIT_20261101.md",
+    "deployment_audit_commit": "ce19362ea8478c9a33ff0ddbb722ee789a049ecd",
+    "append_only_required": true,
+    "backdating_actual_known_at_allowed": false,
+    "reference_date_as_availability_allowed": false
+  },
+  "deployment": {
+    "repository_default_branch": "main",
+    "collector_definitions_branch": "research/loss-forensics-20261101",
+    "workflow_dispatch_available": true,
+    "schedule_entries_present_on_research_branch": true,
+    "unattended_scheduler_execution_proven_on_research_branch": false,
+    "reason": "GitHub scheduled workflows execute from the default branch; workflow definitions only on the research branch do not prove unattended collection.",
+    "post_protocol_eligible_fugle_observations_verified_at_state_write": 0,
+    "post_protocol_eligible_tdcc_first_observed_payloads_verified_at_state_write": 0,
+    "phase_status_interpretation": "COLLECTING_IS_THE_FROZEN_PROSPECTIVE_RESEARCH_PHASE; IT_IS_NOT A CLAIM OF AN ACTIVE UNATTENDED SCHEDULER"
+  },
+  "historical_reopen_rule": {
+    "historical_tdcc_publication_provenance_recovered": false,
+    "historical_rerun_allowed_under_current_prospective_protocol": false,
+    "new_historical_preregistration_required": true,
+    "until_then": "HISTORICAL_LATENCY_DATA_BLOCKED"
+  },
+  "final_research_state": {
+    "historical_latency": "DATA_BLOCKED",
+    "prospective_live_latency": "COLLECTING",
+    "prospective_collector": "DEFINED_AND_FROZEN_ON_RESEARCH_BRANCH",
+    "prospective_unattended_deployment": "NOT_ESTABLISHED",
+    "interpreter_binding": "PENDING_FROZEN_EXECUTABLE",
+    "historical_latency_validated_by_live_transport": false,
+    "production_promotion": false,
+    "trading_promotion": false
+  }
+}
