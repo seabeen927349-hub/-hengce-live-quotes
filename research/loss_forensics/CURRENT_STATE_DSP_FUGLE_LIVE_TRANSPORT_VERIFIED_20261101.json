@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-01",
+  "research_object": "Dynamic State Probability Engine / Loss Forensics — prospective live early-warning transport",
+  "branch": "research/loss-forensics-20261101",
+  "parent_research_head": "77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8",
+  "trading_authority": "NONE",
+  "production_authority": "NONE",
+  "scope_exclusions_primary_anchors": ["6415", "3042"],
+  "historical_actual_availability": {
+    "status": "DATA_BLOCKED",
+    "authority_file": "research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json",
+    "meaning": "Historical h=1 recognition latency relative to true TDCC publication availability is not validated. The prior median-3-sessions result must not be interpreted as true market-known latency."
+  },
+  "fugle_live_transport": {
+    "status": "VERIFIED_CURRENT100_FREE_TIER",
+    "api_surface": "Fugle MarketData /stock/intraday/quote/{symbol}",
+    "workflow_file": ".github/workflows/hengce-escape-twse-full-market-fugle.yml",
+    "workflow_name": "HENGCE Escape Electronics100 Fugle Basic",
+    "universe": "TWSE_LISTED_ELECTRONICS_100_HARD_BIND",
+    "requested_count": 100,
+    "success_count": 100,
+    "failure_count": 0,
+    "healthy_transport": true,
+    "verified_live_output_file_main": "escape_live/electronics100_status.json",
+    "verified_live_snapshot_file_main": "escape_live/electronics100_snapshot.json",
+    "main_proof_commit": "90565cbf6871cf67e7f4a6990e9bd9c4a8811e6a",
+    "proof_generated_at_taipei": "2026-11-01T12:46:22.769520+08:00",
+    "proof_quote_date": "2026-10-30",
+    "proof_stale_count_vs_run_date": 100,
+    "proof_fresh_market_day": false,
+    "stale_interpretation": "Expected because verification was run on Sunday 2026-11-01; stale was correctly flagged rather than treated as live Sunday trading data.",
+    "rate_limit_design": "1.10s nominal call spacing; target <=60 calls/min on Fugle Basic plan",
+    "authority": "SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY"
+  },
+  "full_market_fugle": {
+    "whole_market_snapshot_status": "NOT_AVAILABLE_ON_CURRENT_BASIC_PLAN",
+    "observed_error": "AUTH_OR_PLAN_HTTP_403",
+    "blocked_endpoint_family": "snapshot/quotes/TSE full-market snapshot",
+    "decision": "DO_NOT_UPGRADE_PLAN_YET",
+    "reason": "Current100 single-symbol transport already covers the active bounded research universe. Full-market realtime expansion is not currently justified by evidence."
+  },
+  "priority_decision": {
+    "current_priority": "CONNECT_VERIFIED_CURRENT100_FUGLE_TRANSPORT_TO_SHADOW_EARLY_WARNING",
+    "do_now": [
+      "Use current100 Fugle live quote transport as a prospective shadow evidence source.",
+      "Preserve actual observation timestamps and source last-updated/trade timestamps.",
+      "Collect source-side live evidence for price response, trade activity, bid/ask-side volume and order-book context where available.",
+      "Measure future false negatives, false positives, repair outcomes and control-deterioration outcomes prospectively.",
+      "Keep HISTORICAL_LATENCY=DATA_BLOCKED and PROSPECTIVE_LIVE_LATENCY=COLLECTING as separate states."
+    ],
+    "do_not_do_now": [
+      "Do not expand Fugle realtime coverage to all Taiwan stocks merely because the endpoint can be queried one symbol at a time.",
+      "Do not purchase the Developer plan solely to regain whole-market snapshot access.",
+      "Do not alter frozen Pass 4 coefficients, thresholds, labels or gates using live outcomes.",
+      "Do not convert the live layer directly into BUY/SELL or exact-price prediction.",
+      "Do not claim historical actual-publication latency is validated because live transport is now working."
+    ],
+    "expansion_trigger": "Only reconsider broader Fugle market coverage if prospective current100 errors show that missing cross-sector/capital-destination context is a material and repeated source of false negatives or false positives."
+  },
+  "prospective_live_state": {
+    "status": "COLLECTING",
+    "target": "Earlier recognition of control deterioration without excessive false alarms, using only information truly available at observation time.",
+    "required_timestamp_fields": [
+      "observation_generated_at",
+      "Fugle source lastUpdated",
+      "last trade time",
+      "TDCC snapshot reference date",
+      "TDCC first-observed/publication time",
+      "sector effective time",
+      "regime input availability time",
+      "CONTROL/HOOK known-at time",
+      "h=1 evidence known-at time",
+      "next ownership confirmation known-at time"
+    ]
+  },
+  "governance": {
+    "no_model_worship": true,
+    "no_silent_retuning": true,
+    "no_future_leakage": true,
+    "no_probability_laundering": true,
+    "abstain_allowed": true,
+    "failure_acceptable": true,
+    "primary_user_goal": "Reduce the chance of becoming the last liquidity provider/holder when stronger capital is already withdrawing or transferring risk; capital preservation matters more than exact-price prediction."
+  }
+}
