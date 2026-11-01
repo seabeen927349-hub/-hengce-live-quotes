@@ -1,102 +1,135 @@
 # HENGCE Prospective Live Collector — Deployment Audit
 
-Date: 2026-11-01
-Branch: `research/loss-forensics-20261101`
-Trading authority: **NONE**
+Date: 2026-11-01  
+Research branch: `research/loss-forensics-20261101`  
+Default branch: `main`  
+Trading authority: **NONE**  
 Production authority: **NONE**
 
-## Authority chain
+## Frozen governance carried forward
 
-Historical actual-availability authority remains:
-
-- parent/current-state commit: `a899174ca07b2831740365fb02b8c87c7eecff89`
 - `HISTORICAL_LATENCY = DATA_BLOCKED`
+- `PROSPECTIVE_LIVE_LATENCY = COLLECTING`
+- historical median 3 sessions remains **snapshot-reference-date latency only**, not verified publication/market-known latency.
+- Fugle verified transport remains 100 requested / 100 success / 0 failure.
+- Fugle authority remains `SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY`.
+- frozen Pass 4 coefficients / thresholds / labels / gates remain unchanged.
+- no live-outcome retuning is authorized or performed.
 
-Verified Fugle transport commit:
+## A1. Fugle prospective collector deployment
 
-- `77b0cdf9fb5fa3c1097fa6df82213c0c895d79a8`
-- parent: `a899174ca07b2831740365fb02b8c87c7eecff89`
-- validated transport fact carried forward: current100 single-symbol `/intraday/quote/{symbol}` = 100 requested / 100 success / 0 failure
-- authority remains `SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY`
+Frozen collector source:
+- commit `966a4fbb8051034ced6cdedf7f0a6f4267aad3a8`
+- `.github/workflows/hengce-escape-twse-full-market-fugle.yml`
 
-The transport commit does not supersede or weaken the historical `DATA_BLOCKED` conclusion.
+Default-branch deployment commit:
+- `9708f018db282ec4ddaa745c392d8ead54d65093`
 
-## Prospective collector definitions now committed
+### Mechanical routing delta only
 
-### Fugle current100
+Relative to the frozen prospective definition, the `main` deployment changes only branch routing:
+1. `actions/checkout@v4` checks out `research/loss-forensics-20261101`.
+2. `git pull --rebase` targets `research/loss-forensics-20261101`.
+3. `git push` writes `HEAD:research/loss-forensics-20261101`.
 
-`.github/workflows/hengce-escape-twse-full-market-fugle.yml`
+No change was made to:
+- current100 universe;
+- `/intraday/quote/{symbol}` endpoint;
+- Basic/free-plan rate-limit discipline;
+- request / receipt / source / trade timestamp semantics;
+- exact raw-response SHA256 semantics;
+- prospective protocol commit binding;
+- shadow-only authority;
+- observation schema;
+- append-only observation path;
+- interpreter fail-closed behavior.
 
-The collector now preserves, per successful symbol response:
+The reason for routing is operational: GitHub cron is defined on the default branch, while prospective evidence must continue to land on the research branch.
 
-- request-start time;
-- response-received time;
-- Fugle `lastUpdated`;
-- last-trade time;
-- exact received HTTP response-body SHA256;
-- HTTP Date / Last-Modified / ETag when present;
-- quote date and selected observed market values;
-- current observed industry code with universe provenance.
+## A2. TDCC prospective first-observed deployment
 
-Each successful run additionally writes an immutable prospective observation under:
+Frozen collector source:
+- commit `95812e5cb4c2f828edfecaa6327c88f750ba52d5`
+- `.github/workflows/hengce-prospective-tdcc-first-observed.yml`
 
-`research/loss_forensics/prospective_live/observations/YYYY/MM/DD/`
+Default-branch deployment commit:
+- `32d2e7f4dd10276941e966dc4dea83fb40b0092f`
 
-Formal h=1 probability/classification remains null while the exact frozen executable is not hash-bound.
+The same three routing-only differences are applied: checkout, pull and push target the research branch. The frozen TDCC semantics remain unchanged:
+- endpoint `https://opendata.tdcc.com.tw/getOD.ashx?id=1-5`;
+- exact raw payload SHA256 and content-addressed storage;
+- every poll attempt preserved;
+- immutable first-observed record for each exact payload;
+- snapshot reference date kept separate from availability time;
+- `official_published_at = null` unless independently proven for the exact payload;
+- HTTP Last-Modified is preserved but never auto-promoted to official publication time;
+- first-observed time is HENGCE collector receipt time / conservative public-by upper bound.
 
-### TDCC
+## A3. Smoke-test and scheduled-run proof
 
-`.github/workflows/hengce-prospective-tdcc-first-observed.yml`
+### Manual dispatch
 
-The collector is designed to preserve:
+Status for both collectors:
 
-- official public endpoint request-start and response-received time;
-- exact raw response payload under a content hash;
-- raw SHA256;
-- parseable snapshot/reference date candidates;
-- HTTP Date / Last-Modified / ETag when present;
-- immutable first-observed record for each exact payload hash;
-- every poll attempt, including failures;
-- `official_published_at = null` unless independently proven.
+`NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED`
 
-The TDCC first-observed timestamp is a collector receipt timestamp / conservative public-by upper bound. It is not silently relabeled as the exact official publication timestamp.
+The available GitHub connector in this audit can read workflow state and rerun an existing run, but exposes no action to start a new `workflow_dispatch`. No authenticated browser profile was available to perform an equivalent GitHub UI dispatch. No alternate trigger was substituted or relabeled as a manual dispatch.
 
-## Deployment finding
+Therefore there is no manual smoke-test run ID or smoke-test artifact commit to claim.
 
-The repository default branch is **`main`**.
+### Scheduled run
 
-GitHub scheduled workflows execute from the default branch. The prospective collector definitions currently exist on the research branch, so their `schedule:` entries are **not evidence that unattended collection is active** on this branch.
+At the final pre-authority-write check, `research/loss_forensics/prospective_live/` still contained only:
+- `EVENT_LEDGER_SCHEMA_V1.json`
+- `README.md`
 
-The workflows include `workflow_dispatch`, so an explicitly dispatched run using this branch can create valid post-protocol evidence. However, no post-protocol live observation is counted merely because the workflow files exist.
+Verified post-protocol Fugle observation count: `0`  
+Verified post-protocol TDCC payload/attempt count: `0`
 
-Therefore the current operational status is:
+No GitHub run with independently verified `event = schedule` plus a corresponding new ledger artifact and artifact commit SHA was established in this audit.
 
-- research phase: `PROSPECTIVE_LIVE_LATENCY = COLLECTING`
-- collector specification: `DEFINED_AND_FROZEN_ON_RESEARCH_BRANCH`
-- unattended scheduler deployment: `NOT_ESTABLISHED_ON_RESEARCH_BRANCH`
-- post-protocol eligible Fugle observation count verified by this audit: `0`
-- post-protocol eligible TDCC first-observed payload count verified by this audit: `0`
+For Fugle specifically, 2026-11-01 is Sunday while the frozen cron is Monday-Friday, so a legitimate Fugle scheduled collection run cannot be manufactured on this audit date.
 
-`COLLECTING` describes the prospective cohort/research phase, not a false claim that a scheduler is currently executing.
+Accordingly:
 
-## Required deployment action before claiming continuous collection
+`prospective_unattended_deployment = NOT_ESTABLISHED`
 
-Without changing any research semantics, the frozen collector must execute from a scheduler-active context or be explicitly dispatched on the research branch.
+The fact that scheduler-active definitions now exist on `main` is **deployment preparation**, not proof that unattended collection has executed successfully.
 
-Moving/deploying the workflow definition to `main` would be an operational deployment change and is **not performed by this audit**, because the requested write scope is the research branch.
+## Upgrade gate
 
-## Interpreter status
+The status may change to:
 
-No separately versioned exact Pass 4 frozen executable/model artifact was identified on this branch during this setup. Therefore:
+`VERIFIED_SCHEDULED_COLLECTION`
 
-`INTERPRETER_BINDING_STATUS = INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`
+only after all of the following are verified for the relevant collector:
+1. GitHub run metadata proves `event = schedule`;
+2. collector completes successfully;
+3. a new immutable observation/poll artifact is written to the research branch;
+4. the artifact commit SHA is verified;
+5. the run was not a manual dispatch or rerun;
+6. no backfill or backdating of actual-known timestamps occurred.
 
-The collector does not reconstruct an approximate model from prose and does not promote the source-only diagnostic into the frozen primary model.
+Manual dispatch success alone is insufficient.
 
-## Historical separation
+The detailed per-collector proof fields are frozen in:
+`research/loss_forensics/PROSPECTIVE_SCHEDULED_RUN_PROOF_MANIFEST_20261101.json`.
 
-Nothing in this deployment work changes:
+## Interpreter separation
 
-`HISTORICAL_LATENCY = DATA_BLOCKED`
+Deployment does not bind the Pass 4 interpreter. Exact executable provenance remains unresolved; see:
+`research/loss_forensics/PASS4_FROZEN_EXECUTABLE_BINDING_AUDIT_20261101.md`.
 
-If historical publication provenance is recovered later, historical latency requires a separate preregistration before rerun.
+Until binding succeeds, h=1 probability/classification and calibrated control-loss/early-warning probabilities remain null/forbidden.
+
+## Final deployment state
+
+- collector definitions on default branch: `DEPLOYED_WITH_ROUTING_ONLY_DELTA`
+- evidence destination: `research/loss-forensics-20261101`
+- manual smoke test: `NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED`
+- scheduled-run proof: `NOT_VERIFIED`
+- unattended deployment: `NOT_ESTABLISHED`
+- historical latency: `DATA_BLOCKED`
+- prospective live latency: `COLLECTING`
+- production authority: `NONE`
+- trading authority: `NONE`
