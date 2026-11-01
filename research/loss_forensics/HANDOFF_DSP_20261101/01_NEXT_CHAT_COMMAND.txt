@@ -5,58 +5,76 @@ repo `seabeen927349-hub/-hengce-live-quotes`
 branch `research/loss-forensics-20261101`
 若 branch head 已前進，以最新 head 為準，但不得靜默覆寫既有治理。
 
-在任何分析、建模、找新因子、看 forward outcomes 或重新解釋案例之前，必須依序讀：
+在任何分析、建模、擴張 universe、看 forward outcomes 或重新解釋案例之前，必須先讀：
 1. `research/loss_forensics/HANDOFF_DSP_20261101/00_READ_FIRST.md`
-2. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
-3. `research/loss_forensics/DYNAMIC_STATE_PROBABILITY_ENGINE_CHARTER_V1_20261101.md`
-4. `research/loss_forensics/STATE_INTERACTION_PREREGISTRATION_PASS3_20261101.md`
-5. `research/loss_forensics/PASS4_INCREMENTAL_TARGET_CORRECTION_20261101.md`
-6. `research/loss_forensics/PASS3_PARTIAL_FINDINGS_REPAIR_VELOCITY_PRICING_POWER_20261101.md`
-7. `research/loss_forensics/PASS4_QUADRANT_STRESS_TEST_FLOW_PRICE_OWNERSHIP_20261101.md`
+2. `research/loss_forensics/CURRENT_STATE_DSP_FUGLE_LIVE_TRANSPORT_VERIFIED_20261101.json`
+3. `research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json`
+4. `research/loss_forensics/HANDOFF_DSP_20261101/03_RESEARCH_DRIFT_LOCK.md`
 
-讀完後先做 scope lock：
-`Execute frozen Pass 3, then corrected Pass 4; no new model family, no retuning, no exact-price drift, accept failure.`
+先接受目前正式狀態：
 
-若無法遵守上述 scope，停止研究，不得自行改題。
+- Pass 3 已完成，沒有任何新 family 晉級；CORE_LOOSENING、BRIDGE/DESTINATION_PRELOAD、PROFESSIONAL_FLOW formal weight 全部維持 0，不准救。
+- Corrected Pass 4 h=1 的 snapshot-reference-date layer 有 OOS 增量證據，但不能宣稱 true actual-publication latency 已驗證。
+- `HISTORICAL_ACTUAL_PUBLICATION_LATENCY = DATA_BLOCKED`。
+- Fugle 免費 Developer API current100 transport 已實測 VERIFIED：100 requested / 100 success / 0 failure / healthy_transport=true。
+- proof output 在 main：`escape_live/electronics100_status.json` 與 `escape_live/electronics100_snapshot.json`。
+- proof main commit：`90565cbf6871cf67e7f4a6990e9bd9c4a8811e6a`。
+- 驗證日在 2026-11-01 星期日，所以 quote_date=2026-10-30、100 檔 stale 是正確行為，不是失敗。
+- paid whole-market snapshot endpoint 在 Basic plan 回 `AUTH_OR_PLAN_HTTP_403`；這不構成 current100 blocker。
+- production authority 仍然是 NONE。
+- 6415、3042 仍不得作為目前主要案例/研究錨點。
 
-目前研究排除 6415、3042 作為主要案例/錨點。不要回到單一高點價格、固定 Bull/Bear Score、V43/Monster rescue、Selection Core rescue，也不要重新講整套架構後才開始做。
+現在的優先任務不是擴模型，也不是擴全台股 realtime universe。
 
-核心任務只有兩個：
+唯一優先：
 
-A. 先執行已 preregister 的 Pass 3 全樣本時間序檢驗，不得看完 forward outcomes 再改門檻。
-BASE = CONTROL+HOOK；依序比較加入 Core Loosening、Bridge/Destination Preload、Professional Flow corroboration 後，held-out Brier/log-loss/calibration 是否真正改善。沒有改善就 formal weight=0，不准救。
+`VERIFIED_CURRENT100_FUGLE_TRANSPORT -> PROSPECTIVE SHADOW EARLY WARNING -> TRUE KNOWN-AT TIMESTAMP LEDGER`
 
-B. Pass 3 完成後才執行 corrected Pass 4。不要重做 CONTROL 的 next-snapshot durability；真正 incremental target 是 recognition latency：在 t+1 TDCC 出來前，只用 t availability 後到 t+1 前可見的 daily flow、market/sector-adjusted price response、leverage quality、destination preload / execution mirror，提早分辨 DURABLE_REPAIR vs BRIDGE_RELOAD / FAILED_REPAIR。
+從現在開始，以 current100 為界收集 prospective shadow evidence，真實保存每次 observation 的 known-at 時間：
+- observation generated timestamp
+- Fugle source lastUpdated
+- last trade time
+- TDCC snapshot reference date
+- TDCC actual first-observed/publication timestamp（能真正觀測時才記）
+- sector effective timestamp
+- regime input availability timestamp
+- CONTROL/HOOK known-at time
+- h=1 evidence known-at time
+- next ownership confirmation known-at time
 
-Pass 4 必須同時回報：
-1. recognition latency 能提早幾個交易日；
-2. held-out Brier 是否改善；
-3. held-out log-loss 是否改善；
-4. calibration 是否惡化；
-5. coverage / abstention；
-6. 若無改善，直接 FAILED / formal weight=0。
+研究目的只有：
 
-禁止事項以 `03_RESEARCH_DRIFT_LOCK.md` 為準，尤其禁止：
-- exact-price drift
-- 固定 Bull/Bear score
-- 新模型家族插隊
-- silent retuning / threshold hunting
-- future leakage
-- 單一案例當證明
-- raw flow 直接當 controller
-- Big400/Big1000 單一變化直接下 BUY/SELL
-- narrative rescue
-- raw score 冒充 probability
-- retrieval failure 當 data absence
+**在不大量誤殺正常 repair 的前提下，current100 live evidence 是否能比 ownership confirmation 更早辨認 control deterioration，降低成為最後承接者的風險。**
 
-上一個對話的 local Python、visible Python 與 container 都持續出現 system-level `ClientError`，所以 Pass 3/4 的新數值證明尚未完成。若新對話運算恢復，直接做 frozen tests；若仍故障，標記 DATA_BLOCKED，不得假造結果，也不得拿案例替代全樣本驗證。
+必須 prospective 追蹤：
+- false negatives
+- false positives
+- durable repair outcomes
+- failed repair / control deterioration outcomes
+- actual recognition latency
+- abstention / no-edge cases
 
-既有已驗證、可作 BASE：CONTROL OOS AUC 0.694；confidence>=0.80 next-snapshot retention 88.79%；`CONTROL FULL + HOOK READY + dBig400<0` 的 OOS 52 events，10d mean -5.91%、median -5.42%、positive 22.5%。這些只回答既定 behavioral targets，不得偷換成普遍漲跌準確率。
+Fugle current100 可作 SHADOW evidence，但：
+- 不准改 frozen Pass 4 coefficients/thresholds/labels/gates
+- 不准看 live outcome 後 silent retune
+- 不准直接轉 BUY/SELL
+- 不准升 production
+- 不准把 raw bid/ask 或單一 flow 變成獨立 signal
+- 不准因 live transport 成功就回頭宣稱 historical latency 已驗證
 
-成功定義：
-- 新 family 改善 held-out probability quality 且縮短 recognition latency -> 才可 promote；
-- 只改善解釋、不改善 probability -> diagnostic only / weight 0；
-- 失敗 -> reject；
-- runtime/data 無法測 -> DATA_BLOCKED。
+暫不擴 Fugle 到全台股 realtime，也暫不為 full-market snapshot 升級付費 Developer plan。
+只有當 prospective current100 的錯誤分析反覆顯示「缺少跨產業/資金目的地 context」是 false negative 或 false positive 的主要來源時，才重新評估擴張 universe。
 
-以上四種結果都可接受；唯一不可接受的是為了成功而改規則。
+全市場慢層 context 可繼續使用既有 TWSE/TPEx EOD、breadth、sector/capital-relocation 資料，不要求 Fugle 即時掃全市場。
+
+核心治理：
+- 不追求漂亮模型
+- 不追求精確高低點
+- 不把解釋包裝成預測
+- 不把 raw score 包裝成 probability
+- 不為成功而改規則
+- 不知道時可以 ABSTAIN / NO EDGE
+- 研究失敗可以接受
+
+下一對話不要重新跑 Pass 3，也不要把主要時間花在 historical latency rescue。
+先讀最新 authority，然後接續 current100 prospective shadow evidence / timestamp ledger 的建置與檢查。
