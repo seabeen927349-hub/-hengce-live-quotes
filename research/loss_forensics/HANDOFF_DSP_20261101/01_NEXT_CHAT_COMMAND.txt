@@ -20,10 +20,18 @@ research branch `research/loss-forensics-20261101`
 - historical median 3 sessions 只代表 snapshot-reference-date latency，不是真實 publication / market-known latency。
 - `FUGLE_TRANSPORT = VERIFIED 100 requested / 100 success / 0 failure / SHADOW ONLY`
 - `TDCC_FIRST_OBSERVED = collector deployed, first verified prospective artifact pending`
+- `DEPLOYMENT_ENGINEERING_STATE = DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF`
 - `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
 - `INTERPRETER_BINDING = INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE`
 - `PRODUCTION_AUTHORITY = NONE`
 - `TRADING_AUTHORITY = NONE`
+
+重要語義鎖：
+- `DEPLOYMENT_ENGINEERING_STATE` 只是非 authority 的工程描述。
+- `DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF` 只表示 frozen workflows 已部署到 default branch `main`，並路由 evidence 回 research branch。
+- 它不代表 unattended execution 已被證明。
+- 正式 authority 欄位仍是 `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`。
+- 絕對不准用 engineering descriptor 取代 formal authority。
 
 default branch main 已有兩個 frozen prospective collector 的 scheduler deployment：
 - Fugle deployment commit `9708f018db282ec4ddaa745c392d8ead54d65093`
@@ -72,4 +80,4 @@ Pass 4 binding 方面：目前 repo provenance 不足，禁止近似重建。除
 `SHADOW_DATA_COLLECTING / INTERPRETER_NOT_BOUND`
 直到 exact binding 真正成立。
 
-若 scheduled collection 尚未被真正證明，就誠實維持 NOT_ESTABLISHED；若 executable 找不到，就維持 PENDING。不要為了完整而補規則、補時間、補模型或宣稱 production ready。
+若 scheduled collection 尚未被真正證明，就誠實維持 `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`；若 executable 找不到，就維持 PENDING。不要為了完整而補規則、補時間、補模型或宣稱 production ready。
