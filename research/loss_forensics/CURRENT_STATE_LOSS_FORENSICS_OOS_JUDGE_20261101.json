@@ -35,6 +35,13 @@
     "backdating_violation_count": 0,
     "authority_hash_validation": "PENDING_VALIDATOR_EXECUTION"
   },
+  "governance_ci": {
+    "workflow_path": ".github/workflows/hengce-loss-forensics-oos-governance.yml",
+    "workflow_definition_present": true,
+    "native_actions_run_verified": false,
+    "native_actions_run_status": "PENDING_NO_RUN_OBSERVED_AT_2026_11_01_FREEZE",
+    "workflow_definition_alone_counts_as_validation": false
+  },
   "checkpoint": {
     "day20_operational_review_due": false,
     "day60_judgment_eligibility_due": false,
@@ -64,10 +71,12 @@
   },
   "next_required_action": "FREEZE_ONE_EXACT_CANDIDATE_DEFINITION_AND_SHA_BOUND_EXECUTABLE_THEN_PASS_ALL_ARM_GATES_BEFORE_FORMAL_DAY1",
   "bootstrap_order": [
+    "research/loss_forensics/START_HERE_LOSS_FORENSICS_OOS_JUDGE_20261101.md",
     "research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md",
     "research/loss_forensics/LOSS_FORENSICS_PROSPECTIVE_OOS_EVALUATION_PREREGISTRATION_20261101.md",
     "research/loss_forensics/LOSS_FORENSICS_OOS_GOVERNANCE_LOCK_20261101.json",
     "research/loss_forensics/CURRENT_STATE_LOSS_FORENSICS_OOS_JUDGE_20261101.json",
-    "research/loss_forensics/LOSS_FORENSICS_OOS_CANDIDATE_ARM_CARD_20261101.json"
+    "research/loss_forensics/LOSS_FORENSICS_OOS_CANDIDATE_ARM_CARD_20261101.json",
+    "scripts/hengce_loss_forensics_oos_governance_validate.py"
   ]
 }
