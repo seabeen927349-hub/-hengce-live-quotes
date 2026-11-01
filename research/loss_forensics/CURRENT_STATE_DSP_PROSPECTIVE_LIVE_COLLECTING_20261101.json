@@ -4,8 +4,7 @@
   "state_date": "2026-11-01",
   "branch": "research/loss-forensics-20261101",
   "authority_bootstrap": {
-    "user_supplied_latest_research_head": "365cc032ca11d9067c6c88d724a593131f1d78b1",
-    "verified_research_head_at_turn_start": "365cc032ca11d9067c6c88d724a593131f1d78b1",
+    "repair_parent_research_head": "f9381c86e34b2d4a467d62638f2d4d09d9c77f5e",
     "historical_current_state": "research/loss_forensics/CURRENT_STATE_DSP_ACTUAL_AVAILABILITY_BLOCKED_20261101.json",
     "prospective_protocol": "research/loss_forensics/PROSPECTIVE_ACTUAL_AVAILABILITY_PROTOCOL_20261101.md",
     "historical_governance_superseded": false,
@@ -16,9 +15,9 @@
     "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
     "FUGLE_TRANSPORT": "VERIFIED_100_REQUESTED_100_SUCCESS_0_FAILURE_SHADOW_ONLY",
     "TDCC_FIRST_OBSERVED": "COLLECTOR_DEPLOYED_PENDING_FIRST_VERIFIED_OBSERVATION",
-    "DEPLOYMENT_ENGINEERING_STATE": "DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF",
+    "DEPLOYMENT_ENGINEERING_STATE": "DEPLOYED_HARDENED_AWAITING_FIRST_NATIVE_SCHEDULE_PROOF",
     "UNATTENDED_DEPLOYMENT": "NOT_ESTABLISHED",
-    "INTERPRETER_BINDING": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
+    "INTERPRETER_BINDING": "DATA_BLOCKED_EXACT_EXECUTABLE_PROVENANCE_NOT_RECOVERED",
     "PRODUCTION_AUTHORITY": "NONE",
     "TRADING_AUTHORITY": "NONE"
   },
@@ -26,7 +25,9 @@
     "DEPLOYMENT_ENGINEERING_STATE": "NON_AUTHORITY_OPERATIONAL_DESCRIPTOR_ONLY",
     "UNATTENDED_DEPLOYMENT": "FORMAL_AUTHORITY_FIELD_REQUIRING_SCHEDULE_PROOF",
     "deployment_engineering_state_may_substitute_for_unattended_authority": false,
-    "deployed_workflow_definition_alone_proves_unattended_execution": false
+    "deployed_workflow_definition_alone_proves_unattended_execution": false,
+    "interpreter_data_blocked_means_model_invalid": false,
+    "interpreter_data_blocked_meaning": "EXACT_FROZEN_EXECUTABLE_PROVENANCE_NOT_RECOVERED_SO_FORMAL_BINDING_IS_PROHIBITED"
   },
   "latency_semantics": {
     "historical_median_3_sessions": "SNAPSHOT_REFERENCE_DATE_ONLY_NOT_REAL_PUBLICATION_OR_MARKET_KNOWN_LATENCY",
@@ -54,7 +55,13 @@
   "tdcc_first_observed": {
     "official_endpoint": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
     "frozen_definition_commit": "95812e5cb4c2f828edfecaa6327c88f750ba52d5",
-    "default_branch_deployment_commit": "32d2e7f4dd10276941e966dc4dea83fb40b0092f",
+    "initial_default_branch_deployment_commit": "32d2e7f4dd10276941e966dc4dea83fb40b0092f",
+    "scheduler_hardening_main_commit": "6b810c95e7119b0d892ad392201b86c2d21b36e6",
+    "hardened_cron": "3,13,23,33,43,53 * * * *",
+    "scheduler_heartbeat_path": "research/loss_forensics/prospective_live/tdcc/scheduler_state.json",
+    "scheduler_heartbeat_present_at_last_verification": false,
+    "native_schedule_run_present_in_latest_100_actions_at_last_verification": false,
+    "last_scheduler_verification_at_taipei": "2026-11-01T14:54:41+08:00",
     "main_routing_delta_only": true,
     "raw_payload_content_addressed": true,
     "exact_sha256_required": true,
@@ -70,11 +77,12 @@
     "repository_default_branch": "main",
     "research_evidence_branch": "research/loss-forensics-20261101",
     "collector_definitions_deployed_to_main": true,
-    "deployment_engineering_state": "DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF",
+    "deployment_engineering_state": "DEPLOYED_HARDENED_AWAITING_FIRST_NATIVE_SCHEDULE_PROOF",
     "deployment_engineering_state_is_authority": false,
     "routing_design": "DEFAULT_BRANCH_SCHEDULE_DEFINITION_CHECKS_OUT_AND_PUSHES_RESEARCH_BRANCH",
     "fugle_main_deployment_commit": "9708f018db282ec4ddaa745c392d8ead54d65093",
-    "tdcc_main_deployment_commit": "32d2e7f4dd10276941e966dc4dea83fb40b0092f",
+    "tdcc_initial_main_deployment_commit": "32d2e7f4dd10276941e966dc4dea83fb40b0092f",
+    "tdcc_scheduler_hardening_main_commit": "6b810c95e7119b0d892ad392201b86c2d21b36e6",
     "manual_dispatch_fugle": "NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED",
     "manual_dispatch_tdcc": "NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED",
     "scheduled_run_event_equals_schedule_verified_fugle": false,
@@ -102,9 +110,11 @@
     "next_ownership_confirmation_actual_known_at": "ACTUAL_FIRST_OBSERVED_OR_INDEPENDENT_EXACT_PUBLICATION_TIME_NOT_REFERENCE_DATE"
   },
   "interpreter_binding": {
-    "status": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
+    "status": "DATA_BLOCKED_EXACT_EXECUTABLE_PROVENANCE_NOT_RECOVERED",
     "binding_audit_file": "research/loss_forensics/PASS4_FROZEN_EXECUTABLE_BINDING_AUDIT_20261101.md",
+    "binding_audit_fail_closed_commit": "2f40e00d8c85df645a3000a74ce46f8759f13b2d",
     "final_pass4_authority_commit": "20cc74b7c39897c07992de5ec9b215bf78949856",
+    "bounded_provenance_recovery_audit_closed": true,
     "exact_executable_identified": false,
     "exact_preprocessing_state_identified": false,
     "exact_model_or_deterministic_refit_package_identified": false,
@@ -117,7 +127,9 @@
     "formal_h1_classification_output_allowed": false,
     "formal_control_loss_probability_allowed": false,
     "calibrated_early_warning_probability_allowed": false,
-    "allowed_label_until_bound": "SHADOW_DATA_COLLECTING / INTERPRETER_NOT_BOUND"
+    "allowed_label_until_reopened": "SHADOW_DATA_COLLECTING / INTERPRETER_NOT_BOUND / DATA_BLOCKED",
+    "reopen_only_if": "PRE_EXISTING_EXACT_PROVENANCE_RECOVERED_AND_ALL_10_BINDING_GATES_PASS",
+    "new_approximation_requires_separate_preregistered_research_track": true
   },
   "frozen_pass4_protection": {
     "coefficients_change_allowed": false,
@@ -137,19 +149,21 @@
     "pass3_rerun_authorized": false,
     "historical_latency_rescue_authorized": false
   },
-  "authority_artifacts_this_turn": {
+  "authority_artifacts": {
     "scheduled_run_proof_manifest_commit": "c2b83a458e05a5672ba18db8dcd61f6d2384a66b",
-    "pass4_binding_audit_commit": "65684c5f788a4d62174a9e6b2c66d128fa69968a",
-    "updated_deployment_audit_commit": "67488828a70ab2a25e84911227c629fdcf927c7f"
+    "original_pass4_binding_audit_commit": "65684c5f788a4d62174a9e6b2c66d128fa69968a",
+    "pass4_binding_fail_closed_commit": "2f40e00d8c85df645a3000a74ce46f8759f13b2d",
+    "deployment_audit_commit": "67488828a70ab2a25e84911227c629fdcf927c7f",
+    "tdcc_scheduler_hardening_main_commit": "6b810c95e7119b0d892ad392201b86c2d21b36e6"
   },
   "final_research_state": {
     "HISTORICAL_LATENCY": "DATA_BLOCKED",
     "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
     "FUGLE_TRANSPORT": "VERIFIED_SHADOW_ONLY",
     "TDCC_FIRST_OBSERVED": "PENDING_VERIFIED_ARTIFACT",
-    "DEPLOYMENT_ENGINEERING_STATE": "DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF",
+    "DEPLOYMENT_ENGINEERING_STATE": "DEPLOYED_HARDENED_AWAITING_FIRST_NATIVE_SCHEDULE_PROOF",
     "UNATTENDED_DEPLOYMENT": "NOT_ESTABLISHED",
-    "INTERPRETER_BINDING": "INTERPRETER_BINDING_PENDING_FROZEN_EXECUTABLE",
+    "INTERPRETER_BINDING": "DATA_BLOCKED_EXACT_EXECUTABLE_PROVENANCE_NOT_RECOVERED",
     "PRODUCTION_AUTHORITY": "NONE",
     "TRADING_AUTHORITY": "NONE"
   }
