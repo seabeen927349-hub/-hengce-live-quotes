@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-01",
+  "repo": "seabeen927349-hub/-hengce-live-quotes",
+  "branch": "research/loss-forensics-20261101",
+  "handoff_commit": "d233e4587e13862163359d9ec41f387303154aee",
+  "research_object": "Dynamic State Probability Engine / Loss Forensics",
+  "trading_authority": "NONE",
+  "primary_outputs": [
+    "P(CONTINUATION)",
+    "P(REPAIR)",
+    "P(CONTROL_LOSS)",
+    "P(SYSTEMIC_SHOCK)",
+    "ABSTAIN/NO_EDGE"
+  ],
+  "current_primary_example_exclusions": ["6415", "3042"],
+  "validated_base": {
+    "CONTROL_OOS_AUC": 0.694,
+    "CONTROL_retention_confidence_ge_0_80": 0.8879,
+    "HOOK_RELEASE_OOS_events": 52,
+    "HOOK_RELEASE_10d_mean_return_pct": -5.91,
+    "HOOK_RELEASE_10d_median_return_pct": -5.42,
+    "HOOK_RELEASE_10d_positive_rate": 0.225
+  },
+  "not_yet_proven": [
+    "Pass 3 incremental Brier/log-loss/calibration improvement",
+    "Bridge Reload early detection",
+    "Destination Preload incremental probability value",
+    "Pricing Power / Flow-Price Response incremental probability value",
+    "Pre-TDCC recognition-latency classifier for Durable Repair vs Bridge/Failed Repair"
+  ],
+  "compute_blocker": "Local Python, visible Python, and container returned repeated system-level ClientError in final chat. No new numeric validation claim is authorized.",
+  "next_action": "Read 00_READ_FIRST.md and execute frozen Pass 3, then corrected Pass 4 recognition-latency validation without threshold retuning."
+}
