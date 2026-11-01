@@ -1,0 +1,2 @@
+status,reason,formal_forward_labels_opened,event_rows
+NOT_COMPUTED,DATA_BLOCKED before availability-eligible scoring; reporting zero would be false,false,0
