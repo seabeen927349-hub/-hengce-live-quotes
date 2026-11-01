@@ -1,4 +1,4 @@
-name: HENGCE Escape TWSE Full Market Fugle
+name: HENGCE Escape Electronics100 Fugle Basic
 
 "on":
   workflow_dispatch:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: hengce-escape-twse-full-market-fugle
+  group: hengce-escape-electronics100-fugle-basic
   cancel-in-progress: true
 
 jobs:
@@ -26,13 +26,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch Fugle TSE common-stock snapshot and industry map
+      - name: Fetch current100 via free-tier Fugle single-symbol quotes
         shell: bash
         run: |
           set -euo pipefail
           python3 <<'PY'
-          import hashlib, json, os, re, time, urllib.error, urllib.parse, urllib.request
-          from datetime import datetime, timedelta
+          import hashlib, json, os, random, re, time, urllib.error, urllib.request
+          from datetime import datetime
           from pathlib import Path
           from zoneinfo import ZoneInfo
 
@@ -41,122 +41,207 @@ jobs:
               raise SystemExit('FUGLE_API_KEY_MISSING')
 
           TZ=ZoneInfo('Asia/Taipei')
-          BASE='https://api.fugle.tw/marketdata/v1.0/stock'
+          CONFIG=Path('hengce/legacy/live_universe.json')
           OUT=Path('escape_live')
           OUT.mkdir(parents=True,exist_ok=True)
-          SNAPSHOT_URL=BASE+'/snapshot/quotes/TSE?type=COMMONSTOCK'
-          TICKERS_URL=BASE+'/intraday/tickers?type=EQUITY&exchange=TWSE&market=TSE'
+          BASE='https://api.fugle.tw/marketdata/v1.0/stock/intraday/quote/'
 
-          def fetch_json(url):
-              req=urllib.request.Request(url,headers={
+          MIN_CALL_SPACING_SECONDS=1.10
+          MIN_SUCCESS_COUNT=95
+
+          if not CONFIG.exists():
+              raise SystemExit('ELECTRONICS100_UNIVERSE_MISSING')
+          cfg=json.loads(CONFIG.read_text(encoding='utf-8'))
+          if cfg.get('policy')!='TWSE_LISTED_ELECTRONICS_100_HARD_BIND':
+              raise SystemExit('ELECTRONICS100_POLICY_MISMATCH')
+          if cfg.get('scope')!='TWSE_LISTED_ELECTRONICS_ONLY':
+              raise SystemExit('ELECTRONICS100_SCOPE_MISMATCH')
+          symbols=[str(x).strip() for x in cfg.get('symbols',[])]
+          if len(symbols)!=100 or len(set(symbols))!=100:
+              raise SystemExit(f'ELECTRONICS100_COUNT_OR_DUPLICATE:{len(symbols)}')
+          bad=[s for s in symbols if not re.fullmatch(r'[1-9]\d{3}',s)]
+          if bad:
+              raise SystemExit(f'ELECTRONICS100_BAD_SYMBOLS:{bad[:10]}')
+
+          rows_by_symbol={str(r.get('Ticker')):r for r in cfg.get('rows',[])}
+          if set(rows_by_symbol)!=set(symbols):
+              raise SystemExit('ELECTRONICS100_ROWS_SYMBOL_SET_MISMATCH')
+
+          def fetch_quote(symbol):
+              req=urllib.request.Request(BASE+symbol,headers={
                   'X-API-KEY':API_KEY,
                   'Accept':'application/json',
-                  'User-Agent':'HENGCE-ESCAPE-TWSE-FULL-MARKET/2.4.7'
+                  'User-Agent':'HENGCE-ESCAPE-ELECTRONICS100-BASIC/1.0'
               })
               for attempt in range(4):
                   try:
-                      with urllib.request.urlopen(req,timeout=20) as r:
+                      with urllib.request.urlopen(req,timeout=15) as r:
                           return json.load(r)
                   except urllib.error.HTTPError as e:
-                      if e.code in (401,403): raise RuntimeError(f'AUTH_OR_PLAN_HTTP_{e.code}')
+                      if e.code in (401,403):
+                          raise RuntimeError(f'AUTH_OR_PLAN_HTTP_{e.code}')
                       if e.code==429:
-                          if attempt==3: raise RuntimeError('RATE_LIMIT_HTTP_429')
-                          wait=float(e.headers.get('Retry-After') or 3*(attempt+1))
-                          time.sleep(max(wait,3*(attempt+1))); continue
-                      if 500<=e.code<=599 and attempt<3:
-                          time.sleep(2**attempt); continue
+                          if attempt==3:
+                              raise RuntimeError('RATE_LIMIT_HTTP_429')
+                          wait=float(e.headers.get('Retry-After') or (4+4*attempt))
+                          time.sleep(max(wait,4+4*attempt))
+                          continue
+                      if 500<=e.code<=599:
+                          if attempt==3:
+                              raise RuntimeError(f'SERVER_HTTP_{e.code}')
+                          time.sleep(2**attempt)
+                          continue
                       raise
                   except Exception:
-                      if attempt==3: raise
-                      time.sleep(2**attempt)
+                      if attempt==3:
+                          raise
+                      time.sleep((2**attempt)+random.uniform(0.2,0.6))
 
           now=datetime.now(TZ)
-          snap=fetch_json(SNAPSHOT_URL)
-          tick=fetch_json(TICKERS_URL)
+          data=[]
+          failures=[]
+          last_call_started=None
 
-          if snap.get('market')!='TSE': raise SystemExit('SNAPSHOT_MARKET_NOT_TSE')
-          rows=snap.get('data')
-          if not isinstance(rows,list) or len(rows)<800: raise SystemExit(f'SNAPSHOT_INCOMPLETE_COUNT:{0 if not isinstance(rows,list) else len(rows)}')
-          tickrows=tick.get('data')
-          if not isinstance(tickrows,list) or len(tickrows)<800: raise SystemExit(f'TICKERS_INCOMPLETE_COUNT:{0 if not isinstance(tickrows,list) else len(tickrows)}')
+          for symbol in symbols:
+              if last_call_started is not None:
+                  elapsed=time.monotonic()-last_call_started
+                  if elapsed<MIN_CALL_SPACING_SECONDS:
+                      time.sleep(MIN_CALL_SPACING_SECONDS-elapsed)
+              last_call_started=time.monotonic()
 
-          industry={str(x.get('symbol')):x.get('industry') for x in tickrows if x.get('symbol')}
-          seen=set(); data=[]; rejected=[]
-          for r in rows:
-              symbol=str(r.get('symbol') or '').strip()
-              if not re.fullmatch(r'[1-9]\d{3}',symbol):
-                  rejected.append(symbol); continue
-              if symbol in seen: raise SystemExit(f'DUPLICATE_SYMBOL:{symbol}')
-              seen.add(symbol)
-              rec={
-                  'symbol':symbol,'name':r.get('name'),'industry':industry.get(symbol),
-                  'open':r.get('openPrice'),'high':r.get('highPrice'),'low':r.get('lowPrice'),
-                  'close':r.get('closePrice'),'last_price':r.get('lastPrice'),
-                  'change':r.get('change'),'change_percent':r.get('changePercent'),
-                  'trade_volume':r.get('tradeVolume'),'trade_value':r.get('tradeValue'),
-                  'last_updated':r.get('lastUpdated')
-              }
-              data.append(rec)
-          if len(data)<800: raise SystemExit(f'COMMON_STOCK_4D_FILTER_TOO_SMALL:{len(data)}')
+              try:
+                  q=fetch_quote(symbol)
+                  if not isinstance(q,dict):
+                      raise RuntimeError('INVALID_RESPONSE_TYPE')
+                  if str(q.get('symbol') or '')!=symbol:
+                      raise RuntimeError(f'SYMBOL_MISMATCH:{q.get("symbol")}')
+                  meta=rows_by_symbol[symbol]
+                  total=q.get('total') or {}
+                  last=q.get('lastTrade') or {}
+                  bids=q.get('bids') if isinstance(q.get('bids'),list) else []
+                  asks=q.get('asks') if isinstance(q.get('asks'),list) else []
+                  rec={
+                      'symbol':symbol,
+                      'name':q.get('name') or meta.get('Name'),
+                      'industry':meta.get('industry_code'),
+                      'selection_rank':meta.get('selection_rank'),
+                      'quote_date':q.get('date'),
+                      'reference_price':q.get('referencePrice'),
+                      'previous_close':q.get('previousClose'),
+                      'open':q.get('openPrice'),
+                      'high':q.get('highPrice'),
+                      'low':q.get('lowPrice'),
+                      'close':q.get('closePrice'),
+                      'last_price':q.get('lastPrice'),
+                      'avg_price':q.get('avgPrice'),
+                      'change':q.get('change'),
+                      'change_percent':q.get('changePercent'),
+                      'trade_volume':total.get('tradeVolume'),
+                      'trade_value':total.get('tradeValue'),
+                      'transactions':total.get('transaction'),
+                      'volume_at_bid':total.get('tradeVolumeAtBid'),
+                      'volume_at_ask':total.get('tradeVolumeAtAsk'),
+                      'last_trade_price':last.get('price'),
+                      'last_trade_size':last.get('size'),
+                      'last_trade_time':last.get('time'),
+                      'bids':bids,
+                      'asks':asks,
+                      'best_bid':bids[0] if bids else None,
+                      'best_ask':asks[0] if asks else None,
+                      'last_updated':q.get('lastUpdated'),
+                      'is_trial':q.get('isTrial'),
+                      'is_delayed_open':q.get('isDelayedOpen'),
+                      'is_delayed_close':q.get('isDelayedClose'),
+                      'fetch_ok':True
+                  }
+                  data.append(rec)
+              except Exception as e:
+                  failures.append({'symbol':symbol,'error':str(e)})
 
-          data.sort(key=lambda x:x['symbol'])
-          symbols=[x['symbol'] for x in data]
+          success_count=len(data)
+          if success_count==0:
+              first=failures[0]['error'] if failures else 'UNKNOWN'
+              raise SystemExit(f'ELECTRONICS100_ALL_REQUESTS_FAILED:{first}')
+          if success_count<MIN_SUCCESS_COUNT:
+              raise SystemExit(f'ELECTRONICS100_TOO_MANY_FAILURES:{success_count}/100:{failures[:5]}')
+
+          data_by_symbol={x['symbol']:x for x in data}
+          ordered=[data_by_symbol[s] for s in symbols if s in data_by_symbol]
           universe_sha=hashlib.sha256(('\n'.join(symbols)+'\n').encode()).hexdigest()
+          quote_dates=sorted({str(x.get('quote_date')) for x in ordered if x.get('quote_date')})
+          stale_count=sum(1 for x in ordered if x.get('quote_date')!=now.date().isoformat())
+
           payload={
-              'schema_version':1,
-              'service':'HENGCE Escape TWSE Full Market Fugle',
+              'schema_version':2,
+              'service':'HENGCE Escape Electronics100 Fugle Basic',
               'generated_at_taipei':now.isoformat(),
-              'quote_date':snap.get('date'),
-              'snapshot_time':snap.get('time'),
-              'market':'TSE','exchange':'TWSE','security_scope':'COMMONSTOCK','tpex_included':False,
-              'source':'Fugle MarketData snapshot/quotes/TSE?type=COMMONSTOCK + intraday/tickers',
-              'requested_mode':'WHOLE_MARKET_SNAPSHOT',
-              'common_stock_count':len(data),
-              'industry_mapped_count':sum(x.get('industry') is not None for x in data),
-              'rejected_non_4d_count':len(rejected),
+              'market':'TSE',
+              'exchange':'TWSE',
+              'security_scope':'TWSE_LISTED_ELECTRONICS_100_HARD_BIND',
+              'tpex_included':False,
+              'source':'Fugle MarketData intraday/quote/{symbol}',
+              'requested_mode':'FREE_TIER_RATE_LIMITED_SINGLE_SYMBOL_QUOTES',
+              'rate_limit_design':'1.10s nominal start-to-start spacing; <=60/min target',
+              'universe_version':cfg.get('version'),
               'universe_sha256':universe_sha,
-              'authority':'INTRADAY_MARKET_CONTEXT_AND_ESCAPE_MONITOR_ONLY_NO_FORMAL_EOD_OR_RANKING_AUTHORITY',
-              'data':data
+              'requested_count':100,
+              'success_count':success_count,
+              'failure_count':len(failures),
+              'quote_dates':quote_dates,
+              'stale_quote_count_vs_today':stale_count,
+              'failures':failures,
+              'authority':'SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY',
+              'data':ordered
           }
           raw=json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()
           payload['payload_sha256']=hashlib.sha256(raw).hexdigest()
           status={k:v for k,v in payload.items() if k!='data'}
-          status['healthy']=len(data)>=800 and payload['industry_mapped_count']>=int(len(data)*0.90)
+          status['healthy_transport']=success_count>=MIN_SUCCESS_COUNT
+          status['fresh_market_day']=stale_count==0
 
-          (OUT/'twse_common_snapshot.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
-          (OUT/'twse_common_status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
-          print('HENGCE ESCAPE TWSE COMMON SNAPSHOT',payload['quote_date'],payload['snapshot_time'],len(data),universe_sha,status['healthy'])
+          (OUT/'electronics100_snapshot.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')
+          (OUT/'electronics100_status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('HENGCE ELECTRONICS100 FUGLE BASIC',success_count,'/100','quote_dates=',quote_dates,'stale=',stale_count)
           PY
 
-      - name: Validate fail-closed scope
+      - name: Validate fail-closed electronics100 scope
         shell: bash
         run: |
           set -euo pipefail
           python3 <<'PY'
           import json,re
           from pathlib import Path
-          p=json.loads(Path('escape_live/twse_common_snapshot.json').read_text(encoding='utf-8'))
-          if p.get('market')!='TSE' or p.get('exchange')!='TWSE' or p.get('security_scope')!='COMMONSTOCK':
+          cfg=json.loads(Path('hengce/legacy/live_universe.json').read_text(encoding='utf-8'))
+          p=json.loads(Path('escape_live/electronics100_snapshot.json').read_text(encoding='utf-8'))
+          if p.get('security_scope')!='TWSE_LISTED_ELECTRONICS_100_HARD_BIND':
               raise SystemExit('SCOPE_MISMATCH')
           if p.get('tpex_included') is not False:
               raise SystemExit('TPEX_MUST_BE_EXCLUDED')
+          requested=[str(x) for x in cfg.get('symbols',[])]
           rows=p.get('data',[])
-          if len(rows)<800: raise SystemExit('FULL_MARKET_COUNT_TOO_SMALL')
-          symbols=[str(x.get('symbol')) for x in rows]
-          if len(symbols)!=len(set(symbols)): raise SystemExit('DUPLICATE_SYMBOLS')
-          bad=[s for s in symbols if not re.fullmatch(r'[1-9]\d{3}',s)]
-          if bad: raise SystemExit(f'BAD_SYMBOLS:{bad[:10]}')
-          print('HENGCE ESCAPE TWSE FULL-MARKET SCOPE VERIFIED',len(symbols))
+          returned=[str(x.get('symbol')) for x in rows]
+          if len(requested)!=100 or len(set(requested))!=100:
+              raise SystemExit('REQUESTED_UNIVERSE_INVALID')
+          if len(returned)<95 or len(returned)!=len(set(returned)):
+              raise SystemExit(f'RETURNED_SCOPE_OR_DUPLICATE:{len(returned)}')
+          if not set(returned).issubset(set(requested)):
+              raise SystemExit('RETURNED_SYMBOL_OUTSIDE_CURRENT100')
+          bad=[s for s in returned if not re.fullmatch(r'[1-9]\d{3}',s)]
+          if bad:
+              raise SystemExit(f'BAD_SYMBOLS:{bad[:10]}')
+          if p.get('authority')!='SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY':
+              raise SystemExit('AUTHORITY_MISMATCH')
+          print('HENGCE ELECTRONICS100 FREE-TIER SCOPE VERIFIED',len(returned))
           PY
 
-      - name: Commit isolated escape snapshot
+      - name: Commit isolated electronics100 shadow snapshot
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'hengce-escape-live-bot'
           git config user.email 'hengce-escape-live-bot@users.noreply.github.com'
-          git add escape_live/
+          git add escape_live/electronics100_snapshot.json escape_live/electronics100_status.json
           if git diff --cached --quiet; then echo 'No changes.'; exit 0; fi
           TS="$(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "HENGCE escape TWSE full-market Fugle ${TS}"
-          git push
+          git commit -m "HENGCE escape electronics100 Fugle basic ${TS}"
+          git push origin HEAD:${GITHUB_REF_NAME}
