@@ -33,13 +33,22 @@
     "universe_integrity_violation_count": 0,
     "forbidden_semantic_rule_change_count": 0,
     "backdating_violation_count": 0,
-    "authority_hash_validation": "PENDING_VALIDATOR_EXECUTION"
+    "authority_hash_validation": "PASS_NATIVE_ACTIONS_RUN_41298175079"
   },
   "governance_ci": {
     "workflow_path": ".github/workflows/hengce-loss-forensics-oos-governance.yml",
     "workflow_definition_present": true,
-    "native_actions_run_verified": false,
-    "native_actions_run_status": "PENDING_NO_RUN_OBSERVED_AT_2026_11_01_FREEZE",
+    "native_actions_run_verified": true,
+    "native_actions_run_id": 41298175079,
+    "native_actions_run_head_sha": "21d7b59742611b0eaeb982e513b437257da52cd2",
+    "native_actions_run_event": "push",
+    "native_actions_run_conclusion": "success",
+    "validated_steps": [
+      "CHECKOUT_EXACT_COMMIT",
+      "COMPILE_VALIDATOR",
+      "VALIDATE_FROZEN_GOVERNANCE_AND_CURRENT_STATE",
+      "ASSERT_NO_AUTHORITY_ESCALATION"
+    ],
     "workflow_definition_alone_counts_as_validation": false
   },
   "checkpoint": {
