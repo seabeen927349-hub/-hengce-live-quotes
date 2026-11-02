@@ -8,13 +8,30 @@
     "main": "8780ff04ce0ead8d294fd9eab6f1b0798b60ac1f",
     "research_branch_before_closure": "a03a445a1980265845596bc635128e97507c54d1"
   },
-  "supersedes_operational_interpretation_only": [
-    "Any reading of S1 that treats 2026 electronics cross-sectional data as continuously usable merely because a yearly archive exists"
-  ],
+  "canonical_repair_reconciliation": {
+    "repair_authority": "S2_V1_1_DATA_DEFINITION_DEFECT_REPAIR_ONLY",
+    "library_evidence": [
+      "04A_S2_V1_1_IMPLEMENTATION_REPAIR_AMENDMENT.md",
+      "08_2026_NUMERIC_PARSER_REPAIR_RECEIPT.md",
+      "OBSERVATION_MATRIX_MANIFEST_V2.json"
+    ],
+    "official_source_package": "/HENGCE_CANONICAL/HIST_SOURCE_2018_2026_20261027/",
+    "unlineaged_candidate_mother_used": false,
+    "pre_2026_common_field_value_changes": 0,
+    "event_rows_2026": 194,
+    "min_price_coverage_2026": 0.993392070485,
+    "min_range_coverage_2026": 0.995594713656,
+    "min_turnover_coverage_2026": 1.0,
+    "price_dates_below_95pct_2026": 0,
+    "turnover_dates_below_95pct_2026": 0,
+    "elec_trades_ratio20_nonnull_2026": 0,
+    "operational_conclusion": "official 2026 OHLC/volume/turnover repaired; trade-count-based metrics remain UNKNOWN"
+  },
   "does_not_change": [
     "02_PREREGISTRATION_OBSERVATION_LAYER.md family set",
     "frozen 95% cross-sectional data-quality gate",
     "frozen 90% rolling-validity gate",
+    "frozen 5/20/60 horizons",
     "no-forward-return boundary",
     "no-backtest boundary",
     "no-threshold-tuning boundary",
@@ -34,18 +51,18 @@
       "historically_visible": "YES_DAILY_WITH_CONSERVATIVE_CLOCK",
       "first_public_timestamp": "NOT_PRESERVED_FOR_RETROSPECTIVE_ARCHIVE",
       "safe_use_clock": "NEXT_SESSION_OPEN_CONTEXT unless contemporaneous receipt proves earlier availability",
-      "historical_reconstruction": "2018-2025 core yes subject to row gates; 2026 electronics affected fields fail closed; TAIEX usable where present",
+      "historical_reconstruction": "2018-2026 price core eligible subject to frozen row gates; canonical 2026 parser repair clears 95% price gate on all audited 2026 dates",
       "revision": "inherit upstream source/version corrections",
       "unknown": "coverage/reference/source-lineage failure => UNKNOWN",
-      "contamination": ["retrospective endpoint treated as first-seen", "future bull/bear dating", "current-membership survivorship", "corporate-action reference error", "unauthorized 2026 lineage substitution"],
-      "verdict": "FEASIBLE_WITH_2026_NARROWING"
+      "contamination": ["retrospective endpoint treated as first-seen", "future bull/bear dating", "current-membership survivorship", "corporate-action reference error", "unauthorized source substitution"],
+      "verdict": "FEASIBLE_CLOCK_B"
     },
     {
       "dimension": "Breadth",
       "frozen_family": "Market Path / Transition",
       "historically_visible": "YES_WHEN_DATE_CORRECT_ELECTRONICS_RETURNS_PASS_GATE",
       "first_public_timestamp": "NOT_PRESERVED; Clock B conservative next-session-open",
-      "historical_reconstruction": "2018-2025 yes subject to 95% gate; 2026 affected dates UNKNOWN",
+      "historical_reconstruction": "2018-2026 eligible subject to 95% gate; official 2026 price parser repair restores coverage above gate",
       "revision": "derived value inherits upstream corrections",
       "unknown": "cross-sectional coverage < 95% => UNKNOWN",
       "contamination": ["current universe substituted for historical universe", "listing/delisting survivorship", "corporate-action mechanical moves", "quality-gate relaxation"],
@@ -67,7 +84,7 @@
       "frozen_family": "Volatility / Downside Stress",
       "historically_visible": "YES_DAILY; HISTORICAL_INTRADAY_NOT_ESTABLISHED",
       "first_public_timestamp": "NOT_PRESERVED_FOR_RETROSPECTIVE_ARCHIVE; Clock B conservative next-session-open",
-      "historical_reconstruction": "2018-2025 daily yes; 2026 electronics-derived fields UNKNOWN where gate fails",
+      "historical_reconstruction": "2018-2026 daily price/range families eligible subject to frozen rolling gates; 2026 min price/range coverage above 99%",
       "revision": "derived value inherits upstream corrections",
       "unknown": "rolling-validity or cross-sectional gate failure => UNKNOWN",
       "contamination": ["future crash labels", "outcome-tuned volatility threshold", "unarchived intraday reconstruction", "market-design comparability break"],
@@ -76,13 +93,13 @@
     {
       "dimension": "Liquidity",
       "frozen_family": "Liquidity / Market Quality",
-      "historically_visible": "YES_FOR_NARROWED_EOD_VOLUME_VALUE_TRADES_FAMILIES",
+      "historically_visible": "YES_FOR_NARROWED_EOD_VOLUME_VALUE_TURNOVER_AND_AVAILABLE_TRADES_FAMILIES",
       "first_public_timestamp": "NOT_PRESERVED_FOR_RETROSPECTIVE_ARCHIVE; Clock B conservative next-session-open",
-      "historical_reconstruction": "2018-2025 narrowed EOD yes where fields pass gates; 2026 affected volume/value/trades metrics UNKNOWN",
+      "historical_reconstruction": "2018-2026 turnover-based metrics eligible under field-specific 95% gates; 2026 turnover coverage 100%; 2026 trade-count-based metrics remain UNKNOWN",
       "revision": "inherits source corrections; EOD bid/ask is not full historical spread history",
-      "unknown": "required input missing or coverage < 95% => metric UNKNOWN",
-      "contamination": ["EOD bid/ask promoted to intraday spread", "denominator drift", "unauthorized 2026 patch", "outcome-selected proxy"],
-      "verdict": "PARTIALLY_FEASIBLE_EOD_NARROWED"
+      "unknown": "field-specific required input missing or coverage < 95% => that metric UNKNOWN; missing trades do not suppress turnover metrics",
+      "contamination": ["EOD bid/ask promoted to intraday spread", "denominator drift", "turnover/trades gates recoupled", "unlineaged patch", "outcome-selected proxy"],
+      "verdict": "PARTIALLY_FEASIBLE_EOD_NARROWED_2026_TRADES_FAIL_CLOSED"
     },
     {
       "dimension": "Flow / Microstructure",
@@ -100,7 +117,7 @@
       "frozen_family": "Leverage / Short Structure",
       "historically_visible": "YES_IN_PRINCIPLE_WITH_PRODUCT_SPECIFIC_CLOCKS",
       "first_public_timestamp": "revision-safe credit clock; finalized D balance no earlier than D+2 open absent original provisional archive",
-      "historical_reconstruction": "continuous frozen-core backfill not yet established",
+      "historical_reconstruction": "continuous frozen-core backfill not yet established; parser repair does not authorize margin from HENGCE_2026_HIST_MOTHER.csv",
       "revision": "MATERIAL for same-day credit balances",
       "unknown": "correct historical vintage not proven => UNKNOWN",
       "contamination": ["revision look-ahead", "margin-short/SBL/borrowed-stock collapse", "rule/maintenance drift", "later corrected value used too early"],
@@ -122,7 +139,7 @@
       "frozen_family": "Industry Synchronization / Diffusion",
       "historically_visible": "YES_FOR_PRICE_SYNCHRONIZATION; NO_FOR_COMPLETE_HISTORICAL_SUPPLY_CHAIN_GRAPH",
       "first_public_timestamp": "price leg Clock B conservative next-session-open; any future graph requires own publication clock",
-      "historical_reconstruction": "2018-2025 price sync yes subject to gates; 2026 affected dates UNKNOWN; complete supply-chain graph no",
+      "historical_reconstruction": "2018-2026 price sync eligible subject to rolling/coverage gates after official parser repair; complete supply-chain graph no",
       "revision": "inherits upstream source/universe corrections",
       "unknown": "rolling-validity or cross-sectional gate failure => UNKNOWN; no hindsight edge fill",
       "contamination": ["fixed upstream-downstream causality", "later-known supplier/customer edge backfill", "industry survivorship", "common factor mistaken for lead-lag"],
@@ -153,14 +170,14 @@
   ],
   "year_scope": {
     "2018_2025": "core EOD families reconstructable subject to frozen row-level gates",
-    "2026_taiex": "usable where official session series is present",
-    "2026_electronics_cross_section": "affected fields UNKNOWN unless a new source-lineage-authorized repair version is created",
-    "HENGCE_2026_HIST_MOTHER_csv": "repair candidate / cross-check only; not authorized for silent patch"
+    "2026_price_breadth_range_turnover_price_sync": "eligible from official archive under S2 V1.1 field-specific gates",
+    "2026_trades": "UNKNOWN where source field is absent; ELEC_TRADES_RATIO20 non-null 0/194",
+    "HENGCE_2026_HIST_MOTHER_csv": "unauthorized repair candidate / cross-check only; not used in canonical V2 repair"
   },
   "next_clean_work": [
-    "2026 source-lineage reconciliation without changing frozen gates",
     "official attention/disposition historical sidecar ingestion under post-close clock",
     "revision-safe leverage/short backfill with vintage authority",
+    "bounded weekly participation sidecar only where publication vintage is authorized",
     "external/derivatives field-level clock audit only if/when secondary sidecar is pursued"
   ],
   "predictive_work_authorized": false
