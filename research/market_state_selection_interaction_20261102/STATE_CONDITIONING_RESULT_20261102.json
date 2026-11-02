@@ -1,0 +1,87 @@
+{
+  "project": "HENGCE Market State x Fixed Selection Benchmark",
+  "date": "2026-11-02",
+  "literature_gate_commit": "f40fca25a4347daeede113598252152f3cdf668b",
+  "preregistration_commit": "50e41ec44e2adebf719662a8eb3894845b55f4aa",
+  "state_matrix_sha256": "2e9783338e24a1f2fd5303780750b8c269316265b4ea394f1dc8e4d3ca831755",
+  "archive_sha256": {
+    "2018": "eb233ccafbb5d2cacb293a926dd2211bc803e79d5d409685fa2b021dfa223759",
+    "2019": "01f680cb42cc074b716c762ed0d886af44e0cdbef04d5cd236cd4df127df8a9f",
+    "2020": "c57fc918e9a18a57ffaa9b500c41b2ca6ead94cd2ceb227637444e784ae7cb0d",
+    "2021": "ee2ae0fe25e2e1cebf220faaa546089210311311257256e6f1ba22f8389bc594",
+    "2022": "ad2ece10ec4a0e94c501def438c6e7c92a5193975dcb33a76e8f915c8183cc9b",
+    "2023": "09a50dd3d6b3fc8c7730c65044231836811c83ce420a538ed2ac8f126e680dca",
+    "2024": "f4518a7951bfffac59242955cef117b9d0f064730a43380126cf3f9655219979",
+    "2025": "22851a275796c0ec4f089353b31415f148b17e1c1ec7dc8d4a07b5f88601f41a",
+    "2026": "4be2223ca3dcbd01645fe90e53332a19600acbef070297d7358adf49c288d530"
+  },
+  "primary_sample": {
+    "n": 1921,
+    "first_signal_date": "2018-04-03",
+    "last_signal_date": "2026-09-22",
+    "DIFFUSE_NORMAL": 1589,
+    "SYNCHRONIZED_STRESS": 332
+  },
+  "state_summary": {
+    "DIFFUSE_NORMAL": {
+      "n": 1589,
+      "top5_mean_h20": 0.03532101410891316,
+      "top5_median_h20": 0.024951253440885758,
+      "u100_mean_h20": 0.012500751974609635,
+      "u100_median_h20": 0.02145348164902555,
+      "excess_mean_h20": 0.022820262134303524,
+      "excess_median_h20": 0.00712864308204173,
+      "excess_positive_fraction": 0.5387035871617369
+    },
+    "SYNCHRONIZED_STRESS": {
+      "n": 332,
+      "top5_mean_h20": 0.05246274394620522,
+      "top5_median_h20": 0.046225410397818606,
+      "u100_mean_h20": 0.052336983001773356,
+      "u100_median_h20": 0.05174905503180051,
+      "excess_mean_h20": 0.00012576094443185487,
+      "excess_median_h20": -0.004579380947024704,
+      "excess_positive_fraction": 0.463855421686747
+    }
+  },
+  "primary_estimand": {
+    "definition": "mean(excess | SYNCHRONIZED_STRESS) - mean(excess | DIFFUSE_NORMAL)",
+    "delta": -0.02269450118987167
+  },
+  "hac_lag20": {
+    "se": 0.012044923303049793,
+    "t": -1.8841548940478035,
+    "p": 0.059695072267705956,
+    "ci95": [-0.046317016252302876, 0.000928013872559471]
+  },
+  "moving_block_bootstrap": {
+    "block_length": 20,
+    "resamples": 10000,
+    "seed": 20261102,
+    "bootstrap_mean": -0.021901568673234225,
+    "ci95": [-0.0442321415218818, 0.0013840397303118406]
+  },
+  "temporal_delta": {
+    "EARLY_2018_2022": -0.028205898846635675,
+    "LATE_2023_2026": -0.012114947316174629
+  },
+  "outcome_gate_audit": {
+    "DIFFUSE_NORMAL": {
+      "PRIMARY_INCLUDED": 1589,
+      "TOP5_OUTCOME_INVALID": 93,
+      "U100_OUTCOME_LT95": 14,
+      "HORIZON_UNAVAILABLE": 18
+    },
+    "SYNCHRONIZED_STRESS": {
+      "PRIMARY_INCLUDED": 332,
+      "TOP5_OUTCOME_INVALID": 36,
+      "U100_OUTCOME_LT95": 0,
+      "HORIZON_UNAVAILABLE": 1
+    }
+  },
+  "formal_conclusion": "INCONCLUSIVE",
+  "conditioning_established": false,
+  "economically_material_candidate": false,
+  "reason": "Temporal sign consistency passes, but the preregistered moving-block-bootstrap 95% CI includes zero.",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY"
+}
