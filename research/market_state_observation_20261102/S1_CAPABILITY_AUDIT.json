@@ -1,0 +1,121 @@
+{
+  "audit_id": "HENGCE_MARKET_STATE_S1_PIT_DATA_CAPABILITY_20261102",
+  "project": "HENGCE_MARKET_ENVIRONMENT_OBSERVATION_20261102",
+  "audit_date": "2026-11-02",
+  "status": "PASS_WITH_NARROWING",
+  "authority": "OBSERVATION_SCHEMA_DEFINITION_ONLY",
+  "forward_return_inspection_authorized": false,
+  "backtest_authorized": false,
+  "threshold_design_authorized": false,
+  "state_classification_authorized": false,
+  "core_principle": "Market environment must be reconstructed as a multi-clock vector. A value is unavailable until its own release/effective-as-of clock has passed; missing history remains UNKNOWN.",
+  "reconstruction_classes": [
+    "CONTEMPORANEOUS_CAPTURE",
+    "RETROSPECTIVE_OFFICIAL_DATE_VALUE",
+    "DERIVED_PAST_ONLY",
+    "RESEARCH_PROXY"
+  ],
+  "clocks": {
+    "A_INTRADAY_PROSPECTIVE": "Use only live fields actually returned with timestamp/status. No historical intraday replay assumed.",
+    "B_EOD_SAFE": "Official daily price/volume/trade data; retrospective historical values allowed only with conservative safe-use clock and explicit retrospective provenance.",
+    "C_POST_CLOSE": "T86/attention/SBL and similar official files at their documented post-close production times.",
+    "D_NEXT_SESSION_FINALIZED": "Credit/margin representation uses finalized prior-day balance rather than mutable same-evening today balance.",
+    "W_WEEKLY": "TDCC ownership concentration; no daily forward-fill."
+  },
+  "dimensions": [
+    {
+      "dimension": "Market Path / Transition",
+      "status": "FEASIBLE",
+      "clock": "B_EOD_SAFE",
+      "allowed": ["raw market/electronics price path", "past-only drawdown/path descriptors", "electronics breadth", "cross-sectional dispersion"],
+      "forbidden": ["future-confirmed bull/bear label", "retrospective query treated as first-seen proof"],
+      "coverage_note": "TWSE electronics source archives cover 2018-2026 with date-specific membership; source acquisition is retrospective official history, not original publication snapshots."
+    },
+    {
+      "dimension": "Volatility / Downside Stress",
+      "status": "FEASIBLE_DAILY_PARTIAL_INTRADAY",
+      "clock": "B_EOD_SAFE",
+      "allowed": ["daily realized-volatility family", "downside daily-return family", "OHLC range family", "cross-sectional dispersion"],
+      "forbidden": ["unarchived historical intraday jump measures", "high-volatility=risk-off label"]
+    },
+    {
+      "dimension": "Liquidity / Market Quality",
+      "status": "PARTIALLY_FEASIBLE",
+      "clock": "B_EOD_SAFE",
+      "allowed": ["volume", "trading value", "trade count", "PIT-denominator turnover-like families", "cross-sectional liquidity commonality"],
+      "forbidden": ["claiming EOD last bid/ask equals full historical spread/depth", "unavailable historical effective spread", "unavailable historical aggressive/passive impact"]
+    },
+    {
+      "dimension": "Flow / Price Discovery Structure",
+      "status": "PARTIALLY_FEASIBLE",
+      "clock": "C_POST_CLOSE",
+      "allowed": ["T86 foreign", "T86 investment trust", "T86 dealer primitives", "daily investor-class flow after publication"],
+      "forbidden": ["smart-money motive", "aggressive/passive inference from T86", "intraday order splitting from daily flow"],
+      "canonical_coverage": "Validated HENGCE T86 mother 2023-2025; matched coverage 0.9698/0.9845/0.9772; official data product starts 2004-09-09.",
+      "release_clock": "18:00 excluding block trades; 20:00 including block trades"
+    },
+    {
+      "dimension": "Leverage / Short Structure",
+      "status": "PARTIALLY_FEASIBLE_BACKFILL_REQUIRED",
+      "clock": "C_POST_CLOSE+D_NEXT_SESSION_FINALIZED",
+      "allowed": ["finalized lagged margin balance", "margin short separately", "SBL balance separately", "borrowed-stock selling separately"],
+      "forbidden": ["single leverage score", "same-evening margin balance treated as immutable", "borrowing=short selling"],
+      "notes": "TWSE margin history exists from 2001; existing HENGCE import documents incomplete margin population beyond early 2023. SBL balance product starts 2017-08-07 and is generated at 20:30."
+    },
+    {
+      "dimension": "Industry Synchronization / Diffusion",
+      "status": "FEASIBLE_PRICE_SYNC_FAILS_COMPLETE_SUPPLY_CHAIN",
+      "clock": "B_EOD_SAFE",
+      "allowed": ["electronics/subindustry co-movement", "dispersion", "past-only common-factor-aware synchronization"],
+      "forbidden": ["complete historical supplier/customer graph", "hindsight edge fill", "fixed upstream-downstream direction"]
+    },
+    {
+      "dimension": "Attention / Crowding Activation",
+      "status": "PARTIALLY_FEASIBLE",
+      "clock": "C_POST_CLOSE",
+      "allowed": ["TWSE official attention-stock incidence", "disposition-stock incidence", "cross-sectional attention concentration"],
+      "forbidden": ["Google Trends without vintage/scaling audit", "fear/FOMO/overconfidence labels", "pre-publication use"],
+      "release_clock": "TWSE commercial attention/disposition file 19:00; historical website query from 2001"
+    },
+    {
+      "dimension": "Participation / Concentration Structure",
+      "status": "FAILS_HISTORICAL_PIT_CONTINUOUS_CORE",
+      "clock": "W_WEEKLY",
+      "allowed": ["2026 canonical weekly TDCC sidecar", "bounded historical research components with explicit authority", "prospective weekly collection"],
+      "forbidden": ["daily forward-fill", "continuous 2018-2026 ownership state", "later snapshot used as earlier knowledge"],
+      "gaps": ["2018", "2022", "2023", "2024", "2025"],
+      "fugle_long_history": "HTTP_403_FORBIDDEN"
+    },
+    {
+      "dimension": "Market-Design Context",
+      "status": "FEASIBLE",
+      "clock": "VERSIONED_RULE_METADATA",
+      "allowed": ["effective-date market structure metadata", "continuous-trading regime", "versioned attention/short/tax/day-trading rule context"],
+      "forbidden": ["market-design metadata treated as alpha signal"],
+      "anchor": "TWSE continuous trading effective 2020-03-23"
+    },
+    {
+      "dimension": "External / Derivatives Context",
+      "status": "SECONDARY_CONTEXT_ONLY_PARTIALLY_FEASIBLE",
+      "clock": "SESSION_SPECIFIC_POST_CLOSE_OR_INTRADAY",
+      "allowed": ["TAIFEX futures/options daily history", "VIX history", "OI/participant context with release clock", "day/night session-aware context"],
+      "forbidden": ["TVIX/VIX/OI/overseas move defining core Taiwan state alone", "using night-session data before occurrence"]
+    }
+  ],
+  "fugle_decision": {
+    "historical_role": "NO_REPLACEMENT_OF_HENGCE_MOTHER",
+    "prospective_role": "INTRADAY_AUGMENTATION_ONLY_WHEN_CALL_SUCCEEDS",
+    "whole_market_snapshot_current_status": "FAIL_CLOSED_HTTP_403",
+    "snapshot_authorized": false
+  },
+  "next_step": "S2_OBSERVATION_SCHEMA_FREEZE_AND_EXACT_MEASUREMENT_DEFINITION",
+  "next_step_constraints": [
+    "past-only formulas",
+    "explicit release/effective-as-of clocks",
+    "UNKNOWN preserved",
+    "no forward returns",
+    "no predictive clustering",
+    "no tuning",
+    "no market-state score or threshold"
+  ]
+}
