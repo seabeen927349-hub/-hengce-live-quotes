@@ -1,0 +1,83 @@
+{
+  "system": "HENGCE",
+  "module": "MARKET_ENVIRONMENT_STATE_CLASSIFIER_S5",
+  "date": "2026-11-02",
+  "authority": "DESCRIPTIVE_ONLY_NO_TRADING_AUTHORITY",
+  "research_source_branch": "research/selection-challenge-20261102",
+  "research_source_result": "research/market_state_observation_20261102/13_S5_STATE_DESCRIPTION_RESULT_20261102.md",
+  "research_source_freeze": "research/market_state_observation_20261102/14_S5_STATE_CLASSIFIER_FREEZE_20261102.json",
+  "research_source_commit": "1ae9d86bef28ea93ba14f5c5aae584fb86bfdbf2",
+  "input_matrix_sha256": "2e9783338e24a1f2fd5303780750b8c269316265b4ea394f1dc8e4d3ca831755",
+  "features": [
+    "TAIEX_R20",
+    "ELEC_EW_R20",
+    "ELEC_ADV_DEC_20",
+    "TAIEX_DD60",
+    "TAIEX_RV20",
+    "ELEC_XS_MAD_1",
+    "ELEC_VALUE_RATIO20",
+    "ELEC_VALUE_TOP10_SHARE",
+    "ELEC_SYNC20"
+  ],
+  "scaler": {
+    "type": "RobustScaler",
+    "center_median": {
+      "TAIEX_R20": 0.017845530636,
+      "ELEC_EW_R20": 0.017361922829,
+      "ELEC_ADV_DEC_20": 0.046683046683,
+      "TAIEX_DD60": -0.023182636759,
+      "TAIEX_RV20": 0.150345114704,
+      "ELEC_XS_MAD_1": 0.009115597798,
+      "ELEC_VALUE_RATIO20": 1.005554874267,
+      "ELEC_VALUE_TOP10_SHARE": 0.435390310132,
+      "ELEC_SYNC20": 0.516295466743
+    },
+    "scale_iqr": {
+      "TAIEX_R20": 0.062992962803,
+      "ELEC_EW_R20": 0.072396439108,
+      "ELEC_ADV_DEC_20": 0.760480824426,
+      "TAIEX_DD60": 0.050986651757,
+      "TAIEX_RV20": 0.0765906461875,
+      "ELEC_XS_MAD_1": 0.0031179637715000007,
+      "ELEC_VALUE_RATIO20": 0.24576684497900025,
+      "ELEC_VALUE_TOP10_SHARE": 0.0720344433765,
+      "ELEC_SYNC20": 0.18974732372750003
+    }
+  },
+  "states": {
+    "DIFFUSE_NORMAL": {
+      "cluster_id": 0,
+      "centroid_robust_space": {
+        "TAIEX_R20": 0.18449241068885072,
+        "ELEC_EW_R20": 0.16353129045143633,
+        "ELEC_ADV_DEC_20": 0.15667609786274092,
+        "TAIEX_DD60": -0.033466432046358074,
+        "TAIEX_RV20": -0.019090744032355444,
+        "ELEC_XS_MAD_1": 0.07374744303137937,
+        "ELEC_VALUE_RATIO20": 0.180612043926747,
+        "ELEC_VALUE_TOP10_SHARE": -0.06932082313717959,
+        "ELEC_SYNC20": -0.14717897865285812
+      }
+    },
+    "SYNCHRONIZED_STRESS": {
+      "cluster_id": 1,
+      "centroid_robust_space": {
+        "TAIEX_R20": -1.1825719260219003,
+        "ELEC_EW_R20": -1.2972976701388452,
+        "ELEC_ADV_DEC_20": -0.7791264901206559,
+        "TAIEX_DD60": -1.575202404098159,
+        "TAIEX_RV20": 1.9430451748028719,
+        "ELEC_XS_MAD_1": 0.8960545966913415,
+        "ELEC_VALUE_RATIO20": -0.06648220506421088,
+        "ELEC_VALUE_TOP10_SHARE": 0.4676357905807229,
+        "ELEC_SYNC20": 1.2254495563902976
+      }
+    }
+  },
+  "classification_rule": "transform features by frozen median/IQR; assign nearest Euclidean centroid",
+  "confidence_output": "report both centroid distances and raw distance-margin fraction; no threshold frozen",
+  "missingness_rule": "if any required feature is missing, state=UNKNOWN_FAIL_CLOSED",
+  "replay_validation": "2083/2083 historical eligible rows reproduced exactly",
+  "forward_outcomes_used": false,
+  "trading_effect": "NONE"
+}
