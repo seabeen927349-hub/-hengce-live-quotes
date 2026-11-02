@@ -1,0 +1,34 @@
+name: HENGCE Loss Forensics Electronics100 Fugle
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 1-4 * * 1-5"
+    - cron: "0-30/5 5 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-loss-forensics-electronics100-fugle
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout Loss Forensics authority branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: research/loss-forensics-20261101
+
+      - name: Run frozen Electronics100 collector from research branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "This workflow is intentionally isolated from HENGCE v2.4.7 whole-market Escape monitoring."
+          echo "The frozen collector remains on research/loss-forensics-20261101 and retains its own electronics100_* outputs."
+          test -f .github/workflows/hengce-escape-twse-full-market-fugle.yml
+          echo "Loss Forensics collection authority remains the research branch workflow until migrated to a dedicated script."
