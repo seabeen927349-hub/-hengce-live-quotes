@@ -16,6 +16,27 @@ Production authority: **NONE**
 - frozen Pass 4 coefficients / thresholds / labels / gates remain unchanged.
 - no live-outcome retuning is authorized or performed.
 
+## Fugle data-entitlement separation
+
+A user-reported subscription constraint is now explicitly recorded, but is **not independently verified by this audit**:
+
+`CURRENT_FUGLE_SUBSCRIPTION_TIER_REQUIRES_ADDITIONAL_PAYMENT_FOR_FULL_TAIWAN_EQUITY_REALTIME_DATA`
+
+This is a data-entitlement / coverage constraint, not scheduled-execution evidence. Therefore:
+
+1. a successful GitHub scheduled run may prove that the frozen collector executed unattended;
+2. it does **not** by itself prove that the account is entitled to full-Taiwan-equity realtime coverage;
+3. absence or incompleteness caused by account entitlement must not be relabeled as collector deployment failure without evidence;
+4. conversely, successful requests for the frozen `current100` transport test must not be generalized into proof of full-market realtime entitlement;
+5. no subscription purchase or upgrade is authorized by this governance update;
+6. collector semantics are unchanged.
+
+Until entitlement is independently established by provider/account evidence or direct observed full-universe coverage, the formal coverage statement is:
+
+`FUGLE_FULL_MARKET_REALTIME_COVERAGE = NOT_ESTABLISHED`
+
+This field is independent from `UNATTENDED_DEPLOYMENT`.
+
 ## Deployment state terminology
 
 Two deployment fields are intentionally separate and must never be substituted for each other:
@@ -94,16 +115,16 @@ Therefore there is no manual smoke-test run ID or smoke-test artifact commit to 
 
 ### Scheduled run
 
-At the final pre-authority-write check, `research/loss_forensics/prospective_live/` still contained only:
+At the original pre-authority-write check, `research/loss_forensics/prospective_live/` contained only:
 - `EVENT_LEDGER_SCHEMA_V1.json`
 - `README.md`
 
-Verified post-protocol Fugle observation count: `0`  
-Verified post-protocol TDCC payload/attempt count: `0`
+Verified post-protocol Fugle observation count at that audit: `0`  
+Verified post-protocol TDCC payload/attempt count at that audit: `0`
 
-No GitHub run with independently verified `event = schedule` plus a corresponding new ledger artifact and artifact commit SHA was established in this audit.
+No GitHub run with independently verified `event = schedule` plus a corresponding new ledger artifact and artifact commit SHA was established in that audit.
 
-For Fugle specifically, 2026-11-01 is Sunday while the frozen cron is Monday-Friday, so a legitimate Fugle scheduled collection run cannot be manufactured on this audit date.
+For Fugle specifically, 2026-11-01 was Sunday while the frozen cron is Monday-Friday, so a legitimate Fugle scheduled collection run could not be manufactured on that audit date.
 
 Accordingly:
 
@@ -113,7 +134,7 @@ but formal authority remains:
 
 `UNATTENDED_DEPLOYMENT = NOT_ESTABLISHED`
 
-The fact that scheduler-active definitions now exist on `main` proves deployment preparation/placement only. It does not prove unattended execution.
+The fact that scheduler-active definitions exist on `main` proves deployment preparation/placement only. It does not prove unattended execution.
 
 ## Upgrade gate
 
@@ -131,6 +152,8 @@ only after all of the following are verified for the relevant collector:
 
 Manual dispatch success alone is insufficient.
 
+**Entitlement is intentionally not added to this execution gate.** Passing this gate proves scheduled collection execution only. Full-market realtime coverage remains a separate capability/entitlement question and must not be inferred from the gate.
+
 The detailed per-collector proof fields are frozen in:
 `research/loss_forensics/PROSPECTIVE_SCHEDULED_RUN_PROOF_MANIFEST_20261101.json`.
 
@@ -146,6 +169,8 @@ Until binding succeeds, h=1 probability/classification and calibrated control-lo
 - collector definitions on default branch: `DEPLOYED_WITH_ROUTING_ONLY_DELTA`
 - deployment engineering state: `DEPLOYED_AWAITING_FIRST_SCHEDULE_PROOF`
 - evidence destination: `research/loss-forensics-20261101`
+- Fugle current subscription full-market realtime entitlement: `USER_REPORTED_INSUFFICIENT_NOT_INDEPENDENTLY_VERIFIED`
+- Fugle full-market realtime coverage: `NOT_ESTABLISHED`
 - manual smoke test: `NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED`
 - scheduled-run proof: `NOT_VERIFIED`
 - unattended deployment authority: `NOT_ESTABLISHED`
