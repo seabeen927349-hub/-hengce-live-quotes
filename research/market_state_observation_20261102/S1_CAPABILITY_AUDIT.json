@@ -19,7 +19,7 @@
     "A_INTRADAY_PROSPECTIVE": "Use only live fields actually returned with timestamp/status. No historical intraday replay assumed.",
     "B_EOD_SAFE": "Official daily price/volume/trade data; retrospective historical values allowed only with conservative safe-use clock and explicit retrospective provenance.",
     "C_POST_CLOSE": "T86/attention/SBL and similar official files at their documented post-close production times.",
-    "D_NEXT_SESSION_FINALIZED": "Credit/margin representation uses finalized prior-day balance rather than mutable same-evening today balance.",
+    "D_NEXT_SESSION_FINALIZED": "Revision-safe credit clock: the pre-open announced balance may later be adjusted. Without preserved provisional snapshots, use D final margin/short balance only after D+1 report publishes it as final previous balance; conservatively D+2 open or later.",
     "W_WEEKLY": "TDCC ownership concentration; no daily forward-fill."
   },
   "dimensions": [
@@ -57,10 +57,10 @@
     {
       "dimension": "Leverage / Short Structure",
       "status": "PARTIALLY_FEASIBLE_BACKFILL_REQUIRED",
-      "clock": "C_POST_CLOSE+D_NEXT_SESSION_FINALIZED",
-      "allowed": ["finalized lagged margin balance", "margin short separately", "SBL balance separately", "borrowed-stock selling separately"],
-      "forbidden": ["single leverage score", "same-evening margin balance treated as immutable", "borrowing=short selling"],
-      "notes": "TWSE margin history exists from 2001; existing HENGCE import documents incomplete margin population beyond early 2023. SBL balance product starts 2017-08-07 and is generated at 20:30."
+      "clock": "C_POST_CLOSE+D_REVISION_SAFE_DELAY",
+      "allowed": ["revision-safe finalized lagged margin balance (D value no earlier than D+2 open absent provisional snapshot archive)", "margin short separately", "SBL balance separately", "borrowed-stock selling separately"],
+      "forbidden": ["single leverage score", "using retrospectively corrected D balance at D+1 open", "same-evening margin balance treated as immutable", "borrowing=short selling"],
+      "notes": "TWSE margin history exists from 2001; existing HENGCE import documents incomplete margin population beyond early 2023. Same-day balance can be adjusted next day; final D balance appears in D+1 report previous-balance field, so retrospective corrected data require conservative D+2-open use unless original provisional snapshots are preserved. SBL balance product starts 2017-08-07 and is generated at 20:30."
     },
     {
       "dimension": "Industry Synchronization / Diffusion",
