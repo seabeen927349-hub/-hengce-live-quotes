@@ -1,0 +1,40 @@
+{
+  "schema_id": "HENGCE_MARKET_ENVIRONMENT_OBSERVATION_S2_V1",
+  "date": "2026-11-02",
+  "status": "FROZEN_NON_PREDICTIVE",
+  "observation_anchor": "NEXT_SESSION_OPEN_CONTEXT",
+  "descriptive_horizons_sessions": [5, 20, 60],
+  "horizon_selection_rule": "All frozen horizons retained; forward outcomes may never be used to select among them.",
+  "quality_gates": {
+    "cross_section_min_coverage": 0.95,
+    "rolling_stock_min_fraction": 0.90,
+    "winsorization": false,
+    "clipping": false,
+    "unknown_preserved": true,
+    "quality_thresholds_are_predictive_tuning_parameters": false
+  },
+  "return_definition": {
+    "stock_reference": "official ex_reference on corporate-action date; otherwise prior close",
+    "stock_return": "ln(close/reference)",
+    "taiex_return": "ln(TAIEX_t/TAIEX_t-1)",
+    "electronics_daily_return": "equal-weight mean of valid corporate-action-safe stock returns over date-correct electronics universe",
+    "missing_corporate_action_reference": "UNKNOWN"
+  },
+  "families": [
+    {"family":"MARKET_PATH_BREADTH","clock":"B_EOD_SAFE","metrics":["TAIEX_R5","TAIEX_R20","TAIEX_R60","TAIEX_DD60","ELEC_EW_R5","ELEC_EW_R20","ELEC_EW_R60","ELEC_ADV_DEC_1","ELEC_ADV_DEC_20","ELEC_XS_MAD_1"]},
+    {"family":"VOLATILITY_DOWNSIDE","clock":"B_EOD_SAFE","metrics":["TAIEX_RV20","TAIEX_RV60","TAIEX_DOWNSIDE20","ELEC_RV20","ELEC_RV60","ELEC_RANGE_MEDIAN_1","ELEC_RANGE_MEDIAN_20"]},
+    {"family":"LIQUIDITY_MARKET_QUALITY_EOD","clock":"B_EOD_SAFE","metrics":["MKT_VALUE_RATIO20","ELEC_VALUE_RATIO20","ELEC_TRADES_RATIO20","ELEC_VALUE_TOP10_SHARE"],"excluded":["historical effective spread","historical realized spread","historical full depth","historical aggressive/passive price impact"]},
+    {"family":"INSTITUTIONAL_FLOW","clock":"C_POST_CLOSE","primitive_channels":["ForeignNet","TrustNet","DealerNet"],"not_independent_channel":"TotalNet","metrics_per_channel":["FLOW_NET_VOL_SHARE","FLOW_BREADTH","FLOW_NET_VOL_SHARE_MA5","FLOW_NET_VOL_SHARE_MA20"]},
+    {"family":"LEVERAGE_SHORT","clock":"D_REVISION_SAFE_DELAY","status":"UNKNOWN_UNTIL_CLEAN_HISTORY_AVAILABLE","margin_metrics":["MARGIN_BAL_LOGCHG5","MARGIN_BAL_LOGCHG20","MARGIN_BAL_BREADTH_1"],"margin_short_metrics":["MSHORT_BAL_LOGCHG5","MSHORT_BAL_LOGCHG20","MSHORT_BAL_BREADTH_1"],"finalized_D_earliest_open_context_without_provisional_archive":"D+2_OPEN","securities_lending_must_remain_separate":true},
+    {"family":"INDUSTRY_SYNCHRONIZATION_PRICE_ONLY","clock":"B_EOD_SAFE","metrics":["ELEC_SYNC20","ELEC_SYNC60"],"definition":"median leave-one-out stock-to-electronics correlation","supply_chain_graph_required":false},
+    {"family":"ATTENTION_CROWDING","clock":"C_POST_CLOSE","metrics":["ATTENTION_SHARE","DISPOSITION_SHARE","ATTENTION_SHARE_MA5","DISPOSITION_SHARE_MA5"],"latent_psychology_labels_forbidden":true}
+  ],
+  "sparse_sidecars": [
+    {"family":"TDCC_OWNERSHIP_CONCENTRATION","rule":"attach only actual PIT-authorized weekly snapshot; never daily forward-fill"},
+    {"family":"MARKET_DESIGN_CONTEXT","required_field":"MATCHING_REGIME","continuous_trading_effective_date":"2020-03-23"},
+    {"family":"EXTERNAL_DERIVATIVES_CONTEXT","status":"DEFERRED_SECONDARY_SIDECAR_NOT_REQUIRED_FOR_CORE"}
+  ],
+  "forbidden_output_fields": ["forward_return","future_drawdown","future_volatility","target_label","win_loss","alpha","pnl","trade_action","stock_rank","optimized_cluster","optimized_state","performance_selected_feature"],
+  "authorized_next_step": "BUILD_DETERMINISTIC_HISTORICAL_OBSERVATION_MATRIX",
+  "does_not_authorize": ["state classification","clustering for prediction","threshold design","forward return testing","backtest","tuning","Selection Core performance test","candidate promotion"]
+}
