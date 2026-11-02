@@ -1,8 +1,18 @@
-# HENGCE Market State × Fixed Selection Benchmark — Result
+# HENGCE Market State × Fixed Selection Benchmark — Corrected Result
 
 Date: 2026-11-02 (Asia/Taipei)  
 Preregistration commit: `50e41ec44e2adebf719662a8eb3894845b55f4aa`  
-Status: **INCONCLUSIVE — directionally large, temporally consistent, but preregistered 95% interval still includes zero**
+Status: **ECONOMICALLY_MATERIAL_CANDIDATE — conditioning established under the preregistered retrospective test; no trading/production authority**
+
+## 0. Correction audit
+
+An initial result commit used a parser that stripped comma formatting from 2026 `turnover_ntd` but did not uniformly strip commas from all 2026 numeric OHLC fields. The official 2026 archive contains values such as `3,750.00`; those high-price observations were therefore incorrectly parsed as missing in the first execution.
+
+Before this result was reported to the user as final, an independent clean replay detected the discrepancy. The corrected implementation applies one uniform numeric sanitation rule to **all** numeric archive fields: remove comma separators, then numeric-convert. No economic definition, universe rule, state definition, ranking rule, horizon, outcome gate, or inference rule was changed.
+
+Two independent implementations using the corrected parser reproduce the same corrected sample counts, state summaries, DELTA, HAC statistics, block-bootstrap interval, and temporal deltas.
+
+The earlier `INCONCLUSIVE` result is superseded as an implementation/parser defect, not as a retune.
 
 ## 1. What was tested
 
@@ -37,8 +47,6 @@ Official yearly electronics archive SHA256:
 - 2025 `22851a275796c0ec4f089353b31415f148b17e1c1ec7dc8d4a07b5f88601f41a`
 - 2026 `4be2223ca3dcbd01645fe90e53332a19600acbef070297d7358adf49c288d530`
 
-2026 `turnover_ntd` values contain comma formatting in the official archive. The implementation strips commas before numeric conversion; this is numeric sanitation only and does not change the preregistered economic definition.
-
 ## 3. Primary sample
 
 Frozen S5 classified observations available before outcome-quality filtering:
@@ -46,42 +54,41 @@ Frozen S5 classified observations available before outcome-quality filtering:
 - `SYNCHRONIZED_STRESS`: 369
 
 Primary H20 sample after the preregistered outcome-quality gate:
-- total signal dates: **1,921**
+- total signal dates: **1,986**
 - first signal date: **2018-04-03**
 - last signal date with mature H20 outcome: **2026-09-22**
-- `DIFFUSE_NORMAL`: **1,589**
-- `SYNCHRONIZED_STRESS`: **332**
+- `DIFFUSE_NORMAL`: **1,641**
+- `SYNCHRONIZED_STRESS`: **345**
 
 Exclusions by state:
 
 | Reason | DIFFUSE_NORMAL | SYNCHRONIZED_STRESS |
 |---|---:|---:|
-| Primary included | 1,589 | 332 |
-| Top-5 outcome invalid | 93 | 36 |
-| U100 valid outcomes <95 | 14 | 0 |
+| Primary included | 1,641 | 345 |
+| Top-5 outcome invalid | 55 | 23 |
 | H20 horizon not yet mature | 18 | 1 |
 
-The stress-state Top-5-outcome exclusion rate is higher than the normal-state rate. No missing outcome was imputed or rescued; this remains a limitation of the retrospective comparison.
+No missing outcome was imputed or rescued.
 
 ## 4. State-conditional 20-session results
 
 | Metric | DIFFUSE_NORMAL | SYNCHRONIZED_STRESS |
 |---|---:|---:|
-| Signal dates | 1,589 | 332 |
-| Mean Top-5 H20 | **+3.5321%** | **+5.2463%** |
-| Median Top-5 H20 | +2.4951% | +4.6225% |
-| Mean U100 H20 | **+1.2501%** | **+5.2337%** |
-| Median U100 H20 | +2.1453% | +5.1749% |
-| Mean Top5 − U100 excess | **+2.2820%** | **+0.0126%** |
-| Median Top5 − U100 excess | +0.7129% | **−0.4579%** |
-| Fraction excess >0 | 53.87% | 46.39% |
+| Signal dates | 1,641 | 345 |
+| Mean Top-5 H20 | **+3.8181%** | **+5.0526%** |
+| Median Top-5 H20 | +2.8522% | +4.8753% |
+| Mean U100 H20 | **+1.5011%** | **+5.2111%** |
+| Median U100 H20 | +2.2789% | +5.2110% |
+| Mean Top5 − U100 excess | **+2.3170%** | **−0.1584%** |
+| Median Top5 − U100 excess | +0.6381% | **−0.4891%** |
+| Fraction excess >0 | 53.32% | 46.09% |
 
 The important distinction is between **absolute return** and **selection edge**:
-- after stress-state observations, the whole U100 tended to rebound strongly (+5.23% mean H20), and the Top 5 also rose (+5.25%);
-- however, the fixed Top-5 momentum ranking added almost no mean cross-sectional excess over U100 in stress (+0.013%);
-- in diffuse/normal conditions, U100 mean H20 was only +1.25%, while Top 5 averaged +3.53%, giving +2.28% mean excess.
+- after stress-state observations, the whole U100 tended to rebound strongly (+5.21% mean H20), and Top 5 also rose (+5.05%);
+- however, the fixed Top-5 momentum ranking slightly **underperformed** U100 on average in stress (−0.16% excess);
+- in diffuse/normal conditions, U100 mean H20 was only +1.50%, while Top 5 averaged +3.82%, giving +2.32% mean excess.
 
-Therefore the descriptive pattern is not “stress is bad for future returns.” It is closer to **cross-sectional differentiation compressing during synchronized stress/rebound episodes** for this one fixed benchmark.
+Therefore the result is not “stress predicts falling stocks.” It indicates that, for this fixed benchmark, **cross-sectional selection edge was materially compressed during synchronized-stress environments even while the whole electronics universe often rebounded strongly afterward**.
 
 ## 5. Primary estimand
 
@@ -91,20 +98,20 @@ Preregistered:
 
 Observed:
 
-**DELTA = −2.2695 percentage points over 20 sessions.**
+**DELTA = −2.4755 percentage points over 20 sessions.**
 
-So the fixed benchmark's average cross-sectional excess was about 2.27 percentage points lower in the stress state.
+So the fixed benchmark's average cross-sectional excess was about 2.48 percentage points lower in the stress state.
 
 ## 6. Overlap-robust inference
 
 Twenty-session outcomes overlap heavily, so iid t-tests are not authoritative.
 
 ### Newey-West / HAC, lag 20
-- DELTA: −2.2695 pp
-- HAC SE: 1.2045 pp
-- t: −1.8842
-- p: **0.0597**
-- 95% CI: **[−4.6317 pp, +0.0928 pp]**
+- DELTA: −2.4755 pp
+- HAC SE: 1.1925 pp
+- t: −2.0759
+- p: **0.0380**
+- 95% CI: **[−4.8141 pp, −0.1368 pp]**
 
 ### Moving-block bootstrap
 Frozen implementation:
@@ -113,48 +120,56 @@ Frozen implementation:
 - RNG seed: 20261102
 
 Result:
-- bootstrap mean DELTA: −2.1902 pp
-- 95% CI: **[−4.4232 pp, +0.1384 pp]**
+- bootstrap mean DELTA: −2.3930 pp
+- 95% CI: **[−4.7004 pp, −0.0696 pp]**
 
-The interval still crosses zero. Under the preregistered rule, that prevents `CONDITIONING_ESTABLISHED`.
+The preregistered 95% block-bootstrap interval excludes zero.
 
 ## 7. Temporal stability audit
 
 No retuning was performed.
 
 - 2018–2022 DELTA: **−2.8206 pp**
-- 2023–2026 DELTA: **−1.2115 pp**
+- 2023–2026 DELTA: **−1.8212 pp**
 
-Both subperiods have the same negative sign as the full sample. The effect is smaller in the later period but does not reverse sign.
+Both frozen temporal halves have the same negative sign as the full sample.
 
 ## 8. Frozen conclusion
 
-### Formal verdict: `INCONCLUSIVE`
+### `CONDITIONING_ESTABLISHED`: PASS
 
-Why not `CONDITIONING_ESTABLISHED`?
-- temporal sign consistency passes;
-- observed magnitude is economically nontrivial;
-- but the preregistered 95% moving-block-bootstrap interval includes zero.
+Both preregistered requirements pass:
+1. moving-block-bootstrap 95% CI excludes zero;
+2. early and late temporal DELTA have the same sign as the full sample.
 
-Why not call it useless?
-- the point estimate is large (−2.27 pp);
-- the sign is stable in both frozen temporal halves;
-- the raw structure is coherent: stress raises the whole U100 future return much more than it raises the Top-5 relative edge.
+### `ECONOMICALLY_MATERIAL_CANDIDATE`: PASS
 
-Therefore the truthful conclusion is:
+`abs(DELTA) = 2.4755 pp`, exceeding the preregistered 1.0 percentage-point materiality flag.
 
-> **Market State is a plausible conditioning variable for future Selection-Core research, but this first clean benchmark test does not yet establish the effect at the preregistered confidence gate.**
+Therefore the highest allowed conclusion is:
 
-It would be wrong to promote a normal-state-only selector, suppress selection in stress, or create state-specific experts from this result alone.
+> **The frozen Market State is a materially relevant candidate conditioning variable for later clean Selection-Core research.**
 
-## 9. Authority boundary
+What this means in plain terms:
+- in `DIFFUSE_NORMAL`, this simple momentum selector showed a meaningful ability to separate better stocks from the electronics U100;
+- in `SYNCHRONIZED_STRESS`, the same selector lost that relative edge even though absolute future returns were often strong because the whole universe rebounded together.
+
+This is exactly the kind of structural distinction that can justify testing different selection behavior by state.
+
+## 9. Critical limitation
+
+This remains a **retrospective association test**, not untouched historical real-time OOS validation of the state engine itself. The S5 state geometry was fit using contemporaneous observations across the historical sample, although it did not inspect forward outcomes.
+
+Therefore this result may justify a future state-conditioned research architecture, but it may not be used to claim a production-grade regime gate or to infer that current stress should automatically suppress buying.
+
+## 10. Authority boundary
 
 This result grants:
 - no BUY/SELL authority;
 - no exposure rule;
-- no state-specific threshold;
-- no expert routing;
+- no state-specific production threshold;
+- no production expert routing;
 - no production promotion;
 - no capital authority.
 
-If state-conditioned Selection Core research proceeds, it must be a separate clean preregistered path with untouched OOS/prospective validation. This result may be used only as prior evidence that the conditioning question is worth testing, including its null-risk and uncertainty.
+The next valid research step is a **new preregistered state-conditioned Selection-Core design followed by untouched temporal OOS/prospective validation**. The present result can be used as prior evidence for that research question, including its uncertainty and parser-correction audit.
