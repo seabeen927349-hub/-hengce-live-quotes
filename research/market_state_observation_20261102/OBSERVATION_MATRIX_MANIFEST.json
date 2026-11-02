@@ -1,0 +1,39 @@
+{
+  "artifact": "HENGCE_MARKET_ENVIRONMENT_OBSERVATION_MATRIX_V1",
+  "schema": "HENGCE_MARKET_ENVIRONMENT_OBSERVATION_S2_V1",
+  "status": "NON_PREDICTIVE_OBSERVATION_ONLY",
+  "rows": 2142,
+  "columns": 80,
+  "first_market_event_date": "2018-01-02",
+  "last_market_event_date": "2026-10-22",
+  "first_observation_date": "2018-01-03",
+  "last_observation_date": "2026-10-27",
+  "core_sha256": "47e9e538625b83af751138fd683a4ff975ed3d147943fb700f258e16ab0d373a",
+  "flow_sidecar_sha256": "511f69347bda6f1692bb0d61f6975da4c8c44e707bbc37649b07306685ad2070",
+  "output_sha256": "f547cb6591f6027f34aa85f2d8d83ff51d9ea3d1355a5346dc13408900a7ce4e",
+  "flow_rows_passing_95pct": 723,
+  "flow_first_event_date": "2023-01-03",
+  "flow_last_event_date": "2025-12-31",
+  "forward_return_columns": 0,
+  "forbidden_token_audit": "PASS",
+  "margin_fields": "UNKNOWN_PENDING_REVISION_SAFE_HISTORY",
+  "attention_fields": "UNKNOWN_PENDING_OFFICIAL_HISTORY_INGESTION",
+  "tdcc": "SPARSE_SIDECAR_NOT_IN_DAILY_CORE",
+  "determinism": {
+    "run1_sha256": "f547cb6591f6027f34aa85f2d8d83ff51d9ea3d1355a5346dc13408900a7ce4e",
+    "run2_sha256": "f547cb6591f6027f34aa85f2d8d83ff51d9ea3d1355a5346dc13408900a7ce4e",
+    "byte_compare": "PASS"
+  },
+  "canonical_library_path": "/HENGCE_CANONICAL/RESEARCH/TAIWAN_STOCK_MARKET/MARKET_STATE_OBSERVATION_20261102/HENGCE_MARKET_ENVIRONMENT_OBSERVATION_MATRIX_V1.csv",
+  "authority": "DESCRIPTIVE_CONTEMPORANEOUS_STRUCTURE_AUDIT_ONLY",
+  "does_not_authorize": [
+    "state classification",
+    "risk-on/risk-off labels",
+    "predictive thresholds",
+    "forward-return testing",
+    "Selection Core interaction testing",
+    "backtest",
+    "tuning",
+    "candidate promotion"
+  ]
+}
