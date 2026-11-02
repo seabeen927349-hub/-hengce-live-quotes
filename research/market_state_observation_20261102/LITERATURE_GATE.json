@@ -1,0 +1,76 @@
+{
+  "topic_id": "HENGCE_MARKET_ENVIRONMENT_OBSERVATION_20261102",
+  "topic_title": "Taiwan Equity Market Environment / Market State Observation",
+  "literature_review_complete": true,
+  "literature_status": "PASS",
+  "scope_definition": "Bounded literature review for identifying defensible contemporaneously observable dimensions of the Taiwan equity market environment. Scope excludes forward-return prediction, stock selection, state-to-return mapping, threshold optimization and trading-rule construction.",
+  "search_boundary": {
+    "canonical_master_corpus": "147-entry Taiwan Stock Market Master Corpus as of 2026-11-02",
+    "master_p1_status": "15/15 required P1 domains at least PROVISIONALLY_SATURATED",
+    "topic_subset_rule": "Include Taiwan evidence materially relevant to regime/transition, volatility/tail, liquidity, microstructure/order flow, institutional flow, leverage/short selling, industry synchronization/diffusion, attention/herding, ownership/concentration and market-design context.",
+    "external_discovery": "Targeted discovery of Taiwan futures/spot, implied-volatility and cross-market transmission studies was used only to test whether external context is materially missing. These discovery-level sources are not used to define a predictive rule and do not override canonical FULL_READ evidence.",
+    "exclusion": "P2 domains not material to contemporaneous environment observation are not required for this bounded gate. Derivatives and cross-market evidence remain secondary/contextual pending later source and PIT audits."
+  },
+  "canonical_ledger_reference": "/HENGCE_CANONICAL/RESEARCH/TAIWAN_STOCK_MARKET/HENGCE_TAIWAN_STOCK_MARKET_MASTER_LITERATURE_LEDGER_v1.xlsx",
+  "canonical_ledger_version": "P1 closure authority 2026-11-02; 147 entries; 67 FULL_READ / 26 PARTIAL / 54 FOUND_ONLY",
+  "topic_evidence_subset": {
+    "full_read_count": 25,
+    "partial_count": 7,
+    "found_only_count": 9,
+    "total_count": 41,
+    "paper_ids": [
+      "TW-MKT-077", "TW-MKT-078", "TW-MKT-129", "TW-MKT-130", "TW-MKT-131", "TW-MKT-132", "TW-MKT-133", "TW-MKT-134",
+      "TW-MKT-091", "TW-MKT-092", "TW-MKT-093", "TW-MKT-094", "TW-MKT-095",
+      "TW-MKT-043", "TW-MKT-044", "TW-MKT-051", "BF-TW-003", "BF-TW-004", "BF-TW-008", "BF-TW-021", "BF-TW-022",
+      "TW-MKT-068", "TW-MKT-069", "TW-MKT-073", "TW-MKT-059", "TW-MKT-135",
+      "TW-MKT-081", "TW-MKT-082", "TW-MKT-083", "TW-MKT-084", "TW-MKT-085", "TW-MKT-087", "TW-MKT-138",
+      "TW-MKT-050", "TW-MKT-096", "TW-MKT-097", "TW-MKT-121", "TW-MKT-125",
+      "TW-MKT-071", "TW-MKT-142", "TW-MKT-143"
+    ]
+  },
+  "full_read_count": 25,
+  "partial_count": 7,
+  "found_only_count": 9,
+  "supportive_evidence_reviewed": true,
+  "counterevidence_reviewed": true,
+  "null_results_reviewed": true,
+  "limitations_recorded": true,
+  "identification_threats_recorded": true,
+  "abstracts_not_promoted_to_full_read": true,
+  "saturation_assessment": "PASS for the narrow observation-layer question. The literature is sufficient to bound the initial state-vector architecture and reject universal single-label/single-score interpretations. Additional papers are unlikely to change the initial dimension families materially; the major unresolved questions are PIT observability, data lineage, historical rule/version reconstruction, missingness and current data capability.",
+  "unresolved_material_conflicts": [
+    "Market/sector states can diverge and ex-post regime labels have recognition latency.",
+    "Nonlinear or latent regime models do not reliably improve real-state OOS recognition.",
+    "High volatility/tail stress has strategy-specific rather than universal meaning.",
+    "Institutional flow information content is heterogeneous by investor type, aggressiveness, horizon and herding intensity.",
+    "Liquidity contains systematic/industry commonality and proxy contamination.",
+    "Margin, retail short and institutional SBL can have different or opposite meanings.",
+    "Industry spillover direction and transmitter/receiver roles can reverse by regime.",
+    "Attention/herding proxies do not identify latent emotions.",
+    "External/futures variables may add context but are not yet justified as core state-defining dimensions."
+  ],
+  "clean_path": {
+    "fresh_post_gate_path": true,
+    "legacy_model_first_work_exists": true,
+    "legacy_work_treatment": "PRE_LITERATURE_CONTAMINATED and excluded from confirmatory evidence for this project",
+    "no_forward_return_inspection_used_for_this_gate_or_architecture": true,
+    "no_model_or_backtest_preceded_gate": true,
+    "clarification": "The final field applies to this fresh Market Environment Observation project path only. Earlier HENGCE regime/state/model work is explicitly excluded as contaminated legacy work."
+  },
+  "reviewer": "ChatGPT / HENGCE research assistant",
+  "review_date": "2026-11-02",
+  "authority_consequence": "PREREGISTRATION_ALLOWED_ONLY",
+  "does_not_authorize": [
+    "state classification rule",
+    "bull/bear label",
+    "composite state score",
+    "feature weights",
+    "thresholds",
+    "forward-return inspection",
+    "backtest",
+    "tuning",
+    "stock ranking",
+    "candidate acceptance",
+    "production or capital authority"
+  ]
+}
