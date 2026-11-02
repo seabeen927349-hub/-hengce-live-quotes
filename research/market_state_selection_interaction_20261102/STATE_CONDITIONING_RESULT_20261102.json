@@ -3,6 +3,12 @@
   "date": "2026-11-02",
   "literature_gate_commit": "f40fca25a4347daeede113598252152f3cdf668b",
   "preregistration_commit": "50e41ec44e2adebf719662a8eb3894845b55f4aa",
+  "correction": {
+    "status": "CORRECTED_BEFORE_FINAL_USER_REPORT",
+    "defect": "Initial implementation did not uniformly strip comma separators from all 2026 numeric OHLC fields; high-price observations were parsed as missing.",
+    "repair": "Uniformly strip comma separators from every numeric archive field before numeric conversion. No economic/preregistered rule changed.",
+    "independent_replay": "PASS_TWO_IMPLEMENTATIONS_EXACT_MATCH"
+  },
   "state_matrix_sha256": "2e9783338e24a1f2fd5303780750b8c269316265b4ea394f1dc8e4d3ca831755",
   "archive_sha256": {
     "2018": "eb233ccafbb5d2cacb293a926dd2211bc803e79d5d409685fa2b021dfa223759",
@@ -16,72 +22,71 @@
     "2026": "4be2223ca3dcbd01645fe90e53332a19600acbef070297d7358adf49c288d530"
   },
   "primary_sample": {
-    "n": 1921,
+    "n": 1986,
     "first_signal_date": "2018-04-03",
     "last_signal_date": "2026-09-22",
-    "DIFFUSE_NORMAL": 1589,
-    "SYNCHRONIZED_STRESS": 332
+    "DIFFUSE_NORMAL": 1641,
+    "SYNCHRONIZED_STRESS": 345
   },
   "state_summary": {
     "DIFFUSE_NORMAL": {
-      "n": 1589,
-      "top5_mean_h20": 0.03532101410891316,
-      "top5_median_h20": 0.024951253440885758,
-      "u100_mean_h20": 0.012500751974609635,
-      "u100_median_h20": 0.02145348164902555,
-      "excess_mean_h20": 0.022820262134303524,
-      "excess_median_h20": 0.00712864308204173,
-      "excess_positive_fraction": 0.5387035871617369
+      "n": 1641,
+      "top5_mean_h20": 0.038181015368002134,
+      "top5_median_h20": 0.028522128132545777,
+      "u100_mean_h20": 0.015010757276478798,
+      "u100_median_h20": 0.022789346869458712,
+      "excess_mean_h20": 0.023170258091523337,
+      "excess_median_h20": 0.006380580596609821,
+      "excess_positive_fraction": 0.5332114564290067
     },
     "SYNCHRONIZED_STRESS": {
-      "n": 332,
-      "top5_mean_h20": 0.05246274394620522,
-      "top5_median_h20": 0.046225410397818606,
-      "u100_mean_h20": 0.052336983001773356,
-      "u100_median_h20": 0.05174905503180051,
-      "excess_mean_h20": 0.00012576094443185487,
-      "excess_median_h20": -0.004579380947024704,
-      "excess_positive_fraction": 0.463855421686747
+      "n": 345,
+      "top5_mean_h20": 0.050526422667670406,
+      "top5_median_h20": 0.0487534011999187,
+      "u100_mean_h20": 0.05211075188523691,
+      "u100_median_h20": 0.052109587179212734,
+      "excess_mean_h20": -0.001584329217566494,
+      "excess_median_h20": -0.0048906373612926796,
+      "excess_positive_fraction": 0.4608695652173913
     }
   },
   "primary_estimand": {
     "definition": "mean(excess | SYNCHRONIZED_STRESS) - mean(excess | DIFFUSE_NORMAL)",
-    "delta": -0.02269450118987167
+    "delta": -0.02475458730908983
   },
   "hac_lag20": {
-    "se": 0.012044923303049793,
-    "t": -1.8841548940478035,
-    "p": 0.059695072267705956,
-    "ci95": [-0.046317016252302876, 0.000928013872559471]
+    "se": 0.011924976868884775,
+    "t": -2.075860404700714,
+    "p": 0.038035387022118304,
+    "ci95": [-0.04814137975275434, -0.0013677948654252613]
   },
   "moving_block_bootstrap": {
     "block_length": 20,
     "resamples": 10000,
     "seed": 20261102,
-    "bootstrap_mean": -0.021901568673234225,
-    "ci95": [-0.0442321415218818, 0.0013840397303118406]
+    "bootstrap_mean": -0.023930040054925394,
+    "ci95": [-0.04700400675170316, -0.0006962675800019758]
   },
   "temporal_delta": {
     "EARLY_2018_2022": -0.028205898846635675,
-    "LATE_2023_2026": -0.012114947316174629
+    "LATE_2023_2026": -0.018211759546438628
   },
   "outcome_gate_audit": {
     "DIFFUSE_NORMAL": {
-      "PRIMARY_INCLUDED": 1589,
-      "TOP5_OUTCOME_INVALID": 93,
-      "U100_OUTCOME_LT95": 14,
+      "PRIMARY_INCLUDED": 1641,
+      "TOP5_OUTCOME_INVALID": 55,
       "HORIZON_UNAVAILABLE": 18
     },
     "SYNCHRONIZED_STRESS": {
-      "PRIMARY_INCLUDED": 332,
-      "TOP5_OUTCOME_INVALID": 36,
-      "U100_OUTCOME_LT95": 0,
+      "PRIMARY_INCLUDED": 345,
+      "TOP5_OUTCOME_INVALID": 23,
       "HORIZON_UNAVAILABLE": 1
     }
   },
-  "formal_conclusion": "INCONCLUSIVE",
-  "conditioning_established": false,
-  "economically_material_candidate": false,
-  "reason": "Temporal sign consistency passes, but the preregistered moving-block-bootstrap 95% CI includes zero.",
+  "conditioning_established": true,
+  "economically_material_candidate": true,
+  "formal_conclusion": "ECONOMICALLY_MATERIAL_CANDIDATE",
+  "reason": "Moving-block-bootstrap 95% CI excludes zero; early and late temporal deltas share the full-sample negative sign; abs(delta)=2.4755 percentage points exceeds the preregistered 1.0 percentage-point materiality flag.",
+  "critical_limitation": "Retrospective association only. S5 state geometry was fit on contemporaneous historical observations across the sample without forward outcomes; this is not untouched real-time OOS validation of the state engine.",
   "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY"
 }
