@@ -1,0 +1,41 @@
+{
+  "project": "HENGCE Market Environment Observation",
+  "stage": "S5_STATE_DESCRIPTION",
+  "date": "2026-11-02",
+  "input": {
+    "artifact": "HENGCE_MARKET_ENVIRONMENT_OBSERVATION_MATRIX_V3.csv",
+    "sha256": "2e9783338e24a1f2fd5303780750b8c269316265b4ea394f1dc8e4d3ca831755",
+    "rows_total": 2142,
+    "rows_eligible": 2083,
+    "first_eligible_date": "2018-04-09",
+    "last_eligible_date": "2026-10-27"
+  },
+  "forward_outcomes_viewed": false,
+  "selected_k": 2,
+  "selection_rule": "highest silhouette among admissible K=2..8; smaller K if within 0.02",
+  "states": {
+    "DIFFUSE_NORMAL": {"n": 1714, "share": 0.8228516562650025},
+    "SYNCHRONIZED_STRESS": {"n": 369, "share": 0.1771483437349976}
+  },
+  "seed_stability_ari": {"101": 1.0, "202": 1.0, "303": 1.0, "404": 1.0},
+  "leave_one_year_out_agreement": {
+    "2018": 0.9786096256684492,
+    "2019": 0.9669421487603306,
+    "2020": 0.9877551020408163,
+    "2021": 0.9795081967213115,
+    "2022": 0.9349593495934959,
+    "2023": 1.0,
+    "2024": 0.9958677685950413,
+    "2025": 0.9259259259259259,
+    "2026": 0.9743589743589743
+  },
+  "leave_one_year_out_median_agreement": 0.9786096256684492,
+  "latest_v3_observation": {
+    "date": "2026-10-27",
+    "state": "SYNCHRONIZED_STRESS",
+    "silhouette_sample": -0.08563600053578115,
+    "distance_to_DIFFUSE_NORMAL": 2.679008660850732,
+    "distance_to_SYNCHRONIZED_STRESS": 2.4373502967155476,
+    "interpretation": "BORDERLINE_LOW_CONFIDENCE"
+  }
+}
