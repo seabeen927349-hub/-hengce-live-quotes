@@ -1,0 +1,25 @@
+{
+  "authority": "INTRADAY_CONTEXT_ESCAPE_MONITOR_ONLY_NO_FORMAL_EOD_OR_SELECTION_AUTHORITY",
+  "errors": [
+    "HTTP_403:https://api.fugle.tw/marketdata/v1.0/stock/snapshot/quotes/TSE?type=COMMONSTOCK:{\"message\":\"Forbidden\",\"statusCode\":403}"
+  ],
+  "exchange": "TWSE",
+  "formal_eod_state_creation": false,
+  "fresh_market_day": false,
+  "generated_at_taipei": "2026-11-02T09:32:33.851933+08:00",
+  "healthy_transport": false,
+  "institutional_state_created": false,
+  "margin_state_created": false,
+  "market": "TSE",
+  "monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
+  "schema_version": 1,
+  "security_scope": "COMMONSTOCK",
+  "service": "HENGCE Escape TWSE Common Stock Whole-Market Fugle",
+  "snapshot_authorized": false,
+  "snapshot_endpoint": "https://api.fugle.tw/marketdata/v1.0/stock/snapshot/quotes/TSE?type=COMMONSTOCK",
+  "state": "FAIL_CLOSED",
+  "tdcc_state_created": false,
+  "ticker_endpoint": "https://api.fugle.tw/marketdata/v1.0/stock/intraday/tickers?type=EQUITY&exchange=TWSE&market=TSE",
+  "tpex_included": false,
+  "universe_pass": false
+}
