@@ -14,6 +14,7 @@
     "HISTORICAL_LATENCY": "DATA_BLOCKED",
     "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
     "FUGLE_TRANSPORT": "VERIFIED_100_REQUESTED_100_SUCCESS_0_FAILURE_SHADOW_ONLY",
+    "FUGLE_DATA_ENTITLEMENT": "USER_REPORTED_CURRENT_SUBSCRIPTION_INSUFFICIENT_FOR_FULL_TW_EQUITY_REALTIME_UNIVERSE_NOT_INDEPENDENTLY_VERIFIED",
     "TDCC_FIRST_OBSERVED": "COLLECTOR_DEPLOYED_PENDING_FIRST_VERIFIED_OBSERVATION",
     "DEPLOYMENT_ENGINEERING_STATE": "DEPLOYED_HARDENED_AWAITING_FIRST_NATIVE_SCHEDULE_PROOF",
     "UNATTENDED_DEPLOYMENT": "NOT_ESTABLISHED",
@@ -26,6 +27,9 @@
     "UNATTENDED_DEPLOYMENT": "FORMAL_AUTHORITY_FIELD_REQUIRING_SCHEDULE_PROOF",
     "deployment_engineering_state_may_substitute_for_unattended_authority": false,
     "deployed_workflow_definition_alone_proves_unattended_execution": false,
+    "fugle_schedule_execution_proof_is_separate_from_data_entitlement": true,
+    "fugle_schedule_success_may_prove_full_market_realtime_coverage": false,
+    "fugle_full_market_realtime_coverage_requires_independent_entitlement_or_observed_coverage_proof": true,
     "interpreter_data_blocked_means_model_invalid": false,
     "interpreter_data_blocked_meaning": "EXACT_FROZEN_EXECUTABLE_PROVENANCE_NOT_RECOVERED_SO_FORMAL_BINDING_IS_PROHIBITED"
   },
@@ -50,7 +54,15 @@
     "append_only_required": true,
     "backdating_actual_known_at_allowed": false,
     "formal_ranking_authority": false,
-    "buy_sell_authority": false
+    "buy_sell_authority": false,
+    "data_entitlement": {
+      "status": "USER_REPORTED_LIMITATION_NOT_INDEPENDENTLY_VERIFIED",
+      "user_report": "CURRENT_FUGLE_SUBSCRIPTION_TIER_REQUIRES_ADDITIONAL_PAYMENT_FOR_FULL_TAIWAN_EQUITY_REALTIME_DATA",
+      "full_market_realtime_coverage_established": false,
+      "scheduled_execution_gate_independent": true,
+      "collector_semantics_changed": false,
+      "upgrade_or_purchase_authorized": false
+    }
   },
   "tdcc_first_observed": {
     "official_endpoint": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
@@ -92,6 +104,8 @@
     "prospective_unattended_deployment": "NOT_ESTABLISHED",
     "upgrade_rule": "ONLY_AFTER_EVENT_EQUALS_SCHEDULE_PLUS_SUCCESS_PLUS_NEW_IMMUTABLE_LEDGER_ARTIFACT_PLUS_VERIFIED_ARTIFACT_COMMIT_PLUS_NO_BACKFILL",
     "manual_dispatch_alone_sufficient_for_upgrade": false,
+    "fugle_entitlement_is_part_of_unattended_execution_gate": false,
+    "full_market_realtime_coverage_must_not_be_inferred_from_unattended_execution": true,
     "deployment_audit_file": "research/loss_forensics/PROSPECTIVE_LIVE_COLLECTOR_DEPLOYMENT_AUDIT_20261101.md",
     "scheduled_run_proof_manifest": "research/loss_forensics/PROSPECTIVE_SCHEDULED_RUN_PROOF_MANIFEST_20261101.json"
   },
@@ -160,6 +174,7 @@
     "HISTORICAL_LATENCY": "DATA_BLOCKED",
     "PROSPECTIVE_LIVE_LATENCY": "COLLECTING",
     "FUGLE_TRANSPORT": "VERIFIED_SHADOW_ONLY",
+    "FUGLE_DATA_ENTITLEMENT": "LIMITED_OR_UNKNOWN_FULL_MARKET_REALTIME_NOT_ESTABLISHED",
     "TDCC_FIRST_OBSERVED": "PENDING_VERIFIED_ARTIFACT",
     "DEPLOYMENT_ENGINEERING_STATE": "DEPLOYED_HARDENED_AWAITING_FIRST_NATIVE_SCHEDULE_PROOF",
     "UNATTENDED_DEPLOYMENT": "NOT_ESTABLISHED",
