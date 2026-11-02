@@ -1,0 +1,48 @@
+{
+  "contract_id": "HENGCE_DAILY_COMMAND_CENTER_MARKET_STATE_ADDENDUM_v1_0_20261102",
+  "status": "ACTIVE_DESCRIPTIVE_SIDECAR",
+  "base_contract": "hengce/HENGCE_DAILY_COMMAND_CENTER_CONTRACT_v1_3_20261019.json",
+  "base_contract_unchanged": true,
+  "module": "MARKET_ENVIRONMENT_STATE_CLASSIFIER_S5",
+  "runtime": "scripts/hengce_market_state_s5.py",
+  "freeze": "hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json",
+  "allowed_outputs": [
+    "DIFFUSE_NORMAL",
+    "SYNCHRONIZED_STRESS",
+    "UNKNOWN_FAIL_CLOSED"
+  ],
+  "purpose": "Describe the latest contemporaneous Taiwan-equity market environment only.",
+  "daily_semantics": {
+    "preferred_run_phase": "POSTCLOSE_AFTER_CANONICAL_DATA_READY",
+    "state_date_rule": "Report the latest valid observation date represented by complete frozen S5 features.",
+    "nontrading_day_rule": "Do not invent a new state. Report market closed and carry only the latest valid dated state as historical context.",
+    "data_pending_rule": "If today's frozen feature vector is incomplete, output UNKNOWN_FAIL_CLOSED and identify the latest valid dated state separately."
+  },
+  "hard_separation": {
+    "may_gate_q017": false,
+    "may_gate_e2": false,
+    "may_create_buy_sell_hold": false,
+    "may_change_ranking": false,
+    "may_change_capital": false,
+    "may_change_execution": false,
+    "may_open_predictive_authority": false
+  },
+  "output_contract": {
+    "required_fields": [
+      "state",
+      "observation_date",
+      "distance_diffuse_normal",
+      "distance_synchronized_stress",
+      "distance_margin_fraction",
+      "authority"
+    ],
+    "authority_value": "DESCRIPTIVE_ONLY_NO_TRADING_AUTHORITY"
+  },
+  "research_provenance": {
+    "branch": "research/selection-challenge-20261102",
+    "result": "research/market_state_observation_20261102/13_S5_STATE_DESCRIPTION_RESULT_20261102.md",
+    "classifier_freeze": "research/market_state_observation_20261102/14_S5_STATE_CLASSIFIER_FREEZE_20261102.json",
+    "promotion_source_commit": "1ae9d86bef28ea93ba14f5c5aae584fb86bfdbf2",
+    "forward_outcomes_used": false
+  }
+}
