@@ -11,7 +11,6 @@ S1 does not decide whether a market state predicts returns. It decides whether e
 Status classes: `FEASIBLE`, `PARTIALLY_FEASIBLE`, `FAILS_HISTORICAL_PIT`, `PROSPECTIVE_ONLY`, `SECONDARY_CONTEXT_ONLY`.
 
 ## 2. Key result: Market State must be multi-clock
-
 Taiwan public data are released on materially different clocks.
 
 ### Clock A — Intraday prospective
@@ -26,8 +25,8 @@ Raw daily OHLC, volume, trading value, trade count and market/electronics cross-
 - Securities-lending balance: 20:30.
 - Available short-sale quota: 22:30.
 
-### Clock D — Next-session/pre-open finalized credit state
-TWSE states same-day margin/short balances can be adjusted the following day and that the next report's `previous balance` is the final correct value. Clean replay therefore uses a lagged/finalized credit state, not an immutable same-evening `today balance`.
+### Clock D — Revision-safe delayed credit state
+TWSE states the same-day margin/short balance is published after contributing institutions finish processing, but next-day adjustments can still change it. The pre-open announced balance is therefore contemporaneous but provisional. TWSE says the following report's `previous balance` contains the final correct balance after next-day adjustments. A retrospective historical endpoint can expose that corrected value without preserving the originally announced provisional version. Therefore, absent a contemporaneous provisional snapshot archive, D's finalized balance may be used only after the D+1 report has been published — conservatively **D+2 open or later**. D+1-open use of a later-corrected D value is forbidden.
 
 ### Clock W — Weekly ownership
 TDCC is weekly, no daily forward-fill. Continuous full-market history is missing for material years, so ownership concentration is not a continuous historical core leg.
@@ -47,7 +46,7 @@ Allowed: daily volume, trading value, trade count, PIT-denominator turnover-like
 Official T86 investor-class daily flow is usable only after publication. Current canonical validated HENGCE T86 mother covers 2023–2025 with matched coverage about 96.98%, 98.45% and 97.72%, no failed T86 dates and no SHA mismatches. Foreign, trust and dealer primitives remain separate. T86 does not authorize aggressive/passive flow, intraday order splitting or smart-money motive labels. TWSE commercial T86 history starts 2004-09-09, but longer history is not assumed present in the canonical mother.
 
 ### 3.5 Leverage / Short Structure — `PARTIALLY_FEASIBLE`
-TWSE margin history exists from 2001, but the existing HENGCE import documents incomplete margin population beyond early 2023 and same-day balances can be revised. Clean rule: prefer finalized prior-day balance when available before next-session open. SBL/lending is separate: official lending-balance product starts 2017-08-07 and is generated at 20:30; available-short-sale quota at 22:30. Borrowing is not equal to short selling.
+TWSE margin history exists from 2001, but the existing HENGCE import documents incomplete margin population beyond early 2023 and same-day balances can be revised. Absent a preserved original provisional snapshot, use D's finalized balance only after the D+1 report has published its final `previous balance`; for an open-context vector this means D+2 open or later. SBL/lending is separate: official lending-balance product starts 2017-08-07 and is generated at 20:30; available-short-sale quota at 22:30. Borrowing is not equal to short selling.
 
 ### 3.6 Industry Synchronization / Diffusion — `FEASIBLE` price sync; `FAILS_HISTORICAL_PIT` complete supply-chain graph
 Allowed: electronics/subindustry co-movement, dispersion and past-only common-factor-aware synchronization. Complete historical customer/supplier graph, hindsight edge fill and fixed upstream→downstream direction remain forbidden.
@@ -65,12 +64,11 @@ Use historically versioned rule metadata. Anchor: TWSE intraday continuous tradi
 TAIFEX provides daily futures/options history, VIX and historical transaction-data products. Participant data start 2008-04-07 and have staged disclosure semantics; older detailed history may require paid acquisition. Day/night-session and trade-date attribution must be explicit. VIX/OI/put-call/overseas moves cannot define Taiwan state alone.
 
 ## 4. Fugle decision
-Canonical binding already says Fugle is an intraday realtime augmentation layer and does not replace historical mother. The deployed whole-TWSE snapshot returned HTTP 403 on 2026-11-02 with `snapshot_authorized=false`, `healthy_transport=false` and `FAIL_CLOSED`.
+Canonical binding says Fugle is an intraday realtime augmentation layer and does not replace historical mother. The deployed whole-TWSE snapshot returned HTTP 403 on 2026-11-02 with `snapshot_authorized=false`, `healthy_transport=false` and `FAIL_CLOSED`.
 
-Therefore historical S1 authority from Fugle is none beyond separately audited returned historical content. Whole-market live Market State authority is currently unavailable from this snapshot transport. Realtime fields are prospective only when an actual call succeeds and timestamp/status are preserved.
+Historical S1 authority from Fugle is none beyond separately audited returned historical content. Whole-market live Market State authority is currently unavailable from this snapshot transport. Realtime fields are prospective only when an actual call succeeds and timestamp/status are preserved.
 
 ## 5. Final S1 architecture after narrowing
-
 Core historical EOD-capable:
 1. Market Path / Transition
 2. Daily Volatility / Downside Stress
@@ -80,7 +78,7 @@ Core historical EOD-capable:
 
 Delayed/post-close:
 6. Institutional Flow — strong 2023–2025 canonical coverage, publish-clock constrained
-7. Leverage / Short — delayed/finalized, backfill required for a clean continuous mother
+7. Leverage / Short — revision-safe delayed representation; finalized D margin may require D+2-open use absent provisional snapshots; backfill required for clean continuous mother
 8. Attention / Crowding — official after-close data
 
 Low-frequency/incomplete historical:
