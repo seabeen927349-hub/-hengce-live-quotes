@@ -1,0 +1,73 @@
+{
+  "topic_id": "HENGCE_MARKET_STATE_SELECTION_CONDITIONING_20261102",
+  "topic_title": "Taiwan Equity Market-State Conditioning of a Fixed Cross-Sectional Selection Benchmark",
+  "literature_review_complete": true,
+  "literature_status": "PASS",
+  "scope_definition": "Bounded review asking whether existing Taiwan-equity evidence is sufficient to preregister a test of whether an already-frozen contemporaneous Market State conditions the performance of one fixed generic cross-sectional selection benchmark. This gate does not authorize designing state-specific alpha rules, state-specific thresholds, experts, trading gates, or production logic.",
+  "search_boundary": {
+    "canonical_master_corpus": "Taiwan Stock Market Master Corpus P1 closure authority dated 2026-11-02",
+    "master_p1_status": "15/15 P1 domains at least PROVISIONALLY_SATURATED",
+    "included_mechanisms": [
+      "market/regime dependence of momentum and reversal",
+      "state dependence of institutional flow and herding",
+      "market-adjustment and common-factor falsification",
+      "industry spillover instability across regimes",
+      "short-horizon price discovery versus durable alpha",
+      "timing/cost fragility of apparent institutional-flow alpha"
+    ],
+    "excluded": "No attempt is made here to review or authorize a specific new Selection Core feature family. The experiment is limited to one fixed benchmark used only to test state-conditioning relevance."
+  },
+  "canonical_ledger_reference": "/HENGCE_CANONICAL/RESEARCH/TAIWAN_STOCK_MARKET/HENGCE_TAIWAN_STOCK_MARKET_MASTER_LITERATURE_LEDGER_v1.xlsx",
+  "canonical_ledger_version": "P1 closure 2026-11-02; 147 entries; 67 FULL_READ / 26 PARTIAL / 54 FOUND_ONLY; 15/15 P1 domains at least PROVISIONALLY_SATURATED",
+  "topic_evidence_subset": {
+    "full_read_count": 10,
+    "partial_count": 1,
+    "found_only_count": 5,
+    "full_read_ids": ["BF-TW-004","BF-TW-015","BF-TW-020","BF-TW-029","BF-TW-030","TW-MKT-043","TW-MKT-045","TW-MKT-050","TW-MKT-051","TW-MKT-055"],
+    "partial_ids": ["BF-TW-037"],
+    "found_only_ids": ["TW-MKT-046","TW-MKT-047","TW-MKT-048","TW-MKT-049","BF-TW-039"]
+  },
+  "full_read_count": 10,
+  "partial_count": 1,
+  "found_only_count": 5,
+  "supportive_evidence_reviewed": true,
+  "counterevidence_reviewed": true,
+  "null_results_reviewed": true,
+  "limitations_recorded": true,
+  "identification_threats_recorded": true,
+  "abstracts_not_promoted_to_full_read": true,
+  "saturation_assessment": "PASS for this narrow preregistration question. The reviewed Taiwan evidence is sufficient to justify testing state conditioning, while also making clear that the direction and magnitude are not universal and must not be assumed in advance. Additional literature could refine mechanisms later but is unlikely to change the initial falsifiable benchmark test design.",
+  "unresolved_material_conflicts": [
+    "Taiwan momentum/reversal effects are horizon- and state-dependent and unconditional effects can be weak or insignificant.",
+    "Market-index adjustment can erase apparent behavioral continuation/reversal effects.",
+    "Institutional flow information is heterogeneous and can switch sign across tranquil/crisis regimes.",
+    "Industry transmitter/receiver roles are time-varying and can reverse across regimes.",
+    "Short-horizon price discovery does not imply durable 20-session cross-sectional alpha.",
+    "Realistic timing and costs can eliminate apparent institutional-flow alpha.",
+    "The frozen S5 state geometry was fit on contemporaneous features over the historical sample without forward returns; therefore this experiment can establish retrospective target association, not historical real-time OOS validation of the state engine."
+  ],
+  "existing_state_artifact": {
+    "path": "research/market_state_observation_20261102/14_S5_STATE_CLASSIFIER_FREEZE_20261102.json",
+    "status": "FROZEN_BEFORE_TARGET_INSPECTION",
+    "forward_outcomes_used_in_state_construction": false
+  },
+  "clean_path": {
+    "fresh_topic_path": true,
+    "legacy_selection_models_treatment": "PRE_LITERATURE_CONTAMINATED_OR_OUT_OF_SCOPE; not used as confirmatory evidence",
+    "no_target_return_inspection_preceded_this_gate": true,
+    "no_selection_rule_backtest_preceded_this_gate": true
+  },
+  "reviewer": "ChatGPT / HENGCE research assistant",
+  "review_date": "2026-11-02",
+  "no_model_or_backtest_preceded_gate": true,
+  "authority_consequence": "PREREGISTRATION_ALLOWED_ONLY",
+  "does_not_authorize": [
+    "state-specific selection rules",
+    "state-specific experts",
+    "threshold tuning",
+    "multiple-horizon search",
+    "production promotion",
+    "BUY/SELL authority",
+    "capital authority"
+  ]
+}
