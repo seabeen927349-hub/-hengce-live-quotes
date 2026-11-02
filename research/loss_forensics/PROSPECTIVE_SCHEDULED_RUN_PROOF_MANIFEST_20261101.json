@@ -16,6 +16,14 @@
       "git pull target fixed to research/loss-forensics-20261101",
       "git push target fixed to research/loss-forensics-20261101"
     ],
+    "data_entitlement": {
+      "status": "USER_REPORTED_LIMITATION_NOT_INDEPENDENTLY_VERIFIED",
+      "user_report": "CURRENT_FUGLE_SUBSCRIPTION_TIER_REQUIRES_ADDITIONAL_PAYMENT_FOR_FULL_TAIWAN_EQUITY_REALTIME_DATA",
+      "full_market_realtime_coverage_established": false,
+      "separate_from_scheduled_execution_proof": true,
+      "scheduled_success_alone_proves_full_market_realtime_coverage": false,
+      "subscription_upgrade_authorized": false
+    },
     "manual_dispatch": {
       "status": "NOT_EXECUTED_TOOL_CAPABILITY_BLOCKED",
       "run_id": null,
@@ -78,10 +86,13 @@
       "run is not workflow_dispatch or rerun",
       "artifact is not backfilled and actual-known timestamps are not backdated"
     ],
-    "manual_dispatch_alone_can_upgrade": false
+    "manual_dispatch_alone_can_upgrade": false,
+    "fugle_data_entitlement_is_separate_gate": true,
+    "verified_scheduled_collection_implies_full_market_realtime_entitlement": false
   },
   "authority": {
     "fugle_live": "SHADOW_INTRADAY_ESCAPE_RESEARCH_ONLY_NO_FORMAL_EOD_RANKING_OR_TRADING_AUTHORITY",
+    "fugle_full_market_realtime_coverage": "NOT_ESTABLISHED",
     "production_authority": "NONE",
     "trading_authority": "NONE"
   }
