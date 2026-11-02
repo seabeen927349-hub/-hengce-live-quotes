@@ -2,13 +2,17 @@
 
 Status: **GLOBAL / FAIL-CLOSED / SUPERSEDES SILENT MODEL-FIRST PRACTICE**  
 Effective date: 2026-11-02 (Asia/Taipei)  
-Human directive: **No HENGCE research may enter model construction/versioning before the relevant literature review is completed and auditable.**
+Human directive: **No HENGCE research may enter model construction/versioning before the relevant literature review is completed and auditable. For Taiwan-equity research, this includes a broad Taiwan Stock Market Master Corpus foundation, not only literature about the current hypothesis.**
 
 ## 1. Non-negotiable rule
 
 For every new HENGCE research question, mechanism, feature family, strategy, model, overlay, regime rule, selection rule, exit rule, scoring rule, threshold family, or behavioral hypothesis:
 
 > **READ THE RELEVANT LITERATURE FIRST. MODEL SECOND.**
+
+For Taiwan-equity research, a second rule is equally binding:
+
+> **DO NOT NARROW THE LITERATURE TO THE CURRENT IDEA. MAINTAIN AND READ THE BROADER TAIWAN-STOCK EMPIRICAL CORPUS.**
 
 The literature gate is a prerequisite, not a post-hoc citation exercise. Research findings, papers, theses, reports, null results, counterevidence, identification problems, and limitations must be reviewed **before** model construction or empirical search is allowed.
 
@@ -40,9 +44,10 @@ Forbidden before the gate passes:
 - silent retuning or rescuing a failed family;
 - candidate acceptance/promotion;
 - using an abstract, search snippet, table of contents, news article, or secondary summary as if the underlying study had been fully read;
-- excluding weak/null/contradictory evidence because it harms a preferred narrative.
+- excluding weak/null/contradictory evidence because it harms a preferred narrative;
+- restricting the literature search to the current favored mechanism while leaving materially relevant Taiwan-stock domains unreviewed.
 
-Only after an auditable topic-level `LITERATURE_GATE.json` passes the machine contract may the topic enter:
+Only after the required literature gates pass may the topic enter:
 
 `PREREGISTRATION_ALLOWED`
 
@@ -65,7 +70,48 @@ A source may be marked `FULL_READ` only when the accessible full text has been r
 
 If the full text is inaccessible or the table/robustness audit is incomplete, the source must remain `PARTIAL` or `FOUND_ONLY`. No status inflation is permitted.
 
-## 4. Completion standard for a topic
+## 4. Taiwan Stock Market Master Corpus Foundation
+
+For any HENGCE research whose target universe or mechanism concerns Taiwan equities, there is a **master-corpus prerequisite** in addition to the topic-specific review.
+
+The persistent Taiwan Stock Market Master Corpus must cover materially relevant empirical Taiwan-stock research across at least:
+
+- asset pricing / return anomalies / factor models;
+- behavioral finance / investor behavior;
+- institutional / foreign / fund flow;
+- ownership / chip / concentration;
+- market microstructure / order flow;
+- liquidity / transaction costs;
+- margin / short selling / securities lending / leverage;
+- volatility / crash / tail risk;
+- momentum / reversal / reference points;
+- information / news / earnings / revenue / dividends / events;
+- fundamentals / accounting / valuation;
+- corporate governance / ownership structure;
+- industry / supply-chain / lead-lag information diffusion;
+- analysts / media / attention;
+- IPO / SEO / index / ETF effects;
+- derivatives / equity price discovery where informative for equities;
+- regulation / market design / price limits / tax / continuous trading reforms;
+- regime / crisis / macro conditions;
+- technical trading / trading rules;
+- cross-market / international spillovers.
+
+This is **not** permission to claim that every Taiwan-stock paper ever written has been found. Literal exhaustiveness cannot be proven. Instead, the corpus must use continuous broad search, topic classification, primary-source retrieval, counterevidence retention, and saturation assessment.
+
+For Taiwan-equity model work, the master foundation remains `BLOCKED` until all P1 master domains are at least `PROVISIONALLY_SATURATED`, with material accessible primary studies, major null/counterevidence, and known replications represented. A topic-specific literature gate cannot waive an unsatisfied master-foundation gate.
+
+A currently fashionable mechanism — for example 52-week high, sentiment, foreign flow, or any other single idea — must not crowd out unrelated Taiwan-stock evidence.
+
+Canonical master ledger:
+
+`/HENGCE_CANONICAL/RESEARCH/TAIWAN_STOCK_MARKET/HENGCE_TAIWAN_STOCK_MARKET_MASTER_LITERATURE_LEDGER_v1.xlsx`
+
+The prior behavioral-finance ledger remains a preserved subset, not the overall authority:
+
+`/HENGCE_CANONICAL/RESEARCH/BEHAVIORAL_FINANCE/HENGCE_TAIWAN_BEHAVIORAL_FINANCE_LITERATURE_LEDGER_v1.xlsx`
+
+## 5. Completion standard for a topic
 
 `LITERATURE_COMPLETE=PASS` does **not** mean "all papers ever written." It means a bounded, documented review has reached the following minimum standard:
 
@@ -83,18 +129,20 @@ If the full text is inaccessible or the table/robustness audit is incomplete, th
 
 A topic may pass with documented scientific disagreement. It may **not** pass with unsearched counterevidence, unresolved source identity, or abstract-only claims masquerading as full reads.
 
-## 5. Required topic-level evidence before modeling
+## 6. Required topic-level evidence before modeling
 
 Every project that moves beyond documentation/data-only work must contain a machine-readable `LITERATURE_GATE.json` at the project root with at least:
 
 - `literature_review_complete: true`;
 - `literature_status: "PASS"`;
 - topic/scope/search boundary;
-- canonical ledger reference and version/snapshot identifier;
+- canonical Taiwan-stock master-ledger reference and version/snapshot identifier when applicable;
+- topic-specific evidence subset / ledger reference;
 - counts of FULL_READ / PARTIAL / FOUND_ONLY;
 - confirmation that counterevidence and null results were included;
 - confirmation that limitations/identification threats were recorded;
 - confirmation that abstracts were not promoted to FULL_READ;
+- master-domain saturation status when the research concerns Taiwan equities;
 - saturation assessment;
 - unresolved material conflicts/gaps;
 - reviewer/date;
@@ -102,46 +150,48 @@ Every project that moves beyond documentation/data-only work must contain a mach
 
 The gate validates **process authority only**. It is not evidence that the literature claim is true, and it does not authorize production, capital, holdout access, or candidate acceptance.
 
-## 6. Anti-retrofit rule
+## 7. Anti-retrofit rule
 
 A literature review created after a model has already been designed or tuned cannot retroactively certify that model as literature-first.
 
 If model-first work already exists, it must be labeled `PRE_LITERATURE_CONTAMINATED`. It may be retained for audit/history but cannot be treated as clean confirmatory evidence. A fresh preregistered path is required after the literature gate passes.
 
-## 7. Cross-chat / cross-branch continuity
+## 8. Cross-chat / cross-branch continuity
 
-Literature evidence must live in a persistent canonical ledger, not only in conversation memory. New chats and branches must retrieve the latest ledger before continuing the topic and must write newly read sources back to that ledger.
+Literature evidence must live in a persistent canonical ledger, not only in conversation memory. New chats and branches must retrieve the latest master ledger before continuing Taiwan-stock literature work and must write newly read sources back to the persistent ledger.
 
-For the current Taiwan behavioral-finance program, the canonical persistent ledger is:
+For Taiwan-equity research, the master authority pointer is:
 
-`/HENGCE_CANONICAL/RESEARCH/BEHAVIORAL_FINANCE/HENGCE_TAIWAN_BEHAVIORAL_FINANCE_LITERATURE_LEDGER_v1.xlsx`
+`/HENGCE_CANONICAL/RESEARCH/TAIWAN_STOCK_MARKET/HENGCE_TAIWAN_STOCK_MARKET_MASTER_LITERATURE_LEDGER_v1.xlsx`
 
-This path is a Library authority pointer; GitHub manifests should record the exact ledger version/snapshot used for a given preregistration.
+Topic/subfield ledgers may continue to exist as subordinate views. GitHub manifests should record the exact master-ledger and topic-ledger versions/snapshots used for a given preregistration.
 
-## 8. Relationship to existing HENGCE governance
+## 9. Relationship to existing HENGCE governance
 
 This constitution is an **upstream prerequisite**. Existing rules on PIT observability, no-lookahead, preregistration, variant budgets, append-only research ledgers, holdout custody, OOS validation, production promotion, and capital authority remain in force.
 
 Passing literature review does not weaken any downstream gate.
 
-Order of authority for a new research topic:
+Order of authority for Taiwan-equity research:
 
-1. `LITERATURE_REVIEW_ONLY`
-2. `LITERATURE_COMPLETE=PASS`
-3. preregistration / hypothesis freeze
-4. data-lineage / PIT capability validation
-5. bounded empirical testing
-6. robustness / counterexample tests
-7. OOS / prospective validation as applicable
-8. promotion review under existing HENGCE authority
+1. `TAIWAN_STOCK_MASTER_CORPUS_FOUNDATION`
+2. master P1 domains at least `PROVISIONALLY_SATURATED`
+3. `TOPIC_LITERATURE_REVIEW_ONLY`
+4. topic `LITERATURE_COMPLETE=PASS`
+5. preregistration / hypothesis freeze
+6. data-lineage / PIT capability validation
+7. bounded empirical testing
+8. robustness / counterexample tests
+9. OOS / prospective validation as applicable
+10. promotion review under existing HENGCE authority
 
-Skipping step 2 invalidates clean research provenance for the topic.
+Skipping the master or topic literature gate invalidates clean research provenance for the topic.
 
-## 9. No-good-news exception
+## 10. No-good-news exception
 
 A compelling idea, a strong backtest, an intuitive story, a user suggestion, a famous investor claim, a large effect size, or a surprising chart is **not** an exception. Strong-looking results increase the need for literature and counterevidence review; they do not waive it.
 
-## 10. Amendment rule
+## 11. Amendment rule
 
 This gate is frozen as a global HENGCE principle. Weakening or bypassing it requires:
 
