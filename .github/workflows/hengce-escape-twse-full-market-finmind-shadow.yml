@@ -4,17 +4,21 @@ name: HENGCE Escape TWSE Common FinMind Shadow
   pull_request:
     paths:
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
+      - 'scripts/hengce_escape_intraday_monitor_adapter.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   workflow_dispatch:
+  schedule:
+    - cron: "*/5 1-4 * * 1-5"
+    - cron: "0-30/5 5 * * 1-5"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: hengce-escape-twse-common-finmind-shadow-${{ github.ref }}
+  group: hengce-escape-twse-common-finmind-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -26,17 +30,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install official FinMind client
         run: python -m pip install --disable-pip-version-check finmind-mcp
-      - name: Compile shadow vessel and session-context helper
+      - name: Compile monitor vessel
         run: |
           python -m py_compile scripts/hengce_finmind_twse_common_snapshot_probe.py
           python -m py_compile scripts/hengce_twse_session_status_probe.py
           python -m py_compile scripts/hengce_escape_finmind_twse_common_shadow.py
+          python -m py_compile scripts/hengce_escape_intraday_monitor_adapter.py
       - name: Build non-raw aggregate shadow context
         shell: bash
         run: |
@@ -46,6 +53,14 @@ jobs:
           python scripts/hengce_escape_finmind_twse_common_shadow.py \
             --context /tmp/hengce-finmind-shadow/context.json \
             --status /tmp/hengce-finmind-shadow/status.json
+      - name: Build intraday monitor payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_escape_intraday_monitor_adapter.py \
+            --context /tmp/hengce-finmind-shadow/context.json \
+            --status /tmp/hengce-finmind-shadow/status.json \
+            --out /tmp/hengce-finmind-shadow/intraday_monitor.json
       - name: Assert authority and frozen metric boundary
         shell: bash
         run: |
@@ -57,6 +72,7 @@ jobs:
           root=Path('/tmp/hengce-finmind-shadow')
           context=json.loads((root/'context.json').read_text(encoding='utf-8'))
           status=json.loads((root/'status.json').read_text(encoding='utf-8'))
+          monitor=json.loads((root/'intraday_monitor.json').read_text(encoding='utf-8'))
           for x in (context,status):
               assert x['metric_contract_sha256']==EXPECTED_METRIC_SHA
               assert x['intraday_metric_role']=='PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY'
@@ -93,34 +109,60 @@ jobs:
           assert context['market']['constituent_count'] == context['active_required_count']
           assert context['market']['return_observed_count'] == status['finmind_metric_observation_count']
           assert 0 < status['current_market_date_ratio'] <= 1
+          assert monitor['schema']=='HENGCE_ESCAPE_INTRADAY_MONITOR_V1'
+          assert monitor['monitor_state']=='LIVE_CONTEXT_READY'
+          assert monitor['metric_contract_sha256']==EXPECTED_METRIC_SHA
+          assert monitor['active_universe_transport_full_coverage'] is True
+          assert monitor['formal_escape_level'] is None
+          assert monitor['formal_escape_authority'] is False
+          assert monitor['formal_eod_authority'] is False
+          assert monitor['feature_detector_input_authority'] is False
+          assert monitor['trading_authority'] is False
+          assert monitor['canonical_eod_legs_replaced'] is False
+          assert monitor['quality']['raw_finmind_rows_persisted'] is False
+          assert monitor['quality']['per_security_rows_persisted'] is False
           print(json.dumps({
-              'state': status['state'],
-              'metric_contract_sha256': status['metric_contract_sha256'],
-              'intraday_metric_role': status['intraday_metric_role'],
-              'feature_detector_input_authority': status['feature_detector_input_authority'],
-              'formal_metric_authority': status['formal_metric_authority'],
-              'twse_common_master_count': status['twse_common_master_count'],
-              'active_required_count': status['active_required_count'],
-              'unexpected_missing_count': status['unexpected_missing_count'],
-              'exempt_missing': status['exempt_missing'],
-              'session_context_count': status['session_context_count'],
-              'session_context_ratio': status['session_context_ratio'],
-              'finmind_metric_observation_count': status['finmind_metric_observation_count'],
-              'metric_unknown_count': status['metric_unknown_count'],
-              'metric_unknown_sample': status['metric_unknown_sample'],
-              'twse_mis_secondary_session_status': status['twse_mis_secondary_session_status'],
-              'twse_mis_session_verified_count': status['twse_mis_session_verified_count'],
-              'twse_mis_session_unresolved_count': status['twse_mis_session_unresolved_count'],
-              'latest_source_timestamp': status['latest_source_timestamp'],
-              'market': context['market'],
-              'industry_bucket_count': len(context['industry']),
-              'context_payload_sha256': status['context_payload_sha256'],
+              'monitor_state': monitor['monitor_state'],
+              'market_date': monitor['market_date'],
+              'active_required_count': monitor['active_required_count'],
+              'finmind_metric_observation_count': monitor['finmind_metric_observation_count'],
+              'metric_unknown_count': monitor['metric_unknown_count'],
+              'latest_source_timestamp': monitor['latest_source_timestamp'],
+              'formal_escape_level': monitor['formal_escape_level'],
+              'formal_escape_authority': monitor['formal_escape_authority'],
+              'payload_sha256': monitor['payload_sha256'],
           }, ensure_ascii=False, sort_keys=True))
           PY
-      - name: Upload non-raw aggregate research receipt
+      - name: Upload non-raw aggregate monitor receipt
         uses: actions/upload-artifact@v4
         with:
-          name: hengce-finmind-twse-common-shadow
+          name: hengce-finmind-twse-common-monitor
           path: /tmp/hengce-finmind-shadow/*.json
           if-no-files-found: error
           retention-days: 7
+      - name: Publish latest aggregate monitor state
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p escape_live
+          cp /tmp/hengce-finmind-shadow/context.json escape_live/finmind_twse_common_context.json
+          cp /tmp/hengce-finmind-shadow/status.json escape_live/finmind_twse_common_status.json
+          cp /tmp/hengce-finmind-shadow/intraday_monitor.json escape_live/intraday_monitor.json
+          git config user.name "hengce-escape-bot"
+          git config user.email "hengce-escape-bot@users.noreply.github.com"
+          git add escape_live/finmind_twse_common_context.json escape_live/finmind_twse_common_status.json escape_live/intraday_monitor.json
+          if git diff --cached --quiet; then
+            echo "No aggregate monitor changes to publish"
+            exit 0
+          fi
+          git commit -m "data(escape): refresh FinMind aggregate intraday monitor"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            sleep $((attempt * 2))
+          done
+          echo "Unable to publish aggregate intraday monitor state"
+          exit 1
