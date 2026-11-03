@@ -1,0 +1,106 @@
+name: HENGCE Broker H20 Source-Only HHI Pass
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/broker-h20-frozen-execution-20261103
+    paths:
+      - .github/workflows/hengce_broker_h20_source_pass.yml
+      - research/broker_structure_20261103/hhi_extract/**
+      - research/broker_structure_20261103/source_pass/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-broker-h20-source-pass-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source-shard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-pass dependencies
+        run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]' numpy pandas pyarrow
+      - name: Syntax check source-only executor
+        run: python -m py_compile research/broker_structure_20261103/source_pass/run_broker_hhi_source_shard.py
+      - name: Run source-only HHI shard
+        run: |
+          python research/broker_structure_20261103/source_pass/run_broker_hhi_source_shard.py \
+            --extract-root research/broker_structure_20261103/hhi_extract \
+            --shard ${{ matrix.shard }} \
+            --total-shards 24 \
+            --output broker_hhi_source_shard_${{ matrix.shard }}.json
+      - name: Delete transient raw Broker objects
+        if: always()
+        run: rm -rf /tmp/hengce-broker-source-*
+      - name: Upload non-raw source shard receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: broker-hhi-source-shard-${{ matrix.shard }}
+          path: broker_hhi_source_shard_${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 6
+
+  aggregate-source-pass:
+    needs: source-shard
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: broker-hhi-source-shard-*
+          path: shard_results
+          merge-multiple: true
+      - name: Aggregate exact source coverage and derived HHI
+        id: aggregate
+        continue-on-error: true
+        run: |
+          python research/broker_structure_20261103/source_pass/aggregate_broker_hhi_source_pass.py \
+            --input-dir shard_results \
+            --panel-output broker_hhi_source_panel_1274x100.csv \
+            --lineage-output broker_hhi_source_lineage_1274.jsonl \
+            --receipt-output broker_hhi_source_pass_receipt.json
+      - name: Upload source-pass receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: broker-hhi-source-pass-receipt
+          path: broker_hhi_source_pass_receipt.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload derived HHI and lineage only after PASS
+        if: steps.aggregate.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: broker-hhi-derived-source-pass
+          path: |
+            broker_hhi_source_panel_1274x100.csv
+            broker_hhi_source_lineage_1274.jsonl
+            broker_hhi_source_pass_receipt.json
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
+      - name: Fail workflow if source pass did not pass
+        if: steps.aggregate.outcome != 'success'
+        run: exit 1
