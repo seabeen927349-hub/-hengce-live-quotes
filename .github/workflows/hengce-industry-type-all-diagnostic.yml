@@ -1,0 +1,58 @@
+name: HENGCE industry type ALL diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/selection-challenge-20261102
+    paths:
+      - 'scripts/hengce_industry_type_all_diagnostic.py'
+      - '.github/workflows/hengce-industry-type-all-diagnostic.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-industry-type-all-diagnostic
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/selection-challenge-20261102
+          fetch-depth: 0
+
+      - name: Run outcome-free TWSE structure diagnostic
+        run: python3 scripts/hengce_industry_type_all_diagnostic.py
+
+      - name: Validate authority boundary
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/industry_supply_chain_lead_lag_20261103/03_TYPE_ALL_DIAGNOSTIC_RESULT.json')
+          obj=json.loads(p.read_text(encoding='utf-8'))
+          assert obj['authority']=='DATA_FEASIBILITY_ONLY_NO_TRADING_AUTHORITY'
+          assert obj['forward_outcomes_used'] is False
+          assert len(obj['results'])==2
+          print('AUTHORITY_BOUNDARY_PASS')
+          PY
+
+      - name: Commit diagnostic result if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-research-bot'
+          git config user.email 'hengce-research-bot@users.noreply.github.com'
+          git add research/industry_supply_chain_lead_lag_20261103/03_TYPE_ALL_DIAGNOSTIC_RESULT.json
+          if git diff --cached --quiet; then
+            echo 'No diagnostic result change.'
+            exit 0
+          fi
+          git commit -m 'research: record TWSE type ALL industry diagnostic'
+          git push origin HEAD:research/selection-challenge-20261102
