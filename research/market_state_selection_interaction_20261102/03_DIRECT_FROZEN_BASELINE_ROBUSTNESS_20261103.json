@@ -1,0 +1,88 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "DIRECT_FROZEN_BASELINE_MARKET_STATE_ROBUSTNESS",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "status": "COMPLETED",
+  "purpose": "Directly validate whether the already-frozen simple Selection Core baselines behave differently across the already-frozen S5 Market States, without adding new features or continuing Industry/Supply-Chain data work.",
+  "upstream_frozen_baseline_contract": "HENGCE_SELECTION_CORE_NULL_BASELINE_CONTRACT_V1_20261031.md",
+  "frozen_baselines_used": {
+    "N1": "MOM20 TOP-k; here k=5 within the same PIT U100 used by the formal state-conditioning test",
+    "N2": "REV5 BOTTOM-k; here k=5 within the same PIT U100"
+  },
+  "market_state_source": "research/market_state_observation_20261102/14_S5_STATE_CLASSIFIER_FREEZE_20261102.json",
+  "data": {
+    "years": "2018-2026",
+    "source": "existing canonical TWSE_ELECTRONICS_YYYY.zip archives plus HENGCE_MARKET_ENVIRONMENT_OBSERVATION_MATRIX_V3.csv",
+    "fresh_market_downloads": false,
+    "industry_or_supply_chain_features_used": false,
+    "execution": "signal after close -> next TWSE open; H20 outcome as in formal state-conditioning implementation"
+  },
+  "N1_MOM20": {
+    "evidence_class": "FORMAL_PRIOR_PREREGISTERED_RESULT_REPRODUCED_EXACTLY",
+    "sample_n": 1986,
+    "DIFFUSE_NORMAL": {
+      "n": 1641,
+      "selected_mean_h20": 0.038181015368002134,
+      "u100_mean_h20": 0.015010757276478798,
+      "excess_mean_h20": 0.023170258091523337,
+      "excess_positive_fraction": 0.5332114564290067
+    },
+    "SYNCHRONIZED_STRESS": {
+      "n": 345,
+      "selected_mean_h20": 0.050526422667670406,
+      "u100_mean_h20": 0.05211075188523691,
+      "excess_mean_h20": -0.001584329217566494,
+      "excess_positive_fraction": 0.4608695652173913
+    },
+    "delta_stress_minus_normal": -0.02475458730908983,
+    "hac_lag20_p": 0.038035387022118304,
+    "hac_ci95": [-0.04814137975275434, -0.0013677948654252613],
+    "moving_block_bootstrap_ci95": [-0.04700400675170316, -0.0006962675800019758],
+    "early_delta_2018_2022": -0.028205898846635675,
+    "late_delta_2023_2026": -0.018211759546438628,
+    "conclusion": "MOMENTUM_SELECTION_EDGE_IS_MATERIALLY_WEAKER_IN_SYNCHRONIZED_STRESS"
+  },
+  "N2_REV5": {
+    "evidence_class": "DIRECT_ROBUSTNESS_CHECK_USING_PREEXISTING_FROZEN_BASELINE_RULE_NOT_PRIMARY_PREREGISTERED_STATE_TEST",
+    "sample_n": 2010,
+    "DIFFUSE_NORMAL": {
+      "n": 1649,
+      "selected_mean_h20": 0.015858656015802195,
+      "u100_mean_h20": 0.015403163254528366,
+      "excess_mean_h20": 0.00045549276127382934,
+      "excess_positive_fraction": 0.48211036992116435
+    },
+    "SYNCHRONIZED_STRESS": {
+      "n": 361,
+      "selected_mean_h20": 0.06218882476205046,
+      "u100_mean_h20": 0.049442285275130116,
+      "excess_mean_h20": 0.012746539486920344,
+      "excess_positive_fraction": 0.5290858725761773
+    },
+    "delta_stress_minus_normal": 0.012291046725646486,
+    "hac_lag20": {
+      "se": 0.007028164114282301,
+      "t": 1.7488275068405426,
+      "p": 0.08047363223867882,
+      "ci95": [-0.0014922098810039724, 0.026074303332296943]
+    },
+    "moving_block_bootstrap": {
+      "block_length": 20,
+      "resamples": 10000,
+      "seed": 20261102,
+      "ci95": [-0.0015290471093729547, 0.025825494257770067]
+    },
+    "early_delta_2018_2022": 0.01829221894878375,
+    "late_delta_2023_2026": 0.0014825218855616176,
+    "conclusion": "STRESS_REVERSAL_SIGNAL_SUGGESTIVE_BUT_NOT_ESTABLISHED"
+  },
+  "combined_interpretation": [
+    "Market State does not merely scale all stock-selection rules in the same direction.",
+    "The frozen MOM20 baseline has a clear positive cross-sectional edge in DIFFUSE_NORMAL and essentially no edge in SYNCHRONIZED_STRESS.",
+    "The frozen REV5 baseline has essentially no edge in DIFFUSE_NORMAL and a positive average edge in SYNCHRONIZED_STRESS, but its HAC and block-bootstrap 95% intervals still include zero and the late-period delta is near zero.",
+    "Therefore the current evidence supports state-dependent selection mechanism research, but does not authorize a Stress reversal expert or any state-specific trading rule."
+  ],
+  "industry_supply_chain_work": "STOPPED_BY_USER_DIRECTION_20261103",
+  "next_research_implication": "If continuing, preregister a clean state-conditioned baseline/challenger comparison before any additional state-specific rule is created; preserve untouched prospective/OOS evidence for promotion decisions."
+}
