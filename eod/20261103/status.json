@@ -19,7 +19,6 @@
   "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86",
   "margin_status": "PENDING",
   "margin_pending_reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
-  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
   "available_legs": [
     "price",
     "institutional"
@@ -28,13 +27,10 @@
     "margin"
   ],
   "error_legs": [],
-  "mother_status": "PENDING",
+  "mother_status": "COMPLETE",
   "mother_promotion_required": true,
-  "mother_pending_legs": [
-    "price",
-    "institutional"
-  ],
-  "downstream_ready": false,
+  "mother_pending_legs": [],
+  "downstream_ready": true,
   "three_leg_complete": false,
   "formal_complete_day": false,
   "status": "PARTIAL",
@@ -57,7 +53,7 @@
       "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
     }
   ],
-  "updated_at_taipei": "2026-11-03T17:39:51.866966+08:00",
+  "updated_at_taipei": "2026-11-03T17:48:09.877708+08:00",
   "broker_hhi_status": "PENDING",
   "broker_hhi_pending_reason": "BROKER_SOURCE_BEFORE_1830_TAIPEI",
   "broker_hhi_last_result": "PENDING_RESEARCH_AUXILIARY",
@@ -67,5 +63,12 @@
   "broker_hhi_model_authority_created": false,
   "broker_hhi_trading_authority_created": false,
   "broker_hhi_capital_authority_created": false,
-  "broker_order_execution": false
+  "broker_order_execution": false,
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "9a7a708d8019fd3f2190819c4da5a01050d1cd2a78ff0347d3846e2aff8f5357",
+  "mother_latest_date": "2026-11-03",
+  "mother_promoted_legs": [
+    "price",
+    "institutional"
+  ]
 }
