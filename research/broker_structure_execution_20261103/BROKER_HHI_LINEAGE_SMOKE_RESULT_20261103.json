@@ -1,0 +1,90 @@
+{
+  "all_dates_pass": true,
+  "all_duplicate_key_rows_zero": true,
+  "all_zero_or_negative_gross_stock_count_zero": true,
+  "artifact": "BROKER_HHI_LINEAGE_SMOKE_RESULT_20261103",
+  "authority": "DATA_AND_DERIVED_FEATURE_LINEAGE_ONLY_NO_FORWARD_RETURN_NO_MODEL_AUTHORITY",
+  "conclusion": "DAILY WHOLE-MARKET SPONSORPRO PARQUET -> FROZEN BROKER_GROSS_HHI_1D DERIVATION PATH PASSES CROSS-PERIOD LINEAGE SMOKE. THIS IS NOT AN ALPHA RESULT.",
+  "dates": [
+    {
+      "derived_factor_row_count": 2101,
+      "derived_factor_sha256": "45043dc6eab1ba113e7094a99673ba9c3e9ccb8f665f8ee38730bc9f6084c89f",
+      "duplicate_key_row_count": 0,
+      "requested_date": "2021-06-30",
+      "source_logical_content_sha256": "243aaee998cf4d47cd3c3e70657cf0acfaa3a0c376bf4ad6ced159f10ff60399",
+      "source_parquet_sha256": "6c3d1339a215b646423c2656f2d5612019f6185bec2bf6d5cf1427f821f1d91f",
+      "source_row_count": 507268,
+      "status": "PASS_DERIVED_FEATURE_LINEAGE_ONLY",
+      "unique_broker_id_count": 886,
+      "unique_stock_count": 2101,
+      "zero_or_negative_gross_stock_count": 0
+    },
+    {
+      "derived_factor_row_count": 2217,
+      "derived_factor_sha256": "5b56bda8462ea4204b22baaae52cd50c5bb533c6481417bb62883338e50c73d6",
+      "duplicate_key_row_count": 0,
+      "requested_date": "2022-10-31",
+      "source_logical_content_sha256": "486e04cc42dcede229a99caadd95d0468af7875eb897d417bfb67d408ca8a3c1",
+      "source_parquet_sha256": "aa707ea8d6c5191f44b5daf46d32230b5233dd469044e46cfb0e99f7b4ed4dc1",
+      "source_row_count": 306901,
+      "status": "PASS_DERIVED_FEATURE_LINEAGE_ONLY",
+      "unique_broker_id_count": 883,
+      "unique_stock_count": 2217,
+      "zero_or_negative_gross_stock_count": 0
+    },
+    {
+      "derived_factor_row_count": 2420,
+      "derived_factor_sha256": "ca5b309df7af2a420bc7d07597c103f95e010386cfe64fbaad3c891c95c1cddc",
+      "duplicate_key_row_count": 0,
+      "requested_date": "2024-01-02",
+      "source_logical_content_sha256": "5e8580688080be4c1fecb6b7d63472c28fb8868cd947b1034e09334a44beff4c",
+      "source_parquet_sha256": "53ac0154bbbd8613543825446815b514e10535e2127d6143296005c13bb60e67",
+      "source_row_count": 450700,
+      "status": "PASS_DERIVED_FEATURE_LINEAGE_ONLY",
+      "unique_broker_id_count": 857,
+      "unique_stock_count": 2420,
+      "zero_or_negative_gross_stock_count": 0
+    },
+    {
+      "derived_factor_row_count": 2735,
+      "derived_factor_sha256": "8114cdace4cd87293367bfdfa3a973c11f64f1371843e515c68e50c8c782ab92",
+      "duplicate_key_row_count": 0,
+      "requested_date": "2026-09-22",
+      "source_logical_content_sha256": "dff4803febd6e91a023aaf64abbf47b92b52099a0395ed5ac02c0c364c11f1d0",
+      "source_parquet_sha256": "6256cded6058d49d81e66559687d278b534fa05f16f356c0a925fd361ba07996",
+      "source_row_count": 579559,
+      "status": "PASS_DERIVED_FEATURE_LINEAGE_ONLY",
+      "unique_broker_id_count": 852,
+      "unique_stock_count": 2735,
+      "zero_or_negative_gross_stock_count": 0
+    }
+  ],
+  "execution_branch": "research/broker-execution-data-20261103",
+  "feature_formula": "sum_b(((buy_volume_b+sell_volume_b)/sum_b(buy_volume_b+sell_volume_b))^2)",
+  "frozen_feature": "BROKER_GROSS_HHI_1D",
+  "github_actions_run_id": 41586946649,
+  "hard_locks": {
+    "controls_loaded_into_factor_vessel": false,
+    "forward_returns_loaded": false,
+    "ranking_test_run": false,
+    "raw_licensed_rows_committed": false,
+    "threshold_tuning_run": false
+  },
+  "script_commit_first_added": "54861bd5e4314b30b6dfc87b4433412276515662",
+  "smoke_workflow_commit": "3d956a198242244c1274cdcebf61ce04c565d641",
+  "source_revision_class": "EVENT_DAY_FACT_RECONSTRUCTION",
+  "system": "HENGCE",
+  "u100_coverage_manual_audit": {
+    "audit_source": "local frozen_u100_nonbroker_panel.csv.gz intersect derived factor stock_id only",
+    "covered_per_date": 100,
+    "dates": [
+      "2021-06-30",
+      "2022-10-31",
+      "2024-01-02",
+      "2026-09-22"
+    ],
+    "forward_return_relationship_inspected": false,
+    "missing_per_date": 0,
+    "u100_per_date": 100
+  }
+}
