@@ -1,107 +1,112 @@
 #!/usr/bin/env python3
-"""Research-only structural probe for TWSE ISIN listed-equities classification.
+"""Research-only TWSE ISIN stock-universe structural probe.
 
-No raw HTML or security list is persisted. The output contains only aggregate
-counts and small samples needed to determine a defensible common-stock filter.
-No trading/model/Escape authority is granted.
+Queries TWSE ISIN classification directly for security type=stock, separately
+for the regular listed market and Taiwan Innovation Board. No raw HTML or full
+security list is persisted. Output is aggregate metadata/samples only.
 """
 
 from __future__ import annotations
 
 import collections
+import hashlib
 import json
 import re
 import urllib.request
 
 from bs4 import BeautifulSoup
 
-URL = "https://isin.twse.com.tw/isin/e_C_public.jsp?strMode=2"
-CODE_RE = re.compile(r"^[0-9A-Z]{4,6}$")
+BASE = "https://isin.twse.com.tw/isin/class_main.jsp?chklike=Y&issuetype=1&market={}"
+MARKETS = {"TWSE_LISTED": "1", "TWSE_TIB": "C"}
+FOUR_DIGIT = re.compile(r"[1-9]\d{3}")
 
 
 def clean(text: str) -> str:
     return " ".join(text.replace("\xa0", " ").split())
 
 
-def main() -> None:
+def fetch_market(label: str, market_code: str) -> list[dict[str, str]]:
+    url = BASE.format(market_code)
     req = urllib.request.Request(
-        URL,
-        headers={"User-Agent": "HENGCE-TWSE-ISIN-CLASS-PROBE/1.0", "Accept": "text/html"},
+        url,
+        headers={"User-Agent": "HENGCE-TWSE-ISIN-CLASS-PROBE/2.0", "Accept": "text/html"},
     )
-    with urllib.request.urlopen(req, timeout=45) as response:
+    with urllib.request.urlopen(req, timeout=30) as response:
         raw = response.read()
     soup = BeautifulSoup(raw, "html.parser")
-
-    rows = []
-    section = None
-    section_counts = collections.Counter()
-    cfi_counts = collections.Counter()
-    market_counts = collections.Counter()
-    section_cfi_counts = collections.Counter()
-    samples_by_cfi: dict[str, list[dict[str, str]]] = collections.defaultdict(list)
-
+    rows: list[dict[str, str]] = []
     for tr in soup.find_all("tr"):
         cells = [clean(cell.get_text(" ", strip=True)) for cell in tr.find_all(["td", "th"])]
-        if not cells:
+        # Current TWSE classification table: serial, ISIN, code, name, market,
+        # security type, industry, list/open date, CFI, remarks.
+        if len(cells) < 9:
             continue
-
-        # Section rows on this TWSE public page are single-cell labels such as "Stocks".
-        if len(cells) == 1 and cells[0]:
-            section = cells[0]
+        code = cells[2]
+        cfi = cells[8]
+        if not FOUR_DIGIT.fullmatch(code):
             continue
-
-        # Data rows are expected to expose code/name, ISIN, date, market, industry, CFI, remark.
-        if len(cells) < 6:
-            continue
-        first = cells[0]
-        parts = first.split(maxsplit=1)
-        if not parts or not CODE_RE.fullmatch(parts[0]):
-            continue
-        code = parts[0]
-        name = parts[1] if len(parts) > 1 else ""
-        isin = cells[1]
-        listed_date = cells[2]
-        market = cells[3]
-        industry = cells[4]
-        cfi = cells[5]
-        row = {
-            "code": code,
-            "name": name,
-            "isin": isin,
-            "listed_date": listed_date,
-            "market": market,
-            "industry": industry,
-            "cfi": cfi,
-            "section": section or "",
-        }
-        rows.append(row)
-        section_counts[row["section"]] += 1
-        cfi_counts[cfi] += 1
-        market_counts[market] += 1
-        section_cfi_counts[(row["section"], cfi)] += 1
-        if len(samples_by_cfi[cfi]) < 5:
-            samples_by_cfi[cfi].append({"code": code, "name": name, "market": market, "section": row["section"]})
-
+        rows.append(
+            {
+                "source_market": label,
+                "code": code,
+                "isin": cells[1],
+                "name": cells[3],
+                "market_text": cells[4],
+                "security_type_text": cells[5],
+                "industry_text": cells[6],
+                "listed_date": cells[7],
+                "cfi": cfi,
+            }
+        )
     if not rows:
-        raise RuntimeError("TWSE ISIN page produced no parsed security rows")
+        raise RuntimeError(f"TWSE ISIN stock query produced no four-digit rows for {label}")
+    return rows
 
-    four_digit = [r for r in rows if re.fullmatch(r"[1-9]\d{3}", r["code"])]
-    likely_common = [r for r in four_digit if r["cfi"].startswith("ES")]
 
+def digest(values: list[str]) -> str:
+    return hashlib.sha256("\n".join(sorted(values)).encode("utf-8")).hexdigest()
+
+
+def main() -> None:
+    per_market: dict[str, list[dict[str, str]]] = {}
+    for label, market_code in MARKETS.items():
+        per_market[label] = fetch_market(label, market_code)
+
+    all_rows = [row for rows in per_market.values() for row in rows]
+    code_counts = collections.Counter(row["code"] for row in all_rows)
+    duplicates = sorted(code for code, count in code_counts.items() if count > 1)
+    codes = sorted(code_counts)
+    cfi_counts = collections.Counter(row["cfi"] for row in all_rows)
+
+    market_receipts = {}
+    for label, rows in per_market.items():
+        market_codes = sorted({row["code"] for row in rows})
+        market_receipts[label] = {
+            "count": len(market_codes),
+            "codes_sha256": digest(market_codes),
+            "cfi_counts": dict(collections.Counter(row["cfi"] for row in rows).most_common()),
+            "sample": [
+                {"code": row["code"], "cfi": row["cfi"], "listed_date": row["listed_date"]}
+                for row in rows[:10]
+            ],
+        }
+
+    non_es = [row for row in all_rows if not row["cfi"].startswith("ES")]
     receipt = {
-        "schema": "HENGCE_TWSE_ISIN_EQUITY_CLASS_PROBE_V1",
-        "source": URL,
-        "parsed_security_rows": len(rows),
-        "four_digit_rows": len(four_digit),
-        "section_counts": dict(section_counts.most_common()),
-        "cfi_counts": dict(cfi_counts.most_common()),
-        "market_counts": dict(market_counts.most_common()),
-        "section_cfi_counts": [
-            {"section": section_name, "cfi": cfi, "count": count}
-            for (section_name, cfi), count in section_cfi_counts.most_common()
+        "schema": "HENGCE_TWSE_ISIN_STOCK_CLASS_PROBE_V2",
+        "source_template": BASE,
+        "query_contract": "issuetype=1(stock), market=1(TWSE listed) union market=C(TWSE Taiwan Innovation Board)",
+        "per_market": market_receipts,
+        "union_four_digit_count": len(codes),
+        "union_codes_sha256": digest(codes),
+        "cross_market_duplicate_count": len(duplicates),
+        "cross_market_duplicate_sample": duplicates[:20],
+        "union_cfi_counts": dict(cfi_counts.most_common()),
+        "non_es_cfi_count": len(non_es),
+        "non_es_sample": [
+            {"code": row["code"], "cfi": row["cfi"], "source_market": row["source_market"]}
+            for row in non_es[:20]
         ],
-        "cfi_samples": {key: value for key, value in sorted(samples_by_cfi.items())},
-        "four_digit_es_prefix_count": len(likely_common),
         "raw_html_retained": False,
         "formal_universe_authority": False,
         "trading_authority": False,
