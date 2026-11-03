@@ -1,0 +1,58 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "CURRENT_STATE_BROKER_TAPE_FEASIBILITY",
+  "branch": "research/broker-tape-feasibility-20261103",
+  "pre_state_head": "454aad57d36b99af725b9a7989c46a187d983b36",
+  "topic": "Broker Tape / 券商成交結構",
+  "research_status": "DATA_BLOCKED_TRANSPORT",
+  "formal_broker_outcome_test_exists": false,
+  "forward_returns_inspected_in_this_path": false,
+  "preregistration_frozen": false,
+  "canonical_mother": {
+    "sha256": "2879ebb756c524dbefa4c47258d58fd6fa138aefcced3c7abb3d46634070651b",
+    "rows": 1024443,
+    "range": ["2018-01-02", "2026-10-30"],
+    "latest_date_universe_count": 1092,
+    "latest_date_universe_sha256": "38285023ef4139482841c910b329acfe8c6a8b5cdba8cf3f95e2a466b1bad4d5"
+  },
+  "fugle_state": {
+    "same_connection_realtime_quote_2330": "PASS_NONEMPTY",
+    "content_specs_list": "PASS",
+    "FCNT000009_accessible": true,
+    "FCNT000106_accessible": true,
+    "FCNT000117_accessible": true,
+    "FCNT000009_actual_payloads": "EMPTY_ON_TESTED_SYMBOLS",
+    "FCNT000117_actual_payloads": "EMPTY_ON_TESTED_SYMBOLS_INCLUDING_6173_POSITIVE_CONTROL",
+    "non_broker_content_controls": "EMPTY",
+    "diagnosis": "CONTENT_RETRIEVAL_SUBSYSTEM_BLOCKED_OR_NOT_RETURNING_PAYLOAD; NOT_WHOLE_FUGLE_CONNECTION_FAILURE"
+  },
+  "official_source_boundary": {
+    "fugle_marketdata_rest_ownership_has_documented_broker_gini_endpoint": false,
+    "fugle_marketdata_rest_documented_ownership": ["ETF holdings", "institutional trades", "TDCC distribution"],
+    "fugle_paid_card_broker_concentration_exists": true,
+    "twse_current_day_broker_report_public": true,
+    "twse_historical_bulk_broker_report_is_paid_product": true,
+    "purchase_authorized": false,
+    "purchase_action_taken": false
+  },
+  "artifacts": [
+    "00_BROKER_TAPE_PIT_DATA_FEASIBILITY_AUDIT_20261103.json",
+    "01_BROKER_TAPE_REQUEST_MANIFEST_20261103.json",
+    "02_FUGLE_BROKER_CONTENT_TRANSPORT_DIAGNOSTIC_20261103.json",
+    "03_BROKER_TAPE_RESEARCH_SIDECAR_VESSEL_CONTRACT_20261103.json"
+  ],
+  "hard_locks": {
+    "do_not_run_1092_symbol_bulk_requests_while_transport_returns_empty": true,
+    "do_not_treat_empty_as_zero": true,
+    "do_not_scrape_or_reverse_engineer_authenticated_private_endpoints": true,
+    "do_not_buy_data": true,
+    "do_not_use_search_index_snippets_as_historical_panel": true,
+    "do_not_open_forward_returns": true,
+    "do_not_write_incremental_ranking_preregistration_until_feasibility_pass": true,
+    "do_not_assume_broker_equals_smart_money": true
+  },
+  "reopen_condition": "An authorized Fugle broker-content path returns at least one verifiable non-empty raw payload with date semantics and provenance. Then execute the frozen 1092-name request manifest through the research sidecar vessel, audit PIT/coverage/lineage, and only if that passes proceed to preregistration.",
+  "next_action_if_user_can_refresh_access": "Refresh/reconnect the authenticated Fugle content session or provide an authenticated Fugle web session through an approved browser profile; never provide credentials in chat.",
+  "conclusion": "BROKER_TAPE_REMAINS_UNTESTED_FOR_FORWARD_RETURN. DATA PRODUCT EXISTS, CANONICAL MOTHER AND DOWNLOAD VESSEL ARE READY, BUT FUGLE BROKER CONTENT TRANSPORT IS NOT YET DELIVERING RAW DATA."
+}
