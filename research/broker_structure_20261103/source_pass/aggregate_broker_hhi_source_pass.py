@@ -13,6 +13,17 @@ EXPECTED_U100 = 100
 EXPECTED_SHARDS = 24
 PREREG_COMMIT = '303b2e60501ecc93af6d3b67215f74d17795fa53'
 SOURCE_CLASS = 'EVENT_DAY_FACT_RECONSTRUCTION'
+DATASET = 'TaiwanStockTradingDailyReportSecIdAgg'
+SOURCE_PLAN = 'SponsorPro'
+MOTHER_SHA256 = '2879ebb756c524dbefa4c47258d58fd6fa138aefcced3c7abb3d46634070651b'
+EXPECTED_SCHEMA = {'date','stock_id','securities_trader_id','buy_volume','sell_volume','buy_price','sell_price'}
+REQUIRED_LINEAGE_FIELDS = {
+    'dataset','event_date','retrieval_timestamp_utc','retrieval_timestamp_taipei',
+    'query_or_download_mode','source_plan','row_count','unique_stock_id_count',
+    'unique_securities_trader_id_count','physical_object_sha256','logical_content_sha256',
+    'schema_field_list','canonical_mother_sha256','date_specific_mother_traded_symbol_count',
+    'observed_missing_among_mother_traded_symbols','source_revision_class',
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -90,9 +101,33 @@ def main() -> int:
                     panel_rows, lineage_rows, validation_errors = [], [], []
                     valid_counts, mother_missing_counts = [], []
                     for x in sorted(daily, key=lambda r: r['date_index']):
+                        d = x.get('date')
                         if x.get('status') != 'PASS_SOURCE_DATE_AUDIT':
-                            validation_errors.append(f"{x.get('date')}:STATUS:{x.get('status')}")
+                            validation_errors.append(f"{d}:STATUS:{x.get('status')}")
                             continue
+                        missing_lineage = sorted(REQUIRED_LINEAGE_FIELDS - set(x))
+                        if missing_lineage:
+                            validation_errors.append(f"{d}:LINEAGE_FIELDS_MISSING:{missing_lineage}")
+                            continue
+                        if x.get('dataset') != DATASET or x.get('source_plan') != SOURCE_PLAN or x.get('source_revision_class') != SOURCE_CLASS:
+                            validation_errors.append(f"{d}:SOURCE_IDENTITY_MISMATCH")
+                            continue
+                        if x.get('event_date') != d or x.get('canonical_mother_sha256') != MOTHER_SHA256:
+                            validation_errors.append(f"{d}:EVENT_DATE_OR_MOTHER_SHA_MISMATCH")
+                            continue
+                        for hk in ('physical_object_sha256','logical_content_sha256'):
+                            hv = str(x.get(hk, ''))
+                            if len(hv) != 64 or any(c not in '0123456789abcdef' for c in hv.lower()):
+                                validation_errors.append(f"{d}:{hk}:INVALID_SHA256")
+                        if not EXPECTED_SCHEMA.issubset(set(x.get('schema_field_list', []))):
+                            validation_errors.append(f"{d}:REQUIRED_SCHEMA_FIELDS_MISSING")
+                        try:
+                            row_count = int(x.get('row_count')); us = int(x.get('unique_stock_id_count')); ub = int(x.get('unique_securities_trader_id_count'))
+                            mc = int(x.get('date_specific_mother_traded_symbol_count')); mm = int(x.get('observed_missing_among_mother_traded_symbols'))
+                            if row_count <= 0 or us <= 0 or ub <= 0 or mc <= 0 or mm < 0 or mm > mc:
+                                validation_errors.append(f"{d}:LINEAGE_COUNT_RANGE_INVALID")
+                        except Exception:
+                            validation_errors.append(f"{d}:LINEAGE_COUNT_NOT_INTEGER")
                         h = x.get('hhi_by_stock', {})
                         invalid = x.get('u100_missing_feature_by_stock', {})
                         if len(h) + len(invalid) != EXPECTED_U100 or set(h).intersection(invalid):
