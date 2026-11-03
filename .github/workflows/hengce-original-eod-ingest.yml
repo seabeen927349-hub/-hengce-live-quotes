@@ -1,7 +1,8 @@
 name: HENGCE original EOD ingest
-# launcher-touch: 2026-11-03-original-vessel-two-published-legs
+# Existing HENGCE blood vessel. Broker HHI is a research auxiliary inside this
+# same eod/YYYYMMDD path; no parallel collector, mother, or universe.
 
-on:
+"on":
   workflow_dispatch:
     inputs:
       date:
@@ -12,6 +13,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/hengce-original-eod-ingest.yml'
+      - 'scripts/hengce_eod_broker_aux.py'
   schedule:
     - cron: '0 15 * * 1-5'
 
@@ -25,7 +27,9 @@ concurrency:
 jobs:
   ingest:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
     steps:
       - name: Checkout original HENGCE vessel
         uses: actions/checkout@v4
@@ -38,7 +42,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install original-vessel runtime dependencies
-        run: python -m pip install --disable-pip-version-check requests openpyxl
+        run: python -m pip install --disable-pip-version-check requests openpyxl 'finmind-mcp[parquet]' numpy pandas pyarrow
 
       - name: Resolve target date
         id: target
@@ -62,6 +66,15 @@ jobs:
           set -euo pipefail
           python scripts/hengce_eod_incremental_ingest.py --mode ingest --date '${{ steps.target.outputs.date }}'
 
+      - name: Capture Broker HHI inside the same original EOD vessel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_eod_broker_aux.py \
+            --mode capture \
+            --date '${{ steps.target.outputs.date }}' \
+            --eod-dir 'eod/${{ steps.target.outputs.compact }}'
+
       - name: Verify original-vessel output only
         shell: bash
         run: |
@@ -79,9 +92,34 @@ jobs:
           assert x.get('artifact')=='EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST', x
           assert x.get('parallel_eod_tree') is False, x
           assert x.get('second_mother') is False, x
+          assert x.get('parallel_universe') is False, x
           assert x.get('model_authority_created') is False, x
-          print(json.dumps({k:x.get(k) for k in ('target_date','price_status','price_rows','institutional_status','institutional_rows','margin_status','margin_rows','mother_status','three_leg_complete','downstream_ready')},ensure_ascii=False))
+          assert x.get('broker_hhi_blocks_core_three_leg_or_mother') is False, x
+          assert x.get('data_vessel_governance')=='ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR', x
+          if x.get('broker_hhi_status')=='COMPLETE':
+              dp=Path('eod')/c/'broker_hhi.csv'
+              rp=Path('eod')/c/'receipts'/'broker_hhi.json'
+              assert dp.is_file() and rp.is_file(), x
+              r=json.loads(rp.read_text(encoding='utf-8'))
+              assert r.get('source_revision_class')=='FORWARD_COLLECTED_VENDOR_SNAPSHOT', r
+              assert r.get('raw_broker_rows_persisted') is False, r
+              assert r.get('parallel_eod_tree') is False, r
+              assert r.get('second_mother') is False, r
+              assert r.get('parallel_universe') is False, r
+              assert r.get('blocks_core_three_leg_or_mother') is False, r
+              assert r.get('model_authority_created') is False, r
+              assert r.get('trading_authority_created') is False, r
+              assert r.get('capital_authority_created') is False, r
+          print(json.dumps({k:x.get(k) for k in (
+              'target_date','price_status','price_rows','institutional_status','institutional_rows',
+              'margin_status','margin_rows','broker_hhi_status','broker_hhi_rows',
+              'mother_status','three_leg_complete','downstream_ready'
+          )},ensure_ascii=False))
           PY
+
+      - name: Delete transient licensed Broker objects
+        if: always()
+        run: rm -rf /tmp/hengce-original-vessel-broker-*
 
       - name: Commit original eod tree
         shell: bash
