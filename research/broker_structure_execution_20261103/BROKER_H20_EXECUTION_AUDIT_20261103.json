@@ -1,0 +1,75 @@
+{
+  "anti_contamination": {
+    "horizon_rescue": false,
+    "lookback_tuning": false,
+    "missing_to_zero": false,
+    "named_broker_selection": false,
+    "outcome_values_used_in_lineage_repair": false,
+    "posthoc_sign_flip": false,
+    "state_rescue": false,
+    "threshold_optimization": false
+  },
+  "artifact": "BROKER_H20_EXECUTION_AUDIT_20261103",
+  "authority": "RESEARCH_AUDIT_ONLY_NO_PRODUCTION_OR_CAPITAL_AUTHORITY",
+  "comparison_to_targeted_stitch": {
+    "all_keys_identical": true,
+    "count_abs_hhi_diff_gt_1e_15": 0,
+    "max_abs_hhi_diff": 1.1102230246251565e-16,
+    "primary_judgment_fields_exactly_equal": true,
+    "regression_coefficients_all_dates_exactly_equal": true
+  },
+  "date_taipei": "2026-11-03",
+  "execution_branch": "research/broker-execution-data-20261103",
+  "execution_branch_head_before_canonical_write": "d7e75c3bf1ac54f7542c3c389e55829dda44c6a2",
+  "final_decision": "CANONICALIZE_RESEARCH_RESULT_ONLY; DO_NOT_PROMOTE_TO_TRADING_OR_PRODUCTION",
+  "formal_frozen_judge": {
+    "all_survival_requirements_pass": true,
+    "classification": "INCREMENTAL_VALUE_ESTABLISHED_RECONSTRUCTION_ONLY",
+    "daily_beta_sha256": "a5a895438e5ead679e44f526d18f97c27919131c9cef1a08fed76644587bcdcf",
+    "included_primary_dates": 1274,
+    "judgment_sha256": "1f3ef135751f6a49332285f4aa247f9ade859b0d3ec25f2a234c531dbe63c19c",
+    "panel_sha256": "b3d2bec734523e9a1911aadd8745f099646c89145651ae1c5d341ee46bc65839",
+    "status": "COMPLETE_FROZEN_H20_JUDGMENT"
+  },
+  "frozen_contract_blobs": {
+    "judge": "1f8a34f115741fef21ee04c3eb475cf3fb2712c0",
+    "pit_lineage": "144da48d29ad6db18d6f8fcec6aac9e26c0e4f7d",
+    "preregistration": "226d5e65b08434ab3b1fb58f8411e40661949789"
+  },
+  "independent_full_source_replay": {
+    "actions_artifact_digest_sha256": "4a51f4b0557caf20d63b14ec9fce19e93252d312b081f32f8b382a10777f5965",
+    "aggregate": "success",
+    "all_1274_date_status": "PASS_SOURCE_DATE_AUDIT",
+    "forward_returns_loaded": false,
+    "head_sha": "5e94b957669c7cb0811b282ee50ae11283429059",
+    "lineage_sha256": "e4863cfade5856e05a02265443646c01559ea229659e02287df13143d8d4856d",
+    "minimum_u100_valid_hhi_count": 100,
+    "raw_rows_persisted": false,
+    "required_lineage_fields_missing_count": 0,
+    "run_id": 41604113137,
+    "run_number": 8,
+    "source_panel_sha256": "f6095f922ca93031193bc96597bd3e96ab56f54fe9c294430aacc26165ca810c",
+    "source_pass_status": "PASS_SOURCE_AUDIT_DERIVED_HHI_READY",
+    "source_receipt_sha256": "4b1d04a09890124ea402a62a647728bdc612c2ce7025449c2730ac10865f0652",
+    "source_shards": "24/24 success",
+    "workflow_conclusion": "success"
+  },
+  "repair_audit": {
+    "repair_audit_path": "research/broker_structure_20261103/hhi_extract/U100_AUTHORITY_KEY_REPAIR_AUDIT.json",
+    "repair_builder_path": "research/broker_structure_20261103/source_pass/build_repaired_u100_extract.py",
+    "repair_overlay_path": "research/broker_structure_20261103/hhi_extract/u100_authority_key_repair.csv",
+    "repair_validation": "exactly 100 U100/date, U100 subset mother, repaired keyset SHA equals sealed keyset SHA before source retrieval",
+    "stale_export_mismatch": "12 stale-only and 12 sealed-only keys over 11 dates",
+    "targeted_dates": 11,
+    "targeted_dates_all_pass_100_of_100_hhi": true,
+    "targeted_run_id": 41604570285
+  },
+  "sealed_geometry": {
+    "keyset_sha256": "b0d010ba525f5ae9f93871c316da3ef6dedbd5ca4d64bafab3dac3281743b3d1",
+    "rows": 127400,
+    "signal_dates": 1274,
+    "u100_per_date": 100
+  },
+  "status": "PASS_CANONICAL_RESEARCH_RESULT_READY",
+  "system": "HENGCE"
+}
