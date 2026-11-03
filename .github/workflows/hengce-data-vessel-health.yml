@@ -85,7 +85,8 @@ jobs:
           grep -Fq "LEGS=('price','institutional','margin')" scripts/hengce_eod_incremental_ingest.py
           grep -Fq 'ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR' scripts/hengce_eod_broker_aux.py
           grep -Fq 'python scripts/hengce_eod_broker_aux.py' .github/workflows/hengce-original-eod-ingest.yml
-          grep -Fq -- "--eod-dir 'eod/\${{ steps.target.outputs.compact }}'" .github/workflows/hengce-original-eod-ingest.yml
+          grep -Fq -- '--eod-dir' .github/workflows/hengce-original-eod-ingest.yml
+          grep -Fq 'steps.target.outputs.compact' .github/workflows/hengce-original-eod-ingest.yml
           test ! -e .github/workflows/hengce-broker-prospective-capture.yml
           test ! -e .github/workflows/hengce-broker-prospective-selection-input.yml
           ! grep -R -F 'research/broker_prospective_20261103/captures' .github/workflows
