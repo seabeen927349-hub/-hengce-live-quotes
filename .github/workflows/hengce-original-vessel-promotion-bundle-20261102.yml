@@ -103,6 +103,16 @@ jobs:
           },ensure_ascii=False))
           PY
 
+      - name: Upload verified promotion input bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_ORIGINAL_VESSEL_PROMOTION_INPUT_20261102
+          path: |
+            eod/20261102/promotion_bundle_20261102.json.gz.b64
+            eod/20261102/promotion_bundle_20261102_manifest.json
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Commit verification bundle to repair branch only
         shell: bash
         run: |
@@ -110,5 +120,9 @@ jobs:
           git config user.name 'hengce-repair-bot'
           git config user.email 'hengce-repair-bot@users.noreply.github.com'
           git add eod/20261102/promotion_bundle_20261102.json.gz.b64 eod/20261102/promotion_bundle_20261102_manifest.json
-          git commit -m 'repair: package 2026-11-02 original-vessel promotion input'
-          git push origin HEAD:repair/original-vessel-promotion-20261103
+          if git diff --cached --quiet; then
+            echo 'Bundle unchanged; upload artifact only.'
+          else
+            git commit -m 'repair: package 2026-11-02 original-vessel promotion input'
+            git push origin HEAD:repair/original-vessel-promotion-20261103
+          fi
