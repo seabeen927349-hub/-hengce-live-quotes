@@ -302,6 +302,9 @@ def _fetch_finmind_current_equity_membership(target_date: str) -> tuple[dict[str
     if not isinstance(rows, list) or not rows:
         raise RuntimeError("FINMIND_TAIWAN_STOCK_INFO_EMPTY_OR_MALFORMED")
 
+    # FinMind explicitly documents that market transfers leave historical rows.
+    # Therefore current market membership is the latest date row PER stock_id.
+    # Do not require every stock's row date to equal today's date.
     latest_by_code: dict[str, dict[str, Any]] = {}
     for row in rows:
         if not isinstance(row, dict):
@@ -314,15 +317,11 @@ def _fetch_finmind_current_equity_membership(target_date: str) -> tuple[dict[str
         if old is None or d > str(old.get("date") or ""):
             latest_by_code[code] = row
 
-    all_latest_dates = [str(x.get("date") or "") for x in latest_by_code.values() if str(x.get("date") or "")]
-    if not all_latest_dates:
-        raise RuntimeError("FINMIND_TAIWAN_STOCK_INFO_HAS_NO_DATES")
-    report_date = max(all_latest_dates)
+    current_rows = [row for row in latest_by_code.values() if _is_equity_membership_row(row)]
+    if not current_rows:
+        raise RuntimeError("FINMIND_CURRENT_EQUITY_MEMBERSHIP_EMPTY")
+    latest_membership_date = max(str(row.get("date") or "") for row in current_rows)
 
-    current_rows = [
-        row for row in latest_by_code.values()
-        if str(row.get("date") or "") == report_date and _is_equity_membership_row(row)
-    ]
     markets: dict[str, list[str]] = {"twse": [], "tpex": [], "emerging": []}
     for row in current_rows:
         markets[str(row["type"]).strip().lower()].append(str(row["stock_id"]).strip())
@@ -344,9 +343,9 @@ def _fetch_finmind_current_equity_membership(target_date: str) -> tuple[dict[str
     meta = {
         "dataset": "TaiwanStockInfo",
         "endpoint": FINMIND_DATA_URL,
-        "report_date": report_date,
+        "latest_membership_date": latest_membership_date,
         "target_date": target_date,
-        "latest_row_rule": "MAX_DATE_PER_STOCK_ID_THEN_CURRENT_REPORT_DATE",
+        "latest_row_rule": "MAX_DATE_PER_STOCK_ID",
         "market_type_rule": "twse+tpex+emerging",
         "four_digit_equity_rule": FOUR_DIGIT_EQUITY.pattern,
         "twse_count": len(markets["twse"]),
@@ -545,7 +544,7 @@ def run(target_date: str, eod_dir: Path, exception_path: Path) -> dict[str, Any]
             "finmind_latest_timestamp": source.get("finmind_latest_timestamp"),
             "finmind_latest_lag_seconds": source.get("finmind_latest_lag_seconds"),
             "finmind_id_date_digest_sha256": source.get("finmind_id_date_digest_sha256"),
-            "all_taiwan_membership_report_date": membership.get("report_date"),
+            "all_taiwan_membership_latest_date": membership.get("latest_membership_date"),
             "all_taiwan_equity_membership_count": membership.get("all_taiwan_equity_count"),
             "twse_equity_membership_count": membership.get("twse_count"),
             "tpex_equity_membership_count": membership.get("tpex_count"),
