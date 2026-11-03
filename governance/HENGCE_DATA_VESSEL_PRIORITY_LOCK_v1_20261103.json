@@ -1,0 +1,42 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_DATA_VESSEL_PRIORITY_LOCK",
+  "version": "v1_20261103",
+  "status": "ACTIVE_HARD_GOVERNANCE",
+  "scope": "ALL_HENGCE_DATA_ACQUISITION_AND_ANALYSIS",
+  "purpose": "Prevent ad-hoc external downloads from bypassing configured HENGCE blood vessels and contaminating provenance, research, or trading analysis.",
+  "authority_order": [
+    "EXISTING_HENGCE_GOVERNED_VESSELS",
+    "HENGCE_CANONICAL_MOTHER_AND_LIBRARY_AUTHORITY",
+    "HENGCE_GITHUB_EOD_LIVE_AND_RECEIPTS",
+    "EXPLICIT_USER_AUTHORIZED_EXTERNAL_FETCH_ONLY"
+  ],
+  "hard_rules": {
+    "vessel_first": true,
+    "external_fetch_default_allowed": false,
+    "pending_is_terminal_state_for_current_analysis": true,
+    "not_ready_is_terminal_state_for_current_analysis": true,
+    "blocked_is_terminal_state_for_current_analysis": true,
+    "missing_is_not_permission_to_bypass": true,
+    "external_data_may_not_fill_vessel_gap_without_explicit_user_authorization": true,
+    "externally_seen_data_may_not_influence_hengce_conclusion_without_explicit_user_authorization": true,
+    "do_not_create_parallel_collector": true,
+    "do_not_create_parallel_mother": true,
+    "do_not_create_parallel_universe": true,
+    "preserve_provenance_receipts_hashes_and_promotion_chain": true
+  },
+  "required_behavior": {
+    "when_hengce_task_requests_data": "Use the already configured HENGCE vessel or canonical authority first and exclusively by default.",
+    "when_vessel_returns_pending_not_ready_blocked_or_missing": "Report that exact governed state and stop data substitution. Diagnose or repair the vessel only if requested or required; do not bypass it by downloading the same data externally.",
+    "when_external_source_is_known_to_have_data": "Do not fetch or import it merely because HENGCE is pending. Availability outside HENGCE does not create HENGCE authority.",
+    "when_user_explicitly_authorizes_external_fetch": "Keep the external result visibly separated as HENGCE-EXTERNAL, do not silently promote it into canonical data, and do not mutate governed model authority unless the normal vessel/promotion process is completed.",
+    "when_blood_vessel_is_broken": "Repair or inspect the existing vessel path. Never solve a vessel failure by building a replacement side channel unless the user explicitly authorizes a governance change."
+  },
+  "examples": {
+    "margin_leg_pending": "If eod/YYYYMMDD/status.json says margin=PENDING, the correct HENGCE answer is margin=PENDING. Do not browse TWSE or another vendor to fill the number.",
+    "finmind_or_fugle_available": "If an existing configured FinMind/Fugle HENGCE transport exists, use that transport rather than downloading directly from the provider website or unrelated API path.",
+    "research_missing_feature": "A missing feature remains unavailable until it arrives through the governed vessel or the user explicitly authorizes a new governed ingestion path."
+  },
+  "supersedence": "This lock governs data-acquisition route priority. It does not override stricter existing HENGCE governance; where rules conflict, the stricter provenance/no-bypass rule wins.",
+  "user_directive": "For HENGCE, configured blood vessels have priority for all downloads and data acquisition. Do not bypass them with ad-hoc assistant downloads unless the user explicitly says to do so for that case."
+}
