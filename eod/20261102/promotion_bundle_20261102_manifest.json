@@ -53,5 +53,6 @@
   "uncompressed_json_sha256": "0e521a016a8a535fa4a18b90d92f849baada4126307396d0462a7282e9703cfc",
   "gzip_sha256": "0e1922929c54981d941c00fe43055ab9b848d9bd3a914610a14ca831dcc5984f",
   "bundle_b64_sha256": "b1222b64a8f1855a2b5beda8cc71a126339e359c0c11a666b3428937467a3de0",
-  "bundle_b64_bytes": 197520
+  "bundle_b64_bytes": 197520,
+  "bundle_b64_lines": 49
 }
