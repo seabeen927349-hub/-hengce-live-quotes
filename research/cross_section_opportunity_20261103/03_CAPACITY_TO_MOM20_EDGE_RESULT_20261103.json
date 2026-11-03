@@ -1,0 +1,63 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "CAPACITY_TO_FROZEN_MOM20_EDGE_RESULT",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "preregistration_commit": "873297a3099f62c3bd97c27d18b0b7ba3722eeda",
+  "canonical_replay_gate": {
+    "status": "PASS_EXACT",
+    "n": 1986,
+    "normal_mean_excess_h20": 0.023170258091523337,
+    "stress_mean_excess_h20": -0.001584329217566494,
+    "delta_stress_minus_normal": -0.02475458730908983,
+    "hac_lag20_p": 0.038035387022118304
+  },
+  "primary_model": {
+    "formula": "MOM20_EXCESS_H20 ~ MAD_Z + STRESS + MAD_Z_x_STRESS",
+    "hac_lag": 20,
+    "n": 1986,
+    "r_squared": 0.01177056844267299,
+    "full": {
+      "B_NORMAL": {"coef": 0.0058602346792397545, "se": 0.010910071104695768, "p": 0.5911709704074866, "ci95": [-0.015523111754735072, 0.02724358111321458]},
+      "B_STRESS": {"coef": 0.0035738620963978404, "se": 0.0034794651830688077, "p": 0.3043593862168965, "ci95": [-0.0032457643478780887, 0.010393488540673769]},
+      "B_INTERACTION": {"coef": -0.002286372582841914, "se": 0.010747048744550175, "p": 0.8315264677894356, "ci95": [-0.023350201062256663, 0.018777455896572832]},
+      "B_STATE_AT_MAD0": {"coef": -0.027577610957382665, "se": 0.011229549529104522, "p": 0.014056846795586164, "ci95": [-0.04958712359703625, -0.005568098317729076]}
+    },
+    "early_2018_2022": {
+      "n": 1089,
+      "B_NORMAL": 0.0036364466194330498,
+      "B_STRESS": 0.0021066676454277143,
+      "B_INTERACTION": -0.0015297789740053355
+    },
+    "late_2023_2026": {
+      "n": 897,
+      "B_NORMAL": 0.005248020517845222,
+      "B_STRESS": 0.003231458631008232,
+      "B_INTERACTION": -0.00201656188683699
+    }
+  },
+  "descriptive_mad_terciles": {
+    "DIFFUSE_NORMAL": {
+      "LOW": {"n": 547, "mean_excess_h20": 0.021562474177657425, "positive_fraction": 0.5411334552102377},
+      "MID": {"n": 547, "mean_excess_h20": 0.028608464532795887, "positive_fraction": 0.5557586837294333},
+      "HIGH": {"n": 547, "mean_excess_h20": 0.01933983556411669, "positive_fraction": 0.5027422303473492}
+    },
+    "SYNCHRONIZED_STRESS": {
+      "LOW": {"n": 115, "mean_excess_h20": -0.009726257855246652, "positive_fraction": 0.3826086956521739},
+      "MID": {"n": 115, "mean_excess_h20": -0.001718785491189677, "positive_fraction": 0.46956521739130436},
+      "HIGH": {"n": 115, "mean_excess_h20": 0.0066920556937368455, "positive_fraction": 0.5304347826086957}
+    }
+  },
+  "formal_conclusion": "CAPACITY_DOES_NOT_MAP_TO_MOMENTUM_EDGE",
+  "interpretation": [
+    "Current cross-sectional MAD forecasts future raw differentiation capacity, but does not significantly condition the frozen MOM20 selector's H20 excess after controlling frozen Market State.",
+    "The Stress MAD-tercile descriptive gradient is not authoritative because the preregistered continuous Stress slope CI includes zero; no threshold rescue is allowed.",
+    "The next research question should distinguish raw dispersion magnitude from exploitable ranking structure, using preregistered rank persistence / rank IC / leader persistence diagnostics."
+  ],
+  "forbidden": [
+    "Create a high-MAD Stress trading rule from terciles",
+    "Claim high dispersion means high alpha",
+    "Promote MOM20 or any Stress expert",
+    "Call this untouched OOS"
+  ]
+}
