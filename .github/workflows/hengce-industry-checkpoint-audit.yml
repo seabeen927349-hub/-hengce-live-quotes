@@ -1,0 +1,61 @@
+name: HENGCE industry checkpoint audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/selection-challenge-20261102
+    paths:
+      - 'scripts/hengce_industry_checkpoint_audit.py'
+      - '.github/workflows/hengce-industry-checkpoint-audit.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-industry-checkpoint-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/selection-challenge-20261102
+          fetch-depth: 0
+
+      - name: Run outcome-free checkpoint audit
+        run: python3 scripts/hengce_industry_checkpoint_audit.py
+
+      - name: Validate authority boundary
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/industry_supply_chain_lead_lag_20261103/05_INDUSTRY_CHECKPOINT_AUDIT.json')
+          obj=json.loads(p.read_text(encoding='utf-8'))
+          assert obj['authority']=='DATA_FEASIBILITY_ONLY_NO_TRADING_AUTHORITY'
+          assert obj['forward_outcomes_used'] is False
+          assert obj['forward_return_gate']=='SEALED'
+          assert obj['daily_panel_cleared'] is False
+          assert obj['checkpoint_count']==186
+          print('AUTHORITY_BOUNDARY_PASS')
+          PY
+
+      - name: Commit checkpoint artifacts if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-research-bot'
+          git config user.email 'hengce-research-bot@users.noreply.github.com'
+          git add research/industry_supply_chain_lead_lag_20261103/04_INDUSTRY_CHECKPOINT_SNAPSHOTS.csv
+          git add research/industry_supply_chain_lead_lag_20261103/05_INDUSTRY_CHECKPOINT_AUDIT.json
+          if git diff --cached --quiet; then
+            echo 'No checkpoint artifact change.'
+            exit 0
+          fi
+          git commit -m 'research: record industry checkpoint PIT audit'
+          git push origin HEAD:research/selection-challenge-20261102
