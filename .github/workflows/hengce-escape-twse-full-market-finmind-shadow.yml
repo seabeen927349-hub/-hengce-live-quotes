@@ -44,16 +44,27 @@ jobs:
           python scripts/hengce_escape_finmind_twse_common_shadow.py \
             --context /tmp/hengce-finmind-shadow/context.json \
             --status /tmp/hengce-finmind-shadow/status.json
-      - name: Assert authority and persistence boundary
+      - name: Assert authority and frozen metric boundary
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           import json
           from pathlib import Path
+          EXPECTED_METRIC_SHA='1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281'
           root=Path('/tmp/hengce-finmind-shadow')
           context=json.loads((root/'context.json').read_text(encoding='utf-8'))
           status=json.loads((root/'status.json').read_text(encoding='utf-8'))
+          for x in (context,status):
+              assert x['metric_contract_sha256']==EXPECTED_METRIC_SHA
+              assert x['intraday_metric_role']=='PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY'
+              assert x['price_liquidity_shadow_only'] is True
+              assert x['feature_detector_input_authority'] is False
+              assert x['formal_metric_authority'] is False
+              assert x['rolling_metric_authority'] is False
+              assert x['one_day_change_rate_may_substitute_locked_ew_return'] is False
+              assert x['missing_as_zero_forbidden'] is True
+              assert x['source_binding_promotion_authority'] is False
           assert status['state']=='SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY'
           assert status['active_universe_transport_full_coverage'] is True
           assert status['unexpected_missing_count']==0
@@ -74,6 +85,10 @@ jobs:
           assert 0 < status['current_market_date_ratio'] <= 1
           print(json.dumps({
               'state': status['state'],
+              'metric_contract_sha256': status['metric_contract_sha256'],
+              'intraday_metric_role': status['intraday_metric_role'],
+              'feature_detector_input_authority': status['feature_detector_input_authority'],
+              'formal_metric_authority': status['formal_metric_authority'],
               'twse_common_master_count': status['twse_common_master_count'],
               'active_required_count': status['active_required_count'],
               'unexpected_missing_count': status['unexpected_missing_count'],
