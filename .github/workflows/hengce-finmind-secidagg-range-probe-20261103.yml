@@ -1,6 +1,12 @@
 name: HENGCE FinMind SecIdAgg long-range transport probe
 
 on:
+  push:
+    branches:
+      - 'research/broker-execution-data-20261103'
+    paths:
+      - '.github/workflows/hengce-finmind-secidagg-range-probe-20261103.yml'
+      - 'scripts/hengce_finmind_secidagg_range_probe.py'
   pull_request:
     branches: [main]
     paths:
