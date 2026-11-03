@@ -1,0 +1,189 @@
+{
+  "artifact": "BROKER_H20_FROZEN_RESULT_20261103",
+  "authority": "RETROSPECTIVE_RECONSTRUCTION_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "classification": "INCREMENTAL_VALUE_ESTABLISHED_RECONSTRUCTION_ONLY",
+  "date_taipei": "2026-11-03",
+  "formal_execution": {
+    "complete_panel_sha256": "b3d2bec734523e9a1911aadd8745f099646c89145651ae1c5d341ee46bc65839",
+    "control_coefficient_means_descriptive": {
+      "b_agg_flow5": -0.012889584119162651,
+      "b_liq20": 0.021741287502511378,
+      "b_mom20": 0.02576094238727335,
+      "b_rev5": -0.0021676489416522712
+    },
+    "daily_beta_csv_sha256": "a5a895438e5ead679e44f526d18f97c27919131c9cef1a08fed76644587bcdcf",
+    "early_included_dates": 375,
+    "excluded_date_status_counts": {
+      "INCLUDED_PRIMARY": 1274
+    },
+    "included_primary_dates": 1274,
+    "input_dates": 1274,
+    "judgment_json_sha256": "1f3ef135751f6a49332285f4aa247f9ade859b0d3ec25f2a234c531dbe63c19c",
+    "late_included_dates": 899,
+    "primary_broker": {
+      "all_survival_requirements_pass": true,
+      "bootstrap_ci_excludes_zero": true,
+      "early_mean_b_broker": 0.1135446185596033,
+      "early_sign": 1,
+      "full_sign": 1,
+      "hac": {
+        "ci95": [
+          0.05300957559589341,
+          0.11651788228027664
+        ],
+        "df_reference": 1273,
+        "finite_sample_correction": "T_OVER_T_MINUS_1_INTERCEPT_ONLY",
+        "hac_lag": 20,
+        "kernel": "BARTLETT",
+        "mean": 0.08476372893808502,
+        "p_two_sided": 1.9093256834232111e-07,
+        "reference_distribution": "STUDENT_T_DF_T_MINUS_1",
+        "se_hac_lag20": 0.016185992360022827,
+        "t_hac": 5.236857095487069
+      },
+      "hac_ci_excludes_zero": true,
+      "late_mean_b_broker": 0.0727583522883972,
+      "late_sign": 1,
+      "moving_block_bootstrap": {
+        "block_length": 20,
+        "ci95": [
+          0.054851157463122066,
+          0.11826176825923382
+        ],
+        "ci_method": "PERCENTILE_LINEAR",
+        "draws": 10000,
+        "scheme": "NONCIRCULAR_OVERLAPPING_MOVING_BLOCKS_TRUNCATE_TO_T",
+        "seed": 20261103
+      },
+      "temporal_sign_stability": true
+    },
+    "state_diagnostics": {
+      "DIFFUSE_NORMAL": {
+        "authority": "SECONDARY_DESCRIPTIVE_ONLY_CANNOT_RESCUE_PRIMARY",
+        "date_count": 1014,
+        "fraction_b_broker_gt_zero": 0.6972386587771203,
+        "mean_b_broker": 0.09323276920446527,
+        "median_b_broker": 0.08826781194098404,
+        "raw_broker_hhi_median_across_date_medians": 0.025413992576865677,
+        "raw_broker_hhi_median_iqr_across_dates": 0.023211668562253346
+      },
+      "SYNCHRONIZED_STRESS": {
+        "authority": "SECONDARY_DESCRIPTIVE_ONLY_CANNOT_RESCUE_PRIMARY",
+        "date_count": 260,
+        "fraction_b_broker_gt_zero": 0.6076923076923076,
+        "mean_b_broker": 0.051734471899202036,
+        "median_b_broker": 0.042867966629751064,
+        "raw_broker_hhi_median_across_date_medians": 0.029070367591833825,
+        "raw_broker_hhi_median_iqr_across_dates": 0.024446420931603024
+      }
+    },
+    "year_diagnostics": {
+      "2021": {
+        "date_count": 129,
+        "mean_b_broker": 0.10368799166438432
+      },
+      "2022": {
+        "date_count": 246,
+        "mean_b_broker": 0.11871333754124251
+      },
+      "2023": {
+        "date_count": 239,
+        "mean_b_broker": 0.08557976182687876
+      },
+      "2024": {
+        "date_count": 242,
+        "mean_b_broker": 0.10174902974356441
+      },
+      "2025": {
+        "date_count": 243,
+        "mean_b_broker": 0.030616541869714246
+      },
+      "2026": {
+        "date_count": 175,
+        "mean_b_broker": 0.07367491861921087
+      }
+    }
+  },
+  "frozen_authority": {
+    "frozen_judge": {
+      "git_blob_sha": "1f8a34f115741fef21ee04c3eb475cf3fb2712c0",
+      "path": "scripts/hengce_broker_frozen_h20_judge.py",
+      "sha256": "e33bfea256e98760b07f2de72ed978ac8099134b1de2ed4993bcd6f4232e68b4"
+    },
+    "pit_lineage_feature_contract": {
+      "git_blob_sha": "144da48d29ad6db18d6f8fcec6aac9e26c0e4f7d",
+      "path": "research/broker_structure_20261103/PIT_LINEAGE_FEATURE_CONTRACT.json"
+    },
+    "preregistration": {
+      "git_blob_sha": "226d5e65b08434ab3b1fb58f8411e40661949789",
+      "path": "research/broker_structure_20261103/PREREGISTRATION.json"
+    }
+  },
+  "full_replay_agreement": {
+    "comparison_reference_source_panel_sha256": "8073fcd1a1f48b210188ffec1ccef67226529c866a50b51117046138e535c97f",
+    "daily_regression_coefficient_series_exactly_equal": true,
+    "hhi_difference_count_gt_1e_15": 0,
+    "key_count_compared": 127400,
+    "keysets_identical": true,
+    "max_abs_hhi_difference": 1.1102230246251565e-16,
+    "only_observed_judgment_differences": "panel/daily-beta hashes and ~1e-17 descriptive raw-HHI IQR tails caused by float serialization",
+    "primary_inference_exactly_equal": true
+  },
+  "governance_consequence": "RECONSTRUCTION_INCREMENTAL_INFORMATION_ONLY; NO SIGNED TRADING RULE, NO TOP-K, NO THRESHOLD, NO NAMED BROKER, NO PRODUCTION/CAPITAL AUTHORITY",
+  "interpretation": {
+    "not_supported": [
+      "strict historical vendor-as-known-then PIT claim",
+      "untouched OOS or prospective validation claim",
+      "broker branch equals beneficial owner or smart money",
+      "signed directional trading rule",
+      "Top-k or threshold strategy",
+      "named-broker selection",
+      "production deployment",
+      "capital allocation"
+    ],
+    "supported": "In the revision-aware retrospective reconstruction, higher same-day broker-branch gross participation concentration contains stable incremental cross-sectional H20 ranking information beyond the frozen controls."
+  },
+  "next_legal_research_step": "If this family is to be promoted, freeze a new prospective source-vintage preregistration using FORWARD_COLLECTED_VENDOR_SNAPSHOT before testing any directional candidate; do not retroactively turn this reconstructed positive sign into a trading rule.",
+  "research_question": "Does same-day broker-branch gross participation concentration provide incremental cross-sectional ranking information beyond frozen HENGCE controls at H20?",
+  "sealed_inputs": {
+    "broker_h20_order_input_v3_npz_sha256": "3d37f8e778b4d02c899f5dd18e1153dc8f6dd3f312a8659b3f74cd43d5b602f6",
+    "broker_h20_upstream_input_npz_sha256": "035ab93ca1d3412e979c11afd4e2699b09e24cff9da7a5c6f43c003b0e5df219",
+    "sealed_u100_key_count": 127400,
+    "sealed_u100_keyset_sha256": "b0d010ba525f5ae9f93871c316da3ef6dedbd5ca4d64bafab3dac3281743b3d1"
+  },
+  "source_reconstruction": {
+    "branch": "research/broker-h20-frozen-execution-20261103",
+    "dates_with_any_mother_traded_source_missing": 72,
+    "dates_with_u100_valid_hhi_below_95": 0,
+    "derived_artifact_digest_sha256": "4a51f4b0557caf20d63b14ec9fce19e93252d312b081f32f8b382a10777f5965",
+    "derived_artifact_id": 13217606163,
+    "derived_hhi_rows": 127400,
+    "forward_returns_loaded_during_source_pass": false,
+    "github_actions_run_id": 41604113137,
+    "head_sha": "5e94b957669c7cb0811b282ee50ae11283429059",
+    "maximum_mother_traded_source_missing_count_on_any_date": 31,
+    "minimum_u100_valid_hhi_count_on_any_date": 100,
+    "raw_broker_rows_persisted": false,
+    "run_number": 8,
+    "signal_dates": 1274,
+    "source_lineage_sha256": "e4863cfade5856e05a02265443646c01559ea229659e02287df13143d8d4856d",
+    "source_panel_sha256": "f6095f922ca93031193bc96597bd3e96ab56f54fe9c294430aacc26165ca810c",
+    "source_receipt_sha256": "4b1d04a09890124ea402a62a647728bdc612c2ce7025449c2730ac10865f0652",
+    "source_revision_class": "EVENT_DAY_FACT_RECONSTRUCTION",
+    "workflow_conclusion": "success"
+  },
+  "status": "COMPLETE_FROZEN_H20_JUDGMENT",
+  "system": "HENGCE",
+  "u100_export_lineage_repair": {
+    "affected_signal_dates": 11,
+    "feature_or_threshold_changed": false,
+    "final_full_replay_supersedes_targeted_stitch": true,
+    "outcome_values_used_to_choose_repairs": false,
+    "reason": "Handoff u100_membership_segments_1274.csv disagreed with both sealed NPZ keysets.",
+    "repair_type": "DATA_LINEAGE_REPAIR_ONLY",
+    "sealed_only_key_count": 12,
+    "stale_export_sha256": "ffec3f112b9962b15cb7a85ebcd045713dd87f9633b3d052af7d25734ed2fd50",
+    "stale_only_key_count": 12,
+    "targeted_reconstruction_run_id": 41604570285
+  }
+}
