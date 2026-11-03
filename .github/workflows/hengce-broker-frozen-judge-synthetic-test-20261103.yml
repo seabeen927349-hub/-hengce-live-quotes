@@ -1,0 +1,64 @@
+name: HENGCE frozen broker judge synthetic-only test
+
+on:
+  push:
+    branches:
+      - 'research/broker-execution-data-20261103'
+    paths:
+      - '.github/workflows/hengce-broker-frozen-judge-synthetic-test-20261103.yml'
+      - 'scripts/hengce_broker_frozen_h20_judge.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy pandas scipy
+      - name: Compile frozen judge
+        run: python -m py_compile scripts/hengce_broker_frozen_h20_judge.py
+      - name: Generate synthetic-only panel
+        shell: bash
+        run: |
+          python - <<'PY'
+          import numpy as np, pandas as pd
+          rng=np.random.default_rng(12345)
+          rows=[]
+          dates=list(pd.bdate_range('2022-10-03',periods=25))+list(pd.bdate_range('2023-01-03',periods=25))
+          for d in dates:
+              n=100
+              broker=rng.random(n)
+              mom=rng.normal(size=n); rev=rng.normal(size=n); liq=rng.normal(size=n); flow=rng.normal(size=n)
+              y=0.35*broker+0.1*mom+rng.normal(scale=0.6,size=n)
+              state='DIFFUSE_NORMAL' if d.day%2 else 'SYNCHRONIZED_STRESS'
+              for i in range(n):
+                  rows.append({'date':d.strftime('%Y-%m-%d'),'ticker':f'{i:04d}',
+                      'H20_RETURN':y[i],'BROKER_GROSS_HHI_1D':broker[i],
+                      'MOM20':mom[i],'REV5_LOG':rev[i],'LIQ20':liq[i],
+                      'AGG_FLOW5':flow[i],'HENGCE_STATE_S5':state})
+          pd.DataFrame(rows).to_csv('/tmp/synthetic_panel.csv',index=False)
+          PY
+      - name: Run judge on synthetic data only
+        shell: bash
+        run: |
+          python scripts/hengce_broker_frozen_h20_judge.py \
+            --panel /tmp/synthetic_panel.csv \
+            --output /tmp/synthetic_result.json \
+            --daily-beta-output /tmp/synthetic_beta.csv
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/synthetic_result.json'))
+          assert r['status']=='COMPLETE_FROZEN_H20_JUDGMENT', r
+          assert r['date_counts']['included_primary_dates']==50, r
+          assert r['date_counts']['early_included_dates']==25, r
+          assert r['date_counts']['late_included_dates']==25, r
+          print('SYNTHETIC_JUDGE_TEST_PASS')
+          print(json.dumps({'classification':r['classification'],'date_counts':r['date_counts']},sort_keys=True))
+          PY
