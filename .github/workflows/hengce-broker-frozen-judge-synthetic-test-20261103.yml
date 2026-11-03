@@ -1,5 +1,6 @@
 name: HENGCE frozen broker judge synthetic-only test
 
+# Synthetic data only. This workflow cannot inspect the historical Broker outcome.
 on:
   push:
     branches:
