@@ -1,0 +1,28 @@
+{
+  "system": "HENGCE",
+  "artifact": "BROKER_H20_U100_EXPORT_REPAIR_AUDIT",
+  "authority": "DATA_LINEAGE_REPAIR_ONLY_NO_OUTCOME_VALUE_INSPECTION_NO_RETUNING",
+  "status": "REPAIR_REQUIRED",
+  "sealed_authority_inputs": {
+    "broker_h20_upstream_input_npz_sha256": "035ab93ca1d3412e979c11afd4e2699b09e24cff9da7a5c6f43c003b0e5df219",
+    "broker_h20_order_input_v3_npz_sha256": "3d37f8e778b4d02c899f5dd18e1153dc8f6dd3f312a8659b3f74cd43d5b602f6",
+    "sealed_keysets_identical": true,
+    "sealed_key_count": 127400,
+    "sealed_keyset_sha256": "b0d010ba525f5ae9f93871c316da3ef6dedbd5ca4d64bafab3dac3281743b3d1"
+  },
+  "stale_export": {
+    "handoff_path": "inputs/u100_membership_segments_1274.csv",
+    "handoff_sha256": "ffec3f112b9962b15cb7a85ebcd045713dd87f9633b3d052af7d25734ed2fd50",
+    "expanded_key_count": 127400,
+    "expanded_keyset_sha256": "c6687a8dc12fbf262318b7c70198fbd9792378826c1f1863cc7c84a57a306583",
+    "stale_only_key_count": 12,
+    "sealed_only_key_count": 12,
+    "affected_signal_date_count": 11
+  },
+  "repair_overlay": "u100_authority_key_repair.csv",
+  "repair_rows": 24,
+  "repair_rule": "Apply only the explicit REMOVE_STALE_EXPORT / ADD_SEALED_AUTHORITY actions before source HHI extraction; then require exactly 100 U100 tickers per signal date, U100 subset of frozen mother membership, and the expanded repaired keyset SHA256 to equal the sealed-authority keyset SHA256.",
+  "forward_return_values_inspected_for_this_repair": false,
+  "feature_or_threshold_changed": false,
+  "outcome_or_control_values_changed": false
+}
