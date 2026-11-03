@@ -1,0 +1,57 @@
+{
+  "system": "HENGCE",
+  "artifact": "ORIGINAL_VESSEL_PROMOTION_BUNDLE_MANIFEST",
+  "target_date": "2026-11-02",
+  "source_status_sha256": "2fdbf2571f3eaddad7fc9fd728ba77dab5f8fd5fc31295e6c631c9fc01de5617",
+  "legs": {
+    "price": {
+      "rows": 1092,
+      "shards": 9,
+      "shard_sha256": {
+        "price_1.csv": "1ea0da06d99dbb6bd88f96be1dc5efdebc252abe419a3db75965543aae337349",
+        "price_2.csv": "384200340cd87a88e4606ddd10fcaaf4a3be0dce3d25adb78c50358217070abd",
+        "price_3.csv": "5dbb991578b1469295bf5592e1f4b112073fec88e2f5126358782bc0d0af767d",
+        "price_4.csv": "e9151628ba0340770ad498454a7703e3fffb54c8c1e61fda9b7857b4f270044a",
+        "price_5.csv": "7b01930941f0a0cd0e395b05b0c2371d2ce823a0df3adc4c3754ebe82bed9aca",
+        "price_6.csv": "890edf92b841db2232fa8ab067e5098eed02ad80a7797c15022a7d0c9f28f457",
+        "price_7.csv": "9c93a72f86d3dbcf1731fc167b74d521840e817f5c85b794e59f4fa70d502386",
+        "price_8.csv": "86d4c99a7fa04759c848d496ce852e035628dfa7cdeed66a1669af8fba4469bf",
+        "price_9.csv": "7177552a304397b1a55f8d419f598799aff68de88b1af3bdbfd25b9a895dc076"
+      }
+    },
+    "institutional": {
+      "rows": 1079,
+      "shards": 9,
+      "shard_sha256": {
+        "institutional_1.csv": "72fc6d7c1f4052c54bfc8064b7af1d9ee8a0d80687bda705ed279c9447891d78",
+        "institutional_2.csv": "01f0152ad7e281bab1f4abb5255fbbfaf87561d5b623809341f856fa602a4a8f",
+        "institutional_3.csv": "c65d69a323d2a86d5e22f5b70034fda920ed4887c7d343716023fd9ed06f61b9",
+        "institutional_4.csv": "45c94038fb53606e2f99ec6e938e5f63b45d148b605dbf8d2557fce5fd54d569",
+        "institutional_5.csv": "be36284384632f273860dbfb7cac46058168906c897ef159b74b363474e093c4",
+        "institutional_6.csv": "5a68630c4b4ada193d56c1cca355bfd7b27423cba7ad4728f36ffef240601452",
+        "institutional_7.csv": "96372be944c9d86ea82b01f12574ff90cc776cbf1a76e2dce364a03eb283b44b",
+        "institutional_8.csv": "da667d9d3c5c8e7bb6a6f34188fd4b96d8ff2dee8284a467b2601ca41a8bc6c2",
+        "institutional_9.csv": "b4be28164a431125a2f08e1702656dad6b96cf243fcd732509aec8e343b9046d"
+      }
+    },
+    "margin": {
+      "rows": 1061,
+      "shards": 9,
+      "shard_sha256": {
+        "margin_1.csv": "c1bd3aa14cceef26cc2c8b55226fe76a03ab75cfdd4777ca6ad1ce6ceaab35ca",
+        "margin_2.csv": "1bb345cdb338fcc8d1bb7cd45110c8564025863f0b84ed21bc5a2739a6ab8898",
+        "margin_3.csv": "57bb313243e6e2fb8b6dfa09e5b59a3198a6b3417ee68fc66804138a37946d05",
+        "margin_4.csv": "5b1c315f14d18b54532f97376f050ec912b0d595ca12ad3d0440ecba4d363f7c",
+        "margin_5.csv": "803b73397851f11d765003162d7a0fd4ca6389bfe5bcd538a011d53a73012e1f",
+        "margin_6.csv": "4447a2be98e3829b1066b79cbc014410f6faac41bfccf2e6db19d4878453aa86",
+        "margin_7.csv": "efefc263a41625fcf0dfd9bbdbb9727acc2508bde182213a45943e1102985006",
+        "margin_8.csv": "c593bd98c977be0c9159b50d03c48f7ba3902f445e2ddb2ca69299e609ec9e56",
+        "margin_9.csv": "30326caef3ddf0a12c97b76bfd9c9fce459782ef7831ca20acdf1849f5492095"
+      }
+    }
+  },
+  "uncompressed_json_sha256": "0e521a016a8a535fa4a18b90d92f849baada4126307396d0462a7282e9703cfc",
+  "gzip_sha256": "0e1922929c54981d941c00fe43055ab9b848d9bd3a914610a14ca831dcc5984f",
+  "bundle_b64_sha256": "b1222b64a8f1855a2b5beda8cc71a126339e359c0c11a666b3428937467a3de0",
+  "bundle_b64_bytes": 197520
+}
