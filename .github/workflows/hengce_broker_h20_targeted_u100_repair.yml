@@ -1,0 +1,54 @@
+name: HENGCE Broker H20 Targeted U100 Repair Audit
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/broker-h20-frozen-execution-20261103
+    paths:
+      - .github/workflows/hengce_broker_h20_targeted_u100_repair.yml
+
+permissions:
+  contents: read
+
+jobs:
+  repaired-date:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 11
+      matrix:
+        date_idx: [94,273,320,335,349,379,546,561,788,824,1030]
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]' numpy pandas pyarrow
+      - name: Build repaired U100 extract from sealed authority keyset
+        run: |
+          python research/broker_structure_20261103/source_pass/build_repaired_u100_extract.py \
+            --source-root research/broker_structure_20261103/hhi_extract \
+            --output-root /tmp/hengce-h20-repaired-extract
+      - name: Reconstruct one affected source date
+        run: |
+          python research/broker_structure_20261103/source_pass/run_broker_hhi_source_shard.py \
+            --extract-root /tmp/hengce-h20-repaired-extract \
+            --shard ${{ matrix.date_idx }} \
+            --total-shards 1274 \
+            --output repaired_date_${{ matrix.date_idx }}.json
+      - name: Delete transient raw objects
+        if: always()
+        run: rm -rf /tmp/hengce-broker-source-* /tmp/hengce-h20-repaired-extract
+      - name: Upload non-raw repair receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: broker-hhi-u100-repair-${{ matrix.date_idx }}
+          path: repaired_date_${{ matrix.date_idx }}.json
+          if-no-files-found: error
+          retention-days: 7
