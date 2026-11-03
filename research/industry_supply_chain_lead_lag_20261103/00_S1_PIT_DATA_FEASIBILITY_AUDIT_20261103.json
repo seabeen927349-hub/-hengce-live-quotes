@@ -1,0 +1,68 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "INDUSTRY_SUPPLY_CHAIN_LEAD_LAG_S1_PIT_DATA_FEASIBILITY_AUDIT",
+  "branch": "research/selection-challenge-20261102",
+  "pre_audit_branch_head": "2e7c665af9c2a4fbea4dd6473b6029e581bbd4c8",
+  "authority": "RESEARCH_GOVERNANCE_ONLY_NO_TRADING_AUTHORITY",
+  "topic": "Industry / Supply Chain / Lead-Lag",
+  "upstream_literature_status": "PROVISIONALLY_SATURATED_P1",
+  "scope": "Bounded PIT/data-feasibility audit only. This artifact does not claim exhaustive global data absence.",
+  "hard_locks": {
+    "forward_returns": "SEALED_NOT_INSPECTED",
+    "target_return_discovery": false,
+    "backtest": false,
+    "challenger_defined": false,
+    "state_primitive_defined": false,
+    "expert_defined": false,
+    "threshold_search": false,
+    "ranking_search": false,
+    "production_authority": "NONE",
+    "trading_authority": "NONE"
+  },
+  "s1_verdict": "DATA_BLOCKED",
+  "reason_code": "PIT_SAFE_FIRM_RELATIONSHIP_NETWORK_NOT_VERIFIED",
+  "reason": "The P1 literature gate is complete enough to permit a PIT/data-feasibility audit, but the currently verified HENGCE inputs do not establish a historical point-in-time firm-to-firm supplier/customer relationship panel with directed edges, effective validity dates, historical vintages, and no-lookahead timing.",
+  "required_fields": {
+    "company_to_company_relationship_mapping": "NOT_VERIFIED_AVAILABLE",
+    "directed_upstream_downstream_edges": "NOT_VERIFIED_AVAILABLE",
+    "relationship_effective_start_end_dates": "NOT_VERIFIED_AVAILABLE",
+    "historical_vintage_or_archived_state": "NOT_VERIFIED_AVAILABLE",
+    "source_publication_or_revision_timestamp": "NOT_VERIFIED_AVAILABLE_AT_REQUIRED_EDGE_LEVEL",
+    "deterministic_no_lookahead_reconstruction": "NOT_ESTABLISHED"
+  },
+  "evidence": {
+    "current_library_authority": {
+      "artifact": "HENGCE_TAIWAN_STOCK_MARKET_MASTER_LITERATURE_CORPUS_v1_20261102.md",
+      "finding": "Industry / Supply Chain / Lead-Lag is PROVISIONALLY_SATURATED for P1; the next permitted stage is PIT/data-feasibility audit, not feature construction or return testing."
+    },
+    "historical_capability_audit": {
+      "branch": "research/selection-core-rebuild-20261031",
+      "artifact": "research/selection_core_rebuild/HENGCE_IF09_BOUNDED_CLOSURE_DATA_BLOCKED_20261031.json",
+      "historical_authority_head": "79fc0147a93ce2eb0817c489ae6bb4d912ed2dd4",
+      "finding": "TRUE_FIRM_NETWORK_MAPPING_ABSENT within the then-audited existing sources; relationship endpoints, direction, effective dates, historical vintages and PIT state were not verified. This historical artifact is evidence only and is not imported as current authority."
+    },
+    "current_bounded_recheck": {
+      "research_branch_head_checked": "2e7c665af9c2a4fbea4dd6473b6029e581bbd4c8",
+      "repo_relationship_dataset_found": false,
+      "library_dedicated_s1_closure_found_before_this_artifact": false,
+      "finding": "No new admissible PIT-safe firm relationship panel was identified in the bounded current repo/library recheck."
+    }
+  },
+  "forbidden_substitutions": [
+    "Do not backcast a current supplier/customer graph into historical dates.",
+    "Do not substitute broad industry membership or peer averages for true firm-to-firm supply-chain edges.",
+    "Do not infer relationship edges from contemporaneous price correlation, momentum, turnover, institutional flow, margin financing, or later-known outcomes.",
+    "Do not manually construct historical edges using information that was not demonstrably available at the observation date."
+  ],
+  "separate_family_note": "A historically versioned industry/sector hierarchy may be audited as a distinct information family, but it cannot silently substitute for a supply-chain network family and would require its own literature/PIT/preregistration chain.",
+  "reopen_conditions": [
+    "A source provides firm-to-firm relationship edges with explicit direction.",
+    "Historical relationship validity or archived vintages allow reconstruction of what was knowable at each observation date.",
+    "Publication/revision timing is sufficient to enforce a deterministic no-lookahead rule.",
+    "Coverage is measured for the intended Taiwan electronics universe before any forward return is inspected."
+  ],
+  "decision": "STOP_THIS_FAMILY_AT_S1_UNTIL_REOPEN_CONDITIONS_ARE_MET",
+  "market_state_interaction": "NOT_TESTED_FOR_THIS_FAMILY",
+  "note": "The previously observed Market State x generic selection interaction does not cure this data deficiency and does not authorize a state-conditioned Industry / Supply Chain / Lead-Lag challenger."
+}
