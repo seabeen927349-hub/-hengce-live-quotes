@@ -40,8 +40,7 @@ def main() -> int:
     a = ap.parse_args()
 
     files = sorted(glob.glob(str(Path(a.input_dir) / '*.json')))
-    shards = []
-    parse_errors = []
+    shards, parse_errors = [], []
     for p in files:
         try:
             shards.append(json.loads(Path(p).read_text(encoding='utf-8')))
@@ -49,7 +48,7 @@ def main() -> int:
             parse_errors.append(f'{Path(p).name}:{type(exc).__name__}:{exc}')
 
     receipt = {
-        'schema_version': 1,
+        'schema_version': 2,
         'system': 'HENGCE',
         'artifact': 'BROKER_HHI_SOURCE_ONLY_PASS_RECEIPT',
         'authority': 'DERIVED_SOURCE_FEATURE_AND_LINEAGE_ONLY_NO_OUTCOME_NO_TRADING_AUTHORITY',
@@ -57,6 +56,7 @@ def main() -> int:
         'source_revision_class': SOURCE_CLASS,
         'expected_signal_dates': EXPECTED_DATES,
         'expected_shards': EXPECTED_SHARDS,
+        'missingness_semantics': 'STOCK_DATE_FAIL_CLOSED; PRIMARY_COMPLETE_CASE_GATE_95_OF_100_IS_APPLIED_LATER_WITH_FROZEN_OUTCOME_AND_CONTROLS',
         'raw_broker_rows_persisted': False,
         'forward_returns_loaded': False,
         'status': 'FAIL_CLOSED',
@@ -72,35 +72,34 @@ def main() -> int:
         if sorted(shard_ids) != list(range(EXPECTED_SHARDS)):
             rc = fail(receipt, f'SHARD_ID_SET_INVALID:{sorted(shard_ids)}')
         else:
-            bad = [s for s in shards if s.get('status') != 'PASS_SHARD']
-            if bad:
-                rc = fail(receipt, 'ONE_OR_MORE_SOURCE_SHARDS_FAILED', [
+            bad_shards = [s for s in shards if s.get('status') != 'PASS_SHARD']
+            if bad_shards:
+                rc = fail(receipt, 'ONE_OR_MORE_SOURCE_SHARDS_HAVE_UNREPAIRED_OBJECT_OR_LINEAGE_FAILURE', [
                     {'shard': s.get('shard'), 'status': s.get('status'), 'errors': s.get('errors', [])[:5]}
-                    for s in bad
+                    for s in bad_shards
                 ])
             else:
-                daily = []
-                for s in shards:
-                    daily.extend(s.get('daily', []))
+                daily = [x for s in shards for x in s.get('daily', [])]
                 indices = [x.get('date_index') for x in daily]
                 dates = [x.get('date') for x in daily]
                 if len(daily) != EXPECTED_DATES:
-                    rc = fail(receipt, f'DAILY_COUNT_MISMATCH:{len(daily)}')
+                    rc = fail(receipt, f'DAILY_AUDIT_COUNT_MISMATCH:{len(daily)}')
                 elif sorted(indices) != list(range(EXPECTED_DATES)) or len(set(dates)) != EXPECTED_DATES:
-                    rc = fail(receipt, 'DATE_COVERAGE_NOT_EXACTLY_ONCE')
+                    rc = fail(receipt, 'DATE_AUDIT_COVERAGE_NOT_EXACTLY_ONCE')
                 else:
-                    panel_rows = []
-                    lineage_rows = []
-                    validation_errors = []
+                    panel_rows, lineage_rows, validation_errors = [], [], []
+                    valid_counts, mother_missing_counts = [], []
                     for x in sorted(daily, key=lambda r: r['date_index']):
-                        if x.get('status') != 'PASS_SOURCE_DATE':
+                        if x.get('status') != 'PASS_SOURCE_DATE_AUDIT':
                             validation_errors.append(f"{x.get('date')}:STATUS:{x.get('status')}")
                             continue
-                        if x.get('observed_missing_among_mother_traded_symbols') != 0:
-                            validation_errors.append(f"{x.get('date')}:MOTHER_MISSING")
                         h = x.get('hhi_by_stock', {})
-                        if len(h) != EXPECTED_U100:
-                            validation_errors.append(f"{x.get('date')}:HHI_COUNT:{len(h)}")
+                        invalid = x.get('u100_missing_feature_by_stock', {})
+                        if len(h) + len(invalid) != EXPECTED_U100 or set(h).intersection(invalid):
+                            validation_errors.append(f"{x.get('date')}:U100_FEATURE_PARTITION_INVALID:{len(h)}+{len(invalid)}")
+                            continue
+                        if x.get('u100_valid_hhi_count') != len(h) or x.get('u100_missing_feature_count') != len(invalid):
+                            validation_errors.append(f"{x.get('date')}:U100_FEATURE_COUNTS_INCONSISTENT")
                             continue
                         for ticker, v0 in sorted(h.items()):
                             try:
@@ -112,11 +111,11 @@ def main() -> int:
                                 validation_errors.append(f"{x.get('date')}:{ticker}:HHI_RANGE:{v}")
                             panel_rows.append((x['date'], str(ticker), v))
                         lineage_rows.append({k: v for k, v in x.items() if k != 'hhi_by_stock'})
+                        valid_counts.append(len(h))
+                        mother_missing_counts.append(int(x.get('observed_missing_among_mother_traded_symbols', -1)))
 
                     if validation_errors:
-                        rc = fail(receipt, 'SOURCE_DAILY_VALIDATION_FAILED', validation_errors[:100])
-                    elif len(panel_rows) != EXPECTED_DATES * EXPECTED_U100:
-                        rc = fail(receipt, f'PANEL_ROW_COUNT_MISMATCH:{len(panel_rows)}')
+                        rc = fail(receipt, 'SOURCE_DAILY_AUDIT_VALIDATION_FAILED', validation_errors[:100])
                     else:
                         panel_path = Path(a.panel_output)
                         panel_path.parent.mkdir(parents=True, exist_ok=True)
@@ -129,14 +128,22 @@ def main() -> int:
                         with lineage_path.open('w', encoding='utf-8') as f:
                             for row in lineage_rows:
                                 f.write(json.dumps(row, ensure_ascii=False, separators=(',', ':')) + '\n')
+
+                        lt95 = [x['date'] for x in daily if int(x.get('u100_valid_hhi_count', 0)) < 95]
                         receipt.update({
-                            'status': 'PASS_SOURCE_ONLY_HHI_AND_LINEAGE',
-                            'signal_date_count': EXPECTED_DATES,
-                            'panel_row_count': len(panel_rows),
-                            'lineage_row_count': len(lineage_rows),
+                            'status': 'PASS_SOURCE_AUDIT_DERIVED_HHI_READY',
+                            'signal_date_audit_count': EXPECTED_DATES,
+                            'derived_hhi_row_count': len(panel_rows),
+                            'expected_max_hhi_row_count': EXPECTED_DATES * EXPECTED_U100,
+                            'minimum_u100_valid_hhi_count_on_any_date': min(valid_counts),
+                            'dates_with_any_u100_feature_missing': sum(c < EXPECTED_U100 for c in valid_counts),
+                            'dates_with_u100_valid_hhi_below_95': len(lt95),
+                            'sample_dates_u100_valid_hhi_below_95': lt95[:20],
+                            'dates_with_any_mother_traded_source_missing': sum(c > 0 for c in mother_missing_counts),
+                            'maximum_mother_traded_source_missing_count_on_any_date': max(mother_missing_counts),
                             'panel_sha256': sha256_file(panel_path),
                             'lineage_sha256': sha256_file(lineage_path),
-                            'next_legal_step': 'JOIN_DERIVED_HHI_TO_FROZEN_UPSTREAM_AND_RUN_EXACT_FROZEN_H20_JUDGE_WITHOUT_RETUNING',
+                            'next_legal_step': 'JOIN_VALID_DERIVED_HHI_STOCK_DATES_TO_FROZEN_UPSTREAM; APPLY_FROZEN_COMPLETE_CASE_95_GATE; RUN_EXACT_FROZEN_H20_JUDGE_WITHOUT_RETUNING',
                         })
 
     receipt_path = Path(a.receipt_output)
