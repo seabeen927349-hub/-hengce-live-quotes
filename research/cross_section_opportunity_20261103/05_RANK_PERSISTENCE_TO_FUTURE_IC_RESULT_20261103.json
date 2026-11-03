@@ -1,0 +1,75 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "RANK_PERSISTENCE_TO_FUTURE_IC_RESULT",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "preregistration_commit": "e2f07f6c97bc31fe5afb23ba4afde33d51ddd1e7",
+  "sample": {
+    "input_primary_mom20_dates": 1986,
+    "eligible": 1986,
+    "excluded": 0,
+    "normal_n": 1641,
+    "stress_n": 345
+  },
+  "predictor": {
+    "name": "RANK_PERSIST5",
+    "mean": 0.725139,
+    "description": "Spearman correlation of current MOM20 ordering versus d-5 MOM20 ordering across the current frozen U100"
+  },
+  "outcome": {
+    "name": "FWD_RANK_IC20",
+    "description": "Spearman correlation between current MOM20 and frozen corporate-action-safe H20 outcomes across current U100",
+    "overall_mean": -0.008191,
+    "state_summary": {
+      "DIFFUSE_NORMAL": {"n": 1641, "mean": 0.007459, "median": 0.006793},
+      "SYNCHRONIZED_STRESS": {"n": 345, "mean": -0.082628, "median": -0.068647}
+    }
+  },
+  "primary_model": {
+    "formula": "FWD_RANK_IC20 ~ RANK_PERSIST5 + STRESS + RANK_PERSIST5_x_STRESS",
+    "hac_lag": 20,
+    "r_squared": 0.03342930602625149,
+    "full": {
+      "P_NORMAL": {"coef": 0.038026819964501565, "se": 0.1035714367864911, "p": 0.7135030500353663, "ci95": [-0.16496946596408785, 0.241023105893091]},
+      "P_STRESS": {"coef": -0.1464219286889883, "se": 0.20770505365756048, "p": 0.4808406002162091, "ci95": [-0.5535163532647662, 0.26067249588678965]},
+      "P_INTERACTION": {"coef": -0.18444874865348987, "se": 0.23106064163273435, "p": 0.4247138980559726, "ci95": [-0.6373192844983654, 0.26842178719138565]}
+    },
+    "early_2018_2022": {
+      "n": 1089,
+      "P_NORMAL": -0.08515485523806302,
+      "P_STRESS": -0.22253812830931696,
+      "P_INTERACTION": -0.13738327307125395
+    },
+    "late_2023_2026": {
+      "n": 897,
+      "P_NORMAL": 0.15439432027331412,
+      "P_STRESS": 0.1532665875582185,
+      "P_INTERACTION": -0.0011277327150956058
+    }
+  },
+  "descriptive_terciles": {
+    "DIFFUSE_NORMAL": {
+      "LOW": {"n": 547, "mean_future_ic": 0.00018823891814506385, "positive_ic_fraction": 0.49177330895795246},
+      "MID": {"n": 548, "mean_future_ic": 0.008231877875292816, "positive_ic_fraction": 0.5237226277372263},
+      "HIGH": {"n": 546, "mean_future_ic": 0.013966769041642312, "positive_ic_fraction": 0.5201465201465202}
+    },
+    "SYNCHRONIZED_STRESS": {
+      "LOW": {"n": 115, "mean_future_ic": -0.08044695561058855, "positive_ic_fraction": 0.3739130434782609},
+      "MID": {"n": 115, "mean_future_ic": -0.06362029330709752, "positive_ic_fraction": 0.41739130434782606},
+      "HIGH": {"n": 115, "mean_future_ic": -0.10381619358277329, "positive_ic_fraction": 0.40869565217391307}
+    }
+  },
+  "formal_conclusion": "NO_RANK_PERSISTENCE_CONDITIONING_FOUND",
+  "interpretation": [
+    "One-week stability of the full MOM20 cross-sectional ranking does not significantly predict the future rank information coefficient in either frozen state.",
+    "Normal and Stress differ materially in average future MOM20 rank IC, but RANK_PERSIST5 does not explain that difference or split either state into a stable higher-quality subset.",
+    "The early/late Normal persistence slope changes sign, reinforcing the null conclusion.",
+    "Do not replace the failed full-rank persistence test with unpreregistered top-k overlap, alternate lags, or threshold searches."
+  ],
+  "forbidden": [
+    "Rescue by selecting a different persistence lag after seeing this result",
+    "Use descriptive terciles as a trading threshold",
+    "Promote a persistence gate or expert",
+    "Call the 2018-2026 evidence untouched OOS"
+  ]
+}
