@@ -9,7 +9,6 @@
   "broker_hhi_date": "2026-11-03",
   "broker_hhi_last_result": "ALREADY_COMPLETE_IMMUTABLE",
   "broker_hhi_model_authority_created": false,
-  "broker_hhi_pending_reason": "BROKER_SOURCE_BEFORE_1830_TAIPEI",
   "broker_hhi_receipt": "receipts/broker_hhi.json",
   "broker_hhi_rows": 2322,
   "broker_hhi_sha256": "ad94036ee1f44c509f5ab99c4824f5de304968021aa2f752647bf74655795588",
