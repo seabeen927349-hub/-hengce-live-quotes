@@ -1,12 +1,11 @@
 {
   "system": "HENGCE",
   "artifact": "BROKER_H20_PROSPECTIVE_IMPLEMENTATION_STATUS",
-  "version": "V1_20261103",
+  "version": "V2_20261103_AFTER_PRE_FIRST_OBSERVATION_POWER_AMENDMENT",
   "date_taipei": "2026-11-03",
   "status": "DEPLOYED_AWAITING_FIRST_SAME_DAY_RUNTIME",
   "authority": "IMPLEMENTATION_AND_LINEAGE_STATUS_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
   "research_branch": "research/broker-prospective-validation-20261103",
-  "research_branch_head_before_status_commit": "a0c323bb22c891752257142c5486941966f3ea5d",
   "main_head_with_scheduled_workflows": "e9f958be7c8b2ad4c7998dffb4c4956235625c32",
   "historical_reconstruction_result": {
     "branch": "research/broker-execution-data-20261103",
@@ -15,10 +14,15 @@
     "result_blob_sha": "ef7b27156822194b4ebb507fc69c767aaae44bcf"
   },
   "prospective_preregistration": {
-    "path": "research/broker_prospective_20261103/PREREGISTRATION_PROSPECTIVE.json",
-    "freeze_commit": "90d987d349c9c02d1775ec3de417f7cdea20eb48",
-    "git_blob_sha": "9809ebe235a478e0879b7a774b38386c3405752d",
-    "status": "FROZEN_PRE_OUTCOME_WITH_IMPLEMENTATION_DEPENDENCY"
+    "base_path": "research/broker_prospective_20261103/PREREGISTRATION_PROSPECTIVE.json",
+    "base_freeze_commit": "90d987d349c9c02d1775ec3de417f7cdea20eb48",
+    "base_git_blob_sha": "9809ebe235a478e0879b7a774b38386c3405752d",
+    "amendment_path": "research/broker_prospective_20261103/PREREGISTRATION_AMENDMENT_01_PRE_FIRST_OBSERVATION_POWER_20261103.json",
+    "amendment_commit": "2306eb98ba7137d034cdc99e8022ba8519122132",
+    "amendment_scope": "SUPERSEDES_ONLY_SAMPLE_SIZE_AND_STOPPING_FIELDS",
+    "effective_capture_target_preoutcome_pass_signal_dates": 450,
+    "effective_minimum_final_primary_eligible_signal_dates": 400,
+    "interim_primary_outcome_test": "FORBIDDEN"
   },
   "broker_source_capture": {
     "script_path": "research/broker_prospective_20261103/capture_broker_snapshot.py",
@@ -55,18 +59,31 @@
       "LIQ20",
       "AGG_FLOW5"
     ],
-    "primary_complete_case_minimum": 95,
+    "primary_complete_case_minimum_per_date": 95,
     "outcome_columns_written": false,
     "forward_returns_loaded": false,
     "raw_vendor_rows_persisted": false
   },
   "runtime_state_at_deployment": {
-    "time_check_taipei": "2026-11-03T17:14:46+08:00",
+    "initial_time_check_taipei": "2026-11-03T17:14:46+08:00",
+    "pre_amendment_time_check_taipei": "2026-11-03T17:24:05+08:00",
     "broker_expected_release_not_before": "18:30 Asia/Taipei",
     "institutional_input_expected_release_about": "20:00 Asia/Taipei",
+    "prospective_broker_snapshot_observed_before_amendment": false,
+    "prospective_h20_outcome_observed_before_amendment": false,
     "today_broker_snapshot_claimed_successful": false,
     "today_u100_preoutcome_input_claimed_successful": false,
-    "reason": "The real event-date source had not reached its declared publication window at deployment time. No stale or historical object may substitute for the first same-day prospective snapshot."
+    "reason": "The real event-date source had not reached its declared publication window before deployment and power amendment. No stale or historical object may substitute for the first same-day prospective snapshot."
+  },
+  "power_design": {
+    "historical_hac_lrv_proxy": 0.33377060821668586,
+    "historical_mean_b_broker": 0.08476372893808502,
+    "calculated_n_for_approx_80pct_power_if_historical_effect_and_lrv_repeat": 364.61594489007626,
+    "original_220_date_approx_power": 0.585598884429534,
+    "400_date_approx_power": 0.8350659592263829,
+    "effective_preoutcome_capture_target": 450,
+    "effective_final_primary_eligible_minimum": 400,
+    "caveat": "Planning approximation only; future effect and dependence may differ."
   },
   "governance_state": {
     "implementation_dependency": "CODE_IMPLEMENTED_RUNTIME_VALIDATION_PENDING",
@@ -84,8 +101,10 @@
   "next_legal_state_transitions": [
     "FIRST_SAME_DAY_BROKER_CAPTURE_PASS",
     "SAME_DAY_U100_PREOUTCOME_INPUT_FREEZE_PASS",
-    "ACCUMULATE_FIXED_2026-11-03_TO_2027-11-02_SOURCE_WINDOW_WITHOUT_INTERIM_PRIMARY_OUTCOME_TEST",
-    "AFTER_WINDOW_END_AND_H20_MATURITY_RUN_FROZEN_PROSPECTIVE_JUDGE"
+    "ACCUMULATE_EXACTLY_450_PREOUTCOME_PASS_SIGNAL_DATES_WITHOUT_INTERIM_PRIMARY_OUTCOME_TEST",
+    "WAIT_FOR_H20_MATURITY_OR_PREDECLARED_DATA_QUALITY_FAILURE_FOR_ALL_450_DATES",
+    "REQUIRE_AT_LEAST_400_FINAL_PRIMARY_ELIGIBLE_DATES",
+    "RUN_FROZEN_PROSPECTIVE_JUDGE_ONCE"
   ],
   "failure_policy": "Any source, schema, membership, coverage, corporate-action, Broker or complete-case failure is fail-closed and may only be repaired as a data/lineage implementation issue without inspecting prospective outcomes or changing the frozen scientific hypothesis."
 }
