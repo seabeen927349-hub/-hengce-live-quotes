@@ -4,7 +4,7 @@
   "version": "0.4_20261103",
   "status": "RESEARCH_SHADOW_ALL_TAIWAN_EQUITIES",
   "authority": "DESCRIPTIVE_ONLY_NO_TRADING_AUTHORITY",
-  "purpose": "Monitor the Taiwan equity market through the existing governed HENGCE EOD vessel using paid FinMind data. TWSE and TPEx are the primary broad-market scope; emerging equities are monitored separately and also included in an umbrella all-Taiwan diagnostic, but lower emerging-board snapshot coverage may not block the TWSE+TPEx monitor.",
+  "purpose": "Monitor Taiwan listed and OTC equities through the existing governed HENGCE EOD vessel using paid FinMind data. For HENGCE Market State, 'all Taiwan equities' is explicitly defined as current TWSE plus TPEx ordinary equities. Emerging-board equities are out of scope.",
   "formal_market_state_classifier": "hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json",
   "formal_classifier_mutated": false,
   "data_vessel": {
@@ -15,38 +15,33 @@
     "parallel_universe": false,
     "finmind_snapshot_transport": "taiwan_stock_tick_snapshot",
     "finmind_membership_dataset": "TaiwanStockInfo",
-    "membership_rule": "take latest date row per stock_id; classify current membership by type; filter to four-digit equities and exclude ETF/ETN/TDR-like non-common-equity rows",
+    "membership_rule": "take latest date row per stock_id; keep current twse/tpex four-digit equities; exclude emerging, ETF, ETN, TDR-like and other non-common-equity rows",
     "credential": "FINMIND_TOKEN_FROM_GITHUB_ACTIONS_SECRET_ONLY",
     "raw_vendor_snapshot_persisted": false,
     "per_ticker_vendor_rows_persisted": false,
     "derived_context_path_pattern": "eod/YYYYMMDD/market_state_finmind_context.json"
   },
-  "primary_scope": "twse_tpex_all_equities",
+  "primary_scope": "all_taiwan_equities",
   "observed_scopes": [
-    "twse_tpex_all_equities",
+    "all_taiwan_equities",
     "twse_equities",
     "tpex_equities",
-    "emerging_equities",
-    "all_taiwan_equities",
     "hengce_electronics100_diagnostic"
   ],
   "scope_semantics": {
-    "twse_tpex_all_equities": "primary broad Taiwan exchange-equity monitor: current TWSE plus TPEx equities",
-    "twse_equities": "current TWSE equities",
-    "tpex_equities": "current TPEx equities",
-    "emerging_equities": "current emerging-board equities; monitored separately because trading and liquidity microstructure differ and snapshot coverage may differ",
-    "all_taiwan_equities": "umbrella diagnostic combining TWSE, TPEx and emerging equities; coverage is always disclosed and does not by itself gate the primary monitor",
+    "all_taiwan_equities": "current TWSE plus TPEx ordinary equities only; emerging-board equities are excluded by policy",
+    "twse_equities": "current TWSE ordinary equities",
+    "tpex_equities": "current TPEx ordinary equities",
     "hengce_electronics100_diagnostic": "legacy operating-universe diagnostic only; no longer represents the whole market"
   },
   "coverage_gate": {
     "twse_snapshot_presence_min": 0.98,
     "tpex_snapshot_presence_min": 0.98,
-    "emerging_snapshot_presence_min": null,
-    "all_taiwan_snapshot_presence_min": null,
-    "rule": "Fail closed only if TWSE or TPEx primary-market coverage falls below 98%. Emerging and umbrella all-Taiwan coverage must be reported but may not block the primary monitor."
+    "all_taiwan_snapshot_presence_min": 0.98,
+    "rule": "Fail closed if either TWSE or TPEx snapshot presence falls below 98%. Emerging equities are not part of the monitored universe."
   },
   "allowed_persisted_derived_context": [
-    "membership metadata and market counts",
+    "membership metadata and TWSE/TPEx market counts",
     "snapshot presence/current-date/stale/missing counts and ratios",
     "advancing/declining/unchanged counts and shares",
     "breadth balance",
@@ -58,9 +53,9 @@
     "share closing at-or-above open"
   ],
   "explicitly_not_authorized": [
+    "including emerging-board equities in the Market State universe",
     "persisting raw or per-ticker FinMind snapshot rows in this Market State auxiliary",
     "using Electronics100 as the primary whole-market observation scope",
-    "silently treating incomplete emerging coverage as complete",
     "changing frozen S5 Market State features",
     "changing frozen scaler or centroids",
     "creating or selecting a new state label",
