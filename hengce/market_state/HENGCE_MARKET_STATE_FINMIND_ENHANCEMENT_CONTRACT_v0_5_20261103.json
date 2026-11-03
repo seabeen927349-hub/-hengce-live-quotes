@@ -1,0 +1,76 @@
+{
+  "system": "HENGCE",
+  "module": "MARKET_STATE_FINMIND_ENHANCEMENT",
+  "version": "0.5_20261103",
+  "status": "RESEARCH_SHADOW_TWSE_ALL_LISTED_EQUITIES",
+  "authority": "DESCRIPTIVE_ONLY_NO_TRADING_AUTHORITY",
+  "purpose": "Monitor the broad Taiwan listed-stock market through the existing governed HENGCE EOD vessel. The active Market State universe is current TWSE-listed ordinary equities only. TPEx and emerging-board equities are excluded by policy. FinMind supplies realtime snapshot observations; official TWSE current master supplies universe membership.",
+  "formal_market_state_classifier": "hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json",
+  "formal_classifier_mutated": false,
+  "primary_scope": "twse_all_listed_equities",
+  "market_scope_policy": {
+    "included": ["TWSE current listed ordinary equities"],
+    "excluded": ["TPEx/OTC equities", "emerging-board equities", "ETF", "ETN", "TDR-like non-common-equity rows"],
+    "electronics100_role": "DIAGNOSTIC_ONLY_NOT_PRIMARY_SCOPE"
+  },
+  "data_vessel": {
+    "route": "EXISTING_HENGCE_ORIGINAL_EOD_VESSEL",
+    "path_pattern": "eod/YYYYMMDD",
+    "parallel_eod_tree": false,
+    "second_mother": false,
+    "parallel_universe": false,
+    "membership_authority": "TWSE_OPENAPI_CURRENT_MASTER",
+    "membership_endpoint": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
+    "finmind_snapshot_transport": "taiwan_stock_tick_snapshot",
+    "credential": "FINMIND_TOKEN_FROM_GITHUB_ACTIONS_SECRET_ONLY",
+    "raw_vendor_snapshot_persisted": false,
+    "per_ticker_vendor_rows_persisted": false,
+    "derived_context_path_pattern": "eod/YYYYMMDD/market_state_finmind_context.json"
+  },
+  "coverage_gate": {
+    "twse_snapshot_presence_min": 0.98,
+    "rule": "Fail closed if current official TWSE listed-equity snapshot presence falls below 98%."
+  },
+  "allowed_persisted_derived_context": [
+    "official TWSE membership metadata",
+    "snapshot presence/current-date/stale/missing counts and ratios",
+    "advancing/declining/unchanged counts and shares",
+    "breadth balance",
+    "cross-sectional change-rate mean/median/quantiles in vendor units",
+    "cross-sectional median absolute change rate in vendor units",
+    "aggregate turnover and top-10 turnover share",
+    "volume-ratio median/quantiles",
+    "share closing at-or-above average price",
+    "share closing at-or-above open"
+  ],
+  "explicitly_not_authorized": [
+    "monitoring TPEx as part of the primary Market State universe",
+    "monitoring emerging-board equities as part of the primary Market State universe",
+    "persisting raw or per-ticker FinMind snapshot rows",
+    "changing frozen S5 Market State features",
+    "changing frozen scaler or centroids",
+    "creating or selecting a new state label",
+    "feature selection from forward returns",
+    "threshold optimization",
+    "state-to-return mapping",
+    "Selection input",
+    "Escape input",
+    "trading or capital action"
+  ],
+  "pit_policy": {
+    "current_realtime_snapshot_only": true,
+    "source_revision_class": "FORWARD_COLLECTED_VENDOR_SNAPSHOT",
+    "historical_snapshot_backfill_claim": false,
+    "uncertain_or_failed_source_behavior": "SHADOW_BLOCKED_FAIL_CLOSED",
+    "formal_market_state_may_continue_when_shadow_blocked": true
+  },
+  "research_integrity": {
+    "forward_outcomes_used": false,
+    "formal_classifier_effect": "NONE",
+    "selection_effect": "NONE",
+    "escape_effect": "NONE",
+    "trading_effect": "NONE",
+    "capital_effect": "NONE",
+    "promotion_requires_separate_preregistered_change_control": true
+  }
+}
