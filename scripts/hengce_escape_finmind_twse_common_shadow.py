@@ -36,6 +36,7 @@ from hengce_finmind_twse_common_snapshot_probe import (
     _sid,
     _twse_common_universe,
 )
+from hengce_twse_session_status_probe import current_mis
 
 AUTHORITY = "SHADOW_INTRADAY_CONTEXT_ONLY_NO_FORMAL_EOD_ESCAPE_SELECTION_MODEL_OR_TRADING_AUTHORITY"
 SCOPE = "ALL_TWSE_LISTED_COMMON_STOCKS"
@@ -102,6 +103,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
 
     generated = datetime.now(TAIPEI)
     market_date = generated.date().isoformat()
+    market_date_compact = generated.strftime("%Y%m%d")
     active_exceptions, exception_meta = _active_nontrading_exceptions(exception_path, market_date)
 
     client = FinMindClient()
@@ -150,8 +152,9 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         if not current_market_date:
             stale_codes.append(code)
         # Frozen governance: never reinterpret a stale per-security row as
-        # today's zero return or zero turnover. Until a second PIT-safe source
-        # proves its session status, it remains unknown and contributes NULL.
+        # today's zero return or zero turnover. A current TWSE MIS row may prove
+        # that the security belongs to today's live session, but MIS is not used
+        # here to synthesize a return, price endpoint, amount, or volume metric.
         derived_rows.append(
             {
                 "industry": industries.get(code, "UNKNOWN"),
@@ -165,11 +168,34 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
     if not latest_timestamp or not latest_timestamp.startswith(market_date):
         raise RuntimeError("FinMind packet has no current-market-date observation")
 
+    mis_status = "NOT_NEEDED_NO_STALE_FINMIND_ROWS"
+    mis_session_verified: list[str] = []
+    mis_session_unresolved: list[str] = []
+    mis_meta: dict[str, Any] = {}
+    if stale_codes:
+        try:
+            mis_meta, mis_matches = current_mis(market_date_compact, stale_codes)
+            mis_session_verified = sorted(
+                code
+                for code in stale_codes
+                if code in mis_matches and str(mis_matches[code].get("d") or "").strip() == market_date_compact
+            )
+            mis_session_unresolved = sorted(set(stale_codes) - set(mis_session_verified))
+            mis_status = "PASS_CURRENT_SESSION_CONTEXT" if not mis_session_unresolved else "PARTIAL_CURRENT_SESSION_CONTEXT"
+        except Exception as exc:
+            mis_status = f"ERROR:{type(exc).__name__}:{exc}"
+            mis_session_unresolved = sorted(stale_codes)
+
     by_industry: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in derived_rows:
         by_industry[row["industry"]].append(row)
 
     market_summary = _summarize(derived_rows)
+    metric_observation_count = int(market_summary["current_market_date_count"])
+    metric_unknown_count = len(stale_codes)
+    session_context_count = metric_observation_count + len(mis_session_verified)
+    session_context_ratio = round(session_context_count / len(active_required), 8) if active_required else None
+
     authority_boundary = {
         "metric_contract_sha256": METRIC_CONTRACT_SHA256,
         "intraday_metric_role": INTRADAY_METRIC_ROLE,
@@ -181,13 +207,28 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "missing_as_zero_forbidden": True,
         "source_binding_promotion_authority": False,
     }
+    session_boundary = {
+        "session_context_count": session_context_count,
+        "session_context_ratio": session_context_ratio,
+        "finmind_metric_observation_count": metric_observation_count,
+        "metric_unknown_count": metric_unknown_count,
+        "metric_unknown_sample": stale_codes[:20],
+        "twse_mis_secondary_session_status": mis_status,
+        "twse_mis_session_verified_count": len(mis_session_verified),
+        "twse_mis_session_verified_sample": mis_session_verified[:20],
+        "twse_mis_session_unresolved_count": len(mis_session_unresolved),
+        "twse_mis_session_unresolved_sample": mis_session_unresolved[:20],
+        "twse_mis_metric_values_used": False,
+        "session_context_may_substitute_metric_observation": False,
+    }
     context = {
-        "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_AGGREGATE_SHADOW_V2",
+        "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_AGGREGATE_SHADOW_V3",
         "generated_at_taipei": generated.isoformat(),
         "market_date": market_date,
-        "source": "FinMind taiwan_stock_tick_snapshot + TWSE listed-company master",
+        "source": "FinMind taiwan_stock_tick_snapshot + TWSE listed-company master + TWSE MIS session-context check",
         "authority": AUTHORITY,
         **authority_boundary,
+        **session_boundary,
         "monitoring_universe": SCOPE,
         "exchange": "TWSE",
         "security_scope": "COMMON_STOCK_EX_TDR",
@@ -199,7 +240,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "active_nontrading_exception_count": len(active_exceptions),
         "exempt_missing_count": len(exempt_missing),
         "exempt_missing": exempt_missing,
-        "current_market_date_count": market_summary["current_market_date_count"],
+        "current_market_date_count": metric_observation_count,
         "current_market_date_ratio": market_summary["current_market_date_ratio"],
         "stale_or_noncurrent_count": len(stale_codes),
         "stale_or_noncurrent_sample": stale_codes[:20],
@@ -208,6 +249,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "industry": {key: _summarize(by_industry[key]) for key in sorted(by_industry)},
         "per_security_rows_persisted": False,
         "raw_finmind_rows_persisted": False,
+        "raw_twse_mis_rows_persisted": False,
         "stale_rows_neutralized_as_zero": False,
         "formal_eod_state_creation": False,
         "formal_escape_state_creation": False,
@@ -220,14 +262,15 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
     context["payload_sha256"] = hashlib.sha256(context_bytes).hexdigest()
 
     status = {
-        "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_SHADOW_STATUS_V2",
+        "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_SHADOW_STATUS_V3",
         "generated_at_taipei": generated.isoformat(),
         "state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
         "healthy_transport": True,
         "current_market_date_observed": True,
         "active_universe_transport_full_coverage": True,
         **authority_boundary,
-        "current_market_date_count": market_summary["current_market_date_count"],
+        **session_boundary,
+        "current_market_date_count": metric_observation_count,
         "current_market_date_ratio": market_summary["current_market_date_ratio"],
         "stale_or_noncurrent_count": len(stale_codes),
         "stale_or_noncurrent_sample": stale_codes[:20],
@@ -242,8 +285,14 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "exempt_missing": exempt_missing,
         "latest_source_timestamp": latest_timestamp,
         "exception_governance": exception_meta,
+        "twse_mis_meta": {
+            "current_date_target_count": mis_meta.get("current_date_target_count"),
+            "target_match_count": mis_meta.get("target_match_count"),
+            "query_time": mis_meta.get("query_time"),
+        } if mis_meta else {},
         "context_payload_sha256": context["payload_sha256"],
         "raw_finmind_rows_persisted": False,
+        "raw_twse_mis_rows_persisted": False,
         "per_security_rows_persisted": False,
         "stale_rows_neutralized_as_zero": False,
         "formal_escape_authority": False,
