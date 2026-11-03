@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+import time
 from typing import Any
 
 import requests
@@ -28,16 +29,30 @@ def _sha_lines(values: list[str]) -> str:
     return hashlib.sha256("\n".join(sorted(values)).encode("utf-8")).hexdigest()
 
 
+def _fetch_tpex_payload() -> list[dict[str, Any]]:
+    headers = {
+        "Accept": "application/json",
+        "User-Agent": "HENGCE-TPEX-CURRENT-MASTER/1.1",
+        "Connection": "close",
+    }
+    last_error: Exception | None = None
+    for attempt in range(1, 5):
+        try:
+            response = requests.get(TPEX_MASTER_URL, timeout=(10, 45), headers=headers)
+            response.raise_for_status()
+            rows = response.json()
+            if not isinstance(rows, list) or not rows:
+                raise RuntimeError("TPEX_CURRENT_MASTER_EMPTY_OR_MALFORMED")
+            return rows
+        except (requests.RequestException, ValueError, RuntimeError) as exc:
+            last_error = exc
+            if attempt < 4:
+                time.sleep(1.5 * attempt)
+    raise RuntimeError(f"TPEX_CURRENT_MASTER_FETCH_FAILED_AFTER_RETRIES:{type(last_error).__name__}:{last_error}")
+
+
 def _fetch_tpex_current_common() -> tuple[list[str], str | None, list[dict[str, Any]]]:
-    response = requests.get(
-        TPEX_MASTER_URL,
-        timeout=30,
-        headers={"Accept": "application/json", "User-Agent": "HENGCE-TPEX-CURRENT-MASTER/1.0"},
-    )
-    response.raise_for_status()
-    rows = response.json()
-    if not isinstance(rows, list) or not rows:
-        raise RuntimeError("TPEX_CURRENT_MASTER_EMPTY_OR_MALFORMED")
+    rows = _fetch_tpex_payload()
 
     codes: list[str] = []
     normalized: list[dict[str, Any]] = []
@@ -104,6 +119,7 @@ def _official_membership(target_date: str) -> tuple[dict[str, list[str]], dict[s
         "raw_membership_rows_persisted": False,
         "finmind_membership_used": False,
         "emerging_included": False,
+        "tpex_master_fetch_policy": "BOUNDED_4_ATTEMPTS_FAIL_CLOSED",
         "tpex_master_field_schema": {
             "code": "SecuritiesCompanyCode",
             "name": "CompanyAbbreviation",
