@@ -1,0 +1,72 @@
+{
+  "system": "HENGCE",
+  "artifact": "BROKER_H20_PROSPECTIVE_PREREGISTRATION_AMENDMENT_01",
+  "version": "V1_20261103_PRE_FIRST_OBSERVATION_POWER_FIX",
+  "date_taipei": "2026-11-03",
+  "status": "FROZEN_PRE_FIRST_PROSPECTIVE_OBSERVATION",
+  "authority": "SUPERSEDES_ONLY_SAMPLE_SIZE_AND_STOPPING_FIELDS_OF_PREREGISTRATION_PROSPECTIVE_V1; ALL_OTHER_LOCKS_REMAIN",
+  "parent_preregistration": {
+    "path": "research/broker_prospective_20261103/PREREGISTRATION_PROSPECTIVE.json",
+    "freeze_commit": "90d987d349c9c02d1775ec3de417f7cdea20eb48",
+    "git_blob_sha": "9809ebe235a478e0879b7a774b38386c3405752d"
+  },
+  "pre_observation_proof": {
+    "time_check_taipei": "2026-11-03T17:24:05+08:00",
+    "broker_same_day_capture_not_before": "18:30 Asia/Taipei",
+    "first_scheduled_broker_attempt": "18:45 Asia/Taipei",
+    "prospective_broker_snapshot_observed_before_amendment": false,
+    "prospective_h20_outcome_observed_before_amendment": false,
+    "prospective_daily_bB_series_observed_before_amendment": false,
+    "reason_amendment_is_permitted": "The original one-year/220-date stopping choice was reviewed before any prospective source observation and found underpowered. This amendment is based only on the already-known retrospective effect and HAC uncertainty, not on prospective data."
+  },
+  "power_calculation": {
+    "planning_source": "already-known historical reconstruction result; used for design only, not confirmatory evidence",
+    "historical_mean_b_broker": 0.08476372893808502,
+    "historical_hac_se_lag20": 0.016185992360022827,
+    "historical_signal_dates": 1274,
+    "long_run_variance_proxy_formula": "LRV_PROXY = HAC_SE^2 * T",
+    "long_run_variance_proxy": 0.33377060821668586,
+    "alpha_two_sided": 0.05,
+    "target_power": 0.80,
+    "normal_approximation_formula": "N = ((z_0.975 + z_0.80)^2 * LRV_PROXY) / historical_mean_b_broker^2",
+    "calculated_n_for_80pct_power_if_effect_and_lrv_repeat": 364.61594489007626,
+    "original_220_date_approx_power_if_effect_and_lrv_repeat": 0.585598884429534,
+    "400_date_approx_power_if_effect_and_lrv_repeat": 0.8350659592263829,
+    "planning_caveat": "This is only a planning approximation. The retrospective effect may be optimistic and future dependence may differ; therefore the design uses an additional capture buffer and does not claim guaranteed power."
+  },
+  "superseded_fields": {
+    "source_capture_window.end_event_date": "2027-11-02",
+    "stopping_and_peeking.minimum_primary_eligible_signal_dates": 220,
+    "stopping_and_peeking.first_primary_judgment": "fixed one-year window plus H20 maturity"
+  },
+  "replacement_stopping_rule": {
+    "start_event_date": "2026-11-03",
+    "capture_target_preoutcome_pass_signal_dates": 450,
+    "preoutcome_pass_definition": "signal date has immutable FORWARD_COLLECTED_VENDOR_SNAPSHOT Broker lineage and PASS_PROSPECTIVE_PREOUTCOME_INPUT_FROZEN under the frozen U100/control rules, before any forward outcome is loaded",
+    "stop_source_accrual": "Stop adding confirmatory signal dates immediately after the 450th preoutcome-pass signal date. Do not extend because interim or final outcomes look weak or strong.",
+    "judge_open_time": "Only after the 450th preoutcome-pass signal date has been frozen and every one of those 450 dates has either matured H20 or failed a predeclared outcome-data-quality gate.",
+    "minimum_final_primary_eligible_signal_dates": 400,
+    "if_final_primary_eligible_below_400": "DATA_OR_LINEAGE_INVALID_STOP; no confirmatory alpha conclusion and no outcome-driven extension of the sample.",
+    "interim_primary_outcome_test": "FORBIDDEN",
+    "interim_h20_coefficient_or_ci_reporting": "FORBIDDEN",
+    "operational_source_and_schema_monitoring": "ALLOWED"
+  },
+  "unchanged_scientific_locks": [
+    "BROKER_GROSS_HHI_1D formula unchanged",
+    "positive replication direction unchanged",
+    "H20 primary horizon unchanged",
+    "U100 rule unchanged",
+    "MOM20 REV5 LIQ20 AGG_FLOW5 controls unchanged",
+    "date-level rank regression unchanged",
+    "HAC lag20 unchanged",
+    "moving-block bootstrap block20 10000 draws seed20261103 unchanged",
+    "two-sided confidence intervals unchanged",
+    "no named broker selection",
+    "no sign flip",
+    "no threshold or Top-k rescue",
+    "no state-filter rescue",
+    "no raw licensed Broker publication",
+    "no trading production or capital authority"
+  ],
+  "governance_consequence": "This amendment is the sole authoritative stopping/sample-size rule for the prospective Broker H20 replication. The original one-year/220-date fields are superseded before the first prospective observation and must not be used for final judgment."
+}
