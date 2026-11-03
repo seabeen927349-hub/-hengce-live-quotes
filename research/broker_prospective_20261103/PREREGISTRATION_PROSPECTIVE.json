@@ -1,0 +1,175 @@
+{
+  "system": "HENGCE",
+  "artifact": "BROKER_H20_PROSPECTIVE_SOURCE_VINTAGE_PREREGISTRATION",
+  "version": "V1_20261103",
+  "date_taipei": "2026-11-03",
+  "branch": "research/broker-prospective-validation-20261103",
+  "status": "FROZEN_PRE_OUTCOME_WITH_IMPLEMENTATION_DEPENDENCY",
+  "authority": "PROSPECTIVE_RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "purpose": "Prospectively validate the previously discovered BROKER_GROSS_HHI_1D H20 rank association using contemporaneously frozen vendor snapshots. This is replication, not a new blinded discovery.",
+  "historical_discovery_is_known": true,
+  "upstream_authority": {
+    "historical_result_branch": "research/broker-execution-data-20261103",
+    "historical_result_branch_head_at_freeze": "8aa9621962c57a296daee2d24049a3531bea2e71",
+    "historical_result_path": "research/broker_structure_execution_20261103/BROKER_H20_FROZEN_RESULT_20261103.json",
+    "historical_result_git_blob_sha": "ef7b27156822194b4ebb507fc69c767aaae44bcf",
+    "historical_classification": "INCREMENTAL_VALUE_ESTABLISHED_RECONSTRUCTION_ONLY",
+    "pit_lineage_contract_path": "research/broker_structure_20261103/PIT_LINEAGE_FEATURE_CONTRACT.json",
+    "pit_lineage_contract_git_blob_sha": "144da48d29ad6db18d6f8fcec6aac9e26c0e4f7d",
+    "historical_preregistration_git_blob_sha": "226d5e65b08434ab3b1fb58f8411e40661949789",
+    "frozen_judge_git_blob_sha": "1f8a34f115741fef21ee04c3eb475cf3fb2712c0",
+    "selection_u100_reference_path": "research/market_state_selection_interaction_20261102/00_PREREGISTRATION_STATE_CONDITIONING_TEST.md",
+    "selection_u100_reference_git_blob_sha": "e8f8ad12a0126de8ffb8b96b11525397cdb74a2c"
+  },
+  "prospective_source_contract": {
+    "provider": "FinMind",
+    "plan": "SponsorPro",
+    "dataset": "TaiwanStockTradingDailyReportSecIdAgg",
+    "source_revision_class": "FORWARD_COLLECTED_VENDOR_SNAPSHOT",
+    "official_update_semantics": "Monday-Friday about 18:30 Asia/Taipei; actual availability follows API.",
+    "same_day_capture_requirement": "A confirmatory source snapshot must be first retrieved on its own event date in Asia/Taipei after 18:30. No next-day or historical backfill may be relabeled prospective.",
+    "earliest_feature_use": "next TWSE open after event date d",
+    "raw_licensed_rows_publication": "FORBIDDEN",
+    "raw_download_lifetime": "ephemeral runner only",
+    "persisted_data": "derived non-reconstructive per-stock HHI plus immutable lineage receipt and content hashes",
+    "immutable_first_observed_rule": "First successful same-day snapshot is canonical. Retries may not overwrite it."
+  },
+  "source_capture_window": {
+    "start_event_date": "2026-11-03",
+    "end_event_date": "2027-11-02",
+    "trading_dates_only_for_validation": true,
+    "no_extension_because_results_look_weak_or_strong": true
+  },
+  "source_capture_feature": {
+    "feature_id": "BROKER_GROSS_HHI_1D",
+    "identity": "securities_trader_id",
+    "per_branch_gross": "buy_volume + sell_volume",
+    "branch_set": "all observed valid branches with gross > 0",
+    "formula": "sum_b (gross_b / sum_b gross_b)^2",
+    "valid_range": "(0,1]",
+    "no_named_broker_selection": true,
+    "no_directional_branch_interpretation": true,
+    "beneficial_owner_interpretation": false,
+    "smart_money_interpretation": false
+  },
+  "prospective_validation_sample": {
+    "universe": "Frozen date-correct electronics PIT U100 from the Selection Challenge rule, unchanged.",
+    "u100_rule_summary": "date-correct electronics members; valid close; >=18 valid turnover observations over latest 20 sessions; LIQ20=median turnover; 20 valid corporate-action-safe daily returns; rank LIQ20 descending then ticker ascending; first 100",
+    "primary_horizon_sessions": 20,
+    "primary_outcome": "within-date [0,1] percentile rank of frozen next-open corporate-action-safe H20 simple return",
+    "controls": [
+      "MOM20",
+      "REV5",
+      "LIQ20",
+      "AGG_FLOW5"
+    ],
+    "market_state": "frozen S5 classifier; same-date state is absorbed by date intercept; state diagnostics are descriptive only",
+    "minimum_valid_forward_outcomes_per_date": 95,
+    "minimum_complete_case_rows_per_date": 95,
+    "no_imputation": true
+  },
+  "primary_model": {
+    "model_family": "DATE_LEVEL_FAMA_MACBETH_RANK_REGRESSION",
+    "equation": "RANK_FWD_H20 = a_d + bB_d*RANK_BROKER_HHI + bM_d*RANK_MOM20 + bR_d*RANK_REV5 + bL_d*RANK_LIQ20 + bF_d*RANK_AGG_FLOW5 + error",
+    "rank_method": "average ties; scale (rank-1)/(n-1); ascending raw value",
+    "primary_estimand": "mean_d(bB_d)",
+    "replication_direction_from_historical_discovery": "POSITIVE",
+    "inference_sidedness": "TWO_SIDED_CI_WITH_POSITIVE_SIGN_REQUIREMENT",
+    "no_threshold_or_topk_selection": true
+  },
+  "primary_inference": {
+    "hac": {
+      "estimator": "Newey-West",
+      "lag": 20,
+      "finite_sample": "T/(T-1)",
+      "confidence": 0.95
+    },
+    "moving_block_bootstrap": {
+      "block_length_signal_dates": 20,
+      "resamples": 10000,
+      "seed": 20261103,
+      "confidence": 0.95
+    },
+    "iid_t_test_authoritative": false
+  },
+  "stopping_and_peeking": {
+    "no_interim_primary_outcome_test": true,
+    "first_primary_judgment": "Only after the fixed source-capture window ends and every included signal date has either matured H20 or failed a predeclared data-quality gate.",
+    "minimum_primary_eligible_signal_dates": 220,
+    "if_below_minimum": "DATA_OR_LINEAGE_INVALID_STOP; do not extend the window based on observed outcomes.",
+    "operational_monitoring_allowed_before_maturity": [
+      "source availability",
+      "schema",
+      "hashes",
+      "row counts",
+      "coverage",
+      "implementation parity"
+    ],
+    "forbidden_before_primary_judgment": [
+      "daily bB outcome series",
+      "H20 coefficient",
+      "H20 p-value",
+      "H20 confidence interval",
+      "outcome-driven retuning"
+    ]
+  },
+  "temporal_stability": {
+    "split": "chronological first half vs second half of eligible prospective signal dates",
+    "rule": "Both half-sample mean bB values must be positive and have the same sign as the full prospective mean. No split-date search."
+  },
+  "success_gate": {
+    "classification": "PROSPECTIVE_INCREMENTAL_VALUE_CONFIRMED_RESEARCH_ONLY",
+    "requirements": [
+      "full prospective mean bB > 0",
+      "two-sided HAC 95% CI excludes zero",
+      "two-sided moving-block-bootstrap 95% CI excludes zero",
+      "first-half and second-half mean bB are both positive",
+      "minimum 220 eligible signal dates",
+      "all source-vintage and PIT lineage gates pass"
+    ],
+    "still_not_authorized": [
+      "BUY/SELL rule",
+      "Top-k broker strategy",
+      "threshold",
+      "named broker selection",
+      "production",
+      "capital allocation"
+    ]
+  },
+  "failure_gate": {
+    "valid_null_or_unstable": "NO_STABLE_PROSPECTIVE_INCREMENTAL_VALUE_KILL",
+    "data_or_lineage_failure": "DATA_OR_LINEAGE_INVALID_STOP",
+    "no_rescue": [
+      "sign flip",
+      "named broker selection",
+      "broker-set tuning",
+      "lookback tuning",
+      "horizon tuning",
+      "threshold tuning",
+      "state filter rescue",
+      "drop controls"
+    ]
+  },
+  "implementation_dependency": {
+    "status": "BLOCKS_JUDGE_NOT_SOURCE_CAPTURE",
+    "historical_canonical_mother_sha256": "2879ebb756c524dbefa4c47258d58fd6fa138aefcced3c7abb3d46634070651b",
+    "historical_canonical_mother_end_date": "2026-10-30",
+    "requirement": "Before any prospective H20 judge is opened, freeze and validate a forward date-correct electronics mother/U100 lineage adapter implementing the existing Selection Challenge rules without using forward outcomes.",
+    "existing_live_universe_is_not_authorized_substitute": "hengce/legacy/live_universe.json uses pins and same-day trade value and therefore is not the frozen U100 rule.",
+    "source_capture_policy_until_dependency_closed": "Persist all-stock derived HHI + source hashes now; mother/U100 join remains pending and cannot be called judge-ready."
+  },
+  "hard_locks": [
+    "NO_RETROACTIVE_BACKFILL_AS_PROSPECTIVE",
+    "NO_OVERWRITE_FIRST_OBSERVED_SOURCE_SNAPSHOT",
+    "NO_RAW_LICENSED_DATA_PUBLICATION",
+    "NO_NAMED_BROKER_SELECTION",
+    "NO_BROKER_SET_TUNING",
+    "NO_FEATURE_SIGN_FLIP",
+    "NO_LOOKBACK_TUNING",
+    "NO_HORIZON_TUNING",
+    "NO_THRESHOLD_OPTIMIZATION",
+    "NO_CURRENT_LIVE_UNIVERSE_SUBSTITUTION_FOR_FROZEN_U100",
+    "NO_FORWARD_OUTCOME_PEEKING_BEFORE_FIXED_WINDOW_MATURITY",
+    "NO_PRODUCTION_PROMOTION_FROM_THIS_PREREGISTRATION"
+  ]
+}
