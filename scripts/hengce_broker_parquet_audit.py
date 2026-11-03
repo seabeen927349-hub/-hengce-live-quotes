@@ -2,6 +2,9 @@
 """Audit a locally supplied FinMind broker parquet for HENGCE feasibility.
 
 No network access. No forward returns. No backtest. No ranking test.
+The audit records both the physical parquet SHA-256 and a deterministic logical
+row-content digest so harmless parquet rewrites/compression changes can be
+distinguished from actual data-content changes.
 """
 
 from __future__ import annotations
@@ -31,12 +34,49 @@ EXPECTED = {
     },
 }
 
+CANONICAL_COLUMN_ORDER = {
+    "TaiwanStockTradingDailyReportSecIdAgg": [
+        "date",
+        "stock_id",
+        "securities_trader_id",
+        "buy_volume",
+        "sell_volume",
+        "buy_price",
+        "sell_price",
+    ],
+    "TaiwanStockTradingDailyReport": [
+        "date",
+        "stock_id",
+        "securities_trader_id",
+        "price",
+        "buy",
+        "sell",
+    ],
+}
+
 
 def file_sha256(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as f:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
             h.update(chunk)
+    return h.hexdigest()
+
+
+def logical_content_sha256(table, dataset: str) -> str:
+    """Hash sorted semantic row values, independent of parquet physical bytes."""
+    cols = CANONICAL_COLUMN_ORDER[dataset]
+    selected = table.select(cols)
+    sorted_table = selected.sort_by([(c, "ascending") for c in cols])
+    h = hashlib.sha256()
+    h.update(("HENGCE_LOGICAL_ROW_HASH_V1\n" + "\x1f".join(cols) + "\n").encode("utf-8"))
+    for batch in sorted_table.to_batches(max_chunksize=65536):
+        pycols = [batch.column(i).to_pylist() for i in range(batch.num_columns)]
+        for values in zip(*pycols):
+            # JSON gives stable delimiters/escaping; source fields contain no outcome data.
+            line = json.dumps(values, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+            h.update(line.encode("utf-8"))
+            h.update(b"\n")
     return h.hexdigest()
 
 
@@ -94,7 +134,7 @@ def main() -> int:
     manifest_symbols, manifest_sha = load_manifest_symbols(manifest)
 
     result = {
-        "schema_version": 1,
+        "schema_version": 2,
         "authority": "RESEARCH_ONLY_BROKER_TAPE_FEASIBILITY_NO_FORWARD_RETURN_AUTHORITY",
         "dataset": args.dataset,
         "requested_date": args.date,
@@ -105,6 +145,7 @@ def main() -> int:
         "threshold_tuning_run": False,
         "source_parquet_sha256": file_sha256(path),
         "source_parquet_bytes": path.stat().st_size,
+        "logical_digest_spec": "HENGCE_LOGICAL_ROW_HASH_V1_SORT_ALL_CANONICAL_FIELDS_JSON_LINES",
         "request_manifest_sha256": manifest_sha,
         "errors": [],
     }
@@ -134,6 +175,7 @@ def main() -> int:
         missing_manifest = manifest_symbols - stocks if manifest_symbols else set()
 
         result.update({
+            "logical_content_sha256": logical_content_sha256(table, args.dataset),
             "row_count": table.num_rows,
             "row_group_count": pf.metadata.num_row_groups,
             "columns": cols,
