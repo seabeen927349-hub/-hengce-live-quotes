@@ -1,0 +1,52 @@
+{
+  "system": "HENGCE",
+  "module": "MARKET_STATE_FINMIND_ENHANCEMENT",
+  "version": "0.1_20261103",
+  "status": "RESEARCH_SHADOW_ONLY",
+  "authority": "DESCRIPTIVE_ONLY_NO_TRADING_AUTHORITY",
+  "purpose": "Attach paid FinMind market observations to the existing governed HENGCE data vessel as a shadow Market State auxiliary. Do not create a parallel collector, mother dataset, universe, classifier, selection model, or trading authority.",
+  "formal_market_state_classifier": "hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json",
+  "formal_classifier_mutated": false,
+  "data_vessel": {
+    "route": "EXISTING_HENGCE_ORIGINAL_EOD_VESSEL",
+    "path_pattern": "eod/YYYYMMDD",
+    "parallel_eod_tree": false,
+    "second_mother": false,
+    "parallel_universe": false,
+    "finmind_transport": "scripts/hengce_finmind_twse_common_snapshot_probe.py",
+    "credential": "FINMIND_TOKEN_FROM_GITHUB_ACTIONS_SECRET_ONLY",
+    "raw_vendor_snapshot_persisted": false
+  },
+  "initial_shadow_scope": [
+    "FinMind paid real-time Taiwan-stock snapshot transport health",
+    "TWSE-listed common-stock universe coverage",
+    "snapshot freshness / timestamp lag",
+    "observed vendor field schema"
+  ],
+  "explicitly_not_yet_authorized": [
+    "changing frozen Market State features",
+    "changing frozen scaler or centroids",
+    "creating a new state label",
+    "feature selection from forward returns",
+    "threshold optimization",
+    "state-to-return mapping",
+    "Selection input",
+    "Escape input",
+    "trading or capital action"
+  ],
+  "pit_policy": {
+    "current_realtime_snapshot_only": true,
+    "historical_snapshot_backfill_claim": false,
+    "manual_historical_target_behavior": "SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT",
+    "uncertain_or_failed_source_behavior": "SHADOW_BLOCKED_FAIL_CLOSED",
+    "formal_market_state_may_continue_when_shadow_blocked": true
+  },
+  "research_integrity": {
+    "forward_outcomes_used": false,
+    "selection_effect": "NONE",
+    "escape_effect": "NONE",
+    "trading_effect": "NONE",
+    "capital_effect": "NONE",
+    "promotion_requires_separate_preregistered_change_control": true
+  }
+}
