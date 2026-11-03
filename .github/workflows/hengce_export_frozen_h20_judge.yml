@@ -1,0 +1,36 @@
+name: HENGCE Export Exact Frozen H20 Judge
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/broker-h20-frozen-execution-20261103
+    paths:
+      - .github/workflows/hengce_export_frozen_h20_judge.yml
+
+permissions:
+  contents: read
+
+jobs:
+  export-exact-judge:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact frozen execution-code commit
+        uses: actions/checkout@v4
+        with:
+          ref: d7e75c3bf1ac54f7542c3c389e55829dda44c6a2
+      - name: Verify exact Git blob and record SHA256
+        run: |
+          test "$(git hash-object scripts/hengce_broker_frozen_h20_judge.py)" = "1f8a34f115741fef21ee04c3eb475cf3fb2712c0"
+          sha256sum scripts/hengce_broker_frozen_h20_judge.py > frozen_judge.sha256
+          git hash-object scripts/hengce_broker_frozen_h20_judge.py > frozen_judge.gitblob
+      - name: Upload exact judge only
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-exact-frozen-h20-judge
+          path: |
+            scripts/hengce_broker_frozen_h20_judge.py
+            frozen_judge.sha256
+            frozen_judge.gitblob
+          if-no-files-found: error
+          retention-days: 7
