@@ -4,12 +4,14 @@
 Purpose
 -------
 Validate that the paid FinMind real-time snapshot can cover the current TWSE
-listed-company universe without treating every four-digit FinMind instrument as
-a TWSE common stock.
+listed-common-stock universe without treating every four-digit FinMind instrument
+as a TWSE common stock.
 
 Governance
 ----------
-- TWSE listed-company basic data is the universe source for this audit.
+- TWSE listed-company basic data is the issuer-universe source for this audit.
+- TDR rows are explicitly excluded from that issuer universe before coverage is
+  assessed; they are not silently treated as common stock.
 - FinMind raw snapshot rows are ephemeral and are never written to disk.
 - Only a non-raw receipt is emitted.
 - This script grants no Escape, selection, model, or trading authority.
@@ -37,6 +39,7 @@ TAIPEI = ZoneInfo("Asia/Taipei")
 MASTER_URL = "https://openapi.twse.com.tw/v1/opendata/t187ap03_L"
 FINMIND_ENDPOINT = "taiwan_stock_tick_snapshot"
 FOUR_DIGIT = re.compile(r"[1-9]\d{3}")
+TDR_INDUSTRY_CODE = "91"
 
 
 def _sha256_lines(values: list[str]) -> str:
@@ -69,7 +72,7 @@ def _fetch_twse_master() -> tuple[list[dict[str, Any]], str | None]:
         MASTER_URL,
         headers={
             "Accept": "application/json",
-            "User-Agent": "HENGCE-TWSE-COMMON-AUDIT/1.0",
+            "User-Agent": "HENGCE-TWSE-COMMON-AUDIT/1.1",
         },
     )
     with urllib.request.urlopen(req, timeout=30) as response:
@@ -87,18 +90,59 @@ def _fetch_twse_master() -> tuple[list[dict[str, Any]], str | None]:
     return rows, report_date
 
 
-def _twse_common_codes(master_rows: list[dict[str, Any]]) -> list[str]:
-    codes: list[str] = []
+def _is_tdr(row: dict[str, Any]) -> tuple[bool, dict[str, bool]]:
+    industry = str(row.get("產業別") or "").strip()
+    short_name = str(row.get("公司簡稱") or "").strip().upper()
+    full_name = str(row.get("公司名稱") or "").strip().upper()
+
+    markers = {
+        "industry_91": industry == TDR_INDUSTRY_CODE,
+        "short_name_dr": "-DR" in short_name,
+        "full_name_depositary_receipt": "存託憑證" in full_name,
+    }
+    return any(markers.values()), markers
+
+
+def _twse_common_universe(
+    master_rows: list[dict[str, Any]],
+) -> tuple[list[str], list[str], list[dict[str, Any]]]:
+    common_codes: list[str] = []
+    tdr_codes: list[str] = []
+    tdr_marker_rows: list[dict[str, Any]] = []
+
     for row in master_rows:
         if not isinstance(row, dict):
             continue
         code = str(row.get("公司代號") or "").strip()
         issued = str(row.get("已發行普通股數或TDR原股發行股數") or "").strip()
-        if FOUR_DIGIT.fullmatch(code) and issued not in ("", "0"):
-            codes.append(code)
-    if len(codes) != len(set(codes)):
+        if not FOUR_DIGIT.fullmatch(code) or issued in ("", "0"):
+            continue
+
+        is_tdr, markers = _is_tdr(row)
+        if is_tdr:
+            tdr_codes.append(code)
+            tdr_marker_rows.append(
+                {
+                    "code": code,
+                    "short_name": str(row.get("公司簡稱") or "").strip(),
+                    "industry": str(row.get("產業別") or "").strip(),
+                    "markers": markers,
+                }
+            )
+            continue
+        common_codes.append(code)
+
+    all_codes = common_codes + tdr_codes
+    if len(all_codes) != len(set(all_codes)):
         raise RuntimeError("duplicate TWSE company codes in official master")
-    return sorted(codes)
+    if not tdr_codes:
+        raise RuntimeError("TWSE master unexpectedly produced zero TDR rows")
+
+    # The official issuer table has multiple independent TDR indicators. A
+    # disagreement is surfaced in the receipt rather than silently ignored.
+    return sorted(common_codes), sorted(tdr_codes), sorted(
+        tdr_marker_rows, key=lambda x: x["code"]
+    )
 
 
 async def build_receipt() -> dict[str, Any]:
@@ -114,11 +158,12 @@ async def build_receipt() -> dict[str, Any]:
         raise RuntimeError("FinMind snapshot is empty or malformed")
 
     master_rows, master_report_date = _fetch_twse_master()
-    master_codes = _twse_common_codes(master_rows)
-    if not master_codes:
+    common_codes, tdr_codes, tdr_marker_rows = _twse_common_universe(master_rows)
+    if not common_codes:
         raise RuntimeError("TWSE master produced an empty common-stock universe")
 
-    master_set = set(master_codes)
+    common_set = set(common_codes)
+    tdr_set = set(tdr_codes)
     snapshot_map: dict[str, dict[str, Any]] = {}
     duplicate_snapshot_ids: set[str] = set()
     for row in snapshot_rows:
@@ -131,8 +176,8 @@ async def build_receipt() -> dict[str, Any]:
             duplicate_snapshot_ids.add(code)
         snapshot_map[code] = row
 
-    covered = sorted(master_set & set(snapshot_map))
-    missing = sorted(master_set - set(snapshot_map))
+    covered = sorted(common_set & set(snapshot_map))
+    missing = sorted(common_set - set(snapshot_map))
     current = sorted(
         code
         for code in covered
@@ -140,7 +185,8 @@ async def build_receipt() -> dict[str, Any]:
     )
     stale = sorted(set(covered) - set(current))
     four_digit_snapshot = sorted(code for code in snapshot_map if FOUR_DIGIT.fullmatch(code))
-    extra_four_digit = sorted(set(four_digit_snapshot) - master_set)
+    extra_four_digit = sorted(set(four_digit_snapshot) - common_set)
+    tdr_present_in_snapshot = sorted(tdr_set & set(snapshot_map))
 
     date_values = sorted(
         {_date_text(row) for row in snapshot_map.values() if _date_text(row)}
@@ -157,9 +203,14 @@ async def build_receipt() -> dict[str, Any]:
     field_names = sorted(
         {key for row in snapshot_rows if isinstance(row, dict) for key in row.keys()}
     )
+    tdr_marker_disagreements = [
+        row
+        for row in tdr_marker_rows
+        if len({bool(v) for v in row["markers"].values()}) > 1
+    ]
 
     receipt = {
-        "schema": "HENGCE_FINMIND_TWSE_COMMON_SNAPSHOT_AUDIT_V1",
+        "schema": "HENGCE_FINMIND_TWSE_COMMON_SNAPSHOT_AUDIT_V2",
         "status": "RESEARCH_CAPABILITY_OBSERVED",
         "queried_at_taipei": queried_at.isoformat(),
         "expected_market_date": market_date,
@@ -176,19 +227,25 @@ async def build_receipt() -> dict[str, Any]:
         "twse_master_report_date": master_report_date,
         "twse_master_definition": (
             "official TWSE listed-company basic data; four-digit company code; "
-            "positive issued common/TDR-underlying share field"
+            "positive issued common/TDR-underlying share field; TDR excluded by "
+            "official industry/name markers before common-stock coverage audit"
         ),
-        "twse_master_count": len(master_codes),
-        "twse_master_codes_sha256": _sha256_lines(master_codes),
-        "twse_master_covered_count": len(covered),
-        "twse_master_current_date_count": len(current),
-        "twse_master_stale_count": len(stale),
-        "twse_master_missing_count": len(missing),
-        "twse_master_coverage_ratio": round(len(covered) / len(master_codes), 6),
-        "twse_master_current_date_ratio": round(len(current) / len(master_codes), 6),
-        "extra_four_digit_not_in_twse_master_count": len(extra_four_digit),
-        "missing_master_sample": missing[:20],
-        "stale_master_sample": stale[:20],
+        "twse_tdr_excluded_count": len(tdr_codes),
+        "twse_tdr_excluded_codes": tdr_codes,
+        "twse_tdr_marker_disagreement_count": len(tdr_marker_disagreements),
+        "twse_tdr_marker_disagreement_sample": tdr_marker_disagreements[:20],
+        "twse_tdr_present_in_finmind_count": len(tdr_present_in_snapshot),
+        "twse_common_master_count": len(common_codes),
+        "twse_common_master_codes_sha256": _sha256_lines(common_codes),
+        "twse_common_covered_count": len(covered),
+        "twse_common_current_date_count": len(current),
+        "twse_common_stale_count": len(stale),
+        "twse_common_missing_count": len(missing),
+        "twse_common_coverage_ratio": round(len(covered) / len(common_codes), 6),
+        "twse_common_current_date_ratio": round(len(current) / len(common_codes), 6),
+        "extra_four_digit_not_in_twse_common_count": len(extra_four_digit),
+        "missing_common_sample": missing[:20],
+        "stale_common_sample": stale[:20],
         "extra_four_digit_sample": extra_four_digit[:20],
         "raw_snapshot_retained": False,
         "raw_twse_master_retained": False,
@@ -201,12 +258,12 @@ async def build_receipt() -> dict[str, Any]:
 
     # Structural fail-closed checks only. These are transport/schema invariants,
     # not post-observation operational promotion thresholds.
-    if len(master_codes) < 900:
-        raise RuntimeError("TWSE master unexpectedly small")
+    if len(common_codes) < 900:
+        raise RuntimeError("TWSE common-stock master unexpectedly small")
     if not date_values or not latest_text or not latest_text.startswith(market_date):
         raise RuntimeError("FinMind snapshot has no current-market-date observation")
     if len(covered) < 900:
-        raise RuntimeError("FinMind/TWSE intersection unexpectedly small")
+        raise RuntimeError("FinMind/TWSE common-stock intersection unexpectedly small")
 
     return receipt
 
