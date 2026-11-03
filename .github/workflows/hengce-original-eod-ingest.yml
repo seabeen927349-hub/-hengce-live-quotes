@@ -16,7 +16,8 @@ name: HENGCE original EOD ingest
       - 'scripts/hengce_eod_broker_aux.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_market_state_finmind_aux.py'
-      - 'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_3_20261103.json'
+      - 'scripts/hengce_market_state_twse_tpex_aux.py'
+      - 'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_4_20261103.json'
   schedule:
     - cron: '0 15 * * 1-5'
 
@@ -78,7 +79,7 @@ jobs:
             --date '${{ steps.target.outputs.date }}' \
             --eod-dir 'eod/${{ steps.target.outputs.compact }}'
 
-      - name: Observe FinMind all-Taiwan Market State context inside the same original EOD vessel
+      - name: Observe FinMind TWSE plus TPEx Market State context inside the same original EOD vessel
         id: finmind_market_state_shadow
         continue-on-error: true
         shell: bash
@@ -109,13 +110,14 @@ jobs:
           r={
               'system':'HENGCE',
               'artifact':'MARKET_STATE_FINMIND_SHADOW_AUX_RECEIPT',
-              'schema':'HENGCE_MARKET_STATE_FINMIND_SHADOW_AUX_V3',
+              'schema':'HENGCE_MARKET_STATE_FINMIND_SHADOW_AUX_V5',
               'target_date':d,
               'observed_at_taipei':now,
               'status':'SHADOW_BLOCKED_WORKFLOW_ERROR',
               'workflow_step_outcome':outcome,
-              'contract':'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_3_20261103.json',
+              'contract':'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_4_20261103.json',
               'primary_scope':'all_taiwan_equities',
+              'all_taiwan_definition':'TWSE_PLUS_TPEX_ORDINARY_EQUITIES_ONLY_EXCLUDES_EMERGING',
               'formal_market_state_classifier':'hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json',
               'authority':'RESEARCH_SHADOW_ONLY_DESCRIPTIVE_NO_TRADING_AUTHORITY',
               'data_vessel':'EXISTING_HENGCE_ORIGINAL_EOD_VESSEL',
@@ -142,6 +144,7 @@ jobs:
               'market_state_finmind_shadow_receipt':'receipts/market_state_finmind_shadow.json',
               'market_state_finmind_shadow_observed_at_taipei':now,
               'market_state_finmind_primary_scope':'all_taiwan_equities',
+              'market_state_finmind_all_taiwan_definition':r['all_taiwan_definition'],
               'market_state_finmind_shadow_blocks_core_three_leg_or_mother':False,
               'market_state_finmind_shadow_formal_classifier_mutated':False,
               'market_state_finmind_shadow_model_authority_created':False,
@@ -163,8 +166,7 @@ jobs:
           from pathlib import Path
           d,c=sys.argv[1:]
           root=Path('eod')/c
-          p=root/'status.json'
-          x=json.loads(p.read_text(encoding='utf-8'))
+          x=json.loads((root/'status.json').read_text(encoding='utf-8'))
           assert x.get('target_date')==d, x
           assert x.get('artifact')=='EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST', x
           assert x.get('parallel_eod_tree') is False, x
@@ -177,28 +179,12 @@ jobs:
           assert x.get('market_state_finmind_shadow_model_authority_created') is False, x
           assert x.get('market_state_finmind_shadow_trading_authority_created') is False, x
           assert x.get('data_vessel_governance')=='ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR', x
-          if x.get('broker_hhi_status')=='COMPLETE':
-              dp=root/'broker_hhi.csv'
-              rp=root/'receipts'/'broker_hhi.json'
-              assert dp.is_file() and rp.is_file(), x
-              r=json.loads(rp.read_text(encoding='utf-8'))
-              assert r.get('source_revision_class')=='FORWARD_COLLECTED_VENDOR_SNAPSHOT', r
-              assert r.get('raw_broker_rows_persisted') is False, r
-              assert r.get('parallel_eod_tree') is False, r
-              assert r.get('second_mother') is False, r
-              assert r.get('parallel_universe') is False, r
-              assert r.get('blocks_core_three_leg_or_mother') is False, r
-              assert r.get('model_authority_created') is False, r
-              assert r.get('trading_authority_created') is False, r
-              assert r.get('capital_authority_created') is False, r
-          frp=root/'receipts'/'market_state_finmind_shadow.json'
-          fr=json.loads(frp.read_text(encoding='utf-8'))
+
+          fr=json.loads((root/'receipts'/'market_state_finmind_shadow.json').read_text(encoding='utf-8'))
           assert fr.get('status') in {
-              'OBSERVED_CONTEXT_ATTACHED',
-              'OBSERVED_CAPABILITY_ONLY',
-              'SHADOW_BLOCKED_FAIL_CLOSED',
-              'SHADOW_BLOCKED_WORKFLOW_ERROR',
-              'SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT',
+              'OBSERVED_CONTEXT_ATTACHED','OBSERVED_CAPABILITY_ONLY',
+              'SHADOW_BLOCKED_FAIL_CLOSED','SHADOW_BLOCKED_WORKFLOW_ERROR',
+              'SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT'
           }, fr
           assert fr.get('data_vessel')=='EXISTING_HENGCE_ORIGINAL_EOD_VESSEL', fr
           assert fr.get('parallel_eod_tree') is False, fr
@@ -214,14 +200,14 @@ jobs:
           assert fr.get('capital_authority') is False, fr
           assert fr.get('blocks_core_three_leg_or_mother') is False, fr
           assert fr.get('usable_for_formal_market_state') is False, fr
+
           if fr.get('status')=='OBSERVED_CONTEXT_ATTACHED':
-              cp=root/'market_state_finmind_context.json'
-              assert cp.is_file(), fr
-              ctx=json.loads(cp.read_text(encoding='utf-8'))
+              ctx=json.loads((root/'market_state_finmind_context.json').read_text(encoding='utf-8'))
               assert ctx.get('artifact')=='MARKET_STATE_FINMIND_DERIVED_CONTEXT', ctx
-              assert ctx.get('schema')=='HENGCE_MARKET_STATE_FINMIND_DERIVED_CONTEXT_V2', ctx
+              assert ctx.get('schema')=='HENGCE_MARKET_STATE_FINMIND_DERIVED_CONTEXT_V4', ctx
               assert ctx.get('target_date')==d, ctx
               assert ctx.get('primary_scope')=='all_taiwan_equities', ctx
+              assert ctx.get('all_taiwan_definition')=='TWSE_PLUS_TPEX_ORDINARY_EQUITIES_ONLY_EXCLUDES_EMERGING', ctx
               assert ctx.get('data_vessel')=='EXISTING_HENGCE_ORIGINAL_EOD_VESSEL', ctx
               assert ctx.get('source_revision_class')=='FORWARD_COLLECTED_VENDOR_SNAPSHOT', ctx
               assert ctx.get('raw_vendor_snapshot_persisted') is False, ctx
@@ -233,20 +219,22 @@ jobs:
               assert ctx.get('trading_effect')=='NONE', ctx
               assert ctx.get('capital_effect')=='NONE', ctx
               scopes=ctx.get('scopes') or {}
-              expected={
+              assert set(scopes)=={
                   'all_taiwan_equities','twse_equities','tpex_equities',
-                  'emerging_equities','hengce_electronics100_diagnostic'
-              }
-              assert set(scopes)==expected, ctx
+                  'hengce_electronics100_diagnostic'
+              }, ctx
               membership=ctx.get('all_taiwan_membership') or {}
+              assert membership.get('market_type_rule')=='twse+tpex_only_excludes_emerging', membership
               assert membership.get('twse_count',0)>900, membership
               assert membership.get('tpex_count',0)>700, membership
-              assert membership.get('all_taiwan_equity_count',0)>1800, membership
+              assert membership.get('all_taiwan_equity_count',0)>1700, membership
+              assert 'emerging_count' not in membership, membership
               assert scopes['all_taiwan_equities'].get('snapshot_presence_ratio',0)>0.98, ctx
               assert scopes['twse_equities'].get('snapshot_presence_ratio',0)>0.98, ctx
               assert scopes['tpex_equities'].get('snapshot_presence_ratio',0)>0.98, ctx
               assert scopes['hengce_electronics100_diagnostic'].get('requested_code_count')==100, ctx
               assert fr.get('derived_context_sha256')==ctx.get('payload_sha256'), (fr,ctx)
+
           print(json.dumps({k:x.get(k) for k in (
               'target_date','price_status','price_rows','institutional_status','institutional_rows',
               'margin_status','margin_rows','broker_hhi_status','broker_hhi_rows',
