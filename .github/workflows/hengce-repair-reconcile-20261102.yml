@@ -1,0 +1,66 @@
+name: HENGCE repair reconcile 20261102 through original vessel
+
+on:
+  push:
+    branches:
+      - repair/original-vessel-promotion-20261103
+    paths:
+      - '.github/workflows/hengce-repair-reconcile-20261102.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout current main authority
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Reconcile with original HENGCE vessel only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_eod_incremental_ingest.py --mode ingest --date 2026-11-02
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('eod/20261102/status.json')
+          x=json.loads(p.read_text(encoding='utf-8'))
+          assert x['price_status']=='COMPLETE'
+          assert x['institutional_status']=='COMPLETE'
+          assert x['margin_status']=='COMPLETE'
+          assert x['mother_status']=='COMPLETE'
+          assert x['mother_receipt']=='receipts/mother.json'
+          assert x['mother_latest_date']=='2026-11-02'
+          assert x['mother_sha256']=='7912a066730540e2fba41b7d49ff5e4124b1b8ccd6b0ce32055caeb712bbe8a0'
+          assert x['downstream_ready'] is True
+          assert x['second_mother'] is False
+          assert all(r['result']=='ALREADY_COMPLETE' for r in x['last_run_results'])
+          print('ORIGINAL_VESSEL_RECONCILE=PASS')
+          PY
+
+      - name: Commit reconciled status to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-original-vessel-bot'
+          git config user.email 'hengce-original-vessel-bot@users.noreply.github.com'
+          git add eod/20261102/status.json
+          if git diff --cached --quiet; then
+            echo 'No status change.'
+          else
+            git commit -m 'HENGCE original vessel reconcile mother 2026-11-02'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
