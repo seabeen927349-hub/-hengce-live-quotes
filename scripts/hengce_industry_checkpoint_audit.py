@@ -5,7 +5,6 @@ import csv
 import json
 import re
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -34,20 +33,30 @@ CHECKPOINT_DATES = [
 ]
 
 UA = {
-    "User-Agent": "Mozilla/5.0 HENGCE-INDUSTRY-CHECKPOINT-AUDIT/1.0",
-    "Accept": "application/json",
+    "User-Agent": "Mozilla/5.0 HENGCE-INDUSTRY-CHECKPOINT-AUDIT/1.1",
+    "Accept": "application/json,text/plain,*/*",
     "Referer": "https://www.twse.com.tw/",
 }
+SESSION = requests.Session()
+SESSION.headers.update(UA)
 
 
 def get_json(date_iso: str, type_code: str) -> dict:
     ds = date_iso.replace("-", "")
     last = None
-    for attempt in range(6):
+    for attempt in range(8):
         try:
-            r = requests.get(URL, params={"date": ds, "type": type_code, "response": "json"}, headers=UA, timeout=45)
-            r.raise_for_status()
-            obj = r.json()
+            time.sleep(0.35)
+            r = SESSION.get(URL, params={"date": ds, "type": type_code, "response": "json"}, timeout=45)
+            status = r.status_code
+            ctype = str(r.headers.get("content-type") or "")
+            if status != 200:
+                raise RuntimeError(f"HTTP_{status}_CTYPE_{ctype}")
+            try:
+                obj = r.json()
+            except Exception as exc:
+                head = (r.text or "")[:120].replace("\n", " ")
+                raise RuntimeError(f"NON_JSON_HTTP_{status}_CTYPE_{ctype}_HEAD_{head!r}:{type(exc).__name__}") from exc
             if not isinstance(obj, dict):
                 raise RuntimeError("NON_OBJECT_JSON")
             if str(obj.get("stat")) != "OK":
@@ -57,7 +66,8 @@ def get_json(date_iso: str, type_code: str) -> dict:
             return obj
         except Exception as exc:
             last = repr(exc)
-            time.sleep(min(12, 1.5 * (2 ** attempt)))
+            SESSION.cookies.clear()
+            time.sleep(min(30, 2.0 * (2 ** attempt)))
     raise RuntimeError(f"FETCH_FAIL:{date_iso}:{type_code}:{last}")
 
 
@@ -83,18 +93,10 @@ def parse_stock_rows(obj: dict) -> dict[str, str]:
     raise RuntimeError("STOCK_TABLE_NOT_FOUND")
 
 
-def fetch_one(date_iso: str, type_code: str):
-    return type_code, parse_stock_rows(get_json(date_iso, type_code))
-
-
 def audit_date(date_iso: str):
-    wanted = ["13", *INDUSTRIES.keys()]
     fetched = {}
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        futures = [pool.submit(fetch_one, date_iso, code) for code in wanted]
-        for fut in as_completed(futures):
-            code, rows = fut.result()
-            fetched[code] = rows
+    for code in ["13", *INDUSTRIES.keys()]:
+        fetched[code] = parse_stock_rows(get_json(date_iso, code))
     expected = fetched["13"]
     classification = {}
     duplicates = {}
@@ -144,7 +146,7 @@ def main() -> None:
         for row in rows:
             by_ticker.setdefault(row["ticker"], []).append((date_iso, row["industry_code"], row["industry_name"]))
         print(json.dumps({"checkpoint": n, "total": len(CHECKPOINT_DATES), "date": date_iso, "coverage": audit["coverage"], "missing": len(audit["missing_expected_tickers"]), "extra": len(audit["extra_classified_tickers"])}, ensure_ascii=False), flush=True)
-        time.sleep(0.12)
+        time.sleep(0.35)
 
     changes = []
     for ticker, seq in sorted(by_ticker.items(), key=lambda kv: int(kv[0])):
@@ -175,6 +177,7 @@ def main() -> None:
         "authority": "DATA_FEASIBILITY_ONLY_NO_TRADING_AUTHORITY",
         "forward_outcomes_used": False,
         "source": URL,
+        "transport_policy": "SERIAL_THROTTLED_FAIL_CLOSED_V1_1",
         "universe": "TWSE listed electronics, standard four-digit tickers only",
         "checkpoint_design": "186 dates = canonical archive month-end trading sessions UNION canonical archive ticker first-appearance dates",
         "checkpoint_count": len(CHECKPOINT_DATES),
