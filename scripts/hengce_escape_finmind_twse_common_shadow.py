@@ -73,8 +73,12 @@ def _summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     directional = adv + dec
     trade_values = [float(r["today_total_amount"]) for r in rows if r["today_total_amount"] is not None]
     trade_volumes = [float(r["today_total_volume"]) for r in rows if r["today_total_volume"] is not None]
+    current = sum(bool(r["current_market_date"]) for r in rows)
     return {
         "constituent_count": len(rows),
+        "current_market_date_count": current,
+        "current_market_date_ratio": round(current / len(rows), 8) if rows else None,
+        "stale_or_noncurrent_count": len(rows) - current,
         "return_observed_count": len(returns),
         "advance_count": adv,
         "decline_count": dec,
@@ -82,8 +86,8 @@ def _summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "advance_share_directional": round(adv / directional, 8) if directional else None,
         "net_breadth": adv - dec,
         "equal_weight_change_rate": round(fmean(returns), 8) if returns else None,
-        "trade_today_count": sum(bool(r["trade_today"]) for r in rows),
-        "no_trade_today_count": sum(not bool(r["trade_today"]) for r in rows),
+        "total_amount_observed_count": len(trade_values),
+        "total_volume_observed_count": len(trade_volumes),
         "total_amount": round(sum(trade_values), 4),
         "total_volume": round(sum(trade_volumes), 4),
     }
@@ -132,26 +136,26 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         raise RuntimeError("active TWSE common-stock universe is not fully covered")
 
     derived_rows: list[dict[str, Any]] = []
+    stale_codes: list[str] = []
     latest_timestamp: str | None = None
     for code in sorted(active_required):
         row = snapshot_map[code]
         stamp = _date_text(row)
         if stamp and (latest_timestamp is None or stamp > latest_timestamp):
             latest_timestamp = stamp
-        trade_today = stamp.startswith(market_date)
-        raw_change = _num(row.get("change_rate"))
-        # A stale per-security row describes its last trading session. Never carry
-        # that old return or turnover into today's breadth/flow context.
-        today_change = raw_change if trade_today else 0.0
-        today_amount = _num(row.get("total_amount")) if trade_today else 0.0
-        today_volume = _num(row.get("total_volume")) if trade_today else 0.0
+        current_market_date = stamp.startswith(market_date)
+        if not current_market_date:
+            stale_codes.append(code)
+        # Never reinterpret a stale per-security row as today's zero return or
+        # zero turnover. Until a second source proves "no trade today", it is
+        # unknown and is excluded from current-day breadth/flow aggregates.
         derived_rows.append(
             {
                 "industry": industries.get(code, "UNKNOWN"),
-                "trade_today": trade_today,
-                "today_change_rate": today_change,
-                "today_total_amount": today_amount,
-                "today_total_volume": today_volume,
+                "current_market_date": current_market_date,
+                "today_change_rate": _num(row.get("change_rate")) if current_market_date else None,
+                "today_total_amount": _num(row.get("total_amount")) if current_market_date else None,
+                "today_total_volume": _num(row.get("total_volume")) if current_market_date else None,
             }
         )
 
@@ -162,8 +166,9 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
     for row in derived_rows:
         by_industry[row["industry"]].append(row)
 
+    market_summary = _summarize(derived_rows)
     context = {
-        "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_AGGREGATE_SHADOW_V1",
+        "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_AGGREGATE_SHADOW_V2",
         "generated_at_taipei": generated.isoformat(),
         "market_date": market_date,
         "source": "FinMind taiwan_stock_tick_snapshot + TWSE listed-company master",
@@ -179,11 +184,16 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "active_nontrading_exception_count": len(active_exceptions),
         "exempt_missing_count": len(exempt_missing),
         "exempt_missing": exempt_missing,
+        "current_market_date_count": market_summary["current_market_date_count"],
+        "current_market_date_ratio": market_summary["current_market_date_ratio"],
+        "stale_or_noncurrent_count": len(stale_codes),
+        "stale_or_noncurrent_sample": stale_codes[:20],
         "latest_source_timestamp": latest_timestamp,
-        "market": _summarize(derived_rows),
+        "market": market_summary,
         "industry": {key: _summarize(by_industry[key]) for key in sorted(by_industry)},
         "per_security_rows_persisted": False,
         "raw_finmind_rows_persisted": False,
+        "stale_rows_neutralized_as_zero": False,
         "formal_eod_state_creation": False,
         "formal_escape_state_creation": False,
         "selection_authority": False,
@@ -195,12 +205,16 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
     context["payload_sha256"] = hashlib.sha256(context_bytes).hexdigest()
 
     status = {
-        "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_SHADOW_STATUS_V1",
+        "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_SHADOW_STATUS_V2",
         "generated_at_taipei": generated.isoformat(),
         "state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
         "healthy_transport": True,
         "current_market_date_observed": True,
-        "active_universe_full_coverage": True,
+        "active_universe_transport_full_coverage": True,
+        "current_market_date_count": market_summary["current_market_date_count"],
+        "current_market_date_ratio": market_summary["current_market_date_ratio"],
+        "stale_or_noncurrent_count": len(stale_codes),
+        "stale_or_noncurrent_sample": stale_codes[:20],
         "monitoring_universe": SCOPE,
         "source": "FinMind",
         "finmind_endpoint": FINMIND_ENDPOINT,
@@ -215,6 +229,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "context_payload_sha256": context["payload_sha256"],
         "raw_finmind_rows_persisted": False,
         "per_security_rows_persisted": False,
+        "stale_rows_neutralized_as_zero": False,
         "formal_escape_authority": False,
         "formal_eod_authority": False,
         "trading_authority": False,
