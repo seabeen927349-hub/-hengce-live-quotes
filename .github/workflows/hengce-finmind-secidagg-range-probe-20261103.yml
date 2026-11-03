@@ -1,0 +1,74 @@
+name: HENGCE FinMind SecIdAgg long-range transport probe
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-finmind-secidagg-range-probe-20261103.yml'
+      - 'scripts/hengce_finmind_secidagg_range_probe.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - name: Checkout research head
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install HTTP client
+        run: python -m pip install --disable-pip-version-check requests
+
+      - name: Fail closed if FinMind secret is absent
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${FINMIND_TOKEN:-}" || { echo FINMIND_TOKEN_MISSING; exit 2; }
+
+      - name: Probe documented short range
+        shell: bash
+        run: |
+          python scripts/hengce_finmind_secidagg_range_probe.py \
+            --stock 2330 \
+            --start 2024-07-01 \
+            --end 2024-07-15 \
+            --expected-first 2024-07-01 \
+            --expected-last 2024-07-15 \
+            --output probe_out/2330_short.json
+
+      - name: Probe full frozen history span for a continuously eligible stock
+        shell: bash
+        run: |
+          python scripts/hengce_finmind_secidagg_range_probe.py \
+            --stock 2330 \
+            --start 2021-06-30 \
+            --end 2026-10-27 \
+            --expected-first 2021-06-30 \
+            --expected-last 2026-10-27 \
+            --expected-date-count 1294 \
+            --output probe_out/2330_full_span.json
+
+      - name: Print receipts
+        if: always()
+        shell: bash
+        run: |
+          for f in probe_out/*.json; do [ -f "$f" ] && cat "$f"; done
+
+      - name: Upload non-raw receipts only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-secidagg-range-probe-20261103
+          path: probe_out/*.json
+          if-no-files-found: error
+          retention-days: 7
