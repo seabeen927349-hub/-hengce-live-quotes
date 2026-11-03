@@ -85,17 +85,20 @@ jobs:
           payload=json.dumps(bundle,ensure_ascii=False,separators=(',',':')).encode('utf-8')
           gz=gzip.compress(payload,compresslevel=9,mtime=0)
           b64=base64.b64encode(gz).decode('ascii')
+          wrapped='\n'.join(b64[i:i+4096] for i in range(0,len(b64),4096))+'\n'
           out=root/'promotion_bundle_20261102.json.gz.b64'
-          out.write_text(b64,encoding='ascii')
+          out.write_text(wrapped,encoding='ascii')
           manifest['uncompressed_json_sha256']=hashlib.sha256(payload).hexdigest()
           manifest['gzip_sha256']=hashlib.sha256(gz).hexdigest()
           manifest['bundle_b64_sha256']=hashlib.sha256(b64.encode('ascii')).hexdigest()
           manifest['bundle_b64_bytes']=len(b64)
+          manifest['bundle_b64_lines']=(len(b64)+4095)//4096
           (root/'promotion_bundle_20261102_manifest.json').write_text(
               json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           print(json.dumps({
               'expected':expected,
               'bundle_b64_bytes':len(b64),
+              'bundle_b64_lines':manifest['bundle_b64_lines'],
               'gzip_sha256':manifest['gzip_sha256']
           },ensure_ascii=False))
           PY
