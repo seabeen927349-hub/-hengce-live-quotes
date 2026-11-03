@@ -1,0 +1,91 @@
+name: HENGCE frozen broker HHI lineage smoke
+
+on:
+  push:
+    branches:
+      - 'research/broker-execution-data-20261103'
+    paths:
+      - '.github/workflows/hengce-broker-hhi-lineage-smoke-20261103.yml'
+      - 'scripts/hengce_broker_gross_hhi_daily.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  daily-hhi-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        probe_date:
+          - '2021-06-30'
+          - '2022-10-31'
+          - '2024-01-02'
+          - '2026-09-22'
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+      DATASET: TaiwanStockTradingDailyReportSecIdAgg
+      PROBE_DATE: ${{ matrix.probe_date }}
+    steps:
+      - name: Checkout research head
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install official FinMind client and parquet stack
+        run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]' pandas pyarrow
+
+      - name: Fail closed if FinMind secret is absent
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${FINMIND_TOKEN:-}" || { echo FINMIND_TOKEN_MISSING; exit 2; }
+
+      - name: Download whole-day licensed broker parquet ephemerally
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/hengce-broker-smoke "smoke_out/${PROBE_DATE}"
+          python scripts/hengce_finmind_official_client_fetch.py \
+            --dataset "$DATASET" \
+            --date "$PROBE_DATE" \
+            --output "/tmp/hengce-broker-smoke/${DATASET}_${PROBE_DATE}.parquet" \
+            --receipt "smoke_out/${PROBE_DATE}/transport_receipt.json"
+
+      - name: Derive frozen BROKER_GROSS_HHI_1D without outcomes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_broker_gross_hhi_daily.py \
+            --parquet "/tmp/hengce-broker-smoke/${DATASET}_${PROBE_DATE}.parquet" \
+            --date "$PROBE_DATE" \
+            --factor-output "smoke_out/${PROBE_DATE}/broker_gross_hhi_1d.csv" \
+            --receipt-output "smoke_out/${PROBE_DATE}/hhi_receipt.json" \
+            --transport-receipt "smoke_out/${PROBE_DATE}/transport_receipt.json"
+
+      - name: Remove licensed raw parquet
+        if: always()
+        shell: bash
+        run: rm -rf /tmp/hengce-broker-smoke
+
+      - name: Assert raw parquet is absent and upload derived/receipt only
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -d /tmp/hengce-broker-smoke
+          find smoke_out/${PROBE_DATE} -maxdepth 1 -type f -printf '%f\n' | sort
+
+      - name: Upload non-raw smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-broker-hhi-lineage-smoke-${{ env.PROBE_DATE }}
+          path: smoke_out/${{ env.PROBE_DATE }}/*
+          if-no-files-found: error
+          retention-days: 7
