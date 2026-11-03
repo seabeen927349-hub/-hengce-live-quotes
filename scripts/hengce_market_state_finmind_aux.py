@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Attach FinMind-derived Market State context to the original HENGCE EOD vessel.
+"""Attach all-Taiwan-equity FinMind Market State context to HENGCE.
 
-The FinMind snapshot stays ephemeral. Only bounded, descriptive aggregates are
-persisted inside the existing eod/YYYYMMDD vessel. These aggregates are shadow
-observations only: they do not alter the frozen S5 classifier, Selection,
-Escape, trading, or capital authority.
+The paid FinMind snapshot stays ephemeral. Only bounded descriptive aggregates
+are persisted inside the existing eod/YYYYMMDD vessel. The primary observation
+scope is now all current Taiwan equities across TWSE, TPEx and emerging markets.
+Electronics100 is retained only as a diagnostic sub-scope.
+
+Nothing here alters the frozen S5 classifier, Selection, Escape, trading, or
+capital authority. Historical realtime snapshots are never fabricated.
 """
 from __future__ import annotations
 
@@ -13,32 +16,35 @@ import asyncio
 import hashlib
 import json
 import math
+import os
+import re
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Iterable
 from zoneinfo import ZoneInfo
 
 import numpy as np
+import requests
 from finmind_mcp.client import FinMindClient
 
 from hengce_finmind_twse_common_snapshot_probe import (
     DEFAULT_EXCEPTION_PATH,
     FINMIND_ENDPOINT,
-    _active_nontrading_exceptions,
     _date_text,
-    _fetch_twse_master,
     _sid,
-    _twse_common_universe,
     build_receipt as build_snapshot_audit,
 )
 
 TAIPEI = ZoneInfo("Asia/Taipei")
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = "hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_2_20261103.json"
+CONTRACT = "hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_3_20261103.json"
 FORMAL_CLASSIFIER = "hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json"
 LIVE_UNIVERSE = ROOT / "hengce" / "legacy" / "live_universe.json"
 RECEIPT_NAME = "market_state_finmind_shadow.json"
 CONTEXT_NAME = "market_state_finmind_context.json"
+FINMIND_DATA_URL = "https://api.finmindtrade.com/api/v4/data"
+FOUR_DIGIT_EQUITY = re.compile(r"[1-9]\d{3}")
+CURRENT_MARKET_TYPES = {"twse", "tpex", "emerging"}
 
 PERSISTED_VENDOR_FIELDS = (
     "change_rate",
@@ -53,6 +59,10 @@ PERSISTED_VENDOR_FIELDS = (
 def _canonical_sha(obj: Any) -> str:
     raw = json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(raw).hexdigest()
+
+
+def _sha_lines(values: Iterable[str]) -> str:
+    return hashlib.sha256("\n".join(sorted(values)).encode("utf-8")).hexdigest()
 
 
 def _atomic_json(path: Path, obj: dict[str, Any]) -> None:
@@ -79,10 +89,11 @@ def _base(target_date: str, now: datetime) -> dict[str, Any]:
     return {
         "system": "HENGCE",
         "artifact": "MARKET_STATE_FINMIND_SHADOW_AUX_RECEIPT",
-        "schema": "HENGCE_MARKET_STATE_FINMIND_SHADOW_AUX_V2",
+        "schema": "HENGCE_MARKET_STATE_FINMIND_SHADOW_AUX_V3",
         "target_date": target_date,
         "observed_at_taipei": now.isoformat(),
         "contract": CONTRACT,
+        "primary_scope": "all_taiwan_equities",
         "formal_market_state_classifier": FORMAL_CLASSIFIER,
         "authority": "RESEARCH_SHADOW_ONLY_DESCRIPTIVE_NO_TRADING_AUTHORITY",
         "data_vessel": "EXISTING_HENGCE_ORIGINAL_EOD_VESSEL",
@@ -109,16 +120,23 @@ def _update_status(status_path: Path, status_obj: dict[str, Any], receipt: dict[
             "market_state_finmind_shadow_status": receipt["status"],
             "market_state_finmind_shadow_receipt": f"receipts/{RECEIPT_NAME}",
             "market_state_finmind_shadow_observed_at_taipei": receipt["observed_at_taipei"],
+            "market_state_finmind_primary_scope": receipt.get("primary_scope"),
             "market_state_finmind_shadow_blocks_core_three_leg_or_mother": False,
             "market_state_finmind_shadow_formal_classifier_mutated": False,
             "market_state_finmind_shadow_model_authority_created": False,
             "market_state_finmind_shadow_trading_authority_created": False,
         }
     )
-    if "twse_active_coverage_ratio" in receipt:
-        status_obj["market_state_finmind_shadow_twse_active_coverage_ratio"] = receipt["twse_active_coverage_ratio"]
-    if "finmind_latest_lag_seconds" in receipt:
-        status_obj["market_state_finmind_shadow_latest_lag_seconds"] = receipt["finmind_latest_lag_seconds"]
+    for key in (
+        "finmind_latest_lag_seconds",
+        "all_taiwan_equity_membership_count",
+        "all_taiwan_snapshot_present_count",
+        "all_taiwan_current_date_count",
+        "all_taiwan_snapshot_presence_ratio",
+        "all_taiwan_current_date_coverage_ratio",
+    ):
+        if key in receipt:
+            status_obj[f"market_state_finmind_{key}"] = receipt[key]
     if receipt.get("derived_context_path"):
         status_obj["market_state_finmind_context_status"] = "ATTACHED_RESEARCH_SHADOW"
         status_obj["market_state_finmind_context_path"] = receipt["derived_context_path"]
@@ -157,6 +175,7 @@ def _scope_summary(
     scope_authority: str,
 ) -> dict[str, Any]:
     unique_codes = sorted(set(str(x) for x in codes))
+    present_rows: list[dict[str, Any]] = []
     current_rows: list[dict[str, Any]] = []
     stale_codes: list[str] = []
     missing_codes: list[str] = []
@@ -166,6 +185,7 @@ def _scope_summary(
         if row is None:
             missing_codes.append(code)
             continue
+        present_rows.append(row)
         if _date_text(row).startswith(market_date):
             current_rows.append(row)
         else:
@@ -201,10 +221,14 @@ def _scope_summary(
         "scope": scope_name,
         "scope_authority": scope_authority,
         "requested_code_count": len(unique_codes),
+        "snapshot_present_count": len(present_rows),
+        "snapshot_presence_ratio": _ratio(len(present_rows), len(unique_codes)),
         "current_date_row_count": len(current_rows),
         "current_date_coverage_ratio": _ratio(len(current_rows), len(unique_codes)),
         "stale_code_count": len(stale_codes),
         "missing_code_count": len(missing_codes),
+        "stale_code_sample": stale_codes[:20],
+        "missing_code_sample": missing_codes[:20],
         "change_rate_eligible_count": total_change,
         "advancing_count": advancing,
         "declining_count": declining,
@@ -233,8 +257,6 @@ def _load_electronics100() -> tuple[list[str], dict[str, Any]]:
     obj = json.loads(LIVE_UNIVERSE.read_text(encoding="utf-8"))
     if obj.get("policy") != "TWSE_LISTED_ELECTRONICS_100_HARD_BIND":
         raise RuntimeError("ELECTRONICS100_POLICY_MISMATCH")
-    if obj.get("scope") != "TWSE_LISTED_ELECTRONICS_ONLY":
-        raise RuntimeError("ELECTRONICS100_SCOPE_MISMATCH")
     symbols = [str(x).strip() for x in obj.get("symbols", [])]
     if len(symbols) != 100 or len(set(symbols)) != 100:
         raise RuntimeError("ELECTRONICS100_MEMBERSHIP_COUNT_MISMATCH")
@@ -244,7 +266,98 @@ def _load_electronics100() -> tuple[list[str], dict[str, Any]]:
         "target_date": obj.get("target_date"),
         "authority": obj.get("authority"),
         "payload_sha256": obj.get("payload_sha256"),
+        "role": "DIAGNOSTIC_ONLY_NOT_PRIMARY_MARKET_SCOPE",
     }
+
+
+def _is_equity_membership_row(row: dict[str, Any]) -> bool:
+    code = str(row.get("stock_id") or "").strip()
+    market_type = str(row.get("type") or "").strip().lower()
+    category = str(row.get("industry_category") or "").strip()
+    name = str(row.get("stock_name") or "").strip().upper()
+    if not FOUR_DIGIT_EQUITY.fullmatch(code):
+        return False
+    if market_type not in CURRENT_MARKET_TYPES:
+        return False
+    if category.upper() in {"ETF", "ETN"}:
+        return False
+    if "存託" in category or "-DR" in name:
+        return False
+    return True
+
+
+def _fetch_finmind_current_equity_membership(target_date: str) -> tuple[dict[str, list[str]], dict[str, Any]]:
+    token = os.environ.get("FINMIND_TOKEN")
+    if not token:
+        raise RuntimeError("FINMIND_TOKEN_IS_MISSING_FOR_STOCK_INFO")
+    response = requests.get(
+        FINMIND_DATA_URL,
+        headers={"Authorization": f"Bearer {token}"},
+        params={"dataset": "TaiwanStockInfo"},
+        timeout=30,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    rows = payload.get("data") if isinstance(payload, dict) else None
+    if not isinstance(rows, list) or not rows:
+        raise RuntimeError("FINMIND_TAIWAN_STOCK_INFO_EMPTY_OR_MALFORMED")
+
+    latest_by_code: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        code = str(row.get("stock_id") or "").strip()
+        d = str(row.get("date") or "").strip()
+        if not code or not d:
+            continue
+        old = latest_by_code.get(code)
+        if old is None or d > str(old.get("date") or ""):
+            latest_by_code[code] = row
+
+    all_latest_dates = [str(x.get("date") or "") for x in latest_by_code.values() if str(x.get("date") or "")]
+    if not all_latest_dates:
+        raise RuntimeError("FINMIND_TAIWAN_STOCK_INFO_HAS_NO_DATES")
+    report_date = max(all_latest_dates)
+
+    current_rows = [
+        row for row in latest_by_code.values()
+        if str(row.get("date") or "") == report_date and _is_equity_membership_row(row)
+    ]
+    markets: dict[str, list[str]] = {"twse": [], "tpex": [], "emerging": []}
+    for row in current_rows:
+        markets[str(row["type"]).strip().lower()].append(str(row["stock_id"]).strip())
+    for key in markets:
+        markets[key] = sorted(set(markets[key]))
+
+    combined = sorted(set(markets["twse"]) | set(markets["tpex"]) | set(markets["emerging"]))
+    if len(markets["twse"]) < 900:
+        raise RuntimeError(f"FINMIND_CURRENT_TWSE_EQUITY_UNIVERSE_TOO_SMALL:{len(markets['twse'])}")
+    if len(markets["tpex"]) < 700:
+        raise RuntimeError(f"FINMIND_CURRENT_TPEX_EQUITY_UNIVERSE_TOO_SMALL:{len(markets['tpex'])}")
+    if len(combined) < 1800:
+        raise RuntimeError(f"FINMIND_CURRENT_ALL_TAIWAN_EQUITY_UNIVERSE_TOO_SMALL:{len(combined)}")
+
+    membership_lines = [
+        f"{row.get('stock_id')}|{row.get('type')}|{row.get('date')}|{row.get('industry_category')}|{row.get('stock_name')}"
+        for row in current_rows
+    ]
+    meta = {
+        "dataset": "TaiwanStockInfo",
+        "endpoint": FINMIND_DATA_URL,
+        "report_date": report_date,
+        "target_date": target_date,
+        "latest_row_rule": "MAX_DATE_PER_STOCK_ID_THEN_CURRENT_REPORT_DATE",
+        "market_type_rule": "twse+tpex+emerging",
+        "four_digit_equity_rule": FOUR_DIGIT_EQUITY.pattern,
+        "twse_count": len(markets["twse"]),
+        "tpex_count": len(markets["tpex"]),
+        "emerging_count": len(markets["emerging"]),
+        "all_taiwan_equity_count": len(combined),
+        "membership_sha256": _sha_lines(membership_lines),
+        "raw_membership_rows_persisted": False,
+    }
+    markets["all"] = combined
+    return markets, meta
 
 
 async def _query_context_snapshot() -> list[dict[str, Any]]:
@@ -259,13 +372,9 @@ def _build_derived_context(
     target_date: str,
     observed_at: datetime,
     snapshot_rows: list[dict[str, Any]],
-    exception_path: Path,
     source_receipt: dict[str, Any],
 ) -> dict[str, Any]:
-    master_rows, master_report_date = _fetch_twse_master()
-    common_codes, _, _ = _twse_common_universe(master_rows)
-    active_exceptions, exception_meta = _active_nontrading_exceptions(exception_path, target_date)
-    required_common = sorted(set(common_codes) - active_exceptions)
+    markets, membership_meta = _fetch_finmind_current_equity_membership(target_date)
 
     snapshot_map: dict[str, dict[str, Any]] = {}
     duplicates: set[str] = set()
@@ -278,21 +387,60 @@ def _build_derived_context(
         if code in snapshot_map:
             duplicates.add(code)
         snapshot_map[code] = row
-
     if duplicates:
         raise RuntimeError(f"FINMIND_CONTEXT_DUPLICATE_IDS:{sorted(duplicates)[:20]}")
-    unexpected_missing = sorted(set(required_common) - set(snapshot_map))
-    if unexpected_missing:
-        raise RuntimeError(f"FINMIND_CONTEXT_UNEXPECTED_MISSING:{unexpected_missing[:20]}")
 
     electronics100, electronics_meta = _load_electronics100()
-    noncommon_electronics = sorted(set(electronics100) - set(common_codes))
-    if noncommon_electronics:
-        raise RuntimeError(f"ELECTRONICS100_NOT_IN_TWSE_COMMON:{noncommon_electronics[:20]}")
+    scopes = {
+        "all_taiwan_equities": _scope_summary(
+            snapshot_map,
+            markets["all"],
+            target_date,
+            "ALL_TAIWAN_EQUITIES_TWSE_TPEX_EMERGING",
+            "FINMIND_TAIWAN_STOCK_INFO_LATEST_CURRENT_MEMBERSHIP",
+        ),
+        "twse_equities": _scope_summary(
+            snapshot_map,
+            markets["twse"],
+            target_date,
+            "TWSE_CURRENT_EQUITIES",
+            "FINMIND_TAIWAN_STOCK_INFO_LATEST_CURRENT_MEMBERSHIP",
+        ),
+        "tpex_equities": _scope_summary(
+            snapshot_map,
+            markets["tpex"],
+            target_date,
+            "TPEX_CURRENT_EQUITIES",
+            "FINMIND_TAIWAN_STOCK_INFO_LATEST_CURRENT_MEMBERSHIP",
+        ),
+        "emerging_equities": _scope_summary(
+            snapshot_map,
+            markets["emerging"],
+            target_date,
+            "EMERGING_CURRENT_EQUITIES",
+            "FINMIND_TAIWAN_STOCK_INFO_LATEST_CURRENT_MEMBERSHIP_SEPARATE_MICROSTRUCTURE",
+        ),
+        "hengce_electronics100_diagnostic": _scope_summary(
+            snapshot_map,
+            electronics100,
+            target_date,
+            "HENGCE_TWSE_ELECTRONICS100_DIAGNOSTIC_ONLY",
+            "QUOTE_TRANSPORT_MEMBERSHIP_ONLY_NO_MODEL_RANKING_AUTHORITY",
+        ),
+    }
+
+    all_scope = scopes["all_taiwan_equities"]
+    if (all_scope.get("snapshot_presence_ratio") or 0.0) < 0.98:
+        raise RuntimeError(
+            f"ALL_TAIWAN_EQUITY_SNAPSHOT_PRESENCE_TOO_LOW:{all_scope.get('snapshot_presence_ratio')}"
+        )
 
     digest_lines = []
-    for code in required_common:
-        row = snapshot_map[code]
+    for code in markets["all"]:
+        row = snapshot_map.get(code)
+        if row is None:
+            digest_lines.append(f"{code}|MISSING")
+            continue
         digest_lines.append("|".join([
             code,
             _date_text(row),
@@ -301,29 +449,26 @@ def _build_derived_context(
             str(row.get("volume_ratio") or ""),
             str(row.get("close") or ""),
         ]))
-    snapshot_digest = hashlib.sha256("\n".join(sorted(digest_lines)).encode("utf-8")).hexdigest()
 
     context = {
         "system": "HENGCE",
         "artifact": "MARKET_STATE_FINMIND_DERIVED_CONTEXT",
-        "schema": "HENGCE_MARKET_STATE_FINMIND_DERIVED_CONTEXT_V1",
+        "schema": "HENGCE_MARKET_STATE_FINMIND_DERIVED_CONTEXT_V2",
         "target_date": target_date,
         "observed_at_taipei": observed_at.isoformat(),
         "authority": "RESEARCH_SHADOW_DESCRIPTIVE_CONTEXT_ONLY_NO_MODEL_OR_TRADING_AUTHORITY",
         "data_vessel": "EXISTING_HENGCE_ORIGINAL_EOD_VESSEL",
+        "primary_scope": "all_taiwan_equities",
         "source_revision_class": "FORWARD_COLLECTED_VENDOR_SNAPSHOT",
         "finmind_endpoint": FINMIND_ENDPOINT,
+        "finmind_membership_dataset": "TaiwanStockInfo",
         "source_snapshot_latest_timestamp": source_receipt.get("finmind_latest_timestamp"),
         "source_snapshot_audit_digest_sha256": source_receipt.get("finmind_id_date_digest_sha256"),
-        "context_snapshot_digest_sha256": snapshot_digest,
-        "twse_master_report_date": master_report_date,
-        "nontrading_exception_governance": {
-            "path": exception_meta.get("path"),
-            "sha256": exception_meta.get("sha256"),
-            "active_exception_count": len(active_exceptions),
-        },
+        "context_snapshot_digest_sha256": _sha_lines(digest_lines),
+        "all_taiwan_membership": membership_meta,
         "persisted_vendor_fields_used_for_aggregation": list(PERSISTED_VENDOR_FIELDS),
         "raw_vendor_snapshot_persisted": False,
+        "raw_membership_rows_persisted": False,
         "per_ticker_vendor_rows_persisted": False,
         "forward_outcomes_used": False,
         "formal_market_state_classifier": FORMAL_CLASSIFIER,
@@ -334,22 +479,7 @@ def _build_derived_context(
         "capital_effect": "NONE",
         "promotion_required_before_formal_use": True,
         "electronics100_membership": electronics_meta,
-        "scopes": {
-            "twse_listed_common": _scope_summary(
-                snapshot_map,
-                required_common,
-                target_date,
-                "TWSE_LISTED_COMMON_ACTIVE_REQUIRED",
-                "OFFICIAL_TWSE_MASTER_WITH_DATE_BOUNDED_NONTRADING_EXCEPTIONS",
-            ),
-            "hengce_electronics100": _scope_summary(
-                snapshot_map,
-                electronics100,
-                target_date,
-                "HENGCE_TWSE_ELECTRONICS100",
-                "QUOTE_TRANSPORT_MEMBERSHIP_ONLY_NO_MODEL_RANKING_AUTHORITY",
-            ),
-        },
+        "scopes": scopes,
     }
     context["payload_sha256"] = _canonical_sha(context)
     return context
@@ -363,18 +493,19 @@ def run(target_date: str, eod_dir: Path, exception_path: Path) -> dict[str, Any]
     receipt_path = eod_dir / "receipts" / RECEIPT_NAME
     context_path = eod_dir / CONTEXT_NAME
 
-    # Never destroy a historically collected forward snapshot/context just
-    # because a later manual replay targets that old date.
     if target != now.date() and receipt_path.exists():
         try:
             existing = json.loads(receipt_path.read_text(encoding="utf-8"))
         except Exception:
             existing = {}
-        if existing.get("target_date") == target_date and existing.get("status") == "OBSERVED_CONTEXT_ATTACHED" and context_path.exists():
+        if (
+            existing.get("target_date") == target_date
+            and existing.get("status") == "OBSERVED_CONTEXT_ATTACHED"
+            and context_path.exists()
+        ):
             return existing
 
     receipt = _base(target_date, now)
-
     if target != now.date():
         receipt.update({
             "status": "SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT",
@@ -397,11 +528,12 @@ def run(target_date: str, eod_dir: Path, exception_path: Path) -> dict[str, Any]
             target_date=target_date,
             observed_at=now,
             snapshot_rows=context_snapshot_rows,
-            exception_path=exception_path,
             source_receipt=source,
         )
         _atomic_json(context_path, context)
 
+        all_scope = context["scopes"]["all_taiwan_equities"]
+        membership = context["all_taiwan_membership"]
         receipt.update({
             "status": "OBSERVED_CONTEXT_ATTACHED",
             "source_schema": source.get("schema"),
@@ -413,15 +545,15 @@ def run(target_date: str, eod_dir: Path, exception_path: Path) -> dict[str, Any]
             "finmind_latest_timestamp": source.get("finmind_latest_timestamp"),
             "finmind_latest_lag_seconds": source.get("finmind_latest_lag_seconds"),
             "finmind_id_date_digest_sha256": source.get("finmind_id_date_digest_sha256"),
-            "twse_master_report_date": source.get("twse_master_report_date"),
-            "twse_common_master_count": source.get("twse_common_master_count"),
-            "twse_common_covered_count": source.get("twse_common_covered_count"),
-            "twse_common_unexpected_missing_count": source.get("twse_common_unexpected_missing_count"),
-            "twse_active_required_count": source.get("twse_active_required_count"),
-            "twse_active_covered_count": source.get("twse_active_covered_count"),
-            "twse_active_coverage_ratio": source.get("twse_active_coverage_ratio"),
-            "twse_common_current_date_count": source.get("twse_common_current_date_count"),
-            "twse_common_stale_count": source.get("twse_common_stale_count"),
+            "all_taiwan_membership_report_date": membership.get("report_date"),
+            "all_taiwan_equity_membership_count": membership.get("all_taiwan_equity_count"),
+            "twse_equity_membership_count": membership.get("twse_count"),
+            "tpex_equity_membership_count": membership.get("tpex_count"),
+            "emerging_equity_membership_count": membership.get("emerging_count"),
+            "all_taiwan_snapshot_present_count": all_scope.get("snapshot_present_count"),
+            "all_taiwan_current_date_count": all_scope.get("current_date_row_count"),
+            "all_taiwan_snapshot_presence_ratio": all_scope.get("snapshot_presence_ratio"),
+            "all_taiwan_current_date_coverage_ratio": all_scope.get("current_date_coverage_ratio"),
             "derived_aggregate_context_persisted": True,
             "derived_context_path": CONTEXT_NAME,
             "derived_context_sha256": context["payload_sha256"],
@@ -444,7 +576,7 @@ def run(target_date: str, eod_dir: Path, exception_path: Path) -> dict[str, Any]
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--date", required=True, help="Target TWSE date YYYY-MM-DD")
+    parser.add_argument("--date", required=True, help="Target Taiwan market date YYYY-MM-DD")
     parser.add_argument("--eod-dir", type=Path, required=True)
     parser.add_argument("--exceptions", type=Path, default=DEFAULT_EXCEPTION_PATH)
     args = parser.parse_args()
