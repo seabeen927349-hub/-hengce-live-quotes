@@ -1,0 +1,45 @@
+name: HENGCE Broker H20 U100 Bounded Source Correction
+
+"on":
+  workflow_dispatch:
+  push:
+    branches:
+      - research/broker-h20-frozen-execution-20261103
+    paths:
+      - .github/workflows/hengce_broker_h20_u100_correction.yml
+      - research/broker_structure_20261103/source_correction/**
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-correction:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]' numpy pandas pyarrow
+      - name: Syntax check
+        run: python -m py_compile research/broker_structure_20261103/source_correction/run_u100_stale_membership_correction.py
+      - name: Run bounded correction
+        run: python research/broker_structure_20261103/source_correction/run_u100_stale_membership_correction.py
+      - name: Delete transient raw objects
+        if: always()
+        run: rm -rf /tmp/hengce-h20-u100-correction-*
+      - name: Upload derived correction only
+        uses: actions/upload-artifact@v4
+        with:
+          name: broker-h20-u100-bounded-correction
+          path: |
+            research/broker_structure_20261103/source_correction/broker_hhi_u100_correction_12rows.csv
+            research/broker_structure_20261103/source_correction/broker_hhi_u100_correction_lineage_11dates.jsonl
+            research/broker_structure_20261103/source_correction/broker_hhi_u100_correction_receipt.json
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
