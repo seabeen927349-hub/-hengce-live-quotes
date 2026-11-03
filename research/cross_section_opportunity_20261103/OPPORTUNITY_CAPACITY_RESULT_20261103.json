@@ -1,0 +1,95 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "project": "cross_section_opportunity_20261103",
+  "artifact": "OPPORTUNITY_CAPACITY_RESULT",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "preregistration_commit": "090cabd460d39866f71bf81ddf1270d8b8adb8a3",
+  "input_matrix": {
+    "file": "HENGCE_MARKET_ENVIRONMENT_OBSERVATION_MATRIX_V3.csv",
+    "sha256": "2e9783338e24a1f2fd5303780750b8c269316265b4ea394f1dc8e4d3ca831755",
+    "sha_verified": true
+  },
+  "state_classifier_replay": {
+    "eligible_rows": 2083,
+    "DIFFUSE_NORMAL": 1714,
+    "SYNCHRONIZED_STRESS": 369,
+    "UNKNOWN_FAIL_CLOSED": 59,
+    "status": "EXACT_MATCH_FROZEN_REPLAY_COUNTS"
+  },
+  "primary_sample": {
+    "n": 2102,
+    "first_market_event_date": "2018-01-30",
+    "last_market_event_date": "2026-09-21",
+    "early_n": 1204,
+    "late_n": 898,
+    "state_counts": {
+      "DIFFUSE_NORMAL": 1695,
+      "SYNCHRONIZED_STRESS": 368,
+      "UNKNOWN_FAIL_CLOSED": 39
+    }
+  },
+  "primary_outcome": "FWD20_XS_MAD_MEAN = mean of next 20 ELEC_XS_MAD_1 observations, excluding current date",
+  "primary_model": {
+    "formula": "FWD20_XS_MAD_MEAN ~ const + MAD_Z + SYNC_Z + RV_Z",
+    "HAC_lag": 20,
+    "r_squared": 0.4192240365460215,
+    "full": {
+      "MAD_Z": {"coef": 0.0011662124697354895, "se": 0.00015513343013644052, "t": 7.517480073184745, "p": 5.584206645593673e-14, "ci95": [0.0008621565338699054, 0.0014702684056010734]},
+      "SYNC_Z": {"coef": -0.0007697784447331331, "se": 0.00028836025254494176, "t": -2.6695026028705566, "p": 0.007596368434647549, "ci95": [-0.0013349541542940933, -0.00020460273517217272]},
+      "RV_Z": {"coef": 0.0006890554774936289, "se": 0.00021855262473589816, "t": 3.152812638723934, "p": 0.0016170555935977311, "ci95": [0.00026070020428457075, 0.001117410750702687]}
+    },
+    "early_2018_2022": {
+      "MAD_Z": {"coef": 0.0006746964439379485, "p": 7.781233873895865e-06, "ci95": [0.00037893569442585704, 0.0009704571934500399]},
+      "SYNC_Z": {"coef": 0.00025425612258621485, "p": 0.4266966539922322, "ci95": [-0.00037269036545155624, 0.0008812026106239859]},
+      "RV_Z": {"coef": -0.00006641986079720193, "p": 0.7440074488136906, "ci95": [-0.0004650727602186751, 0.00033223303862427124]}
+    },
+    "late_2023_2026": {
+      "MAD_Z": {"coef": 0.0014521580633616697, "p": 2.329119899307001e-13, "ci95": [0.001063781820205804, 0.0018405343065175353]},
+      "SYNC_Z": {"coef": -0.0017404259717723068, "p": 6.83480731433083e-06, "ci95": [-0.0024986716652613417, -0.000982180278283272]},
+      "RV_Z": {"coef": 0.0010166663629216435, "p": 3.5725159553233595e-05, "ci95": [0.0005346001818911857, 0.0014987325439521013]}
+    }
+  },
+  "stable_predictor_assessment": {
+    "MAD_Z": {"full_ci_excludes_zero": true, "full_sign": "positive", "early_sign": "positive", "late_sign": "positive", "temporal_sign_stable": true, "interpretation": "One frozen-IQR increase in current ELEC_XS_MAD_1 predicts about +11.66 bps/day in average future 20-session cross-sectional MAD, conditional on current synchronization and market volatility."},
+    "SYNC_Z": {"full_ci_excludes_zero": true, "full_sign": "negative", "early_sign": "positive", "late_sign": "negative", "temporal_sign_stable": false},
+    "RV_Z": {"full_ci_excludes_zero": true, "full_sign": "positive", "early_sign": "negative", "late_sign": "positive", "temporal_sign_stable": false}
+  },
+  "transition_descriptive": {
+    "NORMAL_STABLE": {"n": 1243, "mean": 0.009220643162155349, "median": 0.00895077920425},
+    "NORMAL_TO_STRESS": {"n": 452, "mean": 0.010733209681918363, "median": 0.00987083646605},
+    "EARLY_STRESS": {"n": 138, "mean": 0.010878516103695652, "median": 0.009976896559524998},
+    "MATURE_STRESS": {"n": 230, "mean": 0.010408083677235216, "median": 0.009638719054049998},
+    "STRESS_TO_NORMAL": {"n": 138, "mean": 0.010114666089515941, "median": 0.009461432840775002}
+  },
+  "transition_implementation_note": "NORMAL_STABLE requires all next 20 frozen labels to be DIFFUSE_NORMAL; other categories follow preregistered existence/all rules. These are ex-post path descriptors and are not real-time signals.",
+  "normal_heterogeneity": {
+    "n": 1695,
+    "tercile_cutpoints": {"SYNC_Z": [-0.41593048228534923, 0.08766282481655117], "MAD_Z": [-0.3415961563554688, 0.2194729399750064]},
+    "by_SYNC_Z": {
+      "LOW": {"n": 565, "mean": 0.009568459562091682, "median": 0.009014034513750002},
+      "MID": {"n": 565, "mean": 0.009701053386713981, "median": 0.00943739215585},
+      "HIGH": {"n": 565, "mean": 0.009602469753470795, "median": 0.009171462010600002}
+    },
+    "by_MAD_Z": {
+      "LOW": {"n": 565, "mean": 0.008485319168375487, "median": 0.0084065696874},
+      "MID": {"n": 565, "mean": 0.009359649384302744, "median": 0.009260107830100001},
+      "HIGH": {"n": 565, "mean": 0.01102701414959823, "median": 0.010229856561250002}
+    }
+  },
+  "independent_replay": {"status": "PASS_EXACT_PRIMARY_MODEL", "n": 2102, "params_exact_atol_1e-15": true, "hac_se_exact_atol_1e-15": true},
+  "formal_conclusion": "PREDICTABLE_OPPORTUNITY_CAPACITY",
+  "allowed_interpretation": [
+    "The size of the near-future Taiwan electronics cross-sectional differentiation opportunity set is partially forecastable from current point-in-time differentiation.",
+    "Current cross-sectional differentiation is the only prespecified predictor with stable coefficient sign across both early and late periods.",
+    "Static synchronization and market-volatility coefficients are not temporally stable.",
+    "Elevated raw cross-sectional differentiation can coexist with weak MOM20 selection edge; opportunity capacity is not the same thing as exploitable ranking alpha."
+  ],
+  "forbidden_interpretation": [
+    "High dispersion automatically means more alpha.",
+    "Stress should be bought or sold.",
+    "A Stress-specific expert is established.",
+    "The diagnostic identifies which stocks will outperform.",
+    "2018-2026 is untouched OOS for this research question."
+  ]
+}
