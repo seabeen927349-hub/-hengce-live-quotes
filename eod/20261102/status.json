@@ -30,7 +30,7 @@
   "pending_legs": [],
   "error_legs": [],
   "mother_status": "COMPLETE",
-  "mother_promotion_required": true,
+  "mother_promotion_required": false,
   "mother_pending_legs": [],
   "mother_receipt": "receipts/mother.json",
   "mother_sha256": "7912a066730540e2fba41b7d49ff5e4124b1b8ccd6b0ce32055caeb712bbe8a0",
