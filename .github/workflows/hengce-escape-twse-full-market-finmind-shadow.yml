@@ -1,0 +1,89 @@
+name: HENGCE Escape TWSE Common FinMind Shadow
+
+"on":
+  pull_request:
+    paths:
+      - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
+      - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
+      - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
+      - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-escape-twse-common-finmind-shadow-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shadow-context:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install official FinMind client
+        run: python -m pip install --disable-pip-version-check finmind-mcp
+      - name: Compile shadow vessel
+        run: |
+          python -m py_compile scripts/hengce_finmind_twse_common_snapshot_probe.py
+          python -m py_compile scripts/hengce_escape_finmind_twse_common_shadow.py
+      - name: Build non-raw aggregate shadow context
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${FINMIND_TOKEN:-}"
+          mkdir -p /tmp/hengce-finmind-shadow
+          python scripts/hengce_escape_finmind_twse_common_shadow.py \
+            --context /tmp/hengce-finmind-shadow/context.json \
+            --status /tmp/hengce-finmind-shadow/status.json
+      - name: Assert authority and persistence boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('/tmp/hengce-finmind-shadow')
+          context=json.loads((root/'context.json').read_text(encoding='utf-8'))
+          status=json.loads((root/'status.json').read_text(encoding='utf-8'))
+          assert status['state']=='SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY'
+          assert status['active_universe_full_coverage'] is True
+          assert status['unexpected_missing_count']==0
+          assert status['raw_finmind_rows_persisted'] is False
+          assert status['per_security_rows_persisted'] is False
+          assert status['formal_escape_authority'] is False
+          assert status['formal_eod_authority'] is False
+          assert status['trading_authority'] is False
+          assert context['raw_finmind_rows_persisted'] is False
+          assert context['per_security_rows_persisted'] is False
+          assert context['formal_escape_state_creation'] is False
+          assert context['trading_authority'] is False
+          assert context['active_required_count'] >= 900
+          assert context['market']['constituent_count'] == context['active_required_count']
+          print(json.dumps({
+              'state': status['state'],
+              'twse_common_master_count': status['twse_common_master_count'],
+              'active_required_count': status['active_required_count'],
+              'unexpected_missing_count': status['unexpected_missing_count'],
+              'exempt_missing': status['exempt_missing'],
+              'latest_source_timestamp': status['latest_source_timestamp'],
+              'market': context['market'],
+              'industry_bucket_count': len(context['industry']),
+              'context_payload_sha256': status['context_payload_sha256'],
+          }, ensure_ascii=False, sort_keys=True))
+          PY
+      - name: Upload non-raw aggregate research receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-twse-common-shadow
+          path: /tmp/hengce-finmind-shadow/*.json
+          if-no-files-found: error
+          retention-days: 7
