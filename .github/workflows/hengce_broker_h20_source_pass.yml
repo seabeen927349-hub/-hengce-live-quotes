@@ -35,18 +35,23 @@ jobs:
           python-version: '3.12'
       - name: Install source-pass dependencies
         run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]' numpy pandas pyarrow
+      - name: Build repaired U100 extract from sealed authority keyset
+        run: |
+          python research/broker_structure_20261103/source_pass/build_repaired_u100_extract.py \
+            --source-root research/broker_structure_20261103/hhi_extract \
+            --output-root /tmp/hengce-h20-repaired-extract
       - name: Syntax check source-only executor
         run: python -m py_compile research/broker_structure_20261103/source_pass/run_broker_hhi_source_shard.py
       - name: Run source-only HHI shard
         run: |
           python research/broker_structure_20261103/source_pass/run_broker_hhi_source_shard.py \
-            --extract-root research/broker_structure_20261103/hhi_extract \
+            --extract-root /tmp/hengce-h20-repaired-extract \
             --shard ${{ matrix.shard }} \
             --total-shards 24 \
             --output broker_hhi_source_shard_${{ matrix.shard }}.json
       - name: Delete transient raw Broker objects
         if: always()
-        run: rm -rf /tmp/hengce-broker-source-*
+        run: rm -rf /tmp/hengce-broker-source-* /tmp/hengce-h20-repaired-extract
       - name: Upload non-raw source shard receipt
         if: always()
         uses: actions/upload-artifact@v4
