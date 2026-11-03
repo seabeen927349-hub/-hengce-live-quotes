@@ -1,0 +1,157 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "FINMIND_SPONSORPRO_BROKER_TAPE_FEASIBILITY_RESULT",
+  "branch": "research/broker-tape-feasibility-20261103",
+  "authority": "RESEARCH_ONLY_NO_FORWARD_RETURN_AUTHORITY",
+  "result": "ACQUISITION_SCHEMA_COVERAGE_FEASIBILITY_PASS",
+  "strict_historical_pit_result": "NOT_YET_AUTHORIZED_DUE_RETROSPECTIVE_SOURCE_REVISIONS",
+  "dataset": "TaiwanStockTradingDailyReportSecIdAgg",
+  "source_client": "FinMind official finmind-mcp",
+  "source_plan": "SponsorPro",
+  "canonical_mother": {
+    "name": "HENGCE_2026_HIST_MOTHER.csv",
+    "sha256": "2879ebb756c524dbefa4c47258d58fd6fa138aefcced3c7abb3d46634070651b",
+    "rows": 1024443,
+    "range": ["2018-01-02", "2026-10-30"],
+    "latest_date_universe_count": 1092,
+    "latest_date_universe_sha256": "38285023ef4139482841c910b329acfe8c6a8b5cdba8cf3f95e2a466b1bad4d5"
+  },
+  "source_semantics": {
+    "fields_verified": [
+      "date",
+      "stock_id",
+      "securities_trader_id",
+      "buy_volume",
+      "sell_volume",
+      "buy_price",
+      "sell_price"
+    ],
+    "broker_name_is_not_identity_authority": true,
+    "use_securities_trader_id_for_lineage": true,
+    "broker_branch_does_not_identify_beneficial_owner": true,
+    "broker_branch_does_not_imply_smart_money": true
+  },
+  "official_update_semantics": {
+    "TaiwanStockTradingDailyReport_update_time": "weekday 18:00; actual availability follows API",
+    "TaiwanStockTradingDailyReportSecIdAgg_update_time": "weekday 18:30; actual availability follows API",
+    "conservative_research_knowability_rule": "D broker data may be used no earlier than D+1 market open",
+    "source_doc": "https://finmind.github.io/tutor/TaiwanMarket/Chip/"
+  },
+  "boundary_observations": [
+    {
+      "date": "2021-06-30",
+      "transport": "PASS",
+      "schema_date": "PASS",
+      "rows": 507268,
+      "unique_stock_ids": 2101,
+      "unique_broker_branches": 886,
+      "parquet_sha256": "6c3d1339a215b646423c2656f2d5612019f6185bec2bf6d5cf1427f821f1d91f",
+      "canonical_mother_4digit_rows_that_day": 410,
+      "canonical_mother_traded_4digit_symbols_that_day": 408,
+      "missing_among_mother_traded_symbols": 0,
+      "note": "The frozen 2026-10-30 1092-name manifest is not a valid PIT denominator for this historical date. Most apparent missing names were not yet in the mother that day; 2327 was present but no-trade."
+    },
+    {
+      "date": "2022-10-31",
+      "transport": "PASS",
+      "schema_date": "PASS",
+      "rows": 306901,
+      "unique_stock_ids": 2217,
+      "unique_broker_branches": 883,
+      "parquet_sha256": "aa707ea8d6c5191f44b5daf46d32230b5233dd469044e46cfb0e99f7b4ed4dc1",
+      "canonical_mother_4digit_rows_that_day": 418,
+      "canonical_mother_traded_4digit_symbols_that_day": 418,
+      "missing_among_mother_traded_symbols": 0
+    },
+    {
+      "date": "2023-01-11",
+      "transport": "PASS",
+      "schema_date": "PASS",
+      "rows": 368445,
+      "unique_stock_ids": 2245,
+      "unique_broker_branches": 882,
+      "parquet_sha256": "b3eedfa0513017cde5ddcf9e6a158da44a08835592579191e4bac9f200ce6955",
+      "canonical_mother_4digit_rows_that_day": 421,
+      "canonical_mother_traded_4digit_symbols_that_day": 421,
+      "missing_among_mother_traded_symbols": 0
+    },
+    {
+      "date": "2024-01-02",
+      "transport": "PASS",
+      "schema_date": "PASS",
+      "rows": 450700,
+      "unique_stock_ids": 2420,
+      "unique_broker_branches": 857,
+      "parquet_sha256": "53ac0154bbbd8613543825446815b514e10535e2127d6143296005c13bb60e67",
+      "canonical_mother_4digit_rows_that_day": 429,
+      "canonical_mother_traded_4digit_symbols_that_day": 429,
+      "missing_among_mother_traded_symbols": 0
+    },
+    {
+      "date": "2026-10-30",
+      "transport": "PASS",
+      "schema_date": "PASS",
+      "rows": 585741,
+      "unique_stock_ids": 2734,
+      "unique_broker_branches": 852,
+      "canonical_mother_4digit_rows_that_day": 1092,
+      "canonical_mother_traded_4digit_symbols_that_day": 1087,
+      "missing_from_frozen_1092_manifest": ["1470", "9110"],
+      "missing_among_mother_traded_symbols": 0,
+      "note": "1470 and 9110 have Volume=0 and Turnover=0 in canonical mother on 2026-10-30."
+    }
+  ],
+  "latest_repeatability_check": {
+    "date": "2026-10-30",
+    "repeat_1_parquet_sha256": "4ef96801cb2ec040bbdceb768248ee0865a3c56ff6e0094a24b8e0afb9a7749e",
+    "repeat_2_parquet_sha256": "4ef96801cb2ec040bbdceb768248ee0865a3c56ff6e0094a24b8e0afb9a7749e",
+    "repeat_1_bytes": 7402539,
+    "repeat_2_bytes": 7402539,
+    "repeat_1_rows": 585741,
+    "repeat_2_rows": 585741,
+    "logical_digest_spec": "HENGCE_LOGICAL_ROW_HASH_V1_SORT_ALL_CANONICAL_FIELDS_JSON_LINES",
+    "repeat_1_logical_content_sha256": "e653ab8067999973b316e056d7fc75b760b681e597fbbe8359607e76845e73cd",
+    "repeat_2_logical_content_sha256": "e653ab8067999973b316e056d7fc75b760b681e597fbbe8359607e76845e73cd",
+    "result": "PASS_IDENTICAL_REDOWNLOAD"
+  },
+  "earlier_physical_object_observation": {
+    "note": "An earlier successful 2026-10-30 probe before logical hashing observed the same row count but a different physical parquet byte count/SHA. No logical digest was recorded then, so semantic equality with that earlier object cannot be proven. Later repeated downloads are byte-identical and logical-content-identical. This is why every retrieval must preserve timestamp, physical SHA and logical digest."
+  },
+  "retrospective_revision_evidence": {
+    "present": true,
+    "official_updates": [
+      {
+        "date": "2026-10-23",
+        "scope": "TaiwanStockTradingDailyReport 2021-06-30 through 2025-09-16: duplicate branch details removed for some stock-days; SecIdAgg regenerated"
+      },
+      {
+        "date": "2026-10-31",
+        "scope": "2023-01 OTC branch data backfilled/corrected; SecIdAgg regenerated"
+      },
+      {
+        "date": "2026-11-01",
+        "scope": "2022-10 through 2022-11 OTC branch data backfilled/corrected; SecIdAgg regenerated"
+      }
+    ],
+    "source": "https://finmind.github.io/WhatIsNew/",
+    "governance_consequence": "Current historical archive cannot automatically be treated as an exact as-known-then FinMind snapshot for strict PIT testing."
+  },
+  "license_handling": {
+    "raw_parquet_committed_to_public_repo": false,
+    "raw_parquet_runner_lifetime": "ephemeral and deleted after audit",
+    "signed_url_persisted": false,
+    "token_persisted": false,
+    "only_non_raw_receipts_persisted": true
+  },
+  "hard_locks": {
+    "forward_returns_inspected": false,
+    "backtest_run": false,
+    "ranking_test_run": false,
+    "threshold_tuning_run": false,
+    "do_not_publish_raw_licensed_broker_data": true,
+    "do_not_treat_current_corrected_history_as_strict_as_known_then_without_revision_governance": true,
+    "do_not_assume_broker_identity": true
+  },
+  "conclusion": "FINMIND SPONSORPRO IS A WORKING AUTHORIZED ACQUISITION PATH FOR HENGCE BROKER TAPE. TRANSPORT, SCHEMA, DATE SEMANTICS, BOUNDED MOTHER-COVERAGE AND REDOWNLOAD REPEATABILITY PASS. HOWEVER, OFFICIAL RETROSPECTIVE CORRECTIONS MEAN FULL 2021-2026 HISTORY IS NOT AUTOMATICALLY STRICT PIT. FORWARD-RETURN AUTHORITY REMAINS SEALED UNTIL A REVISION-AWARE PIT RULE IS FROZEN."
+}
