@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Research-only TWSE official status probe for noncurrent FinMind quotes.
 
-This probe is deliberately narrow: it queries TWSE public OpenAPI suspension
-and current daily-close datasets, then reports only whether target securities
-can be located and the matching public rows. Absence from a dataset is NOT
-reinterpreted as zero trading, suspension, or a valid metric observation.
+The probe requires current-date evidence. It queries:
+- TWTAWU suspension/resumption data,
+- STOCK_DAY_ALL (which may lag intraday), and
+- the canonical HENGCE/TWSE MI_INDEX price endpoint for today's date.
 
+A prior-day row, source absence, or stale FinMind row is never reinterpreted as
+zero trading, suspension, or a valid current metric observation.
 No Escape, metric, selection, model, EOD, or trading authority is created.
 """
 
@@ -13,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import urllib.parse
 import urllib.request
 from datetime import datetime
 from typing import Any
@@ -21,38 +24,83 @@ from zoneinfo import ZoneInfo
 TAIPEI = ZoneInfo("Asia/Taipei")
 SUSPENSION_URL = "https://openapi.twse.com.tw/v1/exchangeReport/TWTAWU"
 DAILY_CLOSE_URL = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
+MI_INDEX_URL = "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX"
 DEFAULT_TARGETS = ["1413", "1423", "1538", "2321", "3593", "5906"]
 
 
-def fetch(url: str) -> list[dict[str, Any]]:
+def request_json(url: str, params: dict[str, str] | None = None) -> Any:
+    if params:
+        url = f"{url}?{urllib.parse.urlencode(params)}"
     req = urllib.request.Request(
         url,
         headers={
             "Accept": "application/json",
-            "User-Agent": "HENGCE-TWSE-SESSION-STATUS-PROBE/1.0",
+            "User-Agent": "HENGCE-TWSE-SESSION-STATUS-PROBE/2.0",
+            "Referer": "https://www.twse.com.tw/",
         },
     )
     with urllib.request.urlopen(req, timeout=30) as response:
-        payload = json.load(response)
+        return json.load(response)
+
+
+def fetch_list(url: str) -> list[dict[str, Any]]:
+    payload = request_json(url)
     if not isinstance(payload, list):
-        raise RuntimeError(f"unexpected TWSE payload shape for {url}")
+        raise RuntimeError(f"unexpected TWSE list payload shape for {url}")
     return [row for row in payload if isinstance(row, dict)]
 
 
 def row_mentions_target(row: dict[str, Any], target: str) -> bool:
-    # Exact scalar-value matching avoids guessing a field name while the probe
-    # is still learning the official schema.
     return any(str(value).strip() == target for value in row.values())
 
 
 def compact(row: dict[str, Any]) -> dict[str, str]:
-    # Public TWSE row only. Keep scalar nonempty values; no bulk source dump.
     out: dict[str, str] = {}
     for key, value in row.items():
         text = str(value).strip()
         if text:
             out[str(key)] = text
     return out
+
+
+def current_mi_index(target_date: str, targets: set[str]) -> tuple[dict[str, Any], dict[str, dict[str, str]]]:
+    payload = request_json(
+        MI_INDEX_URL,
+        {"date": target_date, "type": "ALLBUT0999", "response": "json"},
+    )
+    if not isinstance(payload, dict):
+        raise RuntimeError("unexpected MI_INDEX payload shape")
+    stat = str(payload.get("stat") or "")
+    response_date = str(payload.get("date") or "")
+    ready = stat.upper() == "OK" and response_date == target_date
+    matched: dict[str, dict[str, str]] = {}
+    if ready:
+        table = next(
+            (
+                t
+                for t in payload.get("tables") or []
+                if "證券代號" in (t.get("fields") or []) and "收盤價" in (t.get("fields") or [])
+            ),
+            None,
+        )
+        if table is None:
+            raise RuntimeError("current MI_INDEX response missing price table")
+        fields = [str(x) for x in (table.get("fields") or [])]
+        for values in table.get("data") or table.get("records") or []:
+            if not isinstance(values, (list, tuple)):
+                continue
+            row = {fields[i]: str(values[i]).strip() for i in range(min(len(fields), len(values)))}
+            code = row.get("證券代號", "").replace("=", "").replace('"', "").strip()
+            if code in targets:
+                matched[code] = compact(row)
+    meta = {
+        "stat": stat,
+        "response_date": response_date,
+        "requested_date": target_date,
+        "current_date_ready": ready,
+        "target_match_count": len(matched),
+    }
+    return meta, matched
 
 
 def main() -> None:
@@ -63,25 +111,36 @@ def main() -> None:
     if not targets:
         raise RuntimeError("no target codes")
 
-    suspension_rows = fetch(SUSPENSION_URL)
-    close_rows = fetch(DAILY_CLOSE_URL)
+    now = datetime.now(TAIPEI)
+    target_date = now.strftime("%Y%m%d")
+    roc_date = f"{now.year - 1911:03d}{now.month:02d}{now.day:02d}"
+
+    suspension_rows = fetch_list(SUSPENSION_URL)
+    close_rows = fetch_list(DAILY_CLOSE_URL)
+    close_dates = sorted({str(row.get("Date") or "").strip() for row in close_rows if str(row.get("Date") or "").strip()})
+    close_latest_date = close_dates[-1] if close_dates else None
+    close_source_current = close_latest_date == roc_date
+    mi_meta, mi_matches = current_mi_index(target_date, set(targets))
 
     result: dict[str, Any] = {
-        "schema": "HENGCE_TWSE_SESSION_STATUS_PROBE_V1",
-        "queried_at_taipei": datetime.now(TAIPEI).isoformat(),
+        "schema": "HENGCE_TWSE_SESSION_STATUS_PROBE_V2",
+        "queried_at_taipei": now.isoformat(),
+        "expected_gregorian_date": target_date,
+        "expected_roc_date": roc_date,
         "sources": {
             "suspension": SUSPENSION_URL,
             "daily_close": DAILY_CLOSE_URL,
+            "mi_index": MI_INDEX_URL,
         },
         "source_row_counts": {
             "suspension": len(suspension_rows),
             "daily_close": len(close_rows),
         },
-        "source_field_names": {
-            "suspension": sorted({str(k) for row in suspension_rows for k in row.keys()}),
-            "daily_close": sorted({str(k) for row in close_rows for k in row.keys()}),
-        },
+        "daily_close_latest_date": close_latest_date,
+        "daily_close_source_current": close_source_current,
+        "mi_index": mi_meta,
         "targets": {},
+        "prior_day_row_is_not_current_evidence": True,
         "absence_is_not_zero": True,
         "absence_is_not_suspension": True,
         "formal_metric_authority": False,
@@ -93,19 +152,26 @@ def main() -> None:
     unresolved = []
     for target in targets:
         suspension_matches = [compact(row) for row in suspension_rows if row_mentions_target(row, target)]
-        close_matches = [compact(row) for row in close_rows if row_mentions_target(row, target)]
-        entry = {
+        all_close_matches = [compact(row) for row in close_rows if str(row.get("Code") or "").strip() == target]
+        current_close_matches = [row for row in all_close_matches if row.get("Date") == roc_date]
+        mi_match = mi_matches.get(target)
+        entry: dict[str, Any] = {
             "suspension_match_count": len(suspension_matches),
-            "daily_close_match_count": len(close_matches),
             "suspension_matches": suspension_matches[:5],
-            "daily_close_matches": close_matches[:5],
+            "daily_close_match_count": len(all_close_matches),
+            "daily_close_current_date_match_count": len(current_close_matches),
+            "daily_close_matches": all_close_matches[:5],
+            "mi_index_current_date_match": mi_match is not None,
+            "mi_index_match": mi_match,
         }
         if suspension_matches:
             entry["evidence_class"] = "TWSE_SUSPENSION_DATA_MATCH"
-        elif close_matches:
-            entry["evidence_class"] = "TWSE_DAILY_CLOSE_DATA_MATCH"
+        elif mi_meta["current_date_ready"] and mi_match is not None:
+            entry["evidence_class"] = "TWSE_CURRENT_MI_INDEX_MATCH"
+        elif current_close_matches:
+            entry["evidence_class"] = "TWSE_CURRENT_STOCK_DAY_ALL_MATCH"
         else:
-            entry["evidence_class"] = "UNRESOLVED_BY_THESE_TWO_SOURCES"
+            entry["evidence_class"] = "UNRESOLVED_CURRENT_DATE_STATUS"
             unresolved.append(target)
         result["targets"][target] = entry
 
