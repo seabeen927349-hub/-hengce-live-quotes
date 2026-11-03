@@ -1,0 +1,92 @@
+{
+  "system": "HENGCE",
+  "artifact": "CURRENT_STATE_FINMIND_INTRADAY_SOURCE",
+  "as_of": "2026-11-03T13:45:22+08:00",
+  "branch": "research/broker-tape-feasibility-20261103",
+  "pr": 38,
+  "status": "SHADOW_CAPABILITY_VERIFIED_SOURCE_PROMOTION_PENDING",
+  "verified": {
+    "finmind_sponsor_realtime_capability": true,
+    "finmind_official_client": "finmind-mcp==0.1.1",
+    "dataset": "taiwan_stock_tick_snapshot",
+    "twse_common_universe_count": 1089,
+    "twse_common_universe_sha256": "628a21b98354e6438c147273410025c7d551920436ccbab98effba1aa4980a15",
+    "official_twse_isin_crosscheck_exact_hash_match": true,
+    "twse_regular_listed_stock_count": 1058,
+    "twse_tib_stock_count": 31,
+    "tdr_excluded": ["9103", "9105", "9110", "9136"],
+    "active_required_count_2026_11_03": 1088,
+    "active_transport_covered_count_2026_11_03": 1088,
+    "unexpected_active_transport_missing_count": 0,
+    "bounded_nontrading_exception": ["1589"],
+    "finmind_current_metric_observation_count": 1082,
+    "metric_unknown_count": 6,
+    "metric_unknown_tickers": ["1413", "1423", "1538", "2321", "3593", "5906"],
+    "twse_mis_current_session_context_verified_count": 6,
+    "session_context_count": 1088,
+    "session_context_ratio": 1.0,
+    "session_context_may_substitute_metric_observation": false,
+    "stale_finmind_rows_zero_filled": false,
+    "raw_finmind_rows_persisted": false,
+    "per_security_finmind_rows_persisted": false
+  },
+  "successful_ci": {
+    "shadow_v3_run_id": 41585044961,
+    "shadow_v3_job_id": 125748535769,
+    "data_vessel_run_id": 41583823308,
+    "twse_isin_classification_job_id": 125744529384
+  },
+  "frozen_boundaries": {
+    "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+    "intraday_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
+    "one_day_finmind_change_rate_may_substitute_locked_ew_return": false,
+    "missing_as_zero_forbidden": true,
+    "feature_detector_input_authority": false,
+    "formal_metric_authority": false,
+    "formal_escape_authority": false,
+    "formal_eod_authority": false,
+    "selection_authority": false,
+    "model_authority": false,
+    "trading_authority": false,
+    "canonical_twse_price_institutional_margin_replaced": false,
+    "tdcc_replaced": false
+  },
+  "source_promotion_gate": {
+    "preregistration_path": "research/escape_finmind_shadow_20261103/01_FINMIND_SOURCE_PROMOTION_PREREGISTRATION_20261103.json",
+    "required_consecutive_eligible_sessions": 5,
+    "completed_eligible_sessions": 0,
+    "first_complete_close_reconciliation_seen": false,
+    "close_reference": "TWSE MI_INDEX ALLBUT0999 same date",
+    "numeric_close_rule": "EXACT_AFTER_DECIMAL_NORMALIZATION",
+    "blocking_mismatch_allowed": 0,
+    "unexpected_active_missing_allowed": 0,
+    "manual_post_result_rescue_forbidden": true
+  },
+  "close_reconciliation_attempts": [
+    {
+      "run_id": 41585285641,
+      "job_id": 125749215384,
+      "generated_at_taipei": "2026-11-03T13:41:40.727448+08:00",
+      "status": "PENDING_TWSE_MI_INDEX",
+      "comparison_performed": false
+    },
+    {
+      "run_id": 41585285641,
+      "job_id": 125750508944,
+      "generated_at_taipei": "2026-11-03T13:45:22.294221+08:00",
+      "status": "PENDING_TWSE_MI_INDEX",
+      "comparison_performed": false
+    }
+  ],
+  "scheduled_monitor": {
+    "workflow": ".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml",
+    "adapter": "scripts/hengce_escape_intraday_monitor_adapter.py",
+    "research_branch_schedule_declared": true,
+    "automatic_schedule_active_on_research_branch": false,
+    "reason": "GitHub Actions schedule events execute from the default branch; presence on this research branch does not itself activate production scheduling.",
+    "formal_escape_level": null,
+    "formal_escape_state": "UNRESOLVED_INTRADAY_SHADOW"
+  },
+  "next_gate": "Complete the first same-date FinMind-vs-TWSE MI_INDEX reconciliation under the already-frozen source-promotion preregistration. Do not change the gate after observing the result.",
+  "merge_pr_38_authorized": false
+}
