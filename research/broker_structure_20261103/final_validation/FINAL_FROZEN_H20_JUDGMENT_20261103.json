@@ -1,0 +1,94 @@
+{
+  "artifact": "BROKER_GROSS_HHI_1D_FROZEN_H20_JUDGE",
+  "authority": "FROZEN_HISTORICAL_RECONSTRUCTION_TEST_ONLY_NO_PRODUCTION_AUTHORITY",
+  "classification": "INCREMENTAL_VALUE_ESTABLISHED_RECONSTRUCTION_ONLY",
+  "control_coefficient_means_descriptive": {
+    "b_agg_flow5": -0.012889584119162651,
+    "b_liq20": 0.021741287502511378,
+    "b_mom20": 0.02576094238727335,
+    "b_rev5": -0.0021676489416522712
+  },
+  "daily_beta_sha256": "b19972175e225483833b0e52bf1142f8a5f0374dc33760c18c57cfc3de824739",
+  "date_counts": {
+    "early_included_dates": 375,
+    "included_primary_dates": 1274,
+    "input_dates": 1274,
+    "late_included_dates": 899
+  },
+  "errors": [],
+  "excluded_date_status_counts": {"INCLUDED_PRIMARY": 1274},
+  "feature": "BROKER_GROSS_HHI_1D",
+  "governance_consequence": "RECONSTRUCTION_INCREMENTAL_INFORMATION_ONLY; NO SIGNED TRADING RULE, NO TOP-K, NO THRESHOLD, NO NAMED BROKER, NO PRODUCTION/CAPITAL AUTHORITY",
+  "hard_locks": {
+    "horizon_rescue": false,
+    "imputation": false,
+    "lookback_tuning": false,
+    "named_broker_selection": false,
+    "sign_flip_rescue": false,
+    "state_rescue": false,
+    "threshold_optimization": false
+  },
+  "panel_sha256": "bcbb9b2f32ef43672f050c915be622217742955e07c64a997d9ee253b8365fa3",
+  "primary_broker": {
+    "all_survival_requirements_pass": true,
+    "bootstrap_ci_excludes_zero": true,
+    "early_mean_b_broker": 0.1135446185596033,
+    "early_sign": 1,
+    "full_sign": 1,
+    "hac": {
+      "ci95": [0.05300957559589341, 0.11651788228027664],
+      "df_reference": 1273,
+      "finite_sample_correction": "T_OVER_T_MINUS_1_INTERCEPT_ONLY",
+      "hac_lag": 20,
+      "kernel": "BARTLETT",
+      "mean": 0.08476372893808502,
+      "p_two_sided": 1.9093256834232111e-07,
+      "reference_distribution": "STUDENT_T_DF_T_MINUS_1",
+      "se_hac_lag20": 0.016185992360022827,
+      "t_hac": 5.236857095487069
+    },
+    "hac_ci_excludes_zero": true,
+    "late_mean_b_broker": 0.0727583522883972,
+    "late_sign": 1,
+    "moving_block_bootstrap": {
+      "block_length": 20,
+      "ci95": [0.054851157463122066, 0.11826176825923382],
+      "ci_method": "PERCENTILE_LINEAR",
+      "draws": 10000,
+      "scheme": "NONCIRCULAR_OVERLAPPING_MOVING_BLOCKS_TRUNCATE_TO_T",
+      "seed": 20261103
+    },
+    "temporal_sign_stability": true
+  },
+  "primary_horizon": "H20",
+  "state_diagnostics": {
+    "DIFFUSE_NORMAL": {
+      "authority": "SECONDARY_DESCRIPTIVE_ONLY_CANNOT_RESCUE_PRIMARY",
+      "date_count": 1014,
+      "fraction_b_broker_gt_zero": 0.6972386587771203,
+      "mean_b_broker": 0.09323276920446527,
+      "median_b_broker": 0.08826781194098404,
+      "raw_broker_hhi_median_across_date_medians": 0.025413992576865677,
+      "raw_broker_hhi_median_iqr_across_dates": 0.023211668562253325
+    },
+    "SYNCHRONIZED_STRESS": {
+      "authority": "SECONDARY_DESCRIPTIVE_ONLY_CANNOT_RESCUE_PRIMARY",
+      "date_count": 260,
+      "fraction_b_broker_gt_zero": 0.6076923076923076,
+      "mean_b_broker": 0.051734471899202036,
+      "median_b_broker": 0.042867966629751064,
+      "raw_broker_hhi_median_across_date_medians": 0.029070367591833825,
+      "raw_broker_hhi_median_iqr_across_dates": 0.024446420931603038
+    }
+  },
+  "status": "COMPLETE_FROZEN_H20_JUDGMENT",
+  "system": "HENGCE",
+  "year_diagnostics": {
+    "2021": {"date_count": 129, "mean_b_broker": 0.10368799166438432},
+    "2022": {"date_count": 246, "mean_b_broker": 0.11871333754124251},
+    "2023": {"date_count": 239, "mean_b_broker": 0.08557976182687876},
+    "2024": {"date_count": 242, "mean_b_broker": 0.10174902974356441},
+    "2025": {"date_count": 243, "mean_b_broker": 0.030616541869714246},
+    "2026": {"date_count": 175, "mean_b_broker": 0.07367491861921087}
+  }
+}
