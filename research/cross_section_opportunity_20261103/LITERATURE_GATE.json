@@ -1,0 +1,63 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "topic": "cross_section_opportunity_capacity",
+  "status": "PASS_DIAGNOSTIC_ONLY",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "question": "Can point-in-time cross-sectional differentiation in Taiwan electronics identify when the near-future cross-section will contain more or less differentiation, without assuming that high dispersion itself creates alpha?",
+  "new_topic_gate_required": true,
+  "reason": "This introduces an opportunity-capacity diagnostic distinct from the already-tested static Market State x MOM20 conditioning question.",
+  "evidence_summary": [
+    "International literature commonly treats cross-sectional return dispersion as an active-management opportunity-set variable, but it also warns that dispersion changes performance measurement and can reflect risk rather than skill.",
+    "Connolly and Stivers (2006) report that daily cross-sectional return dispersion contains incremental information about future firm- and portfolio-level volatility, supporting a bounded persistence/forecastability test of dispersion itself.",
+    "Stivers and Sun (2010) show that recent return dispersion is related differently to subsequent value and momentum premiums; therefore dispersion is not a strategy-neutral guarantee of alpha.",
+    "MSCI research decomposes total dispersion into systematic and stock-specific components and notes that high correlation during stress can reduce the stock-specific share even when total dispersion is elevated.",
+    "Taiwan-specific 2026 NCCU thesis evidence is directionally contrary to the simple overseas story: high-dispersion months were associated with weaker alpha among more active Taiwan equity funds. The full thesis is embargoed until 2031, so this source is ABSTRACT_ONLY_NOT_FULLY_READ and must not be treated as full-text evidence.",
+    "Therefore HENGCE must not preregister 'high dispersion means more alpha'. The defensible first test is narrower: whether a point-in-time differentiation measure predicts subsequent realized cross-sectional differentiation, and how that capacity behaves around frozen state transitions."
+  ],
+  "sources": [
+    {
+      "citation": "de Silva, Sapra, Thorley (2001), Return Dispersion and Active Management, Financial Analysts Journal 57(5)",
+      "doi": "10.2469/faj.v57.n5.2479",
+      "role": "background_opportunity_and_performance_measurement"
+    },
+    {
+      "citation": "Ankrim and Ding (2002), Cross-Sectional Volatility and Return Dispersion, Financial Analysts Journal 58(5)",
+      "doi": "10.2469/faj.v58.n5.2469",
+      "role": "cross_sectional_volatility_and_active_manager_return_dispersion"
+    },
+    {
+      "citation": "Connolly and Stivers (2006), Information content and other characteristics of the daily cross-sectional dispersion in stock returns, Journal of Empirical Finance 13(1)",
+      "doi": "10.1016/j.jempfin.2005.02.001",
+      "role": "lagged_dispersion_contains_information_about_future_volatility"
+    },
+    {
+      "citation": "Stivers and Sun (2010), Cross-Sectional Return Dispersion and Time Variation in Value and Momentum Premiums, Journal of Financial and Quantitative Analysis",
+      "url": "https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/abs/crosssectional-return-dispersion-and-time-variation-in-value-and-momentum-premiums/77E2E3B09BDA5992C29BBCE2CEDC08FE",
+      "role": "dispersion_has_strategy_specific_not_uniform_relation_to_future_premia"
+    },
+    {
+      "citation": "von Reibnitz (2015), When Opportunity Knocks: Cross-Sectional Return Dispersion and Active Fund Performance",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2308215",
+      "role": "overseas_evidence_linking_high_dispersion_to_active_fund_performance"
+    },
+    {
+      "citation": "MSCI (2021/2022), Dispersion in Equity Markets / Is the Market Ripe for Stock Picking?",
+      "url": "https://www.msci.com/research-and-insights/quick-take/is-the-market-ripe-for-stock-picking",
+      "role": "stock_specific_vs_systematic_dispersion_and_correlation_context"
+    },
+    {
+      "citation": "Liu, Yu-Chia (2026), Return Dispersion and Active Fund Performance in Taiwan, NCCU master's thesis",
+      "url": "https://thesis.lib.nccu.edu.tw/detail/f99b82a529d761858efa405f21f7aa20/",
+      "access_status": "ABSTRACT_ONLY_NOT_FULLY_READ_FULL_TEXT_EMBARGO_TO_2031_07_06",
+      "role": "Taiwan_specific_counterevidence_to_naive_high_dispersion_equals_alpha"
+    }
+  ],
+  "gate_constraints": [
+    "No new BUY/SELL/ranking rule may be created from this gate.",
+    "No directional claim that high dispersion implies higher alpha is authorized.",
+    "The first experiment must be a diagnostic of opportunity capacity, not strategy optimization.",
+    "Any new outcome definition must be preregistered before its forward values are inspected.",
+    "Previously inspected 2018-2026 periods remain retrospective/development evidence, not untouched OOS."
+  ]
+}
