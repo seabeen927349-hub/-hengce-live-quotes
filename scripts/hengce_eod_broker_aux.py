@@ -228,6 +228,8 @@ def capture(eod_dir: Path, target: date) -> dict:
             "broker_hhi_source_revision_class": old.get("source_revision_class"),
             "broker_hhi_last_result": "ALREADY_COMPLETE_IMMUTABLE",
         })
+        st.pop("broker_hhi_pending_reason", None)
+        st.pop("broker_hhi_error", None)
         save_status(eod_dir, st)
         return st
 
@@ -330,6 +332,8 @@ def capture(eod_dir: Path, target: date) -> dict:
             "broker_hhi_source_revision_class": SOURCE_REVISION_CLASS,
             "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
         })
+        st.pop("broker_hhi_pending_reason", None)
+        st.pop("broker_hhi_error", None)
     except NotReady as exc:
         st["broker_hhi_status"] = "PENDING"
         st["broker_hhi_pending_reason"] = str(exc)
@@ -339,6 +343,7 @@ def capture(eod_dir: Path, target: date) -> dict:
         st["broker_hhi_status"] = "ERROR"
         st["broker_hhi_error"] = f"{type(exc).__name__}:{exc}"
         st["broker_hhi_last_result"] = "ERROR_RESEARCH_AUXILIARY_ONLY"
+        st.pop("broker_hhi_pending_reason", None)
 
     save_status(eod_dir, st)
     return st
