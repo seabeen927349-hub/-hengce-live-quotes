@@ -1,0 +1,257 @@
+{
+  "system": "HENGCE",
+  "artifact": "BROKER_STRUCTURE_INCREMENTAL_VALUE_PREREGISTRATION",
+  "version": "V1_20261103",
+  "date_taipei": "2026-11-03",
+  "branch": "research/broker-structure-literature-first-20261103",
+  "base_head_before_freeze": "8022c626fafcde5c67f598a2aad208947da4caf6",
+  "status": "FROZEN_PRE_OUTCOME",
+  "authority": "RETROSPECTIVE_RECONSTRUCTION_RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "upstream_gates": {
+    "literature_gate": {
+      "path": "research/broker_structure_20261103/LITERATURE_GATE.json",
+      "git_blob_sha": "594d1c3b180586579b82643b6232e474d427d323",
+      "result": "PASS",
+      "scope": "PREREGISTRATION_ALLOWED_ONLY"
+    },
+    "pit_lineage_feature_contract": {
+      "path": "research/broker_structure_20261103/PIT_LINEAGE_FEATURE_CONTRACT.json",
+      "git_blob_sha": "144da48d29ad6db18d6f8fcec6aac9e26c0e4f7d",
+      "result": "PASS"
+    }
+  },
+  "research_question": "Does same-day broker-branch gross participation concentration provide incremental cross-sectional ranking information beyond the frozen HENGCE controls MOM20, REV5, LIQ20, aggregate institutional flow, and frozen S5 market state?",
+  "anti_contamination_statement": {
+    "clean_branch_broker_forward_returns_inspected_before_freeze": false,
+    "clean_branch_broker_backtest_run_before_freeze": false,
+    "feasibility_branch_treatment": "DATA_CAPABILITY_AND_LINEAGE_ONLY; no confirmatory outcome authority",
+    "published_external_forward_return_results": "LITERATURE_EVIDENCE_ONLY",
+    "after_freeze_forbidden": [
+      "change feature sign because of outcome",
+      "change broker set or select named branches",
+      "change 1-day lookback",
+      "change primary H20 horizon",
+      "add threshold/event filter",
+      "change PIT U100 universe",
+      "drop controls because they weaken the broker coefficient",
+      "switch from concentration to participation/directional feature to rescue the result",
+      "reinterpret branch as beneficial owner or smart money",
+      "upgrade historical reconstruction to strict vendor-PIT"
+    ]
+  },
+  "source_and_sample": {
+    "broker_source_revision_class": "EVENT_DAY_FACT_RECONSTRUCTION",
+    "strict_historical_vendor_pit_claim": false,
+    "broker_data_start": "2021-06-30",
+    "signal_dates": "Every date from 2021-06-30 onward for which the frozen PIT U100 exists, frozen S5 state is known, event-date broker feature and all controls pass lineage/missingness rules, and the forward outcome is mature.",
+    "no_event_threshold": true,
+    "no_named_broker_filter": true,
+    "universe_reference": "research/market_state_selection_interaction_20261102/00_PREREGISTRATION_STATE_CONDITIONING_TEST.md",
+    "universe": "Frozen date-correct electronics PIT U100: valid current close; >=18 valid turnover observations in last 20 sessions; LIQ20=median turnover; 20 valid corporate-action-safe daily returns; rank LIQ20 desc and ticker asc; first 100.",
+    "state_reference": "research/market_state_observation_20261102/14_S5_STATE_CLASSIFIER_FREEZE_20261102.json",
+    "allowed_states": [
+      "DIFFUSE_NORMAL",
+      "SYNCHRONIZED_STRESS"
+    ],
+    "unknown_state_policy": "Exclude UNKNOWN_FAIL_CLOSED dates and report count."
+  },
+  "timing_and_outcomes": {
+    "signal_time": "after close of d",
+    "broker_event_date": "d",
+    "earliest_entry": "next TWSE open after d",
+    "primary_horizon_sessions": 20,
+    "secondary_horizons_sessions": [
+      5,
+      10,
+      40,
+      60
+    ],
+    "secondary_horizons_role": "DESCRIPTIVE_ROBUSTNESS_ONLY_CANNOT_RESCUE_PRIMARY_H20",
+    "corporate_action_safe_return_reference": "research/market_state_selection_interaction_20261102/00_PREREGISTRATION_STATE_CONDITIONING_TEST.md",
+    "primary_stock_outcome": "For each stock i in U100, use the same next-open corporate-action-safe simple H20 return geometry already frozen by Selection Challenge. Cross-sectional percentile ranking of this H20 return is the model outcome.",
+    "u100_excess_equivalence_note": "Subtracting same-date U100_H20 from every stock does not change within-date ranks; the primary rank outcome is therefore equivalent for ranking purposes.",
+    "frozen_portfolio_cost_bps_round_trip": 40,
+    "cost_role": "Primary rank regression is not a portfolio and therefore does not apply a constant portfolio cost. Any secondary or later portfolio comparison must inherit 40 bp round-trip with no change.",
+    "latest_maturity_rule": "Do not use a signal date until the full prespecified horizon outcome is observable."
+  },
+  "primary_predictor": {
+    "feature_id": "BROKER_GROSS_HHI_1D",
+    "definition_reference": "research/broker_structure_20261103/PIT_LINEAGE_FEATURE_CONTRACT.json",
+    "raw_orientation": "higher = more concentrated gross broker participation",
+    "hypothesized_return_sign": "NONE",
+    "inference_sidedness": "TWO_SIDED",
+    "number_of_primary_broker_features": 1
+  },
+  "frozen_controls": {
+    "MOM20": {
+      "definition": "Sum of 20 corporate-action-safe log price-path returns ending on d, using the currently frozen Selection Challenge implementation.",
+      "reference": "research/market_state_selection_interaction_20261102/00_PREREGISTRATION_STATE_CONDITIONING_TEST.md"
+    },
+    "REV5": {
+      "definition": "Prior-5-session close-to-close return; use the frozen N2 baseline definition without alteration.",
+      "reference_artifact": "HENGCE_SELECTION_CORE_NULL_BASELINE_CONTRACT_V1_20261031.json",
+      "reference_sha256": "9aa84ca1a6d67bdf8a49bcf6f6f3246a673e16fd42ac11abd276948365e179dc"
+    },
+    "LIQ20": {
+      "definition": "Median turnover over the latest 20 TWSE trading sessions ending on d, requiring at least 18 valid turnover observations.",
+      "reference": "research/market_state_selection_interaction_20261102/00_PREREGISTRATION_STATE_CONDITIONING_TEST.md"
+    },
+    "AGG_FLOW5": {
+      "definition": "stock_totalnet_intensity_5(s,t) = sum(TotalNet[s,d], last 5 eligible sessions) / sum(Volume[s,d], same sessions).",
+      "reference_artifact": "HENGCE_ESCAPE_METRIC_CONTRACT_V1.json",
+      "reference_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+      "missingness": "Missing institutional evidence is NULL, never zero-filled; no calendar-day forward fill."
+    },
+    "S5_STATE": {
+      "definition": "Frozen DIFFUSE_NORMAL / SYNCHRONIZED_STRESS classifier.",
+      "reference": "research/market_state_observation_20261102/14_S5_STATE_CLASSIFIER_FREEZE_20261102.json",
+      "git_blob_sha": "2578ee9442ae9f3b70b38865846f91d2605729ac",
+      "primary_control_geometry": "The primary model is estimated separately within each signal date, so all same-date market-wide state effects are absorbed by the date-specific intercept. State-stratified broker-slope diagnostics are additionally reported but do not define the primary survival gate."
+    }
+  },
+  "rank_transform": {
+    "scope": "within each eligible signal-date complete-case U100 cross-section",
+    "method": "average rank for ties, scaled to [0,1] as (rank-1)/(n-1), ascending raw value",
+    "applies_to": [
+      "FWD_RETURN_H20",
+      "BROKER_GROSS_HHI_1D",
+      "MOM20",
+      "REV5",
+      "LIQ20",
+      "AGG_FLOW5"
+    ],
+    "winsorization": "NONE",
+    "standardization_search": "NONE"
+  },
+  "date_quality_gate": {
+    "frozen_u100_size": 100,
+    "minimum_valid_forward_outcomes": 95,
+    "minimum_complete_case_rows_for_primary_regression": 95,
+    "all_controls_required_per_complete_case": true,
+    "broker_feature_required_per_complete_case": true,
+    "no_imputation": true,
+    "rank_deficient_design": "Exclude the date, record reason, and do not alter controls.",
+    "coverage_audit": "For every date used, confirm date-specific mother traded symbols and broker observed-missing count under the PIT lineage contract."
+  },
+  "primary_model": {
+    "model_family": "DATE_LEVEL_FAMA_MACBETH_RANK_REGRESSION",
+    "per_date_equation": "RANK_FWD_H20_i,d = a_d + bB_d*RANK_BROKER_HHI_i,d + bM_d*RANK_MOM20_i,d + bR_d*RANK_REV5_i,d + bL_d*RANK_LIQ20_i,d + bF_d*RANK_AGG_FLOW5_i,d + error_i,d",
+    "primary_estimand": "B_BROKER = mean_d(bB_d)",
+    "interpretation": "Incremental cross-sectional rank association of broker concentration after the frozen stock-level controls and date-level common market conditions.",
+    "no_threshold_or_topk_selection_in_primary_model": true
+  },
+  "primary_inference": {
+    "hac": {
+      "estimator": "Newey-West/HAC on the ordered daily bB_d series",
+      "lag": 20,
+      "report": [
+        "mean coefficient",
+        "standard error",
+        "t statistic",
+        "two-sided p value",
+        "95% CI"
+      ]
+    },
+    "moving_block_bootstrap": {
+      "series": "ordered daily bB_d",
+      "block_length_signal_dates": 20,
+      "resamples": 10000,
+      "seed": 20261103,
+      "report": [
+        "95% CI for mean bB_d"
+      ]
+    },
+    "iid_t_test_authoritative": false
+  },
+  "temporal_stability": {
+    "early": "2021-06-30 through 2022-12-31",
+    "late": "2023-01-01 through latest mature H20 signal date",
+    "rule": "Run the identical frozen model with no retuning; report mean bB_d and sign for each period.",
+    "year_by_year": "Descriptive only; no year deletion or cherry-picking."
+  },
+  "state_diagnostics": {
+    "role": "SECONDARY_DESCRIPTIVE_ONLY",
+    "report_for_each_state": [
+      "signal-date count",
+      "mean and median bB_d",
+      "fraction of dates bB_d > 0",
+      "broker feature cross-sectional median and dispersion"
+    ],
+    "state_specific_rule_or_threshold_may_be_created": false,
+    "state_result_may_rescue_primary_failure": false
+  },
+  "secondary_horizon_diagnostics": {
+    "horizons": [
+      5,
+      10,
+      40,
+      60
+    ],
+    "model": "Same rank model and controls with only the outcome horizon changed to the already-frozen horizon.",
+    "hac_lag": "equal to that fixed horizon",
+    "bootstrap_block_length": "equal to that fixed horizon",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20261103,
+    "authority": "DESCRIPTIVE_ONLY; no multiple-horizon winner selection and no rescue of H20."
+  },
+  "frozen_null_baseline_carryover": {
+    "reference_artifact": "HENGCE_SELECTION_CORE_NULL_BASELINE_CONTRACT_V1_20261031.json",
+    "reference_sha256": "9aa84ca1a6d67bdf8a49bcf6f6f3246a673e16fd42ac11abd276948365e179dc",
+    "locked_nulls": [
+      "N0_CROSS_SECTION_EW",
+      "N1_MOM20_TOPK",
+      "N2_REV5_BOTTOMK",
+      "N3_RANDOM_MATCHED seed=20261031 draws=10000"
+    ],
+    "execution_lock": "signal after close -> next TWSE open; round-trip cost 40 bp; horizons 5/10/20/40/60; fail closed",
+    "current_stage_note": "This preregistration intentionally defines no signed Broker Top-k portfolio because the concentration-return sign is unresolved. Therefore the null portfolio contract is inherited as a lock for any later signed challenger, not used to choose a sign after this result."
+  },
+  "conclusion_taxonomy": {
+    "INCREMENTAL_VALUE_ESTABLISHED_RECONSTRUCTION_ONLY": {
+      "requirements": [
+        "Primary H20 HAC 95% CI for B_BROKER excludes zero.",
+        "Primary H20 moving-block-bootstrap 95% CI for B_BROKER excludes zero.",
+        "Early and late mean bB_d have the same sign as full-sample B_BROKER."
+      ],
+      "meaning": "Broker concentration contains stable incremental cross-sectional ranking information in the revision-aware retrospective reconstruction.",
+      "still_not_authorized": [
+        "strict historical vendor-PIT claim",
+        "signed trading rule",
+        "Top-k broker strategy",
+        "threshold",
+        "named broker selection",
+        "production",
+        "capital allocation"
+      ]
+    },
+    "NO_STABLE_INCREMENTAL_VALUE_KILL": {
+      "trigger": "A valid primary H20 test fails any survival requirement because the CIs include zero or temporal sign stability fails.",
+      "rule": "KILL this BROKER_GROSS_HHI_1D candidate. Do not rescue by changing sign, broker set, lookback, threshold, feature family or horizon."
+    },
+    "DATA_OR_LINEAGE_INVALID_STOP": {
+      "trigger": "Required lineage, date coverage, frozen universe, state, complete-case or outcome-maturity checks fail.",
+      "rule": "No alpha conclusion. Repair only data/lineage implementation without inspecting or optimizing outcome results, then replay the same frozen preregistration."
+    }
+  },
+  "negative_result_policy": {
+    "significant_negative_beta": "Counts as incremental information for this research question, not as permission to flip the historical strategy. A low-concentration trading hypothesis would require a new prospectively frozen test.",
+    "null_or_unstable": "KILL",
+    "secondary_horizon_success_after_H20_failure": "CANNOT_RESCUE",
+    "state_specific_success_after_pooled_failure": "CANNOT_RESCUE"
+  },
+  "promotion_boundary": {
+    "if_reconstruction_survives": "Only a new prospective source-vintage preregistration using FORWARD_COLLECTED_VENDOR_SNAPSHOT may test a directional candidate. The retrospective reconstruction sample cannot be relabeled as confirmatory OOS.",
+    "trading_authority": "NONE",
+    "production_authority": "NONE",
+    "capital_authority": "NONE"
+  },
+  "preregistration_gate": {
+    "result": "PASS",
+    "basis": [
+      "Exactly one primary broker feature is frozen.",
+      "Lookback, broker set, sign convention, universe, controls, outcome, primary horizon, inference and kill rule are fixed before HENGCE broker forward-return inspection.",
+      "Historical source-vintage limitation is explicit and caps any positive result at reconstruction-only authority."
+    ],
+    "authority_consequence": "AFTER THIS ARTIFACT IS COMMITTED ATOMICALLY WITH THE PIT CONTRACT, THE FIRST AND ONLY FROZEN HISTORICAL HENGCE BROKER OUTCOME TEST MAY BE EXECUTED. NO TUNING IS AUTHORIZED."
+  }
+}
