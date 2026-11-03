@@ -1,0 +1,83 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "BROKER_TAPE_PIT_DATA_FEASIBILITY_AUDIT",
+  "branch": "research/broker-tape-feasibility-20261103",
+  "pre_audit_branch_head": "ed388847a2191cdc160044d741e9095a1cc0f650",
+  "authority": "RESEARCH_GOVERNANCE_ONLY_NO_TRADING_AUTHORITY",
+  "topic": "Broker Tape / 券商成交結構",
+  "scope": "PIT / coverage / lineage feasibility only. No forward-return inspection, no backtest, no ranking test, no broker identity assumption.",
+  "prior_research_check": {
+    "formal_broker_challenge_found": false,
+    "formal_broker_forward_return_result_found": false,
+    "prior_material_classification": "GOVERNANCE_DATA_CAPABILITY_AND_RESEARCH_PROPOSAL_ONLY"
+  },
+  "mother_authority": {
+    "canonical_pointer": "HENGCE_CANONICAL_STATE.json",
+    "filename": "HENGCE_2026_HIST_MOTHER.csv",
+    "sha256": "2879ebb756c524dbefa4c47258d58fd6fa138aefcced3c7abb3d46634070651b",
+    "rows": 1024443,
+    "date_min": "2018-01-02",
+    "date_max": "2026-10-30",
+    "latest_date_valid_4digit_ticker_count": 1092,
+    "latest_date_universe_sha256_newline_sorted": "38285023ef4139482841c910b329acfe8c6a8b5cdba8cf3f95e2a466b1bad4d5",
+    "universe_rule": "EXACT_VALID_4DIGIT_TICKERS_PRESENT_ON_CANONICAL_MOTHER_LATEST_DATE",
+    "same_name_stale_copy_rejected": {
+      "sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47",
+      "rows": 207218,
+      "date_max": "2026-10-21",
+      "reason": "DOES_NOT_MATCH_CANONICAL_POINTER_SHA_OR_ROW_COUNT"
+    }
+  },
+  "fugle_capability": {
+    "FCNT000009": {"name": "主力券商", "accessible": true, "required_params": ["symbol_id"]},
+    "FCNT000106": {"name": "近240日單一券商買賣超", "accessible": true, "required_params": ["symbol_id", "broker_id", "broker_type"]},
+    "FCNT000117": {"name": "近240日券商買賣基尼係數", "accessible": true, "required_params": ["symbol_id"]},
+    "FCNT000105": {"name": "最新券商分點買賣超排行", "accessible": false, "note": "WEB_ONLY_PER_CURRENT_SPEC_LIST"}
+  },
+  "fugle_download_probes": {
+    "broker_specs": {
+      "FCNT000009_symbols": ["2330", "2317", "2454", "3443"],
+      "FCNT000009_nonempty_payload_count": 0,
+      "FCNT000117_symbols": ["2330", "2317", "2454", "3443"],
+      "FCNT000117_nonempty_payload_count": 0
+    },
+    "control_specs": {
+      "FCNT000001_2330": "EMPTY_OBJECT",
+      "FCNT000153_2330": "EMPTY_OBJECT"
+    },
+    "interpretation": "CURRENT_FUGLE_CONTENT_RETRIEVAL_PATH_RETURNS_EMPTY_PAYLOADS_FOR_BROKER_AND_NON_BROKER_CONTROLS; THIS DOES_NOT PROVE FUGLE LACKS THE DATA AND DOES NOT COUNT AS A VERIFIED DOWNLOAD."
+  },
+  "web_ui_diagnostic": {
+    "authority": "DIAGNOSTIC_ONLY_NOT_DATA_AUTHORITY",
+    "result": "UNAUTHENTICATED_UI_DOES_NOT_EXPOSE_BROKER_CHIP_DATA",
+    "fugle_url": "https://www.fugle.tw/ai/2330",
+    "growin_url": "https://www.growin.ai/zh/my/analysis/2330.TW/whale-interest",
+    "note": "Broker/chip content requires authenticated access in the tested web path; no credentials were entered and no access control was bypassed."
+  },
+  "hard_locks": {
+    "forward_returns": "SEALED_NOT_INSPECTED",
+    "backtest": false,
+    "challenger_defined": false,
+    "preregistration_written": false,
+    "threshold_search": false,
+    "broker_selection": false,
+    "broker_equals_smart_money_assumption": false,
+    "second_mother": false,
+    "production_authority": "NONE",
+    "ranking_authority": "NONE",
+    "signal_authority": "NONE",
+    "capital_authority": "NONE"
+  },
+  "s1_verdict": "DATA_BLOCKED",
+  "reason_code": "FUGLE_CONTENT_PAYLOAD_NOT_VERIFIED_NONEMPTY",
+  "reason": "The canonical mother and its mechanical 1092-name latest-date universe are verified, and Fugle declares the relevant broker content specs accessible. However, actual broker payload retrieval remains empty, and non-broker control content calls are also empty. Therefore PIT semantics, historical coverage, missingness, raw schema, and per-observation lineage cannot yet be verified.",
+  "reopen_conditions": [
+    "Obtain at least one non-empty raw payload from the authorized Fugle broker content path without bypassing access controls.",
+    "Preserve exact raw response bytes or lossless JSON with contentSpecId, symbol, parameters, retrieval timestamp and SHA256.",
+    "Verify date fields and information-availability timing sufficient for deterministic point-in-time reconstruction.",
+    "Measure coverage and missingness mechanically over the canonical mother-derived universe before any forward return is inspected.",
+    "Only after feasibility PASS may the minimal incremental-ranking preregistration be frozen."
+  ],
+  "decision": "STOP_BEFORE_PREREGISTRATION_AND_FORWARD_RETURN_UNTIL_REOPEN_CONDITIONS_ARE_MET"
+}
