@@ -268,8 +268,11 @@ async def process(args) -> dict:
 
                 broker_ids = {str(x) for x in pdf['securities_trader_id'].dropna().astype(str)}
                 daily = {
+                    'dataset': DATASET,
+                    'event_date': d,
                     'date_index': idx,
                     'date': d,
+                    'source_plan': SOURCE_PLAN,
                     'status': 'PASS_SOURCE_DATE_AUDIT',
                     'retrieval_timestamp_utc': retrieval_utc,
                     'retrieval_timestamp_taipei': retrieval_taipei,
