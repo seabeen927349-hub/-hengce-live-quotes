@@ -2,6 +2,13 @@ name: HENGCE Broker H20 Source-Only HHI Pass
 
 "on":
   workflow_dispatch:
+  push:
+    branches:
+      - research/broker-h20-frozen-execution-20261103
+    paths:
+      - .github/workflows/hengce_broker_h20_source_pass.yml
+      - research/broker_structure_20261103/hhi_extract/**
+      - research/broker_structure_20261103/source_pass/**
 
 permissions:
   contents: read
