@@ -41,13 +41,13 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1092,
       "sha256": "88ce1c89ae1210643e36c82d3d7446e8d0d14c897b086d6b7c025c46428e5a0e"
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1080,
       "sha256": "20c1e2672805f5a8b04b012d223d182d0719e168bd19d43290bc7cd733393f8a"
     },
@@ -57,5 +57,15 @@
       "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
     }
   ],
-  "updated_at_taipei": "2026-11-03T17:28:22.901745+08:00"
+  "updated_at_taipei": "2026-11-03T17:39:51.866966+08:00",
+  "broker_hhi_status": "PENDING",
+  "broker_hhi_pending_reason": "BROKER_SOURCE_BEFORE_1830_TAIPEI",
+  "broker_hhi_last_result": "PENDING_RESEARCH_AUXILIARY",
+  "data_vessel_governance": "ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR",
+  "parallel_universe": false,
+  "broker_hhi_blocks_core_three_leg_or_mother": false,
+  "broker_hhi_model_authority_created": false,
+  "broker_hhi_trading_authority_created": false,
+  "broker_hhi_capital_authority_created": false,
+  "broker_order_execution": false
 }
