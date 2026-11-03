@@ -1,6 +1,6 @@
 name: HENGCE original EOD ingest
-# Existing HENGCE blood vessel. Broker HHI is a research auxiliary inside this
-# same eod/YYYYMMDD path; no parallel collector, mother, or universe.
+# Existing HENGCE blood vessel. Research auxiliaries attach inside this same
+# eod/YYYYMMDD path; no parallel collector, mother, universe, or model authority.
 
 "on":
   workflow_dispatch:
@@ -14,6 +14,9 @@ name: HENGCE original EOD ingest
     paths:
       - '.github/workflows/hengce-original-eod-ingest.yml'
       - 'scripts/hengce_eod_broker_aux.py'
+      - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
+      - 'scripts/hengce_market_state_finmind_aux.py'
+      - 'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_1_20261103.json'
   schedule:
     - cron: '0 15 * * 1-5'
 
@@ -75,6 +78,14 @@ jobs:
             --date '${{ steps.target.outputs.date }}' \
             --eod-dir 'eod/${{ steps.target.outputs.compact }}'
 
+      - name: Observe FinMind Market State shadow inside the same original EOD vessel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_market_state_finmind_aux.py \
+            --date '${{ steps.target.outputs.date }}' \
+            --eod-dir 'eod/${{ steps.target.outputs.compact }}'
+
       - name: Verify original-vessel output only
         shell: bash
         run: |
@@ -82,6 +93,7 @@ jobs:
           D='${{ steps.target.outputs.date }}'
           C='${{ steps.target.outputs.compact }}'
           test -f "eod/$C/status.json"
+          test -f "eod/$C/receipts/market_state_finmind_shadow.json"
           python - "$D" "$C" <<'PY'
           import json,sys
           from pathlib import Path
@@ -95,6 +107,10 @@ jobs:
           assert x.get('parallel_universe') is False, x
           assert x.get('model_authority_created') is False, x
           assert x.get('broker_hhi_blocks_core_three_leg_or_mother') is False, x
+          assert x.get('market_state_finmind_shadow_blocks_core_three_leg_or_mother') is False, x
+          assert x.get('market_state_finmind_shadow_formal_classifier_mutated') is False, x
+          assert x.get('market_state_finmind_shadow_model_authority_created') is False, x
+          assert x.get('market_state_finmind_shadow_trading_authority_created') is False, x
           assert x.get('data_vessel_governance')=='ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR', x
           if x.get('broker_hhi_status')=='COMPLETE':
               dp=Path('eod')/c/'broker_hhi.csv'
@@ -110,9 +126,32 @@ jobs:
               assert r.get('model_authority_created') is False, r
               assert r.get('trading_authority_created') is False, r
               assert r.get('capital_authority_created') is False, r
+          frp=Path('eod')/c/'receipts'/'market_state_finmind_shadow.json'
+          fr=json.loads(frp.read_text(encoding='utf-8'))
+          assert fr.get('status') in {
+              'OBSERVED_CAPABILITY_ONLY',
+              'SHADOW_BLOCKED_FAIL_CLOSED',
+              'SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT',
+          }, fr
+          assert fr.get('data_vessel')=='EXISTING_HENGCE_ORIGINAL_EOD_VESSEL', fr
+          assert fr.get('parallel_eod_tree') is False, fr
+          assert fr.get('second_mother') is False, fr
+          assert fr.get('parallel_universe') is False, fr
+          assert fr.get('raw_vendor_snapshot_persisted') is False, fr
+          assert fr.get('formal_classifier_mutated') is False, fr
+          assert fr.get('forward_outcomes_used') is False, fr
+          assert fr.get('selection_authority') is False, fr
+          assert fr.get('escape_authority') is False, fr
+          assert fr.get('model_authority') is False, fr
+          assert fr.get('trading_authority') is False, fr
+          assert fr.get('capital_authority') is False, fr
+          assert fr.get('blocks_core_three_leg_or_mother') is False, fr
+          assert fr.get('usable_for_formal_market_state') is False, fr
           print(json.dumps({k:x.get(k) for k in (
               'target_date','price_status','price_rows','institutional_status','institutional_rows',
               'margin_status','margin_rows','broker_hhi_status','broker_hhi_rows',
+              'market_state_finmind_shadow_status','market_state_finmind_shadow_twse_active_coverage_ratio',
+              'market_state_finmind_shadow_latest_lag_seconds',
               'mother_status','three_leg_complete','downstream_ready'
           )},ensure_ascii=False))
           PY
