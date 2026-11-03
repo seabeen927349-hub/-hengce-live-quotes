@@ -9,8 +9,10 @@ name: HENGCE data vessel health
       - 'scripts/hengce_full_market_shadow.py'
       - 'scripts/hengce_eod_guarded_ingest.py'
       - 'scripts/hengce_daily_command_center.py'
+      - 'scripts/hengce_finmind_official_client_fetch.py'
+      - 'scripts/hengce_broker_parquet_audit.py'
+      - 'research/broker_tape_feasibility_20261103/**'
       - '.github/workflows/hengce-data-vessel-health.yml'
-      - 'hengce/calendar/**'
   workflow_dispatch:
 
 permissions:
@@ -86,3 +88,69 @@ jobs:
           assert x['broker_order_execution'] is False
           PY
           test ! -d eod/20261023
+
+  finmind-broker-probe:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+      DATASET: TaiwanStockTradingDailyReportSecIdAgg
+      PROBE_DATE: '2026-10-30'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install official FinMind client and parquet reader
+        run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]'
+
+      - name: Compile probe code
+        run: |
+          python -m py_compile scripts/hengce_finmind_official_client_fetch.py
+          python -m py_compile scripts/hengce_broker_parquet_audit.py
+
+      - name: Fail closed if FinMind secret is absent
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${FINMIND_TOKEN:-}" ]; then
+            echo 'FINMIND_TOKEN_MISSING'
+            exit 2
+          fi
+
+      - name: Fetch one SponsorPro whole-market broker parquet
+        run: |
+          mkdir -p /tmp/hengce-finmind-probe probe_out
+          python scripts/hengce_finmind_official_client_fetch.py \
+            --dataset "$DATASET" \
+            --date "$PROBE_DATE" \
+            --output "/tmp/hengce-finmind-probe/${DATASET}_${PROBE_DATE}.parquet" \
+            --receipt "probe_out/transport_receipt.json"
+
+      - name: Audit schema, date and frozen-universe coverage
+        run: |
+          python scripts/hengce_broker_parquet_audit.py \
+            --parquet "/tmp/hengce-finmind-probe/${DATASET}_${PROBE_DATE}.parquet" \
+            --dataset "$DATASET" \
+            --date "$PROBE_DATE" \
+            --manifest research/broker_tape_feasibility_20261103/01_BROKER_TAPE_REQUEST_MANIFEST_20261103.json \
+            --output probe_out/parquet_audit.json
+
+      - name: Remove licensed raw parquet
+        if: always()
+        shell: bash
+        run: rm -rf /tmp/hengce-finmind-probe
+
+      - name: Upload non-raw feasibility receipts only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-broker-probe-2026-10-30
+          path: probe_out/*.json
+          if-no-files-found: warn
+          retention-days: 7
