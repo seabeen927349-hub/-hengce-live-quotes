@@ -16,8 +16,8 @@ name: HENGCE original EOD ingest
       - 'scripts/hengce_eod_broker_aux.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_market_state_finmind_aux.py'
-      - 'scripts/hengce_market_state_twse_tpex_aux.py'
-      - 'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_4_20261103.json'
+      - 'scripts/hengce_market_state_twse_only_aux.py'
+      - 'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_5_20261103.json'
   schedule:
     - cron: '0 15 * * 1-5'
 
@@ -79,7 +79,7 @@ jobs:
             --date '${{ steps.target.outputs.date }}' \
             --eod-dir 'eod/${{ steps.target.outputs.compact }}'
 
-      - name: Observe FinMind TWSE plus TPEx Market State context inside the same original EOD vessel
+      - name: Observe FinMind TWSE-only Market State context inside the same original EOD vessel
         id: finmind_market_state_shadow
         continue-on-error: true
         shell: bash
@@ -107,17 +107,18 @@ jobs:
           sp=root/'status.json'
           x=json.loads(sp.read_text(encoding='utf-8'))
           now=datetime.now(ZoneInfo('Asia/Taipei')).isoformat()
+          definition='TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING'
           r={
               'system':'HENGCE',
               'artifact':'MARKET_STATE_FINMIND_SHADOW_AUX_RECEIPT',
-              'schema':'HENGCE_MARKET_STATE_FINMIND_SHADOW_AUX_V5',
+              'schema':'HENGCE_MARKET_STATE_FINMIND_SHADOW_AUX_V6',
               'target_date':d,
               'observed_at_taipei':now,
               'status':'SHADOW_BLOCKED_WORKFLOW_ERROR',
               'workflow_step_outcome':outcome,
-              'contract':'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_4_20261103.json',
-              'primary_scope':'all_taiwan_equities',
-              'all_taiwan_definition':'TWSE_PLUS_TPEX_ORDINARY_EQUITIES_ONLY_EXCLUDES_EMERGING',
+              'contract':'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_5_20261103.json',
+              'primary_scope':'twse_all_listed_equities',
+              'market_scope_definition':definition,
               'formal_market_state_classifier':'hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json',
               'authority':'RESEARCH_SHADOW_ONLY_DESCRIPTIVE_NO_TRADING_AUTHORITY',
               'data_vessel':'EXISTING_HENGCE_ORIGINAL_EOD_VESSEL',
@@ -143,13 +144,16 @@ jobs:
               'market_state_finmind_shadow_status':r['status'],
               'market_state_finmind_shadow_receipt':'receipts/market_state_finmind_shadow.json',
               'market_state_finmind_shadow_observed_at_taipei':now,
-              'market_state_finmind_primary_scope':'all_taiwan_equities',
-              'market_state_finmind_all_taiwan_definition':r['all_taiwan_definition'],
+              'market_state_finmind_primary_scope':'twse_all_listed_equities',
+              'market_state_finmind_market_scope_definition':definition,
               'market_state_finmind_shadow_blocks_core_three_leg_or_mother':False,
               'market_state_finmind_shadow_formal_classifier_mutated':False,
               'market_state_finmind_shadow_model_authority_created':False,
               'market_state_finmind_shadow_trading_authority_created':False,
           })
+          for key in list(x):
+              if key.startswith('market_state_finmind_all_taiwan') or key.startswith('market_state_finmind_tpex'):
+                  x.pop(key,None)
           sp.write_text(json.dumps(x,ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8')
           PY
 
@@ -204,10 +208,10 @@ jobs:
           if fr.get('status')=='OBSERVED_CONTEXT_ATTACHED':
               ctx=json.loads((root/'market_state_finmind_context.json').read_text(encoding='utf-8'))
               assert ctx.get('artifact')=='MARKET_STATE_FINMIND_DERIVED_CONTEXT', ctx
-              assert ctx.get('schema')=='HENGCE_MARKET_STATE_FINMIND_DERIVED_CONTEXT_V4', ctx
+              assert ctx.get('schema')=='HENGCE_MARKET_STATE_FINMIND_DERIVED_CONTEXT_V5', ctx
               assert ctx.get('target_date')==d, ctx
-              assert ctx.get('primary_scope')=='all_taiwan_equities', ctx
-              assert ctx.get('all_taiwan_definition')=='TWSE_PLUS_TPEX_ORDINARY_EQUITIES_ONLY_EXCLUDES_EMERGING', ctx
+              assert ctx.get('primary_scope')=='twse_all_listed_equities', ctx
+              assert ctx.get('market_scope_definition')=='TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING', ctx
               assert ctx.get('data_vessel')=='EXISTING_HENGCE_ORIGINAL_EOD_VESSEL', ctx
               assert ctx.get('source_revision_class')=='FORWARD_COLLECTED_VENDOR_SNAPSHOT', ctx
               assert ctx.get('raw_vendor_snapshot_persisted') is False, ctx
@@ -219,19 +223,14 @@ jobs:
               assert ctx.get('trading_effect')=='NONE', ctx
               assert ctx.get('capital_effect')=='NONE', ctx
               scopes=ctx.get('scopes') or {}
-              assert set(scopes)=={
-                  'all_taiwan_equities','twse_equities','tpex_equities',
-                  'hengce_electronics100_diagnostic'
-              }, ctx
-              membership=ctx.get('all_taiwan_membership') or {}
-              assert membership.get('market_type_rule')=='twse+tpex_only_excludes_emerging', membership
+              assert set(scopes)=={'twse_all_listed_equities','hengce_electronics100_diagnostic'}, ctx
+              membership=ctx.get('twse_membership') or {}
+              assert membership.get('membership_authority')=='OFFICIAL_TWSE_CURRENT_MASTER', membership
+              assert membership.get('market_scope_rule')=='twse_only_excludes_tpex_and_emerging', membership
               assert membership.get('twse_count',0)>900, membership
-              assert membership.get('tpex_count',0)>700, membership
-              assert membership.get('all_taiwan_equity_count',0)>1700, membership
-              assert 'emerging_count' not in membership, membership
-              assert scopes['all_taiwan_equities'].get('snapshot_presence_ratio',0)>0.98, ctx
-              assert scopes['twse_equities'].get('snapshot_presence_ratio',0)>0.98, ctx
-              assert scopes['tpex_equities'].get('snapshot_presence_ratio',0)>0.98, ctx
+              assert membership.get('tpex_included') is False, membership
+              assert membership.get('emerging_included') is False, membership
+              assert scopes['twse_all_listed_equities'].get('snapshot_presence_ratio',0)>0.98, ctx
               assert scopes['hengce_electronics100_diagnostic'].get('requested_code_count')==100, ctx
               assert fr.get('derived_context_sha256')==ctx.get('payload_sha256'), (fr,ctx)
 
@@ -239,9 +238,9 @@ jobs:
               'target_date','price_status','price_rows','institutional_status','institutional_rows',
               'margin_status','margin_rows','broker_hhi_status','broker_hhi_rows',
               'market_state_finmind_shadow_status','market_state_finmind_primary_scope',
-              'market_state_finmind_all_taiwan_equity_membership_count',
-              'market_state_finmind_all_taiwan_snapshot_present_count',
-              'market_state_finmind_all_taiwan_current_date_count',
+              'market_state_finmind_twse_equity_membership_count',
+              'market_state_finmind_twse_snapshot_present_count',
+              'market_state_finmind_twse_current_date_count',
               'market_state_finmind_context_status','mother_status','three_leg_complete','downstream_ready'
           )},ensure_ascii=False))
           PY
