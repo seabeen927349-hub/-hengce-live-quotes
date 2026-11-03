@@ -1,5 +1,6 @@
 name: HENGCE frozen broker HHI lineage smoke
 
+# Outcome-blind data/feature lineage validation only; no forward-return access.
 on:
   push:
     branches:
@@ -73,7 +74,7 @@ jobs:
         shell: bash
         run: rm -rf /tmp/hengce-broker-smoke
 
-      - name: Assert raw parquet is absent and upload derived/receipt only
+      - name: Assert raw parquet is absent and list non-raw evidence
         if: always()
         shell: bash
         run: |
