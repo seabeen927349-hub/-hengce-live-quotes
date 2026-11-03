@@ -2,20 +2,13 @@ name: HENGCE Broker H20 Source-Only HHI Pass
 
 "on":
   workflow_dispatch:
-  push:
-    branches:
-      - research/broker-h20-frozen-execution-20261103
-    paths:
-      - .github/workflows/hengce_broker_h20_source_pass.yml
-      - research/broker_structure_20261103/hhi_extract/**
-      - research/broker_structure_20261103/source_pass/**
 
 permissions:
   contents: read
 
 concurrency:
   group: hengce-broker-h20-source-pass-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   source-shard:
@@ -78,7 +71,7 @@ jobs:
         run: |
           python research/broker_structure_20261103/source_pass/aggregate_broker_hhi_source_pass.py \
             --input-dir shard_results \
-            --panel-output broker_hhi_source_panel_1274x100.csv \
+            --panel-output broker_hhi_source_panel.csv \
             --lineage-output broker_hhi_source_lineage_1274.jsonl \
             --receipt-output broker_hhi_source_pass_receipt.json
       - name: Upload source-pass receipt
@@ -95,7 +88,7 @@ jobs:
         with:
           name: broker-hhi-derived-source-pass
           path: |
-            broker_hhi_source_panel_1274x100.csv
+            broker_hhi_source_panel.csv
             broker_hhi_source_lineage_1274.jsonl
             broker_hhi_source_pass_receipt.json
           if-no-files-found: error
