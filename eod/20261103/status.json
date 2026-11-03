@@ -1,0 +1,61 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST",
+  "target_date": "2026-11-03",
+  "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
+  "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+  "parallel_eod_tree": false,
+  "second_mother": false,
+  "model_authority_created": false,
+  "price_status": "COMPLETE",
+  "price_date": "2026-11-03",
+  "price_rows": 1092,
+  "price_sha256": "88ce1c89ae1210643e36c82d3d7446e8d0d14c897b086d6b7c025c46428e5a0e",
+  "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+  "institutional_status": "COMPLETE",
+  "institutional_date": "2026-11-03",
+  "institutional_rows": 1080,
+  "institutional_sha256": "20c1e2672805f5a8b04b012d223d182d0719e168bd19d43290bc7cd733393f8a",
+  "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86",
+  "margin_status": "PENDING",
+  "margin_pending_reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
+  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
+  "available_legs": [
+    "price",
+    "institutional"
+  ],
+  "pending_legs": [
+    "margin"
+  ],
+  "error_legs": [],
+  "mother_status": "PENDING",
+  "mother_promotion_required": true,
+  "mother_pending_legs": [
+    "price",
+    "institutional"
+  ],
+  "downstream_ready": false,
+  "three_leg_complete": false,
+  "formal_complete_day": false,
+  "status": "PARTIAL",
+  "last_run_results": [
+    {
+      "leg": "price",
+      "result": "PROMOTED",
+      "rows": 1092,
+      "sha256": "88ce1c89ae1210643e36c82d3d7446e8d0d14c897b086d6b7c025c46428e5a0e"
+    },
+    {
+      "leg": "institutional",
+      "result": "PROMOTED",
+      "rows": 1080,
+      "sha256": "20c1e2672805f5a8b04b012d223d182d0719e168bd19d43290bc7cd733393f8a"
+    },
+    {
+      "leg": "margin",
+      "result": "PENDING",
+      "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料"
+    }
+  ],
+  "updated_at_taipei": "2026-11-03T17:28:22.901745+08:00"
+}
