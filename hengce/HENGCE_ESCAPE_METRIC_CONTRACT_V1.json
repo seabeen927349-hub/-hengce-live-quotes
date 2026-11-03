@@ -1,0 +1,88 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_ESCAPE_METRIC_CONTRACT_V1",
+  "version": "v1_20261031",
+  "status": "FORMAL_FORMULA_LOCK_NO_TRADING_AUTHORITY",
+  "monitoring_universe": {
+    "U": "All TWSE-listed common stocks available at t under PIT-safe membership; exclude TPEx, ETF, ETN, warrants, preferred shares and non-common securities.",
+    "source_cohort_E": "PIT-safe TWSE-listed electronics membership used by HENGCE formal electronics universe.",
+    "destination_cohort_N": "U minus E.",
+    "industry_map": "Fugle/TWSE industry classification captured at observation time; industry labels are context only and have no formal stock-selection authority."
+  },
+  "row_level": {
+    "DealerNet": "TotalNet - ForeignNet - TrustNet",
+    "flow_missing_policy": "Missing institutional evidence is NULL, never zero-filled.",
+    "volume_missing_policy": "Rows with missing or nonpositive Volume cannot contribute to flow-intensity denominator.",
+    "membership_policy": "A stock contributes only if its PIT membership/security status is valid on that date."
+  },
+  "core_formulae": {
+    "flow_intensity(group, channel, w, t)": "sum(Net_channel[s,d] for s in group and d in last w eligible sessions through t) / sum(Volume[s,d] for same rows)",
+    "relative_flow(channel,w,t)": "flow_intensity(E,channel,w,t) - flow_intensity(N,channel,w,t)",
+    "foreign_relative_flow_5": "relative_flow(ForeignNet,5,t)",
+    "trust_relative_flow_5": "relative_flow(TrustNet,5,t)",
+    "dealer_relative_flow_5": "relative_flow(DealerNet,5,t)",
+    "totalnet_relative_flow_5": "relative_flow(TotalNet,5,t)",
+    "totalnet_relative_flow_10": "relative_flow(TotalNet,10,t)",
+    "source_absolute_flow_5": "flow_intensity(E,TotalNet,5,t)",
+    "destination_absolute_flow_5": "flow_intensity(N,TotalNet,5,t)",
+    "broad_market_absolute_flow_5": "flow_intensity(U,TotalNet,5,t)",
+    "stock_totalnet_intensity_5(s,t)": "sum(TotalNet[s,d], last 5 eligible sessions) / sum(Volume[s,d], same sessions)",
+    "flow_breadth_negative_share": "count(s in E with stock_totalnet_intensity_5(s,t)<0) / count(eligible s in E)",
+    "capital_migration_strength": "if source_absolute_flow_5<0 and destination_absolute_flow_5>0 then destination_absolute_flow_5 - source_absolute_flow_5 else 0",
+    "destination_absorption_strength": "max(destination_absolute_flow_5,0)",
+    "ew_return(group,w,t)": "equal-weight mean across eligible stocks of Close[t]/Close[t-w]-1, requiring both endpoints",
+    "electronics_relative_return_20": "ew_return(E,20,t)-ew_return(N,20,t)",
+    "ma20_breadth(group,t)": "share of eligible stocks with Close[t] > simple moving average of prior/current 20 eligible closes",
+    "electronics_turnover_share": "sum(Turnover[E,t]) / sum(Turnover[U,t])",
+    "electronics_turnover_share_change_20": "electronics_turnover_share[t] - mean(electronics_turnover_share[t-20:t-1])",
+    "electronics_margin_change_20": "sum(MarginBalance[E,t]) / sum(MarginBalance[E,t-20]) - 1",
+    "average_pairwise_corr20_E": "mean off-diagonal Pearson correlation of daily stock returns over last 20 eligible sessions among E stocks with complete-enough observations; minimum pair observations=15",
+    "average_pairwise_corr20_change_10": "average_pairwise_corr20_E[t] - average_pairwise_corr20_E[t-10]",
+    "vulnerability_crowding_score_raw": "electronics_turnover_share + max(electronics_relative_return_20,0)",
+    "vulnerability_leverage_score_raw": "electronics_margin_change_20",
+    "internal_structure_score_raw": "max(-average_pairwise_corr20_change_10,0) * max(ma20_breadth(E,t),0)",
+    "price_flow_divergence_score_raw": "max(electronics_relative_return_20,0) * max(-totalnet_relative_flow_5,0)",
+    "price_damage_score_raw": "(1-ma20_breadth(E,t)) + (1-ma20_breadth(U,t)) + max(-ew_return(E,5,t),0) + max(-(ew_return(E,5,t)-ew_return(N,5,t)),0)",
+    "price_recovery_score_raw": "ma20_breadth(E,t) + ma20_breadth(U,t) + max(ew_return(E,5,t),0) + max(ew_return(E,5,t)-ew_return(N,5,t),0)",
+    "flow_reentry_score_raw": "max(foreign_relative_flow_5,0)+max(trust_relative_flow_5,0)+max(dealer_relative_flow_5,0)+max(totalnet_relative_flow_5,0)"
+  },
+  "industry_rotation_context": {
+    "industry_flow_intensity_5": "For each TWSE industry k, flow_intensity(k,TotalNet,5,t).",
+    "industry_turnover_share": "sum(Turnover[k,t])/sum(Turnover[U,t]).",
+    "destination_industry": "Non-E industry with positive industry_flow_intensity_5 and positive 5-session turnover-share change; report ranking but do not grant selection/capital authority.",
+    "source_destination_log_required": true
+  },
+  "detector_input_series": [
+    "foreign_relative_flow_5",
+    "trust_relative_flow_5",
+    "dealer_relative_flow_5",
+    "totalnet_relative_flow_5",
+    "totalnet_relative_flow_10",
+    "flow_breadth_negative_share",
+    "capital_migration_strength",
+    "source_absolute_flow_5",
+    "broad_market_absolute_flow_5",
+    "destination_absorption_strength",
+    "price_damage_score_raw",
+    "price_recovery_score_raw",
+    "flow_reentry_score_raw",
+    "vulnerability_crowding_score_raw",
+    "vulnerability_leverage_score_raw",
+    "internal_structure_score_raw",
+    "price_flow_divergence_score_raw"
+  ],
+  "time_semantics": {
+    "eligible_session": "TWSE trading session with required evidence for the metric; no calendar-day forward-fill.",
+    "rolling_window": "Trading-session based, ending at t; past-only detector baseline excludes current observation.",
+    "intraday": "Fugle price/volume can update provisional price/liquidity metrics only; institutional/margin histories remain last formally verified EOD until same-day EOD is canonical."
+  },
+  "governance": {
+    "formula_change_requires_new_version": true,
+    "silent_formula_mutation_forbidden": true,
+    "posthoc_teacher_case_tuning_forbidden": true,
+    "missing_as_zero_forbidden": true,
+    "totalnet_independent_channel": false,
+    "net_flow_equals_allocation_change": false,
+    "trading_authority": "NONE"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_ESCAPE_FUNDING_RISK_MONITOR_V2",
+  "version": "v2.4.7",
+  "status": "FORMAL_OPERATIONAL_RISK_MONITOR_RESEARCH_THRESHOLDS_NO_TRADING_AUTHORITY",
+  "effective_date": "2026-10-31",
+  "scope_lock": "HENGCE_ESCAPE_MONITOR_SCOPE_LOCK_v2_4_7_20261031",
+  "monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
+  "tpex_included": false,
+  "formal_selection_universe_unchanged": "TWSE_LISTED_ELECTRONICS_ONLY",
+  "objective": "Record and classify the full transition from normal/crowded conditions through capital-flow propagation, broad withdrawal, price damage and recovery without using future outcomes to rewrite earlier states.",
+  "source_roles": {
+    "intraday_primary": "FUGLE_REALTIME_TWSE",
+    "intraday_fields": ["price", "volume", "trade_value", "bid_ask", "market_status", "industry", "security_type"],
+    "formal_eod": "HENGCE_CANONICAL_TWSE_PRICE_INSTITUTIONAL_MARGIN",
+    "ownership": "HENGCE_TDCC_OWNERSHIP_VESSEL_PIT_SAFE",
+    "macro_context": "HENGCE_MACRO_SMART_MONEY_CONTEXT_V1",
+    "rule": "Fugle intraday can create provisional price/liquidity/breadth warnings but cannot manufacture same-day formal institutional, margin or TDCC states. Formal EOD state requires canonical integrity PASS."
+  },
+  "clock_separation": {
+    "INTRADAY": "Fugle price/volume/liquidity only; hourly or event-driven provisional warning; no formal flow state.",
+    "CLOSE_PRELIM": "After market close; Fugle close/breadth plus any verified same-day institutional data if available; margin may remain pending.",
+    "EOD_FORMAL": "Only after canonical PRICE+INSTITUTIONAL+MARGIN for the trade date pass freshness/hash/integrity gates.",
+    "OWNERSHIP_WEEKLY": "Latest PIT-safe TDCC snapshot; never daily-forward-filled.",
+    "NEXT_DAY_RECONCILIATION": "If source revisions or hash changes occur, append a reconciliation record; never overwrite the original black-box observation."
+  },
+  "measurement_principles": {
+    "point_in_time_only": true,
+    "future_leak_forbidden": true,
+    "past_only_baseline": true,
+    "identity_smart_money_forbidden": true,
+    "allocation_wording_rule": "Institutional buy/sell data directly evidence net flow, not AUM allocation weights. Use relative net flow unless holdings/exposure data independently confirm allocation change.",
+    "aggregate_independence_rule": "TotalNet is Foreign+Trust+Dealer aggregate and MUST NOT be counted as an independent institutional channel.",
+    "primitive_channels": ["ForeignNet", "TrustNet", "DealerNet"],
+    "aggregate_channel": "TotalNet",
+    "precondition_not_exit": true,
+    "price_strength_not_safety": true
+  },
+  "normalization": {
+    "method": "PAST_ONLY_EMPIRICAL_RANK_PLUS_ROBUST_Z",
+    "baseline_sessions": 60,
+    "minimum_baseline_sessions": 40,
+    "current_observation_excluded_from_baseline": true,
+    "robust_z": "(x - trailing_median) / (1.4826 * trailing_MAD); if MAD=0 use empirical rank only",
+    "research_event_band": {
+      "severe_adverse_percentile": 0.90,
+      "moderate_adverse_percentile": 0.80,
+      "note": "Predeclared research thresholds only; any change requires a new version after cross-cycle evidence, never in-place retuning."
+    },
+    "persistence": {
+      "first_or_second_shot": "condition true on at least 3 of last 5 eligible sessions",
+      "regime_confirmation": "condition true on at least 4 of last 6 eligible sessions",
+      "recovery": "recovery conditions true on at least 5 consecutive eligible sessions before de-escalation"
+    }
+  },
+  "evidence_families": {
+    "VULNERABILITY": ["capital_occupation", "turnover_crowding", "margin_acceleration", "relative_strength_extreme"],
+    "INTERNAL_STRUCTURE": ["breadth_divergence", "correlation_drop", "leadership_narrowing", "new_high_new_low_divergence"],
+    "FLOW_PROPAGATION": ["foreign_relative_flow", "trust_relative_flow", "dealer_relative_flow", "totalnet_aggregate_corroboration"],
+    "FLOW_BREADTH": ["share_of_stocks_negative_5d_totalnet", "share_of_industries_negative_flow", "flow_dispersion"],
+    "CAPITAL_MIGRATION": ["source_industry_outflow", "destination_industry_absorption", "turnover_share_migration"],
+    "LEVERAGE": ["margin_balance_change", "margin_to_turnover", "leveraged_weak_hand_persistence"],
+    "OWNERSHIP": ["TDCC_Big400", "TDCC_Big1000", "ownership_breadth"],
+    "PRICE_DAMAGE": ["market_breadth", "ma20_ma60_breadth", "drawdown", "volatility", "high_beta_underperformance"],
+    "PRICE_FLOW_DIVERGENCE": ["price_up_flow_down", "rebound_without_reentry"]
+  },
+  "regime_types": {
+    "INTERNAL_ROTATION": "One or more crowded/source industries show persistent relative outflow while other TWSE industries show verified positive absorption and broad market flow is not broadly negative.",
+    "BROAD_RISK_OFF": "Net-flow deterioration is broad across industries and primitive channels with weak/absent destination absorption, accompanied or followed by broad price/breadth deterioration.",
+    "MIXED": "Internal rotation and broad risk-off evidence overlap.",
+    "UNRESOLVED": "Evidence insufficient or clocks/data are incomplete."
+  },
+  "state_machine": {
+    "L0_NORMAL": "No verified multi-family deterioration.",
+    "L1_VULNERABLE": "At least two vulnerability/internal-structure families are unusually adverse, but no confirmed primitive-channel exit. This is NOT a sell signal.",
+    "L2_FIRST_SHOT": "At least one primitive institutional channel has a confirmed persistent adverse relative-net-flow event. TotalNet alone cannot create FIRST_SHOT.",
+    "L3_SECOND_SHOT_PROPAGATION": "FIRST_SHOT is active and either a different primitive channel independently confirms, or aggregate TotalNet confirms together with both FLOW_BREADTH and CAPITAL_MIGRATION confirmation. TotalNet may corroborate but may not double-count the first primitive channel.",
+    "L4_REGIME_CONFIRMATION": "SECOND_SHOT persists across the medium window; aggregate 10/20-session flow remains adverse, propagation breadth remains abnormal, and no verified flow re-entry/recovery invalidates it.",
+    "L5_ABSOLUTE_WITHDRAWAL": "REGIME_CONFIRMATION plus absolute withdrawal from the source industry or broad TWSE market. INTERNAL_ROTATION requires verified destination absorption; BROAD_RISK_OFF requires broad negative flow without sufficient destination absorption.",
+    "L6_PRICE_DAMAGE": "Prior withdrawal state plus broad price/breadth damage. This is late confirmation, not the desired first warning.",
+    "REBOUND_WITHOUT_REENTRY": "After L3+, price/breadth recover materially but primitive/aggregate flows do not independently re-enter; state memory remains elevated and cannot reset to NORMAL from price alone.",
+    "RECOVERY": "Flow re-entry and breadth/leadership recovery persist; de-escalation uses hysteresis and requires five consecutive eligible sessions."
+  },
+  "escape_index": {
+    "name": "HENGCE_ESCAPE_PRESSURE",
+    "range": [0, 100],
+    "role": "diagnostic_secondary_to_state_machine",
+    "construction": "Equal-weight mean of valid family adverse scores; no data-driven weights until cross-cycle validation. Missing families are not imputed.",
+    "minimum_valid_families": 6,
+    "required_families": ["FLOW_PROPAGATION", "FLOW_BREADTH", "PRICE_DAMAGE"],
+    "velocity": "5-session change in HENGCE_ESCAPE_PRESSURE; acceleration is change of velocity.",
+    "precision_warning": "A numeric index cannot upgrade/downgrade the state by itself and has no trading authority."
+  },
+  "freshness_and_integrity_gate": {
+    "before_any_formal_state": ["canonical_state data_ready=true", "formal_daily_close_ready=true", "target date equals latest expected TWSE trading date", "price/institutional/margin date sets equal", "canonical integrity PASS", "source hashes recorded in black-box record"],
+    "failure_policy": "UNVERIFIED / FAIL_CLOSED; do not reuse previous day's value as if current."
+  },
+  "black_box": {
+    "format": "append_only_jsonl_hash_chain",
+    "record_key": "trade_date + phase + run_id",
+    "overwrite_forbidden": true,
+    "revision_policy": "append RECONCILIATION record with supersedes_record_hash",
+    "must_record_false_alarms": true,
+    "must_record_missing_data": true
+  },
+  "validation_gate": {
+    "teacher_case_2026_may_june": "replay only, not tuning",
+    "teacher_case_2026_october": "replay only, not tuning",
+    "cross_cycle_required": true,
+    "episode_selection_predeclared": true,
+    "false_positive_rate_required": true,
+    "lead_time_distribution_required": true,
+    "precision_recall_required": true,
+    "transaction_cost_or_action_value_required_before_capital_authority": true,
+    "promotion_authority": "NONE_UNTIL_VALIDATED"
+  },
+  "governance": {
+    "no_silent_mutation": true,
+    "no_in_place_retuning": true,
+    "frozen_stock_selection_models_unchanged": true,
+    "automatic_sell_authority": false,
+    "automatic_buy_authority": false,
+    "trading_authority": "NONE"
+  }
+}
