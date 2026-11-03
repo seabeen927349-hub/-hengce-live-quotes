@@ -5,6 +5,7 @@ name: HENGCE Escape TWSE Common FinMind Shadow
     paths:
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
+      - 'scripts/hengce_twse_session_status_probe.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   workflow_dispatch:
@@ -31,9 +32,10 @@ jobs:
           python-version: '3.12'
       - name: Install official FinMind client
         run: python -m pip install --disable-pip-version-check finmind-mcp
-      - name: Compile shadow vessel
+      - name: Compile shadow vessel and session-context helper
         run: |
           python -m py_compile scripts/hengce_finmind_twse_common_snapshot_probe.py
+          python -m py_compile scripts/hengce_twse_session_status_probe.py
           python -m py_compile scripts/hengce_escape_finmind_twse_common_shadow.py
       - name: Build non-raw aggregate shadow context
         shell: bash
@@ -65,23 +67,31 @@ jobs:
               assert x['one_day_change_rate_may_substitute_locked_ew_return'] is False
               assert x['missing_as_zero_forbidden'] is True
               assert x['source_binding_promotion_authority'] is False
+              assert x['twse_mis_metric_values_used'] is False
+              assert x['session_context_may_substitute_metric_observation'] is False
+              assert x['metric_unknown_count']==x['stale_or_noncurrent_count']
+              assert x['finmind_metric_observation_count']+x['metric_unknown_count']==x['active_required_count']
+              assert x['session_context_count']>=x['finmind_metric_observation_count']
+              assert x['session_context_count']<=x['active_required_count']
           assert status['state']=='SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY'
           assert status['active_universe_transport_full_coverage'] is True
           assert status['unexpected_missing_count']==0
           assert status['raw_finmind_rows_persisted'] is False
+          assert status['raw_twse_mis_rows_persisted'] is False
           assert status['per_security_rows_persisted'] is False
           assert status['stale_rows_neutralized_as_zero'] is False
           assert status['formal_escape_authority'] is False
           assert status['formal_eod_authority'] is False
           assert status['trading_authority'] is False
           assert context['raw_finmind_rows_persisted'] is False
+          assert context['raw_twse_mis_rows_persisted'] is False
           assert context['per_security_rows_persisted'] is False
           assert context['stale_rows_neutralized_as_zero'] is False
           assert context['formal_escape_state_creation'] is False
           assert context['trading_authority'] is False
           assert context['active_required_count'] >= 900
           assert context['market']['constituent_count'] == context['active_required_count']
-          assert context['market']['return_observed_count'] == status['current_market_date_count']
+          assert context['market']['return_observed_count'] == status['finmind_metric_observation_count']
           assert 0 < status['current_market_date_ratio'] <= 1
           print(json.dumps({
               'state': status['state'],
@@ -93,10 +103,14 @@ jobs:
               'active_required_count': status['active_required_count'],
               'unexpected_missing_count': status['unexpected_missing_count'],
               'exempt_missing': status['exempt_missing'],
-              'current_market_date_count': status['current_market_date_count'],
-              'current_market_date_ratio': status['current_market_date_ratio'],
-              'stale_or_noncurrent_count': status['stale_or_noncurrent_count'],
-              'stale_or_noncurrent_sample': status['stale_or_noncurrent_sample'],
+              'session_context_count': status['session_context_count'],
+              'session_context_ratio': status['session_context_ratio'],
+              'finmind_metric_observation_count': status['finmind_metric_observation_count'],
+              'metric_unknown_count': status['metric_unknown_count'],
+              'metric_unknown_sample': status['metric_unknown_sample'],
+              'twse_mis_secondary_session_status': status['twse_mis_secondary_session_status'],
+              'twse_mis_session_verified_count': status['twse_mis_session_verified_count'],
+              'twse_mis_session_unresolved_count': status['twse_mis_session_unresolved_count'],
               'latest_source_timestamp': status['latest_source_timestamp'],
               'market': context['market'],
               'industry_bucket_count': len(context['industry']),
