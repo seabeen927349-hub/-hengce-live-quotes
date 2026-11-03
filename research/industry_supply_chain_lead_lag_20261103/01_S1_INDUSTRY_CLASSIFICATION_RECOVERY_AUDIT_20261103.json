@@ -1,0 +1,86 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "INDUSTRY_CLASSIFICATION_S1_RECOVERY_AUDIT",
+  "branch": "research/selection-challenge-20261102",
+  "pre_audit_branch_head": "2b261480b716374494031a835b20e7a10ea4aed7",
+  "authority": "RESEARCH_GOVERNANCE_ONLY_NO_TRADING_AUTHORITY",
+  "family": "Historical industry / sector classification and membership",
+  "separation_from_supply_chain_family": true,
+  "upstream_literature_context": "Industry / Supply Chain / Lead-Lag P1 is PROVISIONALLY_SATURATED, but a static or historical industry-membership family must not be used as a substitute for firm-to-firm supplier/customer edges.",
+  "hard_locks": {
+    "forward_returns": "SEALED_NOT_INSPECTED_FOR_THIS_AUDIT",
+    "target_return_discovery": false,
+    "backtest": false,
+    "candidate_creation": false,
+    "threshold_search": false,
+    "ranking_search": false,
+    "market_state_conditioning_test": false,
+    "production_authority": "NONE",
+    "trading_authority": "NONE"
+  },
+  "s1_verdict": "RECOVERABLE_BUT_NOT_PIT_CLEARED",
+  "why_not_data_blocked": "TWSE official materials demonstrate that industry classifications are formally assigned and that historical changes are publicly announced with effective dates; therefore historical reconstruction is plausible in principle.",
+  "why_not_pit_cleared": "The currently verified HENGCE repository/library does not yet contain a complete effective-dated historical security-master/industry-membership panel covering the intended research span, including all classification changes, initial listings, and delisted securities. Existing HENGCE research files containing an Industry column do not by themselves prove point-in-time provenance of the labels.",
+  "internal_evidence": {
+    "legacy_matched_control": {
+      "artifact": "HENGCE_PERSISTENCE_MATCHED_CONTROL_20261005.csv",
+      "finding": "Contains SignalDate and Industry labels across 2025-2026, but also contains Fwd20 outcomes and does not establish the source, first-seen time, publication time, historical revision chain, or effective-date provenance of the Industry labels. It is not admissible as a clean raw classification source for a new study."
+    },
+    "phase1_readonly_evidence_map": {
+      "artifact": "HENGCE_PHASE1_READONLY_EVIDENCE_MAP_20261021T222239+0800.json",
+      "finding": "Previously recorded no effective-dated security_master history/table; historical first-seen and publication time were absent unless explicitly noted."
+    },
+    "canonical_mother": {
+      "finding": "Current canonical mother schema does not carry an industry-classification field or effective-dated membership history."
+    }
+  },
+  "official_source_evidence": [
+    {
+      "source": "TWSE Rules & Regulations Directory - Key Points for Classifying and Adjusting Categories of Industries of Listed Companies, Point 5",
+      "finding": "TWSE periodically reviews listed-company industry categories and publicly announces adjustments when business nature or strategy changes. Therefore treating industry category as permanently static is invalid."
+    },
+    {
+      "source": "TWSE interpretation / announcement No. 1121802250",
+      "effective_date": "2023-07-03",
+      "finding": "Official announcement identifies 47 listed companies whose industry categories were adjusted and provides an explicit implementation date. This proves that at least some historical classification changes are recoverable as dated events."
+    },
+    {
+      "source": "TWSE Data E-Shop format notice dated 2023-05-30",
+      "finding": "TWSE added four industry categories effective 2023-07-03 and published category codes, demonstrating formal machine-readable category identifiers in official data products."
+    }
+  ],
+  "pit_risks": [
+    "Backfilling today's classification to earlier dates creates classification look-ahead.",
+    "Using only currently listed companies creates survivorship bias and omits delisted historical members.",
+    "A historical price row or ticker/name pair does not prove the contemporaneous industry category.",
+    "A Git snapshot created later is not proof that the classification was first available at the historical observation date.",
+    "Category taxonomy itself changed over time; e.g. the 2023 expansion from 29 to 33 categories must be represented by effective date rather than normalized backward without an explicit research rule."
+  ],
+  "minimum_reconstruction_requirements": [
+    "Establish an official baseline classification snapshot at a known effective date.",
+    "Collect all official classification-change announcements over the approved research window with announcement date and effective date.",
+    "Add initial-listing classifications with listing/effective dates for securities entering after the baseline.",
+    "Retain historical classification for delisted securities; do not restrict to current survivors.",
+    "Version taxonomy changes explicitly rather than silently mapping future category definitions backward.",
+    "Generate a deterministic ticker-date -> industry_code/industry_name panel and validate coverage against the date-correct TWSE universe.",
+    "Freeze reconstruction logic and coverage thresholds before any forward return is opened."
+  ],
+  "admissibility_gate_before_preregistration": {
+    "required_universe": "Date-correct intended Taiwan listed-electronics universe",
+    "required_fields": [
+      "Ticker",
+      "effective_start_date",
+      "effective_end_date_or_open_ended",
+      "industry_code",
+      "industry_name",
+      "source_announcement_date",
+      "source_reference",
+      "taxonomy_version"
+    ],
+    "coverage_rule": "Must be measured and preregistered before outcome inspection; no silent exclusion of unclassified names.",
+    "unresolved_names_policy": "UNKNOWN_FAIL_CLOSED until a formal rule is preregistered."
+  },
+  "decision": "DO_NOT_OPEN_FORWARD_RETURNS. PERMIT_ONLY_BOUNDED_OFFICIAL_DATA_RECOVERY_AND_PIT_RECONSTRUCTION_AUDIT.",
+  "next_step": "Search and inventory official TWSE classification baseline/change records sufficient to build a complete effective-dated panel; then run coverage and temporal-consistency checks."
+}
