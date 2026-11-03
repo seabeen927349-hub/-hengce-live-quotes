@@ -12,6 +12,7 @@ name: HENGCE data vessel health
       - 'scripts/hengce_finmind_official_client_fetch.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_isin_equity_class_probe.py'
+      - 'scripts/hengce_twse_session_status_probe.py'
       - 'scripts/hengce_broker_parquet_audit.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - 'research/broker_tape_feasibility_20261103/**'
@@ -114,3 +115,19 @@ jobs:
         run: python -m pip install --disable-pip-version-check beautifulsoup4
       - name: Probe TWSE ISIN instrument classification
         run: python scripts/hengce_twse_isin_equity_class_probe.py
+
+  twse-session-status-probe:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile official TWSE status probe
+        run: python -m py_compile scripts/hengce_twse_session_status_probe.py
+      - name: Probe stale FinMind targets against TWSE suspension and daily-close data
+        run: python scripts/hengce_twse_session_status_probe.py --targets 1413 1423 1538 2321 3593 5906
