@@ -1,0 +1,36 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE_RECEIPT",
+  "target_date": "2026-11-03",
+  "status": "PASS",
+  "second_mother": false,
+  "promoted_legs": [
+    "price",
+    "institutional"
+  ],
+  "pending_legs": [
+    "margin"
+  ],
+  "promoted_leg_sha256": {
+    "price": "88ce1c89ae1210643e36c82d3d7446e8d0d14c897b086d6b7c025c46428e5a0e",
+    "institutional": "20c1e2672805f5a8b04b012d223d182d0719e168bd19d43290bc7cd733393f8a",
+    "margin": null
+  },
+  "canonical_leg_sha256": {
+    "price": "b3eacda3370a855517f694879d7c092e85ed08b3d2191e3cb4f822194aabda9a",
+    "institutional": "1ad0815df19df5e5f0c7e43530538e0597065831568b88782ed42f174bcf7906",
+    "margin": "58adea14b1f249bf2f5c75f76f866ba9dfa97867e5ee154fd3b69c35cdde83da"
+  },
+  "mother_latest_date": "2026-11-03",
+  "mother_rows": 1026627,
+  "mother_sha256": "9a7a708d8019fd3f2190819c4da5a01050d1cd2a78ff0347d3846e2aff8f5357",
+  "canonical_mother_path": "/HENGCE_CANONICAL/HENGCE_2026_HIST_MOTHER.csv",
+  "rule": "PRICE_ROW_UNIVERSE_LEFT_JOIN_MARGIN_AND_INSTITUTIONAL_MISSING_EVIDENCE_NULL",
+  "missing_evidence_is_null": true,
+  "formal_daily_close_ready": false,
+  "three_leg_complete": false,
+  "integrity_result": "/HENGCE_CANONICAL/HENGCE_CANONICAL_INTEGRITY_RESULT_20261103.json",
+  "integrity_status": "PASS",
+  "model_or_schema_mutated": false,
+  "updated_at_taipei": "2026-11-03T17:41:00.123502+08:00"
+}
