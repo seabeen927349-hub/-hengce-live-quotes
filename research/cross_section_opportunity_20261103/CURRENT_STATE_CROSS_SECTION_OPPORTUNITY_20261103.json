@@ -1,0 +1,61 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "research_line": "cross_section_opportunity",
+  "status": "BOUNDED_DIAGNOSTIC_ROUND_COMPLETE_STOP_NO_FEATURE_MINING",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "upstream_branch": "research/selection-challenge-20261102",
+  "results": [
+    {
+      "question": "Is near-future cross-sectional differentiation capacity partially predictable?",
+      "result": "PREDICTABLE_OPPORTUNITY_CAPACITY",
+      "key_finding": "Current ELEC_XS_MAD_1 is the only prespecified predictor with temporally stable sign; +1 frozen IQR current MAD predicts about +11.66 bps/day average future 20-session cross-sectional MAD. SYNC_Z and RV_Z are not temporally stable.",
+      "limit": "This predicts raw differentiation capacity, not which stocks will outperform."
+    },
+    {
+      "question": "Does that opportunity capacity condition the frozen MOM20 Top-5 selection edge?",
+      "result": "CAPACITY_DOES_NOT_MAP_TO_MOMENTUM_EDGE",
+      "key_finding": "After controlling frozen Market State, neither Normal nor Stress MAD slope significantly predicts MOM20 H20 excess; no significant state interaction.",
+      "limit": "High raw differentiation cannot be promoted into a MOM20 capacity gate."
+    },
+    {
+      "question": "Does one-week stability of the MOM20 full cross-sectional ordering predict future MOM20 rank IC?",
+      "result": "NO_RANK_PERSISTENCE_CONDITIONING_FOUND",
+      "key_finding": "RANK_PERSIST5 has no significant state-specific slope or interaction; early/late Normal slope changes sign.",
+      "limit": "No lag/threshold/top-k overlap rescue is allowed after seeing this null."
+    }
+  ],
+  "cross_result_inference": [
+    "Raw cross-sectional dispersion and exploitable ranking alpha are distinct objects in Taiwan electronics.",
+    "Stress can contain elevated raw differentiation while frozen MOM20 loses selection edge; therefore 'there is movement' is not equivalent to 'the ranking knows the winners'.",
+    "One-week full-rank stability is also insufficient to identify when MOM20 ranking quality will persist.",
+    "The strongest surviving signal from this round remains frozen Market State's relation to MOM20 failure, not a new opportunity-capacity or persistence gate."
+  ],
+  "descriptive_transition_observation": {
+    "NORMAL_STABLE_future_mad_mean": 0.009220643162155349,
+    "NORMAL_TO_STRESS_future_mad_mean": 0.010733209681918363,
+    "EARLY_STRESS_future_mad_mean": 0.010878516103695652,
+    "MATURE_STRESS_future_mad_mean": 0.010408083677235216,
+    "STRESS_TO_NORMAL_future_mad_mean": 0.010114666089515941,
+    "warning": "These categories use future path labels and are ex-post descriptive only, not real-time predictors."
+  },
+  "frozen_failures_no_rescue": [
+    "High/current MAD as a direct MOM20 edge conditioner",
+    "RANK_PERSIST5 as a future rank-IC conditioner",
+    "SYNC_Z as a stable opportunity-capacity predictor",
+    "RV_Z as a stable opportunity-capacity predictor"
+  ],
+  "not_authorized": [
+    "BUY/SELL",
+    "capital allocation",
+    "production promotion",
+    "state-specific expert routing",
+    "MAD threshold",
+    "rank-persistence threshold",
+    "alternate persistence lag search",
+    "top-k overlap rescue",
+    "claim of untouched OOS"
+  ],
+  "next_eligible_question_if_reopened": "A separately literature-gated and preregistered current-only transition-geometry diagnostic may test whether movement toward/away from the frozen Stress centroid explains Normal-state heterogeneity in future selection quality. This is NOT authorized or tested by this current state.",
+  "stop_reason": "Continuing immediately through alternate persistence lags, top-k overlaps, or thresholds after null results would become unrestricted feature mining and violate the research governance."
+}
