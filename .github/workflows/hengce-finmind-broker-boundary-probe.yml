@@ -1,0 +1,99 @@
+name: HENGCE FinMind Broker Historical Boundary Probe
+
+"on":
+  pull_request:
+    paths:
+      - '.github/workflows/hengce-finmind-broker-boundary-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  boundary-date-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        probe_date:
+          - '2021-06-30'
+          - '2022-10-31'
+          - '2023-01-11'
+          - '2024-01-02'
+          - '2026-10-30'
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+      DATASET: TaiwanStockTradingDailyReportSecIdAgg
+      PROBE_DATE: ${{ matrix.probe_date }}
+
+    steps:
+      - name: Checkout research head
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install official FinMind client and parquet reader
+        run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]'
+
+      - name: Fail closed if FinMind secret is absent
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${FINMIND_TOKEN:-}" ]; then
+            echo 'FINMIND_TOKEN_MISSING'
+            exit 2
+          fi
+
+      - name: Probe SponsorPro whole-market broker parquet
+        id: fetch
+        continue-on-error: true
+        shell: bash
+        run: |
+          mkdir -p /tmp/hengce-finmind-boundary "probe_out/${PROBE_DATE}"
+          python scripts/hengce_finmind_official_client_fetch.py \
+            --dataset "$DATASET" \
+            --date "$PROBE_DATE" \
+            --output "/tmp/hengce-finmind-boundary/${DATASET}_${PROBE_DATE}.parquet" \
+            --receipt "probe_out/${PROBE_DATE}/transport_receipt.json"
+
+      - name: Audit parquet when present
+        if: always()
+        shell: bash
+        run: |
+          RAW="/tmp/hengce-finmind-boundary/${DATASET}_${PROBE_DATE}.parquet"
+          if [ -f "$RAW" ]; then
+            python scripts/hengce_broker_parquet_audit.py \
+              --parquet "$RAW" \
+              --dataset "$DATASET" \
+              --date "$PROBE_DATE" \
+              --manifest research/broker_tape_feasibility_20261103/01_BROKER_TAPE_REQUEST_MANIFEST_20261103.json \
+              --output "probe_out/${PROBE_DATE}/parquet_audit.json"
+          else
+            echo "NO_PARQUET_FOR_${PROBE_DATE}"
+          fi
+
+      - name: Print receipts
+        if: always()
+        shell: bash
+        run: |
+          for f in probe_out/${PROBE_DATE}/*.json; do
+            [ -f "$f" ] && cat "$f"
+          done
+
+      - name: Remove licensed raw parquet
+        if: always()
+        shell: bash
+        run: rm -rf /tmp/hengce-finmind-boundary
+
+      - name: Upload non-raw boundary receipts only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-broker-boundary-${{ env.PROBE_DATE }}
+          path: probe_out/${{ env.PROBE_DATE }}/*.json
+          if-no-files-found: warn
+          retention-days: 7
