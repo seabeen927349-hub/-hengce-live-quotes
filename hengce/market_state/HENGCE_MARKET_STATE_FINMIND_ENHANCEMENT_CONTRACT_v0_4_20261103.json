@@ -1,0 +1,91 @@
+{
+  "system": "HENGCE",
+  "module": "MARKET_STATE_FINMIND_ENHANCEMENT",
+  "version": "0.4_20261103",
+  "status": "RESEARCH_SHADOW_ALL_TAIWAN_EQUITIES",
+  "authority": "DESCRIPTIVE_ONLY_NO_TRADING_AUTHORITY",
+  "purpose": "Monitor the Taiwan equity market through the existing governed HENGCE EOD vessel using paid FinMind data. TWSE and TPEx are the primary broad-market scope; emerging equities are monitored separately and also included in an umbrella all-Taiwan diagnostic, but lower emerging-board snapshot coverage may not block the TWSE+TPEx monitor.",
+  "formal_market_state_classifier": "hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json",
+  "formal_classifier_mutated": false,
+  "data_vessel": {
+    "route": "EXISTING_HENGCE_ORIGINAL_EOD_VESSEL",
+    "path_pattern": "eod/YYYYMMDD",
+    "parallel_eod_tree": false,
+    "second_mother": false,
+    "parallel_universe": false,
+    "finmind_snapshot_transport": "taiwan_stock_tick_snapshot",
+    "finmind_membership_dataset": "TaiwanStockInfo",
+    "membership_rule": "take latest date row per stock_id; classify current membership by type; filter to four-digit equities and exclude ETF/ETN/TDR-like non-common-equity rows",
+    "credential": "FINMIND_TOKEN_FROM_GITHUB_ACTIONS_SECRET_ONLY",
+    "raw_vendor_snapshot_persisted": false,
+    "per_ticker_vendor_rows_persisted": false,
+    "derived_context_path_pattern": "eod/YYYYMMDD/market_state_finmind_context.json"
+  },
+  "primary_scope": "twse_tpex_all_equities",
+  "observed_scopes": [
+    "twse_tpex_all_equities",
+    "twse_equities",
+    "tpex_equities",
+    "emerging_equities",
+    "all_taiwan_equities",
+    "hengce_electronics100_diagnostic"
+  ],
+  "scope_semantics": {
+    "twse_tpex_all_equities": "primary broad Taiwan exchange-equity monitor: current TWSE plus TPEx equities",
+    "twse_equities": "current TWSE equities",
+    "tpex_equities": "current TPEx equities",
+    "emerging_equities": "current emerging-board equities; monitored separately because trading and liquidity microstructure differ and snapshot coverage may differ",
+    "all_taiwan_equities": "umbrella diagnostic combining TWSE, TPEx and emerging equities; coverage is always disclosed and does not by itself gate the primary monitor",
+    "hengce_electronics100_diagnostic": "legacy operating-universe diagnostic only; no longer represents the whole market"
+  },
+  "coverage_gate": {
+    "twse_snapshot_presence_min": 0.98,
+    "tpex_snapshot_presence_min": 0.98,
+    "emerging_snapshot_presence_min": null,
+    "all_taiwan_snapshot_presence_min": null,
+    "rule": "Fail closed only if TWSE or TPEx primary-market coverage falls below 98%. Emerging and umbrella all-Taiwan coverage must be reported but may not block the primary monitor."
+  },
+  "allowed_persisted_derived_context": [
+    "membership metadata and market counts",
+    "snapshot presence/current-date/stale/missing counts and ratios",
+    "advancing/declining/unchanged counts and shares",
+    "breadth balance",
+    "cross-sectional change-rate mean/median/quantiles in vendor units",
+    "cross-sectional median absolute change rate in vendor units",
+    "aggregate turnover and top-10 turnover share",
+    "volume-ratio median/quantiles",
+    "share closing at-or-above average price",
+    "share closing at-or-above open"
+  ],
+  "explicitly_not_authorized": [
+    "persisting raw or per-ticker FinMind snapshot rows in this Market State auxiliary",
+    "using Electronics100 as the primary whole-market observation scope",
+    "silently treating incomplete emerging coverage as complete",
+    "changing frozen S5 Market State features",
+    "changing frozen scaler or centroids",
+    "creating or selecting a new state label",
+    "feature selection from forward returns",
+    "threshold optimization",
+    "state-to-return mapping",
+    "Selection input",
+    "Escape input",
+    "trading or capital action"
+  ],
+  "pit_policy": {
+    "current_realtime_snapshot_only": true,
+    "source_revision_class": "FORWARD_COLLECTED_VENDOR_SNAPSHOT",
+    "historical_snapshot_backfill_claim": false,
+    "manual_historical_target_behavior": "SKIP_UNLESS_PREVIOUS_FORWARD_COLLECTED_CONTEXT_ALREADY_EXISTS",
+    "uncertain_or_failed_primary_source_behavior": "SHADOW_BLOCKED_FAIL_CLOSED",
+    "formal_market_state_may_continue_when_shadow_blocked": true
+  },
+  "research_integrity": {
+    "forward_outcomes_used": false,
+    "formal_classifier_effect": "NONE",
+    "selection_effect": "NONE",
+    "escape_effect": "NONE",
+    "trading_effect": "NONE",
+    "capital_effect": "NONE",
+    "promotion_requires_separate_preregistered_change_control": true
+  }
+}
