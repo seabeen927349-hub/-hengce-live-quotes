@@ -76,21 +76,71 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -Fq 'import hengce_twse_calendar as twse_calendar' scripts/hengce_live_universe_guard.py
-          grep -Fq 'session_guard.guard_shadow(payload, finished.date().isoformat())' scripts/hengce_full_market_shadow.py
-          grep -Fq 'twse_calendar.is_trading_day(target, manifest)' scripts/hengce_eod_guarded_ingest.py
-          grep -Fq 'network_access_attempted": False' scripts/hengce_eod_guarded_ingest.py
-          grep -Fq 'import hengce_eod_guarded_ingest as eod_inc' scripts/hengce_daily_command_center.py
-          grep -Fq 'TWSE_EFFECTIVE_CALENDAR_CLOSED' scripts/hengce_daily_command_center.py
-          grep -Fq "LEGS=('price','institutional','margin')" scripts/hengce_eod_incremental_ingest.py
-          grep -Fq 'ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR' scripts/hengce_eod_broker_aux.py
-          grep -Fq 'python scripts/hengce_eod_broker_aux.py' .github/workflows/hengce-original-eod-ingest.yml
-          grep -Fq -- '--eod-dir' .github/workflows/hengce-original-eod-ingest.yml
-          grep -Fq 'steps.target.outputs.compact' .github/workflows/hengce-original-eod-ingest.yml
-          test ! -e .github/workflows/hengce-broker-prospective-capture.yml
-          test ! -e .github/workflows/hengce-broker-prospective-selection-input.yml
-          ! grep -R -F --exclude='hengce-data-vessel-health.yml' 'research/broker_prospective_20261103/captures' .github/workflows
-          ! grep -R -F --exclude='hengce-data-vessel-health.yml' 'capture_selection_inputs.py' .github/workflows
+          python - <<'PY'
+          from pathlib import Path
+
+          def text(path):
+              return Path(path).read_text(encoding='utf-8')
+
+          required = {
+              'scripts/hengce_live_universe_guard.py': [
+                  'import hengce_twse_calendar as twse_calendar',
+              ],
+              'scripts/hengce_full_market_shadow.py': [
+                  'session_guard.guard_shadow(payload, finished.date().isoformat())',
+              ],
+              'scripts/hengce_eod_guarded_ingest.py': [
+                  'twse_calendar.is_trading_day(target, manifest)',
+                  'network_access_attempted": False',
+              ],
+              'scripts/hengce_daily_command_center.py': [
+                  'import hengce_eod_guarded_ingest as eod_inc',
+                  'TWSE_EFFECTIVE_CALENDAR_CLOSED',
+              ],
+              'scripts/hengce_eod_incremental_ingest.py': [
+                  "LEGS=('price','institutional','margin')",
+              ],
+              'scripts/hengce_eod_broker_aux.py': [
+                  'ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR',
+                  'FORWARD_COLLECTED_VENDOR_SNAPSHOT',
+                  'blocks_core_three_leg_or_mother',
+                  'parallel_eod_tree',
+                  'second_mother',
+                  'parallel_universe',
+              ],
+              '.github/workflows/hengce-original-eod-ingest.yml': [
+                  'python scripts/hengce_eod_broker_aux.py',
+                  '--eod-dir',
+                  'steps.target.outputs.compact',
+              ],
+          }
+          for path, needles in required.items():
+              body=text(path)
+              missing=[n for n in needles if n not in body]
+              assert not missing, f'{path}: missing {missing}'
+
+          forbidden_files = [
+              Path('.github/workflows/hengce-broker-prospective-capture.yml'),
+              Path('.github/workflows/hengce-broker-prospective-selection-input.yml'),
+          ]
+          assert not [str(p) for p in forbidden_files if p.exists()], 'PARALLEL_BROKER_WORKFLOW_PRESENT'
+
+          forbidden_strings = [
+              'research/broker_prospective_20261103/captures',
+              'capture_selection_inputs.py',
+          ]
+          offenders=[]
+          health=Path('.github/workflows/hengce-data-vessel-health.yml').resolve()
+          for p in Path('.github/workflows').glob('*.yml'):
+              if p.resolve()==health:
+                  continue
+              body=p.read_text(encoding='utf-8')
+              for needle in forbidden_strings:
+                  if needle in body:
+                      offenders.append((str(p),needle))
+          assert not offenders, f'PARALLEL_BROKER_WIRING_PRESENT:{offenders}'
+          print('ONE_VESSEL_GOVERNANCE_PASS')
+          PY
 
       - name: Verify 2026-10-23 cannot become download-ready
         shell: bash
