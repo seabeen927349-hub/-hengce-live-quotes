@@ -2,8 +2,9 @@
 """Research-only TWSE ISIN stock-universe structural probe.
 
 Queries TWSE ISIN classification directly for stock instruments, separately
-for the regular listed market and Taiwan Innovation Board. No raw HTML or full
-security list is persisted. Output is aggregate metadata/samples only.
+for the regular listed market and Taiwan Innovation Board. A zero-row optional
+submarket is reported explicitly instead of being promoted into a false CI
+failure. No raw HTML or full security list is persisted.
 """
 
 from __future__ import annotations
@@ -18,8 +19,8 @@ from bs4 import BeautifulSoup
 
 BASE = "https://isin.twse.com.tw/isin/class_main.jsp?chklike=Y&issuetype={issuetype}&market={market}"
 MARKET_QUERIES = {
-    "TWSE_LISTED": {"issuetype": "1", "market": "1"},
-    "TWSE_TIB": {"issuetype": "C", "market": "C"},
+    "TWSE_LISTED": {"issuetype": "1", "market": "1", "required_nonempty": True},
+    "TWSE_TIB": {"issuetype": "C", "market": "C", "required_nonempty": False},
 }
 FOUR_DIGIT = re.compile(r"[1-9]\d{3}")
 
@@ -32,7 +33,7 @@ def fetch_market(label: str, issuetype: str, market: str) -> list[dict[str, str]
     url = BASE.format(issuetype=issuetype, market=market)
     req = urllib.request.Request(
         url,
-        headers={"User-Agent": "HENGCE-TWSE-ISIN-CLASS-PROBE/3.0", "Accept": "text/html"},
+        headers={"User-Agent": "HENGCE-TWSE-ISIN-CLASS-PROBE/3.1", "Accept": "text/html"},
     )
     with urllib.request.urlopen(req, timeout=30) as response:
         raw = response.read()
@@ -40,8 +41,6 @@ def fetch_market(label: str, issuetype: str, market: str) -> list[dict[str, str]
     rows: list[dict[str, str]] = []
     for tr in soup.find_all("tr"):
         cells = [clean(cell.get_text(" ", strip=True)) for cell in tr.find_all(["td", "th"])]
-        # Current TWSE classification table: serial, ISIN, code, name, market,
-        # security type, industry, list/open date, CFI, remarks.
         if len(cells) < 9:
             continue
         code = cells[2]
@@ -61,11 +60,6 @@ def fetch_market(label: str, issuetype: str, market: str) -> list[dict[str, str]
                 "cfi": cfi,
             }
         )
-    if not rows:
-        raise RuntimeError(
-            f"TWSE ISIN stock query produced no four-digit rows for {label} "
-            f"(issuetype={issuetype}, market={market})"
-        )
     return rows
 
 
@@ -75,8 +69,19 @@ def digest(values: list[str]) -> str:
 
 def main() -> None:
     per_market: dict[str, list[dict[str, str]]] = {}
+    market_status: dict[str, str] = {}
     for label, query in MARKET_QUERIES.items():
-        per_market[label] = fetch_market(label, query["issuetype"], query["market"])
+        rows = fetch_market(label, query["issuetype"], query["market"])
+        per_market[label] = rows
+        if rows:
+            market_status[label] = "NONEMPTY"
+        elif query["required_nonempty"]:
+            raise RuntimeError(
+                f"required TWSE ISIN query produced no four-digit rows for {label} "
+                f"(issuetype={query['issuetype']}, market={query['market']})"
+            )
+        else:
+            market_status[label] = "EMPTY_OPTIONAL_QUERY_UNRESOLVED_NO_AUTHORITY"
 
     all_rows = [row for rows in per_market.values() for row in rows]
     code_counts = collections.Counter(row["code"] for row in all_rows)
@@ -88,7 +93,12 @@ def main() -> None:
     for label, rows in per_market.items():
         market_codes = sorted({row["code"] for row in rows})
         market_receipts[label] = {
-            "query": MARKET_QUERIES[label],
+            "query": {
+                "issuetype": MARKET_QUERIES[label]["issuetype"],
+                "market": MARKET_QUERIES[label]["market"],
+            },
+            "required_nonempty": MARKET_QUERIES[label]["required_nonempty"],
+            "status": market_status[label],
             "count": len(market_codes),
             "codes_sha256": digest(market_codes),
             "cfi_counts": dict(collections.Counter(row["cfi"] for row in rows).most_common()),
@@ -99,12 +109,16 @@ def main() -> None:
         }
 
     non_es = [row for row in all_rows if not row["cfi"].startswith("ES")]
+    unresolved_optional = sorted(
+        label for label, status in market_status.items() if status.startswith("EMPTY_OPTIONAL")
+    )
     receipt = {
-        "schema": "HENGCE_TWSE_ISIN_STOCK_CLASS_PROBE_V3",
+        "schema": "HENGCE_TWSE_ISIN_STOCK_CLASS_PROBE_V3_1",
         "source_template": BASE,
         "query_contract": (
-            "TWSE_LISTED: issuetype=1,market=1; "
-            "TWSE_TIB: issuetype=C,market=C; union four-digit stock instruments"
+            "TWSE_LISTED issuetype=1,market=1 is required nonempty; "
+            "TWSE_TIB issuetype=C,market=C is exploratory and a zero-row result is "
+            "reported as unresolved rather than silently treated as an empty market"
         ),
         "per_market": market_receipts,
         "union_four_digit_count": len(codes),
@@ -117,6 +131,7 @@ def main() -> None:
             {"code": row["code"], "cfi": row["cfi"], "source_market": row["source_market"]}
             for row in non_es[:20]
         ],
+        "unresolved_optional_market_queries": unresolved_optional,
         "raw_html_retained": False,
         "formal_universe_authority": False,
         "trading_authority": False,
