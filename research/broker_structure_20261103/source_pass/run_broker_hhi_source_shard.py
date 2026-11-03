@@ -9,7 +9,7 @@ import math
 import os
 import re
 import tempfile
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -35,22 +35,40 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def _canonical_digest_scalar(v):
+    if v is None:
+        return None
+    if isinstance(v, np.generic):
+        return _canonical_digest_scalar(v.item())
+    if isinstance(v, float):
+        if math.isnan(v):
+            return {'__nonfinite__': 'NaN'}
+        if math.isinf(v):
+            return {'__nonfinite__': '+Inf' if v > 0 else '-Inf'}
+        return v
+    if isinstance(v, (datetime, date)):
+        return v.isoformat()
+    if isinstance(v, bytes):
+        return {'__bytes_hex__': v.hex()}
+    return v
+
+
 def logical_content_sha256(table) -> str:
     selected = table.select(EXPECTED_COLS)
     sorted_table = selected.sort_by([(c, 'ascending') for c in EXPECTED_COLS])
     h = hashlib.sha256()
-    h.update(('HENGCE_LOGICAL_ROW_HASH_V1\n' + '\x1f'.join(EXPECTED_COLS) + '\n').encode())
+    h.update(('HENGCE_LOGICAL_ROW_HASH_V2_NONFINITE_CANONICAL\n' + '\x1f'.join(EXPECTED_COLS) + '\n').encode())
     for batch in sorted_table.to_batches(max_chunksize=65536):
         pycols = [batch.column(i).to_pylist() for i in range(batch.num_columns)]
         for vals in zip(*pycols):
-            h.update(json.dumps(vals, ensure_ascii=False, separators=(',', ':'), allow_nan=False).encode())
+            canonical = [_canonical_digest_scalar(v) for v in vals]
+            h.update(json.dumps(canonical, ensure_ascii=False, separators=(',', ':'), allow_nan=False).encode())
             h.update(b'\n')
     return h.hexdigest()
 
 
 def read_dates(path: Path) -> list[int]:
-    raw = path.read_text(encoding='utf-8').strip()
-    vals = [int(x) for x in raw.split(',') if x.strip()]
+    vals = [int(x) for x in path.read_text(encoding='utf-8').strip().split(',') if x.strip()]
     if len(vals) != EXPECTED_DATES or len(set(vals)) != EXPECTED_DATES or vals != sorted(vals):
         raise RuntimeError(f'INVALID_SIGNAL_DATE_ORDINALS:{len(vals)}')
     return vals
@@ -92,40 +110,71 @@ def validate_memberships(dates: list[int], u100: list[set[str]], mother: list[se
         if len(u) != EXPECTED_U100:
             raise RuntimeError(f'U100_SIZE_NOT_100:index={i}:n={len(u)}')
         if not u.issubset(m):
-            miss = sorted(u - m)
-            raise RuntimeError(f'U100_NOT_SUBSET_MOTHER:index={i}:missing={miss[:5]}')
+            raise RuntimeError(f'U100_NOT_SUBSET_MOTHER:index={i}:missing={sorted(u-m)[:5]}')
 
 
-def compute_hhi_for_u100(pdf: pd.DataFrame, target: set[str]) -> dict[str, float]:
+def audit_stock_level_integrity(pdf: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, set[str]]]:
     p = pdf.copy()
     p['stock_norm'] = p['stock_id'].map(normalize_stock_id)
-    u = p[p['stock_norm'].isin(target)].copy()
-    if set(u['stock_norm'].unique()) != target:
-        missing = sorted(target - set(u['stock_norm'].unique()))
-        raise RuntimeError(f'U100_SOURCE_MISSING:{len(missing)}:{missing[:5]}')
-    if u['securities_trader_id'].isna().any():
-        raise RuntimeError('U100_NULL_SECURITIES_TRADER_ID')
-    u['trader_norm'] = u['securities_trader_id'].astype(str).str.strip()
-    if (u['trader_norm'] == '').any():
-        raise RuntimeError('U100_BLANK_SECURITIES_TRADER_ID')
-    u['gross'] = pd.to_numeric(u['buy_volume'], errors='coerce') + pd.to_numeric(u['sell_volume'], errors='coerce')
-    if (not np.isfinite(u['gross'].to_numpy(float)).all()) or (u['gross'] < 0).any():
-        raise RuntimeError('U100_INVALID_GROSS')
-    u = u[u['gross'] > 0].copy()
-    totals = u.groupby('stock_norm', sort=False)['gross'].sum()
-    missing_positive = sorted(target - set(totals.index))
-    if missing_positive:
-        raise RuntimeError(f'U100_ZERO_GROSS_TOTAL:{len(missing_positive)}:{missing_positive[:5]}')
-    u = u.join(totals.rename('gross_total'), on='stock_norm')
-    u['sq'] = (u['gross'] / u['gross_total']) ** 2
-    hhi = u.groupby('stock_norm', sort=True)['sq'].sum()
-    out = {str(k): float(v) for k, v in hhi.items()}
-    if set(out) != target:
-        raise RuntimeError('U100_HHI_KEYSET_MISMATCH')
-    vals = np.array(list(out.values()), dtype=float)
-    if (not np.isfinite(vals).all()) or np.any(vals <= 0.0) or np.any(vals > 1.0 + 1e-12):
-        raise RuntimeError('U100_HHI_RANGE_INVALID')
-    return out
+    p['trader_norm'] = p['securities_trader_id'].astype('string').str.strip()
+    p['buy_num'] = pd.to_numeric(p['buy_volume'], errors='coerce')
+    p['sell_num'] = pd.to_numeric(p['sell_volume'], errors='coerce')
+
+    duplicate_mask = p.duplicated(['date','stock_id','securities_trader_id'], keep=False)
+    bad_volume_mask = (
+        ~np.isfinite(p['buy_num'].to_numpy(float)) |
+        ~np.isfinite(p['sell_num'].to_numpy(float)) |
+        (p['buy_num'].to_numpy(float) < 0) |
+        (p['sell_num'].to_numpy(float) < 0)
+    )
+    bad_identity_mask = p['securities_trader_id'].isna() | p['trader_norm'].isna() | (p['trader_norm'] == '')
+
+    bad = {
+        'duplicate_key': set(p.loc[duplicate_mask, 'stock_norm'].astype(str)),
+        'invalid_volume': set(p.loc[bad_volume_mask, 'stock_norm'].astype(str)),
+        'invalid_identity': set(p.loc[bad_identity_mask, 'stock_norm'].astype(str)),
+    }
+    return p, bad
+
+
+def compute_u100_hhi(
+    audited: pd.DataFrame,
+    target: set[str],
+    missing_source: set[str],
+    bad: dict[str, set[str]],
+) -> tuple[dict[str, float], dict[str, str]]:
+    invalid: dict[str, str] = {}
+    for t in sorted(target):
+        reasons = []
+        if t in missing_source:
+            reasons.append('MISSING_SOURCE_DATA')
+        if t in bad['duplicate_key']:
+            reasons.append('DUPLICATE_KEY')
+        if t in bad['invalid_volume']:
+            reasons.append('INVALID_VOLUME')
+        if t in bad['invalid_identity']:
+            reasons.append('INVALID_IDENTITY')
+        if reasons:
+            invalid[t] = '+'.join(reasons)
+
+    out: dict[str, float] = {}
+    for t in sorted(target - set(invalid)):
+        s = audited[audited['stock_norm'] == t].copy()
+        if s.empty:
+            invalid[t] = 'MISSING_SOURCE_DATA'
+            continue
+        s['gross'] = s['buy_num'] + s['sell_num']
+        s = s[s['gross'] > 0].copy()
+        total = float(s['gross'].sum())
+        if not np.isfinite(total) or total <= 0:
+            invalid[t] = 'ZERO_TOTAL_GROSS_VOLUME'
+            continue
+        v = float(((s['gross'] / total) ** 2).sum())
+        if not np.isfinite(v) or not (0.0 < v <= 1.0 + 1e-12):
+            invalid[t] = 'HHI_RANGE_INVALID'
+            continue
+        out[t] = v
+    return out, invalid
 
 
 async def process(args) -> dict:
@@ -144,7 +193,7 @@ async def process(args) -> dict:
     chosen_indices = list(range(args.shard, len(dates), args.total_shards))
 
     out = {
-        'schema_version': 1,
+        'schema_version': 2,
         'system': 'HENGCE',
         'artifact': 'BROKER_HHI_SOURCE_ONLY_SHARD',
         'authority': 'DERIVED_SOURCE_FEATURE_AND_LINEAGE_ONLY_NO_OUTCOME_NO_TRADING_AUTHORITY',
@@ -154,6 +203,7 @@ async def process(args) -> dict:
         'source_plan': SOURCE_PLAN,
         'source_revision_class': SOURCE_CLASS,
         'canonical_mother_sha256': MOTHER_SHA256,
+        'missingness_semantics': 'STOCK_DATE_FAIL_CLOSED; DATE_AUDIT_CONTINUES; PRIMARY_COMPLETE_CASE_GATE_IS_LATER',
         'shard': args.shard,
         'total_shards': args.total_shards,
         'selected_date_count': len(chosen_indices),
@@ -191,8 +241,9 @@ async def process(args) -> dict:
                     await asyncio.sleep(min(20.0, 1.5 * (2 ** attempt)))
             if last_err is not None or not raw.is_file():
                 out['status'] = 'DATA_OR_LINEAGE_INVALID'
-                out['errors'].append(f'{d}:TRANSPORT:{last_err}')
+                out['errors'].append(f'{d}:TRANSPORT_OR_OBJECT_UNAVAILABLE:{last_err}')
                 break
+
             try:
                 physical_sha = sha256_file(raw)
                 physical_bytes = raw.stat().st_size
@@ -200,57 +251,55 @@ async def process(args) -> dict:
                 cols = pf.schema_arrow.names
                 missing_cols = sorted(set(EXPECTED_COLS) - set(cols))
                 if missing_cols:
-                    raise RuntimeError(f'MISSING_COLUMNS:{missing_cols}')
+                    raise RuntimeError(f'MISSING_REQUIRED_SCHEMA:{missing_cols}')
                 table = pf.read(columns=EXPECTED_COLS)
                 if table.num_rows <= 0:
-                    raise RuntimeError('PARQUET_EMPTY')
+                    raise RuntimeError('PARQUET_EMPTY_SOURCE_OBJECT')
                 observed_dates = {str(x) for x in pc.unique(table['date']).to_pylist() if x is not None}
                 if observed_dates != {d}:
                     raise RuntimeError(f'SOURCE_DATE_MISMATCH:{sorted(observed_dates)}')
 
-                pdf = table.to_pandas()
-                for c in ['buy_volume', 'sell_volume']:
-                    a = pd.to_numeric(pdf[c], errors='coerce').to_numpy(float)
-                    if (not np.isfinite(a).all()) or (a < 0).any():
-                        raise RuntimeError(f'INVALID_{c}')
-                if pdf.duplicated(['date','stock_id','securities_trader_id']).any():
-                    raise RuntimeError('DUPLICATE_SECIDAGG_KEY')
-
-                pdf['stock_norm'] = pdf['stock_id'].map(normalize_stock_id)
-                observed_stocks = set(pdf['stock_norm'].dropna().astype(str))
-                missing_mother = sorted(expected_mother - observed_stocks)
                 logical_sha = logical_content_sha256(table)
-                if missing_mother:
-                    raise RuntimeError(f'MOTHER_TRADED_BROKER_MISSING:{len(missing_mother)}:{missing_mother[:5]}')
-                hhi = compute_hhi_for_u100(pdf[EXPECTED_COLS], target)
+                pdf = table.to_pandas()
+                audited, bad = audit_stock_level_integrity(pdf)
+                observed_stocks = set(audited['stock_norm'].dropna().astype(str))
+                missing_mother = expected_mother - observed_stocks
+                hhi, u100_invalid = compute_u100_hhi(audited, target, missing_mother, bad)
 
                 broker_ids = {str(x) for x in pdf['securities_trader_id'].dropna().astype(str)}
-                out['daily'].append({
+                daily = {
                     'date_index': idx,
                     'date': d,
-                    'status': 'PASS_SOURCE_DATE',
+                    'status': 'PASS_SOURCE_DATE_AUDIT',
                     'retrieval_timestamp_utc': retrieval_utc,
                     'retrieval_timestamp_taipei': retrieval_taipei,
-                    'query_mode': 'FinMindClient.storage_object_url whole-day parquet',
+                    'query_or_download_mode': 'FinMindClient.storage_object_url whole-day parquet',
                     'row_count': int(table.num_rows),
                     'unique_stock_id_count': len(observed_stocks),
                     'unique_securities_trader_id_count': len(broker_ids),
                     'physical_object_sha256': physical_sha,
                     'physical_object_bytes': physical_bytes,
                     'logical_content_sha256': logical_sha,
-                    'logical_digest_spec': 'HENGCE_LOGICAL_ROW_HASH_V1_SORT_ALL_CANONICAL_FIELDS_JSON_LINES',
+                    'logical_digest_spec': 'HENGCE_LOGICAL_ROW_HASH_V2_NONFINITE_CANONICAL_SORT_ALL_REQUIRED_FIELDS_JSON_LINES',
                     'schema_field_list': cols,
                     'canonical_mother_sha256': MOTHER_SHA256,
                     'date_specific_mother_traded_symbol_count': len(expected_mother),
-                    'observed_missing_among_mother_traded_symbols': 0,
+                    'observed_missing_among_mother_traded_symbols': len(missing_mother),
+                    'missing_mother_traded_symbols': sorted(missing_mother),
+                    'duplicate_key_stock_count': len(bad['duplicate_key']),
+                    'invalid_volume_stock_count': len(bad['invalid_volume']),
+                    'invalid_identity_stock_count': len(bad['invalid_identity']),
                     'u100_count': len(target),
-                    'broker_hhi_count': len(hhi),
+                    'u100_valid_hhi_count': len(hhi),
+                    'u100_missing_feature_count': len(u100_invalid),
+                    'u100_missing_feature_by_stock': u100_invalid,
                     'hhi_by_stock': hhi,
                     'source_revision_class': SOURCE_CLASS,
-                })
+                }
+                out['daily'].append(daily)
             except Exception as exc:
                 out['status'] = 'DATA_OR_LINEAGE_INVALID'
-                out['errors'].append(f'{d}:{type(exc).__name__}:{exc}')
+                out['errors'].append(f'{d}:DATE_OBJECT_INTEGRITY:{type(exc).__name__}:{exc}')
                 break
             finally:
                 try:
@@ -261,14 +310,17 @@ async def process(args) -> dict:
                 print(f'SOURCE_PASS_PROGRESS shard={args.shard} {seq}/{len(chosen_indices)} dates')
 
     if out['status'] == 'PASS_SHARD':
-        out['summary'] = {
-            'processed_dates': len(out['daily']),
-            'expected_selected_dates': len(chosen_indices),
-            'all_source_dates_passed': len(out['daily']) == len(chosen_indices),
-        }
         if len(out['daily']) != len(chosen_indices):
             out['status'] = 'DATA_OR_LINEAGE_INVALID'
             out['errors'].append('PROCESSED_DATE_COUNT_MISMATCH')
+        else:
+            out['summary'] = {
+                'processed_dates': len(out['daily']),
+                'expected_selected_dates': len(chosen_indices),
+                'dates_with_any_mother_missing': sum(x['observed_missing_among_mother_traded_symbols'] > 0 for x in out['daily']),
+                'dates_with_any_u100_feature_missing': sum(x['u100_missing_feature_count'] > 0 for x in out['daily']),
+                'minimum_u100_valid_hhi_count': min(x['u100_valid_hhi_count'] for x in out['daily']),
+            }
     return out
 
 
@@ -283,7 +335,7 @@ def main() -> int:
         out = asyncio.run(process(a))
     except Exception as exc:
         out = {
-            'schema_version': 1,
+            'schema_version': 2,
             'system': 'HENGCE',
             'artifact': 'BROKER_HHI_SOURCE_ONLY_SHARD',
             'authority': 'DERIVED_SOURCE_FEATURE_AND_LINEAGE_ONLY_NO_OUTCOME_NO_TRADING_AUTHORITY',
