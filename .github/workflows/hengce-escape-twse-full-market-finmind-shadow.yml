@@ -55,25 +55,33 @@ jobs:
           context=json.loads((root/'context.json').read_text(encoding='utf-8'))
           status=json.loads((root/'status.json').read_text(encoding='utf-8'))
           assert status['state']=='SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY'
-          assert status['active_universe_full_coverage'] is True
+          assert status['active_universe_transport_full_coverage'] is True
           assert status['unexpected_missing_count']==0
           assert status['raw_finmind_rows_persisted'] is False
           assert status['per_security_rows_persisted'] is False
+          assert status['stale_rows_neutralized_as_zero'] is False
           assert status['formal_escape_authority'] is False
           assert status['formal_eod_authority'] is False
           assert status['trading_authority'] is False
           assert context['raw_finmind_rows_persisted'] is False
           assert context['per_security_rows_persisted'] is False
+          assert context['stale_rows_neutralized_as_zero'] is False
           assert context['formal_escape_state_creation'] is False
           assert context['trading_authority'] is False
           assert context['active_required_count'] >= 900
           assert context['market']['constituent_count'] == context['active_required_count']
+          assert context['market']['return_observed_count'] == status['current_market_date_count']
+          assert 0 < status['current_market_date_ratio'] <= 1
           print(json.dumps({
               'state': status['state'],
               'twse_common_master_count': status['twse_common_master_count'],
               'active_required_count': status['active_required_count'],
               'unexpected_missing_count': status['unexpected_missing_count'],
               'exempt_missing': status['exempt_missing'],
+              'current_market_date_count': status['current_market_date_count'],
+              'current_market_date_ratio': status['current_market_date_ratio'],
+              'stale_or_noncurrent_count': status['stale_or_noncurrent_count'],
+              'stale_or_noncurrent_sample': status['stale_or_noncurrent_sample'],
               'latest_source_timestamp': status['latest_source_timestamp'],
               'market': context['market'],
               'industry_bucket_count': len(context['industry']),
