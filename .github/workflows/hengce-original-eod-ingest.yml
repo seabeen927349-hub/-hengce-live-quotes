@@ -79,12 +79,73 @@ jobs:
             --eod-dir 'eod/${{ steps.target.outputs.compact }}'
 
       - name: Observe FinMind Market State shadow inside the same original EOD vessel
+        id: finmind_market_state_shadow
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
           python scripts/hengce_market_state_finmind_aux.py \
             --date '${{ steps.target.outputs.date }}' \
             --eod-dir 'eod/${{ steps.target.outputs.compact }}'
+
+      - name: Record fail-closed FinMind shadow runtime receipt without blocking core vessel
+        if: steps.finmind_market_state_shadow.outcome != 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          D='${{ steps.target.outputs.date }}'
+          C='${{ steps.target.outputs.compact }}'
+          OUTCOME='${{ steps.finmind_market_state_shadow.outcome }}'
+          python - "$D" "$C" "$OUTCOME" <<'PY'
+          import json,sys
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          d,c,outcome=sys.argv[1:]
+          root=Path('eod')/c
+          sp=root/'status.json'
+          x=json.loads(sp.read_text(encoding='utf-8'))
+          now=datetime.now(ZoneInfo('Asia/Taipei')).isoformat()
+          r={
+              'system':'HENGCE',
+              'artifact':'MARKET_STATE_FINMIND_SHADOW_AUX_RECEIPT',
+              'schema':'HENGCE_MARKET_STATE_FINMIND_SHADOW_AUX_V1',
+              'target_date':d,
+              'observed_at_taipei':now,
+              'status':'SHADOW_BLOCKED_WORKFLOW_ERROR',
+              'workflow_step_outcome':outcome,
+              'contract':'hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_1_20261103.json',
+              'formal_market_state_classifier':'hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json',
+              'authority':'RESEARCH_SHADOW_ONLY_DESCRIPTIVE_NO_TRADING_AUTHORITY',
+              'data_vessel':'EXISTING_HENGCE_ORIGINAL_EOD_VESSEL',
+              'parallel_eod_tree':False,
+              'second_mother':False,
+              'parallel_universe':False,
+              'raw_vendor_snapshot_persisted':False,
+              'formal_classifier_mutated':False,
+              'forward_outcomes_used':False,
+              'selection_authority':False,
+              'escape_authority':False,
+              'model_authority':False,
+              'trading_authority':False,
+              'capital_authority':False,
+              'blocks_core_three_leg_or_mother':False,
+              'usable_for_formal_market_state':False,
+          }
+          rp=root/'receipts'/'market_state_finmind_shadow.json'
+          rp.parent.mkdir(parents=True,exist_ok=True)
+          rp.write_text(json.dumps(r,ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8')
+          x.update({
+              'market_state_finmind_shadow_status':r['status'],
+              'market_state_finmind_shadow_receipt':'receipts/market_state_finmind_shadow.json',
+              'market_state_finmind_shadow_observed_at_taipei':now,
+              'market_state_finmind_shadow_blocks_core_three_leg_or_mother':False,
+              'market_state_finmind_shadow_formal_classifier_mutated':False,
+              'market_state_finmind_shadow_model_authority_created':False,
+              'market_state_finmind_shadow_trading_authority_created':False,
+          })
+          sp.write_text(json.dumps(x,ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8')
+          PY
 
       - name: Verify original-vessel output only
         shell: bash
@@ -131,6 +192,7 @@ jobs:
           assert fr.get('status') in {
               'OBSERVED_CAPABILITY_ONLY',
               'SHADOW_BLOCKED_FAIL_CLOSED',
+              'SHADOW_BLOCKED_WORKFLOW_ERROR',
               'SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT',
           }, fr
           assert fr.get('data_vessel')=='EXISTING_HENGCE_ORIGINAL_EOD_VESSEL', fr
