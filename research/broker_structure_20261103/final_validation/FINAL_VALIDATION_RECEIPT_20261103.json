@@ -1,0 +1,81 @@
+{
+  "artifact": "BROKER_H20_FINAL_FROZEN_VALIDATION_RECEIPT_20261103",
+  "authority": "FROZEN_HISTORICAL_RECONSTRUCTION_TEST_ONLY_NO_PRODUCTION_AUTHORITY",
+  "classification": "INCREMENTAL_VALUE_ESTABLISHED_RECONSTRUCTION_ONLY",
+  "exact_source_panel": {
+    "dates": 1274,
+    "keyset_equal_to_sealed_upstream": true,
+    "minimum_hhi_count": 100,
+    "panel_sha256": "47010a29ad049d131c66083c2c49b28c9810ec5e8729029e4207c8eb31191d1f",
+    "receipt_sha256": "8fbdc809e4d27c9762698ac9e47a8936a2d179384e002caf2f6d0c0582ba679b",
+    "row_count": 127400,
+    "status": "PASS_SOURCE_AUDIT_DERIVED_HHI_READY"
+  },
+  "formal_result": {
+    "all_survival_requirements_pass": true,
+    "bootstrap_ci95": [0.054851157463122066, 0.11826176825923382],
+    "bootstrap_ci_excludes_zero": true,
+    "daily_beta_sha256": "b19972175e225483833b0e52bf1142f8a5f0374dc33760c18c57cfc3de824739",
+    "early_mean_b_broker": 0.1135446185596033,
+    "excluded_date_status_counts": {"INCLUDED_PRIMARY": 1274},
+    "hac_ci95": [0.05300957559589341, 0.11651788228027664],
+    "hac_ci_excludes_zero": true,
+    "hac_p_two_sided": 1.9093256834232111e-07,
+    "included_dates": 1274,
+    "late_mean_b_broker": 0.0727583522883972,
+    "mean_b_broker": 0.08476372893808502,
+    "result_json_sha256": "c1c338862e25dd0508c302d057f475d7f4404b50417e4e2d95647b3324517b96",
+    "temporal_sign_stability": true
+  },
+  "frozen_judge_commit": "d7e75c3bf1ac54f7542c3c389e55829dda44c6a2",
+  "frozen_judge_git_blob": "1f8a34f115741fef21ee04c3eb475cf3fb2712c0",
+  "frozen_judge_sha256": "e33bfea256e98760b07f2de72ed978ac8099134b1de2ed4993bcd6f4232e68b4",
+  "frozen_prereg_commit": "303b2e60501ecc93af6d3b67215f74d17795fa53",
+  "full_source_base": {
+    "base_lineage_sha256": "3a005261cbd8b46507b766c3056d8b7cb276ea2b1381d1c8721a7f7e97d2055e",
+    "base_panel_sha256": "a3a962a333cf8669471bfaec7a70ee6d55a992d47c81923f6382042c4d00de4b",
+    "base_receipt_sha256": "80561f96d6f2df72da438777e09afa40631a1c779edb3231922477d8b7758263",
+    "dates_with_mother_source_missing": 72,
+    "max_mother_source_missing_on_one_date": 31,
+    "run_head": "63140afc349f9fd89873e69700dc9a8ea26d5ee2",
+    "run_id": 41600126781,
+    "signal_dates": 1274
+  },
+  "governance_consequence": "RECONSTRUCTION_INCREMENTAL_INFORMATION_ONLY; NO SIGNED TRADING RULE, NO TOP-K, NO THRESHOLD, NO NAMED BROKER, NO PRODUCTION/CAPITAL AUTHORITY",
+  "hard_limits": [
+    "No signed trading rule",
+    "No top-k",
+    "No threshold",
+    "No named-broker interpretation",
+    "No causal smart-money claim",
+    "No production/capital authority",
+    "Historical source is event-day reconstruction, not strict vendor-as-known-then PIT",
+    "No post-outcome retuning/rescue permitted"
+  ],
+  "judge_input": {
+    "build_receipt_sha256": "39522ea8bc52c72d587dfc4ee88bbc0789bf655dc5e0c9fb1ccf10a947ab9c9e",
+    "dates": 1274,
+    "dates_hhi_lt95_before_controls": 0,
+    "minimum_hhi_valid_before_controls": 100,
+    "panel_sha256": "bcbb9b2f32ef43672f050c915be622217742955e07c64a997d9ee253b8365fa3",
+    "row_count": 127400
+  },
+  "original_handoff_zip_sha256": "bee5bc1291b66716e26d9a1544de673a66454186988fdb7ab54b2de6d9bda09c",
+  "schema_version": 1,
+  "sealed_upstream_npz_sha256": "035ab93ca1d3412e979c11afd4e2699b09e24cff9da7a5c6f43c003b0e5df219",
+  "source_class": "EVENT_DAY_FACT_RECONSTRUCTION",
+  "stale_membership_issue": {
+    "bounded_correction_head": "d12253b36f99e26740b5048990f1bd24959195a8",
+    "bounded_correction_run_id": 41603453979,
+    "correction_hhi_sha256": "4d337fda865092d42962e4039e4ea2d9e462241baf0971c04ef055b6d8436882",
+    "correction_lineage_sha256": "c6ca5d8312740dba325631a42cdb1e2da29fff5d903edecc8c5e92e3d71209e6",
+    "effect": "Base source lineage remained valid; 12 exact frozen U100 HHI rows required bounded re-derivation before judging.",
+    "handoff_u100_membership_sha256": "ffec3f112b9962b15cb7a85ebcd045713dd87f9633b3d052af7d25734ed2fd50",
+    "mismatch_dates": 11,
+    "repeated_retrieval_logical_sha_mismatches": 0,
+    "repeated_retrieval_physical_sha_mismatches": 0,
+    "replacement_stock_dates": 12
+  },
+  "status": "COMPLETE_FROZEN_H20_JUDGMENT",
+  "system": "HENGCE"
+}
