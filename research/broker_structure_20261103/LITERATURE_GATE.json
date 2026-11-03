@@ -1,0 +1,162 @@
+{
+  "topic_id": "HENGCE_BROKER_STRUCTURE_20261103",
+  "topic_title": "Taiwan Equity Broker-Branch Structure / Concentration / Participation",
+  "review_date_taipei": "2026-11-03",
+  "branch": "research/broker-structure-literature-first-20261103",
+  "base_authority_at_branch_creation": {
+    "branch": "research/selection-challenge-20261102",
+    "sha": "c42c38923983de2600af898e8135a91325e71ab7"
+  },
+  "literature_review_complete": true,
+  "literature_status": "PASS",
+  "scope_definition": "Bounded literature review for deciding whether daily Taiwan broker-branch trading structure is a defensible contemporaneously observable candidate family for a preregistered incremental cross-sectional ranking test. Scope does not establish a profitable signal, sign, threshold, broker identity, smart-money class, holding horizon, or trading rule.",
+  "canonical_master_corpus": {
+    "ledger": "/HENGCE_CANONICAL/RESEARCH/TAIWAN_STOCK_MARKET/HENGCE_TAIWAN_STOCK_MARKET_MASTER_LITERATURE_LEDGER_v1.xlsx",
+    "status": "P1 literature authority already provisionally saturated across required Taiwan-market domains",
+    "topic_full_read_ids": [
+      "BF-TW-002",
+      "BF-TW-004",
+      "BF-TW-021",
+      "BF-TW-022",
+      "BF-TW-023",
+      "BF-TW-025",
+      "TW-MKT-043",
+      "TW-MKT-045",
+      "TW-MKT-051",
+      "TW-MKT-055",
+      "TW-MKT-059",
+      "TW-MKT-142"
+    ],
+    "topic_found_only_counterevidence_ids": [
+      "TW-MKT-049",
+      "BF-TW-039"
+    ],
+    "full_read_count": 12,
+    "found_only_count": 2
+  },
+  "direct_broker_branch_external_discovery": [
+    {
+      "title": "券商分點進出與臺灣上市櫃公司股價漲跌幅關係實證研究",
+      "year": 2023,
+      "institution": "National Yang Ming Chiao Tung University",
+      "review_status": "PARTIAL_METADATA_ABSTRACT_TOC",
+      "sample": "2020-2022; top-15 net-buy/sell brokerage branches for selected stocks",
+      "methods": "stationarity tests, VAR/VECM, Granger causality, transfer entropy",
+      "bounded_finding": "Only a portion of top-15 branches show significant relationships/Granger effects; transfer-entropy and VAR identification are not highly consistent.",
+      "url": "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/login?o=dnclcdr&s=id%3D%22112NYCU5303009%22.&searchmode=basic"
+    },
+    {
+      "title": "股市主力交易行為與委託簿資訊內涵之互動",
+      "year": 2014,
+      "institution": "National Sun Yat-sen University",
+      "review_status": "PARTIAL_METADATA_ABSTRACT_TOC",
+      "sample": "Taiwan market, 2012-10 through 2013-01; broker buy/sell report plus intraday order-book data",
+      "methods": "broker-volume/net-position definitions of main traders, cumulative abnormal returns, information-content analysis",
+      "bounded_finding": "Some long-term main-trader categories appear more informative, but main-investor identity is constructed from broker execution patterns and the sample is short/old.",
+      "url": "https://ethesys.lis.nsysu.edu.tw/ETD-db/ETD-search-c/view_etd?URN=etd-0024114-033504"
+    },
+    {
+      "title": "使用價量資訊及券商分點買賣日報表來預測台股交易訊號：機器學習的應用",
+      "year": 2023,
+      "institution": "National Sun Yat-sen University",
+      "review_status": "PARTIAL_METADATA_ABSTRACT_TOC",
+      "sample": "2013-2020; highest-market-cap stock in each industry at 2013 start",
+      "methods": "LightGBM with price/volume and broker-branch features; out-of-sample design described",
+      "bounded_finding": "Broker-derived features can contribute model importance, including concentration, but price volatility is generally more influential and the design is not a clean incremental broker-only causal test.",
+      "url": "https://ethesys.lis.nsysu.edu.tw/ETD-db/ETD-search-c/view_etd?URN=etd-0419123-082434"
+    },
+    {
+      "title": "分點券商參與率與股價報酬關係－以台灣股市為例",
+      "year": 2013,
+      "institution": "Fu Jen Catholic University",
+      "review_status": "PARTIAL_METADATA_ABSTRACT_TOC",
+      "sample": "2011-01-03 through 2012-12-31",
+      "methods": "broker-branch participation rate and short-horizon return comparisons",
+      "bounded_finding": "High branch participation accompanies stronger same-day returns but larger next-day/next-two-day reversals in the reported abstract, arguing against a universally bullish participation interpretation.",
+      "url": "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/login?o=dnclcdr&s=id%3D%22101FJU00214023%22.&searchmode=basic"
+    },
+    {
+      "title": "台灣股市行為因子之實證研究：以券商分點進出因子為例",
+      "year": 2026,
+      "publisher": "TEJ",
+      "review_status": "PUBLIC_RESEARCH_ARTICLE_REVIEWED_NOT_PEER_REVIEWED",
+      "sample": "Reported portfolio analysis 2021-10 through 2026-06",
+      "methods": "20 broker-branch behavioral factors, Fama-MacBeth regressions, decile portfolio analysis, factor IC/turnover analysis",
+      "bounded_finding": "Reports significant cross-sectional information for many branch factors, but several factors are not significant after controls, some effects are nonlinear/extreme-quantile-driven, and turnover/transaction-cost concerns remain.",
+      "urls": [
+        "https://www.tejwin.com/insight/%E5%88%B8%E5%95%86%E5%88%86%E9%BB%9E%E9%80%B2%E5%87%BA%E5%9B%A0%E5%AD%90-%E4%B8%8A/",
+        "https://www.tejwin.com/insight/%E5%95%86%E5%88%86%E9%BB%9E%E9%80%B2%E5%87%BA%E5%9B%A0%E5%AD%90-%E4%B8%8B/"
+      ]
+    }
+  ],
+  "official_market_data_semantics": {
+    "source": "Taiwan Stock Exchange broker buy/sell daily report",
+    "facts": [
+      "Broker-level stock buy/sell information combines the broker's proprietary trading department and brokerage/customer entrusted trading.",
+      "If a securities firm has a head office and branches, proprietary trading is consolidated into the head office in the TWSE product description.",
+      "The public same-day query is an execution-venue/broker observation, not a beneficial-owner register."
+    ],
+    "urls": [
+      "https://bsr.twse.com.tw/bshtm/bsWelcome.aspx",
+      "https://eshop.twse.com.tw/zh/category/main/5"
+    ]
+  },
+  "supportive_evidence_reviewed": true,
+  "counterevidence_reviewed": true,
+  "null_results_reviewed": true,
+  "limitations_recorded": true,
+  "identification_threats_recorded": true,
+  "abstracts_not_promoted_to_full_read": true,
+  "bounded_evidence_synthesis": [
+    "Taiwan order-flow studies in the canonical FULL_READ corpus show information contribution differs by investor type, order aggressiveness, trade size, herding intensity, liquidity state and horizon; aggregate flow is not a homogeneous smart-money object.",
+    "Direct broker-branch studies and the 2026 TEJ research article provide enough supportive evidence that branch participation, concentration or directional structure can contain contemporaneous information worth preregistered testing.",
+    "Direct evidence is heterogeneous: only some branches/definitions are significant in some studies; identification methods disagree; participation can be associated with short-horizon reversal; some branch factors lose significance after controls.",
+    "Canonical counterevidence shows apparent institutional-following profitability can disappear under correct signal timing and transaction costs, and a modern Taiwan concentration study provides a direct null against universal concentration-to-return monotonicity.",
+    "Official TWSE semantics establish a major identification limit: a broker branch aggregates multiple economic actors and may mix proprietary and customer brokerage flow. Therefore broker branch cannot be interpreted as beneficial owner, individual trader, or smart money without independent evidence."
+  ],
+  "unresolved_material_conflicts": [
+    "Whether broker-structure information remains incremental after controlling for momentum, reversal, liquidity, aggregate flow and frozen market state is not established by the literature.",
+    "The sign of concentration/participation is not invariant: some evidence supports directional information while other evidence indicates crowding/reversal or null effects.",
+    "Broker labels and branch routing do not identify beneficial owners and may change through time.",
+    "High turnover and implementation costs can erase apparent gross predictive effects.",
+    "Most direct broker-branch theses are below FULL_READ status in this audit and several samples predate the current continuous-trading regime.",
+    "Current FinMind historical broker archive has known retrospective corrections, so strict historical as-known-then PIT requires separate revision-aware governance before outcome testing."
+  ],
+  "saturation_assessment": "PASS for the narrow pre-registration question only. The evidence is sufficient to justify testing broker-branch structure as a candidate information family and to freeze the major anti-overclaim constraints. Additional literature is unlikely to change the initial conclusion that the family is plausible but sign/identity/horizon are unresolved. It is not sufficient to authorize a trading rule or presume alpha.",
+  "clean_path": {
+    "fresh_post_gate_path": true,
+    "broker_research_files_before_this_gate_on_this_branch": false,
+    "broker_forward_returns_inspected_on_this_branch_before_gate": false,
+    "broker_backtest_run_on_this_branch_before_gate": false,
+    "legacy_feasibility_branch": "research/broker-tape-feasibility-20261103",
+    "legacy_feasibility_treatment": "DATA_CAPABILITY_AND_ENGINEERING_EVIDENCE_ONLY; not confirmatory outcome evidence and not clean research ancestry",
+    "published_external_forward_return_results_treatment": "Literature evidence only; no HENGCE candidate outcome panel was inspected."
+  },
+  "mandatory_interpretation_locks": [
+    "same branch != same person",
+    "different branches != different capital",
+    "broker branch != beneficial owner",
+    "broker branch != smart money",
+    "do not select named brokers from realized success",
+    "do not pre-assume concentration sign",
+    "do not pre-assume persistence sign",
+    "do not tune horizon/lookback/broker set after outcome inspection"
+  ],
+  "authority_consequence": "PREREGISTRATION_ALLOWED_ONLY",
+  "does_not_authorize": [
+    "forward-return inspection",
+    "backtest",
+    "feature-weight fitting",
+    "broker selection",
+    "named-broker whitelist or blacklist",
+    "threshold optimization",
+    "lookback optimization",
+    "holding-horizon optimization",
+    "smart-money labels",
+    "production ranking",
+    "trading signal",
+    "capital authority"
+  ],
+  "next_required_gate": "Freeze a revision-aware PIT/data-lineage rule and a minimal incremental-value preregistration before any HENGCE broker candidate forward-return panel is opened.",
+  "reviewer": "ChatGPT / HENGCE research assistant"
+}
