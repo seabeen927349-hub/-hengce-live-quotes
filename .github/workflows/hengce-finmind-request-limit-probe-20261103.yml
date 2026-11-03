@@ -1,0 +1,48 @@
+name: HENGCE FinMind account request-limit probe
+
+on:
+  push:
+    branches:
+      - 'research/broker-execution-data-20261103'
+    paths:
+      - '.github/workflows/hengce-finmind-request-limit-probe-20261103.yml'
+      - 'research/broker_structure_execution_20261103/FINMIND_LIMIT_PROBE_TRIGGER.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  limit-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests
+      - name: Read only request-limit metadata
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, requests
+          token=os.environ.get('FINMIND_TOKEN','').strip()
+          if not token:
+              raise SystemExit('FINMIND_TOKEN_MISSING')
+          r=requests.get('https://api.web.finmindtrade.com/v2/user_info',headers={'Authorization':f'Bearer {token}'},timeout=30)
+          r.raise_for_status()
+          obj=r.json()
+          out={
+            'authority':'DATA_TRANSPORT_CAPACITY_ONLY',
+            'api_request_limit':obj.get('api_request_limit'),
+            'token_printed':False,
+            'user_count_printed':False,
+            'forward_returns_inspected':False,
+            'broker_feature_computed':False,
+          }
+          print('HENGCE_LIMIT_RECEIPT='+json.dumps(out,sort_keys=True))
+          if not isinstance(out['api_request_limit'],(int,float)):
+              raise SystemExit('API_REQUEST_LIMIT_MISSING')
+          PY
