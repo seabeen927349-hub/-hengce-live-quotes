@@ -1,6 +1,16 @@
 name: HENGCE Escape TWSE Common FinMind Shadow
 
 "on":
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
+      - 'scripts/hengce_escape_intraday_monitor_adapter.py'
+      - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
+      - 'scripts/hengce_twse_session_status_probe.py'
+      - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
+      - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   pull_request:
     paths:
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
