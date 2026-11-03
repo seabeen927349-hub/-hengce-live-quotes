@@ -55,7 +55,7 @@
   "market_state_finmind_shadow_formal_classifier_mutated": false,
   "market_state_finmind_shadow_latest_lag_seconds": 13537.567,
   "market_state_finmind_shadow_model_authority_created": false,
-  "market_state_finmind_shadow_observed_at_taipei": "2026-11-03T18:57:02.555406+08:00",
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-03T18:59:59.624229+08:00",
   "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
   "market_state_finmind_shadow_status": "SHADOW_BLOCKED_FAIL_CLOSED",
   "market_state_finmind_shadow_trading_authority_created": false,
@@ -88,5 +88,5 @@
   "system": "HENGCE",
   "target_date": "2026-11-03",
   "three_leg_complete": false,
-  "updated_at_taipei": "2026-11-03T18:57:02.291118+08:00"
+  "updated_at_taipei": "2026-11-03T18:59:59.464188+08:00"
 }
