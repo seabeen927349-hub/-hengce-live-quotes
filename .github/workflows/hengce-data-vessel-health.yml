@@ -10,6 +10,7 @@ name: HENGCE data vessel health
       - 'scripts/hengce_eod_guarded_ingest.py'
       - 'scripts/hengce_daily_command_center.py'
       - 'scripts/hengce_finmind_official_client_fetch.py'
+      - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_broker_parquet_audit.py'
       - 'research/broker_tape_feasibility_20261103/**'
       - '.github/workflows/hengce-data-vessel-health.yml'
@@ -80,6 +81,8 @@ jobs:
     env:
       FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -91,87 +94,4 @@ jobs:
         run: |
           set -euo pipefail
           test -n "${FINMIND_TOKEN:-}"
-          python - <<'PY'
-          import asyncio, json, re, urllib.request
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          from finmind_mcp.client import FinMindClient
-
-          MASTER_URL = 'https://openapi.twse.com.tw/v1/opendata/t187ap03_L'
-
-          async def main():
-              now = datetime.now(ZoneInfo('Asia/Taipei'))
-              today = now.date().isoformat()
-              client = FinMindClient()
-              rows = await client.query_endpoint('taiwan_stock_tick_snapshot', {'data_id': ''})
-              assert isinstance(rows, list)
-
-              req = urllib.request.Request(MASTER_URL, headers={'Accept':'application/json','User-Agent':'HENGCE-TWSE-COMMON-AUDIT/1.0'})
-              with urllib.request.urlopen(req, timeout=30) as r:
-                  master_rows = json.load(r)
-              assert isinstance(master_rows, list)
-
-              def sid(row):
-                  return str(row.get('stock_id') or '').strip()
-
-              def date_text(row):
-                  return str(row.get('date') or '')
-
-              master_codes = []
-              for row in master_rows:
-                  code = str(row.get('公司代號') or '').strip()
-                  issued = str(row.get('已發行普通股數或TDR原股發行股數') or '').strip()
-                  if re.fullmatch(r'[1-9]\d{3}', code) and issued not in ('', '0'):
-                      master_codes.append(code)
-              assert len(master_codes) == len(set(master_codes))
-              master_set = set(master_codes)
-
-              ids = [sid(r) for r in rows if sid(r)]
-              snapshot_map = {sid(r): r for r in rows if sid(r)}
-              snapshot_set = set(snapshot_map)
-              four_digit_rows = [r for r in rows if re.fullmatch(r'\d{4}', sid(r))]
-              today_rows = [r for r in rows if date_text(r).startswith(today)]
-              today_master_codes = sorted(code for code in master_set if code in snapshot_map and date_text(snapshot_map[code]).startswith(today))
-              covered_master_codes = sorted(master_set & snapshot_set)
-              missing_master_codes = sorted(master_set - snapshot_set)
-              extra_four_digit_codes = sorted({sid(r) for r in four_digit_rows} - master_set)
-              stale_master_codes = sorted(code for code in covered_master_codes if not date_text(snapshot_map[code]).startswith(today))
-              date_values = sorted({date_text(r) for r in rows if date_text(r)})
-              today_dates = sorted({date_text(r) for r in today_rows if date_text(r)})
-              fields = sorted(rows[0].keys()) if rows and isinstance(rows[0], dict) else []
-
-              receipt = {
-                  'endpoint': 'taiwan_stock_tick_snapshot',
-                  'twse_master_endpoint': MASTER_URL,
-                  'twse_master_definition': 'TWSE listed-company basic data with four-digit company code and positive issued common/TDR-underlying shares',
-                  'queried_at_taipei': now.isoformat(),
-                  'expected_market_date': today,
-                  'row_count': len(rows),
-                  'unique_id_count': len(set(ids)),
-                  'four_digit_count': len({sid(r) for r in four_digit_rows}),
-                  'twse_master_count': len(master_set),
-                  'twse_master_covered_count': len(covered_master_codes),
-                  'twse_master_today_count': len(today_master_codes),
-                  'twse_master_stale_count': len(stale_master_codes),
-                  'twse_master_missing_count': len(missing_master_codes),
-                  'twse_master_coverage_ratio': round(len(covered_master_codes) / len(master_set), 6) if master_set else 0,
-                  'twse_master_today_ratio': round(len(today_master_codes) / len(master_set), 6) if master_set else 0,
-                  'extra_four_digit_not_in_twse_master_count': len(extra_four_digit_codes),
-                  'missing_master_sample': missing_master_codes[:20],
-                  'stale_master_sample': stale_master_codes[:20],
-                  'extra_four_digit_sample': extra_four_digit_codes[:20],
-                  'latest_date_value': date_values[-1] if date_values else None,
-                  'latest_today_value': today_dates[-1] if today_dates else None,
-                  'field_names': fields,
-                  'raw_retained': False,
-                  'formal_escape_authority': False,
-                  'trading_authority': False,
-              }
-              print(json.dumps(receipt, ensure_ascii=False, sort_keys=True))
-              assert len(rows) > 0
-              assert len(master_set) >= 900
-              assert len(covered_master_codes) >= 900
-              assert date_values and date_values[-1].startswith(today)
-
-          asyncio.run(main())
-          PY
+          python scripts/hengce_finmind_twse_common_snapshot_probe.py
