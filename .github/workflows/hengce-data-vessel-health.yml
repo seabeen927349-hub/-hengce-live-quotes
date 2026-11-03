@@ -46,7 +46,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -Fq 'import hengce_twse_calendar as twse_calendar' scripts/hengce_live_universe_guard.py
+          grep -Fq 'def classify(target,now):' scripts/hengce_live_universe_guard.py
           grep -Fq 'session_guard.guard_shadow(payload, finished.date().isoformat())' scripts/hengce_full_market_shadow.py
           grep -Fq 'twse_calendar.is_trading_day(target, manifest)' scripts/hengce_eod_guarded_ingest.py
           grep -Fq 'network_access_attempted": False' scripts/hengce_eod_guarded_ingest.py
