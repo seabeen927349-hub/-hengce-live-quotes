@@ -1,0 +1,54 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "topic": "cross_section_rank_structure_and_momentum_persistency",
+  "status": "PASS_DIAGNOSTIC_ONLY",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "question": "Can point-in-time stability of the frozen MOM20 cross-sectional ranking identify when that ranking will carry higher future cross-sectional rank information?",
+  "motivation": [
+    "The immediately prior HENGCE test rejected raw cross-sectional MAD as a significant conditioner of frozen MOM20 excess after controlling frozen Market State.",
+    "Taiwan momentum literature repeatedly indicates that the structure and persistence of past winners/losers, not merely the magnitude of dispersion, can separate continuation from reversal.",
+    "Therefore the next bounded diagnostic should test ranking structure directly rather than rescue dispersion thresholds."
+  ],
+  "evidence_summary": [
+    "Lin, Ko, Feng and Yang (2016) report positive Taiwan momentum profits during market continuations but significant reversals during market transitions, indicating that continuity of the underlying state matters for momentum.",
+    "Lin, Xia, Yang and Yang (2020) report that extreme absolute-strength stocks are unusually volatile and attenuate Taiwan momentum; removing them improves momentum, while dispersion and information uncertainty remain related to profitability. This argues against treating raw dispersion magnitude as sufficient.",
+    "Chen, Hsieh and Lee (2023) report that high turnover of winner/loser portfolios attenuates Taiwan momentum and that a persistency-based momentum strategy is profitable, while nonpersistent winners and losers exhibit reversal. This is direct motivation for a point-in-time rank-persistence diagnostic.",
+    "Lin, Ko and Yang (2022) find the momentum-gap predictor does not significantly predict momentum returns in Taiwan, providing useful counterevidence that a plausible formation-period magnitude metric need not transfer to Taiwan.",
+    "Daniel and Moskowitz (2016) show momentum performance is state dependent and crashes cluster after market declines/high volatility, reinforcing that rank signal quality can vary through time."
+  ],
+  "sources": [
+    {
+      "citation": "Lin, Ko, Feng, Yang (2016), Market dynamics and momentum in the Taiwan stock market, Pacific-Basin Finance Journal 38, 59-75",
+      "doi": "10.1016/j.pacfin.2016.03.009",
+      "access_status": "PUBLISHER_PREVIEW_WITH_EXTENDED_INTRO_AND_RESULTS_SUMMARY"
+    },
+    {
+      "citation": "Lin, Xia, Yang, Yang (2020), Enhancing momentum profits in the Taiwan Stock Market: The role of extreme absolute strength, Pacific-Basin Finance Journal 59, 101258",
+      "doi": "10.1016/j.pacfin.2019.101258",
+      "access_status": "PUBLISHER_PREVIEW_WITH_EXTENDED_INTRO_AND_RESULTS_SUMMARY"
+    },
+    {
+      "citation": "Chen, Hsieh, Lee (2023), Revisiting the momentum effect in Taiwan: The role of persistency, Pacific-Basin Finance Journal 78, 101943",
+      "doi": "10.1016/j.pacfin.2023.101943",
+      "access_status": "ABSTRACT_AND_HIGHLIGHTS_ONLY_NOT_FULL_TEXT"
+    },
+    {
+      "citation": "Lin, Ko, Yang (2022), Does the momentum gap explain momentum in Taiwan?, Pacific-Basin Finance Journal 72, 101732",
+      "doi": "10.1016/j.pacfin.2022.101732",
+      "access_status": "PUBLISHER_PREVIEW_AND_ABSTRACT"
+    },
+    {
+      "citation": "Daniel and Moskowitz (2016), Momentum Crashes, Journal of Financial Economics 122(2), 221-247",
+      "doi": "10.1016/j.jfineco.2015.12.002",
+      "access_status": "NBER_WORKING_PAPER_ABSTRACT_AND_PUBLISHED_REFERENCE"
+    }
+  ],
+  "gate_constraints": [
+    "The literature motivates a diagnostic but does not authorize a persistency trading rule.",
+    "No sign is forced by the literature; Taiwan evidence contains both continuation and reversal mechanisms.",
+    "The experiment must use one preregistered current-only rank-persistence metric and one preregistered future rank-IC outcome before either is inspected together.",
+    "No threshold search, alternate lookback search, or selector retuning is allowed in the primary test.",
+    "2018-2026 remains retrospective development evidence."
+  ]
+}
