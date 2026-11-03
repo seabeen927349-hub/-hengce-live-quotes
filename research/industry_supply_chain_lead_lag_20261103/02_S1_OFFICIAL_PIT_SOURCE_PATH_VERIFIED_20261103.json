@@ -1,0 +1,105 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "INDUSTRY_CLASSIFICATION_S1_OFFICIAL_PIT_SOURCE_PATH_VERIFIED",
+  "branch": "research/selection-challenge-20261102",
+  "pre_audit_branch_head": "197ac490adf58bd2cc9bae06a7372049188edfc3",
+  "authority": "RESEARCH_GOVERNANCE_ONLY_NO_TRADING_AUTHORITY",
+  "family": "Historical industry / sector classification and membership",
+  "supersedes_status_only": "RECOVERABLE_BUT_NOT_PIT_CLEARED",
+  "new_status": "OFFICIAL_PIT_SOURCE_PATH_VERIFIED_PANEL_BUILD_AUTHORIZED",
+  "meaning": "An official date-addressable historical source path for Taiwan listed-electronics membership and electronics subindustry classification has been runtime-verified. The historical panel itself is not yet built, coverage-cleared, frozen, or outcome-authorized.",
+  "official_endpoint": {
+    "provider": "Taiwan Stock Exchange (TWSE)",
+    "template": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date={YYYYMMDD}&type={TYPE}&response=json",
+    "existing_hengce_pipe": true,
+    "existing_hengce_usage": "The HENGCE daily-command-center legacy path already uses TWSE MI_INDEX type=13 for the electronics daily close. This audit extends the same official source family for historical classification recovery and does not authorize an alternate mother or fallback data tree."
+  },
+  "type_mapping": {
+    "13": "電子工業 broad stock-level daily table",
+    "24": "半導體業",
+    "25": "電腦及週邊設備業",
+    "26": "光電業",
+    "27": "通信網路業",
+    "28": "電子零組件業",
+    "29": "電子通路業",
+    "30": "資訊服務業",
+    "31": "其他電子業"
+  },
+  "runtime_verification": {
+    "test_date": "2018-01-03",
+    "broad_type_13": {
+      "status": "OK",
+      "title": "107年01月03日 每日收盤行情(電子工業)",
+      "stock_rows": 365,
+      "first_five": [
+        ["1471", "首利"],
+        ["1582", "信錦"],
+        ["2059", "川湖"],
+        ["2301", "光寶科"],
+        ["2302", "麗正"]
+      ]
+    },
+    "subindustries": {
+      "24": {"status": "OK", "rows": 71, "first_two": [["2302", "麗正"], ["2303", "聯電"]]},
+      "25": {"status": "OK", "rows": 58, "first_two": [["2301", "光寶科"], ["2305", "全友"]]},
+      "26": {"status": "OK", "rows": 69, "first_two": [["2323", "中環"], ["2349", "錸德"]]},
+      "27": {"status": "OK", "rows": 39, "first_two": [["2314", "台揚"], ["2321", "東訊"]]},
+      "28": {"status": "OK", "rows": 77, "first_two": [["1471", "首利"], ["1582", "信錦"]]},
+      "29": {"status": "OK", "rows": 21, "first_two": [["2347", "聯強"], ["2414", "精技"]]},
+      "30": {"status": "OK", "rows": 11, "first_two": [["2427", "三商電"], ["2453", "凌群"]]},
+      "31": {"status": "OK", "rows": 35, "first_five": [["2312", "金寶"], ["2317", "鴻海"], ["2354", "鴻準"], ["2359", "所羅門"], ["2360", "致茂"]]}
+    },
+    "type_31_resolution": "A prior multi-navigation browser run duplicated type=30 when attempting type=31. That result was rejected. TWSE official 2018 code documentation identifies 31 as 其他電子業, and an independent exact type=31 runtime call returned status OK with title 107年01月03日 每日收盤行情(其他電子業)."
+  },
+  "source_hierarchy": {
+    "primary_panel_source": "TWSE MI_INDEX same-date stock-level industry tables",
+    "primary_broad_electronics_check": "TWSE MI_INDEX type=13",
+    "primary_subindustry_labels": "TWSE MI_INDEX types 24-31",
+    "secondary_cross_checks": [
+      "TWSE official industry-code documentation",
+      "TWSE classification-change announcements",
+      "TWSE Data E-Shop TWT58U 證券及產業別對照表 for dates from 2019-12-23 where needed",
+      "TWSE electronics-industry index constituent files only as a cross-check, never as the complete selection universe"
+    ]
+  },
+  "hard_locks": {
+    "forward_returns": "SEALED_NOT_INSPECTED",
+    "target_return_discovery": false,
+    "backtest": false,
+    "candidate_creation": false,
+    "state_primitive_definition": false,
+    "expert_definition": false,
+    "threshold_search": false,
+    "ranking_search": false,
+    "market_state_conditioning_test": false,
+    "production_authority": "NONE",
+    "trading_authority": "NONE"
+  },
+  "panel_build_rules": {
+    "eligible_universe_anchor": "Existing canonical HENGCE date-correct listed-electronics price universe; do not replace the canonical mother or create an alternate mother.",
+    "industry_label_key": ["Date", "Ticker"],
+    "label_source": "Same-date TWSE MI_INDEX type 24-31 response",
+    "broad_membership_source": "Same-date TWSE MI_INDEX type=13 response",
+    "missing_label_policy": "UNKNOWN_FAIL_CLOSED",
+    "current_label_backfill": "FORBIDDEN",
+    "future_label_backfill": "FORBIDDEN",
+    "survivor_only_filter": "FORBIDDEN",
+    "duplicate_date_ticker": "FORBIDDEN",
+    "source_response_status_required": "OK"
+  },
+  "mandatory_pre_outcome_checks": [
+    "For each valid trading date, compare union(types 24-31) with type=13; log every discrepancy rather than silently reconciling it.",
+    "Measure join coverage of same-date industry labels against the canonical date-correct eligible electronics universe.",
+    "Measure rolling coverage and missingness by date and ticker; coverage thresholds must be frozen before any forward outcome is opened.",
+    "Check duplicate (Date,Ticker) assignments and cross-subindustry collisions.",
+    "Spot-check known official classification-change effective dates against daily MI_INDEX classifications.",
+    "Do not infer labels for suspended/no-quotation observations; determine eligibility interaction from canonical same-date data and record unresolved cases explicitly.",
+    "Freeze the panel-builder code, source contract, coverage rule, and unknown policy before preregistering any selection challenger."
+  ],
+  "coverage_threshold_status": "NOT_YET_FROZEN_FOR_THIS_FAMILY",
+  "coverage_note": "Existing broader HENGCE governance references high cross-sectional and rolling-validity standards, but this artifact deliberately does not silently transplant a numeric threshold into this family. The exact threshold must be declared before outcome inspection.",
+  "decision": "AUTHORIZE_ONLY_OFFICIAL_PIT_PANEL_CONSTRUCTION_AND_COVERAGE_TEMPORAL_CONSISTENCY_AUDIT",
+  "next_gate": "PANEL_BUILT_AND_VALIDATED",
+  "forward_outcome_gate": "CLOSED"
+}
