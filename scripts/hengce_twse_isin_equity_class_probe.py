@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Research-only TWSE ISIN stock-universe structural probe.
 
-Queries TWSE ISIN classification directly for security type=stock, separately
+Queries TWSE ISIN classification directly for stock instruments, separately
 for the regular listed market and Taiwan Innovation Board. No raw HTML or full
 security list is persisted. Output is aggregate metadata/samples only.
 """
@@ -16,8 +16,11 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 
-BASE = "https://isin.twse.com.tw/isin/class_main.jsp?chklike=Y&issuetype=1&market={}"
-MARKETS = {"TWSE_LISTED": "1", "TWSE_TIB": "C"}
+BASE = "https://isin.twse.com.tw/isin/class_main.jsp?chklike=Y&issuetype={issuetype}&market={market}"
+MARKET_QUERIES = {
+    "TWSE_LISTED": {"issuetype": "1", "market": "1"},
+    "TWSE_TIB": {"issuetype": "C", "market": "C"},
+}
 FOUR_DIGIT = re.compile(r"[1-9]\d{3}")
 
 
@@ -25,11 +28,11 @@ def clean(text: str) -> str:
     return " ".join(text.replace("\xa0", " ").split())
 
 
-def fetch_market(label: str, market_code: str) -> list[dict[str, str]]:
-    url = BASE.format(market_code)
+def fetch_market(label: str, issuetype: str, market: str) -> list[dict[str, str]]:
+    url = BASE.format(issuetype=issuetype, market=market)
     req = urllib.request.Request(
         url,
-        headers={"User-Agent": "HENGCE-TWSE-ISIN-CLASS-PROBE/2.0", "Accept": "text/html"},
+        headers={"User-Agent": "HENGCE-TWSE-ISIN-CLASS-PROBE/3.0", "Accept": "text/html"},
     )
     with urllib.request.urlopen(req, timeout=30) as response:
         raw = response.read()
@@ -59,7 +62,10 @@ def fetch_market(label: str, market_code: str) -> list[dict[str, str]]:
             }
         )
     if not rows:
-        raise RuntimeError(f"TWSE ISIN stock query produced no four-digit rows for {label}")
+        raise RuntimeError(
+            f"TWSE ISIN stock query produced no four-digit rows for {label} "
+            f"(issuetype={issuetype}, market={market})"
+        )
     return rows
 
 
@@ -69,8 +75,8 @@ def digest(values: list[str]) -> str:
 
 def main() -> None:
     per_market: dict[str, list[dict[str, str]]] = {}
-    for label, market_code in MARKETS.items():
-        per_market[label] = fetch_market(label, market_code)
+    for label, query in MARKET_QUERIES.items():
+        per_market[label] = fetch_market(label, query["issuetype"], query["market"])
 
     all_rows = [row for rows in per_market.values() for row in rows]
     code_counts = collections.Counter(row["code"] for row in all_rows)
@@ -82,6 +88,7 @@ def main() -> None:
     for label, rows in per_market.items():
         market_codes = sorted({row["code"] for row in rows})
         market_receipts[label] = {
+            "query": MARKET_QUERIES[label],
             "count": len(market_codes),
             "codes_sha256": digest(market_codes),
             "cfi_counts": dict(collections.Counter(row["cfi"] for row in rows).most_common()),
@@ -93,9 +100,12 @@ def main() -> None:
 
     non_es = [row for row in all_rows if not row["cfi"].startswith("ES")]
     receipt = {
-        "schema": "HENGCE_TWSE_ISIN_STOCK_CLASS_PROBE_V2",
+        "schema": "HENGCE_TWSE_ISIN_STOCK_CLASS_PROBE_V3",
         "source_template": BASE,
-        "query_contract": "issuetype=1(stock), market=1(TWSE listed) union market=C(TWSE Taiwan Innovation Board)",
+        "query_contract": (
+            "TWSE_LISTED: issuetype=1,market=1; "
+            "TWSE_TIB: issuetype=C,market=C; union four-digit stock instruments"
+        ),
         "per_market": market_receipts,
         "union_four_digit_count": len(codes),
         "union_codes_sha256": digest(codes),
