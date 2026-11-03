@@ -5,8 +5,9 @@ The paid FinMind full snapshot is held only in runner memory. The persistent
 output is aggregate/derived market context plus coverage/freshness receipts; no
 per-security licensed quote rows are written.
 
-Authority: shadow intraday context only. No formal EOD, Escape-state, selection,
-model, or trading authority is created by this script.
+Authority: provisional intraday price/liquidity shadow context only. No formal
+metric, detector-input, EOD, Escape-state, selection, model, source-promotion,
+or trading authority is created by this script.
 """
 
 from __future__ import annotations
@@ -38,6 +39,8 @@ from hengce_finmind_twse_common_snapshot_probe import (
 
 AUTHORITY = "SHADOW_INTRADAY_CONTEXT_ONLY_NO_FORMAL_EOD_ESCAPE_SELECTION_MODEL_OR_TRADING_AUTHORITY"
 SCOPE = "ALL_TWSE_LISTED_COMMON_STOCKS"
+METRIC_CONTRACT_SHA256 = "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281"
+INTRADAY_METRIC_ROLE = "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY"
 
 
 def _num(value: Any) -> float | None:
@@ -146,9 +149,9 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         current_market_date = stamp.startswith(market_date)
         if not current_market_date:
             stale_codes.append(code)
-        # Never reinterpret a stale per-security row as today's zero return or
-        # zero turnover. Until a second source proves "no trade today", it is
-        # unknown and is excluded from current-day breadth/flow aggregates.
+        # Frozen governance: never reinterpret a stale per-security row as
+        # today's zero return or zero turnover. Until a second PIT-safe source
+        # proves its session status, it remains unknown and contributes NULL.
         derived_rows.append(
             {
                 "industry": industries.get(code, "UNKNOWN"),
@@ -167,12 +170,24 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         by_industry[row["industry"]].append(row)
 
     market_summary = _summarize(derived_rows)
+    authority_boundary = {
+        "metric_contract_sha256": METRIC_CONTRACT_SHA256,
+        "intraday_metric_role": INTRADAY_METRIC_ROLE,
+        "price_liquidity_shadow_only": True,
+        "feature_detector_input_authority": False,
+        "formal_metric_authority": False,
+        "rolling_metric_authority": False,
+        "one_day_change_rate_may_substitute_locked_ew_return": False,
+        "missing_as_zero_forbidden": True,
+        "source_binding_promotion_authority": False,
+    }
     context = {
         "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_AGGREGATE_SHADOW_V2",
         "generated_at_taipei": generated.isoformat(),
         "market_date": market_date,
         "source": "FinMind taiwan_stock_tick_snapshot + TWSE listed-company master",
         "authority": AUTHORITY,
+        **authority_boundary,
         "monitoring_universe": SCOPE,
         "exchange": "TWSE",
         "security_scope": "COMMON_STOCK_EX_TDR",
@@ -211,6 +226,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "healthy_transport": True,
         "current_market_date_observed": True,
         "active_universe_transport_full_coverage": True,
+        **authority_boundary,
         "current_market_date_count": market_summary["current_market_date_count"],
         "current_market_date_ratio": market_summary["current_market_date_ratio"],
         "stale_or_noncurrent_count": len(stale_codes),
