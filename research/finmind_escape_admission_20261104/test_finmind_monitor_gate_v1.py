@@ -16,7 +16,8 @@ m={'constituent_count':8,'current_market_date_count':6,'return_observed_count':6
    'advance_count':3,'decline_count':2,'flat_count':1,'equal_weight_change_rate':0.1}
 base={'metric_contract_sha256':SHA,'feature_detector_input_authority':False,
       'formal_metric_authority':False,'source_binding_promotion_authority':False,
-      'raw_finmind_rows_persisted':False,'per_security_rows_persisted':False}
+      'raw_finmind_rows_persisted':False,'per_security_rows_persisted':False,
+      'trading_authority':False,'one_day_change_rate_may_substitute_locked_ew_return':False}
 c={**base,'schema':'HENGCE_ESCAPE_FINMIND_TWSE_COMMON_AGGREGATE_SHADOW_V3',
    'market_date':DATE,'generated_at_taipei':TS,'latest_source_timestamp':SRC,
    'active_required_count':8,'finmind_metric_observation_count':6,'metric_unknown_count':2,
@@ -35,7 +36,9 @@ a={**base,'schema':'HENGCE_ESCAPE_INTRADAY_MONITOR_V1',
    'finmind_metric_observation_count':6,'metric_unknown_count':2,
    'formal_escape_authority':False,'formal_eod_authority':False,'trading_authority':False,
    'formal_escape_level':None,'monitor_state':'LIVE_CONTEXT_READY',
-   'active_universe_transport_full_coverage':True,'market':m,'industry':c['industry']}
+   'active_universe_transport_full_coverage':True,'market':m,'industry':c['industry'],
+   'selection_authority':False,'model_authority':False,
+   'quality':{'per_security_rows_persisted':False,'raw_finmind_rows_persisted':False}}
 a['payload_sha256']=gate.digest(a)
 assert gate.verify(c,s,a,DATE)['status']=='PASS_INTRADAY_MONITOR_ONLY'
 
