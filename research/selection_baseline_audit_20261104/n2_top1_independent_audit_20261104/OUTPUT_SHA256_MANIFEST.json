@@ -1,0 +1,65 @@
+{
+  "scope": "new independent audit artifacts only",
+  "files": [
+    {
+      "file": "HOLDING_4_CASH_DIVIDEND_ENTITLEMENTS.csv",
+      "bytes": 995,
+      "sha256": "85c5c68af5a4f97d87cc49503681a3a6fd2592ced359b521988d524ee1f2266b"
+    },
+    {
+      "file": "N2_TOP1_ALL84_DIVIDEND_EXECUTION_DIAGNOSTICS.csv",
+      "bytes": 34880,
+      "sha256": "64a8a60e6b899764a22f3f45be58b9eb476f65b41583d35d5c2036f723bf6581"
+    },
+    {
+      "file": "N2_TOP1_INDEPENDENT_VALIDATION_20261104.md",
+      "bytes": 10896,
+      "sha256": "34d97e26761073e78eb49d37eba1a6c807bfe4c57e7174d1171b7b3bb2db51ac"
+    },
+    {
+      "file": "README_FIRST.md",
+      "bytes": 1423,
+      "sha256": "c92429d54ef11f494b3f115d08ea3ccbdb18e668e3303b04420e9301ba067dbc"
+    },
+    {
+      "file": "SHADOW_HYPOTHESES_PRE_REG_20261104.md",
+      "bytes": 2481,
+      "sha256": "284b18bc2ddf7dd0aa8ab9ccbc230a584f023fc6d73a372573c5fb614b48c6da"
+    },
+    {
+      "file": "SIGNAL_9_EXDIVIDEND_LOOKBACK_DIAGNOSTICS.csv",
+      "bytes": 841,
+      "sha256": "a3a78021a0180bc81e370dc6ec745f0c3f047080e08de6c1706087c0e99d31af"
+    },
+    {
+      "file": "audit_summary.json",
+      "bytes": 1666,
+      "sha256": "0e0cc133c9c9bbd1505143723c10955805c20be213a2df5421de09dd2b7f8581"
+    },
+    {
+      "file": "independent_8_tests_stdout.txt",
+      "bytes": 98,
+      "sha256": "3247c50c34e782db19f552455bce1f096e033aae5010deec64401bb0f5ec19c7"
+    },
+    {
+      "file": "n2_ca_execution_audit.py",
+      "bytes": 12259,
+      "sha256": "7d979801f964883e88b07b5f31f1ba26719e5909dab82646d74a82b7e432a575"
+    },
+    {
+      "file": "original_93_tests_stdout.txt",
+      "bytes": 179,
+      "sha256": "d5660eba8b4659ead95f529b041b5f927d28ef2e05ce234e10758e2cc14f17cf"
+    },
+    {
+      "file": "replay_stdout.txt",
+      "bytes": 5139,
+      "sha256": "8dabf6b97dd426e50a9c1d6b190f1ec3517b7cdddfd9f1e57e9c062187d496da"
+    },
+    {
+      "file": "test_n2_independent_audit.py",
+      "bytes": 2172,
+      "sha256": "f3dd3fdd9ae15efad1693d01d3b6092feede104e0b7cb7cea677100aaf10c1f2"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "audit_date": "2026-11-04",
+  "scope": "READ_ONLY_FROZEN_N2_TOP1_84_FIXED_5M",
+  "immutable_source": {
+    "outer_manifest_members_checked": 26,
+    "outer_manifest_mismatches": 0,
+    "annual_canonical_archives_verified": 9,
+    "reproduced_price_only_pnl_40bp": 19883039.0,
+    "reproduced_price_only_pnl_80bp": 18237928.0
+  },
+  "holding_cash_events": 4,
+  "signal_lookback_ex_actions": 9,
+  "holding_rights_or_mixed_found_in_twt49u": 0,
+  "dividend_adjustment": {
+    "gross_cash_dividend_receivable_proxy_total": 453563.814,
+    "gross_cash_dividend_accrual_pnl_40bp": 20336602.814,
+    "gross_cash_dividend_accrual_pnl_80bp": 18691491.814,
+    "share_multipliers_for_holding_events": "all four ex-event types are cash only; held share count unchanged conditional on complete TWT49U data",
+    "not_certified": "Investor after-tax cash, transaction tax/fees on exit proceeds, legal security registry, split/merger/reduction outside TWT49U, historical data availability and payment proofs"
+  },
+  "open_auction": {
+    "individually_verified_5000000_open_fills": 0,
+    "data_blocked": 84,
+    "blocker": "No 09:00 auction matched quantity/price/order priority and opening bid/ask depth for historical dates; daily volume/turnover are ex-post proxies",
+    "max_entry_day_turnover_fraction_pct": 8.084187914000001
+  },
+  "2024": {
+    "signals": 9,
+    "winners": 2,
+    "losers": 7,
+    "price_only_pnl40": -2643856.4,
+    "cash_event_holding_count": 0,
+    "signal_lookback_ex_event_count": 1,
+    "largest_loss_signal": "2024-04-30",
+    "largest_loss_ticker": "6139"
+  },
+  "recommendation": "TRADING_NO_GO__ALPHA_INCONCLUSIVE__EXECUTION_DATA_BLOCKED"
+}
