@@ -3,8 +3,8 @@
   "system": "HENGCE",
   "module": "Q017_OBSERVER_SUPERVISOR",
   "lane": "backup",
-  "trade_date": "2026-11-03",
-  "generated_at_taipei": "2026-11-03T09:11:45.523393+08:00",
+  "trade_date": "2026-11-04",
+  "generated_at_taipei": "2026-11-04T14:20:19.219112+08:00",
   "state": "PREPARED_MODEL_FAIL_CLOSED",
   "authority": "INFRASTRUCTURE_DIAGNOSTIC_ONLY_NO_RANKING_AUTHORITY",
   "strict_observation_window": "09:01:00-09:01:59.999999 Asia/Taipei",
@@ -29,20 +29,20 @@
     {
       "phase": "MACRO_CACHE_BIND",
       "attempt": 1,
-      "started_at_taipei": "2026-11-03T09:11:45.232686+08:00",
-      "finished_at_taipei": "2026-11-03T09:11:45.522237+08:00",
+      "started_at_taipei": "2026-11-04T14:20:18.797053+08:00",
+      "finished_at_taipei": "2026-11-04T14:20:19.217547+08:00",
       "result": "FALLBACK",
       "error_type": "RuntimeError",
-      "error": "ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261102"
+      "error": "ELECTRONICS_HISTORY_BEHIND_COMPLETE_EOD:HIST=2026-10-22:EOD=20261103"
     },
     {
       "phase": "PREWARM_CACHE",
       "attempt": 2,
-      "started_at_taipei": "2026-11-03T09:11:45.522798+08:00",
-      "finished_at_taipei": "2026-11-03T09:11:45.522880+08:00",
+      "started_at_taipei": "2026-11-04T14:20:19.218255+08:00",
+      "finished_at_taipei": "2026-11-04T14:20:19.218404+08:00",
       "result": "MISS_OR_INVALID",
       "error_type": "FileNotFoundError",
-      "error": "/home/runner/work/-hengce-live-quotes/-hengce-live-quotes/hengce/q017_radar/prewarm_snapshots/20261103_q017_model.json"
+      "error": "/home/runner/work/-hengce-live-quotes/-hengce-live-quotes/hengce/q017_radar/prewarm_snapshots/20261104_q017_model.json"
     }
   ],
   "formal_buy_count": 0,
