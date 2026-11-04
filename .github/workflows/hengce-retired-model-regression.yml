@@ -1,0 +1,44 @@
+name: HENGCE retired strategy boundary
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'hengce/HENGCE_*.json'
+      - 'governance/HENGCE_ACTIVE_STRATEGY_AUTHORITY_*.json'
+      - '.github/workflows/**'
+      - 'tests/engineering/test_q017_retirement_20261105.py'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'hengce/HENGCE_*.json'
+      - 'governance/HENGCE_ACTIVE_STRATEGY_AUTHORITY_*.json'
+      - '.github/workflows/**'
+      - 'tests/engineering/test_q017_retirement_20261105.py'
+permissions:
+  contents: read
+jobs:
+  retired-strategy-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify Q017 cannot execute or create trading authority
+        run: |
+          python -B tests/engineering/test_q017_retirement_20261105.py
+          python - <<'PY'
+          import json,subprocess,sys
+          out=subprocess.check_output([sys.executable,'scripts/hengce_scan_once_router.py','--display-only'],text=True)
+          x=json.loads(out)
+          assert x['status']=='NO_ACTIVE_SELECTION_STRATEGY'
+          assert x['active_strategy_count']==0
+          assert x['rows']==[]
+          assert x['can_create_new_entry'] is False
+          assert x['broker_order_execution'] is False
+          assert x['signal_authority'] is False
+          print('Q017_OPERATIONAL_RETIREMENT_GUARD_PASS')
+          PY
