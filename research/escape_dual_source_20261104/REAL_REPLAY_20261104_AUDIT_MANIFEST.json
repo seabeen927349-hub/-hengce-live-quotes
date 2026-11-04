@@ -1,0 +1,72 @@
+{
+  "schema": "HENGCE_ESCAPE_20261104_REAL_REPLAY_AUDIT_V1",
+  "asof_taipei_date": "2026-11-04",
+  "authority": "RESEARCH_SHADOW_ONLY_FORMAL_BLOCKED",
+  "mother_sha256": "6f7494b46af07a11f68429981b3ec666ad0a520ed9b51ae0150f4c34435639e7",
+  "mother_rows": 1026627,
+  "mother_last_date": "2026-11-03",
+  "pit_e_csv_sha256": "76a7febdda2887672c5bc707e8f2d43cfa3cdcb60060bda80b0da2806e8fc635",
+  "replay_period": [
+    "2026-01-02",
+    "2026-10-27"
+  ],
+  "replay_trading_days": 195,
+  "electronic_archive_rows": 88901,
+  "electronic_archive_nonordinary_excluded": 218,
+  "electronic_rows_admitted_as_research": 88683,
+  "e_daily_counts_min": 452,
+  "e_daily_counts_max": 459,
+  "reconciliations": {
+    "close_mismatch_count": 0,
+    "volume_mismatch_count": 494,
+    "turnover_mismatch_count": 494,
+    "days": {
+      "2026-10-08": 457,
+      "2026-10-21": 14,
+      "2026-10-22": 23
+    },
+    "status": "HOLD_SOURCE_REVISION_UNVERIFIED"
+  },
+  "metrics": {
+    "frozen_names": 17,
+    "latest_valid": 16,
+    "never_valid": [
+      "vulnerability_leverage_score_raw"
+    ],
+    "full_margin_coverage_days": 0,
+    "all17_40past_day_ready": 0,
+    "at_least16_40past_day_ready": 125
+  },
+  "tests": {
+    "research_adapter_synthetic": "6/6 PASS",
+    "real_replay_regression": "10/10 PASS",
+    "independent_shadow_series": "17/17 NULL_PATTERN_MATCH and 16/16 NUMERIC_SERIES_MATCH atol=1e-8",
+    "truncated_prefix": "179/179 sessions identical through 2026-09-30"
+  },
+  "artifacts": {
+    "historical_17_metric_research_shadow.csv": "955650a1170c79e0a4c666be313536b6d48f7011ca0cec289afa242edd32a6d2",
+    "validation_summary.json": "f3609d586cd180ff096d29eda7534a01b96fb5cb63024fb5cc1fabd647cace86",
+    "flow_component_exploratory.json": "4aba57a4dadb41f1b908da28657afd44474b80ab2e1236a72643020ea39ad838",
+    "fail_closed_detector_packet.json": "feec50b79e50977333ce29fba2cf99b55d35f1bb5282342149921f1a8d59a0f8",
+    "escape_replay_pipeline.py": "15686a54a3e75aca824aa97f6313ff8087dc9be16e2a6377219db332d2b563e3",
+    "shadow_flow_diagnostic.py": "4342854406e8f446328d59e20acc9794413d3a85c64842de5648c16f34e1c092",
+    "test_real_replay_evidence.py": "79a77bff89fa71985c117cea5e8797faacb6c08ebcdb880fa0256e8e396c1404"
+  },
+  "package": {
+    "name": "HENGCE_Escape_20261104_Verified_Research_Package.zip",
+    "sha256": "70229d6a8d7eac26c39cbac92b4c08fefaaa0b33917a9a1540641d85383d072a",
+    "size_bytes": 98444
+  },
+  "blockers": [
+    "PIT_U_SECURITY_STATUS_NOT_INDEPENDENTLY_CONFIRMED",
+    "HISTORICAL_SOURCE_REVISIONS_UNRECONCILED",
+    "MARGIN_FULL_COHORT_INCOMPLETE",
+    "NO_17_OF_17_BASELINE",
+    "NO_CROSS_CYCLE_OOS_VALIDATION"
+  ],
+  "formal_detector_executed": false,
+  "formal_detector_input_authority": false,
+  "formal_escape_state_authority": false,
+  "trading_authority": "NONE",
+  "main_mutated": false
+}
