@@ -78,6 +78,8 @@ jobs:
         run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_private_delivery.py' -v
       - name: Test local private receiver authentication expiry and replay (synthetic only)
         run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_private_receiver.py' -v
+      - name: Test synthetic end-to-end 3042 and 3420 private quote handoff
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_private_e2e.py' -v
       - name: Build non-raw aggregate shadow context
         shell: bash
         run: |
