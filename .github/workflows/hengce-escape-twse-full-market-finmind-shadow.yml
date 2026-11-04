@@ -68,6 +68,7 @@ jobs:
           python -m py_compile scripts/hengce_finmind_single_name_bridge.py
           python -m py_compile scripts/hengce_finmind_single_name_membership.py
           python -m py_compile scripts/hengce_finmind_private_delivery.py
+          python -m py_compile scripts/hengce_finmind_private_receiver.py
           python -m py_compile scripts/hengce_escape_intraday_monitor_adapter.py
       - name: Test in-memory single-name FinMind bridge (synthetic data only)
         run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_single_name_bridge.py' -v
@@ -75,6 +76,8 @@ jobs:
         run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_single_name_membership.py' -v
       - name: Test private quote delivery (synthetic data only, no requests)
         run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_private_delivery.py' -v
+      - name: Test local private receiver authentication expiry and replay (synthetic only)
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_private_receiver.py' -v
       - name: Build non-raw aggregate shadow context
         shell: bash
         run: |
