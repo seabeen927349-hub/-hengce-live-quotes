@@ -1,0 +1,153 @@
+{
+  "system": "HENGCE",
+  "artifact": "ESCAPE_DUAL_PROVIDER_DIVISION_OF_LABOR_V1",
+  "date": "2026-11-04",
+  "status": "RESEARCH_SCOPE_LOCK_ONLY_NO_FORMAL_PROMOTION",
+  "principle": "Two complementary vendors and one immutable canonical source of record; NEVER silently blend different dates, units, scopes or revisions.",
+  "lanes": [
+    {
+      "id": "A_INTRADAY_STOCK",
+      "lead": "FUGLE",
+      "data": [
+        "single-stock TWSE quote",
+        "last price",
+        "intraday high low",
+        "quote-time volume",
+        "lastUpdated"
+      ],
+      "role": "PROVISIONAL_STOCK_MONITOR_ONLY",
+      "current_capability": "PASS_THREE_SAMPLES_20261104",
+      "limitations": [
+        "No authorized full-market quote endpoint in current subscription: observed HTTP_403",
+        "13:30 quote volume cannot substitute full-day TWSE shares",
+        "Does not grant institution/margin evidence"
+      ]
+    },
+    {
+      "id": "B_INTRADAY_MARKET",
+      "lead": "FINMIND",
+      "data": [
+        "TWSE common-stock same-date snapshot",
+        "industry-group price/turnover shadow",
+        "market breadth shadow"
+      ],
+      "role": "PROVISIONAL_MARKET_CONTEXT_ONLY",
+      "current_capability": "PASS_1088_OF_1088_ACTIVE_SCOPE_20261104_1520",
+      "limitations": [
+        "No persistent raw per-security feed in current shadow output",
+        "No canonical EOD or 17-metric detector input authority"
+      ]
+    },
+    {
+      "id": "C_HISTORICAL_RESEARCH",
+      "lead": "FINMIND",
+      "data": [
+        "TaiwanStockPrice",
+        "TaiwanStockInstitutionalInvestorsBuySell",
+        "TaiwanStockMarginPurchaseShortSale"
+      ],
+      "role": "HISTORICAL_RESEARCH_AND_CROSS_CHECK_ONLY",
+      "current_capability": "PRICE_3_STOCKS_EXACT_TWSE_MATCH_20261104__FLOW_MARGIN_2330_20261103_OBSERVED",
+      "limitations": [
+        "Vendor historical provenance, availability, corrections and PIT need independent validation",
+        "Source cannot silently replace existing canonical records",
+        "Requested 2026-11-04 flow/margin not returned in tested query"
+      ]
+    },
+    {
+      "id": "D_FORMAL_EOD",
+      "lead": "HENGCE_CANONICAL_TWSE",
+      "data": [
+        "official daily price, volume_shares, turnover_twd",
+        "institutional buy sell net",
+        "margin balances",
+        "PIT daily membership",
+        "immutable source hashes"
+      ],
+      "role": "FORMAL_EOD_SOURCE_OF_RECORD_IF_ALL_GATES_PASS",
+      "current_capability": "20261103_CANONICAL_MOTHER_RECEIPT_PASS",
+      "limitations": [
+        "2026 historical mother is not available as full byte-for-byte file in current GitHub review",
+        "Historical T86 20261103 current vs archived discrepancy requires version reconciliation"
+      ]
+    },
+    {
+      "id": "E_ESCAPE_17_METRICS",
+      "lead": "HENGCE_ESCAPE_RESEARCH",
+      "data": [
+        "daily PIT U/E/N cohorts",
+        "canonical 17 input histories",
+        "past-only 40-60 session baselines",
+        "state transition and change log"
+      ],
+      "role": "RESEARCH_DETECTOR_ONLY_UNTIL_VALIDATED",
+      "current_capability": "DETECTOR_AND_STATE_ENGINE_CODE_PRESENT_NO_VERIFIED_17_SERIES_PRODUCER",
+      "limitations": [
+        "Do not infer full 17 metric readiness from market snapshot coverage",
+        "Do not change locked formulas or grant trading authority",
+        "No missing-as-zero or present membership lookback"
+      ]
+    }
+  ],
+  "gate_order": [
+    "source_id_and_timestamp",
+    "date_and_session_alignment",
+    "security_scope_and_ticker_status",
+    "units_and_trade_session_scope",
+    "row_integrity_and_null_policy",
+    "PIT_membership",
+    "canonical_price_institutional_margin_3legs",
+    "source_hash_and_revision_resolution",
+    ">=40_past_observations_per_input_metric",
+    "feature_series_17_of_17",
+    "detector_and_state_machine",
+    "cross_cycle_oos_validation_before_any_promotion"
+  ],
+  "discrepancies_to_reconcile": [
+    {
+      "ticker": "2330",
+      "date": "2026-11-03",
+      "field": "TotalNet",
+      "archived": -6705803,
+      "current_twse": -6699293,
+      "delta_current_minus_archived": 6510,
+      "status": "HOLD_RECONCILE"
+    },
+    {
+      "ticker": "2454",
+      "date": "2026-11-03",
+      "field": "TotalNet",
+      "archived": -3344344,
+      "current_twse": -3347344,
+      "delta_current_minus_archived": -3000,
+      "status": "HOLD_RECONCILE"
+    }
+  ],
+  "prohibitions": [
+    "FUGLE_QUOTE_TO_EOD_VOLUME",
+    "FINMIND_INTRADAY_TO_FORMAL_EOD",
+    "FINMIND_REWRITE_CANONICAL_MOTHER",
+    "REVISIONS_OVERWRITE_ORIGINAL",
+    "STALE_DATA_AS_CURRENT",
+    "MISSING_AS_ZERO",
+    "PRESENT_DAY_UNIVERSE_FOR_HISTORICAL_BACKTEST",
+    "FROZEN_ESCAPE_FORMULA_MUTATION",
+    "SELECTION_OR_TRADING_AUTHORITY"
+  ],
+  "engineering_workstreams": {
+    "fugle": "Keep existing single-symbol quote adapter as intraday stock watch; expose evidence date, asof, unit and session scope; flag 403 whole-market snapshots rather than retrying to imply permission.",
+    "finmind": "Preserve current TWSE-common market shadow and research-history probes; compare official EOD sources with same-date/security fields; output observed data and provenance with no silent promotion.",
+    "canonical": "Consume only existing historical mother, verify hashes/3 legs and PIT cohorts; on differences append explicit reconciliation manifest without overwriting existing receipts.",
+    "escape": "First wire existing 17-metric research implementation to a read-only joined PIT input panel. Run baseline completeness, date alignment, missingness and all-17 series gates before invoking locked detector.",
+    "validation": "Report sample sizes, PIT pass, coverage, revisions, leakage tests, false alerts and out-of-sample performance separately. Do not equate provider coverage with predictive accuracy."
+  },
+  "governance": {
+    "main_branch_unchanged": true,
+    "formal_selection_universe": "TWSE_LISTED_ELECTRONICS_ONLY",
+    "escape_monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
+    "tpex": false,
+    "parallel_historical_mother": false,
+    "capital_authority": false,
+    "trading_authority": "NONE"
+  }
+}
