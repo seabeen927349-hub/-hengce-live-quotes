@@ -1,67 +1,52 @@
 #!/usr/bin/env python3
-"""Offline quote-only multi-venue equity membership tests: synthetic rows."""
+"""Network-free tests for current official TWSE / TPEx / Emerging membership."""
 import sys
 import unittest
-from datetime import date
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-from hengce_finmind_single_name_membership import current_equity_membership
+from hengce_finmind_single_name_membership import (
+    _issuer_codes, current_official_quote_membership,
+)
 
-ASOF=date(2026,11,4)
+TWSE={str(code) for code in range(1000,2000)}
+TPEX={str(code) for code in range(3000,3800)}
+EMERGING={str(code) for code in range(7000,7100)}
 
-def fixture():
-    rows=[
-        {"stock_id":str(i), "type":"twse", "date":"2026-11-02",
-         "industry_category":"electronics", "stock_name":"S"}
-        for i in range(1000,2000)
-    ]
-    rows += [
-        {"stock_id":str(i), "type":"tpex", "date":"2026-11-02",
-         "industry_category":"electronics", "stock_name":"S"}
-        for i in range(3000,3800)
-    ]
-    rows += [
-        {"stock_id":"3420", "type":"twse", "date":"2026-09-01",
-         "industry_category":"electronics", "stock_name":"OLD"},
-        {"stock_id":"3420", "type":"tpex", "date":"2026-11-03",
-         "industry_category":"electronics", "stock_name":"CURRENT"},
-        {"stock_id":"3420", "type":"twse", "date":"2026-11-05",
-         "industry_category":"electronics", "stock_name":"FUTURE"},
-        {"stock_id":"7888", "type":"emerging", "date":"2026-11-01",
-         "industry_category":"technology", "stock_name":"S"},
-        {"stock_id":"9929", "type":"twse", "date":"2026-11-02",
-         "industry_category":"TDR", "stock_name":"TEST-DR"},
-        {"stock_id":"9991", "type":"twse", "date":"2026-11-02",
-         "industry_category":"ETF", "stock_name":"ETF"},
-    ]
-    return rows
+class OfficialMembershipTests(unittest.TestCase):
+    def test_three_venues_no_historical_guessing(self):
+        def rosters(board):
+            return (TPEX, "TPEx_OPENAPI") if board=="O" else (EMERGING,"TPEx_MOPS_OFFICIAL_CSV")
+        with patch("hengce_finmind_single_name_membership._fetch_roster",side_effect=rosters):
+            current, meta=current_official_quote_membership(TWSE)
+        self.assertEqual(current["3420"],"tpex")
+        self.assertEqual(current["3042"],"tpex")
+        self.assertEqual(current["7888"] if "7888" in current else current["7001"],"emerging")
+        self.assertEqual(meta["twse"],1000)
+        self.assertEqual(meta["tpex"],800)
+        self.assertEqual(meta["emerging"],100)
+        self.assertFalse(meta["membership_rows_persisted"])
 
-class MembershipTests(unittest.TestCase):
-    def test_market_transfers_and_all_venues(self):
-        membership,counts=current_equity_membership(fixture(),ASOF)
-        self.assertEqual(membership["3420"],"tpex")
-        self.assertEqual(membership["7888"],"emerging")
-        self.assertEqual(counts["twse"],1000)
-        self.assertEqual(counts["tpex"],800)
-        self.assertEqual(counts["emerging"],1)
-        self.assertNotIn("9929",membership)
-        self.assertNotIn("9991",membership)
+    def test_block_duplicate_current_ids(self):
+        with patch("hengce_finmind_single_name_membership._fetch_roster",side_effect=[(TPEX|{"1101"},"OPENAPI"),(EMERGING,"OPENAPI")]):
+            with self.assertRaisesRegex(RuntimeError,"DUPLICATE_IDS"):
+                current_official_quote_membership(TWSE)
 
-    def test_fail_closed_unverified_coverage(self):
-        with self.assertRaisesRegex(RuntimeError,"MEMBERSHIP_COVERAGE_UNVERIFIED"):
-            current_equity_membership([
-                {"stock_id":"3420","type":"tpex","date":"2026-11-03",
-                 "industry_category":"electronics", "stock_name":"X"}
-            ],ASOF)
+    def test_block_unavailable_issuer_source(self):
+        with patch("hengce_finmind_single_name_membership._fetch_roster",side_effect=RuntimeError("UNAVAILABLE")):
+            with self.assertRaisesRegex(RuntimeError,"UNAVAILABLE"):
+                current_official_quote_membership(TWSE)
 
-    def test_no_future_data_or_unsupported_types(self):
-        rows=fixture()
-        rows.append({"stock_id":"7788","type":"tpex","date":"2026-11-05","industry_category":"electronics","stock_name":"FUTURE"})
-        rows.append({"stock_id":"7789","type":"warrant","date":"2026-11-04","industry_category":"electronics","stock_name":"W"})
-        m,_=current_equity_membership(rows,ASOF)
-        self.assertNotIn("7788",m)
-        self.assertNotIn("7789",m)
+    def test_issuer_filters_receipts_and_zero_shares(self):
+        rows=[
+            {"公司代號":"3420","公司簡稱":"A","產業別":"24"},
+            {"公司代號":"3421","公司簡稱":"B","產業別":"24","已發行普通股數或TDR原股發行股數":"0"},
+            {"公司代號":"3422","公司簡稱":"TEST-DR","產業別":"24"},
+            {"公司代號":"3423","公司簡稱":"X","產業別":"91"},
+            {"公司代號":"9X24","公司簡稱":"X","產業別":"24"},
+        ]
+        self.assertEqual(_issuer_codes(rows),{"3420"})
 
 if __name__=="__main__":
     unittest.main()
