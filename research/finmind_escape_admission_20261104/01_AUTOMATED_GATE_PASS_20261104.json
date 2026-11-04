@@ -1,0 +1,52 @@
+{
+  "system": "HENGCE",
+  "artifact": "FINMIND_SHADOW_MONITOR_AUTOMATED_GATE_PASS",
+  "date_taipei": "2026-11-04",
+  "status": "PASS_INTRADAY_MONITOR_ONLY",
+  "branch": "research/finmind-escape-admission-20261104",
+  "code_path": "research/finmind_escape_admission_20261104/finmind_monitor_gate_v1.py",
+  "test_path": "research/finmind_escape_admission_20261104/test_finmind_monitor_gate_v1.py",
+  "workflow": ".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml",
+  "github_run_id": 41792248789,
+  "github_run_url": "https://github.com/seabeen927349-hub/-hengce-live-quotes/actions/runs/41792248789",
+  "github_job": "shadow-context",
+  "github_job_conclusion": "success",
+  "verified_steps": [
+    "Build non-raw aggregate shadow context",
+    "Build intraday monitor payload",
+    "Assert authority and frozen metric boundary",
+    "Read-only FinMind monitor evidence gate (research branch)",
+    "Upload non-raw aggregate monitor receipt",
+    "Publish latest aggregate monitor state"
+  ],
+  "monitor": {
+    "market_date": "2026-11-04",
+    "source_data_asof": "2026-11-04 14:30:00.000000",
+    "eligible_count": 1088,
+    "valid_count": 1088,
+    "unknown_count": 0,
+    "advancing": 441,
+    "declining": 548,
+    "flat": 99,
+    "net_breadth": -107
+  },
+  "authority": {
+    "mode": "READ_ONLY_RESEARCH_SHADOW",
+    "model_modified": false,
+    "production_main_modified": false,
+    "selection_authority": false,
+    "formal_escape_level": null,
+    "formal_escape_authority": false,
+    "capital_authority": false,
+    "trading_authority": false
+  },
+  "blocked_for_formal_escape": [
+    "PIT-safe complete 17-metric historical packet",
+    "Frozen detector PASS",
+    "Frozen Escape state engine PASS",
+    "Appropriate official EOD/weekly TDCC timing",
+    "Independent promotion authorization under existing governance"
+  ],
+  "data_scope_note": "Only TWSE-listed ordinary shares, no TPEx, emerging shares, ETFs, warrants, TDR. Prior-day snapshot not falsely promoted.",
+  "test_note": "Synthetic adversarial tests passed in the same CI job; per-security licensed FinMind quotes were not persisted."
+}
