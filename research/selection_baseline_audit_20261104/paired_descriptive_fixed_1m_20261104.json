@@ -1,0 +1,59 @@
+{
+  "status": "DESCRIPTIVE_POST_HOC_NOT_STRATEGY_RESEARCH_GO",
+  "n2_vs_n1": {
+    "pairs": 83,
+    "primary_name": "N2",
+    "reference": "N1",
+    "total_candidate_pnl_1m_event_sum": 1157756.88,
+    "total_reference_pnl_1m_event_sum": 821837.48,
+    "avg_candidate_minus_reference_per_1m_event": 4047.22,
+    "mean_gap_pp_per_1m_event": 0.4047,
+    "annual_block_bootstrap_mean_gap_95pct_CI_in_NT": [
+      -10713.3,
+      18569.45
+    ],
+    "important_limitations": "same 83 priced windows; N1 1 missing exit, rights unverified"
+  },
+  "n2_vs_n0": {
+    "pairs": 78,
+    "primary_name": "N2",
+    "reference": "n0_as_1m_theoretical",
+    "total_candidate_pnl_1m_event_sum": 1247645.08,
+    "total_reference_pnl_1m_event_sum": 1169142.23,
+    "avg_candidate_minus_reference_per_1m_event": 1006.45,
+    "mean_gap_pp_per_1m_event": 0.1006,
+    "annual_block_bootstrap_mean_gap_95pct_CI_in_NT": [
+      -7225.25,
+      11769.41
+    ],
+    "important_limitations": "same 78 windows where all 100 selected stocks have prices; N0 theoretical fractional equal weight, not 1m board-lot executable"
+  },
+  "n2_vs_taiex_close_signal": {
+    "pairs": 84,
+    "primary_name": "N2",
+    "reference": "taiex_signal_close_to_exit_close_1m_pnl",
+    "total_candidate_pnl_1m_event_sum": 1157940.48,
+    "total_reference_pnl_1m_event_sum": 1641871.85,
+    "avg_candidate_minus_reference_per_1m_event": -5761.09,
+    "mean_gap_pp_per_1m_event": -0.5761,
+    "annual_block_bootstrap_mean_gap_95pct_CI_in_NT": [
+      -18984.34,
+      6351.85
+    ],
+    "important_limitations": "84 same date windows; index signal-close/exit-close timing differs from next-open stock fills, no dividends or costs"
+  },
+  "n2_vs_taiex_close_entryday": {
+    "pairs": 84,
+    "primary_name": "N2",
+    "reference": "taiex_entry_session_close_to_exit_close_1m_pnl",
+    "total_candidate_pnl_1m_event_sum": 1157940.48,
+    "total_reference_pnl_1m_event_sum": 1357465.55,
+    "avg_candidate_minus_reference_per_1m_event": -2375.3,
+    "mean_gap_pp_per_1m_event": -0.2375,
+    "annual_block_bootstrap_mean_gap_95pct_CI_in_NT": [
+      -14595.48,
+      9071.26
+    ],
+    "important_limitations": "84 windows; index entry-date CLOSE/exit CLOSE, cannot substitute stock next OPEN; no index daily OPEN in this archive"
+  }
+}
