@@ -1,8 +1,8 @@
 {
   "status": "PASS",
   "source": "Nasdaq ExportHistory/SOX",
-  "latest_session": "2026-11-02",
-  "rows": 210,
+  "latest_session": "2026-11-03",
+  "rows": 211,
   "stale_days": 1,
-  "refreshed_at_taipei": "2026-11-03T08:05:49.312412+08:00"
+  "refreshed_at_taipei": "2026-11-04T09:40:24.117121+08:00"
 }
