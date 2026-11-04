@@ -15,7 +15,10 @@ import math
 import os
 import re
 import threading
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+
+TAIPEI = ZoneInfo("Asia/Taipei")
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Callable
 from urllib.parse import urlsplit
@@ -100,7 +103,7 @@ class QuoteInbox:
                 if not isinstance(code, str) or not TICKER.fullmatch(code) or code in incoming:
                     return 400, "INVALID_OR_DUPLICATE_TICKER"
                 stamp = _timestamp(item.get("asof"))
-                if stamp is None or stamp.date() != current.date():
+                if stamp is None or stamp.astimezone(TAIPEI).date() != current.astimezone(TAIPEI).date():
                     return 422, "NOT_CURRENT_MARKET_DATE"
                 age = (current - stamp).total_seconds()
                 if age > TTL_SECONDS or age < -30:
@@ -121,7 +124,7 @@ class QuoteInbox:
                     self._nonces.pop(seen, None)
             if nonce in self._nonces:
                 return 409, "REPLAY_REJECTED"
-            self._nonces[nonce] = current + __import__("datetime").timedelta(seconds=TTL_SECONDS)
+            self._nonces[nonce] = current + timedelta(seconds=TTL_SECONDS)
             for code, quote in incoming.items():
                 self._quotes[code] = quote
         return 202, "ACCEPTED"
@@ -135,7 +138,7 @@ class QuoteInbox:
             if quote is None:
                 return 404, {"status": "NOT_IN_PRIVATE_CACHE"}
             stamp = _timestamp(quote["asof"])
-            if stamp is None or stamp.date() != now.date() or not (0 <= (now - stamp).total_seconds() <= TTL_SECONDS):
+            if stamp is None or stamp.astimezone(TAIPEI).date() != now.astimezone(TAIPEI).date() or not (0 <= (now - stamp).total_seconds() <= TTL_SECONDS):
                 self._quotes.pop(ticker, None)
                 return 410, {"status": "NOT_FRESH"}
             result = dict(quote)
