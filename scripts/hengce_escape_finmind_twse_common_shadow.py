@@ -38,6 +38,7 @@ from hengce_finmind_twse_common_snapshot_probe import (
 )
 from hengce_twse_session_status_probe import current_mis
 from hengce_finmind_single_name_bridge import lookup as lookup_single_name, public_status as single_name_public_status
+from hengce_finmind_single_name_membership import fetch_current_equity_membership
 
 AUTHORITY = "SHADOW_INTRADAY_CONTEXT_ONLY_NO_FORMAL_EOD_ESCAPE_SELECTION_MODEL_OR_TRADING_AUTHORITY"
 SCOPE = "ALL_TWSE_LISTED_COMMON_STOCKS"
@@ -144,30 +145,52 @@ async def collect(
     if not active_required.issubset(snapshot_set):
         raise RuntimeError("active TWSE common-stock universe is not fully covered")
 
-    # REUSE this very same authorized FinMind full-market snapshot in memory.
-    # The bridge supports ANY governed TWSE common stock; it never re-fetches.
-    # There is NO private recipient configured by this public GitHub workflow.
-    # An explicitly authorized in-process consumer may be supplied by a private
-    # execution context; without one, no paid individual quote leaves memory.
-    if private_quote_consumer is not None:
-        private_quote_consumer(
-            lambda ticker: lookup_single_name(snapshot_map, ticker, datetime.now(TAIPEI), active_required)
+    # SINGLE-NAME QUOTE-ONLY membership is broader than Market State scope.
+    # Reuse FinMind TaiwanStockInfo in this governed runner, NOT a new collector.
+    # Errors affect ONLY this optional quote capability, not existing TWSE
+    # Market State coverage or its approved 0.5 research-shadow contract.
+    quote_membership = {}
+    quote_membership_counts = {}
+    quote_membership_status = "BLOCKED_MEMBERSHIP_UNVERIFIED"
+    try:
+        quote_membership, quote_membership_counts = fetch_current_equity_membership(
+            generated.date()
         )
+        quote_membership_status = "VALIDATED_CURRENT_EQUITIES"
+    except Exception:
+        # Never log tokens, vendor records, or silently infer listing venues.
+        quote_membership_status = "BLOCKED_MEMBERSHIP_UNVERIFIED"
 
-    # Status only. Do not serialize per-ticker vendor quote rows or derived
-    # per-security values into this public repo, receipts, or CI artifacts.
-    frozen_symbols = json.loads(
-        Path("hengce/frozen/live_symbols.json").read_text(encoding="utf-8")
-    ).get("symbols", [])
-    watch_codes = [str(row.get("Ticker") or "") for row in frozen_symbols]
+    # These quote values exist only during THIS SAME pre-existing snapshot run.
+    # No live price, OHLC, turnover or per-stock licensed value is serialized.
+    private_consumer_called = False
+    if private_quote_consumer is not None and quote_membership_status.startswith("VALIDATED"):
+        private_quote_consumer(
+            lambda ticker: lookup_single_name(
+                snapshot_map, ticker, datetime.now(TAIPEI), set(quote_membership)
+            )
+        )
+        private_consumer_called = True
+
+    # Public diagnostic is deliberately aggregate-only, without ticker IDs.
+    watch_codes = [
+        str(item.get("Ticker") or "")
+        for item in json.loads(
+            Path("hengce/frozen/live_symbols.json").read_text(encoding="utf-8")
+        ).get("symbols", [])
+    ]
     bridge_local = single_name_public_status(
-        snapshot_map, watch_codes, generated, active_required
+        snapshot_map, watch_codes, generated, set(quote_membership)
     )
-    bridge_public = {
-        k: v for k, v in bridge_local.items() if k != "watch_status"
-    }
-    bridge_public["private_quote_consumer_connected"] = private_quote_consumer is not None
-    bridge_public["public_market_data_relay"] = False
+    bridge_public = {key: val for key, val in bridge_local.items() if key != "watch_status"}
+    bridge_public.update({
+        "membership_status": quote_membership_status,
+        "market_scope": "TWSE_TPEX_EMERGING_QUOTE_ONLY",
+        "membership_market_counts": quote_membership_counts,
+        "membership_rows_persisted": False,
+        "private_quote_consumer_connected": private_consumer_called,
+        "public_market_data_relay": False,
+    })
 
     derived_rows: list[dict[str, Any]] = []
     stale_codes: list[str] = []
