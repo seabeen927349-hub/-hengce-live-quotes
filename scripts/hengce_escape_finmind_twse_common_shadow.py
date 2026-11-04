@@ -39,6 +39,7 @@ from hengce_finmind_twse_common_snapshot_probe import (
 from hengce_twse_session_status_probe import current_mis
 from hengce_finmind_single_name_bridge import lookup as lookup_single_name, public_status as single_name_public_status
 from hengce_finmind_single_name_membership import current_official_quote_membership
+from hengce_finmind_private_delivery import deliver as deliver_private_quotes
 
 AUTHORITY = "SHADOW_INTRADAY_CONTEXT_ONLY_NO_FORMAL_EOD_ESCAPE_SELECTION_MODEL_OR_TRADING_AUTHORITY"
 SCOPE = "ALL_TWSE_LISTED_COMMON_STOCKS"
@@ -160,16 +161,32 @@ async def collect(
         # Never log tokens, vendor records, or silently infer listing venues.
         quote_membership_status = "BLOCKED_MEMBERSHIP_UNVERIFIED"
 
-    # These quote values exist only during THIS SAME pre-existing snapshot run.
-    # No live price, OHLC, turnover or per-stock licensed value is serialized.
+    # These values exist only during THIS SAME pre-existing snapshot run.
+    # Never write FinMind price/volume or the private target URL to GitHub.
     private_consumer_called = False
-    if private_quote_consumer is not None and quote_membership_status.startswith("VALIDATED"):
-        private_quote_consumer(
-            lambda ticker: lookup_single_name(
-                snapshot_map, ticker, datetime.now(TAIPEI), set(quote_membership)
-            )
+    private_delivery = {
+        "status": "BLOCKED_MEMBERSHIP_UNVERIFIED",
+        "delivered": False,
+        "fresh_quote_count": 0,
+        "private_endpoint_used": False,
+        "public_quote_values_persisted": False,
+        "trading_authority": False,
+    }
+    if quote_membership_status.startswith("VALIDATED"):
+        allowed_codes = set(quote_membership)
+        private_lookup = lambda ticker: lookup_single_name(
+            snapshot_map, ticker, datetime.now(TAIPEI), allowed_codes
         )
-        private_consumer_called = True
+        if private_quote_consumer is not None:
+            private_quote_consumer(private_lookup)
+            private_consumer_called = True
+            private_delivery["status"] = "CALLBACK_IN_PROCESS_ONLY"
+        else:
+            # The existing FinMind runner delivers to ONE explicitly approved
+            # owner-controlled HTTPS destination, only when ALL env secrets
+            # have been provided; default is NOT_CONFIGURED, no network.
+            private_delivery = deliver_private_quotes(private_lookup, allowed_codes)
+            private_consumer_called = private_delivery["delivered"]
 
     # Public diagnostic is deliberately aggregate-only, without ticker IDs.
     watch_codes = [
@@ -188,6 +205,7 @@ async def collect(
         "membership_market_counts": quote_membership_counts,
         "membership_rows_persisted": False,
         "private_quote_consumer_connected": private_consumer_called,
+        "private_delivery": private_delivery,
         "public_market_data_relay": False,
     })
 
