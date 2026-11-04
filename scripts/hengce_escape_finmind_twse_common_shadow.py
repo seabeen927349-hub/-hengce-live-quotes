@@ -22,7 +22,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from statistics import fmean
-from typing import Any
+from typing import Any, Callable
 
 from finmind_mcp.client import FinMindClient
 
@@ -37,6 +37,7 @@ from hengce_finmind_twse_common_snapshot_probe import (
     _twse_common_universe,
 )
 from hengce_twse_session_status_probe import current_mis
+from hengce_finmind_single_name_bridge import lookup as lookup_single_name, public_status as single_name_public_status
 
 AUTHORITY = "SHADOW_INTRADAY_CONTEXT_ONLY_NO_FORMAL_EOD_ESCAPE_SELECTION_MODEL_OR_TRADING_AUTHORITY"
 SCOPE = "ALL_TWSE_LISTED_COMMON_STOCKS"
@@ -97,7 +98,10 @@ def _summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+async def collect(
+    exception_path: Path,
+    private_quote_consumer: Callable[[Callable[[str], tuple[Any, str]]], None] | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
     if not os.environ.get("FINMIND_TOKEN"):
         raise RuntimeError("FINMIND_TOKEN is missing")
 
@@ -139,6 +143,31 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         raise RuntimeError(f"unexpected TWSE common-stock coverage gaps:{unexpected_missing}")
     if not active_required.issubset(snapshot_set):
         raise RuntimeError("active TWSE common-stock universe is not fully covered")
+
+    # REUSE this very same authorized FinMind full-market snapshot in memory.
+    # The bridge supports ANY governed TWSE common stock; it never re-fetches.
+    # There is NO private recipient configured by this public GitHub workflow.
+    # An explicitly authorized in-process consumer may be supplied by a private
+    # execution context; without one, no paid individual quote leaves memory.
+    if private_quote_consumer is not None:
+        private_quote_consumer(
+            lambda ticker: lookup_single_name(snapshot_map, ticker, datetime.now(TAIPEI), active_required)
+        )
+
+    # Status only. Do not serialize per-ticker vendor quote rows or derived
+    # per-security values into this public repo, receipts, or CI artifacts.
+    frozen_symbols = json.loads(
+        Path("hengce/frozen/live_symbols.json").read_text(encoding="utf-8")
+    ).get("symbols", [])
+    watch_codes = [str(row.get("Ticker") or "") for row in frozen_symbols]
+    bridge_local = single_name_public_status(
+        snapshot_map, watch_codes, generated, active_required
+    )
+    bridge_public = {
+        k: v for k, v in bridge_local.items() if k != "watch_status"
+    }
+    bridge_public["private_quote_consumer_connected"] = private_quote_consumer is not None
+    bridge_public["public_market_data_relay"] = False
 
     derived_rows: list[dict[str, Any]] = []
     stale_codes: list[str] = []
@@ -247,6 +276,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "raw_finmind_rows_persisted": False,
         "raw_twse_mis_rows_persisted": False,
         "stale_rows_neutralized_as_zero": False,
+        "single_name_bridge": bridge_public,
         "formal_eod_state_creation": False,
         "formal_escape_state_creation": False,
         "selection_authority": False,
@@ -290,6 +320,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "raw_finmind_rows_persisted": False,
         "raw_twse_mis_rows_persisted": False,
         "per_security_rows_persisted": False,
+        "single_name_bridge": bridge_public,
         "stale_rows_neutralized_as_zero": False,
         "formal_escape_authority": False,
         "formal_eod_authority": False,
