@@ -1,0 +1,28 @@
+{
+  "status": "RETROSPECTIVE_DESCRIPTIVE_ONLY_TRADING_NO_GO",
+  "frozen_sample": "2026 signals 7 of the original 84; no ticker or date substitution",
+  "method": "index entry open -> 20th session exit close, NT$5m hypothetical independent capital each window, 40/80bp symmetrical roundtrip costs, N2 from frozen ledger",
+  "source_sha256": "ca97f13879e7cf81b87093a114e429951383a7cc4e5055fb76e8b0b1d61bd1b6",
+  "frozen_events": 7,
+  "n2_price_pnl_40bp": 3396871.6,
+  "taiex_hypothetical_price_pnl_40bp": 1943436.07,
+  "n2_excess_vs_taiex_40bp": 1453435.53,
+  "n2_price_pnl_80bp": 3258643.2,
+  "taiex_hypothetical_price_pnl_80bp": 1803436.07,
+  "n2_excess_vs_taiex_80bp": 1455207.13,
+  "n2_beats_taiex_windows": 3,
+  "n2_loses_taiex_windows": 4,
+  "top_n2_trade_ticker": "3026",
+  "top_n2_trade_40bp": 3413080.0,
+  "top_trade_excess_40bp": 3018050.18,
+  "without_top_n2_pnl_40bp": -16208.4,
+  "without_top_taiex_pnl_40bp": 1548406.25,
+  "without_top_excess_40bp": -1564614.65,
+  "qualifications": [
+    "TWSE TAIEX is an untradeable index; 0.4/0.8% assumed index cost is illustrative, not certified ETF implementation.",
+    "TAIEX price index and frozen N2 price-only ledger exclude total return entitlements; 6442 has a holding-period cash dividend omitted from frozen ledger.",
+    "Neither N2 5m opening fills nor a matching ETF index-fill has been verified; both remain execution-data blocked.",
+    "2026 has been used for retrospective N2 strategy evaluation; this is not pristine forward validation.",
+    "The matched seven independent windows are not the same as a one-time Jan-Sep buy-and-hold or a single constantly invested account."
+  ]
+}
