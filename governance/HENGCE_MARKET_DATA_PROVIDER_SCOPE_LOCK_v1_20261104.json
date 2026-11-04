@@ -1,0 +1,73 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_MARKET_DATA_PROVIDER_SCOPE_LOCK",
+  "version": "v1_20261104",
+  "established_date": "2026-11-04",
+  "status": "ACTIVE_USER_DIRECTIVE_SOURCE_ROUTING",
+  "scope": "HENGCE market-data acquisition, quote monitoring, and provider health reporting",
+  "user_directive": {
+    "fugle": "Fugle subscription is sufficient for the governed 100-stock monitoring universe only; do not require, poll, or diagnose missing whole-TWSE snapshot entitlement as a system defect.",
+    "finmind": "FinMind is the designated provider for broader Taiwan-equity market monitoring; user reports paid rights for the Taiwan stock market.",
+    "do_not_reactivate_legacy_q017": true
+  },
+  "responsibility_split": {
+    "fugle": {
+      "role": "TWSE_ELECTRONICS100_LIVE_QUOTES_TRANSPORT",
+      "max_scope": "EXISTING_FROZEN_GOVERNED_ELECTRONICS100_UNIVERSE",
+      "implementation": ".github/workflows/hengce-legacy-live-quotes.yml",
+      "output": "legacy_live/status.json",
+      "excluded": "FUGLE_ALL_MARKET_SNAPSHOT_ENDPOINT",
+      "permitted_authority": "QUOTE_TRANSPORT_ONLY_NO_MODEL_RANKING_AUTHORITY"
+    },
+    "finmind": {
+      "role": "BROAD_TAIWAN_EQUITY_MARKET_MONITORING_DATA_PROVIDER",
+      "subscription_entitlement": "USER_REPORTED_FULL_TAIWAN_STOCK_COVERAGE_NOT_INDEPENDENTLY_TESTED_FOR_ALL_MARKET_SEGMENTS",
+      "verified_implemented_scope": "TWSE_LISTED_ORDINARY_EQUITIES_ONLY",
+      "currently_excluded_by_approved_contract": [
+        "TPEx/OTC",
+        "emerging_board",
+        "ETFs",
+        "ETNs",
+        "TDRs"
+      ],
+      "approved_contract": "hengce/market_state/HENGCE_MARKET_STATE_FINMIND_ENHANCEMENT_CONTRACT_v0_5_20261103.json",
+      "implemented_ingest": ".github/workflows/hengce-original-eod-ingest.yml",
+      "current_data_path": "eod/YYYYMMDD/market_state_finmind_context.json",
+      "escape_auxiliary_monitor": ".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml",
+      "source_receipt_required": true,
+      "extension_to_tpex": "REQUIRES_SEPARATE_APPROVED_SCOPE_CHANGE_PIT_LINEAGE_AND_COVERAGE_VALIDATION",
+      "permitted_authority": "RESEARCH_SHADOW_DESCRIPTIVE_ONLY_UNTIL_SEPARATE_PROMOTION"
+    }
+  },
+  "legacy_conflict_resolution": {
+    "workflow": ".github/workflows/hengce-escape-twse-full-market-fugle.yml",
+    "restriction": "DISABLE_AUTOMATIC_SCHEDULE_FOR_UNAUTHORIZED_FUGLE_WHOLE_MARKET_POLL",
+    "action_recorded": "CRON_REMOVED_MANUAL_DISPATCH_RETAINED_FOR_FORENSIC_DIAGNOSTICS",
+    "commit": "31ebe17c8d9a9b282b4cb4a4c940fa24a679ec07",
+    "no_change_to_fugle_electronics100_or_finmind_schedule": true
+  },
+  "validation_baseline": {
+    "prior_market_date": "2026-11-03",
+    "fugle_electronics100_reported": "100/100 request successful; this is prior-day evidence, not today's live heartbeat.",
+    "finmind_twse_monitoring": "1088/1089 snapshot-present, 1082 current-date observations in EOD derived context.",
+    "all_taiwan_equities_status": "NOT_VERIFIED_FOR_TPEX_OR_EMERGING",
+    "no_claim_of_current_session_health_without_fresh_run": true
+  },
+  "hard_rules": {
+    "use_existing_governed_vessels_first": true,
+    "no_parallel_collector_or_second_mother": true,
+    "no_substitution_when_pending_or_blocked": true,
+    "no_reinterpretation_of_missing_fugle_whole_market_entitlement_as_fugle100_failure": true,
+    "no_automatic_fugle_full_market_polling": true,
+    "distinguish_provider_subscription_from_verified_deployment": true,
+    "do_not_convert_finmind_shadow_to_formal_escape_or_trading_without_approved_promotion": true,
+    "preserve_existing_frozen_market_state_classifier": true,
+    "no_q017_revival": true
+  },
+  "governance_compatibility": {
+    "vessel_priority": "governance/HENGCE_DATA_VESSEL_PRIORITY_LOCK_v1_20261103.json",
+    "stricter_existing_rules_win": true,
+    "no_selection_escape_capital_or_trading_authority_created": true,
+    "model_change_authorized": false
+  }
+}
