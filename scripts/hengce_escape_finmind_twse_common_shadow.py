@@ -38,7 +38,7 @@ from hengce_finmind_twse_common_snapshot_probe import (
 )
 from hengce_twse_session_status_probe import current_mis
 from hengce_finmind_single_name_bridge import lookup as lookup_single_name, public_status as single_name_public_status
-from hengce_finmind_single_name_membership import fetch_current_equity_membership
+from hengce_finmind_single_name_membership import current_official_quote_membership
 
 AUTHORITY = "SHADOW_INTRADAY_CONTEXT_ONLY_NO_FORMAL_EOD_ESCAPE_SELECTION_MODEL_OR_TRADING_AUTHORITY"
 SCOPE = "ALL_TWSE_LISTED_COMMON_STOCKS"
@@ -146,17 +146,16 @@ async def collect(
         raise RuntimeError("active TWSE common-stock universe is not fully covered")
 
     # SINGLE-NAME QUOTE-ONLY membership is broader than Market State scope.
-    # Reuse FinMind TaiwanStockInfo in this governed runner, NOT a new collector.
+    # Use official current TPEx/TPEx-emerging rosters, NOT historical
+    # FinMind membership, inside this existing governed FinMind runner.
     # Errors affect ONLY this optional quote capability, not existing TWSE
     # Market State coverage or its approved 0.5 research-shadow contract.
     quote_membership = {}
     quote_membership_counts = {}
     quote_membership_status = "BLOCKED_MEMBERSHIP_UNVERIFIED"
     try:
-        quote_membership, quote_membership_counts = fetch_current_equity_membership(
-            generated.date()
-        )
-        quote_membership_status = "VALIDATED_CURRENT_EQUITIES"
+        quote_membership, quote_membership_counts = current_official_quote_membership(common_set)
+        quote_membership_status = "VALIDATED_OFFICIAL_CURRENT_ROSTERS"
     except Exception:
         # Never log tokens, vendor records, or silently infer listing venues.
         quote_membership_status = "BLOCKED_MEMBERSHIP_UNVERIFIED"
