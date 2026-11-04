@@ -4,12 +4,15 @@ name: HENGCE Escape TWSE Common FinMind Shadow
   push:
     branches:
       - main
+      - research/finmind-escape-admission-20261104
     paths:
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
       - 'scripts/hengce_escape_intraday_monitor_adapter.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
+      - 'research/finmind_escape_admission_20261104/finmind_monitor_gate_v1.py'
+      - 'research/finmind_escape_admission_20261104/test_finmind_monitor_gate_v1.py'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   pull_request:
     paths:
@@ -143,6 +146,19 @@ jobs:
               'payload_sha256': monitor['payload_sha256'],
           }, ensure_ascii=False, sort_keys=True))
           PY
+      - name: Read-only FinMind monitor evidence gate (research branch)
+        if: github.ref_name == 'research/finmind-escape-admission-20261104'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/finmind_escape_admission_20261104/test_finmind_monitor_gate_v1.py
+          python research/finmind_escape_admission_20261104/finmind_monitor_gate_v1.py \
+            --context /tmp/hengce-finmind-shadow/context.json \
+            --status /tmp/hengce-finmind-shadow/status.json \
+            --monitor /tmp/hengce-finmind-shadow/intraday_monitor.json \
+            --date "$(TZ=Asia/Taipei date +%F)" \
+            > /tmp/hengce-finmind-shadow/evidence_gate.json
+
       - name: Upload non-raw aggregate monitor receipt
         uses: actions/upload-artifact@v4
         with:
