@@ -1,0 +1,385 @@
+{
+  "authority": "RESEARCH_PRICE_ONLY_FIXED_1M_NO_COMPOUND",
+  "trading_authority": "NONE",
+  "alpha_verdict": "INCONCLUSIVE",
+  "preregistration_commit": "0bbddd856a1e74e68350b294c222ac63ce5cac35",
+  "source_shas": {
+    "2018": "eb233ccafbb5d2cacb293a926dd2211bc803e79d5d409685fa2b021dfa223759",
+    "2019": "01f680cb42cc074b716c762ed0d886af44e0cdbef04d5cd236cd4df127df8a9f",
+    "2020": "c57fc918e9a18a57ffaa9b500c41b2ca6ead94cd2ceb227637444e784ae7cb0d",
+    "2021": "ee2ae0fe25e2e1cebf220faaa546089210311311257256e6f1ba22f8389bc594",
+    "2022": "ad2ece10ec4a0e94c501def438c6e7c92a5193975dcb33a76e8f915c8183cc9b",
+    "2023": "09a50dd3d6b3fc8c7730c65044231836811c83ce420a538ed2ac8f126e680dca",
+    "2024": "f4518a7951bfffac59242955cef117b9d0f064730a43380126cf3f9655219979",
+    "2025": "22851a275796c0ec4f089353b31415f148b17e1c1ec7dc8d4a07b5f88601f41a",
+    "2026": "4be2223ca3dcbd01645fe90e53332a19600acbef070297d7358adf49c288d530"
+  },
+  "fixed_capital_each_event": 1000000.0,
+  "sleeve_per_selected_ticker": 200000.0,
+  "events": 84,
+  "first_signal": "2018-04-30",
+  "last_exit": "2026-09-30",
+  "strategies": {
+    "N1": {
+      "events": 84,
+      "fully_priced_events": 83,
+      "blocked_events": 1,
+      "bought_positions": 257,
+      "priced_positions": 256,
+      "unfilled_positions": 163,
+      "positions_with_corporate_actions": 22,
+      "positions_with_rights_unresolved": 6,
+      "positions_with_pretax_cash_dividend_approx": 16,
+      "fixed_notional_per_event": 1000000.0,
+      "aggregate_price_only_pnl_40bp_on_priced_events": 821837.48,
+      "aggregate_price_only_pnl_80bp_on_priced_events": 658874.96,
+      "average_price_only_pnl_per_priced_1m_event": 9901.66,
+      "average_return_on_fixed_1m_per_priced_event": 0.009901656385542168,
+      "all_84_windows_certified_price_only": false,
+      "positive_event_count": 34,
+      "negative_event_count": 48,
+      "zero_event_count": 1,
+      "median_priced_event_pnl": -4263.2,
+      "total_cash_dividend_only_scenario_on_priced_events": 59617.36,
+      "scenario_cash_only_augmented_pnl_40bp_if_rights_still_unresolved": 881454.84,
+      "remove_best_positions_pnl_40bp": {
+        "1": 649109.48,
+        "3": 327007.48,
+        "5": 82941.88
+      },
+      "remove_best_events_pnl_40bp": {
+        "1": 523712.68,
+        "3": 20212.28,
+        "5": -324760.92
+      },
+      "mean_capital_fraction_invested_per_event": 0.4947658333333334,
+      "min_event_pnl": -163539.2,
+      "max_event_pnl": 298124.8,
+      "by_year": {
+        "2018": {
+          "events": 8,
+          "priced_events": 8,
+          "blocked_events": 0,
+          "pnl_40bp": 15444.0,
+          "avg_pnl_per_1m_priced_event": 1930.5,
+          "positive_events": 2,
+          "cash_dividend_scenario": 24839.95,
+          "events_with_rights": 0
+        },
+        "2019": {
+          "events": 9,
+          "priced_events": 8,
+          "blocked_events": 1,
+          "pnl_40bp": -187934.72,
+          "avg_pnl_per_1m_priced_event": -23491.84,
+          "positive_events": 3,
+          "cash_dividend_scenario": 0.0,
+          "events_with_rights": 0
+        },
+        "2020": {
+          "events": 10,
+          "priced_events": 10,
+          "blocked_events": 0,
+          "pnl_40bp": 104256.4,
+          "avg_pnl_per_1m_priced_event": 10425.64,
+          "positive_events": 4,
+          "cash_dividend_scenario": 6000.0,
+          "events_with_rights": 0
+        },
+        "2021": {
+          "events": 10,
+          "priced_events": 10,
+          "blocked_events": 0,
+          "pnl_40bp": -115352.2,
+          "avg_pnl_per_1m_priced_event": -11535.22,
+          "positive_events": 3,
+          "cash_dividend_scenario": 2860.04,
+          "events_with_rights": 2
+        },
+        "2022": {
+          "events": 10,
+          "priced_events": 10,
+          "blocked_events": 0,
+          "pnl_40bp": -267513.2,
+          "avg_pnl_per_1m_priced_event": -26751.32,
+          "positive_events": 2,
+          "cash_dividend_scenario": 12298.44,
+          "events_with_rights": 1
+        },
+        "2023": {
+          "events": 10,
+          "priced_events": 10,
+          "blocked_events": 0,
+          "pnl_40bp": 435060.0,
+          "avg_pnl_per_1m_priced_event": 43506.0,
+          "positive_events": 6,
+          "cash_dividend_scenario": 7293.2,
+          "events_with_rights": 0
+        },
+        "2024": {
+          "events": 9,
+          "priced_events": 9,
+          "blocked_events": 0,
+          "pnl_40bp": 46059.2,
+          "avg_pnl_per_1m_priced_event": 5117.69,
+          "positive_events": 3,
+          "cash_dividend_scenario": 0.0,
+          "events_with_rights": 1
+        },
+        "2025": {
+          "events": 11,
+          "priced_events": 11,
+          "blocked_events": 0,
+          "pnl_40bp": 594681.6,
+          "avg_pnl_per_1m_priced_event": 54061.96,
+          "positive_events": 7,
+          "cash_dividend_scenario": 3325.73,
+          "events_with_rights": 2
+        },
+        "2026": {
+          "events": 7,
+          "priced_events": 7,
+          "blocked_events": 0,
+          "pnl_40bp": 197136.4,
+          "avg_pnl_per_1m_priced_event": 28162.34,
+          "positive_events": 4,
+          "cash_dividend_scenario": 3000.0,
+          "events_with_rights": 0
+        }
+      },
+      "recent_3m": {
+        "first_exit_cutoff": "2026-07-27",
+        "events": 3,
+        "priced_events": 3,
+        "pnl_40bp": 136918.0
+      },
+      "blocking_events": [
+        {
+          "signal": "2019-08-30",
+          "entry": "2019-09-02",
+          "exit": "2019-10-01",
+          "unpriced_tickers": "2316"
+        }
+      ]
+    },
+    "N2": {
+      "events": 84,
+      "fully_priced_events": 84,
+      "blocked_events": 0,
+      "bought_positions": 286,
+      "priced_positions": 286,
+      "unfilled_positions": 134,
+      "positions_with_corporate_actions": 14,
+      "positions_with_rights_unresolved": 2,
+      "positions_with_pretax_cash_dividend_approx": 12,
+      "fixed_notional_per_event": 1000000.0,
+      "aggregate_price_only_pnl_40bp_on_priced_events": 1157940.48,
+      "aggregate_price_only_pnl_80bp_on_priced_events": 974540.96,
+      "average_price_only_pnl_per_priced_1m_event": 13785.01,
+      "average_return_on_fixed_1m_per_priced_event": 0.013785005714285713,
+      "all_84_windows_certified_price_only": true,
+      "positive_event_count": 45,
+      "negative_event_count": 38,
+      "zero_event_count": 1,
+      "median_priced_event_pnl": 2424.9,
+      "total_cash_dividend_only_scenario_on_priced_events": 62632.28,
+      "scenario_cash_only_augmented_pnl_40bp_if_rights_still_unresolved": 1220572.76,
+      "remove_best_positions_pnl_40bp": {
+        "1": 985622.48,
+        "3": 677917.68,
+        "5": 452629.28
+      },
+      "remove_best_events_pnl_40bp": {
+        "1": 924846.48,
+        "3": 519609.68,
+        "5": 242863.28
+      },
+      "mean_capital_fraction_invested_per_event": 0.5458319047619048,
+      "min_event_pnl": -133843.2,
+      "max_event_pnl": 233094.0,
+      "by_year": {
+        "2018": {
+          "events": 8,
+          "priced_events": 8,
+          "blocked_events": 0,
+          "pnl_40bp": 253339.8,
+          "avg_pnl_per_1m_priced_event": 31667.47,
+          "positive_events": 5,
+          "cash_dividend_scenario": 8100.0,
+          "events_with_rights": 0
+        },
+        "2019": {
+          "events": 9,
+          "priced_events": 9,
+          "blocked_events": 0,
+          "pnl_40bp": 241.28,
+          "avg_pnl_per_1m_priced_event": 26.81,
+          "positive_events": 4,
+          "cash_dividend_scenario": 0.0,
+          "events_with_rights": 0
+        },
+        "2020": {
+          "events": 10,
+          "priced_events": 10,
+          "blocked_events": 0,
+          "pnl_40bp": 70439.4,
+          "avg_pnl_per_1m_priced_event": 7043.94,
+          "positive_events": 5,
+          "cash_dividend_scenario": 2444.84,
+          "events_with_rights": 0
+        },
+        "2021": {
+          "events": 10,
+          "priced_events": 10,
+          "blocked_events": 0,
+          "pnl_40bp": -20548.8,
+          "avg_pnl_per_1m_priced_event": -2054.88,
+          "positive_events": 5,
+          "cash_dividend_scenario": 5211.38,
+          "events_with_rights": 0
+        },
+        "2022": {
+          "events": 10,
+          "priced_events": 10,
+          "blocked_events": 0,
+          "pnl_40bp": 22280.6,
+          "avg_pnl_per_1m_priced_event": 2228.06,
+          "positive_events": 5,
+          "cash_dividend_scenario": 18417.75,
+          "events_with_rights": 1
+        },
+        "2023": {
+          "events": 10,
+          "priced_events": 10,
+          "blocked_events": 0,
+          "pnl_40bp": 244764.4,
+          "avg_pnl_per_1m_priced_event": 24476.44,
+          "positive_events": 7,
+          "cash_dividend_scenario": 5598.73,
+          "events_with_rights": 1
+        },
+        "2024": {
+          "events": 9,
+          "priced_events": 9,
+          "blocked_events": 0,
+          "pnl_40bp": -28817.2,
+          "avg_pnl_per_1m_priced_event": -3201.91,
+          "positive_events": 3,
+          "cash_dividend_scenario": 5700.0,
+          "events_with_rights": 0
+        },
+        "2025": {
+          "events": 11,
+          "priced_events": 11,
+          "blocked_events": 0,
+          "pnl_40bp": 228677.8,
+          "avg_pnl_per_1m_priced_event": 20788.89,
+          "positive_events": 6,
+          "cash_dividend_scenario": 17159.58,
+          "events_with_rights": 0
+        },
+        "2026": {
+          "events": 7,
+          "priced_events": 7,
+          "blocked_events": 0,
+          "pnl_40bp": 387563.2,
+          "avg_pnl_per_1m_priced_event": 55366.17,
+          "positive_events": 5,
+          "cash_dividend_scenario": 0.0,
+          "events_with_rights": 0
+        }
+      },
+      "recent_3m": {
+        "first_exit_cutoff": "2026-07-27",
+        "events": 3,
+        "priced_events": 3,
+        "pnl_40bp": 260294.0
+      },
+      "blocking_events": []
+    }
+  },
+  "matched_n0_taiex": {
+    "N0_full_price_100_name_events": 78,
+    "N0_theoretical_equalweight_mean_net_event_return_full_cases": 0.014989003007462637,
+    "N0_sum_theoretical_fixed_1m_pnl_over_full_cases": 1169142.23,
+    "TAIEX_84_price_index_signal_close_to_exit_sum_fixed_1m_pnl": 1641871.85,
+    "TAIEX_84_entry_session_close_to_exit_sum_fixed_1m_pnl": 1357465.55,
+    "TAIEX_84_mean_return_signal_close": 0.019546093475642214,
+    "benchmarks_not_entry_open_execution_equivalent": true,
+    "N0_unpriced_100_name_windows": 6
+  },
+  "random_N3": {
+    "draws": 10000,
+    "complete_price_paths": 7311,
+    "blocked_price_paths": 2689,
+    "complete_price_path_pnl40_p05_p50_p95": [
+      -22141.52,
+      543704.28,
+      1152530.74
+    ],
+    "complete_price_path_median_pnl80": 360857.04,
+    "paths_with_any_corporate_action": 10000,
+    "conditional_on_future_price_completeness": true,
+    "N2_vs_conditioned_random_percentile_EXPLORATORY_ONLY": 0.9510326904664205,
+    "by_year_price_complete_path_diagnostics": {
+      "2018": {
+        "complete_paths": 9515,
+        "conditional_median_fixed_capital_pnl": -3707.2
+      },
+      "2019": {
+        "complete_paths": 9014,
+        "conditional_median_fixed_capital_pnl": 24266.4
+      },
+      "2020": {
+        "complete_paths": 9471,
+        "conditional_median_fixed_capital_pnl": 121876.04
+      },
+      "2021": {
+        "complete_paths": 10000,
+        "conditional_median_fixed_capital_pnl": 35827.0
+      },
+      "2022": {
+        "complete_paths": 8996,
+        "conditional_median_fixed_capital_pnl": -77237.9
+      },
+      "2023": {
+        "complete_paths": 10000,
+        "conditional_median_fixed_capital_pnl": 71962.7
+      },
+      "2024": {
+        "complete_paths": 10000,
+        "conditional_median_fixed_capital_pnl": 21989.4
+      },
+      "2025": {
+        "complete_paths": 10000,
+        "conditional_median_fixed_capital_pnl": 140748.0
+      },
+      "2026": {
+        "complete_paths": 10000,
+        "conditional_median_fixed_capital_pnl": 151625.0
+      }
+    }
+  },
+  "warnings": [
+    "Noncompounded sum of fixed-1m event PnL is not a live terminal equity curve: 84 independent funded windows cannot be collapsed into a 1m continuously invested portfolio.",
+    "Price-only research PnL is not investor total return: dividends are unverified scenarios, rights/stock dividends are unresolved, and potential adjustments/survivorship/PIT require independent work.",
+    "N1 has missing purchased exit price on one event; no formal complete 84-event aggregate. All subsequent fixed-capital events remain interpretable independent of this blocked earlier event.",
+    "N3 conditional complete-path distribution excludes paths based on future exit availability, so not a certified random-null p-value.",
+    "TAIEX lacks index open and is only same-window close-index reference. N0 equalweight 100 is not board-lot executable with NT$1m.",
+    "This is a historical price-only 2018–2026 study with 2025-26 already exposed: NOT genuinely prospective OOS.",
+    "Monthly end-of-month signals through 2026-08 only; source 2026-10 is incomplete.",
+    "PIT electronic membership is sourced from historical archived daily TWSE files, not yet externally certified as-of legal common-stock registry.",
+    "One lot/one-fifth sleeve may produce significant unused cash; no optimizing to improve deployment."
+  ],
+  "paired_n2_minus_n1_price_only": {
+    "matched_priced_events": 83,
+    "N2_sum_pnl_matched": 1157756.88,
+    "N1_sum_pnl_matched": 821837.48,
+    "N2_minus_N1_mean_per_1m_event": 4047.221686746987,
+    "year_block_resampled_5000_mean_difference_CI95": [
+      -10713.295348837208,
+      18569.44738836503
+    ],
+    "bootstrap_is_descriptive_not_prospective": true
+  }
+}
