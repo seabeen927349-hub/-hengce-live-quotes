@@ -1,0 +1,30 @@
+{
+  "READ_FIRST_2026_TAIEX_MATCHED_AUDIT.md": {
+    "sha256": "e7109241d44d365ddf4310cddff6beaf131d3de9df4e77ff5542c124424ae1f3",
+    "bytes": 4199
+  },
+  "summary.json": {
+    "sha256": "1ad27e8dcf0a5c415c3b3675174fa6a0360329c4a508c7e940671119a1b4097a",
+    "bytes": 1651
+  },
+  "2026_n2_vs_taiex_open_to_close_same_windows.csv": {
+    "sha256": "6a6e98e7a6dd965af221178962f80e1ddf89f4a83843723b32725311035e931a",
+    "bytes": 4365
+  },
+  "n2_taiex_matched_benchmark.py": {
+    "sha256": "a72bddca19f77b7fae91ab6796acbd967c3f443b5aa5a20c60335c5eebc56dbf",
+    "bytes": 5471
+  },
+  "test_n2_taiex_matched_benchmark.py": {
+    "sha256": "38f1794e0d393c333c76e1cb7cfdbabd51bf87bdb3c958685ca36c206995d100",
+    "bytes": 1560
+  },
+  "run_stdout.txt": {
+    "sha256": "1ad27e8dcf0a5c415c3b3675174fa6a0360329c4a508c7e940671119a1b4097a",
+    "bytes": 1651
+  },
+  "tests_stdout.txt": {
+    "sha256": "40bfd4344a3eb1c606998014b2da30a6e67c7e7643e444298223a1d22650e0c7",
+    "bytes": 99
+  }
+}
