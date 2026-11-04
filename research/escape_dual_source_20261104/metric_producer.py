@@ -168,7 +168,10 @@ def run(mother, membership, out, through):
     turnU = T.where(U).sum(axis=1, min_count=1)
     turnshare = protected_div(turnE,turnU)
     turnchange20 = turnshare-turnshare.shift(1).rolling(20,min_periods=20).mean()
-    marginE = MB.where(E).sum(axis=1,min_count=1)
+    # Margin absence is not zero; the sector sum is unverified unless all
+    # observed PIT electronics securities have source evidence for this session.
+    margin_coverage = (MB.notna() & E).sum(axis=1).div(E.sum(axis=1).where(E.sum(axis=1)>0))
+    marginE = MB.where(E).sum(axis=1,min_count=1).where(margin_coverage==1)
     marginchange20 = marginE / marginE.shift(20).where(marginE.shift(20)>0) - 1
     rets = C.pct_change(fill_method=None).where(U)
     # Correlation limited to as-of E cohort, 20 actual sessions and pairwise min 15 returns.
@@ -209,8 +212,12 @@ def run(mother, membership, out, through):
       'last_day_metric_nonnull':int(outdf.iloc[-1].notna().sum()),
       'last_day_missing_metrics':outdf.columns[outdf.iloc[-1].isna()].tolist(),
       'last_day_5d_totalnet_e_coverage':float((stock_valid & E).tail(5).sum().sum()/E.tail(5).sum().sum()),
-      'last_day_margin_e_coverage':float((MB.notna() & E).iloc[-1].sum()/E.iloc[-1].sum()),
+      'last_day_margin_e_coverage':float(margin_coverage.iloc[-1]),
+      'margin_complete_case_days':int((margin_coverage==1).sum()),
+      'formal_data_gate_status':'BLOCKED_PIT_U_AND_SOURCE_REVISIONS_UNRESOLVED',
       'date_missing_after_source':[],
+      'formal_source_revision_verified':False,
+      'pit_u_source_independently_verified':False,
       'trading_authority':'NONE','formal_escape_promoted':False,
     }
     out.mkdir(parents=True,exist_ok=True)
@@ -224,9 +231,11 @@ def run(mother, membership, out, through):
       'asof_taipei':str(days.max().date())+'T23:59:59+08:00',
       'data_gate':{
           'freshness_pass':True, # only for this historical as-of date, NOT now
-          'integrity_pass':sha=='6f7494b46af07a11f68429981b3ec666ad0a520ed9b51ae0150f4c34435639e7',
-          'pit_pass':not membership_missing,
-          'universe_pass':not membership_missing,
+          # A correct file hash validates bytes, NOT independent source
+          # revisions, PIT U security status, or the absent margin metric.
+          'integrity_pass':False,
+          'pit_pass':False,
+          'universe_pass':False,
       },
       'metrics_history':{col:[None if pd.isna(v) else float(v) for v in outdf[col]] for col in METRICS},
       'governance':{'authority':'RESEARCH_HISTORICAL_ONLY','not_current':True,'no_trading':True,'no_eod_overwrite':True},
