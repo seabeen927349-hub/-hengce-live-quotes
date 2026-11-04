@@ -19,7 +19,7 @@ This file is a **governance/source-audit record only**, not a feature proposal, 
 - Fields: date, industry, sub_industry, stock_count, trading_volume, trading_money, trading_money_pct.
 - `sub_industry=""` denotes industry-chain total; one company can belong to multiple subindustries/chains, hence summing subindustry or chain percentages can double-count.
 - **Historical values use the present-day industry-chain classification.** Historical publication-versioning and first-public timestamp of this derived dataset are **not verified**. This creates classification look-ahead risk. A paid account is asserted by the user but specific live API entitlement/token execution was not tested by this audit.
-- Source: https://finmind.github.io/llms-full.txt
+- Source: https://finmind.github.io/tutor/TaiwanMarket/Chip/
 
 ## Existing HENGCE research constraints (checked)
 
