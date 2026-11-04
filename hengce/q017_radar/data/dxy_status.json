@@ -3,12 +3,12 @@
   "source": "Yahoo Finance chart query1.finance.yahoo.com / DX-Y.NYB",
   "symbol": "DX-Y.NYB",
   "latest_session": "2026-11-03",
-  "latest_close": 101.37100219726562,
+  "latest_close": 101.45899963378906,
   "five_sessions_back": "2026-10-27",
   "five_sessions_back_close": 102.31999969482422,
-  "dxy_5d": -0.00927479965196476,
+  "dxy_5d": -0.008414777791273864,
   "rows": 211,
   "stale_days": 1,
-  "refreshed_at_taipei": "2026-11-04T09:40:24.118657+08:00",
+  "refreshed_at_taipei": "2026-11-04T10:19:19.315913+08:00",
   "causal_rule": "completed weekday sessions strictly before Taiwan trade date; weekend/current pseudo-bars excluded"
 }
