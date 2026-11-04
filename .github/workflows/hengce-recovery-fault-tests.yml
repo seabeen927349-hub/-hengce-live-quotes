@@ -20,10 +20,10 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install requests==2.32.5 openpyxl==3.1.5 PyYAML==6.0.3
-      - name: Exact-base inventory and operational hard-lock integration
+      - name: Exact-base inventory and retired-Q017 no-operation guard
         run: |
           python -B tests/engineering/test_recovery_workflows.py
-          python -B tests/engineering/test_q017_operational_boundary.py
+          python -B tests/engineering/test_q017_retirement_20261105.py
       - name: Reproduce pinned pre-hardening gaps offline
         run: |
           set -euo pipefail
