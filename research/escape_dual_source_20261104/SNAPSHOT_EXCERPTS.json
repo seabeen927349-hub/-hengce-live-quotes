@@ -1,0 +1,137 @@
+{
+  "observation_date": "2026-11-04",
+  "provenance": {
+    "fugle": "Connected Fugle_Stock get_realtime_quote 2026-11-04; total.time 13:30 Taiwan; quote intraday is not EOD",
+    "finmind": "https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id={ticker}&start_date=2026-11-03&end_date=2026-11-04",
+    "twse": "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?date=20261104&stockNo={ticker}&response=json",
+    "twse_t86_current": "https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=20261103&selectType=24",
+    "github_archived_t86": "eod/20261103/institutional_2.csv",
+    "caveat": "Tool-observed field excerpts, not raw response snapshots. Current T86 revision timeline unverified."
+  },
+  "stocks": [
+    {
+      "ticker": "2330",
+      "fugle_quote": {
+        "date": "2026-11-04",
+        "open": 2320,
+        "high": 2320,
+        "low": 2235,
+        "close": 2260,
+        "trade_volume_raw": 45312,
+        "trade_value_twd": 102853720000
+      },
+      "finmind_eod": {
+        "date": "2026-11-04",
+        "open": 2320,
+        "high": 2320,
+        "low": 2235,
+        "close": 2260,
+        "volume_shares": 53552371,
+        "turnover_twd": 121552332520
+      },
+      "twse_eod": {
+        "date": "2026-11-04",
+        "open": 2320,
+        "high": 2320,
+        "low": 2235,
+        "close": 2260,
+        "volume_shares": 53552371,
+        "turnover_twd": 121552332520
+      },
+      "institutional_20261103": {
+        "github_archived_twse_t86": {
+          "foreign_net": -11703020,
+          "trust_net": 2339135,
+          "dealer_net": 2658082,
+          "total_net": -6705803
+        },
+        "current_twse_t86": {
+          "foreign_net": -11703020,
+          "trust_net": 2345645,
+          "dealer_net": 2658082,
+          "total_net": -6699293
+        },
+        "finmind_t86_view": {
+          "foreign_net": -11703020,
+          "trust_net": 2345645,
+          "dealer_net": 2658082,
+          "total_net": -6699293
+        }
+      }
+    },
+    {
+      "ticker": "2317",
+      "fugle_quote": {
+        "date": "2026-11-04",
+        "open": 247.5,
+        "high": 247.5,
+        "low": 236.5,
+        "close": 240,
+        "trade_volume_raw": 59931,
+        "trade_value_twd": 14404477000
+      },
+      "finmind_eod": {
+        "date": "2026-11-04",
+        "open": 247.5,
+        "high": 247.5,
+        "low": 236.5,
+        "close": 240,
+        "volume_shares": 61567651,
+        "turnover_twd": 14797145124
+      },
+      "twse_eod": {
+        "date": "2026-11-04",
+        "open": 247.5,
+        "high": 247.5,
+        "low": 236.5,
+        "close": 240,
+        "volume_shares": 61567651,
+        "turnover_twd": 14797145124
+      }
+    },
+    {
+      "ticker": "2454",
+      "fugle_quote": {
+        "date": "2026-11-04",
+        "open": 3740,
+        "high": 3760,
+        "low": 3455,
+        "close": 3715,
+        "trade_volume_raw": 13849,
+        "trade_value_twd": 50298260000
+      },
+      "finmind_eod": {
+        "date": "2026-11-04",
+        "open": 3740,
+        "high": 3760,
+        "low": 3455,
+        "close": 3715,
+        "volume_shares": 15800007,
+        "turnover_twd": 57332748090
+      },
+      "twse_eod": {
+        "date": "2026-11-04",
+        "open": 3740,
+        "high": 3760,
+        "low": 3455,
+        "close": 3715,
+        "volume_shares": 15800007,
+        "turnover_twd": 57332748090
+      },
+      "institutional_20261103": {
+        "github_archived_twse_t86": {
+          "foreign_net": -3827239,
+          "trust_net": 475640,
+          "dealer_net": 7255,
+          "total_net": -3344344
+        },
+        "current_twse_t86": {
+          "foreign_net": -3827239,
+          "trust_net": 472640,
+          "dealer_net": 7255,
+          "total_net": -3347344
+        }
+      }
+    }
+  ]
+}
