@@ -1,0 +1,73 @@
+{
+  "system": "HENGCE",
+  "artifact": "ESCAPE_V247_17_METRIC_ROOT_CAUSE_AUDIT_20261104",
+  "recorded_at_date_taipei": "2026-11-04",
+  "scope": "READ_ONLY_CANONICAL_DATA_AND_GITHUB_CODE_AUDIT",
+  "repository_branch": "research/finmind-escape-admission-20261104",
+  "main_head_checked": "b53e5fd08755f0b4b3e6e640fabb85c5fad60e06",
+  "authority": "RESEARCH_DATA_READINESS_ONLY_NO_FORMAL_ESCAPE_NO_MODEL_REWEIGHT_NO_TRADING",
+  "evidence": {
+    "canonical_date": "2026-11-03",
+    "canonical_state": "/HENGCE_CANONICAL/HENGCE_CANONICAL_STATE.json",
+    "file_sha256_matched_expected": {
+      "price": "b3eacda3370a855517f694879d7c092e85ed08b3d2191e3cb4f822194aabda9a",
+      "institutional": "1ad0815df19df5e5f0c7e43530538e0597065831568b88782ed42f174bcf7906",
+      "margin": "4e87099ee9371e77f0c2ce574a7baa1cadea08315f960338301365a03fc582f6",
+      "historical_mother": "6f7494b46af07a11f68429981b3ec666ad0a520ed9b51ae0150f4c34435639e7"
+    },
+    "sessions_2026": 200,
+    "original_vessel": {
+      "price_rows": 215836,
+      "institutional_rows": 213488,
+      "margin_rows": 209499
+    },
+    "last_day": {
+      "price_rows": 1092,
+      "institutional_rows": 1080,
+      "margin_rows": 1062,
+      "price_without_institutional": 12,
+      "price_without_margin": 31,
+      "rows_present_in_all_three": 1050
+    },
+    "historical_mother": {
+      "total_rows": 1026627,
+      "sessions": 2148,
+      "pre_2026_sessions": 1948,
+      "note": "2018-2025 historical portion primarily electronics price observations; not full-market 17-metric evidence"
+    },
+    "named_metric_count": 17,
+    "detector": "scripts/HENGCE_ESCAPE_FEATURE_DETECTOR_V1.py",
+    "engine": "scripts/HENGCE_ESCAPE_STATE_ENGINE_V2.py",
+    "metric_contract": "hengce/HENGCE_ESCAPE_METRIC_CONTRACT_V1.json",
+    "detector_minimum": "17 aligned histories; >=46 aligned sessions; >=40 valid prior sessions for baseline; full 60-session baseline used when available",
+    "code_inventory": "main recursive tree enumerated (1694 entries); detector, state engine, blackbox and FinMind shadow present; no complete PIT 17-series packet builder found",
+    "pit_e_cohort": "Historical TWSE MI_INDEX same-date type 13 / 24-31 path verified in industry_supply_chain_lead_lag research; historical panel not built",
+    "pit_u_cohort": "No fully verified date-correct TWSE listed-common historical membership panel in audited canonical CSVs",
+    "finmind_shadow": "PIT intraday descriptive context available; not equivalent to rolling frozen 17-metric EOD evidence",
+    "escape_library_state": "PENDING_FIRST_VERIFIED_V2_4_7_RUN at latest checked state"
+  },
+  "findings": [
+    "Canonical EOD three-leg source data present and SHA256 matched; not a source-ingestion outage.",
+    "Exact daily PIT electronics/non-electronics cohort panel unavailable in audited inputs.",
+    "PIT all-listed-common universe eligibility panel not verified historically.",
+    "No full 17-metric compute/align/release pipeline found in audited code.",
+    "Thus cannot assert detector pass, state engine pass or hash-chain evidence for today.",
+    "Historical mother before 2026 cannot substantiate full-market cross-cycle escape metrics."
+  ],
+  "caveats": [
+    "FinMind and Fugle real-time permissions are unrelated to a missing post-close metrics compiler.",
+    "FinMind full-market intraday monitoring cannot be silently substituted for institutional/margin EOD.",
+    "TDCC weekly ownership is separate; it is not one of frozen detector's 17 required series.",
+    "Q017 is not the Escape execution source.",
+    "Readiness audit does not validate future market predictive performance."
+  ],
+  "mandatory_sequence": [
+    "Build same-date PIT electronics E/N panel through governed TWSE source and PIT U eligibility, with duplicate, mismatch and missing audits.",
+    "Freeze date/ticker joins, missingness rules, source release timestamps, effective membership and calendar.",
+    "Compute all 17 frozen metric histories through canonical latest EOD date with contract hash, no lookahead and proper minimum baseline.",
+    "Run untouched detector and state engine with audited data_gate.",
+    "Append only real verified EOD_FORMAL state to existing Escape blackbox; otherwise report UNVERIFIED.",
+    "Separately preregister forward-risk evaluations before claims of predictive utility."
+  ],
+  "decision": "DATA_CAPABILITY_AUDITED_FULL_17_METRIC_RELEASE_BLOCKED_NO_FORMAL_ESCAPE_STATE_OR_SIGNALS"
+}
