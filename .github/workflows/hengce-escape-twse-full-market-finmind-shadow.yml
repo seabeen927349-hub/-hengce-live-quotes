@@ -120,7 +120,7 @@ jobs:
           assert status['single_name_bridge']['private_quote_consumer_connected'] is False
           assert status['single_name_bridge']['model_authority_created'] is False
           assert status['single_name_bridge']['trading_authority_created'] is False
-          assert status['single_name_bridge']['membership_status'] in ('VALIDATED_CURRENT_EQUITIES', 'BLOCKED_MEMBERSHIP_UNVERIFIED')
+          assert status['single_name_bridge']['membership_status'] in ('VALIDATED_OFFICIAL_CURRENT_ROSTERS', 'BLOCKED_MEMBERSHIP_UNVERIFIED')
           assert status['single_name_bridge']['membership_rows_persisted'] is False
           assert status['single_name_bridge']['public_market_data_relay'] is False
           assert status['stale_rows_neutralized_as_zero'] is False
