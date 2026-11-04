@@ -7,6 +7,7 @@ name: HENGCE Escape TWSE Common FinMind Shadow
     paths:
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
       - 'scripts/hengce_finmind_single_name_bridge.py'
+      - 'scripts/hengce_finmind_single_name_membership.py'
       - 'scripts/hengce_escape_intraday_monitor_adapter.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
@@ -16,6 +17,7 @@ name: HENGCE Escape TWSE Common FinMind Shadow
     paths:
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
       - 'scripts/hengce_finmind_single_name_bridge.py'
+      - 'scripts/hengce_finmind_single_name_membership.py'
       - 'scripts/hengce_escape_intraday_monitor_adapter.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
@@ -56,9 +58,12 @@ jobs:
           python -m py_compile scripts/hengce_twse_session_status_probe.py
           python -m py_compile scripts/hengce_escape_finmind_twse_common_shadow.py
           python -m py_compile scripts/hengce_finmind_single_name_bridge.py
+          python -m py_compile scripts/hengce_finmind_single_name_membership.py
           python -m py_compile scripts/hengce_escape_intraday_monitor_adapter.py
       - name: Test in-memory single-name FinMind bridge (synthetic data only)
         run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_single_name_bridge.py' -v
+      - name: Test quote-only multi-venue membership (synthetic data only)
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_single_name_membership.py' -v
       - name: Build non-raw aggregate shadow context
         shell: bash
         run: |
@@ -115,6 +120,9 @@ jobs:
           assert status['single_name_bridge']['private_quote_consumer_connected'] is False
           assert status['single_name_bridge']['model_authority_created'] is False
           assert status['single_name_bridge']['trading_authority_created'] is False
+          assert status['single_name_bridge']['membership_status'] in ('VALIDATED_CURRENT_EQUITIES', 'BLOCKED_MEMBERSHIP_UNVERIFIED')
+          assert status['single_name_bridge']['membership_rows_persisted'] is False
+          assert status['single_name_bridge']['public_market_data_relay'] is False
           assert status['stale_rows_neutralized_as_zero'] is False
           assert status['formal_escape_authority'] is False
           assert status['formal_eod_authority'] is False
