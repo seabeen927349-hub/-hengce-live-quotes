@@ -16,7 +16,7 @@
   "formal_eod_state_creation": false,
   "formal_escape_state_creation": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-04T15:22:58.628229+08:00",
+  "generated_at_taipei": "2026-11-04T15:27:01.947540+08:00",
   "industry": {
     "01": {
       "advance_count": 2,
@@ -590,7 +590,7 @@
   "model_authority": false,
   "monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
   "one_day_change_rate_may_substitute_locked_ew_return": false,
-  "payload_sha256": "8e3c0b9d42805ad2f7fde5fa4347e8336d014f39eb0f8e4cc954e3648078ba33",
+  "payload_sha256": "cb2349080a11b0240a23ce833bf1b89afd5b04bb6467455ba93cc24ead861bd4",
   "per_security_rows_persisted": false,
   "price_liquidity_shadow_only": true,
   "raw_finmind_rows_persisted": false,
