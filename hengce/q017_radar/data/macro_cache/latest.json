@@ -3,7 +3,7 @@
   "system": "HENGCE",
   "module": "Q017_MORNING_MACRO_CACHE",
   "trade_date": "2026-11-04",
-  "generated_at_taipei": "2026-11-04T10:19:19.521374+08:00",
+  "generated_at_taipei": "2026-11-04T10:45:04.848711+08:00",
   "status": "PASS",
   "authority": "Q017_PREMARKET_INPUT_CACHE_ONLY_NOT_MARKET_OBSERVATION",
   "causal_policy": "SOX_AND_DXY_COMPLETED_SESSIONS_STRICTLY_BEFORE_TAIWAN_TRADE_DATE",
@@ -13,7 +13,7 @@
     "latest_session": "2026-11-03",
     "rows": 211,
     "stale_days": 1,
-    "refreshed_at_taipei": "2026-11-04T10:19:19.313975+08:00"
+    "refreshed_at_taipei": "2026-11-04T10:45:04.752804+08:00"
   },
   "sox_features": {
     "session": "2026-11-03",
@@ -25,25 +25,25 @@
     "source": "Yahoo Finance chart query1.finance.yahoo.com / DX-Y.NYB",
     "symbol": "DX-Y.NYB",
     "latest_session": "2026-11-03",
-    "latest_close": 101.45899963378906,
+    "latest_close": 101.3759994506836,
     "five_sessions_back": "2026-10-27",
     "five_sessions_back_close": 102.31999969482422,
-    "dxy_5d": -0.008414777791273864,
+    "dxy_5d": -0.009225960193082194,
     "rows": 211,
     "stale_days": 1,
-    "refreshed_at_taipei": "2026-11-04T10:19:19.315913+08:00",
+    "refreshed_at_taipei": "2026-11-04T10:45:04.754408+08:00",
     "causal_rule": "completed weekday sessions strictly before Taiwan trade date; weekend/current pseudo-bars excluded"
   },
   "files": {
     "sox_csv": "hengce/q017_radar/data/sox_2026.csv",
     "sox_csv_sha256": "84044b3703d181f7a77ebf027edcc4e5afb308c128dac094947fe6ca2ec78d5d",
     "dxy_csv": "hengce/q017_radar/data/dxy_2026.csv",
-    "dxy_csv_sha256": "3ecde7c9c0e2eaecdddcb59bcb4c68aca1e07e7cc9439803cec0246452d00cd8"
+    "dxy_csv_sha256": "6059c380133f83349daf5b3aa5f3db83e91fb2b588e0d384227303e34a85d6c4"
   },
   "observation_policy": {
     "contains_0901_quotes": false,
     "may_be_prepared_before_market_open": true,
     "cannot_substitute_for_q017_0901_observation": true
   },
-  "cache_sha256": "bd8dfa795418207c585c6ef7d55ba3993f8f271cbb75c25c7843f85516458cbc"
+  "cache_sha256": "b8a4dcb9a44dc6adba8ddf85e8f94b439897993259d3fdea83bcc9ff7eeab362"
 }
