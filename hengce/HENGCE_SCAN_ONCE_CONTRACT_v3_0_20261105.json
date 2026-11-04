@@ -1,0 +1,19 @@
+{
+  "contract_id": "HENGCE_SCAN_ONCE_CONTRACT_v3_0_20261105",
+  "status": "NO_ACTIVE_STRATEGY",
+  "effective_date": "2026-11-05",
+  "command": "衡策掃一次",
+  "active_strategy_count": 0,
+  "active_strategy": null,
+  "candidate_sources": [],
+  "selection_policy": "NONE",
+  "return_policy": "ZERO_ROWS_FAIL_CLOSED",
+  "may_generate_buy_sell_signal": false,
+  "may_compute_q017": false,
+  "may_restore_q017": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "runtime_router": "scripts/hengce_scan_once_router.py",
+  "retirement_lock": "hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
+  "underlying_data_collector_authority": "UNCHANGED"
+}

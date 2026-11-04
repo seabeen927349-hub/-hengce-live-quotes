@@ -1,0 +1,16 @@
+{
+  "system": "HENGCE",
+  "artifact": "ACTIVE_STRATEGY_AUTHORITY",
+  "effective_date": "2026-11-05",
+  "status": "NO_ACTIVE_SELECTION_STRATEGY",
+  "active_strategy_count": 0,
+  "active_strategy": null,
+  "candidate_sources": [],
+  "selection_authority": false,
+  "signal_authority": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "q017": "RETIRED_ALL_OPERATIONAL_PATHS",
+  "retirement_lock": "hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
+  "independent_data_collection": "UNCHANGED"
+}

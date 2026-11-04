@@ -1,0 +1,19 @@
+{
+  "contract_id": "HENGCE_TOTAL_SCOREBOARD_CONTRACT_v1_3_20261105",
+  "status": "NO_ACTIVE_SELECTION_STRATEGY",
+  "effective_date": "2026-11-05",
+  "active_operational_families": [],
+  "retired_operational_families": [
+    "Q017_CANONICAL_FAMILY",
+    "E2_PROFIT_MAX_FAMILY",
+    "V43_FAMILY",
+    "X_FAMILY",
+    "NEXTDAY_FAMILY"
+  ],
+  "score_policy": "ZERO_NO_ACTIVE_FAMILY",
+  "attention_score_cap": 0,
+  "entry_authority": false,
+  "display_historical_rankings_as_live": false,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false
+}
