@@ -61,14 +61,14 @@ def lookup(
     now: datetime,
     allowed_tickers: set[str],
 ) -> tuple[EphemeralQuote | None, str]:
-    """Lookup ANY approved TWSE stock without a second FinMind request.
+    """Lookup ANY approved Taiwan equity without a second FinMind price request.
 
     Validation is fail-closed. No price fallback; no trading-model authority.
     """
     if not isinstance(ticker, str) or not TICKER.fullmatch(ticker):
         return None, "INVALID_TICKER"
     if ticker not in allowed_tickers:
-        return None, "OUTSIDE_GOVERNED_TWSE_UNIVERSE"
+        return None, "OUTSIDE_GOVERNED_EQUITY_UNIVERSE"
     if now.tzinfo is None:
         return None, "NOW_MISSING_TIMEZONE"
     row = snapshot_map.get(ticker)
@@ -116,7 +116,7 @@ def public_status(
         "schema": "HENGCE_FINMIND_SINGLE_NAME_IN_MEMORY_V1",
         "source": "EXISTING_FINMIND_TAIWAN_STOCK_TICK_SNAPSHOT_VESSEL",
         "single_fetch_reused": True,
-        "query_capability": "ANY_GOVERNED_TWSE_COMMON_STOCK",
+        "query_capability": "ANY_VERIFIED_TWSE_TPEX_EMERGING_EQUITY",
         "ttl_seconds": HENGCE_LIVE_TTL_SECONDS,
         "watch_status": statuses,
         "ready_count": sum(s == "READY_IN_RUNNER_MEMORY_ONLY" for s in statuses.values()),
