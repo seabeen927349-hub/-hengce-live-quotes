@@ -1,0 +1,65 @@
+{
+  "system": "HENGCE",
+  "artifact": "FINMIND_ESCAPE_ADMISSION_AUDIT_20261104",
+  "audit_date_taipei": "2026-11-04",
+  "authority": "RESEARCH_SHADOW_MONITOR_ONLY_NO_FORMAL_ESCAPE_NO_SELECTION_NO_TRADING",
+  "source": {
+    "pipeline": ".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml",
+    "run_id": 41761072226,
+    "run_url": "https://github.com/seabeen927349-hub/-hengce-live-quotes/actions/runs/41761072226",
+    "run_event": "pull_request",
+    "run_branch": "research/finmind-single-name-bridge-20261104",
+    "run_conclusion": "success",
+    "artifact_id": 13291070119,
+    "artifact_name": "hengce-finmind-twse-common-monitor",
+    "captured_at_taipei": "2026-11-04T10:31:04.860493+08:00",
+    "latest_vendor_timestamp": "2026-11-04 10:30:59.806420",
+    "published_to_main": false
+  },
+  "source_digest": {
+    "context_sha256": "827b32e49218efba29599cf743fde23d50777c3f3319850a10798d614a98943f",
+    "monitor_sha256": "707c3cfb06663bfe1dd4e3d1a06cee2e7a44c46f7f35fed093d88843ffe5f6b3"
+  },
+  "diagnostic": {
+    "universe": "TWSE_LISTED_COMMON_EX_TDR_EX_TPEX",
+    "eligible_count": 1088,
+    "quote_rows_covered": 1088,
+    "current_date_metric_rows": 1045,
+    "noncurrent_or_stale_metrics": 43,
+    "advancing": 350,
+    "declining": 589,
+    "unchanged": 106,
+    "net_breadth": -239,
+    "equal_weight_change_rate_vendor_units": -0.23355981,
+    "session_context_count": 1088,
+    "missing_as_zero_forbidden": true
+  },
+  "verification": {
+    "transport": "PASS",
+    "coverage": "PASS",
+    "timestamp_binding": "PASS",
+    "self_digest_context": "PASS",
+    "self_digest_monitor": "PASS",
+    "aggregate_count_reconciliation": "PASS",
+    "source_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+    "formal_metric_history_17": "NOT_PRESENT_IN_AGGREGATE_SHADOW",
+    "formal_escape_state": "UNVERIFIED",
+    "formal_daily_close_20261104": "NOT_VERIFIED_BY_THIS_SOURCE",
+    "selection_authority": false,
+    "trading_authority": false
+  },
+  "missing_gates": [
+    "Verified as-of 17-metric history packet with >=40 valid prior observations and adequate rolling windows, frozen source/member dates",
+    "Frozen Escape detector PASS with complete freshness/integrity/PIT/universe gates",
+    "Frozen Escape state engine PASS; no substitution of single-day FinMind change_rate for 20-day equal-weight return",
+    "Match fresh formal 2026-11-04 EOD three legs and latest valid TDCC on their distinct clocks",
+    "Promotion/approval of source lineage if and only if existing governance permits"
+  ],
+  "hard_rules": [
+    "FinMind shadow is monitor-only; never auto-promote into frozen Escape/Selection/Capital.",
+    "No current-session health guarantee after the 10:31 capture.",
+    "No personal trading signal, no Q017 legacy fallback.",
+    "No raw licensed or per-security FinMind rows committed.",
+    "No data-filling from ad-hoc providers or additional mother."
+  ]
+}
