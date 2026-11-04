@@ -8,6 +8,7 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
       - 'scripts/hengce_finmind_single_name_bridge.py'
       - 'scripts/hengce_finmind_single_name_membership.py'
+      - 'scripts/hengce_finmind_private_delivery.py'
       - 'scripts/hengce_escape_intraday_monitor_adapter.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
@@ -18,6 +19,7 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'
       - 'scripts/hengce_finmind_single_name_bridge.py'
       - 'scripts/hengce_finmind_single_name_membership.py'
+      - 'scripts/hengce_finmind_private_delivery.py'
       - 'scripts/hengce_escape_intraday_monitor_adapter.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
@@ -41,6 +43,12 @@ jobs:
     timeout-minutes: 5
     env:
       FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+      # Never expose private quote credentials to pull_request jobs.
+      # Empty/unprovisioned values mean private delivery is strictly disabled.
+      HENGCE_PRIVATE_QUOTE_ENDPOINT: ${{ github.event_name != 'pull_request' && secrets.HENGCE_PRIVATE_QUOTE_ENDPOINT || '' }}
+      HENGCE_PRIVATE_QUOTE_BEARER: ${{ github.event_name != 'pull_request' && secrets.HENGCE_PRIVATE_QUOTE_BEARER || '' }}
+      HENGCE_PRIVATE_QUOTE_HMAC_KEY: ${{ github.event_name != 'pull_request' && secrets.HENGCE_PRIVATE_QUOTE_HMAC_KEY || '' }}
+      HENGCE_PRIVATE_QUOTE_LICENSED_PRIVATE_USE_APPROVED: ${{ github.event_name != 'pull_request' && vars.HENGCE_PRIVATE_QUOTE_LICENSED_PRIVATE_USE_APPROVED || '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,11 +67,14 @@ jobs:
           python -m py_compile scripts/hengce_escape_finmind_twse_common_shadow.py
           python -m py_compile scripts/hengce_finmind_single_name_bridge.py
           python -m py_compile scripts/hengce_finmind_single_name_membership.py
+          python -m py_compile scripts/hengce_finmind_private_delivery.py
           python -m py_compile scripts/hengce_escape_intraday_monitor_adapter.py
       - name: Test in-memory single-name FinMind bridge (synthetic data only)
         run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_single_name_bridge.py' -v
       - name: Test quote-only multi-venue membership (synthetic data only)
         run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_single_name_membership.py' -v
+      - name: Test private quote delivery (synthetic data only, no requests)
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_private_delivery.py' -v
       - name: Build non-raw aggregate shadow context
         shell: bash
         run: |
@@ -117,12 +128,25 @@ jobs:
           assert status['per_security_rows_persisted'] is False
           assert status['single_name_bridge']['per_security_quote_values_persisted'] is False
           assert status['single_name_bridge']['paid_quote_values_in_public_repo'] is False
-          assert status['single_name_bridge']['private_quote_consumer_connected'] is False
+          assert status['single_name_bridge']['private_quote_consumer_connected'] == status['single_name_bridge']['private_delivery']['delivered']
+          assert status['single_name_bridge']['private_delivery']['public_quote_values_persisted'] is False
+          assert status['single_name_bridge']['private_delivery']['trading_authority'] is False
           assert status['single_name_bridge']['model_authority_created'] is False
           assert status['single_name_bridge']['trading_authority_created'] is False
           assert status['single_name_bridge']['membership_status'] in ('VALIDATED_OFFICIAL_CURRENT_ROSTERS', 'BLOCKED_MEMBERSHIP_UNVERIFIED')
           assert status['single_name_bridge']['membership_rows_persisted'] is False
           assert status['single_name_bridge']['public_market_data_relay'] is False
+          assert status['single_name_bridge']['private_delivery']['status'] in (
+              'NOT_CONFIGURED', 'CONFIGURATION_INCOMPLETE',
+              'REJECTED_NONPRIVATE_OR_INSECURE_ENDPOINT',
+              'REJECTED_WEAK_PRIVATE_CREDENTIALS', 'NOT_LICENSE_APPROVED',
+              'BLOCKED_MEMBERSHIP_UNVERIFIED', 'PRIVATE_DELIVERY_FAILED',
+              'PRIVATE_RECEIVER_REJECTED', 'DELIVERED_PRIVATE_ONLY',
+              'NO_FRESH_QUOTE_FAIL_CLOSED', 'BLOCKED_OVERSIZE_PAYLOAD',
+              'BLOCKED_NAIVE_CLOCK')
+          if '${{ github.event_name }}' == 'pull_request':
+              assert status['single_name_bridge']['private_delivery']['status'] == 'NOT_CONFIGURED'
+
           assert status['stale_rows_neutralized_as_zero'] is False
           assert status['formal_escape_authority'] is False
           assert status['formal_eod_authority'] is False
