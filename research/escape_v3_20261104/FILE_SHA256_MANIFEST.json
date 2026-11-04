@@ -24,6 +24,10 @@
       "sha256": "6f9e2dbb89191960d7c3da48527376b5826170abccb7aaffd7c955220b10b75c",
       "bytes": 3461
     },
+    "research/escape_v3_20261104/HANDOFF.json": {
+      "sha256": "24ad3d3815abeffb9bba5b861a3679584ff8c43a1d14650bf9850a21fa93efda",
+      "bytes": 1489
+    },
     "research/escape_v3_20261104/README.md": {
       "sha256": "6836694ee42e33e63573089a389075411311f8268cfd93587742dbc8334f09cb",
       "bytes": 6289
@@ -139,6 +143,7 @@
   },
   "excluded": [
     "FILE_SHA256_MANIFEST.json (self-reference)",
+    "COMMIT_RECEIPT.json (post-commit receipt)",
     "work/",
     "__pycache__/"
   ]

@@ -1,0 +1,36 @@
+{
+  "status": "COMPLETE_NO_GO",
+  "research_branch": "research/escape-v3-20261104",
+  "base_head": "d8feaf0a962b89acc0fb7ca82a1390d2c8f7e5e2",
+  "commits": {
+    "authority_and_preregistration": "a5c0a9c4f8b4ec5c04b663a705a980227dd4f840",
+    "frozen_executable_before_outcomes": "a3bf7349d79f6e17fc61cd3e5d42930dce1e9d00",
+    "results_and_tests": "f4eca90e75b726b414c421895490c17060f0bb5f"
+  },
+  "engineering": "PASS_BOUNDED_STATE_RELEASE",
+  "predictive": "NO-GO",
+  "formal": "NO-GO",
+  "trading_authority": "NONE",
+  "automated_tests": {
+    "passed": 31,
+    "failed": 0
+  },
+  "full_reproduction": "PASS",
+  "parameter_searches": 0,
+  "prospective_oos": false,
+  "main_modified": false,
+  "frozen_files_modified": false,
+  "canonical_modified": false,
+  "scope_comparison": "23 added paths only; no modifications or deletions versus base at results commit",
+  "remaining_limitations": [
+    "PIT U security status",
+    "margin eligibility membership",
+    "historical source revisions",
+    "corporate-action-adjusted returns",
+    "genuine forward-recorded outcomes"
+  ],
+  "next_action": "Archive predictor as NO-GO. No additional retuning or deployment authorized by results. Preserve engineering and evidence.",
+  "artifact_manifest": "FILE_SHA256_MANIFEST.json",
+  "artifact_inputs": "SOURCE_INDEX.json",
+  "final_commit_receipt": "Final handoff commit is reported in delivery response and package COMMIT_RECEIPT.json; excluded from hash manifest to avoid self-reference."
+}
