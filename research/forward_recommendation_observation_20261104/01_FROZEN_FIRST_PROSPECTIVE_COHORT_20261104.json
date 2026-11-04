@@ -1,0 +1,92 @@
+{
+  "system": "HENGCE",
+  "artifact": "FIRST_PROSPECTIVE_RECOMMENDATION_OBSERVATION_COHORT",
+  "version": "20261104_v1",
+  "registration_time_taipei": "2026-11-04T12:02:15+08:00",
+  "authority": "RESEARCH_OBSERVATION_ONLY_NO_TRADING_OR_MODEL_PROMOTION",
+  "registration_basis": "User expressly allows research recommendations so they can be evaluated prospectively, including failures. This records the two previously mentioned conversational watchlists unchanged, not a new model ranking or formal BUY.",
+  "provenance_warning": "Original immutable Nov-03 creation receipt not verified. Nov-04 intraday results already seen before registration. Nov-04 performance MUST NOT be described as untouched prospective validation. The forward outcome test begins at the next eligible TWSE session open after 2026-11-04 registration.",
+  "references": {
+    "protocol": "research/forward_recommendation_observation_20261104/00_PREREGISTERED_SCOREKEEPING_PROTOCOL.md",
+    "official_eod": "eod/20261103/status.json",
+    "original_canonical_date": "2026-11-03",
+    "research_status": "research/cross_section_opportunity_20261103/CURRENT_STATE_CROSS_SECTION_OPPORTUNITY_20261103.json",
+    "research_branch": "research/selection-challenge-20261102"
+  },
+  "named_baskets": [
+    {
+      "id": "A_DIP_WATCH",
+      "name": "Earlier three-name dip watch",
+      "weighting": "EQUAL_WEIGHT",
+      "tickers": [
+        "4770",
+        "5876",
+        "4764"
+      ]
+    },
+    {
+      "id": "B_NEXT_SESSION_WATCH",
+      "name": "Later five-name next-session watch",
+      "weighting": "EQUAL_WEIGHT",
+      "tickers": [
+        "4770",
+        "2317",
+        "2395",
+        "3034",
+        "6873"
+      ]
+    }
+  ],
+  "unique_symbols": [
+    "4770",
+    "5876",
+    "4764",
+    "2317",
+    "2395",
+    "3034",
+    "6873"
+  ],
+  "prediction": {
+    "statement": "Test whether each pre-existing equal-weight observational basket delivers a positive net total return, and an excess return over the official TAIEX price index, at both H5 and H20.",
+    "is_empirical_hypothesis_not_claim": true,
+    "not_personal_order": true,
+    "trigger": "NEXT_ELIGIBLE_TWSE_TRADING_SESSION_OPEN_AFTER_REGISTRATION",
+    "planned_entry_date_if_normal_calendar": "2026-11-05",
+    "entry_price": "OFFICIAL_TWSE_OPEN_NO_FORWARD_LOOK",
+    "horizons": {
+      "H5": "CLOSE_OF_5TH_COMPLETED_TRADING_SESSION_INCLUDING_ENTRY_DAY",
+      "H20": "CLOSE_OF_20TH_COMPLETED_TRADING_SESSION_INCLUDING_ENTRY_DAY"
+    },
+    "weights": "EQUAL_BY_BASKET_AT_ENTRY_NO_REBALANCING",
+    "transaction_cost_roundtrip_bps": 40,
+    "sensitivity_roundtrip_bps": 80,
+    "benchmark": "TAIEX_PRICE_INDEX_OPEN_TO_SAME_HORIZON_CLOSE",
+    "stock_level_reporting_required": true,
+    "group_level_reporting_required": true,
+    "intent_to_recommend_coverage_required": true,
+    "missing_data_policy": "UNSCORABLE_WITH_REASON_NOT_ZERO_RETURN",
+    "performance_metric_set": [
+      "positive_net_return_hit_rate",
+      "mean_net_return",
+      "excess_vs_TAIEX",
+      "max_adverse_excursion",
+      "effective_sample_size",
+      "missingness",
+      "full_loser_visibility"
+    ]
+  },
+  "no_backdating": true,
+  "no_preentry_success_credit": true,
+  "no_deleted_losers": true,
+  "no_reweighting": true,
+  "do_not_change_formal_core": true,
+  "state": "REGISTRATION_LOCKED_PENDING_FUTURE_EXECUTION_PRICES",
+  "results": "NOT_AVAILABLE_YET",
+  "guardrails": [
+    "NO_FORMAL_BUY_SELL",
+    "NO_PORTFOLIO_ADVICE",
+    "NO_RETROACTIVE_ALFA_CLAIM",
+    "NO_FEATURE_MINING_FROM_ALREADY_VIEWED_NOV04_INTRADAY_PRICE_ACTION",
+    "NO_PRIVATE_LICENSED_FUGLE_PRICES_COMMITTED"
+  ]
+}
