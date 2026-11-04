@@ -1,0 +1,11 @@
+{
+  "full_archive_to_results_pipeline": "PASS",
+  "deterministic_four_result_files": {
+    "comparison_metrics.csv": "bf50415a74b8a5b330a27a0d942f76e3757b66c4655e1b7f64486444ceb44cec",
+    "daily_v2_v3.csv": "e99475c4adc875b4a6d01a99617605b0eec796baffb87fed04f3f99b3527c87f",
+    "event_recall_lead_times.json": "dd92c816c5762b4abf9f07b2df08520774a3f03fab84928fea6b39655804f40b",
+    "paired_block_bootstrap.json": "637aee3a61898203aca3faf7829b4049e92085e001ba57d989f5b5d8e718f628"
+  },
+  "all_31_tests_passed": true,
+  "trading_authority": "NONE"
+}

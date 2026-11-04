@@ -1,0 +1,145 @@
+{
+  "files": {
+    "hengce/HENGCE_ESCAPE_METRIC_CONTRACT_V1.json": {
+      "sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+      "bytes": 5981
+    },
+    "research/escape_dual_source_20261104/ESCAPE_SHADOW_VALIDATION_NO_GO_20261104.md": {
+      "sha256": "ef2098bf36f4749462e1dd4fb813e09de916ccbc204a84f299d40fdfc438e123",
+      "bytes": 5389
+    },
+    "research/escape_dual_source_20261104/MARGIN_BACKFILL_20231104_CLOSEOUT.md": {
+      "sha256": "ed537d649d627c9daffe04c431992a6a3020db841a92eb2fe797964e77661c57",
+      "bytes": 4768
+    },
+    "research/escape_dual_source_20261104/MARGIN_REPAIR_20261104_ARTIFACT_MANIFEST.json": {
+      "sha256": "f5886becc4878969428c49f545651fd2de417c89abef232e7ca2fc2f7a0b97c8",
+      "bytes": 2860
+    },
+    "research/escape_v3_20261104/.gitignore": {
+      "sha256": "7c0e3807a109f275f04fa607825e26c8d69f2e23f684cf4ca68e03df1173780a",
+      "bytes": 19
+    },
+    "research/escape_v3_20261104/00_AUTHORITY_AND_PREREGISTRATION.md": {
+      "sha256": "6f9e2dbb89191960d7c3da48527376b5826170abccb7aaffd7c955220b10b75c",
+      "bytes": 3461
+    },
+    "research/escape_v3_20261104/README.md": {
+      "sha256": "6836694ee42e33e63573089a389075411311f8268cfd93587742dbc8334f09cb",
+      "bytes": 6289
+    },
+    "research/escape_v3_20261104/SOURCE_INDEX.json": {
+      "sha256": "1b2eb6ffcfecf13f24c24be8b22e7c10a44c8fdddeba95cf1fbcc6fd16fc72e1",
+      "bytes": 1454
+    },
+    "research/escape_v3_20261104/replay_source_snapshot.py": {
+      "sha256": "5641e1d2a3fb094469f136423cc6deef8cac43ebdbafedacb0c688afbe531cef",
+      "bytes": 13348
+    },
+    "research/escape_v3_20261104/reproduce_inputs.py": {
+      "sha256": "d53c8eb1485c5563fe3512e707440fa020ff76fed1077803b95c7c7b8cb8e401",
+      "bytes": 4612
+    },
+    "research/escape_v3_20261104/results/authority_verification.json": {
+      "sha256": "133a67f21d14f0c9c99998ee85df48a4c4587def73b95f213b23bfd14dc9af4c",
+      "bytes": 851
+    },
+    "research/escape_v3_20261104/results/comparison_metrics.csv": {
+      "sha256": "bf50415a74b8a5b330a27a0d942f76e3757b66c4655e1b7f64486444ceb44cec",
+      "bytes": 119199
+    },
+    "research/escape_v3_20261104/results/daily_v2_v3.csv": {
+      "sha256": "e99475c4adc875b4a6d01a99617605b0eec796baffb87fed04f3f99b3527c87f",
+      "bytes": 327921
+    },
+    "research/escape_v3_20261104/results/decision.json": {
+      "sha256": "4af77a2483bab7b2213f5756a43830fdfb434512b001fea408af7f920196f123",
+      "bytes": 1393
+    },
+    "research/escape_v3_20261104/results/event_recall_lead_times.json": {
+      "sha256": "dd92c816c5762b4abf9f07b2df08520774a3f03fab84928fea6b39655804f40b",
+      "bytes": 94519
+    },
+    "research/escape_v3_20261104/results/full_reproduction.log": {
+      "sha256": "bfdc6e279e340e5e8c924910008b8d4fc5a32532a272785a392af1dc40df62d5",
+      "bytes": 10197
+    },
+    "research/escape_v3_20261104/results/independent_price_series.csv": {
+      "sha256": "35b528c5b9b2872cf0c5f35ae3f258892f3dc4bd3d7f0f880d62339bc3d9cba5",
+      "bytes": 46834
+    },
+    "research/escape_v3_20261104/results/input_verification.json": {
+      "sha256": "323c2fb42fcc000a2ab4086f67a5ef1ede883d27d432411b2b8628c2e180b35d",
+      "bytes": 927
+    },
+    "research/escape_v3_20261104/results/original_margin_audit.json": {
+      "sha256": "7e72b1fc004b6da6a5f2109b206f969a7ff2bddaeb1cd56b1464c71a4087fc4f",
+      "bytes": 555
+    },
+    "research/escape_v3_20261104/results/paired_block_bootstrap.json": {
+      "sha256": "637aee3a61898203aca3faf7829b4049e92085e001ba57d989f5b5d8e718f628",
+      "bytes": 1597
+    },
+    "research/escape_v3_20261104/results/recomputed_metrics.csv": {
+      "sha256": "b293ff611887241fae057e619fdd1900ed409816a6abf7c4f9fbc168475bad35",
+      "bytes": 322280
+    },
+    "research/escape_v3_20261104/results/reproduction_result.json": {
+      "sha256": "6459a810095e83f6999eb22187375abf700216bf45bf68f2616580dbbace1d8d",
+      "bytes": 550
+    },
+    "research/escape_v3_20261104/results/summary_comparison.csv": {
+      "sha256": "b6092959d567dd9539047dd1347e9373e5ea3b4f22de52307f25ad726642a2a4",
+      "bytes": 16310
+    },
+    "research/escape_v3_20261104/results/test_result.json": {
+      "sha256": "7509020e6bd0e29c6cc48e833dd829053bbc07196db6ca3add891c2154268a15",
+      "bytes": 82
+    },
+    "research/escape_v3_20261104/results/unit_tests.txt": {
+      "sha256": "c78e7dbeba0327772cbf592d71b26c8a8d6829af490733a3ddf514569b6a295e",
+      "bytes": 3076
+    },
+    "research/escape_v3_20261104/run_all.py": {
+      "sha256": "b575e3bfa071278c596c95ddc8725f09bf99ea6e9a3e586cdc534f05dc26e6c0",
+      "bytes": 1574
+    },
+    "research/escape_v3_20261104/run_tests.py": {
+      "sha256": "21f22f2131e8a292cc89cf5fbc77e7f68290ee1016871169e22b7c19a0de93b9",
+      "bytes": 637
+    },
+    "research/escape_v3_20261104/validate_v3.py": {
+      "sha256": "42e760537c6efeda10cf066f2e742af136fdbb2a087e8389970bbff78b8c327f",
+      "bytes": 11074
+    },
+    "research/escape_v3_20261104/verify_original_margin.py": {
+      "sha256": "4b035aa63a04d80fa46de827677d14ecb707175d5539951962b5f3f7c999fe6d",
+      "bytes": 2263
+    },
+    "scripts/HENGCE_ESCAPE_FEATURE_DETECTOR_V1.py": {
+      "sha256": "fdd53c3fc65bd84e48f40ce1628b93a7c6973f8b3b63bc11fa579666e3e7c5f4",
+      "bytes": 7392
+    },
+    "scripts/HENGCE_ESCAPE_STATE_ENGINE_V2.py": {
+      "sha256": "c9f038e5c383f03f1adc6948dc19cefcdef6fce2a0698e0ae42327bb1d80bb7f",
+      "bytes": 7872
+    },
+    "scripts/HENGCE_ESCAPE_STATE_ENGINE_V3_RESEARCH.py": {
+      "sha256": "c705024abab04fad9efe386512c54f240124906c83a1c752e693628b64c6e33b",
+      "bytes": 4057
+    },
+    "tests/test_escape_v3_evaluation.py": {
+      "sha256": "8d971dd51bff34fa4b864daf7eafdbbd4048f39203344ff6a55f527ecc92e84c",
+      "bytes": 1303
+    },
+    "tests/test_escape_v3_research.py": {
+      "sha256": "96dc830cc12fb0886c5277fb4bcfbb209d6780a21cf81ca5b8940336db08924a",
+      "bytes": 5409
+    }
+  },
+  "excluded": [
+    "FILE_SHA256_MANIFEST.json (self-reference)",
+    "work/",
+    "__pycache__/"
+  ]
+}

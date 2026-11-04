@@ -148,10 +148,11 @@ def main():
             'legacy_raw_and_v2_exact_parity':True,'full_prefix_detector_parity_indices':parity,
             'prefix_800_signal_invariance':True,'v2_first_L6':panel.loc[panel.v2.eq(6),'Date'].min(),
             'v2_2025_2026_L6':int((panel.Date.ge('2025-01-01')&panel.v2.eq(6)).sum()),
+            'v2_clean_2025_2026_L6':int((panel.Date.ge('2025-01-01')&panel.Date.lt('2026-10-08')&panel.v2.eq(6)).sum()),
             'v3_2025_2026_L6':int((panel.Date.ge('2025-01-01')&panel.v3.eq(6)).sum()),
             'recovery5_days':int(panel.recovery5.sum()),
             'state_counts':{s:{str(k):int(v) for k,v in panel.loc[panel.Date.ge('2025-01-01'),s].value_counts().sort_index().items()} for s in ('raw','v2','v3')},
-            'limitations':['Historical temporal splits only; all data predate design freeze','PIT U and margin eligibility not independently certified','Source revisions excluded, not resolved','Unadjusted close-price returns may include corporate-action distortions; no verified total-return series','Original pre-repair raw sources absent from supplied archives','Few independent adverse episodes','No claim of live V2 latching'],
+            'limitations':['Historical temporal splits only; all data predate design freeze','PIT U and margin eligibility not independently certified','Source revisions excluded, not resolved','Unadjusted close-price returns may include corporate-action distortions; no verified total-return series','Original source audit is recorded separately in original_margin_audit.json','Few independent adverse episodes','No claim of live V2 latching'],
             'runtime':{'python':platform.python_version(),'pandas':pd.__version__,'numpy':np.__version__}}
     pd.DataFrame(results).to_csv(OUT/'comparison_metrics.csv',index=False)
     panel.to_csv(OUT/'daily_v2_v3.csv',index=False)

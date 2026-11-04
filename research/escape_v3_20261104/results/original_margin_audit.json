@@ -1,0 +1,18 @@
+{
+  "original_sha256": {
+    "mother": "d746f1f302ea8eb77569f35cf3d2e02895f25d390d35c273ee1535c9ed0a5d62",
+    "margin": "142300b99ad66564f79db38e7270332e3300946a0ea63d9c86e6141a0d81cb12"
+  },
+  "original_price_rows": 735618,
+  "original_margin_rows": 717643,
+  "joined_rows": 716342,
+  "existing_verified_equal": 14287,
+  "restored_null_rows": 702055,
+  "margin_only": 1301,
+  "price_only": 19276,
+  "conflicts": 0,
+  "patch_exact_match": true,
+  "new_network_TWSE_query_performed": false,
+  "authority": "RESEARCH_ONLY",
+  "trading_authority": "NONE"
+}

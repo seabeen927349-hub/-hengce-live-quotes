@@ -1,0 +1,24 @@
+{
+  "frozen_files": [
+    {
+      "path": "scripts/HENGCE_ESCAPE_FEATURE_DETECTOR_V1.py",
+      "git_blob": "eb3a3d80ae3473017e5fb1f70365ec9a4a0231f0",
+      "sha256": "fdd53c3fc65bd84e48f40ce1628b93a7c6973f8b3b63bc11fa579666e3e7c5f4",
+      "bytes": 7392
+    },
+    {
+      "path": "scripts/HENGCE_ESCAPE_STATE_ENGINE_V2.py",
+      "git_blob": "f9c78ac71962a6634ec236b248f85ad127ef7cc1",
+      "sha256": "c9f038e5c383f03f1adc6948dc19cefcdef6fce2a0698e0ae42327bb1d80bb7f",
+      "bytes": 7872
+    },
+    {
+      "path": "hengce/HENGCE_ESCAPE_METRIC_CONTRACT_V1.json",
+      "git_blob": "d310bde6ccb30870f824981d3cb22b751a802775",
+      "sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+      "bytes": 5981
+    }
+  ],
+  "prior_archive_internal_manifest_all_9_entries_verified": true,
+  "canonical_sources_modified": false
+}

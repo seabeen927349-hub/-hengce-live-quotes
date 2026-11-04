@@ -1,0 +1,36 @@
+test_confusion_definitions (test_escape_v3_evaluation.TestEvaluation.test_confusion_definitions) ... ok
+test_empty_not_perfect (test_escape_v3_evaluation.TestEvaluation.test_empty_not_perfect) ... ok
+test_event_crossing_strict_future (test_escape_v3_evaluation.TestEvaluation.test_event_crossing_strict_future) ... ok
+test_events_nonoverlap (test_escape_v3_evaluation.TestEvaluation.test_events_nonoverlap) ... ok
+test_incomplete_terminal_excluded (test_escape_v3_evaluation.TestEvaluation.test_incomplete_terminal_excluded) ... ok
+test_missing_return_excluded (test_escape_v3_evaluation.TestEvaluation.test_missing_return_excluded) ... ok
+test_no_alert_not_zero_precision (test_escape_v3_evaluation.TestEvaluation.test_no_alert_not_zero_precision) ... ok
+test_no_events_not_zero_recall (test_escape_v3_evaluation.TestEvaluation.test_no_events_not_zero_recall) ... ok
+test_actual_frozen_gate_fails (test_escape_v3_research.TestV3.test_actual_frozen_gate_fails) ... ok
+test_bounded_release_all_levels (test_escape_v3_research.TestV3.test_bounded_release_all_levels) ... ok
+test_detector_past_only_baseline (test_escape_v3_research.TestV3.test_detector_past_only_baseline) ... ok
+test_duplicate_rejected (test_escape_v3_research.TestV3.test_duplicate_rejected) ... ok
+test_escalation_immediate (test_escape_v3_research.TestV3.test_escalation_immediate) ... ok
+test_false_pit_preserved (test_escape_v3_research.TestV3.test_false_pit_preserved) ... ok
+test_gap_resets_confirmation (test_escape_v3_research.TestV3.test_gap_resets_confirmation) ... ok
+test_integrity_required (test_escape_v3_research.TestV3.test_integrity_required) ... ok
+test_manual_level_ignored (test_escape_v3_research.TestV3.test_manual_level_ignored) ... ok
+test_missing_resets_confirmation (test_escape_v3_research.TestV3.test_missing_resets_confirmation) ... ok
+test_no_input_mutation (test_escape_v3_research.TestV3.test_no_input_mutation) ... ok
+test_no_intraday_flow (test_escape_v3_research.TestV3.test_no_intraday_flow) ... ok
+test_no_single_day_drop (test_escape_v3_research.TestV3.test_no_single_day_drop) ... ok
+test_no_trading_authority (test_escape_v3_research.TestV3.test_no_trading_authority) ... ok
+test_nonfinite_rejected (test_escape_v3_research.TestV3.test_nonfinite_rejected) ... ok
+test_order_rejected (test_escape_v3_research.TestV3.test_order_rejected) ... ok
+test_real_detector_evaluation (test_escape_v3_research.TestV3.test_real_detector_evaluation) ... ok
+test_recovery_to_zero (test_escape_v3_research.TestV3.test_recovery_to_zero) ... ok
+test_reescalation (test_escape_v3_research.TestV3.test_reescalation) ... ok
+test_research_mode_required (test_escape_v3_research.TestV3.test_research_mode_required) ... ok
+test_rolling_max_invariant (test_escape_v3_research.TestV3.test_rolling_max_invariant) ... ok
+test_short_history_rejected (test_escape_v3_research.TestV3.test_short_history_rejected) ... ok
+test_wrong_contract (test_escape_v3_research.TestV3.test_wrong_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 15.060s
+
+OK

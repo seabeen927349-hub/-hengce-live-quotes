@@ -1,0 +1,60 @@
+{
+  "decision": "NO-GO",
+  "formal_decision": "NO-GO",
+  "trading_authority": "NONE",
+  "prospective_oos": false,
+  "optimization_runs": 0,
+  "candidate_specs_tested": 1,
+  "predictive_gates_passed": 7,
+  "predictive_gates_total": 30,
+  "legacy_raw_and_v2_exact_parity": true,
+  "full_prefix_detector_parity_indices": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    918
+  ],
+  "prefix_800_signal_invariance": true,
+  "v2_first_L6": "2024-07-30",
+  "v2_2025_2026_L6": 438,
+  "v2_clean_2025_2026_L6": 427,
+  "v3_2025_2026_L6": 0,
+  "recovery5_days": 0,
+  "state_counts": {
+    "raw": {
+      "0.0": 176,
+      "1.0": 108,
+      "2.0": 140,
+      "3.0": 14
+    },
+    "v2": {
+      "6.0": 438
+    },
+    "v3": {
+      "0.0": 86,
+      "1.0": 132,
+      "2.0": 188,
+      "3.0": 32
+    }
+  },
+  "limitations": [
+    "Historical temporal splits only; all data predate design freeze",
+    "PIT U and margin eligibility not independently certified",
+    "Source revisions excluded, not resolved",
+    "Unadjusted close-price returns may include corporate-action distortions; no verified total-return series",
+    "Original source audit is recorded separately in original_margin_audit.json",
+    "Few independent adverse episodes",
+    "No claim of live V2 latching"
+  ],
+  "runtime": {
+    "python": "3.12.14",
+    "pandas": "2.2.3",
+    "numpy": "2.3.5"
+  }
+}

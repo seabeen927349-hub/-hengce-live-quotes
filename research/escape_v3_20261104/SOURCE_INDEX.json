@@ -1,0 +1,34 @@
+{
+  "repository": "seabeen927349-hub/-hengce-live-quotes",
+  "base_branch": "research/escape-fugle-finmind-reconcile-20261104",
+  "base_head": "d8feaf0a962b89acc0fb7ca82a1390d2c8f7e5e2",
+  "research_branch": "research/escape-v3-20261104",
+  "artifacts": [
+    {
+      "name": "HENGCE_Escape_2023_2026_919Day_Repaired_Research.zip",
+      "library_file_id": "libfile_c076c9125ef0819197c12784c027ce71",
+      "sha256": "67d833114dda72aa89f0890bac65d84d37686bfd06f66c18da728af7e721e052"
+    },
+    {
+      "name": "HENGCE_Escape_2023_2025_Margin_702055_Patch.zip",
+      "library_file_id": "libfile_85c592e70f8c8191801411f2c829a787",
+      "sha256": "12121d2684874cb96ec456edce980aa696af6c2a1bf2ae834157ea33588b8b4d"
+    },
+    {
+      "name": "HENGCE_Escape_20261104_OOS_Validation_NoGo.zip",
+      "library_file_id": "libfile_cb8174d868448191994688bbf9e1b106",
+      "attached_copy_library_file_id": "libfile_43f2b0a83e448191b8327950fe3b5555",
+      "sha256": "fdf59bf21a68c3027410ebae00c1595d170552cf285c13e8a7fffa5425a6bc33"
+    },
+    {
+      "name": "TWSE_2023_2025_mother.csv",
+      "library_file_id": "libfile_d7d15a6b19bc81919d7413b61d92fe90",
+      "sha256": "d746f1f302ea8eb77569f35cf3d2e02895f25d390d35c273ee1535c9ed0a5d62"
+    },
+    {
+      "name": "TWSE_2023_2025_margin.csv",
+      "library_file_id": "libfile_d8dfd9b270d081918243a7f8e692f0e6",
+      "sha256": "142300b99ad66564f79db38e7270332e3300946a0ea63d9c86e6141a0d81cb12"
+    }
+  ]
+}
