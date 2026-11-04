@@ -1,0 +1,49 @@
+{
+  "original_pre_registration_commit": "fed0992266ae78e3c24c1067aa351d4748220575",
+  "files": {
+    "README.md": {
+      "sha256": "9d72c85e16c15605083e641f2bbce6d1851254a0e680d18baf7c7232e35dc21f",
+      "size_bytes": 671
+    },
+    "READ_FIRST_IF_MOM60_SKIP5_20261104.md": {
+      "sha256": "62b90bb0d5be1f9f69c8e7c818c6eeee5e5448c75716eaf4c5b2473361c81bc0",
+      "size_bytes": 5707
+    },
+    "if_mom60_skip5.py": {
+      "sha256": "d54ae67a8954a3cbb5b9698f4f160598c79e9ccfb3d9bf339eaf9fa00f6d8c55",
+      "size_bytes": 12504
+    },
+    "test_if_mom60_skip5.py": {
+      "sha256": "b4ac8e0d8250b899c1af4499803d43fc84defab2daae603f7c0ec512ef5261d8",
+      "size_bytes": 3510
+    },
+    "tests.log": {
+      "sha256": "7f583a2c445f84b18a624c4d264696604a97eb6a81b10fcd006081d2627781da",
+      "size_bytes": 99
+    },
+    "all84_three_strategies_40_80bp.csv": {
+      "sha256": "283ebe263443028d4f8fbb257f7b0e3055a41232a14bcdf4dde1f7b8af3f4c4d",
+      "size_bytes": 82192
+    },
+    "strategy_summary.csv": {
+      "sha256": "413a9a0dab96a28426fd6e4a6ebbb3dc7b6bc4c070c06b4a74a6f85b06587c5e",
+      "size_bytes": 923
+    },
+    "yearly_pnl.csv": {
+      "sha256": "ccb2e96795ce0a41da8ce77aa7b1a8a1aafd39a035f33994457210f2258f0549",
+      "size_bytes": 2732
+    },
+    "pairwise_benchmarks.csv": {
+      "sha256": "ab5363898daa9b965d759674d1284e1a56814437f0d488002d8f7c34a80dbdb4",
+      "size_bytes": 206
+    },
+    "random_null_pool_coverage.csv": {
+      "sha256": "387612f92555edc86d7f5c05a27611261a2acb0eccb6fa7bac785bd605756f01",
+      "size_bytes": 8302
+    },
+    "summary.json": {
+      "sha256": "bd14b06f1be4b16f1b3f422f293cec1b3494432385952fc1117d90ceb1e4853e",
+      "size_bytes": 6582
+    }
+  }
+}
