@@ -1,0 +1,76 @@
+{
+  "schema": "HENGCE_ESCAPE_MARGIN_REPAIR_20261104_ARTIFACT_MANIFEST_V1",
+  "status": "PASS_NONDESTRUCTIVE_RESEARCH_REPAIR_FORMAL_DETECTOR_BLOCKED",
+  "source_years": "2023-2026-10-27",
+  "research_trading_sessions": 919,
+  "official_twse_margin_raw_rows_2023_2025": 717643,
+  "source_margin_rows_joined_on_date_ticker": 716342,
+  "existing_margin_rows_verified_equal": 14287,
+  "backfilled_missing_margin_rows": 702055,
+  "raw_margin_without_price_key_rows": 1301,
+  "price_rows_without_raw_margin_key_rows": 19276,
+  "conflicting_margin_values": 0,
+  "research_mother_rows": 946213,
+  "research_ordinary_rows": 942320,
+  "daily_pit_e_archives": {
+    "2023": 239,
+    "2024": 242,
+    "2025": 243,
+    "2026": 195
+  },
+  "baseline": {
+    "strict_all_e_balance": "0 margin feature days; no formal 17 input admission",
+    "twse_reported_margin_research_only": {
+      "all_17_nonnull_days": 889,
+      "past_40_baseline_all_17_days": 849,
+      "first_day": "2023-04-28",
+      "interpretation": "Sum only actual observed TWSE MI_MARGN balances, unreported E securities remain NULL and unverified"
+    }
+  },
+  "unresolved": [
+    "FULL_MARGIN_ELIGIBILITY_PIT_MEMBERSHIP",
+    "FULL_PIT_U_COMMON_SECURITY_STATUS",
+    "2026_10_08_10_21_10_22_VOLUME_TURNOVER_SOURCE_REVISIONS",
+    "PRE_2023_WHOLE_MARKET_INSTITUTIONAL_MARGIN_BACKFILL",
+    "OOS_PREDICTIVE_VALIDATION"
+  ],
+  "source_and_output_hashes": {
+    "canonical_original": "6f7494b46af07a11f68429981b3ec666ad0a520ed9b51ae0150f4c34435639e7",
+    "research_combined_mother": "14cce8e47d294cb81aa22fcb51e580487574ebab0ca88819673006df57090dae",
+    "observed_e_archive": "f19aa1975cba89da9a641067f7d2ed57e569d7fe61d57b5d7a03c962ee81ecfe",
+    "backfill_patch": "2da6d9787d2bd2cb988ea212e9d40de1b695055c5c441bca27a0f8f00bd90621"
+  },
+  "tests": {
+    "passed": 19,
+    "total": 19
+  },
+  "artifact_library_paths": [
+    "/HENGCE/Research Outputs/ESCAPE_MARGIN_REPAIR_20261104/HENGCE_Escape_2023_2025_Margin_702055_Patch.zip",
+    "/HENGCE/Research Outputs/ESCAPE_MARGIN_REPAIR_20261104/HENGCE_Escape_2023_2026_919Day_Repaired_Research.zip"
+  ],
+  "artifact_zip_sha256": {
+    "HENGCE_Escape_2023_2025_Margin_702055_Patch.zip": "12121d2684874cb96ec456edce980aa696af6c2a1bf2ae834157ea33588b8b4d",
+    "HENGCE_Escape_2023_2026_919Day_Repaired_Research.zip": "67d833114dda72aa89f0890bac65d84d37686bfd06f66c18da728af7e721e052"
+  },
+  "finmind_sample_verification": {
+    "symbol": "2330",
+    "dates": [
+      "2024-01-02",
+      "2024-01-03",
+      "2024-01-04",
+      "2024-01-05"
+    ],
+    "margin_lots": [
+      12844,
+      13785,
+      13655,
+      13891
+    ],
+    "matched_twse": "4/4",
+    "older_2018_sample_access": "YES_4_DAYS_2330_ONLY_NOT_BULK_DATA"
+  },
+  "original_canonical_mutated": false,
+  "main_branch_mutated": false,
+  "formal_escape_authority": false,
+  "trading_authority": "NONE"
+}
