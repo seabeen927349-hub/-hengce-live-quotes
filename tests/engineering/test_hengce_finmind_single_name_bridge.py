@@ -33,7 +33,7 @@ class Tests(unittest.TestCase):
 
     def test_fail_closed_invalid_universe_or_missing(self):
         snapshot={"3042":make()}
-        for code,expected in [("not-a-ticker","INVALID_TICKER"),("9999","OUTSIDE_GOVERNED_TWSE_UNIVERSE"),("2330","NOT_IN_SNAPSHOT")]:
+        for code,expected in [("not-a-ticker","INVALID_TICKER"),("9999","OUTSIDE_GOVERNED_EQUITY_UNIVERSE"),("2330","NOT_IN_SNAPSHOT")]:
             self.assertEqual(lookup(snapshot,code,NOW,ALLOWED)[1],expected)
 
     def test_fail_closed_stale_previous_day(self):
