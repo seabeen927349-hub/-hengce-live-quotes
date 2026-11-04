@@ -23,10 +23,18 @@ def verify(context,status,monitor,expected_date):
     require(c.get('latest_source_timestamp')==s.get('latest_source_timestamp')==m.get('latest_source_timestamp'),'SOURCE_TIMESTAMP_MISMATCH')
     for x in (c,s,m):
         require(x.get('metric_contract_sha256')==SHA,'METRIC_CONTRACT_MISMATCH')
-        for k in ('feature_detector_input_authority','formal_metric_authority','trading_authority','per_security_rows_persisted','raw_finmind_rows_persisted'):
-            require(x.get(k) is not True,'UNAUTHORIZED_'+k.upper())
+    for x in (c,s):
+        for k in ('feature_detector_input_authority','formal_metric_authority','trading_authority','per_security_rows_persisted','raw_finmind_rows_persisted','source_binding_promotion_authority','one_day_change_rate_may_substitute_locked_ew_return'):
+            require(x.get(k) is False,'MISSING_OR_UNAUTHORIZED_'+k.upper())
+    for k in ('feature_detector_input_authority','trading_authority','selection_authority','model_authority'):
+        require(m.get(k) is False,'MISSING_OR_UNAUTHORIZED_MONITOR_'+k.upper())
+    quality=m.get('quality')
+    require(isinstance(quality,dict),'MONITOR_QUALITY_MISSING')
+    for k in ('per_security_rows_persisted','raw_finmind_rows_persisted'):
+        require(quality.get(k) is False,'MISSING_OR_UNAUTHORIZED_QUALITY_'+k.upper())
     require(c.get('formal_escape_state_creation') is False,'ESCAPE_STATE_FORBIDDEN')
     require(s.get('formal_escape_authority') is False and m.get('formal_escape_authority') is False,'FORMAL_ESCAPE_AUTHORITY_FORBIDDEN')
+    require(s.get('formal_eod_authority') is False and m.get('formal_eod_authority') is False,'FORMAL_EOD_AUTHORITY_FORBIDDEN')
     require(m.get('formal_escape_level') is None,'FORMAL_ESCAPE_LEVEL_FORBIDDEN')
     require(m.get('monitor_state')=='LIVE_CONTEXT_READY' and s.get('state')=='SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY','MONITOR_NOT_READY')
     require(s.get('healthy_transport') is True and s.get('active_universe_transport_full_coverage') is True,'TRANSPORT_NOT_READY')
