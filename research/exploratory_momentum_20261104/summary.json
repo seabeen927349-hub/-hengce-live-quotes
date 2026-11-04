@@ -1,0 +1,178 @@
+{
+  "status": "EXPLORATORY_HISTORIC_NO_TRADING_PROMOTION",
+  "preregistered_git_commit": "fed0992266ae78e3c24c1067aa351d4748220575",
+  "years": "2018-2026 historical already exposed, NOT OOS",
+  "frozen_events": 84,
+  "n2_84_selections_reconstructed": true,
+  "input_ledger_sha256": "ca97f13879e7cf81b87093a114e429951383a7cc4e5055fb76e8b0b1d61bd1b6",
+  "input_annual_zip_sha256": {
+    "2018": {
+      "name": "TWSE_ELECTRONICS_2018.zip",
+      "sha256": "eb233ccafbb5d2cacb293a926dd2211bc803e79d5d409685fa2b021dfa223759",
+      "size_bytes": 3359184
+    },
+    "2019": {
+      "name": "TWSE_ELECTRONICS_2019.zip",
+      "sha256": "01f680cb42cc074b716c762ed0d886af44e0cdbef04d5cd236cd4df127df8a9f",
+      "size_bytes": 3338552
+    },
+    "2020": {
+      "name": "TWSE_ELECTRONICS_2020.zip",
+      "sha256": "c57fc918e9a18a57ffaa9b500c41b2ca6ead94cd2ceb227637444e784ae7cb0d",
+      "size_bytes": 3472032
+    },
+    "2021": {
+      "name": "TWSE_ELECTRONICS_2021.zip",
+      "sha256": "ee2ae0fe25e2e1cebf220faaa546089210311311257256e6f1ba22f8389bc594",
+      "size_bytes": 3552737
+    },
+    "2022": {
+      "name": "TWSE_ELECTRONICS_2022.zip",
+      "sha256": "ad2ece10ec4a0e94c501def438c6e7c92a5193975dcb33a76e8f915c8183cc9b",
+      "size_bytes": 3588907
+    },
+    "2023": {
+      "name": "TWSE_ELECTRONICS_2023.zip",
+      "sha256": "09a50dd3d6b3fc8c7730c65044231836811c83ce420a538ed2ac8f126e680dca",
+      "size_bytes": 3572527
+    },
+    "2024": {
+      "name": "TWSE_ELECTRONICS_2024.zip",
+      "sha256": "f4518a7951bfffac59242955cef117b9d0f064730a43380126cf3f9655219979",
+      "size_bytes": 3761880
+    },
+    "2025": {
+      "name": "TWSE_ELECTRONICS_2025.zip",
+      "sha256": "22851a275796c0ec4f089353b31415f148b17e1c1ec7dc8d4a07b5f88601f41a",
+      "size_bytes": 3837708
+    },
+    "2026": {
+      "name": "TWSE_ELECTRONICS_2026.zip",
+      "sha256": "4be2223ca3dcbd01645fe90e53332a19600acbef070297d7358adf49c288d530",
+      "size_bytes": 2678683
+    }
+  },
+  "strategy_summary": [
+    {
+      "strategy": "MOM20_SIMPLE",
+      "cost": 0.004,
+      "total_windows": 84,
+      "priced_windows": 84,
+      "blocked_windows": 0,
+      "total_pnl_if_complete": 8719966.0,
+      "partial_priced_pnl_NOT_COMPARABLE": 8719966.0,
+      "mean_pnl_if_complete": 103809.11904761905,
+      "win_rate_among_priced": 0.4166666666666667,
+      "pnl_excluding_largest1_if_complete": 4401766.0,
+      "pnl_excluding_largest3_if_complete": -1609835.6000000015,
+      "holding_company_action_events": 6,
+      "signal_last60d_company_action_events": 17,
+      "execution_data_blocked_windows": 84
+    },
+    {
+      "strategy": "MOM20_SIMPLE",
+      "cost": 0.008,
+      "total_windows": 84,
+      "priced_windows": 84,
+      "blocked_windows": 0,
+      "total_pnl_if_complete": 6814722.3999999985,
+      "partial_priced_pnl_NOT_COMPARABLE": 6814722.3999999985,
+      "mean_pnl_if_complete": 81127.6476190476,
+      "win_rate_among_priced": 0.40476190476190477,
+      "pnl_excluding_largest1_if_complete": 2515822.3999999985,
+      "pnl_excluding_largest3_if_complete": -3435648.000000002,
+      "holding_company_action_events": 6,
+      "signal_last60d_company_action_events": 17,
+      "execution_data_blocked_windows": 84
+    },
+    {
+      "strategy": "MOM60_SKIP5",
+      "cost": 0.004,
+      "total_windows": 84,
+      "priced_windows": 84,
+      "blocked_windows": 0,
+      "total_pnl_if_complete": -3774514.000000002,
+      "partial_priced_pnl_NOT_COMPARABLE": -3774514.000000002,
+      "mean_pnl_if_complete": -44934.690476190495,
+      "win_rate_among_priced": 0.42857142857142855,
+      "pnl_excluding_largest1_if_complete": -7938509.200000003,
+      "pnl_excluding_largest3_if_complete": -14178933.200000003,
+      "holding_company_action_events": 3,
+      "signal_last60d_company_action_events": 18,
+      "execution_data_blocked_windows": 84
+    },
+    {
+      "strategy": "MOM60_SKIP5",
+      "cost": 0.008,
+      "total_windows": 84,
+      "priced_windows": 84,
+      "blocked_windows": 0,
+      "total_pnl_if_complete": -5430956.3999999985,
+      "partial_priced_pnl_NOT_COMPARABLE": -5430956.3999999985,
+      "mean_pnl_if_complete": -64654.24285714284,
+      "win_rate_among_priced": 0.42857142857142855,
+      "pnl_excluding_largest1_if_complete": -9545233.2,
+      "pnl_excluding_largest3_if_complete": -15747081.2,
+      "holding_company_action_events": 3,
+      "signal_last60d_company_action_events": 18,
+      "execution_data_blocked_windows": 84
+    },
+    {
+      "strategy": "N2_FROZEN",
+      "cost": 0.004,
+      "total_windows": 84,
+      "priced_windows": 84,
+      "blocked_windows": 0,
+      "total_pnl_if_complete": 20328810.6,
+      "partial_priced_pnl_NOT_COMPARABLE": 20328810.6,
+      "mean_pnl_if_complete": 242009.65000000002,
+      "win_rate_among_priced": 0.5476190476190477,
+      "pnl_excluding_largest1_if_complete": 15891417.400000002,
+      "pnl_excluding_largest3_if_complete": 8761553.400000002,
+      "holding_company_action_events": 4,
+      "signal_last60d_company_action_events": 27,
+      "execution_data_blocked_windows": 84
+    },
+    {
+      "strategy": "N2_FROZEN",
+      "cost": 0.008,
+      "total_windows": 84,
+      "priced_windows": 84,
+      "blocked_windows": 0,
+      "total_pnl_if_complete": 18733358.4,
+      "partial_priced_pnl_NOT_COMPARABLE": 18733358.4,
+      "mean_pnl_if_complete": 223016.1714285714,
+      "win_rate_among_priced": 0.5119047619047619,
+      "pnl_excluding_largest1_if_complete": 14399220.799999999,
+      "pnl_excluding_largest3_if_complete": 7307992.799999999,
+      "holding_company_action_events": 4,
+      "signal_last60d_company_action_events": 27,
+      "execution_data_blocked_windows": 84
+    }
+  ],
+  "pairwise": [
+    {
+      "comparator": "N2_FROZEN",
+      "pairwise_priced_windows": 84,
+      "wins_candidate": 23,
+      "losses_candidate": 57,
+      "excess_pnl_on_priced_pairs_NOT_ALL84": -24103324.599999998,
+      "all84_pairs_priced": true
+    },
+    {
+      "comparator": "MOM20_SIMPLE",
+      "pairwise_priced_windows": 84,
+      "wins_candidate": 32,
+      "losses_candidate": 40,
+      "excess_pnl_on_priced_pairs_NOT_ALL84": -12494480.0,
+      "all84_pairs_priced": true
+    }
+  ],
+  "random_full_40bp_windows": 78,
+  "selection_engineering": "CHECKED_FROZEN_N2_PARITY_84_OF_84",
+  "pit_classification": "ARCHIVED_PIT_CLAIM_NOT_INDEPENDENTLY_VERIFIED",
+  "corporate_actions": "NOT_TOTAL_RETURN_CERTIFIED",
+  "opening_fills": "DATA_BLOCKED_ALL",
+  "future_oos": "NOT_AVAILABLE",
+  "policy": "NO_GOLDEN_BACKTEST; STOP/NO-GO absent robust forward evidence and execution data"
+}
