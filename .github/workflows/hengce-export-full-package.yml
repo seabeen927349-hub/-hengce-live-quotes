@@ -56,3 +56,5 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
+
+# Exact original-vessel 2026-11-04 three-leg bridge recovery export, no new collectors.
