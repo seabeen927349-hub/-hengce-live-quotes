@@ -1,0 +1,15 @@
+{
+  "system": "HENGCE",
+  "artifact": "SINGLE_STOCK_ANALYSIS_DEFAULT_POINTER",
+  "status": "ACTIVE",
+  "effective_date": "2026-11-05",
+  "trigger": "分析某股",
+  "version": "v1_20261105",
+  "contract": "governance/HENGCE_SINGLE_STOCK_FINMIND_ANALYSIS_CONTRACT_v1_20261105.json",
+  "readme": "docs/HENGCE_SINGLE_STOCK_FINMIND_ANALYSIS_STANDARD_v1_20261105.md",
+  "automatic_research_when_user_asks": true,
+  "scheduled_job_created": false,
+  "active_selection_strategy_count": 0,
+  "trading_authority": false,
+  "canonical_mutation_authority": false
+}

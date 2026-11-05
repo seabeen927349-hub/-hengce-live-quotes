@@ -1,0 +1,72 @@
+{
+  "system": "HENGCE",
+  "artifact": "SINGLE_STOCK_FINMIND_ANALYSIS_CONTRACT",
+  "version": "v1_20261105",
+  "status": "ACTIVE_ANALYTICAL_STANDARD",
+  "effective_date": "2026-11-05",
+  "user_directive": "Whenever the user says 分析某股, 衡策分析股票代碼 or equivalent, conduct a full longitudinal FinMind single-stock research analysis, then reconcile with the existing HENGCE canonical mother when the stock is covered.",
+  "triggers": [
+    "衡策分析某股",
+    "分析某股",
+    "衡策分析<股票代碼>",
+    "分析<股票代碼>"
+  ],
+  "specification": "docs/HENGCE_SINGLE_STOCK_FINMIND_ANALYSIS_STANDARD_v1_20261105.md",
+  "operational_mode": "ON_DEMAND_READ_ONLY_ANALYTICAL_RESEARCH",
+  "market_scope": "TWSE and TPEx stocks if verifiable, with PIT and source-scope checks",
+  "data_priority": [
+    "EXISTING_HENGCE_GOVERNED_BLOOD_VESSELS",
+    "EXISTING_HENGCE_CANONICAL_MOTHER_AND_LIBRARY",
+    "EXISTING_HENGCE_GITHUB_EOD_AND_RECEIPTS",
+    "EXPLICIT_USER_AUTHORIZED_FINMIND_READ_ONLY_SINGLE_STOCK_RESEARCH"
+  ],
+  "finmind_source_role": "EXTERNAL_FINMIND_RESEARCH unless an existing governed transport/receipt exists",
+  "finmind_priority_datasets": [
+    "TaiwanStockPrice",
+    "TaiwanStockPriceAdj_IF_LICENSED",
+    "TaiwanStockMonthRevenue",
+    "TaiwanStockFinancialStatements",
+    "TaiwanStockBalanceSheet",
+    "TaiwanStockCashFlowsStatement",
+    "TaiwanStockInstitutionalInvestorsBuySell",
+    "TaiwanStockMarginPurchaseShortSale",
+    "TaiwanStockPER",
+    "TaiwanStockDividend",
+    "TaiwanStockTotalReturnIndex",
+    "OPTIONAL_SUPPORTED_SHAREHOLDER_OR_MISC_DATA"
+  ],
+  "lookback_default_years": 10,
+  "analysis_modules": [
+    "DATA_AUTHORITY_AND_LINEAGE",
+    "LONG_TERM_PRICE_VOLUME_AND_DRAWDOWN",
+    "TREND_MOMENTUM_VOLATILITY",
+    "LONG_TERM_REVENUE_AND_GROWTH",
+    "QUARTERLY_EARNINGS_AND_MARGIN",
+    "CASH_FLOW_QUALITY_AND_WORKING_CAPITAL",
+    "INSTITUTIONAL_AND_MARGIN",
+    "VALUATION_SENSITIVITY",
+    "MATCHED_MARKET_BENCHMARK",
+    "CONDITIONAL_SCENARIOS_AND_RISKS"
+  ],
+  "source_asof_and_pit_required": true,
+  "canonical_market_boundary": {
+    "twse": "USE_CANONICAL_WHEN_RECEIPT_HASH_DATE_VALID",
+    "tpex": "NO_CANONICAL_COVERAGE_IF_CURRENT_CANONICAL_IS_TWSE_ONLY"
+  },
+  "finmind_external_authorization_scope": "USER_AUTHORIZED_READ_ONLY_SINGLE_TICKER_RESEARCH_NOT_CANONICAL_BACKFILL_OR_SECOND_COLLECTOR",
+  "historical_total_return_rule": "UNADJUSTED_STOCK_PRICE_MUST_NOT_BE_LABELED_TOTAL_RETURN",
+  "annual_benchmark_rule": "MATCH_DATES_AND_DISCLOSE_RAW_STOCK_VS_TOTAL_RETURN_INDEX_NONCOMPARABILITY",
+  "canonical_promotion_permission": false,
+  "parallel_collector_permission": false,
+  "second_mother_permission": false,
+  "trading_model_activation_permission": false,
+  "active_selection_strategy_count": 0,
+  "retired_model_reactivation_forbidden": true,
+  "capital_authority_twd": 0,
+  "broker_order_execution": false,
+  "absent_data_policy": "MARK_MISSING_OR_NOT_APPLICABLE; DO_NOT_FABRICATE_OR_REPLACE_GOVERNED_PENDING_STATUS",
+  "priority_parent": "governance/HENGCE_DATA_VESSEL_PRIORITY_LOCK_v1_20261103.json",
+  "market_scope_parent": "governance/HENGCE_MARKET_DATA_PROVIDER_SCOPE_LOCK_v1_20261104.json",
+  "historical_origin_example": "5289 FinMind 2014-2026 deep fundamental/price analysis dated 2026-11-05, not a model output",
+  "default_next_action": "On command, fetch and analyze current available data; compare with Canonical; produce comprehensive report without asking user to restate the standard."
+}
