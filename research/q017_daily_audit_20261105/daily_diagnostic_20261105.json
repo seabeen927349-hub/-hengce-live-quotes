@@ -1,0 +1,1247 @@
+{
+  "system": "HENGCE",
+  "study": "Q017_RETIRED_DAILY_POINT_IN_TIME_DIAGNOSTIC",
+  "generated_using": "read-only GitHub Actions historical analysis, no model activation",
+  "as_of_complete_eod": "2026-11-04",
+  "intraday_2026_11_05_excluded": "Session incomplete at user request (12:07 Taipei)",
+  "source_root": "research/retired_q017_20261105/hengce/q017_radar/data/twse_electronics_history_2026.csv",
+  "universe_history_latest": "2026-10-22",
+  "source_history_rows": 88149,
+  "eod_sessions": [
+    "2026-10-21",
+    "2026-10-22",
+    "2026-10-27",
+    "2026-10-28",
+    "2026-10-29",
+    "2026-10-30",
+    "2026-11-02",
+    "2026-11-03",
+    "2026-11-04"
+  ],
+  "formal_snapshot_dates": [
+    "2026-10-21",
+    "2026-10-22"
+  ],
+  "macro_reconstruction_discrepancy": [
+    {
+      "date": "2026-10-21",
+      "computed": {
+        "latest_session": "2026-10-20",
+        "one": -0.0028746891968092214,
+        "five": -0.07576363330011182
+      },
+      "recorded": {
+        "gate_go": true,
+        "checks": {
+          "sox_1d_lte_0": true,
+          "sox_5d_lte_minus_3pct": true,
+          "dxy_5d_gte_minus_0_5pct": true
+        },
+        "sox_1d": -0.0028746891968092214,
+        "sox_5d": -0.07576363330011182,
+        "dxy_5d": -0.00391467532476264,
+        "source_lock": "Q017_LOCK_20261018.json"
+      },
+      "differences": {
+        "sox_1d": 0.0,
+        "sox_5d": 0.0,
+        "dxy_5d": 0.00048929
+      }
+    },
+    {
+      "date": "2026-10-22",
+      "computed": {
+        "latest_session": "2026-10-21",
+        "one": 0.019651470366216506,
+        "five": -0.015304782920177673
+      },
+      "recorded": {
+        "gate_go": false,
+        "checks": {
+          "sox_1d_lte_0": false,
+          "sox_5d_lte_minus_3pct": false,
+          "dxy_5d_gte_minus_0_5pct": false
+        },
+        "sox_1d": 0.019651470366216506,
+        "sox_5d": -0.015304782920177673,
+        "dxy_5d": -0.008444709098746506,
+        "source_lock": "Q017_LOCK_20261018.json"
+      },
+      "differences": {
+        "sox_1d": 0.0,
+        "sox_5d": 0.0,
+        "dxy_5d": 0.00093614
+      }
+    }
+  ],
+  "archive_vs_eod_price_discrepancies_total": 0,
+  "archive_vs_eod_price_discrepancy_examples": [],
+  "critical_limitation": "Retrospective daily EOD open price reveals stocks not opened by 09:01. On dates without saved 09:01 snapshot, this is NOT actual Q017 selection; no causal 09:01 rank or executable open return can be established.",
+  "historical_model_status": "RETIRED_NO_TRADING_OR_SELECTION_AUTHORITY",
+  "daily": [
+    {
+      "date": "2026-10-21",
+      "mode": "FORMAL_SAVED_0901",
+      "market_gate": "GO",
+      "go": true,
+      "macro_asof": {
+        "sox_session": "2026-10-20",
+        "sox1": -0.0028746891968092214,
+        "sox5": -0.07576363330011182,
+        "dxy_session": "2026-10-20",
+        "dxy5": -0.004403963073969508,
+        "checks": {
+          "sox_1d_lte_0": true,
+          "sox_5d_lte_minus_3pct": true,
+          "dxy_5d_gte_minus_0_5pct": true
+        }
+      },
+      "prior_tw_date": "2026-10-20",
+      "universe_n": 455,
+      "eligible_beta_n": 441,
+      "eod_open_proxy_n": 403,
+      "original_0901_opened_n": 175,
+      "original_gate": "GO",
+      "visible_top3": [
+        {
+          "ticker": "3055",
+          "score": 1.147172,
+          "qualified": true
+        },
+        {
+          "ticker": "8150",
+          "score": 1.033239,
+          "qualified": true
+        },
+        {
+          "ticker": "7795",
+          "score": 0.935294,
+          "qualified": true
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "3055",
+          "score": 1.147172
+        },
+        {
+          "ticker": "8150",
+          "score": 1.033239
+        },
+        {
+          "ticker": "3016",
+          "score": 0.997085
+        }
+      ],
+      "active_n": 3,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": true,
+      "eod_mother_status": "COMPLETE"
+    },
+    {
+      "date": "2026-10-22",
+      "mode": "FORMAL_SAVED_0901",
+      "market_gate": "CASH",
+      "go": false,
+      "macro_asof": {
+        "sox_session": "2026-10-21",
+        "sox1": 0.019651470366216506,
+        "sox5": -0.015304782920177673,
+        "dxy_session": "2026-10-21",
+        "dxy5": -0.007508573861985224,
+        "checks": {
+          "sox_1d_lte_0": false,
+          "sox_5d_lte_minus_3pct": false,
+          "dxy_5d_gte_minus_0_5pct": false
+        }
+      },
+      "prior_tw_date": "2026-10-21",
+      "universe_n": 457,
+      "eligible_beta_n": 442,
+      "eod_open_proxy_n": 435,
+      "original_0901_opened_n": 225,
+      "original_gate": "CASH",
+      "visible_top3": [
+        {
+          "ticker": "3055",
+          "score": 1.762124,
+          "qualified": false
+        },
+        {
+          "ticker": "7795",
+          "score": 1.165165,
+          "qualified": false
+        },
+        {
+          "ticker": "3016",
+          "score": 1.145956,
+          "qualified": false
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "3055",
+          "score": 1.762124
+        },
+        {
+          "ticker": "6531",
+          "score": 1.221438
+        },
+        {
+          "ticker": "7795",
+          "score": 1.165165
+        }
+      ],
+      "active_n": 0,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": false,
+      "eod_mother_status": "COMPLETE"
+    },
+    {
+      "date": "2026-10-27",
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_gate": "WATCH",
+      "go": false,
+      "macro_asof": {
+        "sox_session": "2026-10-26",
+        "sox1": 0.028202280137779256,
+        "sox5": -0.020578494640661527,
+        "dxy_session": "2026-10-26",
+        "dxy5": -0.0001961587742934645,
+        "checks": {
+          "sox_1d_lte_0": false,
+          "sox_5d_lte_minus_3pct": false,
+          "dxy_5d_gte_minus_0_5pct": true
+        }
+      },
+      "prior_tw_date": "2026-10-22",
+      "universe_n": 455,
+      "eligible_beta_n": 440,
+      "eod_open_proxy_n": 434,
+      "original_0901_opened_n": null,
+      "original_gate": null,
+      "visible_top3": [
+        {
+          "ticker": "2360",
+          "score": 2.005892,
+          "qualified": false
+        },
+        {
+          "ticker": "3055",
+          "score": 1.493401,
+          "qualified": false
+        },
+        {
+          "ticker": "3016",
+          "score": 1.46255,
+          "qualified": false
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "2360",
+          "score": 2.005892
+        },
+        {
+          "ticker": "3055",
+          "score": 1.493401
+        },
+        {
+          "ticker": "3016",
+          "score": 1.46255
+        }
+      ],
+      "active_n": 0,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": true,
+      "eod_mother_status": "COMPLETE"
+    },
+    {
+      "date": "2026-10-28",
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_gate": "WATCH",
+      "go": false,
+      "macro_asof": {
+        "sox_session": "2026-10-27",
+        "sox1": 0.036002745060183194,
+        "sox5": 0.017608676793007705,
+        "dxy_session": "2026-10-27",
+        "dxy5": 0.005799629592270206,
+        "checks": {
+          "sox_1d_lte_0": false,
+          "sox_5d_lte_minus_3pct": false,
+          "dxy_5d_gte_minus_0_5pct": true
+        }
+      },
+      "prior_tw_date": "2026-10-22",
+      "universe_n": 455,
+      "eligible_beta_n": 440,
+      "eod_open_proxy_n": 412,
+      "original_0901_opened_n": null,
+      "original_gate": null,
+      "visible_top3": [
+        {
+          "ticker": "6715",
+          "score": 2.664495,
+          "qualified": false
+        },
+        {
+          "ticker": "8021",
+          "score": 2.496732,
+          "qualified": false
+        },
+        {
+          "ticker": "3715",
+          "score": 2.479853,
+          "qualified": false
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "6715",
+          "score": 2.664495
+        },
+        {
+          "ticker": "8021",
+          "score": 2.496732
+        },
+        {
+          "ticker": "3715",
+          "score": 2.479853
+        }
+      ],
+      "active_n": 0,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": true,
+      "eod_mother_status": "COMPLETE"
+    },
+    {
+      "date": "2026-10-29",
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_gate": "WATCH",
+      "go": false,
+      "macro_asof": {
+        "sox_session": "2026-10-28",
+        "sox1": 0.017547999662282487,
+        "sox5": 0.015509420231415882,
+        "dxy_session": "2026-10-28",
+        "dxy5": 0.004028332354360176,
+        "checks": {
+          "sox_1d_lte_0": false,
+          "sox_5d_lte_minus_3pct": false,
+          "dxy_5d_gte_minus_0_5pct": true
+        }
+      },
+      "prior_tw_date": "2026-10-22",
+      "universe_n": 455,
+      "eligible_beta_n": 440,
+      "eod_open_proxy_n": 371,
+      "original_0901_opened_n": null,
+      "original_gate": null,
+      "visible_top3": [
+        {
+          "ticker": "8021",
+          "score": 2.481759,
+          "qualified": false
+        },
+        {
+          "ticker": "3016",
+          "score": 2.381493,
+          "qualified": false
+        },
+        {
+          "ticker": "4989",
+          "score": 2.048612,
+          "qualified": false
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "8021",
+          "score": 2.481759
+        },
+        {
+          "ticker": "3016",
+          "score": 2.381493
+        },
+        {
+          "ticker": "4989",
+          "score": 2.048612
+        }
+      ],
+      "active_n": 0,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": true,
+      "eod_mother_status": "COMPLETE"
+    },
+    {
+      "date": "2026-10-30",
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_gate": "WATCH",
+      "go": false,
+      "macro_asof": {
+        "sox_session": "2026-10-29",
+        "sox1": -0.014190437332421313,
+        "sox5": 0.07325968806487393,
+        "dxy_session": "2026-10-29",
+        "dxy5": 0.004231869920213072,
+        "checks": {
+          "sox_1d_lte_0": true,
+          "sox_5d_lte_minus_3pct": false,
+          "dxy_5d_gte_minus_0_5pct": true
+        }
+      },
+      "prior_tw_date": "2026-10-22",
+      "universe_n": 455,
+      "eligible_beta_n": 440,
+      "eod_open_proxy_n": 416,
+      "original_0901_opened_n": null,
+      "original_gate": null,
+      "visible_top3": [
+        {
+          "ticker": "8021",
+          "score": 3.462688,
+          "qualified": false
+        },
+        {
+          "ticker": "4958",
+          "score": 3.267215,
+          "qualified": false
+        },
+        {
+          "ticker": "3016",
+          "score": 3.140075,
+          "qualified": false
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "8021",
+          "score": 3.462688
+        },
+        {
+          "ticker": "4958",
+          "score": 3.267215
+        },
+        {
+          "ticker": "3016",
+          "score": 3.140075
+        }
+      ],
+      "active_n": 0,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": true,
+      "eod_mother_status": "COMPLETE"
+    },
+    {
+      "date": "2026-11-02",
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_gate": "WATCH",
+      "go": false,
+      "macro_asof": {
+        "sox_session": "2026-10-30",
+        "sox1": -0.07200773141920269,
+        "sox5": -0.008410867820395795,
+        "dxy_session": "2026-10-30",
+        "dxy5": 0.0006875522689600011,
+        "checks": {
+          "sox_1d_lte_0": true,
+          "sox_5d_lte_minus_3pct": false,
+          "dxy_5d_gte_minus_0_5pct": true
+        }
+      },
+      "prior_tw_date": "2026-10-22",
+      "universe_n": 455,
+      "eligible_beta_n": 440,
+      "eod_open_proxy_n": 408,
+      "original_0901_opened_n": null,
+      "original_gate": null,
+      "visible_top3": [
+        {
+          "ticker": "6213",
+          "score": 3.136464,
+          "qualified": false
+        },
+        {
+          "ticker": "2308",
+          "score": 3.059175,
+          "qualified": false
+        },
+        {
+          "ticker": "3016",
+          "score": 3.036851,
+          "qualified": false
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "6213",
+          "score": 3.136464
+        },
+        {
+          "ticker": "2308",
+          "score": 3.059175
+        },
+        {
+          "ticker": "3016",
+          "score": 3.036851
+        }
+      ],
+      "active_n": 0,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": true,
+      "eod_mother_status": "COMPLETE"
+    },
+    {
+      "date": "2026-11-03",
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_gate": "GO",
+      "go": true,
+      "macro_asof": {
+        "sox_session": "2026-11-02",
+        "sox1": -0.03372417118458271,
+        "sox5": -0.0681321865841269,
+        "dxy_session": "2026-11-02",
+        "dxy5": -0.0020596222671468434,
+        "checks": {
+          "sox_1d_lte_0": true,
+          "sox_5d_lte_minus_3pct": true,
+          "dxy_5d_gte_minus_0_5pct": true
+        }
+      },
+      "prior_tw_date": "2026-10-22",
+      "universe_n": 455,
+      "eligible_beta_n": 440,
+      "eod_open_proxy_n": 417,
+      "original_0901_opened_n": null,
+      "original_gate": null,
+      "visible_top3": [
+        {
+          "ticker": "3026",
+          "score": 3.807857,
+          "qualified": true
+        },
+        {
+          "ticker": "6213",
+          "score": 3.720506,
+          "qualified": true
+        },
+        {
+          "ticker": "2360",
+          "score": 3.70513,
+          "qualified": true
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "3026",
+          "score": 3.807857
+        },
+        {
+          "ticker": "6213",
+          "score": 3.720506
+        },
+        {
+          "ticker": "2360",
+          "score": 3.70513
+        }
+      ],
+      "active_n": 3,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": true,
+      "eod_mother_status": "COMPLETE"
+    },
+    {
+      "date": "2026-11-04",
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_gate": "WATCH",
+      "go": false,
+      "macro_asof": {
+        "sox_session": "2026-11-03",
+        "sox1": 0.02634187397736465,
+        "sox5": -0.07682198480576741,
+        "dxy_session": "2026-11-03",
+        "dxy5": -0.009861245978853517,
+        "checks": {
+          "sox_1d_lte_0": false,
+          "sox_5d_lte_minus_3pct": true,
+          "dxy_5d_gte_minus_0_5pct": false
+        }
+      },
+      "prior_tw_date": "2026-10-22",
+      "universe_n": 455,
+      "eligible_beta_n": 440,
+      "eod_open_proxy_n": 433,
+      "original_0901_opened_n": null,
+      "original_gate": null,
+      "visible_top3": [
+        {
+          "ticker": "2360",
+          "score": 6.094845,
+          "qualified": false
+        },
+        {
+          "ticker": "3016",
+          "score": 5.926824,
+          "qualified": false
+        },
+        {
+          "ticker": "3026",
+          "score": 5.572992,
+          "qualified": false
+        }
+      ],
+      "proxy_top3": [
+        {
+          "ticker": "2360",
+          "score": 6.094845
+        },
+        {
+          "ticker": "3016",
+          "score": 5.926824
+        },
+        {
+          "ticker": "3026",
+          "score": 5.572992
+        }
+      ],
+      "active_n": 0,
+      "price_status": "COMPLETE",
+      "eod_three_leg_complete": true,
+      "eod_mother_status": "COMPLETE"
+    }
+  ],
+  "picks": [
+    {
+      "signal_date": "2026-10-21",
+      "ticker": "3055",
+      "rank": 1,
+      "mode": "FORMAL_SAVED_0901",
+      "market_go": true,
+      "reference_entry_open": 149.0,
+      "beta": 1.1471716010291497,
+      "residual": 0.034439630320475596,
+      "score": 1.1471716010291497,
+      "pre_signal": {
+        "prior_close": 144.5,
+        "prior_5_return": -0.2016574585635359,
+        "prior_10_return": -0.3325635103926097,
+        "prior_20_return": -0.10248447204968947,
+        "prior_close_over_ma20": -0.24087207775151032,
+        "prior_vol_ratio20": -0.8918567267124438,
+        "beta_obs_count": 190
+      },
+      "available_sessions": 9,
+      "d1_return": 0.02684563758389258,
+      "d2_return": -0.04026845637583898,
+      "d5_return": -0.023489932885906062,
+      "d10_return": null,
+      "end_date": "2026-11-04",
+      "end_close_return": -0.12416107382550334,
+      "worst_intraday_low_return": -0.18456375838926176,
+      "stop5_next_open_retro": {
+        "exit_date": "2026-10-29",
+        "exit_price": 141.0,
+        "return_vs_0901_reference": -0.05369127516778527
+      },
+      "next_session_open": 153.0,
+      "outcomes": [
+        {
+          "date": "2026-10-21",
+          "close": 153.0,
+          "open": 149.0,
+          "high": 155.5,
+          "low": 149.0,
+          "close_return_vs_0901_reference": 0.02684563758389258
+        },
+        {
+          "date": "2026-10-22",
+          "close": 143.0,
+          "open": 153.0,
+          "high": 153.0,
+          "low": 142.0,
+          "close_return_vs_0901_reference": -0.04026845637583898
+        },
+        {
+          "date": "2026-10-27",
+          "close": 146.5,
+          "open": 145.0,
+          "high": 147.0,
+          "low": 133.5,
+          "close_return_vs_0901_reference": -0.016778523489932917
+        },
+        {
+          "date": "2026-10-28",
+          "close": 141.0,
+          "open": 150.0,
+          "high": 155.0,
+          "low": 139.5,
+          "close_return_vs_0901_reference": -0.05369127516778527
+        },
+        {
+          "date": "2026-10-29",
+          "close": 145.5,
+          "open": 141.0,
+          "high": 151.0,
+          "low": 137.5,
+          "close_return_vs_0901_reference": -0.023489932885906062
+        },
+        {
+          "date": "2026-10-30",
+          "close": 134.0,
+          "open": 139.0,
+          "high": 141.5,
+          "low": 131.0,
+          "close_return_vs_0901_reference": -0.10067114093959728
+        },
+        {
+          "date": "2026-11-02",
+          "close": 139.0,
+          "open": 129.5,
+          "high": 144.0,
+          "low": 129.5,
+          "close_return_vs_0901_reference": -0.06711409395973156
+        },
+        {
+          "date": "2026-11-03",
+          "close": 135.0,
+          "open": 135.5,
+          "high": 137.0,
+          "low": 126.5,
+          "close_return_vs_0901_reference": -0.09395973154362414
+        },
+        {
+          "date": "2026-11-04",
+          "close": 130.5,
+          "open": 135.0,
+          "high": 135.0,
+          "low": 121.5,
+          "close_return_vs_0901_reference": -0.12416107382550334
+        }
+      ]
+    },
+    {
+      "signal_date": "2026-10-21",
+      "ticker": "8150",
+      "rank": 2,
+      "mode": "FORMAL_SAVED_0901",
+      "market_go": true,
+      "reference_entry_open": 102.5,
+      "beta": 1.033239294970218,
+      "residual": 0.03727902085006952,
+      "score": 1.033239294970218,
+      "pre_signal": {
+        "prior_close": 99.1,
+        "prior_5_return": -0.14568965517241383,
+        "prior_10_return": -0.20080645161290323,
+        "prior_20_return": 0.14302191464821212,
+        "prior_close_over_ma20": -0.12285360240750576,
+        "prior_vol_ratio20": -0.7825942574049,
+        "beta_obs_count": 190
+      },
+      "available_sessions": 9,
+      "d1_return": 0.0,
+      "d2_return": -0.06439024390243897,
+      "d5_return": -0.05170731707317067,
+      "d10_return": null,
+      "end_date": "2026-11-04",
+      "end_close_return": -0.17951219512195127,
+      "worst_intraday_low_return": -0.23804878048780498,
+      "stop5_next_open_retro": {
+        "exit_date": "2026-10-27",
+        "exit_price": 98.9,
+        "return_vs_0901_reference": -0.035121951219512115
+      },
+      "next_session_open": 104.0,
+      "outcomes": [
+        {
+          "date": "2026-10-21",
+          "close": 102.5,
+          "open": 102.5,
+          "high": 103.0,
+          "low": 100.5,
+          "close_return_vs_0901_reference": 0.0
+        },
+        {
+          "date": "2026-10-22",
+          "close": 95.9,
+          "open": 104.0,
+          "high": 105.0,
+          "low": 95.7,
+          "close_return_vs_0901_reference": -0.06439024390243897
+        },
+        {
+          "date": "2026-10-27",
+          "close": 97.0,
+          "open": 98.9,
+          "high": 103.5,
+          "low": 96.3,
+          "close_return_vs_0901_reference": -0.0536585365853659
+        },
+        {
+          "date": "2026-10-28",
+          "close": 100.5,
+          "open": 101.0,
+          "high": 102.0,
+          "low": 99.0,
+          "close_return_vs_0901_reference": -0.019512195121951237
+        },
+        {
+          "date": "2026-10-29",
+          "close": 97.2,
+          "open": 101.0,
+          "high": 102.0,
+          "low": 96.8,
+          "close_return_vs_0901_reference": -0.05170731707317067
+        },
+        {
+          "date": "2026-10-30",
+          "close": 90.9,
+          "open": 93.6,
+          "high": 93.6,
+          "low": 89.6,
+          "close_return_vs_0901_reference": -0.11317073170731706
+        },
+        {
+          "date": "2026-11-02",
+          "close": 92.0,
+          "open": 87.5,
+          "high": 93.5,
+          "low": 87.4,
+          "close_return_vs_0901_reference": -0.10243902439024388
+        },
+        {
+          "date": "2026-11-03",
+          "close": 83.5,
+          "open": 88.9,
+          "high": 89.7,
+          "low": 83.2,
+          "close_return_vs_0901_reference": -0.18536585365853664
+        },
+        {
+          "date": "2026-11-04",
+          "close": 84.1,
+          "open": 85.6,
+          "high": 86.0,
+          "low": 78.1,
+          "close_return_vs_0901_reference": -0.17951219512195127
+        }
+      ]
+    },
+    {
+      "signal_date": "2026-10-21",
+      "ticker": "7795",
+      "rank": 3,
+      "mode": "FORMAL_SAVED_0901",
+      "market_go": true,
+      "reference_entry_open": 441.5,
+      "beta": 0.9352940718738995,
+      "residual": 0.029432865810767237,
+      "score": 0.9352940718738995,
+      "pre_signal": {
+        "prior_close": 430.0,
+        "prior_5_return": -0.17938931297709926,
+        "prior_10_return": -0.23076923076923073,
+        "prior_20_return": -0.10973084886128359,
+        "prior_close_over_ma20": -0.14952531645569622,
+        "prior_vol_ratio20": -0.40617679656729866,
+        "beta_obs_count": 181
+      },
+      "available_sessions": 9,
+      "d1_return": -0.03737259343148358,
+      "d2_return": -0.07248018120045296,
+      "d5_return": -0.07361268403171006,
+      "d10_return": null,
+      "end_date": "2026-11-04",
+      "end_close_return": -0.1585503963759909,
+      "worst_intraday_low_return": -0.20724801812004534,
+      "stop5_next_open_retro": {
+        "exit_date": "2026-10-27",
+        "exit_price": 431.0,
+        "return_vs_0901_reference": -0.023782559456398622
+      },
+      "next_session_open": 428.5,
+      "outcomes": [
+        {
+          "date": "2026-10-21",
+          "close": 425.0,
+          "open": 441.5,
+          "high": 443.5,
+          "low": 422.0,
+          "close_return_vs_0901_reference": -0.03737259343148358
+        },
+        {
+          "date": "2026-10-22",
+          "close": 409.5,
+          "open": 428.5,
+          "high": 439.5,
+          "low": 409.5,
+          "close_return_vs_0901_reference": -0.07248018120045296
+        },
+        {
+          "date": "2026-10-27",
+          "close": 407.0,
+          "open": 431.0,
+          "high": 436.0,
+          "low": 399.5,
+          "close_return_vs_0901_reference": -0.07814269535673835
+        },
+        {
+          "date": "2026-10-28",
+          "close": 425.0,
+          "open": 419.5,
+          "high": 425.0,
+          "low": 408.5,
+          "close_return_vs_0901_reference": -0.03737259343148358
+        },
+        {
+          "date": "2026-10-29",
+          "close": 409.0,
+          "open": 429.0,
+          "high": 429.0,
+          "low": 404.0,
+          "close_return_vs_0901_reference": -0.07361268403171006
+        },
+        {
+          "date": "2026-10-30",
+          "close": 401.5,
+          "open": 397.5,
+          "high": 403.5,
+          "low": 387.5,
+          "close_return_vs_0901_reference": -0.0906002265005662
+        },
+        {
+          "date": "2026-11-02",
+          "close": 409.5,
+          "open": 397.5,
+          "high": 412.0,
+          "low": 389.5,
+          "close_return_vs_0901_reference": -0.07248018120045296
+        },
+        {
+          "date": "2026-11-03",
+          "close": 380.0,
+          "open": 400.0,
+          "high": 405.0,
+          "low": 370.5,
+          "close_return_vs_0901_reference": -0.13929784824462066
+        },
+        {
+          "date": "2026-11-04",
+          "close": 371.5,
+          "open": 385.5,
+          "high": 385.5,
+          "low": 350.0,
+          "close_return_vs_0901_reference": -0.1585503963759909
+        }
+      ]
+    },
+    {
+      "signal_date": "2026-11-03",
+      "ticker": "3026",
+      "rank": 1,
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_go": true,
+      "reference_entry_open": 615.0,
+      "beta": 0.7579883866676224,
+      "residual": -0.16094540640003194,
+      "score": 3.807857110135748,
+      "pre_signal": {
+        "prior_close": 756.0,
+        "prior_5_return": -0.06781750924784213,
+        "prior_10_return": -0.098927294398093,
+        "prior_20_return": -0.04424778761061943,
+        "prior_close_over_ma20": -0.06539745333168501,
+        "prior_vol_ratio20": 0.04002216699357097,
+        "beta_obs_count": 192
+      },
+      "available_sessions": 2,
+      "d1_return": -0.06666666666666665,
+      "d2_return": -0.047154471544715415,
+      "d5_return": null,
+      "d10_return": null,
+      "end_date": "2026-11-04",
+      "end_close_return": -0.047154471544715415,
+      "worst_intraday_low_return": -0.1447154471544716,
+      "stop5_next_open_retro": {
+        "exit_date": "2026-11-04",
+        "exit_price": 579.0,
+        "return_vs_0901_reference": -0.05853658536585371
+      },
+      "next_session_open": 579.0,
+      "outcomes": [
+        {
+          "date": "2026-11-03",
+          "close": 574.0,
+          "open": 615.0,
+          "high": 631.0,
+          "low": 574.0,
+          "close_return_vs_0901_reference": -0.06666666666666665
+        },
+        {
+          "date": "2026-11-04",
+          "close": 586.0,
+          "open": 579.0,
+          "high": 595.0,
+          "low": 526.0,
+          "close_return_vs_0901_reference": -0.047154471544715415
+        }
+      ]
+    },
+    {
+      "signal_date": "2026-11-03",
+      "ticker": "6213",
+      "rank": 2,
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_go": true,
+      "reference_entry_open": 631.0,
+      "beta": 0.7323700830756984,
+      "residual": -0.16320361385007603,
+      "score": 3.7205061889165583,
+      "pre_signal": {
+        "prior_close": 777.0,
+        "prior_5_return": -0.027534418022528206,
+        "prior_10_return": -0.023869346733668362,
+        "prior_20_return": 0.43357933579335795,
+        "prior_close_over_ma20": 0.0688493018777081,
+        "prior_vol_ratio20": 1.5342507594118304,
+        "beta_obs_count": 192
+      },
+      "available_sessions": 2,
+      "d1_return": -0.04912836767036455,
+      "d2_return": -0.030110935023771823,
+      "d5_return": null,
+      "d10_return": null,
+      "end_date": "2026-11-04",
+      "end_close_return": -0.030110935023771823,
+      "worst_intraday_low_return": -0.11251980982567356,
+      "stop5_next_open_retro": null,
+      "next_session_open": 630.0,
+      "outcomes": [
+        {
+          "date": "2026-11-03",
+          "close": 600.0,
+          "open": 631.0,
+          "high": 662.0,
+          "low": 597.0,
+          "close_return_vs_0901_reference": -0.04912836767036455
+        },
+        {
+          "date": "2026-11-04",
+          "close": 612.0,
+          "open": 630.0,
+          "high": 652.0,
+          "low": 560.0,
+          "close_return_vs_0901_reference": -0.030110935023771823
+        }
+      ]
+    },
+    {
+      "signal_date": "2026-11-03",
+      "ticker": "2360",
+      "rank": 3,
+      "mode": "RETROSPECTIVE_EOD_OPEN_PROXY_NOT_REAL_0901",
+      "market_go": true,
+      "reference_entry_open": 1645.0,
+      "beta": 0.8157407242561301,
+      "residual": -0.14168173936487002,
+      "score": 3.7051298413403133,
+      "pre_signal": {
+        "prior_close": 1980.0,
+        "prior_5_return": -0.022222222222222254,
+        "prior_10_return": -0.17500000000000004,
+        "prior_20_return": -0.1663157894736842,
+        "prior_close_over_ma20": -0.09774436090225569,
+        "prior_vol_ratio20": -0.1803536238681197,
+        "beta_obs_count": 192
+      },
+      "available_sessions": 2,
+      "d1_return": -0.06079027355623101,
+      "d2_return": -0.1063829787234043,
+      "d5_return": null,
+      "d10_return": null,
+      "end_date": "2026-11-04",
+      "end_close_return": -0.1063829787234043,
+      "worst_intraday_low_return": -0.15197568389057747,
+      "stop5_next_open_retro": {
+        "exit_date": "2026-11-04",
+        "exit_price": 1510.0,
+        "return_vs_0901_reference": -0.0820668693009119
+      },
+      "next_session_open": 1510.0,
+      "outcomes": [
+        {
+          "date": "2026-11-03",
+          "close": 1545.0,
+          "open": 1645.0,
+          "high": 1655.0,
+          "low": 1545.0,
+          "close_return_vs_0901_reference": -0.06079027355623101
+        },
+        {
+          "date": "2026-11-04",
+          "close": 1470.0,
+          "open": 1510.0,
+          "high": 1530.0,
+          "low": 1395.0,
+          "close_return_vs_0901_reference": -0.1063829787234043
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "sessions": 9,
+    "go_days": [
+      "2026-10-21",
+      "2026-11-03"
+    ],
+    "non_go_days": [
+      "2026-10-22",
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29",
+      "2026-10-30",
+      "2026-11-02",
+      "2026-11-04"
+    ],
+    "formal": {
+      "count": 3,
+      "d1_return": {
+        "n": 3,
+        "mean": -0.003508985282530334,
+        "positive": 1
+      },
+      "d2_return": {
+        "n": 3,
+        "mean": -0.059046293826243636,
+        "positive": 0
+      },
+      "d5_return": {
+        "n": 3,
+        "mean": -0.049603311330262266,
+        "positive": 0
+      },
+      "d10_return": {
+        "n": 0,
+        "mean": null,
+        "positive": 0
+      },
+      "end_close_return": {
+        "n": 3,
+        "mean": -0.15407455510781518,
+        "positive": 0
+      },
+      "prior_5_return": {
+        "n": 3,
+        "mean": -0.17557880890434965,
+        "negative": 3
+      },
+      "prior_close_over_ma20": {
+        "n": 3,
+        "mean": -0.17108366553823742,
+        "negative": 3
+      },
+      "prior_vol_ratio20": {
+        "n": 3,
+        "mean": -0.6935425935615475,
+        "negative": 3
+      },
+      "pre_5_below_minus_10pct": 3,
+      "pre_close_below_ma20": 3,
+      "pre_volume_under_half_ma20": 2
+    },
+    "proxy": {
+      "count": 3,
+      "d1_return": {
+        "n": 3,
+        "mean": -0.05886176929775407,
+        "positive": 0
+      },
+      "d2_return": {
+        "n": 3,
+        "mean": -0.06121612843063051,
+        "positive": 0
+      },
+      "d5_return": {
+        "n": 0,
+        "mean": null,
+        "positive": 0
+      },
+      "d10_return": {
+        "n": 0,
+        "mean": null,
+        "positive": 0
+      },
+      "end_close_return": {
+        "n": 3,
+        "mean": -0.06121612843063051,
+        "positive": 0
+      },
+      "prior_5_return": {
+        "n": 3,
+        "mean": -0.039191383164197534,
+        "negative": 3
+      },
+      "prior_close_over_ma20": {
+        "n": 3,
+        "mean": -0.03143083745207753,
+        "negative": 2
+      },
+      "prior_vol_ratio20": {
+        "n": 3,
+        "mean": 0.46463976751242725,
+        "negative": 1
+      },
+      "pre_5_below_minus_10pct": 0,
+      "pre_close_below_ma20": 2,
+      "pre_volume_under_half_ma20": 0
+    },
+    "all": {
+      "count": 6,
+      "d1_return": {
+        "n": 6,
+        "mean": -0.031185377290142202,
+        "positive": 1
+      },
+      "d2_return": {
+        "n": 6,
+        "mean": -0.06013121112843708,
+        "positive": 0
+      },
+      "d5_return": {
+        "n": 3,
+        "mean": -0.049603311330262266,
+        "positive": 0
+      },
+      "d10_return": {
+        "n": 0,
+        "mean": null,
+        "positive": 0
+      },
+      "end_close_return": {
+        "n": 6,
+        "mean": -0.10764534176922284,
+        "positive": 0
+      },
+      "prior_5_return": {
+        "n": 6,
+        "mean": -0.1073850960342736,
+        "negative": 6
+      },
+      "prior_close_over_ma20": {
+        "n": 6,
+        "mean": -0.10125725149515748,
+        "negative": 5
+      },
+      "prior_vol_ratio20": {
+        "n": 6,
+        "mean": -0.11445141302456012,
+        "negative": 4
+      },
+      "pre_5_below_minus_10pct": 3,
+      "pre_close_below_ma20": 5,
+      "pre_volume_under_half_ma20": 2
+    }
+  },
+  "unchanged": true
+}
