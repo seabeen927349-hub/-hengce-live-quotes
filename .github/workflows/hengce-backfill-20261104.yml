@@ -1,0 +1,76 @@
+name: HENGCE EOD one-off backfill 2026-11-04
+# Explicit historical repair for one missing date; original EOD vessel only.
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-backfill-20261104.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: hengce-original-eod-ingest
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout original vessel
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install TWSE transport dependencies
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Fetch official TWSE original EOD three legs for 2026-11-04
+        id: backfill
+        continue-on-error: true
+        run: python scripts/hengce_eod_incremental_ingest.py --mode ingest --date 2026-11-04
+      - name: Verify original-vessel date, rows and boundaries
+        id: validate
+        continue-on-error: true
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts import hengce_eod_incremental_ingest as ingest
+          p=Path("eod/20261104/status.json")
+          if not p.exists():
+              raise SystemExit("BACKFILL_NO_STATUS_FILE")
+          x=json.loads(p.read_text())
+          assert x.get("target_date")=="2026-11-04", x
+          assert x.get("parallel_eod_tree") is False and x.get("second_mother") is False, x
+          for leg in ingest.LEGS:
+              assert x.get(leg+"_status")=="COMPLETE", (leg,x.get(leg+"_status"))
+              info=ingest._read(Path("eod/20261104"),leg,"2026-11-04")
+              assert info and info["rows"]>=ingest.MIN[leg], (leg,info)
+              receipt=json.loads((Path("eod/20261104")/"receipts"/(leg+".json")).read_text())
+              assert receipt["sha256"]==info["sha256"],leg
+              assert receipt["target_date"]=="2026-11-04",leg
+          assert x.get("three_leg_complete") is True, x
+          print("2026-11-04 THREE_LEG_SOURCE_COMPLETE", [x[leg+"_rows"] for leg in ingest.LEGS])
+          PY
+      - name: Persist exact original-vessel bytes even when partial
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f eod/20261104/status.json
+          git config user.name "hengce-historical-backfill-bot"
+          git config user.email "hengce-historical-backfill-bot@users.noreply.github.com"
+          git add eod/20261104/
+          if ! git diff --cached --quiet; then
+            git commit -m "HENGCE original EOD 2026-11-04 missing-date repair"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Require all three legs to be real and complete
+        if: steps.validate.outcome != 'success'
+        run: |
+          echo "Historical EOD is missing one or more valid source legs; see persisted status." >&2
+          exit 1
