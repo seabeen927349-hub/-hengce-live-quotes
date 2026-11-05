@@ -1,0 +1,284 @@
+{
+  "system": "HENGCE",
+  "label": "HENGCE_EXTERNAL_TWSE_RESEARCH_V04_20261105",
+  "status": "INDEPENDENT_RESEARCH_ONLY_NOT_HENGCE_CANONICAL",
+  "score_model": "PRE_EVENT_RESILIENCE_SCORE_V04_FIXED_WEIGHTS_50_30_20",
+  "score_source": "research/five_day_stress_resilience_20261105/quantified_resilience_score_v04.json",
+  "score_asof_date": "2026-10-28",
+  "evaluation_date": "2026-11-05",
+  "price_source_url": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20261105&type=ALLBUT0999&response=json",
+  "price_origin": "Official TWSE public daily close, separately read-only retrieved, not loaded into existing EOD original vessel",
+  "price_validation": "stat OK, date 20261105",
+  "quotes_parsed": 1097,
+  "score_universe_count": 560,
+  "matched": 559,
+  "missing": [
+    {
+      "ticker": "3714",
+      "name": "富采",
+      "score": 43.113
+    }
+  ],
+  "taiex_close_1104": 42948.91,
+  "taiex_close_1105": 41574.72,
+  "taiex_daily_pct": -3.199592259733719,
+  "taiex_close_1028": 47035.58,
+  "taiex_6d_pct": -11.610061999873288,
+  "score_groups": [
+    {
+      "group": "80–100",
+      "n": 86,
+      "mean_day_pct": -0.939,
+      "median_day_pct": -0.628,
+      "beat_day_pct": 90.7,
+      "gain_day_pct": 17.4,
+      "lose5_day_pct": 2.3,
+      "mean_6d_pct": -4.414,
+      "beat_6d_pct": 89.5
+    },
+    {
+      "group": "60–79",
+      "n": 136,
+      "mean_day_pct": -1.618,
+      "median_day_pct": -1.957,
+      "beat_day_pct": 72.8,
+      "gain_day_pct": 19.1,
+      "lose5_day_pct": 4.4,
+      "mean_6d_pct": -7.087,
+      "beat_6d_pct": 73.5
+    },
+    {
+      "group": "40–59",
+      "n": 124,
+      "mean_day_pct": -3.891,
+      "median_day_pct": -4.156,
+      "beat_day_pct": 40.3,
+      "gain_day_pct": 10.5,
+      "lose5_day_pct": 38.7,
+      "mean_6d_pct": -11.873,
+      "beat_6d_pct": 42.7
+    },
+    {
+      "group": "20–39",
+      "n": 129,
+      "mean_day_pct": -6.604,
+      "median_day_pct": -6.864,
+      "beat_day_pct": 8.5,
+      "gain_day_pct": 4.7,
+      "lose5_day_pct": 81.4,
+      "mean_6d_pct": -17.388,
+      "beat_6d_pct": 13.2
+    },
+    {
+      "group": "0–19",
+      "n": 84,
+      "mean_day_pct": -8.432,
+      "median_day_pct": -9.065,
+      "beat_day_pct": 3.6,
+      "gain_day_pct": 1.2,
+      "lose5_day_pct": 94,
+      "mean_6d_pct": -21.28,
+      "beat_6d_pct": 8.3
+    }
+  ],
+  "score_top20": {
+    "n": 111,
+    "mean_day_pct": -0.889,
+    "median_day_pct": -0.544,
+    "beat_day_pct": 89.2,
+    "gain_day_pct": 21.6,
+    "lose5_day_pct": 2.7,
+    "mean_6d_pct": -4.403,
+    "beat_6d_pct": 88.3
+  },
+  "score_bottom20": {
+    "n": 111,
+    "mean_day_pct": -8.157,
+    "median_day_pct": -9.043,
+    "beat_day_pct": 3.6,
+    "gain_day_pct": 1.8,
+    "lose5_day_pct": 91.9,
+    "mean_6d_pct": -21.14,
+    "beat_6d_pct": 9
+  },
+  "low_vol_single_factor_top20": {
+    "n": 111,
+    "mean_day_pct": -0.77,
+    "median_day_pct": -0.544,
+    "beat_day_pct": 89.2,
+    "gain_day_pct": 22.5,
+    "lose5_day_pct": 1.8,
+    "mean_6d_pct": -4.532,
+    "beat_6d_pct": 88.3
+  },
+  "low_vol_single_factor_bottom20": {
+    "n": 111,
+    "mean_day_pct": -8.135,
+    "median_day_pct": -9.007,
+    "beat_day_pct": 5.4,
+    "gain_day_pct": 1.8,
+    "lose5_day_pct": 91,
+    "mean_6d_pct": -18.92,
+    "beat_6d_pct": 12.6
+  },
+  "score_vs_vol_mean_return_gain_pp": -0.119,
+  "auc_expost_one_day": 0.8886,
+  "examples_highscore_worst": [
+    {
+      "ticker": "9933",
+      "name": "中鼎",
+      "score": 85.85,
+      "ret_day_pct": -5.32
+    },
+    {
+      "ticker": "2377",
+      "name": "微星",
+      "score": 83.149,
+      "ret_day_pct": -5.32
+    },
+    {
+      "ticker": "4571",
+      "name": "鈞興-KY",
+      "score": 83.721,
+      "ret_day_pct": -4.89
+    },
+    {
+      "ticker": "2006",
+      "name": "東和鋼鐵",
+      "score": 85.17,
+      "ret_day_pct": -4.24
+    },
+    {
+      "ticker": "3380",
+      "name": "明泰",
+      "score": 90.447,
+      "ret_day_pct": -3.98
+    },
+    {
+      "ticker": "2352",
+      "name": "佳世達",
+      "score": 83.023,
+      "ret_day_pct": -3.95
+    },
+    {
+      "ticker": "2347",
+      "name": "聯強",
+      "score": 81.342,
+      "ret_day_pct": -3.43
+    },
+    {
+      "ticker": "3416",
+      "name": "融程電",
+      "score": 82.504,
+      "ret_day_pct": -3.22
+    },
+    {
+      "ticker": "2014",
+      "name": "中鴻",
+      "score": 82.111,
+      "ret_day_pct": -3.18
+    },
+    {
+      "ticker": "8112",
+      "name": "至上",
+      "score": 84.025,
+      "ret_day_pct": -3.1
+    },
+    {
+      "ticker": "6214",
+      "name": "精誠",
+      "score": 94.007,
+      "ret_day_pct": -3.02
+    },
+    {
+      "ticker": "2393",
+      "name": "億光",
+      "score": 88.623,
+      "ret_day_pct": -2.79
+    }
+  ],
+  "examples_low_score_best": [
+    {
+      "ticker": "6873",
+      "name": "泓德能源",
+      "score": 7.138,
+      "ret_day_pct": 1.29
+    },
+    {
+      "ticker": "6949",
+      "name": "沛爾生醫*-創",
+      "score": 16.869,
+      "ret_day_pct": -2.15
+    },
+    {
+      "ticker": "6830",
+      "name": "汎銓",
+      "score": 16.369,
+      "ret_day_pct": -2.37
+    },
+    {
+      "ticker": "7795",
+      "name": "長廣",
+      "score": 17.442,
+      "ret_day_pct": -3.63
+    },
+    {
+      "ticker": "3518",
+      "name": "柏騰",
+      "score": 8.587,
+      "ret_day_pct": -4.64
+    },
+    {
+      "ticker": "1709",
+      "name": "和益",
+      "score": 8.39,
+      "ret_day_pct": -5.37
+    },
+    {
+      "ticker": "3229",
+      "name": "晟鈦",
+      "score": 8.354,
+      "ret_day_pct": -6.14
+    },
+    {
+      "ticker": "6226",
+      "name": "光鼎",
+      "score": 6.118,
+      "ret_day_pct": -6.22
+    },
+    {
+      "ticker": "3665",
+      "name": "貿聯-KY",
+      "score": 10.662,
+      "ret_day_pct": -6.37
+    },
+    {
+      "ticker": "6715",
+      "name": "嘉基",
+      "score": 15.295,
+      "ret_day_pct": -6.46
+    },
+    {
+      "ticker": "6668",
+      "name": "中揚光",
+      "score": 19.785,
+      "ret_day_pct": -6.75
+    },
+    {
+      "ticker": "6933",
+      "name": "AMAX-KY",
+      "score": 18.372,
+      "ret_day_pct": -6.78
+    }
+  ],
+  "no_changes_to_model": true,
+  "no_canonical_promotion": true,
+  "no_trading_authority": true,
+  "limitations": [
+    "Single market day, selection of 50/30/20 weights occurred after 2026-10-29..11-04 event and is not truly independently pre-registered.",
+    "HENGCE 2026-11-05 original EOD status remains PENDING; external TWSE result is explicitly separated and must not be promoted to mother.",
+    "Potential stock-specific events, market beta, industry composition and unadjusted corporate actions remain confounders.",
+    "No evidence of future expected return, trading profitability or calibrated probabilities.",
+    "Low volatility single-factor comparator is required to detect whether complexity truly adds value."
+  ]
+}
