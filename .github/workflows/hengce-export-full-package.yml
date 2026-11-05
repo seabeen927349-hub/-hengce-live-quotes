@@ -48,6 +48,14 @@ jobs:
           package_scope=complete main working tree + complete current research branch working tree
           EOF
 
+      - name: Export official original-vessel source receipts for missing 2026-11-04
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_ORIGINAL_VESSEL_20261104_CANONICAL_BRIDGE_INPUT
+          path: package/main/eod/20261104/
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Upload full package
         uses: actions/upload-artifact@v4
         with:
