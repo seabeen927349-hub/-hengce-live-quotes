@@ -1,0 +1,37 @@
+name: HENGCE one-shot retired-model exploratory validation
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-research-validation-once-20261105.yml'
+permissions:
+  contents: write
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare retired reference and research changes on identical EOD-open cohort
+        run: python research/q017_daily_audit_20261105/compare_revisions_20261105.py > /tmp/hengce_research_experiment.json
+      - name: Log experiment summary
+        run: python -m json.tool /tmp/hengce_research_experiment.json
+      - name: Publish research artifacts (never trading signal)
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_RETIRED_MODEL_ABLATION_RESEARCH_20261105
+          path: |
+            research/q017_daily_audit_20261105/Q017_REVISION_ABLATION_20261105.json
+            research/q017_daily_audit_20261105/Q017_REVISION_ABLATION_REPORT_20261105.md
+          if-no-files-found: error
+      - name: Commit research output only
+        run: |
+          set -euo pipefail
+          git config user.name "hengce-research-audit-bot"
+          git config user.email "hengce-research-audit-bot@users.noreply.github.com"
+          git add research/q017_daily_audit_20261105/Q017_REVISION_ABLATION_20261105.json research/q017_daily_audit_20261105/Q017_REVISION_ABLATION_REPORT_20261105.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Research-only retired Q017 ablation comparing R1 with original 2026"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
