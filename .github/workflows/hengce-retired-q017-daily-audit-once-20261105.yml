@@ -1,0 +1,43 @@
+name: HENGCE retired Q017 one-shot historical daily audit
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-retired-q017-daily-audit-once-20261105.yml'
+permissions:
+  contents: write
+concurrency:
+  group: hengce-retired-q017-readonly-audit-20261105
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compute read-only point-in-time Q017 counterfactual
+        run: python research/q017_daily_audit_20261105/run_audit.py > /tmp/q017_daily_result_20261105.txt
+      - name: Show key statistics
+        run: cat /tmp/q017_daily_result_20261105.txt
+      - name: Upload immutable research artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_RETIRED_Q017_DAILY_AUDIT_20261105
+          path: |
+            research/q017_daily_audit_20261105/daily_diagnostic_20261105.json
+            research/q017_daily_audit_20261105/REPORT_20261105.md
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit audited research only (never activate strategy)
+        run: |
+          set -euo pipefail
+          git config user.name "hengce-research-audit-bot"
+          git config user.email "hengce-research-audit-bot@users.noreply.github.com"
+          git add research/q017_daily_audit_20261105/daily_diagnostic_20261105.json research/q017_daily_audit_20261105/REPORT_20261105.md
+          if ! git diff --cached --quiet; then
+            git commit -m "HENGCE read-only daily retired Q017 counterfactual 20261021 through 20261104"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
