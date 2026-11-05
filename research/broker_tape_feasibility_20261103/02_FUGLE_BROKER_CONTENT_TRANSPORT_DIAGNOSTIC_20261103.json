@@ -1,0 +1,59 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "FUGLE_BROKER_CONTENT_TRANSPORT_DIAGNOSTIC",
+  "scope": "RESEARCH_DATA_TRANSPORT_DIAGNOSTIC_ONLY",
+  "authority": "NO_FORWARD_RETURN_NO_RANKING_NO_TRADING_AUTHORITY",
+  "fugle_stock_connector": {
+    "list_content_specs_verified": true,
+    "specs": {
+      "FCNT000009": {"name": "主力券商", "accessible": true, "requiredParams": ["symbol_id"]},
+      "FCNT000106": {"name": "近240日單一券商買賣超", "accessible": true, "requiredParams": ["symbol_id", "broker_id", "broker_type"]},
+      "FCNT000117": {"name": "近240日券商買賣基尼係數", "accessible": true, "requiredParams": ["symbol_id"]},
+      "FCNT000105": {"name": "最新券商分點買賣超排行", "accessible": false, "accessHint": "請至富果官網查看"}
+    },
+    "actual_get_content_probes": [
+      {"contentSpecId": "FCNT000009", "symbol_id": "2330", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000009", "symbol_id": "2317", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000009", "symbol_id": "2454", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000009", "symbol_id": "3443", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000117", "symbol_id": "2330", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000117", "symbol_id": "2317", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000117", "symbol_id": "2454", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000117", "symbol_id": "3443", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000117", "symbol_id": "6173", "payload": {}, "nonempty": false},
+      {"contentSpecId": "FCNT000001", "symbol_id": "2330", "payload": {}, "nonempty": false, "role": "NON_BROKER_CONTROL"},
+      {"contentSpecId": "FCNT000153", "symbol_id": "2330", "payload": {}, "nonempty": false, "role": "NON_BROKER_CONTROL"}
+    ]
+  },
+  "positive_control_external_verification": {
+    "source": "Fugle public stock-page search index",
+    "url": "https://www.fugle.tw/ai/6173",
+    "observed": "The indexed Fugle page exposes a broker-concentration card with buy Gini, sell Gini and buy-sell-difference Gini values for 6173, while FCNT000117 via the connected Fugle-Stock content tool returned an empty object.",
+    "use": "TRANSPORT_DIAGNOSTIC_ONLY_NOT_RESEARCH_PANEL_DATA"
+  },
+  "official_fugle_api_boundary": {
+    "developer_docs": "https://developer.fugle.tw/docs/data/http-api/getting-started/",
+    "ownership_endpoints_verified": [
+      "/ownership/etf-holdings/{symbol}",
+      "/ownership/institutional-trades/{symbol}",
+      "/ownership/tdcc-distribution/{symbol}"
+    ],
+    "broker_or_gini_endpoint_in_documented_marketdata_rest_api": false,
+    "consequence": "The repository FUGLE_API_KEY marketdata transport cannot be assumed to provide broker branch/Gini history through a documented REST endpoint."
+  },
+  "fugle_product_existence": {
+    "support_page": "https://support.fugle.tw/fugle-card/large-trader/7538/",
+    "finding": "Fugle documents broker buy/sell concentration as a paid card based on daily broker buy/sell reports and Gini coefficients.",
+    "interpretation": "BROKER_DATA_PRODUCT_EXISTS; FAILURE OF CURRENT CONTENT TOOL IS NOT EVIDENCE OF SOURCE DATA ABSENCE."
+  },
+  "verdict": "TRANSPORT_BLOCKED",
+  "reason_code": "FUGLE_STOCK_CONTENT_TOOL_RETURNS_EMPTY_FOR_ACCESSIBLE_BROKER_SPECS_AND_POSITIVE_CONTROL",
+  "forbidden_inference": [
+    "Do not interpret empty connector payloads as zero broker activity.",
+    "Do not interpret empty connector payloads as proof Fugle lacks broker data.",
+    "Do not scrape or reverse-engineer authenticated/private endpoints to bypass access controls.",
+    "Do not synthesize 240-day broker history from search snippets or isolated web cards."
+  ],
+  "next_legal_step": "Resolve an authorized non-empty Fugle broker-content retrieval path, then write exact raw payloads into the research sidecar vessel with per-request provenance and SHA256 before PIT/coverage audit."
+}

@@ -1,0 +1,87 @@
+{
+  "system": "HENGCE",
+  "date_taipei": "2026-11-03",
+  "artifact": "BROKER_TAPE_RESEARCH_SIDECAR_VESSEL_CONTRACT",
+  "version": "v0_1",
+  "authority": "RESEARCH_DATA_ONLY_NO_MODEL_NO_TRADING_AUTHORITY",
+  "purpose": "Use the canonical HENGCE mother to define the stock universe, retrieve authorized Fugle broker-structure content, preserve raw payload lineage, and measure PIT/coverage feasibility before any preregistration or forward-return inspection.",
+  "canonical_anchor": {
+    "mother": "HENGCE_2026_HIST_MOTHER.csv",
+    "sha256": "2879ebb756c524dbefa4c47258d58fd6fa138aefcced3c7abb3d46634070651b",
+    "rows": 1024443,
+    "latest_date": "2026-10-30",
+    "universe_count": 1092,
+    "universe_manifest": "01_BROKER_TAPE_REQUEST_MANIFEST_20261103.json",
+    "second_mother_forbidden": true,
+    "mother_mutation_forbidden": true
+  },
+  "transport": {
+    "primary": "Fugle-Stock.get_content",
+    "allowed_stage_1_specs": ["FCNT000009", "FCNT000117"],
+    "conditional_stage_2_spec": "FCNT000106",
+    "stage_2_unlock_rule": "broker_id and broker_type must first be observed from a verifiable authorized raw source; never guess or select brokers based on outcomes",
+    "documented_marketdata_api_fallback_for_broker_history": false,
+    "current_status": "BLOCKED_EMPTY_PAYLOAD"
+  },
+  "logical_vessel_layout": {
+    "root": "research/broker_tape_feasibility_20261103/vessel/",
+    "raw_nonempty": "raw/<retrieval_yyyymmdd>/<contentSpecId>/<symbol>.json",
+    "request_receipts": "receipts/<retrieval_yyyymmdd>/<contentSpecId>/<symbol>.receipt.json",
+    "coverage": "coverage/<retrieval_yyyymmdd>/coverage.json",
+    "lineage_index": "lineage/BROKER_TAPE_LINEAGE_INDEX.jsonl"
+  },
+  "raw_payload_contract": {
+    "preserve_losslessly": true,
+    "required_receipt_fields": [
+      "symbol_id",
+      "contentSpecId",
+      "params",
+      "retrieval_time_taipei",
+      "retrieval_transport",
+      "response_nonempty",
+      "raw_sha256",
+      "raw_byte_count",
+      "mother_sha256",
+      "request_manifest_sha256"
+    ],
+    "empty_response_rule": "Record request receipt as EMPTY; do not create a synthetic data observation and do not convert empty to zero.",
+    "overwrite_rule": "Never silently overwrite a different raw payload. Preserve retrieval lineage and hashes.",
+    "idempotency_rule": "Identical request plus identical raw SHA256 is idempotent and may be referenced without duplication."
+  },
+  "pit_audit_requirements": [
+    "Identify every date/time field returned by Fugle and its semantic meaning.",
+    "Establish when each observation became knowable to the researcher.",
+    "Prohibit use before its verified information-availability time.",
+    "Do not backfill missing broker observations from later snapshots.",
+    "Do not treat current broker identities or branch labels as historically stable unless source lineage proves stability."
+  ],
+  "coverage_audit_requirements": [
+    "Report nonempty payload rate over the full 1092-name canonical mother-derived universe.",
+    "Report date span and observation counts per symbol for each broker content family.",
+    "Report missingness by date, liquidity, listing age and market segment before any forward return is opened.",
+    "Report schema variation and field-level null rates.",
+    "No manual deletion of difficult or missing symbols from the denominator."
+  ],
+  "governance_locks": {
+    "forward_return_inspection": "FORBIDDEN",
+    "backtest": "FORBIDDEN",
+    "broker_smart_money_identity_assumption": "FORBIDDEN",
+    "broker_selection": "FORBIDDEN",
+    "threshold_optimization": "FORBIDDEN",
+    "feature_weighting": "FORBIDDEN",
+    "ranking_test": "FORBIDDEN",
+    "preregistration": "NOT_YET_AUTHORIZED_UNTIL_FEASIBILITY_PASS",
+    "production_promotion": "FORBIDDEN"
+  },
+  "release_sequence": [
+    "verify canonical mother SHA",
+    "load frozen 1092-name request manifest",
+    "retrieve authorized Fugle raw payloads",
+    "write per-request receipts and raw SHA256",
+    "run schema and lineage audit",
+    "run PIT availability audit",
+    "run universe/date coverage and missingness audit",
+    "adjudicate PASS or DATA_BLOCKED without inspecting forward returns",
+    "only if PASS: freeze minimal incremental-ranking preregistration"
+  ]
+}

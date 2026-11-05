@@ -1,0 +1,92 @@
+{
+  "system": "HENGCE",
+  "artifact": "FINMIND_TWSE_COMMON_SHADOW_COMPATIBILITY_GATE",
+  "date": "2026-11-03",
+  "status": "PASS_FOR_SHADOW_INTRADAY_TRANSPORT_ONLY",
+  "purpose": "Freeze what the verified FinMind whole-market snapshot may and may not do under the existing HENGCE Escape v2.4.7 metric contract.",
+  "evidence": {
+    "branch": "research/broker-tape-feasibility-20261103",
+    "validated_head": "390bdc3e9138bc420fb391d6bafbda7deb6ec0c7",
+    "data_vessel_health_run_id": 41583823308,
+    "finmind_shadow_run_id": 41583823282,
+    "finmind_endpoint": "taiwan_stock_tick_snapshot",
+    "official_finmind_client": "finmind-mcp==0.1.1",
+    "twse_isin_stock_query": {
+      "regular_listed": "issuetype=1&market=1",
+      "taiwan_innovation_board": "issuetype=C&market=C"
+    },
+    "twse_isin_regular_listed_count": 1058,
+    "twse_isin_tib_count": 31,
+    "twse_isin_union_count": 1089,
+    "twse_isin_union_sha256": "628a21b98354e6438c147273410025c7d551920436ccbab98effba1aa4980a15",
+    "twse_common_proxy_count": 1089,
+    "twse_common_proxy_sha256": "628a21b98354e6438c147273410025c7d551920436ccbab98effba1aa4980a15",
+    "universe_exact_hash_match": true,
+    "tdr_excluded_count": 4,
+    "active_required_count": 1088,
+    "active_covered_count": 1088,
+    "active_transport_coverage_ratio": 1.0,
+    "bounded_nontrading_exception": {
+      "ticker": "1589",
+      "effective_end": "2026-11-17",
+      "expected_delisting_date": "2026-11-18",
+      "permanent_allowlist": false
+    },
+    "current_market_date_count": 1082,
+    "current_market_date_ratio": 0.99448529,
+    "stale_or_noncurrent_count": 6,
+    "stale_or_noncurrent_sample": ["1413", "1423", "1538", "2321", "3593", "5906"],
+    "stale_rows_neutralized_as_zero": false,
+    "unexpected_missing_count": 0,
+    "raw_finmind_rows_persisted": false,
+    "per_security_finmind_rows_persisted": false
+  },
+  "locked_escape_contract": {
+    "artifact": "HENGCE_ESCAPE_METRIC_CONTRACT_V1",
+    "sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+    "formula_change_requires_new_version": true,
+    "silent_formula_mutation_forbidden": true,
+    "missing_as_zero_forbidden": true,
+    "intraday_role": "price/volume may update provisional price/liquidity metrics only; institutional/margin histories remain last formally verified EOD until same-day EOD is canonical"
+  },
+  "compatibility": {
+    "pit_twse_common_universe": "PASS_EXACT_HASH_CROSSCHECK",
+    "tpex_exclusion": "PASS",
+    "etf_etn_warrant_preferred_noncommon_exclusion": "PASS_VIA_OFFICIAL_TWSE_STOCK_CLASSIFICATION_CROSSCHECK",
+    "taiwan_innovation_board_inclusion": "PASS_31_STOCKS",
+    "transport_coverage_active_required": "PASS_1088_OF_1088",
+    "missing_as_zero_policy": "PASS_NO_ZERO_FILL",
+    "raw_licensed_row_persistence_boundary": "PASS_NO_RAW_OR_PER_SECURITY_PERSISTENCE",
+    "current_session_price_liquidity_context": "PARTIAL_1082_OF_1088_CURRENT_DATE",
+    "full_current_session_denominator_metrics": "BLOCKED_UNTIL_NONCURRENT_SEMANTICS_RESOLVED_OR_METRIC_FAILS_CLOSED",
+    "locked_5_10_20_session_metrics": "NOT_PRODUCED_BY_SHADOW",
+    "institutional_flow_metrics": "NOT_PRODUCED_AND_NOT_REPLACED",
+    "margin_metrics": "NOT_PRODUCED_AND_NOT_REPLACED",
+    "tdcc_metrics": "NOT_PRODUCED_AND_NOT_REPLACED",
+    "feature_detector_input_authority": false,
+    "formal_escape_state_authority": false,
+    "formal_eod_authority": false,
+    "selection_authority": false,
+    "model_authority": false,
+    "trading_authority": false
+  },
+  "unit_semantics_lock": {
+    "finmind_change_rate": "provider field retained only as shadow current-session context; do not assume it is identical in unit or horizon to locked ew_return",
+    "locked_ew_return": "Close[t]/Close[t-w]-1 over eligible stock endpoints and trading-session windows",
+    "silent_substitution_forbidden": true
+  },
+  "promotion_blockers": [
+    "Resolve the six stale/noncurrent rows with a PIT-safe market-status/no-trade rule before any metric requiring a full current-session denominator is authorized.",
+    "Build an explicit adapter that maps only contract-compatible price/liquidity observations into the frozen metric pipeline; one-day shadow aggregates may not be passed directly to HENGCE_ESCAPE_FEATURE_DETECTOR_V1.",
+    "Preserve canonical TWSE PRICE+INSTITUTIONAL+MARGIN as formal EOD authority and PIT-safe TDCC as ownership authority; FinMind intraday must not replace those legs.",
+    "Changing the formal intraday primary source from the currently locked Fugle source to FinMind requires an explicit governance/source-binding version change, not a silent edit.",
+    "Collect prospective market-hours shadow observations before source promotion; historical or teacher-case fit may not be used to retroactively authorize the source."
+  ],
+  "decision": {
+    "finmind_whole_market_capability": "VERIFIED",
+    "finmind_candidate_intraday_source": "QUALIFIED_FOR_SHADOW",
+    "finmind_formal_escape_source": "NOT_YET_PROMOTED",
+    "escape_state_creation": "FORBIDDEN_FROM_THIS_GATE",
+    "merge_pr_38": "NOT_AUTHORIZED_BY_THIS_GATE"
+  }
+}

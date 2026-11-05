@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "authority": "DATA_SOURCE_COVERAGE_EXCEPTION_ONLY_NO_ESCAPE_SELECTION_MODEL_OR_TRADING_AUTHORITY",
+  "created_date": "2026-11-03",
+  "policy": {
+    "purpose": "Allow a TWSE listed common-stock issuer to be absent from an intraday provider only when an explicit, source-backed, date-bounded nontrading exception is active.",
+    "default": "FAIL_CLOSED_ON_ANY_UNEXPECTED_MISSING_TICKER",
+    "permanent_allowlist_forbidden": true,
+    "expired_exception_behavior": "FAIL_CLOSED_IF_STILL_REQUIRED",
+    "tpex_included": false
+  },
+  "exceptions": [
+    {
+      "ticker": "1589",
+      "name": "永冠-KY",
+      "reason": "TWSE-listed security is under an official stop-trading status; absence from a real-time trade snapshot is therefore not evidence of provider coverage loss during the bounded interval.",
+      "effective_start": "2026-04-07",
+      "effective_end": "2026-11-17",
+      "expected_delisting_date": "2026-11-18",
+      "expected_absent_from_realtime_snapshot": true,
+      "sources": [
+        "https://www.twse.com.tw/zh/listed/violations/stop.html",
+        "https://investoredu.twse.com.tw/Pages/TWSE_HotNews.aspx?Page=6"
+      ]
+    }
+  ]
+}

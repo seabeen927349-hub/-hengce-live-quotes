@@ -9,8 +9,15 @@ name: HENGCE data vessel health
       - 'scripts/hengce_full_market_shadow.py'
       - 'scripts/hengce_eod_guarded_ingest.py'
       - 'scripts/hengce_daily_command_center.py'
+      - 'scripts/hengce_finmind_official_client_fetch.py'
+      - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
+      - 'scripts/hengce_finmind_twse_close_reconciliation.py'
+      - 'scripts/hengce_twse_isin_equity_class_probe.py'
+      - 'scripts/hengce_twse_session_status_probe.py'
+      - 'scripts/hengce_broker_parquet_audit.py'
+      - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
+      - 'research/broker_tape_feasibility_20261103/**'
       - '.github/workflows/hengce-data-vessel-health.yml'
-      - 'hengce/calendar/**'
   workflow_dispatch:
 
 permissions:
@@ -23,49 +30,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install runtime dependencies
         run: python -m pip install --disable-pip-version-check requests openpyxl
-
       - name: Compile guarded runtime paths
         run: |
-          python -m py_compile \
-            scripts/hengce_twse_calendar.py \
-            scripts/hengce_market_session_guard.py \
-            scripts/hengce_live_universe_guard.py \
-            scripts/hengce_full_market_shadow.py \
-            scripts/hengce_eod_incremental_ingest.py \
-            scripts/hengce_eod_guarded_ingest.py \
-            scripts/hengce_daily_command_center.py
-
+          python -m py_compile scripts/hengce_twse_calendar.py scripts/hengce_market_session_guard.py scripts/hengce_live_universe_guard.py scripts/hengce_full_market_shadow.py scripts/hengce_eod_incremental_ingest.py scripts/hengce_eod_guarded_ingest.py scripts/hengce_daily_command_center.py
       - name: Effective-calendar regression
         run: python scripts/hengce_market_session_guard.py --self-test
-
       - name: Live quote session regression
         run: python scripts/hengce_live_universe_guard.py --mode self-test
-
       - name: EOD three-leg closure no-network regression
         run: python scripts/hengce_eod_guarded_ingest.py --mode self-test
-
       - name: Command-center closure regression
         run: python scripts/hengce_daily_command_center.py --mode self-test
-
       - name: Assert runtime wiring and pinned-ingest boundary
         shell: bash
         run: |
           set -euo pipefail
-          grep -Fq 'import hengce_twse_calendar as twse_calendar' scripts/hengce_live_universe_guard.py
+          grep -Fq 'def classify(target,now):' scripts/hengce_live_universe_guard.py
           grep -Fq 'session_guard.guard_shadow(payload, finished.date().isoformat())' scripts/hengce_full_market_shadow.py
           grep -Fq 'twse_calendar.is_trading_day(target, manifest)' scripts/hengce_eod_guarded_ingest.py
           grep -Fq 'network_access_attempted": False' scripts/hengce_eod_guarded_ingest.py
           grep -Fq 'import hengce_eod_guarded_ingest as eod_inc' scripts/hengce_daily_command_center.py
           grep -Fq 'TWSE_EFFECTIVE_CALENDAR_CLOSED' scripts/hengce_daily_command_center.py
-
       - name: Verify 2026-10-23 cannot become download-ready
         shell: bash
         run: |
@@ -86,3 +77,117 @@ jobs:
           assert x['broker_order_execution'] is False
           PY
           test ! -d eod/20261023
+
+  finmind-live-snapshot-probe:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install official FinMind client
+        run: python -m pip install --disable-pip-version-check finmind-mcp
+      - name: Probe FinMind freshness and fail-closed TWSE common coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${FINMIND_TOKEN:-}"
+          python scripts/hengce_finmind_twse_common_snapshot_probe.py
+
+  twse-isin-classification-probe:
+    if: github.event_name == 'pull_request'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install classification dependency
+        run: python -m pip install --disable-pip-version-check beautifulsoup4
+      - name: Probe TWSE ISIN instrument classification
+        run: python scripts/hengce_twse_isin_equity_class_probe.py
+
+  twse-session-status-probe:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile official TWSE status probe
+        run: python -m py_compile scripts/hengce_twse_session_status_probe.py
+      - name: Probe stale FinMind targets against TWSE current-session sources
+        run: python scripts/hengce_twse_session_status_probe.py --targets 1413 1423 1538 2321 3593 5906
+
+  finmind-twse-close-reconciliation:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install reconciliation dependencies
+        run: python -m pip install --disable-pip-version-check finmind-mcp requests openpyxl
+      - name: Compile reconciliation probe
+        run: python -m py_compile scripts/hengce_finmind_twse_close_reconciliation.py
+      - name: Reconcile FinMind close against canonical TWSE MI_INDEX when ready
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${FINMIND_TOKEN:-}"
+          mkdir -p /tmp/hengce-close-reconciliation
+          python scripts/hengce_finmind_twse_close_reconciliation.py \
+            --receipt /tmp/hengce-close-reconciliation/receipt.json
+      - name: Assert research-only reconciliation boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/hengce-close-reconciliation/receipt.json')
+          x=json.loads(p.read_text(encoding='utf-8'))
+          assert x['raw_finmind_rows_persisted'] is False
+          assert x['raw_twse_price_rows_persisted'] is False
+          assert x['per_security_rows_persisted'] is False
+          assert x['formal_source_promotion_authority'] is False
+          assert x['formal_metric_authority'] is False
+          assert x['formal_eod_authority'] is False
+          assert x['formal_escape_authority'] is False
+          assert x['trading_authority'] is False
+          assert x['status'] in ('PENDING_TWSE_MI_INDEX','RECONCILIATION_COMPLETE_RESEARCH_ONLY')
+          if x['status']=='RECONCILIATION_COMPLETE_RESEARCH_ONLY':
+              assert x['comparison_performed'] is True
+              assert x['active_required_count'] >= 900
+              assert x['missing_finmind_count']==0
+          else:
+              assert x['comparison_performed'] is False
+          print(json.dumps(x, ensure_ascii=False, sort_keys=True))
+          PY
+      - name: Upload non-raw reconciliation receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-twse-close-reconciliation
+          path: /tmp/hengce-close-reconciliation/receipt.json
+          if-no-files-found: error
+          retention-days: 7

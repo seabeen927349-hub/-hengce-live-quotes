@@ -1,0 +1,99 @@
+{
+  "system": "HENGCE",
+  "artifact": "FINMIND_SOURCE_PROMOTION_PREREGISTRATION",
+  "version": "1.0",
+  "date": "2026-11-03",
+  "status": "PREREGISTERED_BEFORE_FIRST_COMPLETE_TWSE_CLOSE_RECONCILIATION",
+  "scope": "FinMind taiwan_stock_tick_snapshot as a candidate intraday transport source for ALL_TWSE_LISTED_COMMON_STOCKS",
+  "explicit_non_scope": [
+    "No formal Escape level is authorized.",
+    "No frozen Escape metric formula is changed.",
+    "No institutional, margin, TDCC, or canonical EOD leg is replaced.",
+    "No Selection Core, model, or trading authority is created.",
+    "No historical fit, forward return, or teacher-case outcome may be used to tune these source-quality rules."
+  ],
+  "known_before_preregistration": {
+    "finmind_capability_verified": true,
+    "official_client": "finmind-mcp==0.1.1",
+    "twse_common_universe_count": 1089,
+    "twse_common_universe_sha256": "628a21b98354e6438c147273410025c7d551920436ccbab98effba1aa4980a15",
+    "active_required_count_on_2026_11_03": 1088,
+    "bounded_exception_2026_11_03": ["1589"],
+    "active_transport_coverage_observed": "1088/1088",
+    "finmind_current_metric_observation_count_observed": 1082,
+    "twse_mis_current_session_context_verified_for_stale_finmind_rows": ["1413", "1423", "1538", "2321", "3593", "5906"],
+    "first_complete_twse_mi_index_reconciliation_seen": false,
+    "note": "Capability and same-session transport behavior have already been observed. This is therefore not a blind capability preregistration. It is a forward source-promotion gate frozen before any complete FinMind-vs-TWSE official close reconciliation result is observed."
+  },
+  "frozen_metric_contract": {
+    "sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+    "formula_change_requires_new_version": true,
+    "missing_as_zero_forbidden": true,
+    "one_day_finmind_change_rate_may_substitute_locked_ew_return": false
+  },
+  "universe_gate": {
+    "rule": "Each evaluated session must use the PIT-valid TWSE listed-common-stock universe and must exclude TPEx and non-common instruments.",
+    "official_crosscheck_required": true,
+    "unexpected_missing_finmind_active_required_allowed": 0,
+    "exceptions": "Only source-backed, bounded, date-effective non-trading exceptions are permitted. Permanent convenience allowlists are forbidden."
+  },
+  "close_reconciliation_classification_contract": {
+    "canonical_reference": "TWSE MI_INDEX ALLBUT0999 for the same trading date",
+    "accepted_classes": {
+      "CURRENT_CLOSE_EXACT_MATCH": "TWSE has numeric current-date close; FinMind row is current-date; numeric close is exactly equal after numeric normalization.",
+      "TWSE_CLOSE_NULL_FINMIND_STALE": "TWSE current-date row exists but has no numeric close; FinMind row is stale/noncurrent. This is accepted only as no-current-metric semantics and remains NULL for metric use."
+    },
+    "blocking_classes": [
+      "CURRENT_CLOSE_MISMATCH",
+      "TWSE_CLOSE_PRESENT_FINMIND_STALE",
+      "TWSE_CLOSE_PRESENT_FINMIND_CLOSE_NULL",
+      "TWSE_CLOSE_NULL_FINMIND_CURRENT",
+      "TWSE_ROW_MISSING"
+    ],
+    "numeric_tolerance": "EXACT_AFTER_DECIMAL_NORMALIZATION",
+    "ratio_based_rescue_forbidden": true,
+    "majority_match_rescue_forbidden": true,
+    "manual_ticker_override_after_result_forbidden": true,
+    "unknown_classification_policy": "BLOCK_SOURCE_PROMOTION"
+  },
+  "prospective_soak_gate": {
+    "required_consecutive_eligible_trading_sessions": 5,
+    "eligible_session_definition": "Same-date official TWSE MI_INDEX is available and a reconciliation can be completed against a FinMind snapshot without retrospective reconstruction.",
+    "session_pass_rule": "Zero blocking classifications, zero unexpected FinMind active-universe misses, and every active-required security is accounted for by an accepted reconciliation class or a pre-existing bounded exception.",
+    "pending_official_publication": "Does not count as a pass or fail; the same date must be reconciled prospectively when the canonical source becomes available.",
+    "failure_rule": "Any blocking classification or unexpected active-universe miss breaks the consecutive-pass sequence. The gate may not be relaxed using the observed failed case."
+  },
+  "intraday_semantics_gate": {
+    "transport_coverage_and_metric_observation_are_separate": true,
+    "twse_mis_may_verify_current_session_context": true,
+    "twse_mis_values_may_supply_locked_escape_metrics": false,
+    "stale_finmind_row_may_be_zero_filled": false,
+    "session_context_may_substitute_metric_observation": false,
+    "formal_metric_adapter_required_before_detector_input": true
+  },
+  "persistence_boundary": {
+    "raw_finmind_rows_persisted": false,
+    "per_security_finmind_rows_persisted": false,
+    "aggregate_research_receipts_allowed": true,
+    "bounded_ticker_samples_for_error_classification_allowed": true
+  },
+  "promotion_sequence": [
+    "PASS 5 consecutive eligible prospective close reconciliations under the frozen classification contract.",
+    "Build and separately review a contract-compatible intraday metric adapter; do not feed one-day provider aggregates directly into the frozen Escape detector.",
+    "Issue an explicit governance/source-binding version change if FinMind is to replace the currently locked formal intraday source binding.",
+    "Keep TWSE PRICE + INSTITUTIONAL + MARGIN as canonical EOD authority and TDCC as PIT-safe ownership authority.",
+    "Only after the above may a separate artifact consider formal Escape intraday source promotion."
+  ],
+  "current_decision": {
+    "finmind_capability": "VERIFIED",
+    "finmind_shadow_transport": "QUALIFIED",
+    "finmind_formal_intraday_source": "NOT_PROMOTED",
+    "feature_detector_input_authority": false,
+    "formal_escape_authority": false,
+    "formal_eod_authority": false,
+    "selection_authority": false,
+    "model_authority": false,
+    "trading_authority": false,
+    "pr_38_merge_authorized": false
+  }
+}
