@@ -1,0 +1,206 @@
+{
+  "system": "HENGCE",
+  "artifact": "PIT_LINEAGE_FEATURE_CONTRACT",
+  "version": "V1_20261103",
+  "date_taipei": "2026-11-03",
+  "branch": "research/broker-structure-literature-first-20261103",
+  "base_head_before_freeze": "8022c626fafcde5c67f598a2aad208947da4caf6",
+  "status": "FROZEN_PRE_OUTCOME",
+  "authority": "RESEARCH_ONLY_NO_TRADING_OR_PRODUCTION_AUTHORITY",
+  "purpose": "Freeze revision-aware source knowability, lineage, missingness, PIT universe, and one broker-structure feature before any HENGCE broker candidate forward-return panel is opened.",
+  "upstream_authority": {
+    "literature_gate": {
+      "path": "research/broker_structure_20261103/LITERATURE_GATE.json",
+      "git_blob_sha": "594d1c3b180586579b82643b6232e474d427d323",
+      "status": "PASS",
+      "authority_consequence": "PREREGISTRATION_ALLOWED_ONLY"
+    },
+    "selection_challenge_branch": "research/selection-challenge-20261102",
+    "selection_challenge_sha": "c42c38923983de2600af898e8135a91325e71ab7",
+    "frozen_universe_timing_contract": {
+      "path": "research/market_state_selection_interaction_20261102/00_PREREGISTRATION_STATE_CONDITIONING_TEST.md",
+      "git_blob_sha": "e8f8ad12a0126de8ffb8b96b11525397cdb74a2c"
+    },
+    "frozen_market_state": {
+      "path": "research/market_state_observation_20261102/14_S5_STATE_CLASSIFIER_FREEZE_20261102.json",
+      "git_blob_sha": "2578ee9442ae9f3b70b38865846f91d2605729ac",
+      "input_matrix_sha256": "2e9783338e24a1f2fd5303780750b8c269316265b4ea394f1dc8e4d3ca831755"
+    },
+    "null_baseline_contract": {
+      "artifact": "HENGCE_SELECTION_CORE_NULL_BASELINE_CONTRACT_V1_20261031.json",
+      "sha256": "9aa84ca1a6d67bdf8a49bcf6f6f3246a673e16fd42ac11abd276948365e179dc",
+      "status": "FROZEN_PRE_CHALLENGER_TEST_CONTRACT"
+    },
+    "aggregate_flow_metric_contract": {
+      "artifact": "HENGCE_ESCAPE_METRIC_CONTRACT_V1.json",
+      "sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+      "status": "FORMAL_FORMULA_LOCK_NO_TRADING_AUTHORITY"
+    },
+    "finmind_feasibility_evidence": {
+      "branch": "research/broker-tape-feasibility-20261103",
+      "artifact_path": "research/broker_tape_feasibility_20261103/05_FINMIND_SPONSORPRO_BROKER_TAPE_FEASIBILITY_RESULT_20261103.json",
+      "git_blob_sha": "517fb372b30df8a90ef81aea2b156bafb6678798",
+      "treatment": "DATA_CAPABILITY_AND_LINEAGE_EVIDENCE_ONLY_NOT_CONFIRMATORY_OUTCOME_EVIDENCE"
+    }
+  },
+  "canonical_mother": {
+    "name": "HENGCE_2026_HIST_MOTHER.csv",
+    "sha256": "2879ebb756c524dbefa4c47258d58fd6fa138aefcced3c7abb3d46634070651b",
+    "rows": 1024443,
+    "date_range": [
+      "2018-01-02",
+      "2026-10-30"
+    ],
+    "latest_date_valid_4digit_universe_count": 1092,
+    "latest_date_universe_sha256": "38285023ef4139482841c910b329acfe8c6a8b5cdba8cf3f95e2a466b1bad4d5",
+    "explicitly_rejected_stale_same_name_sha256": "60fb82570d48ef2620a8390d612457fc79e795b9e1fe485f61739103bfa8db47"
+  },
+  "broker_source_contract": {
+    "provider": "FinMind",
+    "plan": "SponsorPro",
+    "dataset": "TaiwanStockTradingDailyReportSecIdAgg",
+    "source_client": "official finmind-mcp / authorized GitHub Actions secret",
+    "historical_data_start": "2021-06-30",
+    "verified_fields": [
+      "date",
+      "stock_id",
+      "securities_trader_id",
+      "buy_volume",
+      "sell_volume",
+      "buy_price",
+      "sell_price"
+    ],
+    "lineage_identity_field": "securities_trader_id",
+    "broker_name_is_identity_authority": false,
+    "official_update_semantics": {
+      "dataset_update_time": "Monday-Friday 18:30 Asia/Taipei; actual availability follows API",
+      "conservative_knowability": "Broker event-date D data may be used no earlier than the next TWSE market open after D.",
+      "finmind_doc": "https://finmind.github.io/tutor/TaiwanMarket/Chip/",
+      "twse_product_doc": "https://eshop.twse.com.tw/zh/product/detail/34e615c34c4e4ca3b23fc732bd736f94"
+    },
+    "license_and_secret_handling": {
+      "raw_licensed_rows_may_be_committed_to_public_repo": false,
+      "signed_urls_may_be_persisted": false,
+      "tokens_or_credentials_may_be_persisted": false,
+      "raw_download_lifetime": "ephemeral research runner only",
+      "derived_non_reconstructive_features_and_lineage_receipts_may_be_persisted": true
+    }
+  },
+  "revision_aware_source_classes": {
+    "EVENT_DAY_FACT_RECONSTRUCTION": {
+      "definition": "Historical event-date broker facts retrieved after the event and potentially incorporating later official/vendor corrections or backfills.",
+      "current_2021_2026_historical_archive_class": true,
+      "allowed_use": "RETROSPECTIVE_INCREMENTAL_DIAGNOSTIC_ONLY",
+      "forbidden_claims": [
+        "VENDOR_AS_KNOWN_THEN_SNAPSHOT",
+        "STRICT_HISTORICAL_VENDOR_PIT",
+        "UNTOUCHED_OOS",
+        "PROSPECTIVE_VALIDATION",
+        "PRODUCTION_AUTHORITY"
+      ]
+    },
+    "VENDOR_AS_KNOWN_THEN_SNAPSHOT": {
+      "definition": "A source object frozen contemporaneously with retrieval timestamp and immutable content hashes, before later source revisions.",
+      "available_for_current_historical_backfill": false
+    },
+    "FORWARD_COLLECTED_VENDOR_SNAPSHOT": {
+      "definition": "A future broker object collected prospectively after this contract with event date, retrieval timestamp, physical SHA256 and logical-content digest preserved.",
+      "strict_source_vintage_pit_eligible": true,
+      "earliest_usable_time": "next TWSE open after event date D, subject to successful retrieval and all lineage checks"
+    }
+  },
+  "known_revision_evidence": {
+    "present": true,
+    "source": "https://finmind.github.io/WhatIsNew/",
+    "examples": [
+      {
+        "announcement_date": "2026-10-23",
+        "scope": "Historical TaiwanStockTradingDailyReport rows were corrected and SecIdAgg regenerated for affected historical dates."
+      },
+      {
+        "announcement_date": "2026-11-01",
+        "scope": "2022-10 through 2022-11 OTC broker data were backfilled/corrected and SecIdAgg updated."
+      }
+    ],
+    "consequence": "Current historical downloads are not treated as exact vendor snapshots as known on the event date."
+  },
+  "required_lineage_receipt_per_retrieval": [
+    "dataset",
+    "event_date",
+    "retrieval_timestamp_utc",
+    "retrieval_timestamp_taipei",
+    "query_or_download_mode",
+    "source_plan",
+    "row_count",
+    "unique_stock_id_count",
+    "unique_securities_trader_id_count",
+    "physical_object_sha256",
+    "logical_content_sha256",
+    "schema_field_list",
+    "canonical_mother_sha256",
+    "date_specific_mother_traded_symbol_count",
+    "observed_missing_among_mother_traded_symbols",
+    "source_revision_class"
+  ],
+  "pit_universe_and_timing": {
+    "signal_date": "d",
+    "signal_information_cutoff": "through close of d only",
+    "broker_feature_event_date": "d only",
+    "broker_feature_earliest_decision_time": "next TWSE open after d",
+    "selection_universe": "Reuse the frozen point-in-time U100 from the Selection Challenge contract without modification.",
+    "u100_rules_reference": "research/market_state_selection_interaction_20261102/00_PREREGISTRATION_STATE_CONDITIONING_TEST.md",
+    "latest_2026_universe_may_be_used_as_historical_denominator": false,
+    "date_specific_pit_membership_required": true
+  },
+  "missingness_and_integrity": {
+    "empty_or_missing_broker_rows_may_be_zero_filled": false,
+    "mother_nontrading_stock_is_broker_data_missing": false,
+    "rule_nontrading": "If canonical mother says Volume=0 and Turnover=0 on d, absence of broker rows is structural non-trading; do not impute a feature and do not label source missing.",
+    "rule_traded_but_no_broker_rows": "If canonical mother indicates trading on d but no valid broker rows exist, broker feature is MISSING_SOURCE_DATA and the stock-date fails closed.",
+    "duplicate_key": "(date, stock_id, securities_trader_id) duplicates fail closed unless the source itself supplies a documented canonical aggregate key; no silent summation of unexpected duplicates.",
+    "invalid_volume": "Negative, nonnumeric or nonfinite buy_volume/sell_volume fails the stock-date.",
+    "zero_total_gross_volume": "Feature undefined; fail closed.",
+    "partial_schema": "Missing required fields fails closed.",
+    "coverage_claim": "Boundary-date feasibility does not prove every 2021-2026 date is complete; coverage must be audited for every executed research date."
+  },
+  "primary_feature_contract": {
+    "feature_id": "BROKER_GROSS_HHI_1D",
+    "economic_label": "same-day broker-branch gross participation concentration",
+    "lookback_sessions": 1,
+    "broker_set": "ALL observed valid securities_trader_id values for stock i on event date d; no named-broker whitelist/blacklist and no success-selected broker set.",
+    "per_branch_gross_volume": "GROSS_b(i,d) = buy_volume_b(i,d) + sell_volume_b(i,d)",
+    "denominator": "GROSS_TOTAL(i,d) = sum_b GROSS_b(i,d) over branches with GROSS_b > 0",
+    "share": "SHARE_b(i,d) = GROSS_b(i,d) / GROSS_TOTAL(i,d)",
+    "formula": "BROKER_GROSS_HHI_1D(i,d) = sum_b SHARE_b(i,d)^2",
+    "valid_range": "(0,1]",
+    "buy_price_sell_price_usage": "Preserve for source lineage/audit only; do not price-weight the primary feature.",
+    "sign_convention": "Higher raw value means more concentrated gross broker participation. No bullish/bearish sign is hypothesized; primary inference is two-sided.",
+    "beneficial_owner_interpretation": false,
+    "smart_money_interpretation": false,
+    "routing_identity_interpretation": "Execution venue/broker-branch observation only."
+  },
+  "hard_locks_after_freeze": [
+    "NO_NAMED_BROKER_SELECTION",
+    "NO_BROKER_SET_TUNING",
+    "NO_FEATURE_SIGN_FLIP_TO_RESCUE_RESULTS",
+    "NO_LOOKBACK_TUNING",
+    "NO_THRESHOLD_OPTIMIZATION",
+    "NO_HOLDING_HORIZON_OPTIMIZATION",
+    "NO_EMPTY_TO_ZERO",
+    "NO_CURRENT_UNIVERSE_AS_PAST_DENOMINATOR",
+    "NO_BROKER_BRANCH_EQUALS_BENEFICIAL_OWNER",
+    "NO_BROKER_BRANCH_EQUALS_SMART_MONEY",
+    "NO_RAW_LICENSED_DATA_PUBLICATION",
+    "NO_FORWARD_RETURN_INSPECTION_BEFORE_PREREGISTRATION_FREEZE"
+  ],
+  "contract_gate": {
+    "result": "PASS",
+    "basis": [
+      "Source timing and revision class are explicit.",
+      "Historical current archive is demoted to EVENT_DAY_FACT_RECONSTRUCTION.",
+      "Date-specific PIT universe and fail-closed missingness are fixed.",
+      "One broker feature, one-day lookback, all-branch broker set and direction convention are frozen before HENGCE broker outcomes."
+    ],
+    "authority_consequence": "PREREGISTRATION_MAY_BE_FROZEN; FORWARD RETURNS REMAIN SEALED UNTIL PREREGISTRATION IS ALSO FROZEN_PASS."
+  }
+}
