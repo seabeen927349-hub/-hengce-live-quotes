@@ -1,4 +1,5 @@
 name: HENGCE original EOD ingest
+# Manual existing-vessel EOD refresh requested 2026-11-05; no workflow logic change.
 # Existing HENGCE blood vessel. Research auxiliaries attach inside this same
 # eod/YYYYMMDD path; no parallel collector, mother, universe, or model authority.
 
