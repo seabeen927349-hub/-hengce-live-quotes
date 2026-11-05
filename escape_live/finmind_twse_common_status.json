@@ -2,10 +2,10 @@
   "active_covered_count": 1088,
   "active_required_count": 1088,
   "active_universe_transport_full_coverage": true,
-  "context_payload_sha256": "849b32067d1aefcf718f0d372fedd48fa8fe5ab741ebff390e2fcd628efd5c29",
-  "current_market_date_count": 1088,
+  "context_payload_sha256": "96c37d346151dc4905f3bf2734e6379b2286ff4bb26192408b64815ea48236fa",
+  "current_market_date_count": 1085,
   "current_market_date_observed": true,
-  "current_market_date_ratio": 1.0,
+  "current_market_date_ratio": 0.99724265,
   "exception_governance": {
     "active_rows": [
       {
@@ -23,17 +23,21 @@
   ],
   "feature_detector_input_authority": false,
   "finmind_endpoint": "taiwan_stock_tick_snapshot",
-  "finmind_metric_observation_count": 1088,
+  "finmind_metric_observation_count": 1085,
   "formal_eod_authority": false,
   "formal_escape_authority": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-04T20:50:49.362065+08:00",
+  "generated_at_taipei": "2026-11-05T15:47:23.824945+08:00",
   "healthy_transport": true,
   "intraday_metric_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
-  "latest_source_timestamp": "2026-11-04 14:30:00.000000",
+  "latest_source_timestamp": "2026-11-05 14:30:00.000000",
   "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
-  "metric_unknown_count": 0,
-  "metric_unknown_sample": [],
+  "metric_unknown_count": 3,
+  "metric_unknown_sample": [
+    "1538",
+    "3714",
+    "5906"
+  ],
   "missing_as_zero_forbidden": true,
   "monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
   "one_day_change_rate_may_substitute_locked_ew_return": false,
@@ -43,24 +47,46 @@
   "raw_twse_mis_rows_persisted": false,
   "rolling_metric_authority": false,
   "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_SHADOW_STATUS_V3",
-  "session_context_count": 1088,
+  "session_context_count": 1087,
   "session_context_may_substitute_metric_observation": false,
-  "session_context_ratio": 1.0,
+  "session_context_ratio": 0.99908088,
   "source": "FinMind",
   "source_binding_promotion_authority": false,
-  "stale_or_noncurrent_count": 0,
-  "stale_or_noncurrent_sample": [],
+  "stale_or_noncurrent_count": 3,
+  "stale_or_noncurrent_sample": [
+    "1538",
+    "3714",
+    "5906"
+  ],
   "stale_rows_neutralized_as_zero": false,
   "state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
   "trading_authority": false,
   "twse_common_master_count": 1089,
-  "twse_master_report_date": "1151103",
-  "twse_mis_meta": {},
+  "twse_master_report_date": "1151104",
+  "twse_mis_meta": {
+    "current_date_target_count": 2,
+    "query_time": {
+      "sessionFromTime": "-1",
+      "sessionLatestTime": "-1",
+      "sessionStr": "UserSession",
+      "showChart": "False",
+      "stockInfo": "3367",
+      "stockInfoItem": "5382",
+      "sysDate": "20261105",
+      "sysTime": "15:47:28"
+    },
+    "target_match_count": 2
+  },
   "twse_mis_metric_values_used": false,
-  "twse_mis_secondary_session_status": "NOT_NEEDED_NO_STALE_FINMIND_ROWS",
-  "twse_mis_session_unresolved_count": 0,
-  "twse_mis_session_unresolved_sample": [],
-  "twse_mis_session_verified_count": 0,
-  "twse_mis_session_verified_sample": [],
+  "twse_mis_secondary_session_status": "PARTIAL_CURRENT_SESSION_CONTEXT",
+  "twse_mis_session_unresolved_count": 1,
+  "twse_mis_session_unresolved_sample": [
+    "3714"
+  ],
+  "twse_mis_session_verified_count": 2,
+  "twse_mis_session_verified_sample": [
+    "1538",
+    "5906"
+  ],
   "unexpected_missing_count": 0
 }
