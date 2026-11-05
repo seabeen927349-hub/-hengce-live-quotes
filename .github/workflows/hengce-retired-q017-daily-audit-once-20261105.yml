@@ -20,14 +20,22 @@ jobs:
       - name: Compute read-only point-in-time Q017 counterfactual
         run: python research/q017_daily_audit_20261105/run_audit.py > /tmp/q017_daily_result_20261105.txt
       - name: Scan all archived 2026 dates using original Q017 selection formula, read-only
-        run: python research/q017_daily_audit_20261105/run_full_2026.py > /tmp/q017_full_2026_result.txt
+        id: full
+        continue-on-error: true
+        run: |
+          if ! python research/q017_daily_audit_20261105/run_full_2026.py > /tmp/q017_full_2026_result.txt 2> /tmp/q017_full_2026_traceback.txt; then
+            cp /tmp/q017_full_2026_traceback.txt research/q017_daily_audit_20261105/FULL_2026_ERROR_TMP.txt
+            echo "FULL_2026_FAILED" >&2
+            exit 1
+          fi
       - name: Show key statistics
         run: |
           cat /tmp/q017_daily_result_20261105.txt
+          if test -e research/q017_daily_audit_20261105/FULL_2026_ERROR_TMP.txt; then cat research/q017_daily_audit_20261105/FULL_2026_ERROR_TMP.txt; else true; fi
           python - <<'PY'
           import json
-          p=json.load(open('research/q017_daily_audit_20261105/full_2026_counterfactual_20261105.json'))
-          print('FULL_2026',{'days':p['evaluated_days'],'go':p['go_count'],'picks':p['reconstructed_signals'],'sample_10d':p['groups'][0]['d10']['n']})
+          p=json.load(open('research/q017_daily_audit_20261105/full_2026_counterfactual_20261105.json')) if __import__('os').path.exists('research/q017_daily_audit_20261105/full_2026_counterfactual_20261105.json') else {}
+          print('FULL_2026',{'days':p.get('evaluated_days'),'go':p.get('go_count'),'picks':p.get('reconstructed_signals'),'sample_10d':(p.get('groups') or [{}])[0].get('d10',{}).get('n')})
           PY
       - name: Upload immutable research artifact
         uses: actions/upload-artifact@v4
@@ -38,6 +46,7 @@ jobs:
             research/q017_daily_audit_20261105/REPORT_20261105.md
             research/q017_daily_audit_20261105/full_2026_counterfactual_20261105.json
             research/q017_daily_audit_20261105/FULL_2026_COUNTERFACTUAL_REPORT_20261105.md
+            research/q017_daily_audit_20261105/FULL_2026_ERROR_TMP.txt
           if-no-files-found: error
           retention-days: 30
       - name: Commit audited research only (never activate strategy)
@@ -45,9 +54,12 @@ jobs:
           set -euo pipefail
           git config user.name "hengce-research-audit-bot"
           git config user.email "hengce-research-audit-bot@users.noreply.github.com"
-          git add research/q017_daily_audit_20261105/daily_diagnostic_20261105.json research/q017_daily_audit_20261105/REPORT_20261105.md research/q017_daily_audit_20261105/full_2026_counterfactual_20261105.json research/q017_daily_audit_20261105/FULL_2026_COUNTERFACTUAL_REPORT_20261105.md
+          git add -A research/q017_daily_audit_20261105/
           if ! git diff --cached --quiet; then
             git commit -m "HENGCE read-only daily retired Q017 counterfactual 20261021 through 20261104"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
+      - name: Fail workflow if full-year audit did not complete
+        if: steps.full.outcome != 'success'
+        run: exit 1
