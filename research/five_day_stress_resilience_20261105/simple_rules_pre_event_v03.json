@@ -1,0 +1,106 @@
+{
+  "scope": "single five-day crash with PRE-EVENT eligibility only",
+  "asof": "2026-10-28",
+  "vol_cutoffs_pct": {
+    "low20": 1.3385203735067297,
+    "low40": 1.9534270100530118,
+    "high40": 2.889004255552734,
+    "high20": 4.197240653576143
+  },
+  "rules": [
+    {
+      "label": "all",
+      "n": 560,
+      "mean": -8.57,
+      "median": -8.61,
+      "beatMarket": 50.7,
+      "crashMoreThan15pct": 15.5,
+      "up": 7
+    },
+    {
+      "label": "pre volatility bottom20%",
+      "n": 112,
+      "mean": -3.82,
+      "median": -3.04,
+      "beatMarket": 86.6,
+      "crashMoreThan15pct": 0,
+      "up": 9.8
+    },
+    {
+      "label": "pre volatility bottom40%",
+      "n": 224,
+      "mean": -5.06,
+      "median": -4.57,
+      "beatMarket": 78.6,
+      "crashMoreThan15pct": 0.4,
+      "up": 9.4
+    },
+    {
+      "label": "pre volatility bottom40% and prior 3week nonnegative",
+      "n": 115,
+      "mean": -4.15,
+      "median": -3.22,
+      "beatMarket": 80,
+      "crashMoreThan15pct": 0,
+      "up": 14.8
+    },
+    {
+      "label": "pre volatility bottom40% and prior 3week nonnegative and money>=100m",
+      "n": 63,
+      "mean": -4.57,
+      "median": -3.6,
+      "beatMarket": 73,
+      "crashMoreThan15pct": 0,
+      "up": 14.3
+    },
+    {
+      "label": "pre volatility top40% and prior 3week negative",
+      "n": 152,
+      "mean": -13.71,
+      "median": -13.93,
+      "beatMarket": 15.8,
+      "crashMoreThan15pct": 44.7,
+      "up": 2.6
+    },
+    {
+      "label": "prior 3week nonnegative all volatility",
+      "n": 218,
+      "mean": -5.88,
+      "median": -5.48,
+      "beatMarket": 66.5,
+      "crashMoreThan15pct": 6,
+      "up": 12.8
+    },
+    {
+      "label": "prior 3week negative all volatility",
+      "n": 342,
+      "mean": -10.28,
+      "median": -10.04,
+      "beatMarket": 40.6,
+      "crashMoreThan15pct": 21.6,
+      "up": 3.2
+    },
+    {
+      "label": "vol bottom20% but momentum negative",
+      "n": 53,
+      "mean": -4.45,
+      "median": -3.63,
+      "beatMarket": 86.8,
+      "crashMoreThan15pct": 0,
+      "up": 3.8
+    },
+    {
+      "label": "vol top20% but momentum positive",
+      "n": 40,
+      "mean": -8.17,
+      "median": -9.97,
+      "beatMarket": 45,
+      "crashMoreThan15pct": 22.5,
+      "up": 15
+    }
+  ],
+  "notes": [
+    "Rules drafted after seeing this event; no time-held-out test.",
+    "Higher observed historical hit rates are not prospective probabilities."
+  ]
+}

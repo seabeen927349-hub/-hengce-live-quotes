@@ -1,0 +1,78 @@
+{
+  "model_id": "HENGCE_PRE_EVENT_RESILIENCE_SCORE_V04",
+  "status": "EXPLORATORY_NO_TRADING_AUTHORITY",
+  "data_source": "EXISTING_GOVERNED_HENGCE_EOD_PRICE_ONLY",
+  "requires": "prior_trend_anchor price and nine pre-event close+turnover daily sessions",
+  "asof": "2026-10-28",
+  "benchmark": "Research only, TAIEX event return -8.69%; not used in score",
+  "filters": {
+    "twse_ticker_pattern": "^[1-9][0-9]{3}$",
+    "min_preperiod_average_daily_turnover_twd": 20000000,
+    "min_each_preperiod_daily_turnover_twd": 2000000,
+    "all_preperiod_closes_required": true
+  },
+  "features": {
+    "priorVolPct": {
+      "description": "Population standard deviation of eight pre-event consecutive observed-session close returns in percentage points",
+      "rank_direction": "ascending_is_better",
+      "weight": 0.5
+    },
+    "priorWorstDayPct": {
+      "description": "Minimum of eight pre-event close returns (percentage points)",
+      "rank_direction": "descending_is_better",
+      "weight": 0.3
+    },
+    "priorTrendPct": {
+      "description": "100 × (latest pre-event close / anchor close - 1)",
+      "rank_direction": "descending_is_better",
+      "weight": 0.2
+    }
+  },
+  "ranking": "Within pre-eligible universe and asof date only; average ranks for ties; percentile = 100 * (rank - 1)/(N - 1), ascending from smallest value; volatility converted to 100 - percentile; resulting 0..100 scores.",
+  "tiers": [
+    {
+      "score_min": 80,
+      "score_max": 100,
+      "label": "VERY_RESILIENT_RELATIVE"
+    },
+    {
+      "score_min": 60,
+      "score_max": 80,
+      "label": "RESILIENT_RELATIVE"
+    },
+    {
+      "score_min": 40,
+      "score_max": 60,
+      "label": "NEUTRAL_RELATIVE"
+    },
+    {
+      "score_min": 20,
+      "score_max": 40,
+      "label": "FRAGILE_RELATIVE"
+    },
+    {
+      "score_min": 0,
+      "score_max": 20,
+      "label": "VERY_FRAGILE_RELATIVE"
+    }
+  ],
+  "universe_pre_event_n": 560,
+  "historical_event_result_only": {
+    "high_score_80_100_n": 86,
+    "high_score_80_100_mean_five_day_return_pct": -3.534,
+    "high_score_80_100_beat_market_pct": 87.2,
+    "high_score_80_100_down_over_15_pct": 0,
+    "low_score_0_20_n": 84,
+    "low_score_0_20_mean_five_day_return_pct": -14.085,
+    "low_score_0_20_beat_market_pct": 15.5
+  },
+  "warnings": [
+    "No independent market episode validation. Single event post-selection bias.",
+    "Past relative beat-market share is not forecast probability.",
+    "No sector controls or split/dividend adjustments.",
+    "Only market state described, not trade entry/exit, no position sizing, no automated execution.",
+    "Weights are provisional, they have not been tuned on held-out event."
+  ],
+  "trading_authority": false,
+  "canonical_data_promotion": false
+}
