@@ -43,6 +43,41 @@ def prices_by_date():
              "close":c,"high":high,"low":low,
              "volume":number(x.get("volume_shares"))}
         by_day[d][t]=row
+    # Archived electronic-member history ends at 2026-10-22. Extend the
+    # research-only price panel using existing audited HENGCE TWSE EOD vessel.
+    # Membership after that date is conservatively frozen at the last known
+    # electronics universe; this is a known proxy limitation, NOT true PIT
+    # electronics membership or a Canonical vessel alteration.
+    last_archived_day=max(by_day)
+    last_members=set(by_day[last_archived_day])
+    for folder in sorted((ROOT/"eod").iterdir()):
+        if not (folder.is_dir() and folder.name.isdigit() and len(folder.name)==8):
+            continue
+        d=f"{folder.name[:4]}-{folder.name[4:6]}-{folder.name[6:]}"
+        if not (last_archived_day<d<=ASOF):
+            continue
+        status_path=folder/"status.json"
+        if not status_path.exists():
+            continue
+        status=json.loads(status_path.read_text())
+        if status.get("target_date")!=d or status.get("price_status")!="COMPLETE":
+            continue
+        for f in sorted(folder.glob("price_*.csv")):
+            for x in rows(f):
+                t=str(x.get("Ticker") or "").strip()
+                if x.get("Date")!=d or t not in last_members:
+                    continue
+                op=number(x.get("Open"))
+                close=number(x.get("Close"))
+                if close is None or close<=0:
+                    continue
+                by_day[d][t]={
+                    "date":d,"ticker":t,"name":x.get("Name") or by_day[last_archived_day][t].get("name",""),
+                    "open":op if op and op>0 else None,
+                    "close":close,
+                    "high":number(x.get("High")),"low":number(x.get("Low")),
+                    "volume":number(x.get("VolumeShares")),
+                }
     for d,a in by_day.items():
         for t,row in a.items():
             by_t[t].append(row)
@@ -257,7 +292,7 @@ def main():
         "not_go_count":len(daily)-completed_sessions,
         "reconstructed_signals":len(signal),
         "saved_0901_snapshot_dates":formal_dates,
-        "signal_semantics":"Counterfactual full-session open; includes stocks not opened by 09:01. No reconstruction of actual Q017 selection, true entry execution, or provider observability.",
+        "signal_semantics":"Counterfactual full-session open; includes stocks not opened by 09:01. No reconstruction of actual Q017 selection, true entry execution, or provider observability. Archived membership after 2026-10-22 frozen to last observed electronics universe; extended prices from original governed EOD vessel.",
         "production_q017_retired":True,"capital_authority":False,
         "registered_observation_comparison_20261021":compare,
         "macro_revisions":"For dates without saved valid pre-open macro caches, later archive SOX/DXY history is a reconstructed source, not guaranteed original point-in-time read.",
@@ -288,6 +323,7 @@ def main():
         "- 2026/11/04 尚未成熟的 D10、D20 不得當零；同日開盤與正式 09:01 報價不可互換。",
         "- 2026/11/05 中午盤中不是完整 EOD，故僅使用 11/04 以前完整收盤資料。",
         "- 事後依 10/21 失敗挑的閾值存在過度擬合風險；表格僅是事後分組，不宣稱修正後勝率。",
+        "- 10/22 後用衡策已入庫 EOD 原血管價格延伸，上市電子股集合以 10/22 名單近似，不是當日更新的正式電子股會員名單。",
         "- 歷史價格未還原，除權息可能影響個別年初至年末報酬；與同期候選池僅為同口徑近似比較。",
         "- 保留 Q017 退役狀態；無正式策略、交易權限、下單或恢復排程。",
         "",

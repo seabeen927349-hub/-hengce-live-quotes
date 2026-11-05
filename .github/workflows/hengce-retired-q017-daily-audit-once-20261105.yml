@@ -63,3 +63,5 @@ jobs:
       - name: Fail workflow if full-year audit did not complete
         if: steps.full.outcome != 'success'
         run: exit 1
+
+# One-shot rerun: extend frozen archived type-13 membership with original EOD stock prices from 2026-10-27 onward.
