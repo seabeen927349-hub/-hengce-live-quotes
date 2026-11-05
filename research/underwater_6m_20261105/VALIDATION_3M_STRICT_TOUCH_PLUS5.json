@@ -1,0 +1,1296 @@
+{
+  "type": "3m_robustness_check",
+  "start": "2026-08-05",
+  "asof": "2026-11-05",
+  "lookback": 60,
+  "zone_width_pct": 5,
+  "overhead_zone_range_pct": [
+    5,
+    20
+  ],
+  "first_touch_within_sessions": 3,
+  "outcome": "close at 5 trading days after first touch divided by close on touch day, change negative = decline",
+  "baseline": "highest historical-price volume band of same width; fixed 5–10% above spot; 20d high when within 5–20%",
+  "constant_tdcc_share_8150_pit_limitation": true,
+  "data": {
+    "3042": {
+      "name": "晶技",
+      "rows": 11,
+      "stats": {
+        "dyn": {
+          "eligible": 10,
+          "touched": 1,
+          "negative_forward5": 1,
+          "negative_pct": 100,
+          "mean_forward5_pct": -9.38,
+          "closed_below_zone": 1,
+          "closed_above_zone": 0
+        },
+        "vol": {
+          "eligible": 10,
+          "touched": 0,
+          "negative_forward5": 0,
+          "negative_pct": null,
+          "mean_forward5_pct": null,
+          "closed_below_zone": 0,
+          "closed_above_zone": 0
+        },
+        "fixed": {
+          "eligible": 11,
+          "touched": 4,
+          "negative_forward5": 1,
+          "negative_pct": 25,
+          "mean_forward5_pct": 0.73,
+          "closed_below_zone": 3,
+          "closed_above_zone": 1
+        },
+        "prior": {
+          "eligible": 7,
+          "touched": 1,
+          "negative_forward5": 0,
+          "negative_pct": 0,
+          "mean_forward5_pct": 1.86,
+          "closed_below_zone": 1,
+          "closed_above_zone": 0
+        }
+      },
+      "same_touch_comparison": {
+        "matched": 0,
+        "same_prediction": 0,
+        "dyn_right_vol_wrong": 0,
+        "vol_right_dyn_wrong": 0
+      },
+      "versus_fixed": {
+        "matched": 1,
+        "dyn_down_fixed_up": 0,
+        "fixed_down_dyn_up": 0
+      }
+    },
+    "6415": {
+      "name": "矽力*-KY",
+      "rows": 11,
+      "stats": {
+        "dyn": {
+          "eligible": 11,
+          "touched": 5,
+          "negative_forward5": 3,
+          "negative_pct": 60,
+          "mean_forward5_pct": 0.2,
+          "closed_below_zone": 3,
+          "closed_above_zone": 1
+        },
+        "vol": {
+          "eligible": 11,
+          "touched": 5,
+          "negative_forward5": 3,
+          "negative_pct": 60,
+          "mean_forward5_pct": -0.51,
+          "closed_below_zone": 3,
+          "closed_above_zone": 1
+        },
+        "fixed": {
+          "eligible": 11,
+          "touched": 6,
+          "negative_forward5": 4,
+          "negative_pct": 66.7,
+          "mean_forward5_pct": -1.22,
+          "closed_below_zone": 4,
+          "closed_above_zone": 1
+        },
+        "prior": {
+          "eligible": 8,
+          "touched": 2,
+          "negative_forward5": 1,
+          "negative_pct": 50,
+          "mean_forward5_pct": -3,
+          "closed_below_zone": 2,
+          "closed_above_zone": 0
+        }
+      },
+      "same_touch_comparison": {
+        "matched": 5,
+        "same_prediction": 5,
+        "dyn_right_vol_wrong": 0,
+        "vol_right_dyn_wrong": 0
+      },
+      "versus_fixed": {
+        "matched": 5,
+        "dyn_down_fixed_up": 0,
+        "fixed_down_dyn_up": 0
+      }
+    },
+    "8150": {
+      "name": "南茂",
+      "rows": 11,
+      "stats": {
+        "dyn": {
+          "eligible": 9,
+          "touched": 1,
+          "negative_forward5": 0,
+          "negative_pct": 0,
+          "mean_forward5_pct": 11.17,
+          "closed_below_zone": 0,
+          "closed_above_zone": 1
+        },
+        "vol": {
+          "eligible": 9,
+          "touched": 2,
+          "negative_forward5": 0,
+          "negative_pct": 0,
+          "mean_forward5_pct": 10.94,
+          "closed_below_zone": 0,
+          "closed_above_zone": 2
+        },
+        "fixed": {
+          "eligible": 11,
+          "touched": 4,
+          "negative_forward5": 1,
+          "negative_pct": 25,
+          "mean_forward5_pct": 5.75,
+          "closed_below_zone": 1,
+          "closed_above_zone": 2
+        },
+        "prior": {
+          "eligible": 6,
+          "touched": 1,
+          "negative_forward5": 0,
+          "negative_pct": 0,
+          "mean_forward5_pct": 11.16,
+          "closed_below_zone": 0,
+          "closed_above_zone": 1
+        }
+      },
+      "same_touch_comparison": {
+        "matched": 1,
+        "same_prediction": 1,
+        "dyn_right_vol_wrong": 0,
+        "vol_right_dyn_wrong": 0
+      },
+      "versus_fixed": {
+        "matched": 1,
+        "dyn_down_fixed_up": 0,
+        "fixed_down_dyn_up": 0
+      }
+    }
+  },
+  "rows": [
+    {
+      "stock": "6415",
+      "anchor_date": "2026-08-05",
+      "spot": 445,
+      "dyn": {
+        "touch": true,
+        "date": "2026-08-10",
+        "lo": 467.25,
+        "hi": 489.5,
+        "forward_return_pct": -2.473,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-17"
+      },
+      "vol": {
+        "touch": true,
+        "date": "2026-08-10",
+        "lo": 467.25,
+        "hi": 489.5,
+        "forward_return_pct": -2.473,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-17"
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-08-10",
+        "lo": 467.25,
+        "hi": 489.5,
+        "forward_return_pct": -2.473,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-17"
+      },
+      "prior": null
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-08-12",
+      "spot": 449,
+      "dyn": {
+        "touch": true,
+        "date": "2026-08-13",
+        "lo": 471.45,
+        "hi": 493.9,
+        "forward_return_pct": -3.656,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-20"
+      },
+      "vol": {
+        "touch": true,
+        "date": "2026-08-14",
+        "lo": 493.9,
+        "hi": 516.35,
+        "forward_return_pct": -7.188,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-21"
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-08-13",
+        "lo": 471.45,
+        "hi": 493.9,
+        "forward_return_pct": -3.656,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-20"
+      },
+      "prior": {
+        "touch": true,
+        "date": "2026-08-14",
+        "lo": 499,
+        "hi": 521.45,
+        "forward_return_pct": -7.188,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-21"
+      }
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-08-19",
+      "spot": 440,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          484,
+          506
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          484,
+          506
+        ]
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-08-24",
+        "lo": 462,
+        "hi": 484,
+        "forward_return_pct": -8.333,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-31"
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          511,
+          533
+        ]
+      }
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-08-26",
+      "spot": 469,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          515.9,
+          539.35
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          515.9,
+          539.35
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          492.45,
+          515.9
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          511,
+          534.45
+        ]
+      }
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-09-02",
+      "spot": 426,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          447.3,
+          468.6
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          447.3,
+          468.6
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          447.3,
+          468.6
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          511,
+          532.3
+        ]
+      }
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-09-09",
+      "spot": 417,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          437.85,
+          458.7
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          437.85,
+          458.7
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          437.85,
+          458.7
+        ]
+      },
+      "prior": null
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-09-16",
+      "spot": 418.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          439.43,
+          460.35
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          439.43,
+          460.35
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          439.43,
+          460.35
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          488.5,
+          509.43
+        ]
+      }
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-09-23",
+      "spot": 426,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          447.3,
+          468.6
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          447.3,
+          468.6
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          447.3,
+          468.6
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          488.5,
+          509.8
+        ]
+      }
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-10-02",
+      "spot": 425,
+      "dyn": {
+        "touch": true,
+        "date": "2026-10-05",
+        "lo": 446.25,
+        "hi": 467.5,
+        "forward_return_pct": -3.054,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-10-13"
+      },
+      "vol": {
+        "touch": true,
+        "date": "2026-10-05",
+        "lo": 446.25,
+        "hi": 467.5,
+        "forward_return_pct": -3.054,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-10-13"
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-10-05",
+        "lo": 446.25,
+        "hi": 467.5,
+        "forward_return_pct": -3.054,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-10-13"
+      },
+      "prior": null
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-10-12",
+      "spot": 440,
+      "dyn": {
+        "touch": true,
+        "date": "2026-10-14",
+        "lo": 462,
+        "hi": 484,
+        "forward_return_pct": 4.034,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-10-21"
+      },
+      "vol": {
+        "touch": true,
+        "date": "2026-10-14",
+        "lo": 462,
+        "hi": 484,
+        "forward_return_pct": 4.034,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-10-21"
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-10-14",
+        "lo": 462,
+        "hi": 484,
+        "forward_return_pct": 4.034,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-10-21"
+      },
+      "prior": {
+        "touch": true,
+        "date": "2026-10-15",
+        "lo": 475,
+        "hi": 497,
+        "forward_return_pct": 1.179,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-10-22"
+      }
+    },
+    {
+      "stock": "6415",
+      "anchor_date": "2026-10-19",
+      "spot": 475.5,
+      "dyn": {
+        "touch": true,
+        "date": "2026-10-22",
+        "lo": 499.28,
+        "hi": 523.05,
+        "forward_return_pct": 6.144,
+        "close_below_low": false,
+        "close_above_high": false,
+        "after_date": "2026-11-02"
+      },
+      "vol": {
+        "touch": true,
+        "date": "2026-10-22",
+        "lo": 499.28,
+        "hi": 523.05,
+        "forward_return_pct": 6.144,
+        "close_below_low": false,
+        "close_above_high": false,
+        "after_date": "2026-11-02"
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-10-22",
+        "lo": 499.28,
+        "hi": 523.05,
+        "forward_return_pct": 6.144,
+        "close_below_low": false,
+        "close_above_high": false,
+        "after_date": "2026-11-02"
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          513,
+          536.77
+        ]
+      }
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-08-05",
+      "spot": 177,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          185.85,
+          194.7
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          194.7,
+          203.55
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          185.85,
+          194.7
+        ]
+      },
+      "prior": null
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-08-12",
+      "spot": 181.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          208.73,
+          217.8
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          199.65,
+          208.73
+        ]
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-08-13",
+        "lo": 190.58,
+        "hi": 199.65,
+        "forward_return_pct": 1.072,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-20"
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          198,
+          207.07
+        ]
+      }
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-08-19",
+      "spot": 186,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          213.9,
+          223.2
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          213.9,
+          223.2
+        ]
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-08-20",
+        "lo": 195.3,
+        "hi": 204.6,
+        "forward_return_pct": 1.857,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-27"
+      },
+      "prior": {
+        "touch": true,
+        "date": "2026-08-20",
+        "lo": 196.5,
+        "hi": 205.8,
+        "forward_return_pct": 1.857,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-27"
+      }
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-08-26",
+      "spot": 185.5,
+      "dyn": {
+        "touch": true,
+        "date": "2026-08-27",
+        "lo": 194.78,
+        "hi": 204.05,
+        "forward_return_pct": -9.375,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-09-03"
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          213.33,
+          222.6
+        ]
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-08-27",
+        "lo": 194.78,
+        "hi": 204.05,
+        "forward_return_pct": -9.375,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-09-03"
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          202,
+          211.28
+        ]
+      }
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-09-02",
+      "spot": 180,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          189,
+          198
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          189,
+          198
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          189,
+          198
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          202,
+          211
+        ]
+      }
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-09-09",
+      "spot": 184.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          193.72,
+          202.95
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          193.72,
+          202.95
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          193.72,
+          202.95
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          202,
+          211.22
+        ]
+      }
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-09-16",
+      "spot": 185.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          194.78,
+          204.05
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          213.33,
+          222.6
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          194.78,
+          204.05
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          202,
+          211.28
+        ]
+      }
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-09-23",
+      "spot": 198,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          227.7,
+          237.6
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          227.7,
+          237.6
+        ]
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-09-24",
+        "lo": 207.9,
+        "hi": 217.8,
+        "forward_return_pct": 9.36,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-10-05"
+      },
+      "prior": null
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-10-02",
+      "spot": 230.5,
+      "dyn": null,
+      "vol": null,
+      "fixed": {
+        "touch": false,
+        "zone": [
+          242.03,
+          253.55
+        ]
+      },
+      "prior": null
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-10-12",
+      "spot": 204.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          224.95,
+          235.18
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          224.95,
+          235.18
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          214.73,
+          224.95
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          235.5,
+          245.72
+        ]
+      }
+    },
+    {
+      "stock": "3042",
+      "anchor_date": "2026-10-19",
+      "spot": 182.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          209.88,
+          219
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          191.63,
+          200.75
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          191.63,
+          200.75
+        ]
+      },
+      "prior": null
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-08-05",
+      "spot": 86.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          99.48,
+          103.8
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          99.48,
+          103.8
+        ]
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-08-07",
+        "lo": 90.83,
+        "hi": 95.15,
+        "forward_return_pct": 6.489,
+        "close_below_low": false,
+        "close_above_high": false,
+        "after_date": "2026-08-14"
+      },
+      "prior": null
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-08-12",
+      "spot": 92.2,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          101.42,
+          106.03
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          101.42,
+          106.03
+        ]
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-08-13",
+        "lo": 96.81,
+        "hi": 101.42,
+        "forward_return_pct": -5.382,
+        "close_below_low": true,
+        "close_above_high": false,
+        "after_date": "2026-08-20"
+      },
+      "prior": null
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-08-19",
+      "spot": 87.3,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          91.67,
+          96.03
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          100.4,
+          104.76
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          91.67,
+          96.03
+        ]
+      },
+      "prior": null
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-08-26",
+      "spot": 91.1,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          100.21,
+          104.77
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          100.21,
+          104.77
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          95.66,
+          100.21
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          99.4,
+          103.96
+        ]
+      }
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-09-02",
+      "spot": 90.2,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          94.71,
+          99.22
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          103.73,
+          108.24
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          94.71,
+          99.22
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          99.4,
+          103.91
+        ]
+      }
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-09-09",
+      "spot": 91.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          100.65,
+          105.23
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          100.65,
+          105.23
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          96.08,
+          100.65
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          98.5,
+          103.08
+        ]
+      }
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-09-16",
+      "spot": 87.1,
+      "dyn": {
+        "touch": true,
+        "date": "2026-09-18",
+        "lo": 91.45,
+        "hi": 95.81,
+        "forward_return_pct": 11.17,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-09-29"
+      },
+      "vol": {
+        "touch": true,
+        "date": "2026-09-18",
+        "lo": 91.45,
+        "hi": 95.81,
+        "forward_return_pct": 11.17,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-09-29"
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-09-18",
+        "lo": 91.45,
+        "hi": 95.81,
+        "forward_return_pct": 11.17,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-09-29"
+      },
+      "prior": {
+        "touch": true,
+        "date": "2026-09-21",
+        "lo": 96.3,
+        "hi": 100.66,
+        "forward_return_pct": 11.165,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-09-30"
+      }
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-09-23",
+      "spot": 107,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          117.7,
+          123.05
+        ]
+      },
+      "vol": {
+        "touch": true,
+        "date": "2026-09-24",
+        "lo": 112.35,
+        "hi": 117.7,
+        "forward_return_pct": 10.714,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-10-05"
+      },
+      "fixed": {
+        "touch": true,
+        "date": "2026-09-24",
+        "lo": 112.35,
+        "hi": 117.7,
+        "forward_return_pct": 10.714,
+        "close_below_low": false,
+        "close_above_high": true,
+        "after_date": "2026-10-05"
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          116,
+          121.35
+        ]
+      }
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-10-02",
+      "spot": 127,
+      "dyn": null,
+      "vol": null,
+      "fixed": {
+        "touch": false,
+        "zone": [
+          133.35,
+          139.7
+        ]
+      },
+      "prior": null
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-10-12",
+      "spot": 123,
+      "dyn": null,
+      "vol": null,
+      "fixed": {
+        "touch": false,
+        "zone": [
+          129.15,
+          135.3
+        ]
+      },
+      "prior": {
+        "touch": false,
+        "zone": [
+          133,
+          139.15
+        ]
+      }
+    },
+    {
+      "stock": "8150",
+      "anchor_date": "2026-10-19",
+      "spot": 102.5,
+      "dyn": {
+        "touch": false,
+        "zone": [
+          107.63,
+          112.75
+        ]
+      },
+      "vol": {
+        "touch": false,
+        "zone": [
+          107.63,
+          112.75
+        ]
+      },
+      "fixed": {
+        "touch": false,
+        "zone": [
+          107.63,
+          112.75
+        ]
+      },
+      "prior": null
+    }
+  ],
+  "summary": {
+    "anchors": 33,
+    "stats": {
+      "dyn": {
+        "eligible": 30,
+        "touched": 7,
+        "negative_forward5": 4,
+        "negative_pct": 57.1,
+        "mean_forward5_pct": 0.4,
+        "closed_below_zone": 4,
+        "closed_above_zone": 2
+      },
+      "vol": {
+        "eligible": 30,
+        "touched": 7,
+        "negative_forward5": 3,
+        "negative_pct": 42.9,
+        "mean_forward5_pct": 2.76,
+        "closed_below_zone": 3,
+        "closed_above_zone": 3
+      },
+      "fixed": {
+        "eligible": 33,
+        "touched": 14,
+        "negative_forward5": 6,
+        "negative_pct": 42.9,
+        "mean_forward5_pct": 1.33,
+        "closed_below_zone": 8,
+        "closed_above_zone": 4
+      },
+      "prior": {
+        "eligible": 21,
+        "touched": 4,
+        "negative_forward5": 1,
+        "negative_pct": 25,
+        "mean_forward5_pct": 1.75,
+        "closed_below_zone": 3,
+        "closed_above_zone": 1
+      }
+    }
+  }
+}
