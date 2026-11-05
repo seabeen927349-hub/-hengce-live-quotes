@@ -1,0 +1,123 @@
+{
+  "status": "EXPLORATORY_INEPISODE_CROSS_STOCK_ONLY",
+  "n": 555,
+  "models": [
+    {
+      "cols": [
+        "pre_daily_vol_pct",
+        "pretrend_1007_pct",
+        "log_money"
+      ],
+      "n": 555,
+      "cv_r2": 0.348,
+      "cv_mae": 3.934,
+      "full_coefs": [
+        -8.546,
+        -2.148,
+        2.423,
+        -1.136
+      ]
+    },
+    {
+      "cols": [
+        "pre_daily_vol_pct",
+        "pretrend_1007_pct",
+        "log_money",
+        "pre_inst_turnover_pct"
+      ],
+      "n": 555,
+      "cv_r2": 0.3538,
+      "cv_mae": 3.904,
+      "full_coefs": [
+        -8.546,
+        -2.229,
+        2.625,
+        -1.064,
+        -0.538
+      ]
+    },
+    {
+      "cols": [
+        "pre_daily_vol_pct",
+        "pretrend_1007_pct",
+        "log_money",
+        "pre_foreign_turnover_pct"
+      ],
+      "n": 555,
+      "cv_r2": 0.3506,
+      "cv_mae": 3.915,
+      "full_coefs": [
+        -8.546,
+        -2.197,
+        2.547,
+        -1.109,
+        -0.359
+      ]
+    },
+    {
+      "cols": [
+        "pre_daily_vol_pct",
+        "pretrend_1007_pct",
+        "log_money",
+        "pre_credit_turnover_days"
+      ],
+      "n": 555,
+      "cv_r2": 0.3661,
+      "cv_mae": 3.806,
+      "full_coefs": [
+        -8.546,
+        -2.138,
+        2.136,
+        -1.568,
+        -1.035
+      ]
+    },
+    {
+      "cols": [
+        "pre_daily_vol_pct",
+        "pretrend_1007_pct",
+        "log_money",
+        "pre_inst_turnover_pct",
+        "pre_credit_turnover_days"
+      ],
+      "n": 555,
+      "cv_r2": 0.3702,
+      "cv_mae": 3.792,
+      "full_coefs": [
+        -8.546,
+        -2.208,
+        2.32,
+        -1.49,
+        -0.462,
+        -0.997
+      ]
+    },
+    {
+      "cols": [
+        "pre_daily_vol_pct",
+        "pretrend_1007_pct",
+        "log_money",
+        "pre_inst_turnover_pct",
+        "pre_foreign_turnover_pct",
+        "pre_credit_turnover_days"
+      ],
+      "n": 555,
+      "cv_r2": 0.3712,
+      "cv_mae": 3.793,
+      "full_coefs": [
+        -8.546,
+        -2.227,
+        2.356,
+        -1.393,
+        -2.242,
+        1.831,
+        -1.007
+      ]
+    }
+  ],
+  "notes": [
+    "All predictors available by 2026-10-28, but model selection informed by this episode.",
+    "Robustness CV for cross stocks, not held-out market crashes or trade PnL.",
+    "Underlying credit and institutional data are a subset of observations and proxies."
+  ]
+}
