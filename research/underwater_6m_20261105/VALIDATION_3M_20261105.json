@@ -1,0 +1,4104 @@
+{
+  "version": "v1_read_only_three_month_validation",
+  "date_start": "2026-08-05",
+  "date_end": "2026-11-05",
+  "as_of": "2026-11-05T13:30:00+08:00",
+  "last_finmind_eod": "2026-11-04",
+  "metric": "first touch during following 3 sessions; compare close on session 5 to touch-day close; return <0 means subsequent decline",
+  "alpha": 1,
+  "lookback_sessions": 60,
+  "horizon": 5,
+  "anchor_step": 5,
+  "stocks": {
+    "3042": {
+      "name": "晶技",
+      "finmind_dates": [
+        "2026-05-05",
+        "2026-11-04"
+      ],
+      "fugle_latest": [
+        "2026-11-05",
+        132
+      ],
+      "history_days": 126,
+      "first_test": "2026-08-05",
+      "last_test": "2026-10-28",
+      "anchors": 12,
+      "basic_next5_decline": 6,
+      "shares_source": "FinMind historical daily outstanding",
+      "holdings_rows": 125,
+      "series_lengths": {
+        "price": 125,
+        "margin": 125,
+        "inst": 625
+      },
+      "by_model": {
+        "dynamic": {
+          "eligible": 12,
+          "touch": 10,
+          "touch_rate_pct": 83.3,
+          "subsequent_declines": 7,
+          "decline_rate_pct": 70,
+          "end_close_below_zone": 6,
+          "end_close_above_zone": 2,
+          "mean_after_touch_return_pct": -1.4
+        },
+        "raw_volume": {
+          "eligible": 12,
+          "touch": 9,
+          "touch_rate_pct": 75,
+          "subsequent_declines": 6,
+          "decline_rate_pct": 66.7,
+          "end_close_below_zone": 6,
+          "end_close_above_zone": 2,
+          "mean_after_touch_return_pct": -1.52
+        },
+        "near": {
+          "eligible": 12,
+          "touch": 11,
+          "touch_rate_pct": 91.7,
+          "subsequent_declines": 7,
+          "decline_rate_pct": 63.6,
+          "end_close_below_zone": 6,
+          "end_close_above_zone": 2,
+          "mean_after_touch_return_pct": -0.88
+        },
+        "prior_high": {
+          "eligible": 8,
+          "touch": 4,
+          "touch_rate_pct": 50,
+          "subsequent_declines": 3,
+          "decline_rate_pct": 75,
+          "end_close_below_zone": 3,
+          "end_close_above_zone": 1,
+          "mean_after_touch_return_pct": 0.95
+        }
+      },
+      "sharedPair": {
+        "both_touch": 9,
+        "both_decline": 6,
+        "dynamic_only_decline": 0,
+        "volume_only_decline": 0
+      },
+      "rows": [
+        {
+          "stock": "3042",
+          "as_of": "2026-08-05",
+          "spot": 177,
+          "next5_close": 181.5,
+          "next5_return_pct": 2.54,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 185.85,
+              "zone_hi": 194.7,
+              "mass_pct": 9.24
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 194.7,
+              "zone_hi": 203.55,
+              "mass_pct": 10.3
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 4.31,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 177,
+              "zone_hi": 185.85,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-08-12",
+          "spot": 181.5,
+          "next5_close": 186,
+          "next5_return_pct": 2.48,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.268,
+              "reversal": true,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 181.5,
+              "zone_hi": 190.58,
+              "mass_pct": 8.67
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 199.65,
+              "zone_hi": 208.72,
+              "mass_pct": 13.12
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.268,
+              "reversal": true,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 181.5,
+              "zone_hi": 190.58,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.268,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 193.46,
+              "zone_hi": 202.54,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-08-19",
+          "spot": 186,
+          "next5_close": 185.5,
+          "next5_return_pct": -0.27,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -1.592,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 186,
+              "zone_hi": 195.3,
+              "mass_pct": 16.85
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -1.592,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 195.3,
+              "zone_hi": 204.6,
+              "mass_pct": 11.27
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -1.592,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 186,
+              "zone_hi": 195.3,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -1.592,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 191.85,
+              "zone_hi": 201.15,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-08-26",
+          "spot": 185.5,
+          "next5_close": 180,
+          "next5_return_pct": -2.96,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -6.25,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 185.5,
+              "zone_hi": 194.78,
+              "mass_pct": 20.27
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -6.25,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 185.5,
+              "zone_hi": 194.78,
+              "mass_pct": 12.81
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -6.25,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 185.5,
+              "zone_hi": 194.78,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 197.36,
+              "zone_hi": 206.64,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-09-02",
+          "spot": 180,
+          "next5_close": 184.5,
+          "next5_return_pct": 2.5,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 6.034,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 180,
+              "zone_hi": 189,
+              "mass_pct": 37.79
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 6.034,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 180,
+              "zone_hi": 189,
+              "mass_pct": 17.63
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 6.034,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 180,
+              "zone_hi": 189,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 197.5,
+              "zone_hi": 206.5,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-09-09",
+          "spot": 184.5,
+          "next5_close": 185.5,
+          "next5_return_pct": 0.54,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 184.5,
+              "zone_hi": 193.72,
+              "mass_pct": 20.79
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 184.5,
+              "zone_hi": 193.72,
+              "mass_pct": 16.9
+            },
+            "near": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 184.5,
+              "zone_hi": 193.72,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 197.39,
+              "zone_hi": 206.61,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-09-16",
+          "spot": 185.5,
+          "next5_close": 198,
+          "next5_return_pct": 6.74,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 10.924,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 185.5,
+              "zone_hi": 194.78,
+              "mass_pct": 17.88
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 10.924,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 185.5,
+              "zone_hi": 194.78,
+              "mass_pct": 18.67
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 10.924,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 185.5,
+              "zone_hi": 194.78,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 197.36,
+              "zone_hi": 206.64,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-09-23",
+          "spot": 198,
+          "next5_close": 230.5,
+          "next5_return_pct": 16.41,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.547,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 207.9,
+              "zone_hi": 217.8,
+              "mass_pct": 2.14
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.547,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 207.9,
+              "zone_hi": 217.8,
+              "mass_pct": 10.44
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.547,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 198,
+              "zone_hi": 207.9,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.547,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 198,
+              "zone_hi": 207.9,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-10-02",
+          "spot": 230.5,
+          "next5_close": 204.5,
+          "next5_return_pct": -11.28,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -7.883,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 230.5,
+              "zone_hi": 242.03,
+              "mass_pct": 0
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -7.883,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 230.5,
+              "zone_hi": 242.03,
+              "mass_pct": 0
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -7.883,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 230.5,
+              "zone_hi": 242.03,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -7.883,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 230.5,
+              "zone_hi": 242.03,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-10-12",
+          "spot": 204.5,
+          "next5_close": 182.5,
+          "next5_return_pct": -10.76,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": -10.976,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 204.5,
+              "zone_hi": 214.73,
+              "mass_pct": 25.49
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": -10.976,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 204.5,
+              "zone_hi": 214.73,
+              "mass_pct": 11.81
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": -10.976,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 204.5,
+              "zone_hi": 214.73,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-10-19",
+          "spot": 182.5,
+          "next5_close": 178.5,
+          "next5_return_pct": -2.19,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.557,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 182.5,
+              "zone_hi": 191.63,
+              "mass_pct": 18.33
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.557,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 182.5,
+              "zone_hi": 191.63,
+              "mass_pct": 29.47
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.557,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 182.5,
+              "zone_hi": 191.63,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "3042",
+          "as_of": "2026-10-28",
+          "spot": 178.5,
+          "next5_close": 144.5,
+          "next5_return_pct": -19.05,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -16.954,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 178.5,
+              "zone_hi": 187.43,
+              "mass_pct": 19.43
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -16.954,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 178.5,
+              "zone_hi": 187.43,
+              "mass_pct": 30.69
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -16.954,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 178.5,
+              "zone_hi": 187.43,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        }
+      ]
+    },
+    "6415": {
+      "name": "矽力*-KY",
+      "finmind_dates": [
+        "2026-05-05",
+        "2026-11-04"
+      ],
+      "fugle_latest": [
+        "2026-11-05",
+        412
+      ],
+      "history_days": 126,
+      "first_test": "2026-08-05",
+      "last_test": "2026-10-28",
+      "anchors": 12,
+      "basic_next5_decline": 5,
+      "shares_source": "FinMind historical daily outstanding",
+      "holdings_rows": 124,
+      "series_lengths": {
+        "price": 125,
+        "margin": 125,
+        "inst": 625
+      },
+      "by_model": {
+        "dynamic": {
+          "eligible": 12,
+          "touch": 9,
+          "touch_rate_pct": 75,
+          "subsequent_declines": 5,
+          "decline_rate_pct": 55.6,
+          "end_close_below_zone": 5,
+          "end_close_above_zone": 3,
+          "mean_after_touch_return_pct": -1.5
+        },
+        "raw_volume": {
+          "eligible": 12,
+          "touch": 9,
+          "touch_rate_pct": 75,
+          "subsequent_declines": 5,
+          "decline_rate_pct": 55.6,
+          "end_close_below_zone": 5,
+          "end_close_above_zone": 3,
+          "mean_after_touch_return_pct": -1.82
+        },
+        "near": {
+          "eligible": 12,
+          "touch": 12,
+          "touch_rate_pct": 100,
+          "subsequent_declines": 5,
+          "decline_rate_pct": 41.7,
+          "end_close_below_zone": 5,
+          "end_close_above_zone": 3,
+          "mean_after_touch_return_pct": -0.15
+        },
+        "prior_high": {
+          "eligible": 6,
+          "touch": 4,
+          "touch_rate_pct": 66.7,
+          "subsequent_declines": 2,
+          "decline_rate_pct": 50,
+          "end_close_below_zone": 1,
+          "end_close_above_zone": 1,
+          "mean_after_touch_return_pct": 0.85
+        }
+      },
+      "sharedPair": {
+        "both_touch": 9,
+        "both_decline": 5,
+        "dynamic_only_decline": 0,
+        "volume_only_decline": 0
+      },
+      "rows": [
+        {
+          "stock": "6415",
+          "as_of": "2026-08-05",
+          "spot": 445,
+          "next5_close": 449,
+          "next5_return_pct": 0.9,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 3,
+              "subsequent_five_return_pct": -3.441,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 467.25,
+              "zone_hi": 489.5,
+              "mass_pct": 9.1
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 3,
+              "subsequent_five_return_pct": -3.441,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 467.25,
+              "zone_hi": 489.5,
+              "mass_pct": 16.15
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 0.899,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 445,
+              "zone_hi": 467.25,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-08-12",
+          "spot": 449,
+          "next5_close": 440,
+          "next5_return_pct": -2,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -5.376,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 449,
+              "zone_hi": 471.45,
+              "mass_pct": 7.62
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": -8.333,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 493.9,
+              "zone_hi": 516.35,
+              "mass_pct": 11.19
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -5.376,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 449,
+              "zone_hi": 471.45,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": -8.333,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 487.77,
+              "zone_hi": 510.22,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-08-19",
+          "spot": 440,
+          "next5_close": 469,
+          "next5_return_pct": 6.59,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 4.688,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 440,
+              "zone_hi": 462,
+              "mass_pct": 9.02
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 4.688,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 440,
+              "zone_hi": 462,
+              "mass_pct": 12.93
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 4.688,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 440,
+              "zone_hi": 462,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-08-26",
+          "spot": 469,
+          "next5_close": 426,
+          "next5_return_pct": -9.17,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -9.458,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 469,
+              "zone_hi": 492.45,
+              "mass_pct": 7.72
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -9.458,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 469,
+              "zone_hi": 492.45,
+              "mass_pct": 15.36
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -9.458,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 469,
+              "zone_hi": 492.45,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 499.27,
+              "zone_hi": 522.73,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-09-02",
+          "spot": 426,
+          "next5_close": 417,
+          "next5_return_pct": -2.11,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 447.3,
+              "zone_hi": 468.6,
+              "mass_pct": 11.04
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 447.3,
+              "zone_hi": 468.6,
+              "mass_pct": 18.53
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 1.46,
+              "reversal": false,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 426,
+              "zone_hi": 447.3,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-09-09",
+          "spot": 417,
+          "next5_close": 418.5,
+          "next5_return_pct": 0.36,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 3,
+              "subsequent_five_return_pct": 1.087,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 417,
+              "zone_hi": 437.85,
+              "mass_pct": 10.57
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 3,
+              "subsequent_five_return_pct": 1.087,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 417,
+              "zone_hi": 437.85,
+              "mass_pct": 18.2
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 3,
+              "subsequent_five_return_pct": 1.087,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 417,
+              "zone_hi": 437.85,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-09-16",
+          "spot": 418.5,
+          "next5_close": 426,
+          "next5_return_pct": 1.79,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 439.43,
+              "zone_hi": 460.35,
+              "mass_pct": 9.1
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 439.43,
+              "zone_hi": 460.35,
+              "mass_pct": 20.52
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 3.65,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 418.5,
+              "zone_hi": 439.43,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-09-23",
+          "spot": 426,
+          "next5_close": 425,
+          "next5_return_pct": -0.23,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 447.3,
+              "zone_hi": 468.6,
+              "mass_pct": 10
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 447.3,
+              "zone_hi": 468.6,
+              "mass_pct": 22.97
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.118,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 426,
+              "zone_hi": 447.3,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 477.85,
+              "zone_hi": 499.15,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-10-02",
+          "spot": 425,
+          "next5_close": 440,
+          "next5_return_pct": 3.53,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.452,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 446.25,
+              "zone_hi": 467.5,
+              "mass_pct": 9.75
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.452,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 446.25,
+              "zone_hi": 467.5,
+              "mass_pct": 22.96
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.452,
+              "reversal": true,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 425,
+              "zone_hi": 446.25,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.452,
+              "reversal": true,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 432.38,
+              "zone_hi": 453.63,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-10-12",
+          "spot": 440,
+          "next5_close": 475.5,
+          "next5_return_pct": 8.07,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": 0.955,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 440,
+              "zone_hi": 462,
+              "mass_pct": 12.72
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": 0.955,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 440,
+              "zone_hi": 462,
+              "mass_pct": 30.87
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": 0.955,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 440,
+              "zone_hi": 462,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": 0.955,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 464,
+              "zone_hi": 486,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-10-19",
+          "spot": 475.5,
+          "next5_close": 525,
+          "next5_return_pct": 10.41,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 3,
+              "subsequent_five_return_pct": 11.229,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 499.28,
+              "zone_hi": 523.05,
+              "mass_pct": 3.13
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 3,
+              "subsequent_five_return_pct": 11.229,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 499.28,
+              "zone_hi": 523.05,
+              "mass_pct": 5.59
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.514,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 475.5,
+              "zone_hi": 499.28,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 3,
+              "subsequent_five_return_pct": 11.229,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 501.11,
+              "zone_hi": 524.89,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "6415",
+          "as_of": "2026-10-28",
+          "spot": 525,
+          "next5_close": 457.5,
+          "next5_return_pct": -12.86,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -12.691,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 525,
+              "zone_hi": 551.25,
+              "mass_pct": 0
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -12.691,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 525,
+              "zone_hi": 551.25,
+              "mass_pct": 0
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -12.691,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 525,
+              "zone_hi": 551.25,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        }
+      ]
+    },
+    "8150": {
+      "name": "南茂",
+      "finmind_dates": [
+        "2026-05-05",
+        "2026-11-04"
+      ],
+      "fugle_latest": [
+        "2026-11-05",
+        76
+      ],
+      "history_days": 126,
+      "first_test": "2026-08-05",
+      "last_test": "2026-10-28",
+      "anchors": 12,
+      "basic_next5_decline": 7,
+      "shares_source": "TDCC end-period fallback constant; PIT limited",
+      "holdings_rows": 0,
+      "series_lengths": {
+        "price": 125,
+        "margin": 125,
+        "inst": 625
+      },
+      "by_model": {
+        "dynamic": {
+          "eligible": 12,
+          "touch": 9,
+          "touch_rate_pct": 75,
+          "subsequent_declines": 4,
+          "decline_rate_pct": 44.4,
+          "end_close_below_zone": 5,
+          "end_close_above_zone": 3,
+          "mean_after_touch_return_pct": 2.92
+        },
+        "raw_volume": {
+          "eligible": 12,
+          "touch": 5,
+          "touch_rate_pct": 41.7,
+          "subsequent_declines": 2,
+          "decline_rate_pct": 40,
+          "end_close_below_zone": 2,
+          "end_close_above_zone": 2,
+          "mean_after_touch_return_pct": 4.99
+        },
+        "near": {
+          "eligible": 12,
+          "touch": 11,
+          "touch_rate_pct": 91.7,
+          "subsequent_declines": 5,
+          "decline_rate_pct": 45.5,
+          "end_close_below_zone": 6,
+          "end_close_above_zone": 3,
+          "mean_after_touch_return_pct": 2.37
+        },
+        "prior_high": {
+          "eligible": 6,
+          "touch": 2,
+          "touch_rate_pct": 33.3,
+          "subsequent_declines": 0,
+          "decline_rate_pct": 0,
+          "end_close_below_zone": 0,
+          "end_close_above_zone": 2,
+          "mean_after_touch_return_pct": 13.61
+        }
+      },
+      "sharedPair": {
+        "both_touch": 5,
+        "both_decline": 2,
+        "dynamic_only_decline": 0,
+        "volume_only_decline": 0
+      },
+      "rows": [
+        {
+          "stock": "8150",
+          "as_of": "2026-08-05",
+          "spot": 86.5,
+          "next5_close": 92.2,
+          "next5_return_pct": 6.59,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 6.099,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 86.5,
+              "zone_hi": 90.83,
+              "mass_pct": 9.21
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 95.15,
+              "zone_hi": 99.47,
+              "mass_pct": 10.79
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 6.099,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 86.5,
+              "zone_hi": 90.83,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-08-12",
+          "spot": 92.2,
+          "next5_close": 87.3,
+          "next5_return_pct": -5.31,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -6.028,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 92.2,
+              "zone_hi": 96.81,
+              "mass_pct": 27.55
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 101.42,
+              "zone_hi": 106.03,
+              "mass_pct": 23.22
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -6.028,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 92.2,
+              "zone_hi": 96.81,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-08-19",
+          "spot": 87.3,
+          "next5_close": 91.1,
+          "next5_return_pct": 4.35,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 91.67,
+              "zone_hi": 96.03,
+              "mass_pct": 41.49
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 91.67,
+              "zone_hi": 96.03,
+              "mass_pct": 19.83
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 3.641,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 87.3,
+              "zone_hi": 91.67,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-08-26",
+          "spot": 91.1,
+          "next5_close": 90.2,
+          "next5_return_pct": -0.99,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.111,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 91.1,
+              "zone_hi": 95.66,
+              "mass_pct": 32.69
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 100.21,
+              "zone_hi": 104.76,
+              "mass_pct": 18.97
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.111,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 91.1,
+              "zone_hi": 95.66,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 97.12,
+              "zone_hi": 101.68,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-09-02",
+          "spot": 90.2,
+          "next5_close": 91.5,
+          "next5_return_pct": 1.44,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 2.694,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 90.2,
+              "zone_hi": 94.71,
+              "mass_pct": 35.21
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 2.694,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 90.2,
+              "zone_hi": 94.71,
+              "mass_pct": 15.77
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 2.694,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": false,
+              "zone_lo": 90.2,
+              "zone_hi": 94.71,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 97.15,
+              "zone_hi": 101.66,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-09-09",
+          "spot": 91.5,
+          "next5_close": 87.1,
+          "next5_return_pct": -4.81,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -4.18,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 91.5,
+              "zone_hi": 96.08,
+              "mass_pct": 41.21
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -4.18,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 91.5,
+              "zone_hi": 96.08,
+              "mass_pct": 21.31
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -4.18,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 91.5,
+              "zone_hi": 96.08,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 96.21,
+              "zone_hi": 100.79,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-09-16",
+          "spot": 87.1,
+          "next5_close": 107,
+          "next5_return_pct": 22.85,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": 13.83,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 91.45,
+              "zone_hi": 95.81,
+              "mass_pct": 37.53
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": 13.83,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 91.45,
+              "zone_hi": 95.81,
+              "mass_pct": 22.05
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 23.414,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 87.1,
+              "zone_hi": 91.45,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 2,
+              "subsequent_five_return_pct": 13.83,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 94.12,
+              "zone_hi": 98.48,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-09-23",
+          "spot": 107,
+          "next5_close": 127,
+          "next5_return_pct": 18.69,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.393,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 107,
+              "zone_hi": 112.35,
+              "mass_pct": 15.87
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.393,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 112.35,
+              "zone_hi": 117.7,
+              "mass_pct": 10.19
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.393,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 107,
+              "zone_hi": 112.35,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 13.393,
+              "reversal": false,
+              "close_below_zone": false,
+              "closed_above_zone": true,
+              "zone_lo": 113.33,
+              "zone_hi": 118.67,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-10-02",
+          "spot": 127,
+          "next5_close": 123,
+          "next5_return_pct": -3.15,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.806,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 127,
+              "zone_hi": 133.35,
+              "mass_pct": 0
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.806,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 127,
+              "zone_hi": 133.35,
+              "mass_pct": 0
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -0.806,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 127,
+              "zone_hi": 133.35,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-10-12",
+          "spot": 123,
+          "next5_close": 102.5,
+          "next5_return_pct": -16.67,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 123,
+              "zone_hi": 129.15,
+              "mass_pct": 33.13
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 123,
+              "zone_hi": 129.15,
+              "mass_pct": 10.18
+            },
+            "near": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 123,
+              "zone_hi": 129.15,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 129.93,
+              "zone_hi": 136.08,
+              "mass_pct": null
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-10-19",
+          "spot": 102.5,
+          "next5_close": 100.5,
+          "next5_return_pct": -1.95,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 1.413,
+              "reversal": false,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 102.5,
+              "zone_hi": 107.63,
+              "mass_pct": 14.22
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 107.63,
+              "zone_hi": 112.75,
+              "mass_pct": 11.55
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": 1.413,
+              "reversal": false,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 102.5,
+              "zone_hi": 107.63,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        },
+        {
+          "stock": "8150",
+          "as_of": "2026-10-28",
+          "spot": 100.5,
+          "next5_close": 84.1,
+          "next5_return_pct": -16.32,
+          "models": {
+            "dynamic": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 105.53,
+              "zone_hi": 110.55,
+              "mass_pct": 12.76
+            },
+            "raw_volume": {
+              "valid": true,
+              "contact": false,
+              "contact_day": null,
+              "subsequent_five_return_pct": null,
+              "reversal": null,
+              "close_below_zone": null,
+              "closed_above_zone": null,
+              "zone_lo": 110.55,
+              "zone_hi": 115.57,
+              "mass_pct": 10.22
+            },
+            "near": {
+              "valid": true,
+              "contact": true,
+              "contact_day": 1,
+              "subsequent_five_return_pct": -13.477,
+              "reversal": true,
+              "close_below_zone": true,
+              "closed_above_zone": false,
+              "zone_lo": 100.5,
+              "zone_hi": 105.53,
+              "mass_pct": null
+            },
+            "prior_high": {
+              "valid": false
+            }
+          }
+        }
+      ]
+    }
+  },
+  "samples": [
+    {
+      "stock": "6415",
+      "as_of": "2026-08-05",
+      "spot": 445,
+      "next5_close": 449,
+      "next5_return_pct": 0.9,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 3,
+          "subsequent_five_return_pct": -3.441,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 467.25,
+          "zone_hi": 489.5,
+          "mass_pct": 9.1
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 3,
+          "subsequent_five_return_pct": -3.441,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 467.25,
+          "zone_hi": 489.5,
+          "mass_pct": 16.15
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 0.899,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 445,
+          "zone_hi": 467.25,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-08-12",
+      "spot": 449,
+      "next5_close": 440,
+      "next5_return_pct": -2,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -5.376,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 449,
+          "zone_hi": 471.45,
+          "mass_pct": 7.62
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": -8.333,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 493.9,
+          "zone_hi": 516.35,
+          "mass_pct": 11.19
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -5.376,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 449,
+          "zone_hi": 471.45,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": -8.333,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 487.77,
+          "zone_hi": 510.22,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-08-19",
+      "spot": 440,
+      "next5_close": 469,
+      "next5_return_pct": 6.59,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 4.688,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 440,
+          "zone_hi": 462,
+          "mass_pct": 9.02
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 4.688,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 440,
+          "zone_hi": 462,
+          "mass_pct": 12.93
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 4.688,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 440,
+          "zone_hi": 462,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-08-26",
+      "spot": 469,
+      "next5_close": 426,
+      "next5_return_pct": -9.17,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -9.458,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 469,
+          "zone_hi": 492.45,
+          "mass_pct": 7.72
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -9.458,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 469,
+          "zone_hi": 492.45,
+          "mass_pct": 15.36
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -9.458,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 469,
+          "zone_hi": 492.45,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 499.27,
+          "zone_hi": 522.73,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-09-02",
+      "spot": 426,
+      "next5_close": 417,
+      "next5_return_pct": -2.11,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 447.3,
+          "zone_hi": 468.6,
+          "mass_pct": 11.04
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 447.3,
+          "zone_hi": 468.6,
+          "mass_pct": 18.53
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 1.46,
+          "reversal": false,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 426,
+          "zone_hi": 447.3,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-09-09",
+      "spot": 417,
+      "next5_close": 418.5,
+      "next5_return_pct": 0.36,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 3,
+          "subsequent_five_return_pct": 1.087,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 417,
+          "zone_hi": 437.85,
+          "mass_pct": 10.57
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 3,
+          "subsequent_five_return_pct": 1.087,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 417,
+          "zone_hi": 437.85,
+          "mass_pct": 18.2
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 3,
+          "subsequent_five_return_pct": 1.087,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 417,
+          "zone_hi": 437.85,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-09-16",
+      "spot": 418.5,
+      "next5_close": 426,
+      "next5_return_pct": 1.79,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 439.43,
+          "zone_hi": 460.35,
+          "mass_pct": 9.1
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 439.43,
+          "zone_hi": 460.35,
+          "mass_pct": 20.52
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 3.65,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 418.5,
+          "zone_hi": 439.43,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-09-23",
+      "spot": 426,
+      "next5_close": 425,
+      "next5_return_pct": -0.23,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 447.3,
+          "zone_hi": 468.6,
+          "mass_pct": 10
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 447.3,
+          "zone_hi": 468.6,
+          "mass_pct": 22.97
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.118,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 426,
+          "zone_hi": 447.3,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 477.85,
+          "zone_hi": 499.15,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-10-02",
+      "spot": 425,
+      "next5_close": 440,
+      "next5_return_pct": 3.53,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.452,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 446.25,
+          "zone_hi": 467.5,
+          "mass_pct": 9.75
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.452,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 446.25,
+          "zone_hi": 467.5,
+          "mass_pct": 22.96
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.452,
+          "reversal": true,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 425,
+          "zone_hi": 446.25,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.452,
+          "reversal": true,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 432.38,
+          "zone_hi": 453.63,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-10-12",
+      "spot": 440,
+      "next5_close": 475.5,
+      "next5_return_pct": 8.07,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": 0.955,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 440,
+          "zone_hi": 462,
+          "mass_pct": 12.72
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": 0.955,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 440,
+          "zone_hi": 462,
+          "mass_pct": 30.87
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": 0.955,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 440,
+          "zone_hi": 462,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": 0.955,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 464,
+          "zone_hi": 486,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-10-19",
+      "spot": 475.5,
+      "next5_close": 525,
+      "next5_return_pct": 10.41,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 3,
+          "subsequent_five_return_pct": 11.229,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 499.28,
+          "zone_hi": 523.05,
+          "mass_pct": 3.13
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 3,
+          "subsequent_five_return_pct": 11.229,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 499.28,
+          "zone_hi": 523.05,
+          "mass_pct": 5.59
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.514,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 475.5,
+          "zone_hi": 499.28,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 3,
+          "subsequent_five_return_pct": 11.229,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 501.11,
+          "zone_hi": 524.89,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "6415",
+      "as_of": "2026-10-28",
+      "spot": 525,
+      "next5_close": 457.5,
+      "next5_return_pct": -12.86,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -12.691,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 525,
+          "zone_hi": 551.25,
+          "mass_pct": 0
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -12.691,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 525,
+          "zone_hi": 551.25,
+          "mass_pct": 0
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -12.691,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 525,
+          "zone_hi": 551.25,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-08-05",
+      "spot": 177,
+      "next5_close": 181.5,
+      "next5_return_pct": 2.54,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 185.85,
+          "zone_hi": 194.7,
+          "mass_pct": 9.24
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 194.7,
+          "zone_hi": 203.55,
+          "mass_pct": 10.3
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 4.31,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 177,
+          "zone_hi": 185.85,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-08-12",
+      "spot": 181.5,
+      "next5_close": 186,
+      "next5_return_pct": 2.48,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.268,
+          "reversal": true,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 181.5,
+          "zone_hi": 190.58,
+          "mass_pct": 8.67
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 199.65,
+          "zone_hi": 208.72,
+          "mass_pct": 13.12
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.268,
+          "reversal": true,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 181.5,
+          "zone_hi": 190.58,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.268,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 193.46,
+          "zone_hi": 202.54,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-08-19",
+      "spot": 186,
+      "next5_close": 185.5,
+      "next5_return_pct": -0.27,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -1.592,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 186,
+          "zone_hi": 195.3,
+          "mass_pct": 16.85
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -1.592,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 195.3,
+          "zone_hi": 204.6,
+          "mass_pct": 11.27
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -1.592,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 186,
+          "zone_hi": 195.3,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -1.592,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 191.85,
+          "zone_hi": 201.15,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-08-26",
+      "spot": 185.5,
+      "next5_close": 180,
+      "next5_return_pct": -2.96,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -6.25,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 185.5,
+          "zone_hi": 194.78,
+          "mass_pct": 20.27
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -6.25,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 185.5,
+          "zone_hi": 194.78,
+          "mass_pct": 12.81
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -6.25,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 185.5,
+          "zone_hi": 194.78,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 197.36,
+          "zone_hi": 206.64,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-09-02",
+      "spot": 180,
+      "next5_close": 184.5,
+      "next5_return_pct": 2.5,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 6.034,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 180,
+          "zone_hi": 189,
+          "mass_pct": 37.79
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 6.034,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 180,
+          "zone_hi": 189,
+          "mass_pct": 17.63
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 6.034,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 180,
+          "zone_hi": 189,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 197.5,
+          "zone_hi": 206.5,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-09-09",
+      "spot": 184.5,
+      "next5_close": 185.5,
+      "next5_return_pct": 0.54,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 184.5,
+          "zone_hi": 193.72,
+          "mass_pct": 20.79
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 184.5,
+          "zone_hi": 193.72,
+          "mass_pct": 16.9
+        },
+        "near": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 184.5,
+          "zone_hi": 193.72,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 197.39,
+          "zone_hi": 206.61,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-09-16",
+      "spot": 185.5,
+      "next5_close": 198,
+      "next5_return_pct": 6.74,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 10.924,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 185.5,
+          "zone_hi": 194.78,
+          "mass_pct": 17.88
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 10.924,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 185.5,
+          "zone_hi": 194.78,
+          "mass_pct": 18.67
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 10.924,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 185.5,
+          "zone_hi": 194.78,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 197.36,
+          "zone_hi": 206.64,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-09-23",
+      "spot": 198,
+      "next5_close": 230.5,
+      "next5_return_pct": 16.41,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.547,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 207.9,
+          "zone_hi": 217.8,
+          "mass_pct": 2.14
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.547,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 207.9,
+          "zone_hi": 217.8,
+          "mass_pct": 10.44
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.547,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 198,
+          "zone_hi": 207.9,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.547,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 198,
+          "zone_hi": 207.9,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-10-02",
+      "spot": 230.5,
+      "next5_close": 204.5,
+      "next5_return_pct": -11.28,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -7.883,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 230.5,
+          "zone_hi": 242.03,
+          "mass_pct": 0
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -7.883,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 230.5,
+          "zone_hi": 242.03,
+          "mass_pct": 0
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -7.883,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 230.5,
+          "zone_hi": 242.03,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -7.883,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 230.5,
+          "zone_hi": 242.03,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-10-12",
+      "spot": 204.5,
+      "next5_close": 182.5,
+      "next5_return_pct": -10.76,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": -10.976,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 204.5,
+          "zone_hi": 214.73,
+          "mass_pct": 25.49
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": -10.976,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 204.5,
+          "zone_hi": 214.73,
+          "mass_pct": 11.81
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": -10.976,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 204.5,
+          "zone_hi": 214.73,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-10-19",
+      "spot": 182.5,
+      "next5_close": 178.5,
+      "next5_return_pct": -2.19,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.557,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 182.5,
+          "zone_hi": 191.63,
+          "mass_pct": 18.33
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.557,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 182.5,
+          "zone_hi": 191.63,
+          "mass_pct": 29.47
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.557,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 182.5,
+          "zone_hi": 191.63,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "3042",
+      "as_of": "2026-10-28",
+      "spot": 178.5,
+      "next5_close": 144.5,
+      "next5_return_pct": -19.05,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -16.954,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 178.5,
+          "zone_hi": 187.43,
+          "mass_pct": 19.43
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -16.954,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 178.5,
+          "zone_hi": 187.43,
+          "mass_pct": 30.69
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -16.954,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 178.5,
+          "zone_hi": 187.43,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-08-05",
+      "spot": 86.5,
+      "next5_close": 92.2,
+      "next5_return_pct": 6.59,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 6.099,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 86.5,
+          "zone_hi": 90.83,
+          "mass_pct": 9.21
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 95.15,
+          "zone_hi": 99.47,
+          "mass_pct": 10.79
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 6.099,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 86.5,
+          "zone_hi": 90.83,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-08-12",
+      "spot": 92.2,
+      "next5_close": 87.3,
+      "next5_return_pct": -5.31,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -6.028,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 92.2,
+          "zone_hi": 96.81,
+          "mass_pct": 27.55
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 101.42,
+          "zone_hi": 106.03,
+          "mass_pct": 23.22
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -6.028,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 92.2,
+          "zone_hi": 96.81,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-08-19",
+      "spot": 87.3,
+      "next5_close": 91.1,
+      "next5_return_pct": 4.35,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 91.67,
+          "zone_hi": 96.03,
+          "mass_pct": 41.49
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 91.67,
+          "zone_hi": 96.03,
+          "mass_pct": 19.83
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 3.641,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 87.3,
+          "zone_hi": 91.67,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-08-26",
+      "spot": 91.1,
+      "next5_close": 90.2,
+      "next5_return_pct": -0.99,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.111,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 91.1,
+          "zone_hi": 95.66,
+          "mass_pct": 32.69
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 100.21,
+          "zone_hi": 104.76,
+          "mass_pct": 18.97
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.111,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 91.1,
+          "zone_hi": 95.66,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 97.12,
+          "zone_hi": 101.68,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-09-02",
+      "spot": 90.2,
+      "next5_close": 91.5,
+      "next5_return_pct": 1.44,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 2.694,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 90.2,
+          "zone_hi": 94.71,
+          "mass_pct": 35.21
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 2.694,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 90.2,
+          "zone_hi": 94.71,
+          "mass_pct": 15.77
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 2.694,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": false,
+          "zone_lo": 90.2,
+          "zone_hi": 94.71,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 97.15,
+          "zone_hi": 101.66,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-09-09",
+      "spot": 91.5,
+      "next5_close": 87.1,
+      "next5_return_pct": -4.81,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -4.18,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 91.5,
+          "zone_hi": 96.08,
+          "mass_pct": 41.21
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -4.18,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 91.5,
+          "zone_hi": 96.08,
+          "mass_pct": 21.31
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -4.18,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 91.5,
+          "zone_hi": 96.08,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 96.21,
+          "zone_hi": 100.79,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-09-16",
+      "spot": 87.1,
+      "next5_close": 107,
+      "next5_return_pct": 22.85,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": 13.83,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 91.45,
+          "zone_hi": 95.81,
+          "mass_pct": 37.53
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": 13.83,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 91.45,
+          "zone_hi": 95.81,
+          "mass_pct": 22.05
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 23.414,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 87.1,
+          "zone_hi": 91.45,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 2,
+          "subsequent_five_return_pct": 13.83,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 94.12,
+          "zone_hi": 98.48,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-09-23",
+      "spot": 107,
+      "next5_close": 127,
+      "next5_return_pct": 18.69,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.393,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 107,
+          "zone_hi": 112.35,
+          "mass_pct": 15.87
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.393,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 112.35,
+          "zone_hi": 117.7,
+          "mass_pct": 10.19
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.393,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 107,
+          "zone_hi": 112.35,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 13.393,
+          "reversal": false,
+          "close_below_zone": false,
+          "closed_above_zone": true,
+          "zone_lo": 113.33,
+          "zone_hi": 118.67,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-10-02",
+      "spot": 127,
+      "next5_close": 123,
+      "next5_return_pct": -3.15,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.806,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 127,
+          "zone_hi": 133.35,
+          "mass_pct": 0
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.806,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 127,
+          "zone_hi": 133.35,
+          "mass_pct": 0
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -0.806,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 127,
+          "zone_hi": 133.35,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-10-12",
+      "spot": 123,
+      "next5_close": 102.5,
+      "next5_return_pct": -16.67,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 123,
+          "zone_hi": 129.15,
+          "mass_pct": 33.13
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 123,
+          "zone_hi": 129.15,
+          "mass_pct": 10.18
+        },
+        "near": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 123,
+          "zone_hi": 129.15,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 129.93,
+          "zone_hi": 136.08,
+          "mass_pct": null
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-10-19",
+      "spot": 102.5,
+      "next5_close": 100.5,
+      "next5_return_pct": -1.95,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 1.413,
+          "reversal": false,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 102.5,
+          "zone_hi": 107.63,
+          "mass_pct": 14.22
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 107.63,
+          "zone_hi": 112.75,
+          "mass_pct": 11.55
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": 1.413,
+          "reversal": false,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 102.5,
+          "zone_hi": 107.63,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    },
+    {
+      "stock": "8150",
+      "as_of": "2026-10-28",
+      "spot": 100.5,
+      "next5_close": 84.1,
+      "next5_return_pct": -16.32,
+      "models": {
+        "dynamic": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 105.53,
+          "zone_hi": 110.55,
+          "mass_pct": 12.76
+        },
+        "raw_volume": {
+          "valid": true,
+          "contact": false,
+          "contact_day": null,
+          "subsequent_five_return_pct": null,
+          "reversal": null,
+          "close_below_zone": null,
+          "closed_above_zone": null,
+          "zone_lo": 110.55,
+          "zone_hi": 115.57,
+          "mass_pct": 10.22
+        },
+        "near": {
+          "valid": true,
+          "contact": true,
+          "contact_day": 1,
+          "subsequent_five_return_pct": -13.477,
+          "reversal": true,
+          "close_below_zone": true,
+          "closed_above_zone": false,
+          "zone_lo": 100.5,
+          "zone_hi": 105.53,
+          "mass_pct": null
+        },
+        "prior_high": {
+          "valid": false
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "anchors": 36,
+    "baseline_next5_decline": 18,
+    "by_model": {
+      "dynamic": {
+        "eligible": 36,
+        "touch": 28,
+        "touch_rate_pct": 77.8,
+        "subsequent_declines": 16,
+        "decline_rate_pct": 57.1,
+        "end_close_below_zone": 16,
+        "end_close_above_zone": 8,
+        "mean_after_touch_return_pct": -0.04
+      },
+      "raw_volume": {
+        "eligible": 36,
+        "touch": 23,
+        "touch_rate_pct": 63.9,
+        "subsequent_declines": 13,
+        "decline_rate_pct": 56.5,
+        "end_close_below_zone": 13,
+        "end_close_above_zone": 7,
+        "mean_after_touch_return_pct": -0.23
+      },
+      "near": {
+        "eligible": 36,
+        "touch": 34,
+        "touch_rate_pct": 94.4,
+        "subsequent_declines": 17,
+        "decline_rate_pct": 50,
+        "end_close_below_zone": 17,
+        "end_close_above_zone": 8,
+        "mean_after_touch_return_pct": 0.43
+      },
+      "prior_high": {
+        "eligible": 20,
+        "touch": 10,
+        "touch_rate_pct": 50,
+        "subsequent_declines": 5,
+        "decline_rate_pct": 50,
+        "end_close_below_zone": 4,
+        "end_close_above_zone": 4,
+        "mean_after_touch_return_pct": 3.44
+      }
+    },
+    "notes": [
+      "Weekly non-overlapping anchor windows; individual stock returns still cross-correlated",
+      "No contemporaneous 2026-08 to 2026-10 TDCC feature because snapshot backfilled on 2026-10-29",
+      "Fugle 2026-11-05 closing bar appended as independent research observation only",
+      "No backfill into official three-leg Canonical EOD / no selection authority",
+      "The high and low of a day don't give the order of prices or executed trades; contact is OHLC only"
+    ]
+  }
+}
