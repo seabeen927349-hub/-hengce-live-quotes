@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "module": "BOTTOM_DISCRIMINATION_RESEARCH_V1",
+  "research_date": "2026-11-05",
+  "canonical_mother_sha256": "0245cef58e99e84effdc3d4af6d3a61f21e86ad0d5f69e05a6b6f251875ceaab",
+  "price_data_asof": "2026-11-04",
+  "original_rows": 1027719,
+  "study_rows": 899281,
+  "events": 39115,
+  "source": "HENGCE_CANONICAL/HENGCE_2026_HIST_MOTHER.csv",
+  "definition": {
+    "horizon_sessions": 20,
+    "TRUE": "first +12% high before -8% low",
+    "FAKE": "first -8% low before +12% high",
+    "INCONCLUSIVE": "neither"
+  },
+  "status": "REJECTED_MODEL_UNSTABLE",
+  "live_recommendation_authority": false,
+  "capital_authority": false,
+  "q017_retirement_preserved": true,
+  "model_is_active": false,
+  "validated_auc": {
+    "test_2024": 0.5208,
+    "test_2025": 0.6712,
+    "diagnostic_2026": 0.3816
+  },
+  "model_health_gate": {
+    "recent_calendar_days": 130,
+    "min_resolved": 100,
+    "min_unique_event_dates": 20,
+    "auc_min": 0.55,
+    "threshold_posthoc": true,
+    "passes_independent_out_of_sample": false
+  },
+  "health_gate_on_8150_20261021": {
+    "date": "2026-10-21",
+    "auc_on_matured_prior_only": 0.3991,
+    "decision": "ABSTAIN_MODEL_UNRELIABLE"
+  },
+  "forward_research_requirements": [
+    "Adjusted corporate action safe historical prices",
+    "Point-in-time as-of index membership and completeness",
+    "A new untouched independent evaluation period",
+    "Rolling historical label-maturation-aware performance gate",
+    "Execution-ready order/position/cost/drawdown evaluation",
+    "Predefined recall/false-bottom precision thresholds on independent samples"
+  ],
+  "disclaimer": "A labelled event classifier is NOT a model proven to call true bottoms; 2026 validation failed."
+}
