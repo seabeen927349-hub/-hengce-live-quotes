@@ -1,0 +1,932 @@
+{
+  "description": "HENGCE phase13 raw TWSE 2018 Jan-Feb reranking; frozen protocol unchanged",
+  "source_paths": [
+    "research/phase13_twse_archive_pilot/2018_01_days_01_08.csv",
+    "research/phase13_twse_archive_pilot/2018_01_days_09_16.csv",
+    "research/phase13_twse_archive_pilot/2018_01_days_17_22.csv",
+    "research/phase13_twse_archive_pilot/2018_02_days_01_07.csv",
+    "research/phase13_twse_archive_pilot/2018_02_days_08_13.csv"
+  ],
+  "scope_notes": "A day with an exchange quote is not a certified PIT common-share membership roster; four-digit codes except name ending -DR; excludes some special instruments by code length but other corporate categories might remain",
+  "formula": "20-day raw close momentum, 21 positive closes, last 9 daily turnover >/= 2 million, 9 day average >=20 million TWD; descending mom20 then ascending ticker; no later returns used",
+  "summary": {
+    "dates_loaded": 35,
+    "dates_reranked": 15,
+    "days_changed": 15,
+    "old_overlap_mean": 2.8666666666666667,
+    "days_top1_nonlegacy": 7,
+    "unique_nonlegacy_top5": [
+      "1526",
+      "2033",
+      "2731",
+      "3557",
+      "8454",
+      "9958"
+    ],
+    "min_eligible": 399,
+    "max_eligible": 432
+  },
+  "records": [
+    {
+      "date": "2018-01-30",
+      "eligible": 425,
+      "old_top5": "6215;3532;2376;3035;3661",
+      "official_scope_top5": "9958;6215;3532;2376;3035",
+      "official_scope_6_10": "3661;2399;3443;6591;1526",
+      "old_overlap": 4,
+      "top10": [
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.70386
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.42822
+        },
+        {
+          "ticker": "3532",
+          "name": "台勝科",
+          "mom20": 0.42395
+        },
+        {
+          "ticker": "2376",
+          "name": "技嘉",
+          "mom20": 0.4053
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.39267
+        },
+        {
+          "ticker": "3661",
+          "name": "世芯-KY",
+          "mom20": 0.3521
+        },
+        {
+          "ticker": "2399",
+          "name": "映泰",
+          "mom20": 0.32319
+        },
+        {
+          "ticker": "3443",
+          "name": "創意",
+          "mom20": 0.31758
+        },
+        {
+          "ticker": "6591",
+          "name": "動力-KY",
+          "mom20": 0.31395
+        },
+        {
+          "ticker": "1526",
+          "name": "日馳",
+          "mom20": 0.29624
+        }
+      ]
+    },
+    {
+      "date": "2018-01-31",
+      "eligible": 420,
+      "old_top5": "3035;2399;6215;3443;2388",
+      "official_scope_top5": "9958;3035;2399;6215;1526",
+      "official_scope_6_10": "3443;2731;2388;2376;3532",
+      "old_overlap": 3,
+      "top10": [
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.70508
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.35655
+        },
+        {
+          "ticker": "2399",
+          "name": "映泰",
+          "mom20": 0.35338
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.35096
+        },
+        {
+          "ticker": "1526",
+          "name": "日馳",
+          "mom20": 0.32948
+        },
+        {
+          "ticker": "3443",
+          "name": "創意",
+          "mom20": 0.32657
+        },
+        {
+          "ticker": "2731",
+          "name": "雄獅",
+          "mom20": 0.32353
+        },
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.31776
+        },
+        {
+          "ticker": "2376",
+          "name": "技嘉",
+          "mom20": 0.31465
+        },
+        {
+          "ticker": "3532",
+          "name": "台勝科",
+          "mom20": 0.30049
+        }
+      ]
+    },
+    {
+      "date": "2018-02-01",
+      "eligible": 413,
+      "old_top5": "6215;2425;3532;3035;2477",
+      "official_scope_top5": "9958;6215;2425;2731;3532",
+      "official_scope_6_10": "3035;2477;2388;2208;2399",
+      "old_overlap": 3,
+      "top10": [
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.70515
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.34856
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.32459
+        },
+        {
+          "ticker": "2731",
+          "name": "雄獅",
+          "mom20": 0.31068
+        },
+        {
+          "ticker": "3532",
+          "name": "台勝科",
+          "mom20": 0.31
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.30486
+        },
+        {
+          "ticker": "2477",
+          "name": "美隆電",
+          "mom20": 0.27972
+        },
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.27189
+        },
+        {
+          "ticker": "2208",
+          "name": "台船",
+          "mom20": 0.26957
+        },
+        {
+          "ticker": "2399",
+          "name": "映泰",
+          "mom20": 0.26786
+        }
+      ]
+    },
+    {
+      "date": "2018-02-02",
+      "eligible": 403,
+      "old_top5": "2425;3035;6215;2376;2388",
+      "official_scope_top5": "9958;2425;3035;6215;2376",
+      "official_scope_6_10": "2388;2038;2399;8454;3037",
+      "old_overlap": 4,
+      "top10": [
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.70598
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.39869
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.33504
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.29657
+        },
+        {
+          "ticker": "2376",
+          "name": "技嘉",
+          "mom20": 0.27835
+        },
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.26168
+        },
+        {
+          "ticker": "2038",
+          "name": "海光",
+          "mom20": 0.25553
+        },
+        {
+          "ticker": "2399",
+          "name": "映泰",
+          "mom20": 0.24014
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.23991
+        },
+        {
+          "ticker": "3037",
+          "name": "欣興",
+          "mom20": 0.23669
+        }
+      ]
+    },
+    {
+      "date": "2018-02-05",
+      "eligible": 399,
+      "old_top5": "2425;6215;2399;3035;3504",
+      "official_scope_top5": "9958;2033;3557;2425;6215",
+      "official_scope_6_10": "2038;2399;8454;3035;3504",
+      "old_overlap": 2,
+      "top10": [
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.70588
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.4466
+        },
+        {
+          "ticker": "3557",
+          "name": "嘉威",
+          "mom20": 0.4375
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.42384
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.40657
+        },
+        {
+          "ticker": "2038",
+          "name": "海光",
+          "mom20": 0.29548
+        },
+        {
+          "ticker": "2399",
+          "name": "映泰",
+          "mom20": 0.24908
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.23884
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.23333
+        },
+        {
+          "ticker": "3504",
+          "name": "揚明光",
+          "mom20": 0.2332
+        }
+      ]
+    },
+    {
+      "date": "2018-02-06",
+      "eligible": 423,
+      "old_top5": "2425;6215;3030;3035;4976",
+      "official_scope_top5": "2033;3557;9958;2425;6215",
+      "official_scope_6_10": "8454;3030;2038;3035;1516",
+      "old_overlap": 2,
+      "top10": [
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.4469
+        },
+        {
+          "ticker": "3557",
+          "name": "嘉威",
+          "mom20": 0.39844
+        },
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.39572
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.36877
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.29412
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.20805
+        },
+        {
+          "ticker": "3030",
+          "name": "德律",
+          "mom20": 0.20674
+        },
+        {
+          "ticker": "2038",
+          "name": "海光",
+          "mom20": 0.2
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.1681
+        },
+        {
+          "ticker": "1516",
+          "name": "川飛",
+          "mom20": 0.13988
+        }
+      ]
+    },
+    {
+      "date": "2018-02-07",
+      "eligible": 427,
+      "old_top5": "2425;6215;3035;3030;2388",
+      "official_scope_top5": "2033;2425;3557;6215;3035",
+      "official_scope_6_10": "3030;8454;2388;2038;4976",
+      "old_overlap": 3,
+      "top10": [
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.44758
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.39333
+        },
+        {
+          "ticker": "3557",
+          "name": "嘉威",
+          "mom20": 0.38281
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.36434
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.3375
+        },
+        {
+          "ticker": "3030",
+          "name": "德律",
+          "mom20": 0.26835
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.23385
+        },
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.22685
+        },
+        {
+          "ticker": "2038",
+          "name": "海光",
+          "mom20": 0.22271
+        },
+        {
+          "ticker": "4976",
+          "name": "佳凌",
+          "mom20": 0.20228
+        }
+      ]
+    },
+    {
+      "date": "2018-02-08",
+      "eligible": 427,
+      "old_top5": "2425;2388;6215;3035;3030",
+      "official_scope_top5": "2425;2388;6215;3035;3557",
+      "official_scope_6_10": "8454;3030;2033;2231;4976",
+      "old_overlap": 4,
+      "top10": [
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.45
+        },
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.37915
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.3225
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.26325
+        },
+        {
+          "ticker": "3557",
+          "name": "嘉威",
+          "mom20": 0.25954
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.25397
+        },
+        {
+          "ticker": "3030",
+          "name": "德律",
+          "mom20": 0.24076
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.23162
+        },
+        {
+          "ticker": "2231",
+          "name": "為升",
+          "mom20": 0.20504
+        },
+        {
+          "ticker": "4976",
+          "name": "佳凌",
+          "mom20": 0.20455
+        }
+      ]
+    },
+    {
+      "date": "2018-02-09",
+      "eligible": 430,
+      "old_top5": "2388;2425;3030;3035;6215",
+      "official_scope_top5": "2388;2425;8454;3030;3557",
+      "official_scope_6_10": "2033;3035;2231;6215;9958",
+      "old_overlap": 3,
+      "top10": [
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.50235
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.45
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.26292
+        },
+        {
+          "ticker": "3030",
+          "name": "德律",
+          "mom20": 0.22631
+        },
+        {
+          "ticker": "3557",
+          "name": "嘉威",
+          "mom20": 0.20392
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.19424
+        },
+        {
+          "ticker": "3035",
+          "name": "智原",
+          "mom20": 0.19231
+        },
+        {
+          "ticker": "2231",
+          "name": "為升",
+          "mom20": 0.1823
+        },
+        {
+          "ticker": "6215",
+          "name": "和椿",
+          "mom20": 0.16818
+        },
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.15971
+        }
+      ]
+    },
+    {
+      "date": "2018-02-12",
+      "eligible": 424,
+      "old_top5": "2388;2425;3030;3257;3504",
+      "official_scope_top5": "2388;9958;2425;2033;3557",
+      "official_scope_6_10": "8454;3030;3257;2231;3504",
+      "old_overlap": 2,
+      "top10": [
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.66825
+        },
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.4161
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.39667
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.38783
+        },
+        {
+          "ticker": "3557",
+          "name": "嘉威",
+          "mom20": 0.27652
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.27273
+        },
+        {
+          "ticker": "3030",
+          "name": "德律",
+          "mom20": 0.15281
+        },
+        {
+          "ticker": "3257",
+          "name": "虹冠電",
+          "mom20": 0.1332
+        },
+        {
+          "ticker": "2231",
+          "name": "為升",
+          "mom20": 0.13287
+        },
+        {
+          "ticker": "3504",
+          "name": "揚明光",
+          "mom20": 0.11512
+        }
+      ]
+    },
+    {
+      "date": "2018-02-21",
+      "eligible": 426,
+      "old_top5": "2388;2425;3504;2376;3532",
+      "official_scope_top5": "2388;9958;2425;3557;2033",
+      "official_scope_6_10": "8454;9935;3504;2376;3532",
+      "old_overlap": 2,
+      "top10": [
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.83412
+        },
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.72727
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.52824
+        },
+        {
+          "ticker": "3557",
+          "name": "嘉威",
+          "mom20": 0.3806
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.37743
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.27533
+        },
+        {
+          "ticker": "9935",
+          "name": "慶豐富",
+          "mom20": 0.20416
+        },
+        {
+          "ticker": "3504",
+          "name": "揚明光",
+          "mom20": 0.2024
+        },
+        {
+          "ticker": "2376",
+          "name": "技嘉",
+          "mom20": 0.17619
+        },
+        {
+          "ticker": "3532",
+          "name": "台勝科",
+          "mom20": 0.17316
+        }
+      ]
+    },
+    {
+      "date": "2018-02-22",
+      "eligible": 428,
+      "old_top5": "2388;2425;3030;3661;3504",
+      "official_scope_top5": "2388;9958;2425;3557;2033",
+      "official_scope_6_10": "3030;8454;3661;3504;4560",
+      "old_overlap": 2,
+      "top10": [
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.92523
+        },
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.83871
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.5287
+        },
+        {
+          "ticker": "3557",
+          "name": "嘉威",
+          "mom20": 0.37313
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.3626
+        },
+        {
+          "ticker": "3030",
+          "name": "德律",
+          "mom20": 0.26739
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.25
+        },
+        {
+          "ticker": "3661",
+          "name": "世芯-KY",
+          "mom20": 0.23045
+        },
+        {
+          "ticker": "3504",
+          "name": "揚明光",
+          "mom20": 0.18887
+        },
+        {
+          "ticker": "4560",
+          "name": "強信-KY",
+          "mom20": 0.1834
+        }
+      ]
+    },
+    {
+      "date": "2018-02-23",
+      "eligible": 429,
+      "old_top5": "2434;2388;2425;2399;3030",
+      "official_scope_top5": "2434;2388;2425;9958;2033",
+      "official_scope_6_10": "8454;2399;3030;2038;4560",
+      "old_overlap": 3,
+      "top10": [
+        {
+          "ticker": "2434",
+          "name": "統懋",
+          "mom20": 0.95604
+        },
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.75117
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.52747
+        },
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.50667
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.37692
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.2743
+        },
+        {
+          "ticker": "2399",
+          "name": "映泰",
+          "mom20": 0.24497
+        },
+        {
+          "ticker": "3030",
+          "name": "德律",
+          "mom20": 0.2306
+        },
+        {
+          "ticker": "2038",
+          "name": "海光",
+          "mom20": 0.22124
+        },
+        {
+          "ticker": "4560",
+          "name": "強信-KY",
+          "mom20": 0.20388
+        }
+      ]
+    },
+    {
+      "date": "2018-02-26",
+      "eligible": 432,
+      "old_top5": "2434;2388;2425;2399;2465",
+      "official_scope_top5": "2434;2388;2425;9958;2033",
+      "official_scope_6_10": "8454;2399;2465;1439;3030",
+      "old_overlap": 3,
+      "top10": [
+        {
+          "ticker": "2434",
+          "name": "統懋",
+          "mom20": 1.16022
+        },
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.86321
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.63369
+        },
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.57124
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.38846
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.33333
+        },
+        {
+          "ticker": "2399",
+          "name": "映泰",
+          "mom20": 0.29114
+        },
+        {
+          "ticker": "2465",
+          "name": "麗臺",
+          "mom20": 0.27991
+        },
+        {
+          "ticker": "1439",
+          "name": "雋揚",
+          "mom20": 0.27696
+        },
+        {
+          "ticker": "3030",
+          "name": "德律",
+          "mom20": 0.2291
+        }
+      ]
+    },
+    {
+      "date": "2018-02-27",
+      "eligible": 403,
+      "old_top5": "2434;2388;2425;3030;2465",
+      "official_scope_top5": "2434;2388;2425;9958;2033",
+      "official_scope_6_10": "8454;2038;4560;9935;4426",
+      "old_overlap": 3,
+      "top10": [
+        {
+          "ticker": "2434",
+          "name": "統懋",
+          "mom20": 1.1041
+        },
+        {
+          "ticker": "2388",
+          "name": "威盛",
+          "mom20": 0.87678
+        },
+        {
+          "ticker": "2425",
+          "name": "承啟",
+          "mom20": 0.80593
+        },
+        {
+          "ticker": "9958",
+          "name": "世紀鋼",
+          "mom20": 0.58428
+        },
+        {
+          "ticker": "2033",
+          "name": "佳大",
+          "mom20": 0.48374
+        },
+        {
+          "ticker": "8454",
+          "name": "富邦媒",
+          "mom20": 0.30435
+        },
+        {
+          "ticker": "2038",
+          "name": "海光",
+          "mom20": 0.23684
+        },
+        {
+          "ticker": "4560",
+          "name": "強信-KY",
+          "mom20": 0.2286
+        },
+        {
+          "ticker": "9935",
+          "name": "慶豐富",
+          "mom20": 0.2081
+        },
+        {
+          "ticker": "4426",
+          "name": "利勤",
+          "mom20": 0.20569
+        }
+      ]
+    }
+  ],
+  "governance": "RESEARCH_ONLY; NO_VALIDATED_SELECTION_EDGE; NO_MODEL_PROMOTION; NO_TRADING_AUTHORITY"
+}
