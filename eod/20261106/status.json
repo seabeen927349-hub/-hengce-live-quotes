@@ -18,7 +18,7 @@
   "broker_hhi_trading_authority_created": false,
   "broker_order_execution": false,
   "data_vessel_governance": "ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR",
-  "downstream_ready": false,
+  "downstream_ready": true,
   "error_legs": [],
   "formal_complete_day": true,
   "institutional_date": "2026-11-06",
@@ -70,15 +70,10 @@
   "market_state_finmind_twse_snapshot_presence_ratio": 0.9990817263544536,
   "market_state_finmind_twse_snapshot_present_count": 1088,
   "model_authority_created": false,
-  "mother_pending_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ],
-  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
-  "mother_promotion_required": true,
+  "mother_pending_legs": [],
+  "mother_promotion_required": false,
   "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
-  "mother_status": "PENDING",
+  "mother_status": "COMPLETE",
   "parallel_eod_tree": false,
   "parallel_universe": false,
   "pending_legs": [],
@@ -93,5 +88,13 @@
   "system": "HENGCE",
   "target_date": "2026-11-06",
   "three_leg_complete": true,
-  "updated_at_taipei": "2026-11-06T23:18:03.924497+08:00"
+  "updated_at_taipei": "2026-11-06T23:18:03.924497+08:00",
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "eb725b3163829a5365c4f68af0c920db92b753b8efbd8b054b8d022328707ee0",
+  "mother_latest_date": "2026-11-06",
+  "mother_promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ]
 }
