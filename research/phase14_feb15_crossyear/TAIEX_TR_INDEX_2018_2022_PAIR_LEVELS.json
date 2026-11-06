@@ -1,0 +1,75 @@
+{
+  "source": "TWSE MI_INDEX type ALLBUT0999 original daily response, 發行量加權股價報酬指數",
+  "levels": [
+    {
+      "date": "20180222",
+      "totalreturn_index_level": 18268.19,
+      "price_index_level": 10662.38,
+      "official_stat_ok": true,
+      "textlen": 145041
+    },
+    {
+      "date": "20180323",
+      "totalreturn_index_level": 18543.95,
+      "price_index_level": 10823.33,
+      "official_stat_ok": true,
+      "textlen": 146383
+    },
+    {
+      "date": "20190218",
+      "totalreturn_index_level": 18100.07,
+      "price_index_level": 10145.28,
+      "official_stat_ok": true,
+      "textlen": 150870
+    },
+    {
+      "date": "20190320",
+      "totalreturn_index_level": 18824.92,
+      "price_index_level": 10551.56,
+      "official_stat_ok": true,
+      "textlen": 151464
+    },
+    {
+      "date": "20200218",
+      "totalreturn_index_level": 21724.09,
+      "price_index_level": 11648.98,
+      "official_stat_ok": true,
+      "textlen": 155239
+    },
+    {
+      "date": "20200318",
+      "totalreturn_index_level": 17192.79,
+      "price_index_level": 9218.67,
+      "official_stat_ok": true,
+      "textlen": 156271
+    },
+    {
+      "date": "20210218",
+      "totalreturn_index_level": 31707.86,
+      "price_index_level": 16424.51,
+      "official_stat_ok": true,
+      "textlen": 160483
+    },
+    {
+      "date": "20210319",
+      "totalreturn_index_level": 31064.96,
+      "price_index_level": 16070.24,
+      "official_stat_ok": true,
+      "textlen": 161149
+    },
+    {
+      "date": "20220216",
+      "totalreturn_index_level": 36166.21,
+      "price_index_level": 18231.47,
+      "official_stat_ok": true,
+      "textlen": 166669
+    },
+    {
+      "date": "20220317",
+      "totalreturn_index_level": 34667.35,
+      "price_index_level": 17448.22,
+      "official_stat_ok": true,
+      "textlen": 167916
+    }
+  ]
+}
