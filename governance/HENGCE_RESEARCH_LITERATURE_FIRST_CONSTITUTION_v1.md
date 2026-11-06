@@ -201,3 +201,8 @@ This gate is frozen as a global HENGCE principle. Weakening or bypassing it requ
 - no silent override by model code, research notes, branch instructions, or automated agents.
 
 Absent those conditions, unknown or missing literature-gate state is **BLOCKED**.
+
+
+## 12. Mandatory execution checklist and persistent handoff (2026-11-06 addendum)
+
+The mandatory operating checklist is [HENGCE_LITERATURE_FIRST_EXECUTION_SOP_20261106.md](HENGCE_LITERATURE_FIRST_EXECUTION_SOP_20261106.md). For every new research topic or continued round, consult domain experts' *published primary methods and counterevidence first*, before devising any new strategy hypothesis or empirical test. Record reading depth honestly and compare Taiwan-market applicability. If a methodological point is not understood, consult independent professional sources, record the open question, and hold the relevant test; do not improvise a factor or backfit a threshold. Follow the fail-closed master-corpus and topic literature gates above, then preregister before new candidate testing. Keep clear lineage, negatives, limitations, and a cross-chat handoff; study failures are not production authorization. This addendum strengthens existing gates and may not weaken sections 1–11.
