@@ -30,3 +30,6 @@ Nonpersistent W-L K6 Table5B RAW −0.429, FF5 −0.436; K12 persistent W-L RAW 
 
 ## Decision
 No new indicators, entry rule, ranking, score or performance test. Continue original governance: MOM20 Top5, S5, Escape, RMS and existing vessel unchanged, active trading authorization NONE. Next read p1 and PDF images, verify conflicts and complete multi-source counterevidence + master literature gate before preregistration.
+
+## 2026-11-06 temporary ScienceDirect PDF link check
+User supplied a signed ScienceDirect asset link for article S0927538X23000094; authorization query indicates 2026-11-06T12:32:35Z with expiry 300 s (= 20:37:35 Asia/Taipei). At 20:41 Asia/Taipei this was already expired; direct web PDF retrieval failed. Do **not** commit the signed query string or claim that the original PDF images were accessed. The user-supplied full article text (pages 2–24) remains available for method analysis; original PDF page 1, visible typesetting and inconsistent table labels/signs await verification from a newly downloaded PDF uploaded as a file.
