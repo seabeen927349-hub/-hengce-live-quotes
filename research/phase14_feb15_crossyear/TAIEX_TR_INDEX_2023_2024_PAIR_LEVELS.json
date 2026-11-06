@@ -1,0 +1,33 @@
+{
+  "source": "TWSE MI_INDEX type ALLBUT0999 original daily response, 發行量加權股價報酬指數",
+  "levels": [
+    {
+      "date": "20230216",
+      "totalreturn_index_level": 32326.3,
+      "price_index_level": 15550.5,
+      "official_stat_ok": true,
+      "textlen": 170756
+    },
+    {
+      "date": "20230320",
+      "totalreturn_index_level": 32114.54,
+      "price_index_level": 15419.97,
+      "official_stat_ok": true,
+      "textlen": 171759
+    },
+    {
+      "date": "20240216",
+      "totalreturn_index_level": 40127.51,
+      "price_index_level": 18607.25,
+      "official_stat_ok": true,
+      "textlen": 180984
+    },
+    {
+      "date": "20240318",
+      "totalreturn_index_level": 42935.74,
+      "price_index_level": 19879.85,
+      "official_stat_ok": true,
+      "textlen": 182047
+    }
+  ]
+}
