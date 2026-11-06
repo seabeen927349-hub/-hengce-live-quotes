@@ -1,3 +1,5 @@
+> **UPDATE / SUPERSEDED READING STATUS (2026-11-06):** The original 24-page publisher PDF has now been uploaded by the user and fully inspected. Its SHA256 is `b281bcfc2bfb672c9273c215d6e6458d797f55621b72974d2bf21d852c208e92`. The prior "PDF not obtained" blocker below is a HISTORICAL record and **is resolved**. Read [Phase35 original PDF verified audit](HENGCE_PHASE35_TAIWAN_2023_ORIGINAL_PDF_VERIFIED_20261106.md) for current authority. **The broader Taiwan master literature gate / faithful replication / new-model permission remain BLOCKED; no trading authorization.**
+
 # 衡策 HENGCE — 2023 Taiwan Persistency FULL-TEXT READING GATE
 **Date:** 2026-11-06 (Taipei)  
 **Decision:** BLOCKED — `LITERATURE_REVIEW_ONLY`  
