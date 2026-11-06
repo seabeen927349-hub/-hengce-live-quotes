@@ -2,7 +2,7 @@
   "active_covered_count": 1088,
   "active_required_count": 1088,
   "active_universe_transport_full_coverage": true,
-  "context_payload_sha256": "803a508338fbd801cf3bf48ad7422be11249843366f383ec078d26d54614a2bd",
+  "context_payload_sha256": "6c19d9ec5d2721e8e7c0dd5de885041a5b2fe8f8d0a605bd1ef82d56042c0aeb",
   "current_market_date_count": 1085,
   "current_market_date_observed": true,
   "current_market_date_ratio": 0.99724265,
@@ -27,7 +27,7 @@
   "formal_eod_authority": false,
   "formal_escape_authority": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-06T15:45:54.822644+08:00",
+  "generated_at_taipei": "2026-11-06T20:45:43.881258+08:00",
   "healthy_transport": true,
   "intraday_metric_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
   "latest_source_timestamp": "2026-11-06 14:30:00.000000",
@@ -70,10 +70,10 @@
       "sessionLatestTime": "-1",
       "sessionStr": "UserSession",
       "showChart": "False",
-      "stockInfo": "1482",
-      "stockInfoItem": "6725",
+      "stockInfo": "2266",
+      "stockInfoItem": "69617",
       "sysDate": "20261106",
-      "sysTime": "15:45:59"
+      "sysTime": "20:45:47"
     },
     "target_match_count": 2
   },

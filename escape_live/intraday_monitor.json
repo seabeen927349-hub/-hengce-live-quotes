@@ -12,7 +12,7 @@
   "formal_escape_authority": false,
   "formal_escape_level": null,
   "formal_escape_state": "UNRESOLVED_INTRADAY_SHADOW",
-  "generated_at_taipei": "2026-11-06T15:45:54.822644+08:00",
+  "generated_at_taipei": "2026-11-06T20:45:43.881258+08:00",
   "industry": {
     "01": {
       "advance_count": 0,
@@ -589,7 +589,7 @@
   "monitor_phase": "INTRADAY_PRICE_LIQUIDITY_OBSERVATION",
   "monitor_state": "LIVE_CONTEXT_READY",
   "monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
-  "payload_sha256": "58678a192a1d0e3765c140c1caeff8fbd9798df7b3eaf269be45b8e72a6462c2",
+  "payload_sha256": "496d05ed4a589a69a2dd3b2ed997507bc6e9f70b7d2bf8ae5177bc24fcb4012c",
   "quality": {
     "healthy_transport": true,
     "per_security_rows_persisted": false,
