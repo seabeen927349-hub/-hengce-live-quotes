@@ -33,6 +33,10 @@ NONTRADING_2026 = frozenset({
     "2026-02-27", "2026-04-03", "2026-04-06", "2026-05-01",
     "2026-06-19", "2026-09-25", "2026-09-28", "2026-10-09",
     "2026-10-26", "2026-12-25",
+    # Emergency full-market closures due to typhoons; confirmed by CNA.
+    # https://www.cna.com.tw/news/afe/202607090360.aspx
+    # https://www.cna.com.tw/news/afe/202610220388.aspx
+    "2026-07-10", "2026-10-23",
 })
 FIELDS = ("date", "stock_id", "securities_trader_id", "buy_volume", "sell_volume")
 SCHEMA = "HENGCE_MS1470_HISTORICAL_RESEARCH_BACKFILL_V1"
