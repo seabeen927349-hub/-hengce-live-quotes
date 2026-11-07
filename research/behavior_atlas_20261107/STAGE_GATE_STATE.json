@@ -4,12 +4,12 @@
   "protocol_path": "research/behavior_atlas_20261107/PROTOCOL_LOCK_V1.md",
   "state_date": "2026-11-07",
   "scope": "2018–2026 TWSE four-leg human aggregate behavior research",
-  "current_focus": "G4",
+  "current_focus": "G7",
   "current_permissions": [
-    "ONE_LOCKED_2023_2024_BEHAVIORAL_REPLICATION",
-    "NO_FORWARD_PRICE_OR_RETURN_TARGET"
+    "READ_ONLY_RESEARCH_REPRODUCTION",
+    "LITERATURE_AND_SOURCE_AUDIT_ONLY"
   ],
-  "research_phase": "HISTORICAL_REPLICATION_ONLY",
+  "research_phase": "CLOSED_DESCRIPTIVE_ONLY",
   "model_authority": false,
   "trading_authority": false,
   "master_corpus_p1": "PROVISIONALLY_SATURATED_ALL_AT_2026_11_02",
@@ -211,7 +211,7 @@
     {
       "id": "G4",
       "title": "跨年跨股穩定性驗證",
-      "status": "NOT_STARTED",
+      "status": "PASS",
       "blocking_gates": [
         "G3"
       ],
@@ -223,12 +223,31 @@
       "pass_rule": "predeclared reproducibility thresholds and multiplicity control passed; year/industry/stock robustness",
       "stop_rule": "any failure => FAIL_STOP; only demonstrated code/data bug can be fixed, never retune",
       "retunes_after_validation": 0,
-      "validation_runs": 0
+      "validation_runs": 1,
+      "pass_scope": "RETROSPECTIVE_SAME_PERIOD_BEHAVIORAL_COVARIATION_ONLY",
+      "provenance": "A1 frozen source; only time window 2023–2024 changed, without return-target inspection",
+      "replication_observations": {
+        "weeks": 26,
+        "stock_week_episodes": 23504,
+        "mean_rho": 0.3490026721008969,
+        "year_2023_rho": 0.3538739049474814,
+        "year_2024_rho": 0.3441314392543126,
+        "annual_both_pass_threshold_0p05": true,
+        "permutation_p": 0.002,
+        "bonferroni_upper": 0.012,
+        "flagged_identity_sensitivity_rho": 0.349345267445887
+      },
+      "evidence_files": [
+        "11_REPLICATION_SCORECARD.csv",
+        "12_STRUCTURAL_BREAK_AND_FAILURE_REPORT.md",
+        "A1_G4_REPLICATION_RECEIPT.json"
+      ],
+      "mechanistic_explanation_unverified": true
     },
     {
       "id": "G5",
       "title": "事前群體行為預測驗證",
-      "status": "NOT_STARTED",
+      "status": "FAIL_STOP",
       "blocking_gates": [
         "G4"
       ],
@@ -240,7 +259,13 @@
       "pass_rule": "outperform frozen simple baselines after PIT gate, including false alarms, lag, calibration",
       "stop_rule": "no baseline improvement=>DESCRIPTIVE_ONLY terminal",
       "retunes_after_validation": 0,
-      "prediction_runs": 0
+      "prediction_runs": 0,
+      "no_prediction_experiment_performed": true,
+      "stop_reason": "NO_CERTIFIED_2018_TO_2025_TDCC_FIRST_PUBLICATION_TIMESTAMPS; DESCRIPTIVE_REPLICATION_DOES_NOT_AUTHORIZE_PREDICTION_OR_TRADING",
+      "fail_stop_is_data_authority_not_negative_predictive_result": true,
+      "evidence_files": [
+        "13_FORWARD_BEHAVIOR_PREDICTION_REPORT.md"
+      ]
     },
     {
       "id": "G6",
@@ -257,14 +282,15 @@
       ],
       "pass_rule": "corporate actions, dividends, delisting, cost, matched risk, drawdown, coherent cash accounting; prospective still required",
       "stop_rule": "data unavailable=>ECONOMIC_VALIDATION_BLOCKED; no edge=>NO_MONETIZABLE_EDGE",
-      "economic_validation_runs": 0
+      "economic_validation_runs": 0,
+      "no_return_tests_performed": true
     },
     {
       "id": "G7",
       "title": "前瞻驗證（合格路線）／研究結案（所有路線）",
-      "status": "NOT_STARTED",
+      "status": "PASS",
       "blocking_gates": [],
-      "allowed_now": false,
+      "allowed_now": true,
       "deliverables": [
         "19_FINAL_HENGCE_BEHAVIOR_ATLAS_REPORT.md",
         "20_CLOSURE_AND_HANDOFF.md"
@@ -279,7 +305,9 @@
       ],
       "conditional_deliverables_only_if_prospective": [
         "18_PROSPECTIVE_APPEND_ONLY_LEDGER.jsonl"
-      ]
+      ],
+      "closure_reason": "DESCRIPTIVE_ONLY_A1_STABLE_CONTEMPORANEOUS_TDCC_FOREIGN_ASSOCIATION; INDEPENDENT_BEHAVIOR_NOT_PROVEN; PREDICTIVE_PIT_UNAVAILABLE",
+      "terminal": true
     }
   ],
   "final_outcomes": [
@@ -373,9 +401,16 @@
       "from": "G3_NOT_STARTED",
       "to": "G3_PASS_G4_ACTIVE",
       "reason": "A1 2018-22 63 anchors 45712 stock-week episodes, mean rho 0.35162, 5/5 years same sign, 499 perm p=0.002, 6-test Bonferroni upper 0.012; 5 other recipes deliberately NOT_EXECUTED; no forward returns."
+    },
+    {
+      "date": "2026-11-07",
+      "event": "G4_PASS_G5_FAIL_STOP_G7_CLOSURE",
+      "from": "G4_REPLICATION_ONLY",
+      "to": "CLOSED_DESCRIPTIVE_ONLY",
+      "reason": "G4 2023 and 2024 positive and above G2 threshold; G5 blocked before any prediction by uncertified historical TDCC release times; G6 untouched; no retunes, 5 optional discovery recipes unexecuted."
     }
   ],
-  "terminal_outcome": null,
+  "terminal_outcome": "DESCRIPTIVE_ONLY",
   "last_completed_action": "G0 prior evidence review round 1; G1 source data scan round 1",
   "no_new_model_created": true,
   "expenses_used": {
