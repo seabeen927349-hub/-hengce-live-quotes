@@ -1,0 +1,52 @@
+{
+  "schema": "HENGCE_HISTORICAL_RECOVERY_RESEARCH_CANDIDATE_V1",
+  "canonical_mutated": false,
+  "model_or_trade_authority": false,
+  "years": {
+    "2018": {
+      "trade_days": 245,
+      "rows": {
+        "price": 225533,
+        "institutional": 200799,
+        "margin": 220846
+      },
+      "official_source_receipt": "manifest.json"
+    },
+    "2019": {
+      "trade_days": 242,
+      "rows": {
+        "price": 226715,
+        "institutional": 202065,
+        "margin": 222986
+      },
+      "official_source_receipt": "manifest.json"
+    },
+    "2020": {
+      "trade_days": 245,
+      "rows": {
+        "price": 231961,
+        "institutional": 220469,
+        "margin": 229390
+      },
+      "official_source_receipt": "manifest.json"
+    },
+    "2021": {
+      "trade_days": 244,
+      "rows": {
+        "price": 232956,
+        "institutional": 224644,
+        "margin": 230349
+      },
+      "official_source_receipt": "manifest.json"
+    },
+    "2022": {
+      "trade_days": 246,
+      "rows": {
+        "price": 237941,
+        "institutional": 229721,
+        "margin": 234233
+      },
+      "official_source_receipt": "manifest.json"
+    }
+  }
+}
