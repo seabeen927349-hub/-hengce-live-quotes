@@ -100,7 +100,7 @@ def fetch(url,timeout=28):
             with urllib.request.urlopen(req,timeout=timeout) as res:
                 final=res.geturl()
                 require(final.startswith("https://") and
-                        (final.split("/")[2] in ("indexes.nasdaq.com","cdn.cboe.com")),"UNTRUSTED_VENDOR_REDIRECT_HOST:"+final.split("/")[2][:120])
+                        (final.split("/")[2] in ("indexes.nasdaq.com","cdn.cboe.com","cdn-api.cboe.com")),"UNTRUSTED_VENDOR_REDIRECT_HOST:"+final.split("/")[2][:120])
                 data=res.read(5_000_001)
                 require(len(data)>100 and len(data)<=5_000_000,"VENDOR_RESPONSE_SIZE_INVALID")
                 return data
