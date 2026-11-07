@@ -63,3 +63,17 @@
 5. **實際有效缺值分母**：所有資料QA與研究使用數值有效性，而非空字串有效性；必要時建立只讀清理版，不改原血管。
 
 **G1裁決：** `BLOCKED`（資料結構PASS，但普通股PIT分類、週資料發布時間、公司行動尚未合格）；G1完整QA預算 **已使用1／2輪**；未研究任何新群體模式與未來報酬。G0專題Gate仍BLOCKED，G2–G7（結案除外）不得進入。
+
+
+## 六、已完成G1第一個歷史身分來源測試：FinMind `TaiwanStockInfo`
+
+2026-11-07 GitHub Actions `42371717381`，使用既有 `FINMIND_TOKEN` 查詢（**僅查現有證券身分，沒有做報酬回測**）。
+
+- 來源總列：4,381；其中4碼列3,662、2,556個四碼代碼。
+- 依來源每列標記：twse 2,005、tpex 1,089、emerging 568；相同代碼可在不同時段有不同市場別，共176個代碼曾出現多種市場別。
+- 以每個代碼紀錄日期最晚者取「現有最新市場別」：twse 1,229、tpex 933、emerging 394；**不是歷史逐週的名單**。
+- 例：1258「其祥-KY」來源標為 `tpex`、1240「茂生農經」標為 `tpex`、9103「美德醫療-DR」來源分類為 `存託憑證`。佐證「四碼 ≠ TWSE普通股」。
+- `date` 為來源的型別／名錄更新日期；**不能當成歷史上市／退市事件、持有人可觀察日期或完整過往股票名單**。此公開總覽不能修復所有曾下市或2018年以前市場別時間序列。
+- 官方文件：https://finmind.github.io/tutor/TaiwanMarket/Technical/ ；執行紀錄：https://github.com/seabeen927349-hub/-hengce-live-quotes/actions/runs/42371717381 ；驗證包 Library `/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/HENGCE_BEHAVIOR_G1_FINMIND_MARKET_TYPE_PROBE_20261107.zip`。
+
+**結論**：`PASS_METADATA_CAPABILITY_ONLY`；G1 PIT 普通股／退市全史仍 `BLOCKED`。此項缺口的兩種來源嘗試預算已使用 **1／2**；下次只能核對TWSE歷史日證券類別／上市異動來源，不得再追加第3套不受控的分類代理。
