@@ -1,0 +1,53 @@
+{
+  "schema": "HENGCE_BEHAVIOR_ATLAS_G4_A1_REPLICATION_V1",
+  "status": "PASS_REPLICATION_DESCRIPTIVE_ONLY",
+  "pre_registered_experiment": "A1",
+  "scope": "2023-2024 HISTORICAL REPLICATION ONLY",
+  "no_forward_returns_computed": true,
+  "future_price_targets_read": false,
+  "point_in_time_predictive_authority": false,
+  "source_daily_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+  "source_weekly_scope_sha256": "0d708990cafdc679a7f92ab0ca49363acbde93bf64490e446a81c2ffdb414cb6",
+  "statistics": {
+    "week_anchors": 26,
+    "stock_week_episodes": 23504,
+    "equal_weight_anchor_mean_spearman": 0.3490026721008969,
+    "anchor_median_spearman": 0.3637604146656358,
+    "week_anchor_bootstrap_95pct": [
+      0.3298371909002138,
+      0.3656991828037854
+    ],
+    "within_week_ticker_shuffle_permutations": 499,
+    "two_sided_empirical_p": 0.002,
+    "conservative_six_test_bonferroni_p_upper": 0.012,
+    "same_sign_years_out_of_two": 2,
+    "all_replication_years": {
+      "2023": {
+        "anchors": 13,
+        "total_stockepisodes": 11231,
+        "mean_rho": 0.3538739049474814,
+        "median_rho": 0.36910828305969623
+      },
+      "2024": {
+        "anchors": 13,
+        "total_stockepisodes": 12273,
+        "mean_rho": 0.3441314392543126,
+        "median_rho": 0.3562737021609567
+      }
+    },
+    "exclude_flagged_current_roster_identity_conflict_mean_rho": 0.349345267445887,
+    "total_flagged_identity_rows_in_experiments": 15,
+    "pre_registered_replication_qualifies": true,
+    "positive_2023_at_least_0p05": true,
+    "positive_2024_at_least_0p05": true,
+    "G4_replication_trials_used": 1,
+    "G4_replication_trials_max": 1
+  },
+  "cautions": [
+    "Association not individual psychology and not causal",
+    "Correlation is not holding-to-return alpha",
+    "2023-2024 historical replication executed once, no new model or feature selected",
+    "Historical TDCC first-release time not known",
+    "Even replicated contemporaneous association does not establish independent groups, psychology or future returns"
+  ]
+}
