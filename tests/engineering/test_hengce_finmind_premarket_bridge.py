@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Governed FinMind to premarket bridge regression tests."""
 import copy
+import datetime as dt
 import sys
+from zoneinfo import ZoneInfo
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
 from hengce_finmind_premarket_bridge import build, METRIC_SHA
+from hengce_overseas_sox_vix_premarket_v1 import build as produce_us, canonical as official_digest, vendor_url
 
 class FinMindBridgeTests(unittest.TestCase):
     def setUp(self):
@@ -72,6 +75,30 @@ class FinMindBridgeTests(unittest.TestCase):
         self.assertEqual(build(*args)["finmind"]["data_role"],"CURRENT_INTRADAY_OBSERVATION")
         self.stat["latest_source_timestamp"]="2026-11-09 08:40:00"
         with self.assertRaises(ValueError):build(*args)
+    def vendor_packet(self):
+        t=dt.date(2026,11,6);p=dt.date(2026,11,5)
+        return produce_us(dt.datetime(2026,11,9,8,10,tzinfo=ZoneInfo("Asia/Taipei")),
+            "2026-11-06",{p:9011.14,t:9390.25},{p:28.18,t:25.64},
+            b"PK-SYNTHETIC-SOX-DIGEST-NOT-REAL"+b"A"*150,b"CBOE-SYNTHETIC-VIX-DIGEST-NOT-REAL"+b"B"*150,
+            vendor_url(dt.date(2026,11,9)))
+    def test_official_producer_packet_promotes_only_today(self):
+        x=self.preopen(self.vendor_packet())
+        d=x["two_time_scale_display"]
+        self.assertEqual(x["premarket_forecast"]["status"],"VERIFIED_GOVERNED_OVERSEAS_SOX_VIX")
+        self.assertEqual(d["today_market_environment"]["label"],"強烈偏多")
+        self.assertEqual(d["long_term_capital_environment"]["label"],"資料不足")
+        self.assertEqual(x["governance"]["trading_authority"],"NONE")
+    def test_overseas_tamper_sha_rejected(self):
+        p=self.vendor_packet();p["sources"]["sox"]["latest_close"]=10000
+        with self.assertRaisesRegex(ValueError,"receipt hash mismatch"):self.preopen(p)
+    def test_fabricated_model_grade_rejected(self):
+        p=self.vendor_packet();p["direction_forecast"]["grade"]=1
+        p["packet_sha256"]=official_digest({k:v for k,v in p.items() if k!="packet_sha256"})
+        with self.assertRaisesRegex(ValueError,"coefficients or grade"):self.preopen(p)
+    def test_future_receipt_time_rejected(self):
+        p=self.vendor_packet();p["generated_at_taipei"]="2026-11-09T08:59:00+08:00"
+        p["packet_sha256"]=official_digest({k:v for k,v in p.items() if k!="packet_sha256"})
+        with self.assertRaisesRegex(ValueError,"outside current preopen PIT"):self.preopen(p)
     def test_inputs_immutable(self):
         old=copy.deepcopy([self.ctx,self.stat,self.monitor])
         self.preopen()

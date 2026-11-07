@@ -1,0 +1,104 @@
+name: HENGCE Governed SOX VIX Premarket EOD
+
+"on":
+  pull_request:
+    paths:
+      - 'scripts/hengce_overseas_sox_vix_premarket_v1.py'
+      - 'scripts/hengce_finmind_premarket_bridge.py'
+      - 'tests/engineering/test_hengce_overseas_sox_vix_premarket.py'
+      - 'tests/engineering/test_hengce_finmind_premarket_bridge.py'
+      - '.github/workflows/hengce-overseas-sox-vix-premarket.yml'
+      - '.github/workflows/hengce-finmind-premarket-shadow-bridge.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'probe = official-source download without publication; run = preopen governed publish'
+        type: choice
+        default: probe
+        options:
+          - probe
+          - run
+  schedule:
+    - cron: '10,30 0 * * 1-5'  # 08:10 and 08:30 Asia/Taipei; second is retry
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-overseas-premarket-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  overseas-eod:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - name: Checkout trusted source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install vendor XLSX reader
+        run: python -m pip install 'openpyxl>=3.1,<4'
+      - name: Regression, parser and PIT tests
+        run: |
+          python -m py_compile scripts/hengce_overseas_sox_vix_premarket_v1.py scripts/hengce_finmind_premarket_bridge.py
+          python -m unittest discover -s tests/engineering -p 'test_hengce_overseas_sox_vix_premarket.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_premarket_bridge.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_two_time_scale_environment_display.py' -v
+      - name: Verify both actual official vendor download endpoints
+        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'probe')
+        run: |
+          python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode probe
+      - name: Produce current preopen vendor-verified packet
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'run')
+        run: |
+          python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode run --out /tmp/hengce_sox_vix_premarket.json
+      - name: Publish overseas shadow with exact lease
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'run'))
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -s /tmp/hengce_sox_vix_premarket.json ]; then
+            echo 'BLOCKED: no valid overseas packet to publish'
+            exit 2
+          fi
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('/tmp/hengce_sox_vix_premarket.json')
+          obj=json.loads(p.read_text(encoding='utf-8'))
+          assert obj['status']=='PASS_VERIFIED_VENDOR_EOD'
+          target=obj['target_tw_date'].replace('-','')
+          rec=obj['packet_sha256'][:16]
+          out=Path('overseas_premarket/latest.json')
+          out.parent.mkdir(parents=True,exist_ok=True)
+          out.write_bytes(p.read_bytes())
+          hist=Path('overseas_premarket/history')/f'{target}_{rec}.json'
+          hist.parent.mkdir(parents=True,exist_ok=True)
+          if hist.exists():
+              assert hist.read_bytes()==p.read_bytes(), 'IMMUTABLE_OVERSEAS_RECEIPT_CONFLICT'
+          else:
+              hist.write_bytes(p.read_bytes())
+          Path('/tmp/hengce_overseas_history_path').write_text(str(hist))
+          PY
+          git config user.name 'hengce-overseas-eod-bot'
+          git config user.email 'hengce-overseas-eod-bot@users.noreply.github.com'
+          git add overseas_premarket/latest.json "$(cat /tmp/hengce_overseas_history_path)"
+          if git diff --cached --quiet; then
+            echo 'Identical packet: no publication'
+            exit 0
+          fi
+          git commit -m 'data(shadow): governed SOX/VIX official-source EOD preopen packet'
+          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
+      - name: Save guarded publisher receipts
+        if: always() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-sox-vix-source-publication
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore
+          retention-days: 10

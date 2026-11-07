@@ -75,6 +75,17 @@ jobs:
               "--expected-finmind-session",source_date.isoformat(),
               "--asof-taipei",now.isoformat(),
               "--out","/tmp/hengce_finmind_premarket_shadow.json"]
+          if preopen:
+              overseas=Path("overseas_premarket/latest.json")
+              if overseas.exists():
+                  try:
+                      packet=json.loads(overseas.read_text(encoding="utf-8"))
+                      if packet.get("target_tw_date")==today.isoformat() and packet.get("reference_prev_tw_date")==source_date.isoformat():
+                          args.extend(["--premarket",str(overseas)])
+                      else:
+                          print("NO_PREMARKET_SOURCE: stale or incorrect session; leaving today's market environment as 資料不足")
+                  except (ValueError,OSError) as exc:
+                      print("NO_PREMARKET_SOURCE: malformed overseas packet",type(exc).__name__)
           completed=subprocess.run(args,capture_output=True,text=True)
           print(completed.stdout)
           if completed.returncode:
