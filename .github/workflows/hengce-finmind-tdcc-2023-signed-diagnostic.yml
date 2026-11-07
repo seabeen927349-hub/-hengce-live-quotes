@@ -1,0 +1,32 @@
+name: HENGCE FinMind 2023 Signed-Tier Diagnostic
+
+"on":
+  push:
+    branches:
+      - research/tdcc-finmind-historical-backfill-20261107
+    paths:
+      - .github/workflows/hengce-finmind-tdcc-2023-signed-diagnostic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  signed-tier-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/hengce_finmind_tdcc_2023_negative_diagnostic.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hengce-finmind-2023-04-21-signed-tier-metadata
+          path: /tmp/hengce-finmind-2023-anomaly/receipt.json
+          retention-days: 1
+          if-no-files-found: error
