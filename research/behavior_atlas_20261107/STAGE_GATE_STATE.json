@@ -32,7 +32,13 @@
     "post_validation_retunes": 0,
     "literature_supplementary_rounds": 2,
     "data_fix_attempts_per_gap": 2,
-    "indefinite_auto_restart": false
+    "indefinite_auto_restart": false,
+    "data_audit_rounds": 2,
+    "replication_primary_run": 1,
+    "behavior_prediction_primary_run": 1,
+    "economic_validation_primary_run": 1,
+    "preregistration_approval_versions": 1,
+    "no_unbounded_stage_extensions": true
   },
   "status_vocabulary": [
     "NOT_STARTED",
