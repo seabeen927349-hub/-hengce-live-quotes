@@ -1,0 +1,29 @@
+name: HENGCE Behavior Atlas G1 Official TWSE Identity Historical Delisting Probe
+"on":
+  push:
+    branches: [research/behavior-atlas-protocol-lock-20261107]
+    paths: [.github/workflows/hengce-behavior-g1-twse-official-identity.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-source-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read official TWSE company listing and delisted records
+        run: |
+          python -m py_compile research/behavior_atlas_20261107/g1_twse_official_identity_probe.py
+          python research/behavior_atlas_20261107/g1_twse_official_identity_probe.py
+      - name: Retain official metadata evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-behavior-g1-official-twse-identity
+          path: /tmp/hengce_g1_official_security_identity/
+          retention-days: 7
+          if-no-files-found: error
