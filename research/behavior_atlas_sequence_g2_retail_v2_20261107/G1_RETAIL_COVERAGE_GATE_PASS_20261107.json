@@ -1,0 +1,138 @@
+{
+  "schema": "HENGCE_HBA_G1_RETAIL_457_WEEK_SOURCE_AUDIT_PASS_V1",
+  "date": "2026-11-07",
+  "pass_status": "PASS_SCOPED_RETROSPECTIVE_BEHAVIOR_ONLY",
+  "authorization": [
+    "G3_RETROSPECTIVE_6_FIXED_PRE_REGISTERED_SEQUENCE_RECIPES"
+  ],
+  "prohibited": [
+    "HISTORICAL_TDCC_PRE_RELEASE_TRADING_CLAIM",
+    "G5_PREDICTION",
+    "G6_RETURN_BACKTEST",
+    "INTERPRET_TIER_COUNTS_AS_UNIQUE_NATURAL_PERSON_ID",
+    "N2_RESTART"
+  ],
+  "original_blocker_preserved": "G1_RETAIL_COVERAGE_GATE.json is immutable historical BLOCKED snapshot; this PASS receipt supersedes only the source-grade coverage status.",
+  "source_ledger_folder": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/RETAIL_HEADCOUNTS_V2/",
+  "evidence": {
+    "original_G1_scoped_candidate_stockweeks": 443341,
+    "original_G1_weeks": 457,
+    "full_15_grade_original_people_matches": 443341,
+    "valid_account_holder_grade_stockweeks": 443207,
+    "invalid_local_grade_stockweeks": 134,
+    "unmatched_stockweeks": 0,
+    "invalid_percentage": 0.030222,
+    "matched_rate": 1,
+    "eligible_retail_rate": 0.9996977495877891,
+    "raw_finmind_archive_weeks": 404,
+    "raw_official_2025_tail_2026_weeks": 53,
+    "official_shards": [
+      {
+        "shard": "2025A",
+        "weeks": 5,
+        "stockweeks": 14445,
+        "valid": 14445
+      },
+      {
+        "shard": "2025B",
+        "weeks": 4,
+        "stockweeks": 11593,
+        "valid": 11593
+      },
+      {
+        "shard": "2026A",
+        "weeks": 5,
+        "stockweeks": 14557,
+        "valid": 14557
+      },
+      {
+        "shard": "2026B",
+        "weeks": 5,
+        "stockweeks": 14601,
+        "valid": 14601
+      },
+      {
+        "shard": "2026C",
+        "weeks": 6,
+        "stockweeks": 17538,
+        "valid": 17538
+      },
+      {
+        "shard": "2026D",
+        "weeks": 28,
+        "stockweeks": 82797,
+        "valid": 82797
+      }
+    ],
+    "years": {
+      "2018": {
+        "scope": 47537,
+        "valid": 47537,
+        "invalid": 0
+      },
+      "2019": {
+        "scope": 47454,
+        "valid": 47454,
+        "invalid": 0
+      },
+      "2020": {
+        "scope": 49789,
+        "valid": 49784,
+        "invalid": 5
+      },
+      "2021": {
+        "scope": 46864,
+        "valid": 46735,
+        "invalid": 129
+      },
+      "2022": {
+        "scope": 48621,
+        "valid": 48621,
+        "invalid": 0
+      },
+      "2023": {
+        "scope": 49869,
+        "valid": 49869,
+        "invalid": 0
+      },
+      "2024": {
+        "scope": 52636,
+        "valid": 52636,
+        "invalid": 0
+      },
+      "2025": {
+        "scope": 53263,
+        "valid": 53263,
+        "invalid": 0
+      },
+      "2026": {
+        "scope": 47308,
+        "valid": 47308,
+        "invalid": 0
+      }
+    },
+    "aggregate_source_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
+    "source_G1_candidate_sha256": "0d708990cafdc679a7f92ab0ca49363acbde93bf64490e446a81c2ffdb414cb6",
+    "original_3leg_daily_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+    "original_tdcc_weekly_internal_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
+    "raw_full_audit_json": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/RETAIL_HEADCOUNTS_V2/G1_RETAIL_457_WEEK_FINAL_AUDIT.json",
+    "enriched_weekly_panel": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/RETAIL_HEADCOUNTS_V2/HENGCE_G1_TDCC_RETAIL_457_WEEK_MATCHED_PANEL_2018_2026.csv.gz",
+    "per_week_coverage": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/RETAIL_HEADCOUNTS_V2/G1_RETAIL_457_WEEK_PER_WEEK_COVERAGE.csv",
+    "raw_html_parser_issue": "Before fixing HTML total-row check, a 2025B shard reported 11338 artificial MISSING_TOTAL errors. Label-based parsing corrected 2025B to 11593/11593 valid. Both GitHub Actions runs retained as audit history.",
+    "corrected_raw_official_ci_run": "https://github.com/seabeen927349-hub/-hengce-live-quotes/actions/runs/42386667773"
+  },
+  "definition": {
+    "small_holder_under_or_equal_10_lots": "Sum of original `people` from holdings grades 1–3, shares 1–10000",
+    "small_holder_10_to_50_lots": "Sum of original `people` from grades 4–8, shares 10001–50000",
+    "oddlot_holder_people": "grade 1, supplementary observation",
+    "number_is": "number of security holdings accounts in each size bucket by individual ticker and week, not deduplicated natural persons",
+    "full_grade_validation": "15 people grades for each stock-week, nonnegative counts, sum equals published reported total people, every source tied to historical raw snapshot SHA",
+    "invalid_134_is_null": "Local missing only, not entire market blocker"
+  },
+  "method_gate": "Original 6 G2 experiments S4A S4B S12A S12B S24A S24B unchanged; 24 fixed comparisons and 999 max-stat permutations per recipe. 24w underpowered confirmation.",
+  "study_scope_limitation": "G1 is not historical publication-PIT or full legal historical ordinary-stock-classification certificate. Confirmed permission ONLY retrospective historical behavioral description.",
+  "outcome_inspection_before_pass": false,
+  "G3_experiments_performed_before_pass": 0,
+  "research_model_authority": false,
+  "trading_authority": false
+}
