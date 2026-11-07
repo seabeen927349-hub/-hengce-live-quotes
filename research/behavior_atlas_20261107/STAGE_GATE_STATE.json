@@ -194,12 +194,16 @@
     }
   ],
   "final_outcomes": [
-    "BEHAVIOR_LAW_REPRODUCED",
-    "DESCRIPTIVE_ONLY",
+    "LITERATURE_NOT_READY",
     "DATA_OR_PIT_BLOCKED",
+    "NO_REPRODUCIBLE_PATTERN_CANDIDATE",
     "NO_STABLE_BEHAVIOR_LAW",
+    "DESCRIPTIVE_ONLY",
     "NO_PREDICTIVE_BEHAVIOR_EDGE",
-    "NO_MONETIZABLE_EDGE"
+    "ECONOMIC_VALIDATION_BLOCKED",
+    "NO_MONETIZABLE_EDGE",
+    "BEHAVIOR_LAW_REPRODUCED",
+    "PROSPECTIVE_PENDING"
   ],
   "state_update_contract": "append evidence + check source hash + preserve negative results; do not change PASS without exact evidence; do not start blocked future stage",
   "no_new_hypothesis_model_or_returns_pre_gate": true,
