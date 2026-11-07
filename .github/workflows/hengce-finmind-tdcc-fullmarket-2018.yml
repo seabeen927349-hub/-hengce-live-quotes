@@ -1,0 +1,44 @@
+name: HENGCE TDCC FinMind Full-Market 2018 Research Archive
+
+"on":
+  push:
+    branches:
+      - research/tdcc-finmind-historical-backfill-20261107
+    paths:
+      - .github/workflows/hengce-finmind-tdcc-fullmarket-2018.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-finmind-tdcc-fullmarket-year-2018
+  cancel-in-progress: false
+
+jobs:
+  backfill-2018:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile research-only reader
+        run: python -m py_compile scripts/hengce_finmind_tdcc_historical_backfill.py scripts/hengce_finmind_tdcc_marketwide_year.py
+      - name: Archive all 2018 FinMind TDCC weekly snapshots
+        run: |
+          set -euo pipefail
+          python scripts/hengce_finmind_tdcc_marketwide_year.py \
+            --year 2018 \
+            --out /tmp/hengce-tdcc-finmind-2018
+      - name: Retain short-lived research artifact for transfer to private Library
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2018
+          path: /tmp/hengce-tdcc-finmind-2018/
+          if-no-files-found: error
+          retention-days: 1
