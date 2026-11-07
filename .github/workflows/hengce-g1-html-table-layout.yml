@@ -1,0 +1,17 @@
+name: HENGCE G1 raw TDCC HTML grade layout test
+"on":
+  push:
+    branches: [research/behavior-atlas-sequence-g2-retail-v2-20261107]
+    paths: [.github/workflows/hengce-g1-html-table-layout.yml]
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  validate-html:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install beautifulsoup4 lxml
+      - run: python research/behavior_atlas_sequence_g2_retail_v2_20261107/g1_raw_html_table_structure_check.py
