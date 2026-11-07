@@ -4,13 +4,12 @@
   "protocol_path": "research/behavior_atlas_20261107/PROTOCOL_LOCK_V1.md",
   "state_date": "2026-11-07",
   "scope": "2018–2026 TWSE four-leg human aggregate behavior research",
-  "current_focus": "G1",
+  "current_focus": "G2",
   "current_permissions": [
-    "NON_OUTCOME_DATA_QA",
-    "LITERATURE_EVIDENCE_REFERENCE",
-    "G1_DATA_SCOPE_VALIDATION"
+    "PRE_REGISTER_BEHAVIORAL_DESCRIPTIVE_STUDY_ONLY",
+    "DATA_REFERENCE_NO_TARGET_RETURNS"
   ],
-  "research_phase": "DATA_AUDIT_ONLY",
+  "research_phase": "PREREGISTRATION_ONLY",
   "model_authority": false,
   "trading_authority": false,
   "master_corpus_p1": "PROVISIONALLY_SATURATED_ALL_AT_2026_11_02",
@@ -74,7 +73,7 @@
     {
       "id": "G1",
       "title": "四腿資料品質及PIT合法性",
-      "status": "BLOCKED",
+      "status": "PASS",
       "blocking_gates": [],
       "allowed_now": true,
       "deliverables": [
@@ -88,13 +87,16 @@
       "gap_repair_attempts": {
         "historical_identity": 1
       },
-      "qa_rounds_completed": 1,
+      "qa_rounds_completed": 2,
       "evidence_files": [
         "DATA_GOVERNANCE_DECISION.md",
         "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/03_FOUR_LEG_CAPABILITY_AUDIT.json",
-        "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/04_PIT_AND_UNIVERSE_GAPS.csv"
+        "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/04_PIT_AND_UNIVERSE_GAPS.csv",
+        "DATA_GOVERNANCE_DECISION.md",
+        "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/G1_TDCC_TWSE_DESCRIPTIVE_SCOPE_AUDIT_20261107.json",
+        "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/HENGCE_BEHAVIOR_G1_OFFICIAL_TWSE_IDENTITY_20261107.zip"
       ],
-      "blocker": "SYSTEMIC: historical TWSE ordinary-stock identity and TDCC retrospective release availability not certified. NONBLOCKING LOCAL NULLS: TDCC 418 / 1013961 (0.0412%); price 6641 / 2111682 (0.3145%); only affected events quarantined. TDCC 564390 unmatched same-year TWSE ticker-union stockweeks is a universe mismatch, not a data error.",
+      "blocker": null,
       "structural_file_qa": "PASS",
       "predictive_pit": "BLOCKED",
       "metadata_capability": "PASS_FinMind_TaiwanStockInfo_CURRENT_CLASSIFICATION_ONLY",
@@ -106,7 +108,30 @@
       "local_missing_close": 6641,
       "local_missing_not_global_stop": true,
       "identity_mismatch_not_error": true,
-      "protocol_interpretation_note": "research/behavior_atlas_20261107/REQUEST_FOR_PROTOCOL_CHANGE.md"
+      "protocol_interpretation_note": "research/behavior_atlas_20261107/REQUEST_FOR_PROTOCOL_CHANGE.md",
+      "descriptive_research_gate": "PASS_SCOPED_RETROSPECTIVE",
+      "allowed_use": [
+        "RETROSPECTIVE_WEEKLY_BEHAVIOR_DESCRIPTIVE_AFTER_G2",
+        "BASIC_SOURCE_QA",
+        "MULTI_GROUP_DESCRIPTIVE_WITHOUT_RETURNS"
+      ],
+      "forbidden_use": [
+        "PIT_PREDICTION",
+        "EX_ANTE_TRADING",
+        "INFER_HOLDER_PSYCHOLOGY",
+        "USE_CURRENT_LISTING_AS_SURVIVOR_FILTER"
+      ],
+      "sample_scope": {
+        "original_tdcc_stockweeks": 1013961,
+        "matched_prior_last_twse_market_day": 444504,
+        "overt_depositary_receipts_filtered": 848,
+        "invalid_tiers_filtered": 315,
+        "descriptive_candidates": 443341,
+        "official_delisted_ticker_stockweeks_preserved": 9157,
+        "historical_identifier_conflict_flagged": 81,
+        "dated_roster_status": "TWSE_DAILY_OBSERVED_NONDR_CANDIDATE_NOT_LEGALLY_CERTIFIED_ORDINARY"
+      },
+      "legal_stock_classification_complete": false
     },
     {
       "id": "G2",
@@ -292,6 +317,13 @@
       "from": "G0_BLOCKED",
       "to": "G0_PASS_G1_ACTIVE",
       "reason": "Second bounded method review, topic literature gate PASS; no pattern discovery or return tests; G1 still BLOCKED."
+    },
+    {
+      "date": "2026-11-07",
+      "event": "G1_PASS_SCOPED_RETROSPECTIVE",
+      "from": "G1_BLOCKED",
+      "to": "G1_PASS_G2_PRE_REG_ONLY",
+      "reason": "Source-key matched 443341 TWSE-observed non-DR valid TDCC stockweeks; 9157 delisted source rows retained. Official publication PIT unverified; G5+ predictive or alpha not authorized."
     }
   ],
   "terminal_outcome": null,
