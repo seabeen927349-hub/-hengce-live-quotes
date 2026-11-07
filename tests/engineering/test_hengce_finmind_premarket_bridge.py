@@ -38,6 +38,8 @@ class FinMindBridgeTests(unittest.TestCase):
         self.assertEqual(a["finmind"]["data_role"],"PREVIOUS_COMPLETED_TW_SESSION")
         self.assertEqual(a["observed_breadth"]["advancers"],105)
         self.assertEqual(a["premarket_forecast"]["status"],"NO_VERIFIED_OVERSEAS_PACKET")
+        self.assertEqual(a["two_time_scale_display"]["today_market_environment"]["label"],"資料不足")
+        self.assertEqual(a["two_time_scale_display"]["long_term_capital_environment"]["label"],"資料不足")
     def test_coverage_fail_closed(self):
         self.stat["current_market_date_ratio"]=0.95
         with self.assertRaises(ValueError):self.preopen()
@@ -57,6 +59,7 @@ class FinMindBridgeTests(unittest.TestCase):
            "direction_forecast":{"grade":5,"expected_taiex_open_gap_log_pct":0.7},
            "risk_forecast":{"grade":"elevated"}}
         self.assertEqual(self.preopen(p)["premarket_forecast"]["grade"],5)
+        self.assertEqual(self.preopen(p)["two_time_scale_display"]["today_market_environment"]["label"],"資料不足")
         p["reference_prev_tw_date"]="2026-11-05"
         with self.assertRaises(ValueError):self.preopen(p)
     def test_intraday_source_freshness(self):
