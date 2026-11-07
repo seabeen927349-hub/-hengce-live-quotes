@@ -1,0 +1,128 @@
+{
+  "schema": "HENGCE_BEHAVIOR_ATLAS_G2_EXPERIMENT_BUDGET_V1",
+  "locked_date": "2026-11-07",
+  "maximum_methods": 3,
+  "implementations_per_family": 2,
+  "max_primary_discovery_experiments": 6,
+  "experiment_order": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+  ],
+  "experiments": [
+    {
+      "id": "A1",
+      "family": "A",
+      "method": "WITHIN_WEEK_GROUP_SYNCHRONY",
+      "window_weeks": 4,
+      "primary_y": "TDCC_Big400Pct_change_since_global_t_minus4",
+      "primary_x": "ForeignNet_shares_sum_over_same_4_week_period_divided_by_Volume_shares_sum",
+      "secondary": [
+        "Big1000Pct change",
+        "TrustNet",
+        "DealerNet",
+        "MarginBalance"
+      ],
+      "primary_statistic": "equal-weight average of within-anchor-week Spearman correlations; each anchor week reference index multiple of 4 since first TDCC date",
+      "min_effect_abs": 0.08
+    },
+    {
+      "id": "A2",
+      "family": "A",
+      "method": "WITHIN_WEEK_GROUP_SYNCHRONY",
+      "window_weeks": 12,
+      "primary_y": "TDCC_Big400Pct_change_since_global_t_minus12",
+      "primary_x": "ForeignNet_shares_sum_over_same_12_week_period_divided_by_Volume_shares_sum",
+      "secondary": [
+        "Big1000Pct change",
+        "TrustNet",
+        "DealerNet",
+        "MarginBalance"
+      ],
+      "primary_statistic": "equal-weight average of within-anchor-week Spearman correlations; each anchor week reference index multiple of 12 since first TDCC date",
+      "min_effect_abs": 0.08
+    },
+    {
+      "id": "B1",
+      "family": "B",
+      "method": "LEAD_LAG_ASYMMETRY",
+      "window_weeks": 4,
+      "primary_statistic": "Spearman(earlier ForeignNet4w participation, next Big400Pct4w change) minus Spearman(earlier Big400Pct4w change, next ForeignNet4w participation), nonoverlap anchors",
+      "min_effect_abs": 0.08,
+      "secondary": [
+        "TrustNet",
+        "MarginBalance",
+        "Big1000Pct"
+      ],
+      "null": "symmetric no fixed lead-lag"
+    },
+    {
+      "id": "B2",
+      "family": "B",
+      "method": "LEAD_LAG_ASYMMETRY",
+      "window_weeks": 12,
+      "primary_statistic": "Spearman(earlier ForeignNet12w participation, next Big400Pct12w change) minus reverse, nonoverlap anchors",
+      "min_effect_abs": 0.08,
+      "secondary": [
+        "TrustNet",
+        "MarginBalance",
+        "Big1000Pct"
+      ],
+      "null": "symmetric no fixed lead-lag"
+    },
+    {
+      "id": "C1",
+      "family": "C",
+      "method": "PRESET_KMEANS_BEHAVIOR_PATH",
+      "window_weeks": 8,
+      "primary_variables": [
+        "Big400Pct",
+        "Big1000Pct",
+        "ForeignNet/Volume",
+        "TrustNet/Volume",
+        "Margin_MarginBalance"
+      ],
+      "preprocessing": "within-stock first differences for ownership percentages, 1w normalized net flows, 1w financing log1p changes; standardize training-only per variable; skip missing whole episodes; never backfill",
+      "clusters_k": 3,
+      "estimator": "MiniBatchKMeans",
+      "random_seed": 20261107,
+      "primary_statistic": "reproducible cluster composition and transition stability vs within-week ticker-shuffled null; bootstrap ARI >=0.5 and matched episode frequency ratio >=1.3",
+      "no_label_from_future_returns": true
+    },
+    {
+      "id": "C2",
+      "family": "C",
+      "method": "PRESET_KMEANS_BEHAVIOR_PATH",
+      "window_weeks": 26,
+      "primary_variables": [
+        "Big400Pct",
+        "Big1000Pct",
+        "ForeignNet/Volume",
+        "TrustNet/Volume",
+        "Margin_MarginBalance"
+      ],
+      "preprocessing": "same as C1",
+      "clusters_k": 3,
+      "estimator": "MiniBatchKMeans",
+      "random_seed": 20261107,
+      "primary_statistic": "same as C1, 26-week nonoverlapping path; bootstrap ARI >=0.5 and matched episode frequency ratio >=1.3",
+      "no_label_from_future_returns": true
+    }
+  ],
+  "experimental_outcome_access": "BEHAVIOR_ONLY; no future price, forward returns, or trading outcomes",
+  "tested_primary": 0,
+  "random_seed": 20261107,
+  "number_of_permutations": 499,
+  "statistical_familywise_alpha": 0.05,
+  "primary_multiplicity_correction": "Holm Bonferroni across six principal registered primary effects; permutation p minimum ~0.002; no secondary feature promotion",
+  "stop_condition": "No qualified candidate under locked effect size/year agreement/multiplicity requirements after six recipes: stop G3, report NO_REPRODUCIBLE_PATTERN_CANDIDATE; do not create new experiments",
+  "postvalidation_retunes_allowed": 0,
+  "G4_primary_replication_permitted": 1,
+  "G5_primary_behavior_prediction_permitted_if_data_PIT": 1,
+  "G6_primary_economic_validation_permitted_if_all_gates": 1,
+  "correction_policy": "Only verified code/data defects, reproducible and all affected results rerun without changing methods; no performance-driven edits.",
+  "research_model_trade_authority": false
+}
