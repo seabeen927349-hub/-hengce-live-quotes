@@ -1,0 +1,74 @@
+{
+  "schema": "HENGCE_HUMAN_BEHAVIOR_ATLAS_G2_SPLIT_BASELINES_V1",
+  "locked_at_date": "2026-11-07",
+  "authorized_scope": "RETROSPECTIVE_AGGREGATE_TDCC_BEHAVIOR_DESCRIPTION_ONLY",
+  "discovery_window": [
+    "2018-01-01",
+    "2022-12-31"
+  ],
+  "historical_replication_window": [
+    "2023-01-01",
+    "2024-12-31"
+  ],
+  "retrospective_stress_window": [
+    "2025-01-01",
+    "2026-11-06"
+  ],
+  "prospective_start": "2026-11-07",
+  "sample_source": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/G1_TDCC_TWSE_DESCRIPTIVE_ELIGIBLE_2018_2026.csv.gz",
+  "sample_source_sha256": "0d708990cafdc679a7f92ab0ca49363acbde93bf64490e446a81c2ffdb414cb6",
+  "stock_week_rows_source": 443341,
+  "date_alignment": "SnapshotDate is weekly reference date, pair daily observations <= weekly reference only; cannot claim same-date TDCC release.",
+  "episode_unit": "non_overlapping_stock_week_blocks_at_fixed_calendar_anchor_modulo_window",
+  "anchor_week_index_origin": "2018-01-05 (first globally observed TDCC weekly snapshot)",
+  "allow_stocks_delisted_later": true,
+  "never_filter_by_present_day_listing": true,
+  "name_dr_disqualified_in_G1": true,
+  "official_identity_caution_flag_behavior": "retain with warning; primary validation must sensitivity exclude flagged 81 rows; if finding relies on these, not eligible",
+  "missingness": "exclude only incomplete observation window; no zero-fill or daily TDCC ffill",
+  "daily_fields": [
+    "Date",
+    "Ticker",
+    "ForeignNet",
+    "TrustNet",
+    "DealerNet",
+    "Margin_MarginBalance",
+    "Volume",
+    "Close"
+  ],
+  "tdcc_fields": [
+    "SnapshotDate",
+    "Ticker",
+    "Big400Pct",
+    "Big1000Pct",
+    "Big400Holders",
+    "Big400Shares",
+    "Big1000Holders",
+    "Big1000Shares"
+  ],
+  "not_eligible_return_targets": [
+    "future_63_day_return",
+    "future_126_day_return",
+    "future_252_day_return",
+    "trading_label",
+    "forward_price"
+  ],
+  "primary_null": "No statistically and economically nontrivial cross-episode stock-level multi-group behavioral similarity beyond same-week market-wide conditions.",
+  "common_conditions": [
+    "TWSE historical daily-observed stock roster",
+    "same TDCC global calendar anchor",
+    "market calendar week effects",
+    "same-ticker longitudinal continuity where relevant"
+  ],
+  "baseline_0": "no predictable/common group behavior, empirical contemporaneous TDCC and institutional measures unrelated conditional on week",
+  "baseline_1": "within each reference week shuffle TDCC stock identities preserving same-week whole-market distribution, deterministic RNG seed 20261107",
+  "baseline_2": "for lead-lag shuffle synchronized 4/12-week episode blocks by stock while preserving each block internal values and duration",
+  "baseline_3": "simple static group medians and null non-overlap time sequences",
+  "multiple_testing": "Holm Bonferroni across up to 6 primary recipe effects, nominal familywise alpha 0.05; all secondary measures clearly exploratory.",
+  "validation_dependent_data": "year-block reproducibility and stock bootstrap/block permutation as available; raw stockweeks never treated as iid people",
+  "effect_size_min_for_AB": "absolute pooled/median within-week Spearman rho >=0.08 for A; absolute asymmetric lead-lag Spearman difference >=0.08 for B",
+  "discovery_cross_year_sign": "same orientation in >=4 of the 5 discovery calendar years and >=25 eligible stocks per each included week",
+  "G4_replication": "in both 2023 and 2024 separately, pre-registered primary effect preserves discovery orientation; each annual effect magnitude >=0.05; no retuning; descriptive stability only",
+  "G5_prediction_gate": "BLOCKED_PENDING_HISTORICAL_TDCC_PUBLICATION_TIME",
+  "G6_return_gate": "BLOCKED_PENDING_PIT_AND_CORPORATE_ACTIONS"
+}
