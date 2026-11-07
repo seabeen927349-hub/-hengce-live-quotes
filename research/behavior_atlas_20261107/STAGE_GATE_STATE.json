@@ -4,12 +4,13 @@
   "protocol_path": "research/behavior_atlas_20261107/PROTOCOL_LOCK_V1.md",
   "state_date": "2026-11-07",
   "scope": "2018–2026 TWSE four-leg human aggregate behavior research",
-  "current_focus": "G2",
+  "current_focus": "G3",
   "current_permissions": [
-    "PRE_REGISTER_BEHAVIORAL_DESCRIPTIVE_STUDY_ONLY",
-    "DATA_REFERENCE_NO_TARGET_RETURNS"
+    "LOCKED_NON_RETURN_BEHAVIOR_DISCOVERY",
+    "NO_FORWARD_RETURN_INSPECTION",
+    "NO_G5_OR_G6"
   ],
-  "research_phase": "PREREGISTRATION_ONLY",
+  "research_phase": "G3_DESCRIPTIVE_DISCOVERY_ONLY",
   "model_authority": false,
   "trading_authority": false,
   "master_corpus_p1": "PROVISIONALLY_SATURATED_ALL_AT_2026_11_02",
@@ -136,7 +137,7 @@
     {
       "id": "G2",
       "title": "唯一預註冊與樣本/基準/預算凍結",
-      "status": "NOT_STARTED",
+      "status": "PASS",
       "blocking_gates": [
         "G0",
         "G1"
@@ -150,7 +151,22 @@
       ],
       "pass_rule": "complete hypothesis, baselines, splits, unit, variation budget, rejection criteria frozen before target inspection",
       "stop_rule": "no prereg or PIT => BLOCKED",
-      "prereg_sha256": null
+      "prereg_sha256": "9276c55dd9b9504a1bd25bfa1965915aaceee2a95a7a685bfe5e81511893a178",
+      "preregistered_research_scope": "RETROSPECTIVE_DESCRIPTIVE_ONLY",
+      "locked_document_sha256": {
+        "protocol": "9276c55dd9b9504a1bd25bfa1965915aaceee2a95a7a685bfe5e81511893a178",
+        "split_baselines": "dd84dc86be6b80ddd3b86abc1097f911c549be85e592fffe01a5d3f7f84af2d3",
+        "experiments": "06a8bdf568ee4a6c28b889ae5fabb880f7619e220e31779136161de3593e2c71",
+        "source_hash_lock": "58c0be10848595c2a6ad3dd5447978b1ef9d3ff4da56aebd1d0eac41a55d2219"
+      },
+      "evidence_files": [
+        "05_PREREGISTRATION_LOCK.md",
+        "06_SPLIT_AND_BASELINES.json",
+        "07_EXPERIMENT_BUDGET.json",
+        "SOURCE_HASH_LOCK.json"
+      ],
+      "research_questions_unchanged": true,
+      "no_future_returns": true
     },
     {
       "id": "G3",
@@ -159,7 +175,7 @@
       "blocking_gates": [
         "G2"
       ],
-      "allowed_now": false,
+      "allowed_now": true,
       "deliverables": [
         "08_DISCOVERY_ALL_PATTERNS.csv",
         "09_DISCOVERY_NULLS_AND_COUNTEREXAMPLES.csv",
@@ -324,6 +340,13 @@
       "from": "G1_BLOCKED",
       "to": "G1_PASS_G2_PRE_REG_ONLY",
       "reason": "Source-key matched 443341 TWSE-observed non-DR valid TDCC stockweeks; 9157 delisted source rows retained. Official publication PIT unverified; G5+ predictive or alpha not authorized."
+    },
+    {
+      "date": "2026-11-07",
+      "event": "G2_PREREGISTRATION_PASS",
+      "from": "G2_NOT_STARTED",
+      "to": "G2_PASS_G3_ACTIVE",
+      "reason": "G0 PASS, G1 retrospective descriptive scope PASS; locked source hashes, 2018-22 discovery/2023-24 replication, six maximum TDCC-centered recipes A1-A2-B1-B2-C1-C2, no target returns."
     }
   ],
   "terminal_outcome": null,
