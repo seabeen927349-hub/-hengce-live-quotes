@@ -119,7 +119,7 @@ def validate(rows: list[dict], ticker: str, start: str, end: str) -> dict:
         # but they are NOT a shareholder holding tier and MUST be excluded
         # from the Big400/Big1000 aggregations.
         is_adjustment = "差異數調整" in lvl
-        if not (0 <= p <= 100 and people >= 0 and (units >= 0 or is_adjustment)):
+        if not ((0 <= p <= 100 or (is_adjustment and -100 <= p <= 100)) and people >= 0 and (units >= 0 or is_adjustment)):
             raise ValueError(f"NUMERIC_OUT_OF_RANGE stock={ticker} date={ds} level={lvl} percent={p} people={people} unit={units}")
         if is_adjustment:
             adjustment_rows += 1
