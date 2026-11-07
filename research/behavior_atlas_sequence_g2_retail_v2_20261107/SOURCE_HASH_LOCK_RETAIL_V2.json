@@ -1,0 +1,61 @@
+{
+  "schema": "HENGCE_HBA_RETAIL_G2_V2_SOURCE_LOCK",
+  "date": "2026-11-07",
+  "amendment": "user explicitly asked to include retail-sized holder headcounts before G3",
+  "branch": "research/behavior-atlas-sequence-g2-retail-v2-20261107",
+  "parent_branch": "research/behavior-atlas-sequence-20261107",
+  "base_G2_v1_immutable": true,
+  "base_prereg_docs_git_blob_shas": {
+    "protocol": "ddde495e43ddac5262e7bf6d9b320b8214d807b8",
+    "methods": "35178797041bd642557a153fefd131ec0f7c5c3b",
+    "budget": "7e472c3e20cc7d3781c851e12bcab37ac45f34ca"
+  },
+  "v2_docs": [
+    {
+      "path": "research/behavior_atlas_sequence_g2_retail_v2_20261107/G2_CHANGE_REQUEST_RETAIL_HEADCOUNT.md",
+      "git_blob_sha": "9db1cbb073d3beda0be76b0ca5d839caa7605821",
+      "len": 1779
+    },
+    {
+      "path": "research/behavior_atlas_sequence_g2_retail_v2_20261107/05_PREREGISTRATION_RETAIL_V2.md",
+      "git_blob_sha": "019bb607fc549dc90f692f48bab00faf814e227d",
+      "len": 5221
+    },
+    {
+      "path": "research/behavior_atlas_sequence_g2_retail_v2_20261107/06_SPLIT_AND_BASELINES_RETAIL_V2.json",
+      "git_blob_sha": "e8fae0bffc244881db5f8953019742fa16f90d89",
+      "len": 14095
+    },
+    {
+      "path": "research/behavior_atlas_sequence_g2_retail_v2_20261107/07_EXPERIMENT_BUDGET_RETAIL_V2.json",
+      "git_blob_sha": "bb050bafc43bcb89bafdb3833526b5e410d70e10",
+      "len": 13821
+    },
+    {
+      "path": "research/behavior_atlas_sequence_g2_retail_v2_20261107/G1_RETAIL_COVERAGE_GATE.json",
+      "git_blob_sha": "0f308d627fc44e6f45c1e204e09a69d009ae80f4",
+      "len": 4151
+    }
+  ],
+  "original_G1_source_lock": {
+    "daily_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+    "tdcc_weekly_internal_gzip_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
+    "scoped_443341_sha256": "0d708990cafdc679a7f92ab0ca49363acbde93bf64490e446a81c2ffdb414cb6"
+  },
+  "new_15_level_source_status": "PARTIAL_ORIGINAL_LEVEL_SOURCE_VERIFIED; G1_RETAIL_COVERAGE_GATE=BLOCKED; SHA for full 457-week 15-grade source not established and MUST NOT be invented",
+  "library_15_level_source_folder": "/HENGCE/Research Outputs/TDCC_FINMIND_20261107",
+  "all_457_weeks_15_level_people_join_verified": false,
+  "inherited_first_404_weeks_from_prior_evidence": true,
+  "remaining_53_weeks_source_grade_audit_status": "UNVERIFIED",
+  "permitted_now": "G2 method frozen; source QA only",
+  "forbidden_until_G1_RETAIL_GATE_PASS": [
+    "G3 24-pair lead-lag tests",
+    "G4 replication",
+    "G5 forward prediction",
+    "G6 return optimization"
+  ],
+  "max_primary_experiments": 6,
+  "experiments_executed": 0,
+  "retail_count_does_not_equal_legal_natural_person_investors": true,
+  "trade_authority": false
+}
