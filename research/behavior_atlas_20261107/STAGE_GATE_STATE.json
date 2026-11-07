@@ -166,20 +166,25 @@
     },
     {
       "id": "G7",
-      "title": "前瞻新資料追蹤與正式結案",
+      "title": "前瞻驗證（合格路線）／研究結案（所有路線）",
       "status": "NOT_STARTED",
-      "blocking_gates": [
-        "G6"
-      ],
+      "blocking_gates": [],
       "allowed_now": false,
       "deliverables": [
-        "18_PROSPECTIVE_APPEND_ONLY_LEDGER.jsonl",
         "19_FINAL_HENGCE_BEHAVIOR_ATLAS_REPORT.md",
         "20_CLOSURE_AND_HANDOFF.md"
       ],
-      "pass_rule": "matured prospective 63/126/252 events evaluated under frozen rules, all negative and positive findings reported",
-      "stop_rule": "close at defined milestone with honest no-result classification; no automatic promotion",
-      "prospective_matured_events": 0
+      "pass_rule": "Closure report is mandatory for any terminal result; prospective claims are allowed only after G5/G6 PASS and matured new observations",
+      "stop_rule": "If earlier stage FAIL_STOP, close immediately as appropriate evidence-limited outcome with no further tests; no automatic retry",
+      "prospective_matured_events": 0,
+      "closure_allowed_on_any_terminal_stage": true,
+      "prospective_testing_requires": [
+        "G5",
+        "G6"
+      ],
+      "conditional_deliverables_only_if_prospective": [
+        "18_PROSPECTIVE_APPEND_ONLY_LEDGER.jsonl"
+      ]
     }
   ],
   "final_outcomes": [
@@ -202,7 +207,9 @@
     "decision_only_from_evidence": true,
     "required_stage_snapshot_on_each_turn": true,
     "no_prospective_claim_for_previously_examined_data": true,
-    "formal_terminal_outcome_required": true
+    "formal_terminal_outcome_required": true,
+    "closure_is_allowed_from_any_terminal_gate": true,
+    "no_unauthorized_prospective_if_early_stop": true
   },
   "transition_log": [
     {
@@ -212,5 +219,6 @@
       "to": "LITERATURE_REVIEW_ONLY",
       "reason": "Master corpus P1 provisionally saturated; topic-specific behavioral atlas gate not yet approved; only governance planning and QA allowed."
     }
-  ]
+  ],
+  "terminal_outcome": null
 }
