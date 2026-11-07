@@ -1,0 +1,7 @@
+experiment,family,status,period,n_anchors,n_stockweek_episodes,primary_effect,permutation_p_two_sided,bonferroni_six_p_upper,discovery_year_sign_consistency,discovery_gate,caveat
+A1,TDCC-Foreign-4W synchrony,CANDIDATE_DISCOVERY,2018-2022,63,45712,0.3516219155,0.002,0.012,5/5,PASS_A1_DISCOVERY_ONLY,"contemporaneous foreign ownership may mechanically enter TDCC big400 holder class; not independent psychology nor forward returns"
+A2,TDCC-Foreign-12W synchrony,NOT_EXECUTED,,,,,,,,,"early stop to validate A1, no hidden experimentation"
+B1,4W lag asymmetry,NOT_EXECUTED,,,,,,,,,"reserved budget, no results"
+B2,12W lag asymmetry,NOT_EXECUTED,,,,,,,,,"reserved budget, no results"
+C1,8W trajectory clustering,NOT_EXECUTED,,,,,,,,,"reserved budget, no results"
+C2,26W trajectory clustering,NOT_EXECUTED,,,,,,,,,"reserved budget, no results"
