@@ -1,0 +1,31 @@
+name: HENGCE Behavior Atlas G1 FinMind Stock Identity Capability Probe
+"on":
+  push:
+    branches: [research/behavior-atlas-protocol-lock-20261107]
+    paths: [.github/workflows/hengce-behavior-atlas-g1-finmind-market-type-probe.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  metadata-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check current vendor stock-type metadata without pretending retrospective PIT
+        run: |
+          python -m py_compile research/behavior_atlas_20261107/g1_finmind_current_market_type_probe.py
+          python research/behavior_atlas_20261107/g1_finmind_current_market_type_probe.py
+      - name: Retain summary only; no licensed historical raw rows
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-behavior-atlas-g1-finmind-market-type-summary
+          path: /tmp/hengce-behavior-g1-info/manifest.json
+          retention-days: 3
+          if-no-files-found: error
