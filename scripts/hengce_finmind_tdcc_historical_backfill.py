@@ -113,7 +113,7 @@ def validate(rows: list[dict], ticker: str, start: str, end: str) -> dict:
         except (TypeError, ValueError):
             raise ValueError("NUMERIC_FIELD_INVALID") from None
         if not (0 <= p <= 100 and 0 <= people and 0 <= units):
-            raise ValueError("NUMERIC_OUT_OF_RANGE")
+            raise ValueError(f"NUMERIC_OUT_OF_RANGE stock={ticker} date={ds} level={lvl} percent={p} people={people} unit={units}")
     return {
         "rows": len(rows),
         "snapshots": len(observed_dates),
