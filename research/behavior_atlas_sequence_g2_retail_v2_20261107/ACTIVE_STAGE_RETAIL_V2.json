@@ -1,0 +1,48 @@
+{
+  "schema": "HENGCE_HBA_SEQUENCE_G2_V2_ACTIVE_STAGE",
+  "as_of": "2026-11-07",
+  "directive": "請加入散戶人數",
+  "project": "HENGCE HUMAN BEHAVIOR ATLAS sequence continuation",
+  "parent_v1_unchanged": true,
+  "original_A1_research_already_closed": true,
+  "branch": "research/behavior-atlas-sequence-g2-retail-v2-20261107",
+  "stage": "G2",
+  "G2_status": "PASS_METHOD_LOCKED",
+  "G1_original_status": "PASS_RESTRICTED_RETROSPECTIVE",
+  "G1_new_retail_count_grade_source_status": "BLOCKED_PENDING_457_WEEK_COVERAGE_QA",
+  "G3_status": "NOT_STARTED",
+  "G3_experiments_executed": 0,
+  "G3_enabled": false,
+  "G5_status": "BLOCKED_UNVERIFIED_HISTORICAL_TDCC_RELEASE_TIMESTAMPS",
+  "G6_status": "BLOCKED_NO_PIT_CORPORATE_ACTIONS_RETURNS",
+  "horizon_weeks": [
+    4,
+    12,
+    24
+  ],
+  "trading_sessions": [
+    20,
+    60,
+    120
+  ],
+  "test_ids": [
+    "S4A",
+    "S4B",
+    "S12A",
+    "S12B",
+    "S24A",
+    "S24B"
+  ],
+  "existing_big_holder_indicators": 4,
+  "new_small_holder_headcount_indicators": 2,
+  "total_tdcc_indicators": 6,
+  "institutional_margin_indicators": 4,
+  "predeclared_within_recipe_pairings": 24,
+  "total_main_experiment_budget": 6,
+  "trading_authority": false,
+  "model_authority": false,
+  "legal_natural_person_classification_from_tdcc": false,
+  "original_branch": "research/behavior-atlas-sequence-20261107",
+  "next_step": "G1 verify available historical 15 grade people for all applicable stockweeks, then advance gate; do NOT execute any of the 6 G3 tests beforehand",
+  "version_change_kind": "exogenous owner amendment before any G3 result"
+}
