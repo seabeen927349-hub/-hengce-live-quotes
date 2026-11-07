@@ -57,7 +57,7 @@ class OverseasProducerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"LATEST_US_SOURCE_SESSION_MISMATCH"):self.packet()
     def test_stale_us_friday_rejected(self):
         t=dt.datetime(2026,11,13,8,15,tzinfo=TZ)
-        with self.assertRaisesRegex(ValueError,"STALE_PREVIOUS_TW_SESSION"):
+        with self.assertRaisesRegex(ValueError,"STALE_OR_NONTRADING_US_SESSION"):
             self.packet(t)
     def test_no_taiwan_stale_eod(self):
         with self.assertRaisesRegex(ValueError,"STALE_PREVIOUS_TW_SESSION"):
