@@ -195,7 +195,7 @@ def main() -> int:
                 candidates = sorted({str(r.get("Ticker", "")).strip() for r in csv.DictReader(fd)})
             if len(candidates) != 3091 or any(not FOUR_DIGIT.fullmatch(t) for t in candidates):
                 raise ValueError("FROZEN_TDCC_PARENT_CANDIDATES_MISMATCH")
-            serialized = ("Ticker\\n" + "\\n".join(candidates) + "\\n").encode("utf-8")
+            serialized = ("Ticker\n" + "\n".join(candidates) + "\n").encode("utf-8")
             if sha256(serialized) != "70229d9b1bcef321deaad73b96fcb65c84227e30d173cd0b20a7e7e524a52936":
                 raise ValueError("FROZEN_TDCC_UNION_SHA_MISMATCH")
             if not (1 <= args.limit <= 100):
