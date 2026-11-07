@@ -6,6 +6,7 @@ name: HENGCE TDCC FinMind Historical Backfill Probe (Research Only)
       - research/tdcc-finmind-historical-backfill-20261107
     paths:
       - 'scripts/hengce_finmind_tdcc_historical_backfill.py'
+      - 'scripts/hengce_finmind_tdcc_marketwide_probe.py'
       - '.github/workflows/hengce-tdcc-finmind-history-probe.yml'
   workflow_dispatch:
 
@@ -35,11 +36,17 @@ jobs:
           python scripts/hengce_finmind_tdcc_historical_backfill.py \
             --mode probe \
             --out /tmp/hengce-finmind-tdcc-probe
+      - name: Compile marketwide access probe
+        run: python -m py_compile scripts/hengce_finmind_tdcc_marketwide_probe.py
+      - name: Test marketwide historical query without data_id
+        run: python scripts/hengce_finmind_tdcc_marketwide_probe.py
       - name: Preserve research proof or explicit blocker (no credentials)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: hengce-finmind-tdcc-historical-probe
-          path: /tmp/hengce-finmind-tdcc-probe/
+          path: |
+            /tmp/hengce-finmind-tdcc-probe/
+            /tmp/hengce-finmind-market-probe/
           if-no-files-found: warn
           retention-days: 30
