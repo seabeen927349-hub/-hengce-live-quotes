@@ -4,17 +4,17 @@
   "protocol_path": "research/behavior_atlas_20261107/PROTOCOL_LOCK_V1.md",
   "state_date": "2026-11-07",
   "scope": "2018–2026 TWSE four-leg human aggregate behavior research",
-  "current_focus": "G0",
+  "current_focus": "G1",
   "current_permissions": [
-    "LITERATURE_DISCOVERY",
-    "EVIDENCE_MAP",
-    "NON_OUTCOME_DATA_QA"
+    "NON_OUTCOME_DATA_QA",
+    "LITERATURE_EVIDENCE_REFERENCE",
+    "G1_DATA_SCOPE_VALIDATION"
   ],
-  "research_phase": "LITERATURE_REVIEW_ONLY",
+  "research_phase": "DATA_AUDIT_ONLY",
   "model_authority": false,
   "trading_authority": false,
   "master_corpus_p1": "PROVISIONALLY_SATURATED_ALL_AT_2026_11_02",
-  "topic_literature_gate": "BLOCKED_NOT_YET_PASSED",
+  "topic_literature_gate": "PASS",
   "data_source_hashes": {
     "daily_three_leg_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
     "weekly_tdcc_fourth_leg_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3"
@@ -50,7 +50,7 @@
     {
       "id": "G0",
       "title": "文獻與前輪失敗盤點",
-      "status": "BLOCKED",
+      "status": "PASS",
       "blocking_gates": [],
       "allowed_now": true,
       "deliverables": [
@@ -61,13 +61,15 @@
       "pass_rule": "topic-specific LITERATURE_GATE PASS + master P1 valid",
       "stop_rule": "After 2 bounded literature supplement rounds without topic gate PASS => FAIL_STOP/LITERATURE_NOT_READY; cannot silently reopen",
       "max_repair_rounds": 2,
-      "rounds_completed": 1,
+      "rounds_completed": 2,
       "evidence_files": [
         "01_PRIOR_WORK_AND_NEGATIVE_LEDGER.md",
         "02_BEHAVIOR_EVIDENCE_MAP.md",
-        "LITERATURE_GATE.json"
+        "LITERATURE_GATE.json",
+        "G0_SECOND_BOUNDED_METHOD_REVIEW_20261107.md"
       ],
-      "blocker": "Primary methods on sequence clustering, cluster stability, false discovery under dependent panel data still require second bounded literature review; no topic gate PASS."
+      "blocker": null,
+      "pass_scope": "LITERATURE_FOR_BOUNDED_DESCRIPTIVE_AGGREGATE_BEHAVIOR_PRE_REG_ONLY"
     },
     {
       "id": "G1",
@@ -283,6 +285,13 @@
       "from": "G1_BLOCKED_CONFLATING_MINOR_NULLS",
       "to": "G1_BLOCKED_SYSTEMIC_PIT_AND_IDENTITY_ONLY",
       "reason": "Research owner's TDCC-first directive: 418 local tier nulls and 6641 missing closes not whole-mother fail, preserve unaffected valid rows."
+    },
+    {
+      "date": "2026-11-07",
+      "event": "G0_PASS",
+      "from": "G0_BLOCKED",
+      "to": "G0_PASS_G1_ACTIVE",
+      "reason": "Second bounded method review, topic literature gate PASS; no pattern discovery or return tests; G1 still BLOCKED."
     }
   ],
   "terminal_outcome": null,
