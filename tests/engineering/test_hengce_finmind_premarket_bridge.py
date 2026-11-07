@@ -25,6 +25,7 @@ class FinMindBridgeTests(unittest.TestCase):
                    "active_required_count":1088,"finmind_metric_observation_count":1085,
                    "metric_unknown_count":3,"current_market_date_ratio":0.99724265,
                    "latest_source_timestamp":"2026-11-06 14:30:00"}
+        self.stat.pop("market_date")  # production status carries source timestamp, not market_date
         self.monitor={**c,"market":m,"formal_escape_authority":False,
                       "monitor_state":"LIVE_CONTEXT_READY","feature_detector_input_authority":False,
                       "active_required_count":1088,"finmind_metric_observation_count":1085}
