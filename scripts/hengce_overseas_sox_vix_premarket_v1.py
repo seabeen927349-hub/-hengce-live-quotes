@@ -107,7 +107,7 @@ def fetch(url,timeout=28):
         except (OSError,ValueError,urllib.error.HTTPError) as e:
             last=e
             if attempt<2:time.sleep(1+attempt)
-    raise RuntimeError("VENDOR_FETCH_FAILURE:"+type(last).__name__) from last
+    raise RuntimeError("VENDOR_FETCH_FAILURE:"+type(last).__name__+":"+str(last)[:280]) from last
 
 def build(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
     """Build only with known pre-open Taipei time and common completed US EOD."""
