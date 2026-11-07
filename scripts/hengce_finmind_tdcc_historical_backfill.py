@@ -185,9 +185,19 @@ def main() -> int:
                 ("1101", "2024-01-01", "2024-02-01"),
             ]
         else:
-            sys.path.insert(0, str(ROOT / "scripts"))
-            from hengce_tdcc_2026_full_market_runner import load_candidates_from_parent
-            candidates = load_candidates_from_parent()
+            # Load the original fixed 3,091-ticker candidate set directly,
+            # without importing TDCC HTML transport or unrelated dependencies.
+            parent = ROOT / "ownership/tdcc/consolidated_candidate/tdcc_fourth_leg_best_available.csv.gz"
+            parent_raw = parent.read_bytes()
+            if sha256(parent_raw) != "d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f":
+                raise ValueError("FROZEN_TDCC_PARENT_SHA_MISMATCH")
+            with gzip.open(parent, "rt", encoding="utf-8", newline="") as fd:
+                candidates = sorted({str(r.get("Ticker", "")).strip() for r in csv.DictReader(fd)})
+            if len(candidates) != 3091 or any(not FOUR_DIGIT.fullmatch(t) for t in candidates):
+                raise ValueError("FROZEN_TDCC_PARENT_CANDIDATES_MISMATCH")
+            serialized = ("Ticker\\n" + "\\n".join(candidates) + "\\n").encode("utf-8")
+            if sha256(serialized) != "70229d9b1bcef321deaad73b96fcb65c84227e30d173cd0b20a7e7e524a52936":
+                raise ValueError("FROZEN_TDCC_UNION_SHA_MISMATCH")
             if not (1 <= args.limit <= 100):
                 raise ValueError("SAMPLE_LIMIT_MUST_BE_1_TO_100")
             targets = [(ticker, args.start, args.end) for ticker in candidates[:args.limit]]
