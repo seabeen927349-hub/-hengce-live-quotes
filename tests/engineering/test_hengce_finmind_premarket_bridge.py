@@ -79,7 +79,7 @@ class FinMindBridgeTests(unittest.TestCase):
         t=dt.date(2026,11,6);p=dt.date(2026,11,5)
         return produce_us(dt.datetime(2026,11,9,8,10,tzinfo=ZoneInfo("Asia/Taipei")),
             "2026-11-06",{p:9011.14,t:9390.25},{p:28.18,t:25.64},
-            b"PK-SYNTHETIC-SOX-DIGEST-NOT-REAL",b"CBOE-SYNTHETIC-VIX-DIGEST-NOT-REAL",
+            b"PK-SYNTHETIC-SOX-DIGEST-NOT-REAL"+b"A"*150,b"CBOE-SYNTHETIC-VIX-DIGEST-NOT-REAL"+b"B"*150,
             vendor_url(dt.date(2026,11,9)))
     def test_official_producer_packet_promotes_only_today(self):
         x=self.preopen(self.vendor_packet())
