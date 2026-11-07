@@ -1,0 +1,187 @@
+{
+  "project_id": "HENGCE_HUMAN_BEHAVIOR_ATLAS_20261107",
+  "protocol_version": "1.0",
+  "protocol_path": "research/behavior_atlas_20261107/PROTOCOL_LOCK_V1.md",
+  "state_date": "2026-11-07",
+  "scope": "2018–2026 TWSE four-leg human aggregate behavior research",
+  "current_focus": "G0",
+  "current_permissions": [
+    "LITERATURE_DISCOVERY",
+    "EVIDENCE_MAP",
+    "NON_OUTCOME_DATA_QA"
+  ],
+  "research_phase": "LITERATURE_REVIEW_ONLY",
+  "model_authority": false,
+  "trading_authority": false,
+  "master_corpus_p1": "PROVISIONALLY_SATURATED_ALL_AT_2026_11_02",
+  "topic_literature_gate": "BLOCKED_NOT_YET_PASSED",
+  "data_source_hashes": {
+    "daily_three_leg_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+    "weekly_tdcc_fourth_leg_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3"
+  },
+  "universe": {
+    "daily_rows": 2111682,
+    "weekly_rows": 1013961,
+    "weekly_snapshots": 457,
+    "tdcc_invalid_rows": 418
+  },
+  "work_cap": {
+    "total_major_discovery_experiments": 6,
+    "method_families": 3,
+    "implementation_variants_each": 2,
+    "post_validation_retunes": 0,
+    "literature_supplementary_rounds": 2,
+    "data_fix_attempts_per_gap": 2,
+    "indefinite_auto_restart": false
+  },
+  "status_vocabulary": [
+    "NOT_STARTED",
+    "BLOCKED",
+    "PASS",
+    "FAIL_STOP"
+  ],
+  "stages": [
+    {
+      "id": "G0",
+      "title": "文獻與前輪失敗盤點",
+      "status": "BLOCKED",
+      "blocking_gates": [],
+      "allowed_now": true,
+      "deliverables": [
+        "01_PRIOR_WORK_AND_NEGATIVE_LEDGER.md",
+        "02_BEHAVIOR_EVIDENCE_MAP.md",
+        "LITERATURE_GATE.json"
+      ],
+      "pass_rule": "topic-specific LITERATURE_GATE PASS + master P1 valid",
+      "stop_rule": "2 bounded supplementary literature rounds then BLOCKED, no modeling",
+      "max_repair_rounds": 2
+    },
+    {
+      "id": "G1",
+      "title": "四腿資料品質及PIT合法性",
+      "status": "NOT_STARTED",
+      "blocking_gates": [],
+      "allowed_now": true,
+      "deliverables": [
+        "03_FOUR_LEG_CAPABILITY_AUDIT.json",
+        "04_PIT_AND_UNIVERSE_GAPS.csv",
+        "DATA_GOVERNANCE_DECISION.md"
+      ],
+      "pass_rule": "checked source SHA, weekly key/PIT and universe coverage; strict predictive PIT separate",
+      "stop_rule": "2 source fixes per gap; unfixable core missing => FAIL_STOP",
+      "max_attempts_per_gap": 2
+    },
+    {
+      "id": "G2",
+      "title": "唯一預註冊與樣本/基準/預算凍結",
+      "status": "NOT_STARTED",
+      "blocking_gates": [
+        "G0",
+        "G1"
+      ],
+      "allowed_now": false,
+      "deliverables": [
+        "05_PREREGISTRATION_LOCK.md",
+        "06_SPLIT_AND_BASELINES.json",
+        "07_EXPERIMENT_BUDGET.json",
+        "SOURCE_HASH_LOCK.json"
+      ],
+      "pass_rule": "complete hypothesis, baselines, splits, unit, variation budget, rejection criteria frozen before target inspection",
+      "stop_rule": "no prereg or PIT => BLOCKED"
+    },
+    {
+      "id": "G3",
+      "title": "無報酬導向行為模式發掘",
+      "status": "NOT_STARTED",
+      "blocking_gates": [
+        "G2"
+      ],
+      "allowed_now": false,
+      "deliverables": [
+        "08_DISCOVERY_ALL_PATTERNS.csv",
+        "09_DISCOVERY_NULLS_AND_COUNTEREXAMPLES.csv",
+        "10_DERIVED_BEHAVIOR_ATLAS_DRAFT.md",
+        "EXPERIMENT_LOG.jsonl"
+      ],
+      "pass_rule": "all predeclared variants and nulls archived; >=1 nontrivial predeclared candidate for G4",
+      "stop_rule": "max 3 method families x 2 locked implementations; none=>FAIL_STOP",
+      "max_method_families": 3,
+      "max_implementations_per_family": 2,
+      "max_major_experiments": 6
+    },
+    {
+      "id": "G4",
+      "title": "跨年跨股穩定性驗證",
+      "status": "NOT_STARTED",
+      "blocking_gates": [
+        "G3"
+      ],
+      "allowed_now": false,
+      "deliverables": [
+        "11_REPLICATION_SCORECARD.csv",
+        "12_STRUCTURAL_BREAK_AND_FAILURE_REPORT.md"
+      ],
+      "pass_rule": "predeclared reproducibility thresholds and multiplicity control passed; year/industry/stock robustness",
+      "stop_rule": "any failure => FAIL_STOP; only demonstrated code/data bug can be fixed, never retune",
+      "retunes_after_validation": 0
+    },
+    {
+      "id": "G5",
+      "title": "事前群體行為預測驗證",
+      "status": "NOT_STARTED",
+      "blocking_gates": [
+        "G4"
+      ],
+      "allowed_now": false,
+      "deliverables": [
+        "13_FORWARD_BEHAVIOR_PREDICTION_REPORT.md",
+        "14_FALSE_POSITIVE_AND_DELAY.csv"
+      ],
+      "pass_rule": "outperform frozen simple baselines after PIT gate, including false alarms, lag, calibration",
+      "stop_rule": "no baseline improvement=>DESCRIPTIVE_ONLY terminal",
+      "retunes_after_validation": 0
+    },
+    {
+      "id": "G6",
+      "title": "風險報酬及投資可交易性",
+      "status": "NOT_STARTED",
+      "blocking_gates": [
+        "G5"
+      ],
+      "allowed_now": false,
+      "deliverables": [
+        "15_RETURN_RISK_AND_EXECUTION_REPORT.md",
+        "16_ALL_TRADES_AND_FAILURES.csv",
+        "17_COST_AND_CAPACITY_STRESS.csv"
+      ],
+      "pass_rule": "corporate actions, dividends, delisting, cost, matched risk, drawdown, coherent cash accounting; prospective still required",
+      "stop_rule": "data unavailable=>ECONOMIC_VALIDATION_BLOCKED; no edge=>NO_MONETIZABLE_EDGE"
+    },
+    {
+      "id": "G7",
+      "title": "前瞻新資料追蹤與正式結案",
+      "status": "NOT_STARTED",
+      "blocking_gates": [
+        "G6"
+      ],
+      "allowed_now": false,
+      "deliverables": [
+        "18_PROSPECTIVE_APPEND_ONLY_LEDGER.jsonl",
+        "19_FINAL_HENGCE_BEHAVIOR_ATLAS_REPORT.md",
+        "20_CLOSURE_AND_HANDOFF.md"
+      ],
+      "pass_rule": "matured prospective 63/126/252 events evaluated under frozen rules, all negative and positive findings reported",
+      "stop_rule": "close at defined milestone with honest no-result classification; no automatic promotion"
+    }
+  ],
+  "final_outcomes": [
+    "BEHAVIOR_LAW_REPRODUCED",
+    "DESCRIPTIVE_ONLY",
+    "DATA_OR_PIT_BLOCKED",
+    "NO_STABLE_BEHAVIOR_LAW",
+    "NO_PREDICTIVE_BEHAVIOR_EDGE",
+    "NO_MONETIZABLE_EDGE"
+  ],
+  "state_update_contract": "append evidence + check source hash + preserve negative results; do not change PASS without exact evidence; do not start blocked future stage",
+  "no_new_hypothesis_model_or_returns_pre_gate": true
+}
