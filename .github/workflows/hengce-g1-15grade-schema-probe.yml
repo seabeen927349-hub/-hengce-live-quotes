@@ -1,0 +1,20 @@
+name: HENGCE G1 15-tier holder-count source schema probe
+"on":
+  push:
+    branches: [research/behavior-atlas-sequence-g2-retail-v2-20261107]
+    paths:
+      - '.github/workflows/hengce-g1-15grade-schema-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-schema-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source-file fields on current official and historical TDCC files
+        run: python research/behavior_atlas_sequence_g2_retail_v2_20261107/g1_15_grade_source_schema_probe.py
