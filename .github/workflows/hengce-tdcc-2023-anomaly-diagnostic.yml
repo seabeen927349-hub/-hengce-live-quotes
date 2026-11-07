@@ -1,0 +1,21 @@
+name: HENGCE TDCC 2023 Numeric Anomaly Diagnosis
+"on":
+  push:
+    branches: [research/tdcc-finmind-historical-backfill-20261107]
+    paths: [.github/workflows/hengce-tdcc-2023-anomaly-diagnostic.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Scan 2023-04-21 anomalous holding tier values
+        run: python scripts/hengce_finmind_tdcc_2023_bad_rows_diagnostic.py
