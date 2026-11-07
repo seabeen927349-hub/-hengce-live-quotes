@@ -1,0 +1,72 @@
+{
+  "schema": "HENGCE_BEHAVIOR_SEQUENCE_G2_SOURCE_HASH_LOCK_V1",
+  "date": "2026-11-07",
+  "project": "HENGCE_ORIGINAL_BEHAVIOR_ATLAS_SEQUENCE_CONTINUATION",
+  "source_authority": "READ_ONLY_RESEARCH",
+  "original_study_must_remain_closed": true,
+  "locked_github_ref": "research/behavior-atlas-sequence-20261107",
+  "preregistered_files": [
+    {
+      "path": "research/behavior_atlas_sequence_20261107/LITERATURE_GATE.json",
+      "git_blob_sha": "4bea6b8c2a0194a4b36001ff97a085bde2830a0d"
+    },
+    {
+      "path": "research/behavior_atlas_sequence_20261107/05_PREREGISTRATION_LOCK.md",
+      "git_blob_sha": "ddde495e43ddac5262e7bf6d9b320b8214d807b8"
+    },
+    {
+      "path": "research/behavior_atlas_sequence_20261107/06_SPLIT_AND_BASELINES.json",
+      "git_blob_sha": "35178797041bd642557a153fefd131ec0f7c5c3b"
+    },
+    {
+      "path": "research/behavior_atlas_sequence_20261107/07_EXPERIMENT_BUDGET.json",
+      "git_blob_sha": "7e472c3e20cc7d3781c851e12bcab37ac45f34ca"
+    }
+  ],
+  "input_sources": [
+    {
+      "role": "TWSE_2018_2026_THREE_LEG_MOTHER",
+      "library_path": "/HENGCE_CANONICAL/RESEARCH/HIST_FULL_MARKET_MOTHER_2018_2026_20261107/HENGCE_FULL_MARKET_MOTHER_RESEARCH_2018_2026.csv.gz",
+      "sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+      "rows": 2111682
+    },
+    {
+      "role": "TDCC_2018_2026_FOURTH_LEG_WEEKLY",
+      "library_path": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_FOURTH_LEG_WEEKLY_2018_2026_RESEARCH_SIDECAR_20261107.zip",
+      "internal_gzip_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
+      "stock_weeks": 1013961,
+      "snapshots": 457
+    },
+    {
+      "role": "G1_TWSE_WEEKLY_NONDR_BEHAVIOR_DESCRIPTIVE",
+      "library_path": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/G1_TDCC_TWSE_DESCRIPTIVE_ELIGIBLE_2018_2026.csv.gz",
+      "sha256": "0d708990cafdc679a7f92ab0ca49363acbde93bf64490e446a81c2ffdb414cb6",
+      "rows": 443341
+    }
+  ],
+  "g1_caution": "Historical TDCC original publication timestamps and fully PIT ordinary legal stock identity are NOT verified; scoped retrospective description only.",
+  "data_scope_yearly_candidate_rows": {
+    "2018": 47537,
+    "2019": 47454,
+    "2020": 49789,
+    "2021": 46864,
+    "2022": 48621,
+    "2023": 49869,
+    "2024": 52636,
+    "2025": 53263,
+    "2026": 47308
+  },
+  "already_seen_results_contamination": true,
+  "total_usable_primary_experiments_budget": 6,
+  "test_names": [
+    "S4A",
+    "S4B",
+    "S12A",
+    "S12B",
+    "S24A",
+    "S24B"
+  ],
+  "model_authority": false,
+  "trading_authority": false,
+  "any_change_after_lock": "new proposal; never overwrite G2 primary spec or historical parent research results"
+}
