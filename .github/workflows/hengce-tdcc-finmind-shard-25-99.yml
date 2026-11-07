@@ -1,0 +1,46 @@
+name: HENGCE FinMind TDCC History Shard 25-99 (Research Only)
+
+"on":
+  push:
+    branches:
+      - research/tdcc-finmind-historical-backfill-20261107
+    paths:
+      - .github/workflows/hengce-tdcc-finmind-shard-25-99.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-finmind-tdcc-history-shard-25-99
+  cancel-in-progress: false
+
+jobs:
+  history-shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and validate transport (no paid data in repository)
+        run: |
+          python -m py_compile scripts/hengce_finmind_tdcc_historical_backfill.py scripts/hengce_finmind_tdcc_shard.py
+      - name: Pull frozen-stock shard 25-99 from FinMind 2018-2025
+        run: |
+          set -euo pipefail
+          python scripts/hengce_finmind_tdcc_shard.py \
+            --offset 25 --count 75 \
+            --start 2018-01-01 --end 2025-10-30 \
+            --out /tmp/hengce-finmind-shard-25-99
+      - name: Save evidence in short-lived artifact only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-2018-2025-shard-25-99
+          path: /tmp/hengce-finmind-shard-25-99/
+          retention-days: 1
+          if-no-files-found: error
