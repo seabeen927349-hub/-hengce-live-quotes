@@ -56,6 +56,7 @@ def get_full_market(token, refdate):
         raise RuntimeError('NO_FULL_MARKET_DATA_FOR_VERIFIED_DATE_'+refdate)
     keys=set()
     tickers=set()
+    metadata_anomalies=[]
     for row in rows:
         if not isinstance(row,dict) or any(k not in row for k in FIELDS):
             raise RuntimeError('MISSING_REQUIRED_FIELD_'+refdate)
@@ -71,12 +72,19 @@ def get_full_market(token, refdate):
         except (ValueError,TypeError):
             raise RuntimeError('BAD_NUMERIC_'+refdate)
         reconciliation='差異數調整' in lvl
-        if person<0 or (not reconciliation and (p<0 or p>100 or unit<0)):
+        summary_row=lvl.strip().lower() in ('total','合計','總計')
+        # TDCC holding tiers must have valid unsigned counts and proportions.
+        # Vendor-provided total rows may report 101% or other accounting artifacts.
+        # These are NOT holding tiers, are preserved verbatim, and are audited
+        # separately; never feed them into Big400 / Big1000 aggregations.
+        if person<0 or (not (reconciliation or summary_row) and (p<0 or p>100 or unit<0)):
             raise RuntimeError('BAD_PERCENT_PEOPLE_UNIT_'+refdate)
+        if summary_row and (p<0 or p>100 or unit<0):
+            metadata_anomalies.append({'date':refdate,'ticker':s,'level':lvl,'percent':p,'unit_negative':unit<0})
     if len(tickers)<1000:
         raise RuntimeError('IMPLAUSIBLE_STOCK_UNIVERSE_'+refdate)
     return rows,{'raw_sha256':sha256(raw),'source_bytes':len(raw),
-                 'tier_rows':len(rows),'security_count':len(tickers)}
+                 'tier_rows':len(rows),'security_count':len(tickers),'non_tier_summary_anomalies':metadata_anomalies[:100],'non_tier_summary_anomaly_count':len(metadata_anomalies)}
 
 def main():
     ap=argparse.ArgumentParser()
