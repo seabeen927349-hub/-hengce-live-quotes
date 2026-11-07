@@ -1,0 +1,10 @@
+test,phase,calendar_year,anchor_weeks,stockweek_episodes,equal_weight_week_mean_spearman,sign_positive,pre_registered_annual_effect_gte_0p05,experimental_status
+A1,discovery,2018,12,7776,0.3374836765,true,true,DESCRIPTIVE_DISCOVERY
+A1,discovery,2019,13,8237,0.3630575518,true,true,DESCRIPTIVE_DISCOVERY
+A1,discovery,2020,13,9904,0.3226710015,true,true,DESCRIPTIVE_DISCOVERY
+A1,discovery,2021,12,9154,0.3726440380,true,true,DESCRIPTIVE_DISCOVERY
+A1,discovery,2022,13,10641,0.3627828394,true,true,DESCRIPTIVE_DISCOVERY
+A1,replication,2023,13,11231,0.3538739049,true,true,HISTORICAL_REPLICATION
+A1,replication,2024,13,12273,0.3441314393,true,true,HISTORICAL_REPLICATION
+A1,discovery_all,2018-2022,63,45712,0.3516219155,true,true,CANDIDATE_ABOVE_FROZEN_GATE
+A1,replication_all,2023-2024,26,23504,0.3490026721,true,true,PASS_FROZEN_RETROSPECTIVE_REPLICATION
