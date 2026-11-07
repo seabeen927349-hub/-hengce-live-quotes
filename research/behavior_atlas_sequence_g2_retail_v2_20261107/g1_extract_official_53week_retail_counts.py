@@ -72,7 +72,8 @@ def parse_html(b,date,ticker,sha):
                 if num in grades:duplicate=True
                 try:grades[num]=digits(vals[2])
                 except ValueError:grades[num]=-1
-            elif num==17:
+            elif re.sub(r'\\s+', '', vals[1])=='合計':
+                # Official HTML may omit the adjustment row, so total is row 16 or 17.
                 try:total=digits(vals[2])
                 except ValueError:pass
     row=consolidate(date,ticker,grades,total,"TDCC_OFFICIAL_HIST_HTML",sha)
