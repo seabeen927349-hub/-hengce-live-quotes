@@ -1,0 +1,104 @@
+name: HENGCE FinMind PreMarket Shadow Bridge
+
+"on":
+  pull_request:
+    paths:
+      - 'scripts/hengce_finmind_premarket_bridge.py'
+      - 'tests/engineering/test_hengce_finmind_premarket_bridge.py'
+      - 'docs/HENGCE_FINMIND_PREMARKET_BRIDGE_20261107.md'
+      - '.github/workflows/hengce-finmind-premarket-shadow-bridge.yml'
+  workflow_run:
+    workflows:
+      - HENGCE Escape TWSE Common FinMind Shadow
+    types:
+      - completed
+  workflow_dispatch:
+  schedule:
+    - cron: '40 0 * * 1-5' # 08:40 Asia/Taipei
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-finmind-premarket-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  premarket-shadow:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check out PR head for tests, main for scheduled data
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Bridge unit tests
+        run: |
+          python -m py_compile scripts/hengce_finmind_premarket_bridge.py
+          python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_premarket_bridge.py' -v
+      - name: Consume existing FinMind vessel outputs only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from datetime import datetime, date
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          import json, subprocess, sys
+          now=datetime.now(ZoneInfo("Asia/Taipei"))
+          today=now.date()
+          status_path=Path("escape_live/finmind_twse_common_status.json")
+          if not status_path.exists():
+              print("BLOCKED: missing governed FinMind status")
+              sys.exit(0)
+          status=json.loads(status_path.read_text(encoding="utf-8"))
+          source_date=date.fromisoformat(json.loads(Path("escape_live/finmind_twse_common_context.json").read_text(encoding="utf-8"))["market_date"])
+          preopen=today.weekday()<5 and now.hour<9 and source_date<today
+          intraday=today.weekday()<5 and (9,0)<=(now.hour,now.minute)<=(13,45) and source_date==today
+          if not (preopen or intraday):
+              print("BLOCKED: unavailable PIT session; no new packet")
+              sys.exit(0)
+          args=[sys.executable,"scripts/hengce_finmind_premarket_bridge.py",
+              "--context","escape_live/finmind_twse_common_context.json",
+              "--status",str(status_path),
+              "--monitor","escape_live/intraday_monitor.json",
+              "--phase","PREOPEN_PREVIOUS_SESSION" if preopen else "INTRADAY_CURRENT_SESSION",
+              "--target-tw-date",today.isoformat(),
+              "--expected-finmind-session",source_date.isoformat(),
+              "--asof-taipei",now.isoformat(),
+              "--out","/tmp/hengce_finmind_premarket_shadow.json"]
+          completed=subprocess.run(args,capture_output=True,text=True)
+          print(completed.stdout)
+          if completed.returncode:
+              print("BLOCKED: source integrity gate",completed.stderr)
+              sys.exit(0)
+          PY
+      - name: Publish safe read-only packet
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f /tmp/hengce_finmind_premarket_shadow.json ]; then
+            echo 'No fresh verified FinMind packet to publish'
+            exit 0
+          fi
+          cp /tmp/hengce_finmind_premarket_shadow.json escape_live/finmind_premarket_bridge_shadow.json
+          git config user.name 'hengce-finmind-bridge-bot'
+          git config user.email 'hengce-finmind-bridge-bot@users.noreply.github.com'
+          git add escape_live/finmind_premarket_bridge_shadow.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'data(shadow): refresh governed FinMind premarket environment'
+          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
+      - name: Preserve publication arbitration receipts
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-premarket-lease
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore
+          retention-days: 7
