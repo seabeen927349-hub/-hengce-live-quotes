@@ -1,0 +1,76 @@
+{
+  "system": "HENGCE",
+  "artifact": "HENGCE_FOURTH_LEG_2018_2026_WEEKLY_RESEARCH_MOTHER",
+  "schema": "HENGCE_FOUR_LEG_WEEKLY_V1",
+  "status": "PASS_RESEARCH_FOURTH_LEG_INTEGRATED",
+  "total_rows": 1013961,
+  "valid_rows": 1013543,
+  "invalid_or_null_rows": 418,
+  "snapshot_count": 457,
+  "first_snapshot": "20180105",
+  "last_snapshot": "20261106",
+  "source_counts": {
+    "FINMIND_VENDOR_HISTORICAL": 858654,
+    "TDCC_OFFICIAL_HISTORICAL_2025_TAIL": 26038,
+    "TDCC_OFFICIAL_HISTORICAL_2026_JAN_APR": 46696,
+    "TDCC_VERIFIED_CONTINUATION_2026": 76627,
+    "TDCC_OFFICIAL_CURRENT": 8916
+  },
+  "source_selection_counts": {
+    "FINMIND_VENDOR_HISTORICAL": 858654,
+    "TDCC_OFFICIAL_HISTORICAL_2025_TAIL": 26038,
+    "TDCC_OFFICIAL_HISTORICAL_2026_JAN_APR": 46696,
+    "TDCC_VERIFIED_CONTINUATION_2026": 73657,
+    "TDCC_OFFICIAL_CURRENT": 8916
+  },
+  "year_counts": {
+    "2018": {
+      "rows": 87665,
+      "valid": 87665
+    },
+    "2019": {
+      "rows": 87039,
+      "valid": 87038,
+      "invalid": 1
+    },
+    "2020": {
+      "rows": 92138,
+      "valid": 92131,
+      "invalid": 7
+    },
+    "2021": {
+      "rows": 87827,
+      "valid": 87440,
+      "invalid": 387
+    },
+    "2022": {
+      "rows": 102894,
+      "valid": 102871,
+      "invalid": 23
+    },
+    "2023": {
+      "rows": 137352,
+      "valid": 137352
+    },
+    "2024": {
+      "rows": 144055,
+      "valid": 144055
+    },
+    "2025": {
+      "rows": 145722,
+      "valid": 145722
+    },
+    "2026": {
+      "rows": 129269,
+      "valid": 129269
+    }
+  },
+  "overlap_counts": {
+    "('TDCC_VERIFIED_CONTINUATION_2026', 'TDCC_OFFICIAL_CURRENT')": 2970
+  },
+  "conflict_count": 0,
+  "output_file": "HENGCE_TDCC_FOURTH_LEG_WEEKLY_2018_2026.csv.gz",
+  "output_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
+  "mother_sha256_expected": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+  "daily_mother_mutated": false
+}

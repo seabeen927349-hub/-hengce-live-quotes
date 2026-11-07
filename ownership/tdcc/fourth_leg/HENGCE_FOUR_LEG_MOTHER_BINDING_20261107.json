@@ -1,0 +1,45 @@
+{
+  "system": "HENGCE",
+  "schema": "HENGCE_FOUR_LEG_MOTHER_LINKAGE_REGISTERED_20261107_V1",
+  "status": "RESEARCH_FOURTH_LEG_REGISTERED",
+  "source_integration_run_id": 42364808564,
+  "fourth_leg_archive_library_path": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_FOURTH_LEG_WEEKLY_2018_2026_RESEARCH_SIDECAR_20261107.zip",
+  "daily_mother_fourth_leg_folder": "/HENGCE_CANONICAL/RESEARCH/HIST_FULL_MARKET_MOTHER_2018_2026_20261107/TDCC_FOURTH_LEG",
+  "weekly_data_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
+  "weekly_data_rows": 1013961,
+  "snapshot_count": 457,
+  "invalid_historical_tier_rows": 418,
+  "daily_mother": {
+    "library_path": "/HENGCE_CANONICAL/RESEARCH/HIST_FULL_MARKET_MOTHER_2018_2026_20261107/HENGCE_FULL_MARKET_MOTHER_RESEARCH_2018_2026.csv.gz",
+    "sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+    "rows": 2111682,
+    "date_range": [
+      "2018-01-02",
+      "2026-11-06"
+    ]
+  },
+  "join_key": [
+    "SnapshotDate",
+    "Ticker"
+  ],
+  "join_frequency": "WEEKLY_SIDE_CAR_NO_DAILY_FORWARD_FILL",
+  "no_same_week_lookahead": true,
+  "retrospective_finmind_publication_date_verified": false,
+  "ordinary_stock_historical_identity_verified": false,
+  "canonical_official_weekly_vessel": {
+    "workflow": ".github/workflows/hengce-tdcc-ownership-daily.yml",
+    "current_pointer": "ownership/tdcc/latest.json",
+    "snapshot_file_template": "ownership/tdcc/{SnapshotDate}/tdcc_ownership_4d.csv",
+    "friday_cron_utc": "45 15 * * 5",
+    "friday_taipei": "Friday 23:45 Asia/Taipei",
+    "retry_cron_utc": "15 21 * * 5",
+    "retry_taipei": "Saturday 05:15 Asia/Taipei",
+    "additional_high_frequency_checks_preserved": true,
+    "source": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
+    "latest_week_at_registration": "20261106",
+    "future_official_weekly_updates_are_read_from_latest_pointer": true
+  },
+  "production_daily_mother_mutated": false,
+  "model_authority_created": false,
+  "trading_authority_created": false
+}
