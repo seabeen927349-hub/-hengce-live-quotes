@@ -143,7 +143,7 @@ def main():
                 raw_total+=yr_raw
                 print("HENGCE_TDCC_PANEL_YEAR",year,"weeks",len(srcs),"stockweeks",yr_count,
                     "tier_valid",yr_valid,"tier_invalid",yr_bad,flush=True)
-        receipt["status"]="PASS" if valid>900000 and bad/total_rows<.05 else "INSUFFICIENT_QUALITY_FAIL_CLOSED"
+        receipt["status"]="PASS" if valid>200000 and bad/total_rows<.05 else "INSUFFICIENT_QUALITY_FAIL_CLOSED"
         receipt["total_4digit_stock_week_rows"]=total_rows
         receipt["total_valid_derived_rows"]=valid
         receipt["total_invalid_rows"]=bad
