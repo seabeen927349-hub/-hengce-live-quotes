@@ -1,0 +1,57 @@
+name: HENGCE MS1470 2026 official calendar coverage gate
+
+# Runs only after historical shard workflow completes. The original licensed
+# parquet is never downloaded again or committed. GitHub artefacts are temporary.
+on:
+  workflow_run:
+    workflows: ['HENGCE MS1470 2026 historical broker-branch research']
+    types: [completed]
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reconcile-calendar-and-merge:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch ONLY authorized research aggregate artefacts from completed run
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: HENGCE_MS1470_2026_*
+          path: ${{ runner.temp }}/ms1470-months
+          merge-multiple: false
+      - name: Reclassify only official non-trading dates; preserve every real missing session
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_ms1470_research_calendar_reconcile.py --input-root "${RUNNER_TEMP}/ms1470-months"
+      - name: Merge and require verified 2026 session coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_ms1470_research_merge.py --input-root "${RUNNER_TEMP}/ms1470-months" --output-dir "${RUNNER_TEMP}/ms1470-official-calendar-verified"
+          python - <<'PY'
+          import json,os,pathlib
+          x=json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"ms1470-official-calendar-verified"/"manifest_merged_2026.json").read_text())
+          print(json.dumps({"coverage_status":x["status"],"verified_days":x["unique_source_days"],
+                            "expected":x["expected_trading_days"],"missing_trading_days":x["missing_trading_days"]}))
+          assert x["status"]=="COMPLETE_VERIFIED_2026_YTD_TRADING_SESSIONS", "YEAR_COVERAGE_INCOMPLETE"
+          PY
+      - name: Publish verified aggregate research to temporary GitHub artifact only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_MS1470_2026_OFFICIAL_CALENDAR_AUDITED
+          path: ${{ runner.temp }}/ms1470-official-calendar-verified/
+          if-no-files-found: warn
+          retention-days: 7
