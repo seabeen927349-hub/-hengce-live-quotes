@@ -61,12 +61,18 @@
       "pass_rule": "topic-specific LITERATURE_GATE PASS + master P1 valid",
       "stop_rule": "After 2 bounded literature supplement rounds without topic gate PASS => FAIL_STOP/LITERATURE_NOT_READY; cannot silently reopen",
       "max_repair_rounds": 2,
-      "rounds_completed": 0
+      "rounds_completed": 1,
+      "evidence_files": [
+        "01_PRIOR_WORK_AND_NEGATIVE_LEDGER.md",
+        "02_BEHAVIOR_EVIDENCE_MAP.md",
+        "LITERATURE_GATE.json"
+      ],
+      "blocker": "Primary methods on sequence clustering, cluster stability, false discovery under dependent panel data still require second bounded literature review; no topic gate PASS."
     },
     {
       "id": "G1",
       "title": "四腿資料品質及PIT合法性",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED",
       "blocking_gates": [],
       "allowed_now": true,
       "deliverables": [
@@ -77,7 +83,16 @@
       "pass_rule": "checked source SHA, weekly key/PIT and universe coverage; strict predictive PIT separate",
       "stop_rule": "2 source fixes per gap; unfixable core missing => FAIL_STOP",
       "max_attempts_per_gap": 2,
-      "gap_repair_attempts": {}
+      "gap_repair_attempts": {},
+      "qa_rounds_completed": 1,
+      "evidence_files": [
+        "DATA_GOVERNANCE_DECISION.md",
+        "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/03_FOUR_LEG_CAPABILITY_AUDIT.json",
+        "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/04_PIT_AND_UNIVERSE_GAPS.csv"
+      ],
+      "blocker": "Four-digit TDCC includes 564390 stock-weeks absent from same-year TWSE; historic listing/common-stock identity and first release timestamp not certified; 6641 numeric-close missing (including 4648 '--').",
+      "structural_file_qa": "PASS",
+      "predictive_pit": "BLOCKED"
     },
     {
       "id": "G2",
@@ -228,7 +243,31 @@
       "from": null,
       "to": "LITERATURE_REVIEW_ONLY",
       "reason": "Master corpus P1 provisionally saturated; topic-specific behavioral atlas gate not yet approved; only governance planning and QA allowed."
+    },
+    {
+      "date": "2026-11-07",
+      "event": "G0_FIRST_ROUND_EVIDENCE_FILED",
+      "from": "G0_BLOCKED_ROUND_0",
+      "to": "G0_BLOCKED_ROUND_1_OF_2",
+      "reason": "Prior nulls and Taiwan primary literature evidence mapped; unsupervised methods unverified; no model experiments."
+    },
+    {
+      "date": "2026-11-07",
+      "event": "G1_FIRST_FULL_BINARY_QA_FILED",
+      "from": "G1_NOT_STARTED",
+      "to": "G1_BLOCKED_ROUND_1_OF_2",
+      "reason": "2,111,682 daily+1,013,961 weekly records re-scanned; 6,641 true missing closes and 564,390 universe mismatches; full source evidence preserved in Library."
     }
   ],
-  "terminal_outcome": null
+  "terminal_outcome": null,
+  "last_completed_action": "G0 prior evidence review round 1; G1 source data scan round 1",
+  "no_new_model_created": true,
+  "expenses_used": {
+    "g0_bounded_rounds": 1,
+    "g1_full_qa_rounds": 1,
+    "g3_discovery_experiments": 0,
+    "g4_validation_runs": 0,
+    "g5_prediction_runs": 0,
+    "g6_economic_runs": 0
+  }
 }
