@@ -53,7 +53,22 @@ def check():
                 require(rows[STAGES.index(parent)]['status']=='PASS','PASS_WITH_BLOCKED_PREREQUISITE_'+step['id'])
         if step['status']=='FAIL_STOP':
             for next_step in rows[STAGES.index(step['id'])+1:]:
-                require(next_step['status'] not in ('PASS',),'CHILD_PASS_AFTER_TERMINAL_PARENT')
+                # G7 is a mandatory closeout ledger, never a bypass for new experiments.
+                if next_step['id']=='G7':
+                    continue
+                require(next_step['status']!='PASS','CHILD_PASS_AFTER_TERMINAL_PARENT')
+    # Closure can occur after any failed gate, but cannot invent study authority.
+    closing=rows[7]
+    if closing['status']=='PASS':
+        require((BASE/'20_CLOSURE_AND_HANDOFF.md').exists(),'FINAL_CLOSURE_MISSING')
+        require((BASE/'19_FINAL_HENGCE_BEHAVIOR_ATLAS_REPORT.md').exists(),'FINAL_REPORT_MISSING')
+        require(obj.get('terminal_outcome') in obj.get('final_outcomes',[]),'UNKNOWN_TERMINAL_OUTCOME')
+        any_failed=any(x['status']=='FAIL_STOP' for x in rows[:7])
+        if not any_failed:
+            require(rows[6]['status']=='PASS','PROSPECTIVE_WITHOUT_ECONOMIC_GATE')
+        if closing.get('prospective_matured_events',0)>0:
+            require(rows[5]['status']=='PASS' and rows[6]['status']=='PASS',
+                    'PROSPECTIVE_WITHOUT_PREDICTION_AND_ECONOMIC_GATE')
     literature=BASE/'LITERATURE_GATE.json'
     if rows[0]['status']=='PASS':
         require(literature.exists(),'LITERATURE_GATE_MISSING')
