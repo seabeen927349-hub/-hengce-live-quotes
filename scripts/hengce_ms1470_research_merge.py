@@ -12,6 +12,8 @@ import json
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
+from datetime import date, timedelta
+from hengce_ms1470_historical_research import NONTRADING_2026
 
 
 def sha256(path: Path) -> str:
@@ -91,14 +93,30 @@ def main() -> None:
         outputs[period] = {"path": p.name, "sha256": sha256(p),
                            "rows": len(periods[period])}
 
+    calendar_start, calendar_end = date(2026, 1, 2), date(2026, 11, 6)
+    expected_sessions = set()
+    day = calendar_start
+    while day <= calendar_end:
+        if day.weekday() < 5 and day.isoformat() not in NONTRADING_2026:
+            expected_sessions.add(day.isoformat())
+        day += timedelta(days=1)
+    missing_sessions = sorted(expected_sessions - date_set)
+    unexpected_sessions = sorted(date_set - expected_sessions)
+    complete = (len(month_receipts) == 11 and not problems and
+                not missing_sessions and not unexpected_sessions)
+
     result = {
         "system": "HENGCE",
         "artifact": "MS1470_2026_RESEARCH_MERGE",
-        "status": ("COMPLETE_REQUESTED_WEEKDAYS" if len(month_receipts) == 11 and
-                   not problems else "PARTIAL_DO_NOT_TREAT_AS_FULL_YEAR"),
+        "status": ("COMPLETE_VERIFIED_2026_YTD_TRADING_SESSIONS" if complete
+                   else "PARTIAL_DO_NOT_TREAT_AS_FULL_YEAR"),
         "source_period": "2026-01-02_to_2026-11-06",
         "months_found": len(month_receipts),
         "unique_source_days": len(date_set),
+        "twse_trading_calendar_source": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?response=html",
+        "expected_trading_days": len(expected_sessions),
+        "missing_trading_days": missing_sessions,
+        "unexpected_source_days": unexpected_sessions,
         "shards": month_receipts,
         "missing_or_failed_source_dates": problems,
         "outputs": outputs,
