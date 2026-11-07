@@ -1,23 +1,21 @@
 {
   "project": "HENGCE_ORIGINAL_BEHAVIOR_ATLAS_REVIEW_ROUTER",
   "instruction_date": "2026-11-07",
-  "user_directive": "回g1",
-  "active_stage": "G1",
-  "mode": "SOURCE_DATA_QA_ONLY",
-  "sequence_research_status": "PAUSED_BEFORE_PREREGISTRATION_AND_ANY_EXPERIMENT",
+  "user_directive": "繼續做g2",
+  "active_stage": "G2",
+  "mode": "G2_LOCKED_NO_EXECUTION",
+  "sequence_research_status": "G2_PREREGISTRATION_WRITTEN_AWAITING_MECHANICAL_CI_VALIDATION",
   "original_study": "research/behavior_atlas_20261107/",
   "original_study_locked_terminal": "DESCRIPTIVE_ONLY",
   "original_locked_stage_results_unchanged": true,
   "authorizations": [
-    "read verified research mother and TDCC sidecar",
-    "audit full/15-tier TDCC weekly provenance and coverage",
-    "audit historical stock eligibility and TDCC publication timestamps",
-    "classify localized vs systemic issues"
+    "G2_PRE_REGISTER_ONLY",
+    "BIBLIOGRAPHY_G0_PASS_INHERITED",
+    "G1_SCOPED_PIT_CAUTION"
   ],
   "prohibited": [
-    "G2_NEW_PREREGISTRATION",
-    "G3_NEW_BEHAVIOR_EXPERIMENT",
-    "G4_NEW_REPLICATION",
+    "G3_NEW_BEHAVIOR_EXPERIMENT_WHILE_G2_PENDING",
+    "G4_REPLICATION",
     "G5_PREDICTIVE_TEST",
     "G6_RETURN_BACKTEST",
     "N2_RESTART",
@@ -35,5 +33,48 @@
   "source_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
   "source_tdcc_weekly_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
   "existing_G1_conclusion": "PASS_SCOPED_RETROSPECTIVE_DESCRIPTIVE_ONLY, NOT FULL_PREDICTIVE_PIT",
-  "no_new_data_claims_made_in_this_reentry": true
+  "no_new_data_claims_made_in_this_reentry": true,
+  "G2_phase_permission": "SCOPED_RETROSPECTIVE_BEHAVIOR_ONLY",
+  "G0_inherited": "PASS_STRICT_SCOPE",
+  "G1_inherited": "PASS_SCOPED_RETROSPECTIVE_DESCRIPTIVE_ONLY",
+  "G2_status": "PENDING_CI_VERIFICATION",
+  "G3_status": "NOT_STARTED",
+  "G4_status": "NOT_STARTED",
+  "G5_status": "BLOCKED_HISTORICAL_TDCC_PUBLICATION_UNVERIFIED",
+  "G6_status": "BLOCKED_PIT_AND_CORPORATE_ACTION_DATA",
+  "research_model_authority": false,
+  "trading_authority": false,
+  "prevent_non_approved_reopening": true,
+  "allowed_next": [
+    "READ_ONLY_VALIDATE_PREREGISTRATION",
+    "NO_G3_UNTIL_G2_CI_PASS"
+  ],
+  "documents": [
+    "LITERATURE_GATE.json",
+    "05_PREREGISTRATION_LOCK.md",
+    "06_SPLIT_AND_BASELINES.json",
+    "07_EXPERIMENT_BUDGET.json",
+    "SOURCE_HASH_LOCK.json",
+    "validate_g2_preregistration.py"
+  ],
+  "experimental_design": {
+    "horizons_weeks": [
+      4,
+      12,
+      24
+    ],
+    "institution_days": [
+      20,
+      60,
+      120
+    ],
+    "directions_per_horizon": 2,
+    "max_primary_tests": 6,
+    "primary_tests_executed": 0,
+    "underpowered_horizon_weeks": [
+      24
+    ],
+    "no_forward_return_inspection": true
+  },
+  "updated_date": "2026-11-07"
 }
