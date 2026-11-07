@@ -83,7 +83,9 @@
       "pass_rule": "checked source SHA, weekly key/PIT and universe coverage; strict predictive PIT separate",
       "stop_rule": "2 source fixes per gap; unfixable core missing => FAIL_STOP",
       "max_attempts_per_gap": 2,
-      "gap_repair_attempts": {},
+      "gap_repair_attempts": {
+        "historical_identity": 1
+      },
       "qa_rounds_completed": 1,
       "evidence_files": [
         "DATA_GOVERNANCE_DECISION.md",
@@ -92,7 +94,10 @@
       ],
       "blocker": "Four-digit TDCC includes 564390 stock-weeks absent from same-year TWSE; historic listing/common-stock identity and first release timestamp not certified; 6641 numeric-close missing (including 4648 '--').",
       "structural_file_qa": "PASS",
-      "predictive_pit": "BLOCKED"
+      "predictive_pit": "BLOCKED",
+      "metadata_capability": "PASS_FinMind_TaiwanStockInfo_CURRENT_CLASSIFICATION_ONLY",
+      "metadata_evidence": "GitHub Actions 42371717381; Library /HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/HENGCE_BEHAVIOR_G1_FINMIND_MARKET_TYPE_PROBE_20261107.zip",
+      "identity_caution": "176 securities show more than one market type; present-type data not historical listing/delisting. 9103 is DR; 1240 and 1258 are TPEx examples."
     },
     {
       "id": "G2",
@@ -257,6 +262,13 @@
       "from": "G1_NOT_STARTED",
       "to": "G1_BLOCKED_ROUND_1_OF_2",
       "reason": "2,111,682 daily+1,013,961 weekly records re-scanned; 6,641 true missing closes and 564,390 universe mismatches; full source evidence preserved in Library."
+    },
+    {
+      "date": "2026-11-07",
+      "event": "G1_IDENTITY_SOURCE_FIRST_PROBE",
+      "from": "G1_BLOCKED_QA1",
+      "to": "G1_BLOCKED_QA1_IDENTITY_SOURCE_1_OF_2",
+      "reason": "Authenticated FinMind TaiwanStockInfo returned current market-type metadata for 2556 four-digit tickers; not a full PIT stock identity archive."
     }
   ],
   "terminal_outcome": null,
