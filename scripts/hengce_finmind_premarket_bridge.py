@@ -10,6 +10,7 @@ import json
 import math
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from hengce_two_time_scale_environment_display import build_display
 
 TZ = ZoneInfo("Asia/Taipei")
 METRIC_SHA = "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281"
@@ -113,6 +114,7 @@ def build(context,status,monitor,phase,target,previous,asof,premarket=None):
         "interpretation":"Historical session observations, NOT future fund flows or formal Escape metrics."
       },
       "premarket_forecast":prediction,
+      "two_time_scale_display":build_display(prediction,target,previous),
       "macro_regime":"UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
       "escape_formal_state":"UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
       "governance":{"new_finmind_fetch":False,"new_market_universe":False,
