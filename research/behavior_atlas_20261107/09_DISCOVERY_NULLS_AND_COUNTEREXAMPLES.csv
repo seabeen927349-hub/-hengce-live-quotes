@@ -1,0 +1,7 @@
+id,category,statement,status,impact
+N-A1-001,mechanical_overlap,"Foreign buyers can be among the Big400 accounts and TDCC shares reflect the same buying; same-period association is not independent investor group behavior.",UNRESOLVED_IMPORTANT,"A1 cannot be called group psychology or independent smart money signal."
+N-A1-002,common_market_week,"Same-week across-stock ranks and same-week ticker shuffle control for some common-market shifts, but do not control point-in-time industry or firm-specific news.",PARTIAL_CONTROL,"G4 must be read as limited retrospective replication only."
+N-A1-003,corporate_actions,"Large stock splits, reverse splits, shareholder structure and share-class changes may mechanically move TDCC holding tiers.",UNRESOLVED,"Corporate actions full PIT not yet audited; do not infer intent."
+N-A1-004,historical_release_lag,"TDCC reference week is not validated as earliest public availability date for 2018-2025.",KNOWN_PIT_BLOCK,"No weekly contemporaneous predictive/backtest/trade claim."
+N-A1-005,survivorship_and_security_identity,"443341 candidate weeks use actual TWSE daily observed roster rather than current listing roster; 81 current-roster date-conflict rows are flagged, none affected A1 sample.",PARTIAL_SCOPE,"Not the legally complete TWSE common-stock history."
+N-A1-006,other_five_preregistered_recipes,"A2, B1, B2, C1, C2 not executed after A1 met prospectively specified discovery screening.",NOT_EXECUTED,"Must not be treated as failed or passed studies."
