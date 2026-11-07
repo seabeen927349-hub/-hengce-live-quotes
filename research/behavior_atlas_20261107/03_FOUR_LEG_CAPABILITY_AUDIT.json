@@ -1,0 +1,51 @@
+{
+  "artifact": "HENGCE_HUMAN_BEHAVIOR_ATLAS_G1_DATA_QA_ROUND_1_V2",
+  "status": "BLOCKED_FOR_PIT_AND_STOCK_IDENTITY",
+  "date": "2026-11-07",
+  "source_mother": {
+    "path": "/HENGCE_CANONICAL/RESEARCH/HIST_FULL_MARKET_MOTHER_2018_2026_20261107/HENGCE_FULL_MARKET_MOTHER_RESEARCH_2018_2026.csv.gz",
+    "gzip_sha256_verified": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+    "rows": 2111682,
+    "duplicate_stock_date": 0,
+    "date_backtracks": 0,
+    "foreign_buy_sell_net_mismatch": 0,
+    "valid_positive_numeric_close": 2105041,
+    "missing_price_total": 6641,
+    "missing_price_dashdash": 4648,
+    "missing_price_empty": 1993,
+    "dashdash_close_with_nonzero_volume": 2357,
+    "numeric_ohlc_high_low_conflict": 0,
+    "missing_foreign_net": 97371,
+    "missing_margin_balance": 45204
+  },
+  "fourth_leg": {
+    "path": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_FOURTH_LEG_WEEKLY_2018_2026_RESEARCH_SIDECAR_20261107.zip",
+    "weekly_csv_sha256_verified": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
+    "stock_week_rows": 1013961,
+    "unique_snapshots": 457,
+    "valid_tier": 1013543,
+    "invalid_tier": 418,
+    "invalid_tier_in_20210108": 209,
+    "duplicate_date_ticker": 0,
+    "invalid_numeric_tier_internal_checks": 0,
+    "ticker_week_code_absent_from_same_year_TWSE_ticker_union": 564390,
+    "absent_from_daily_universe_interpretation": "NOT_EVIDENCE_OF_MISSING_DAILY_DATA; different exchange and security universe; historical security-type masking required",
+    "retrospective_finmind_without_verified_first_publication": 858654,
+    "reference_date_as_release_timestamp_prohibited": true
+  },
+  "QA_lineage": {
+    "detailed_full_scan_library": "/HENGCE_CANONICAL/RESEARCH/HUMAN_BEHAVIOR_ATLAS_20261107/03_FOUR_LEG_CAPABILITY_AUDIT_ROUND1_CORRECTED.json",
+    "detailed_full_scan_sha256": "4d0ce62ff8da866644e12baec4ed0a254ad90b13b7d14f950b824ea88625bf2b",
+    "code_path_in_library": "/HENGCE_CANONICAL/RESEARCH/HUMAN_BEHAVIOR_ATLAS_20261107/",
+    "original_mother_modified": false,
+    "original_fourth_leg_modified": false,
+    "inspected_forward_returns": false,
+    "data_audit_rounds_used": 1,
+    "data_audit_rounds_max": 2
+  },
+  "G1_pass_for_descriptive_patterns": false,
+  "G1_pass_for_predictive_studies": false,
+  "G6_economic_returns_ready": false,
+  "next_allowed_operation": "NON_OUTCOME_SECOND_QA_ROUND_ON_HISTORICAL_TWSE_LISTING_IDENTITY_AND_TDCC_RELEASE_SEMANTICS",
+  "model_or_trade_authority": false
+}
