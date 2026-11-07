@@ -22,8 +22,11 @@ TICKER="2330"
 
 def normalized_lower_bound(level:str):
     clean=re.sub(r"[,，\s股]", "",level).replace("～","-").replace("~","-")
-    if "差異數調整" in clean or "合計" in clean or "總計" in clean:
+    if "差異數調整" in clean or "合計" in clean or "總計" in clean or clean.lower()=="total":
         return None
+    english_top=re.match(r"^morethan(\\d+)$",clean.lower())
+    if english_top:
+        return int(english_top.group(1))
     m=re.match(r"^(\d+)(?:-|以上|及以上|\+)",clean)
     if not m:
         return None
