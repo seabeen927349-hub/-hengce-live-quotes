@@ -1,0 +1,39 @@
+name: HENGCE Research FinMind Pilot Archive Export
+on:
+  push:
+    branches: [research/long-horizon-source-recovery-20261107]
+    paths:
+      - '.github/workflows/hengce-research-finmind-pilot-export.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/long-horizon-source-recovery-20261107
+      - name: Verify FinMind archival pilot completeness
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('research/long_horizon_data_recovery_20261107/finmind_pilot')
+          for year in range(2018,2023):
+              for stem in (f'2330_{year}',f'2330_{year}_margin',f'2330_{year}_price',f'market_total_institutional_{year}'):
+                  p=root/(stem+'.json')
+                  assert p.exists(),p
+                  obj=json.loads(p.read_text(encoding='utf-8'))
+                  assert obj.get('rows') and obj.get('raw_vendor_bytes_preserved') is False,stem
+          print('FinMind pilot 20/20 archival files PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-2018-22-pilot
+          path: research/long_horizon_data_recovery_20261107/finmind_pilot/*.json
+          if-no-files-found: error
+          retention-days: 30
