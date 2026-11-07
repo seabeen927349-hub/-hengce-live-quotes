@@ -54,7 +54,7 @@ def main():
             if low>=1000001:
                 super_high.append(r)
         if len(high)!=4 or len(super_high)!=1:
-            raise ValueError(f"UNKNOWN_LEVEL_SCHEMA high={len(high)} super={len(super_high)}")
+            raise ValueError(f"UNKNOWN_LEVEL_SCHEMA high={len(high)} super={len(super_high)} levels={sorted(r['HoldingSharesLevel'] for r in rows)}")
         def totals(v):
             return {"pct":round(sum(float(x["percent"]) for x in v),6),
                     "shares":sum(int(x["unit"]) for x in v),
