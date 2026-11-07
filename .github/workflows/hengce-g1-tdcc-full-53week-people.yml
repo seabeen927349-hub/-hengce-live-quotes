@@ -2,7 +2,9 @@ name: HENGCE G1 2025-2026 TDCC raw holder counts full extract
 "on":
   push:
     branches: [research/behavior-atlas-sequence-g2-retail-v2-20261107]
-    paths: [.github/workflows/hengce-g1-tdcc-full-53week-people.yml]
+    paths:
+      - .github/workflows/hengce-g1-tdcc-full-53week-people.yml
+      - research/behavior_atlas_sequence_g2_retail_v2_20261107/g1_extract_official_53week_retail_counts.py
   workflow_dispatch:
 permissions: {contents: read}
 jobs:
