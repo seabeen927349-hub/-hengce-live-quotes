@@ -22,7 +22,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from statistics import fmean
-from typing import Any
+from typing import Any, Callable
 
 from finmind_mcp.client import FinMindClient
 
@@ -37,6 +37,9 @@ from hengce_finmind_twse_common_snapshot_probe import (
     _twse_common_universe,
 )
 from hengce_twse_session_status_probe import current_mis
+from hengce_finmind_single_name_bridge import lookup as lookup_single_name, public_status as single_name_public_status
+from hengce_finmind_single_name_membership import current_official_quote_membership
+from hengce_finmind_private_delivery import deliver as deliver_private_quotes
 
 AUTHORITY = "SHADOW_INTRADAY_CONTEXT_ONLY_NO_FORMAL_EOD_ESCAPE_SELECTION_MODEL_OR_TRADING_AUTHORITY"
 SCOPE = "ALL_TWSE_LISTED_COMMON_STOCKS"
@@ -97,7 +100,10 @@ def _summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+async def collect(
+    exception_path: Path,
+    private_quote_consumer: Callable[[Callable[[str], tuple[Any, str]]], None] | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
     if not os.environ.get("FINMIND_TOKEN"):
         raise RuntimeError("FINMIND_TOKEN is missing")
 
@@ -139,6 +145,69 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         raise RuntimeError(f"unexpected TWSE common-stock coverage gaps:{unexpected_missing}")
     if not active_required.issubset(snapshot_set):
         raise RuntimeError("active TWSE common-stock universe is not fully covered")
+
+    # SINGLE-NAME QUOTE-ONLY membership is broader than Market State scope.
+    # Use official current TPEx/TPEx-emerging rosters, NOT historical
+    # FinMind membership, inside this existing governed FinMind runner.
+    # Errors affect ONLY this optional quote capability, not existing TWSE
+    # Market State coverage or its approved 0.5 research-shadow contract.
+    quote_membership = {}
+    quote_membership_counts = {}
+    quote_membership_status = "BLOCKED_MEMBERSHIP_UNVERIFIED"
+    try:
+        quote_membership, quote_membership_counts = current_official_quote_membership(common_set)
+        quote_membership_status = "VALIDATED_OFFICIAL_CURRENT_ROSTERS"
+    except Exception:
+        # Never log tokens, vendor records, or silently infer listing venues.
+        quote_membership_status = "BLOCKED_MEMBERSHIP_UNVERIFIED"
+
+    # These values exist only during THIS SAME pre-existing snapshot run.
+    # Never write FinMind price/volume or the private target URL to GitHub.
+    private_consumer_called = False
+    private_delivery = {
+        "status": "BLOCKED_MEMBERSHIP_UNVERIFIED",
+        "delivered": False,
+        "fresh_quote_count": 0,
+        "private_endpoint_used": False,
+        "public_quote_values_persisted": False,
+        "trading_authority": False,
+    }
+    if quote_membership_status.startswith("VALIDATED"):
+        allowed_codes = set(quote_membership)
+        private_lookup = lambda ticker: lookup_single_name(
+            snapshot_map, ticker, datetime.now(TAIPEI), allowed_codes
+        )
+        if private_quote_consumer is not None:
+            private_quote_consumer(private_lookup)
+            private_consumer_called = True
+            private_delivery["status"] = "CALLBACK_IN_PROCESS_ONLY"
+        else:
+            # The existing FinMind runner delivers to ONE explicitly approved
+            # owner-controlled HTTPS destination, only when ALL env secrets
+            # have been provided; default is NOT_CONFIGURED, no network.
+            private_delivery = deliver_private_quotes(private_lookup, allowed_codes)
+            private_consumer_called = private_delivery["delivered"]
+
+    # Public diagnostic is deliberately aggregate-only, without ticker IDs.
+    watch_codes = [
+        str(item.get("Ticker") or "")
+        for item in json.loads(
+            Path("hengce/frozen/live_symbols.json").read_text(encoding="utf-8")
+        ).get("symbols", [])
+    ]
+    bridge_local = single_name_public_status(
+        snapshot_map, watch_codes, generated, set(quote_membership)
+    )
+    bridge_public = {key: val for key, val in bridge_local.items() if key != "watch_status"}
+    bridge_public.update({
+        "membership_status": quote_membership_status,
+        "market_scope": "TWSE_TPEX_EMERGING_QUOTE_ONLY",
+        "membership_market_counts": quote_membership_counts,
+        "membership_rows_persisted": False,
+        "private_quote_consumer_connected": private_consumer_called,
+        "private_delivery": private_delivery,
+        "public_market_data_relay": False,
+    })
 
     derived_rows: list[dict[str, Any]] = []
     stale_codes: list[str] = []
@@ -247,6 +316,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "raw_finmind_rows_persisted": False,
         "raw_twse_mis_rows_persisted": False,
         "stale_rows_neutralized_as_zero": False,
+        "single_name_bridge": bridge_public,
         "formal_eod_state_creation": False,
         "formal_escape_state_creation": False,
         "selection_authority": False,
@@ -290,6 +360,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "raw_finmind_rows_persisted": False,
         "raw_twse_mis_rows_persisted": False,
         "per_security_rows_persisted": False,
+        "single_name_bridge": bridge_public,
         "stale_rows_neutralized_as_zero": False,
         "formal_escape_authority": False,
         "formal_eod_authority": False,
