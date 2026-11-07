@@ -1,0 +1,108 @@
+name: HENGCE TDCC Register Four-Leg Mother Binding in Main
+
+"on":
+  push:
+    branches: [research/tdcc-finmind-historical-backfill-20261107]
+    paths: [.github/workflows/hengce-tdcc-register-four-leg-binding.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: hengce-tdcc-register-four-leg-main
+  cancel-in-progress: false
+
+jobs:
+  register-validated-pointer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout production main for metadata-only registration
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Download completed checked fourth-leg sidecar artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-fourth-leg-2018-2026-integrated-mother
+          run-id: 42364808564
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/hengce-fourth-leg-certified
+      - name: Independently validate archive, then write binding metadata only
+        shell: python
+        run: |
+          import json,hashlib,pathlib
+          p=pathlib.Path('/tmp/hengce-fourth-leg-certified')
+          a=json.loads((p/'HENGCE_FOURTH_LEG_INTEGRATION_AUDIT.json').read_text(encoding='utf-8'))
+          b=json.loads((p/'HENGCE_FOUR_LEG_MOTHER_BINDING.json').read_text(encoding='utf-8'))
+          f=p/'HENGCE_TDCC_FOURTH_LEG_WEEKLY_2018_2026.csv.gz'
+          actual=hashlib.sha256(f.read_bytes()).hexdigest()
+          assert a['status']=='PASS_RESEARCH_FOURTH_LEG_INTEGRATED',a.get('status')
+          assert a['total_rows']==1013961 and a['snapshot_count']==457
+          assert a['invalid_or_null_rows']==418 and a['last_snapshot']=='20261106'
+          assert a['output_sha256']==actual and b['fourth_leg_weekly']['sha256']==actual
+          assert b['daily_ffill_disabled'] is True and b['trading_authority'] is False
+          main=pathlib.Path('.github/workflows/hengce-tdcc-ownership-daily.yml').read_text()
+          assert "- cron: '45 15 * * 5'" in main
+          assert "- cron: '15 21 * * 5'" in main
+          cur=json.loads(pathlib.Path('ownership/tdcc/latest.json').read_text())
+          assert cur['snapshot_date']=='20261106'
+          record={
+            'system':'HENGCE',
+            'schema':'HENGCE_FOUR_LEG_MOTHER_LINKAGE_REGISTERED_20261107_V1',
+            'status':'RESEARCH_FOURTH_LEG_REGISTERED',
+            'source_integration_run_id':42364808564,
+            'fourth_leg_archive_library_path':'/HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_FOURTH_LEG_WEEKLY_2018_2026_RESEARCH_SIDECAR_20261107.zip',
+            'daily_mother_fourth_leg_folder':'/HENGCE_CANONICAL/RESEARCH/HIST_FULL_MARKET_MOTHER_2018_2026_20261107/TDCC_FOURTH_LEG',
+            'weekly_data_sha256':actual,
+            'weekly_data_rows':1013961,'snapshot_count':457,'invalid_historical_tier_rows':418,
+            'daily_mother':b['three_leg_daily_mother'],
+            'join_key':['SnapshotDate','Ticker'],
+            'join_frequency':'WEEKLY_SIDE_CAR_NO_DAILY_FORWARD_FILL',
+            'no_same_week_lookahead':True,
+            'retrospective_finmind_publication_date_verified':False,
+            'ordinary_stock_historical_identity_verified':False,
+            'canonical_official_weekly_vessel':{
+              'workflow':'.github/workflows/hengce-tdcc-ownership-daily.yml',
+              'current_pointer':'ownership/tdcc/latest.json',
+              'snapshot_file_template':'ownership/tdcc/{SnapshotDate}/tdcc_ownership_4d.csv',
+              'friday_cron_utc':'45 15 * * 5',
+              'friday_taipei':'Friday 23:45 Asia/Taipei',
+              'retry_cron_utc':'15 21 * * 5',
+              'retry_taipei':'Saturday 05:15 Asia/Taipei',
+              'additional_high_frequency_checks_preserved':True,
+              'source':'https://opendata.tdcc.com.tw/getOD.ashx?id=1-5',
+              'latest_week_at_registration':cur['snapshot_date'],
+              'future_official_weekly_updates_are_read_from_latest_pointer':True
+            },
+            'production_daily_mother_mutated':False,
+            'model_authority_created':False,
+            'trading_authority_created':False
+          }
+          dest=pathlib.Path('ownership/tdcc/fourth_leg')
+          dest.mkdir(parents=True,exist_ok=True)
+          (dest/'HENGCE_FOUR_LEG_MOTHER_BINDING_20261107.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          # The compact auditing snapshot contains no licensed source rows.
+          compact={k:a.get(k) for k in ('system','artifact','schema','status','total_rows','valid_rows',
+                    'invalid_or_null_rows','snapshot_count','first_snapshot','last_snapshot','source_counts',
+                    'source_selection_counts','year_counts','overlap_counts','conflict_count',
+                    'output_file','output_sha256','mother_sha256_expected','daily_mother_mutated')}
+          (dest/'HENGCE_FOUR_LEG_SOURCE_AUDIT_20261107.json').write_text(json.dumps(compact,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('HENGCE_FOURTH_LEG_REGISTRATION_PASS',json.dumps(record,ensure_ascii=False))
+      - name: Commit only validated pointer and compact audit to main
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-tdcc-fourth-leg-register'
+          git config user.email 'actions@users.noreply.github.com'
+          git add ownership/tdcc/fourth_leg/HENGCE_FOUR_LEG_MOTHER_BINDING_20261107.json
+          git add ownership/tdcc/fourth_leg/HENGCE_FOUR_LEG_SOURCE_AUDIT_20261107.json
+          if git diff --cached --quiet; then
+            echo 'Fourth leg registration already present.'
+            exit 0
+          fi
+          git commit -m 'data(tdcc): register 2018-2026 complete weekly fourth-leg mother pointer'
+          git pull --rebase origin main
+          git push origin HEAD:main
