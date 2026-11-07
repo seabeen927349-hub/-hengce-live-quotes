@@ -1,0 +1,36 @@
+name: HENGCE FinMind TDCC Bulk Historical Valid-Date Probe
+
+"on":
+  push:
+    branches:
+      - research/tdcc-finmind-historical-backfill-20261107
+    paths:
+      - .github/workflows/hengce-tdcc-finmind-marketwide-valid-date.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  corrected-bulk-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check 2018 2024 2025 whole-market historical weekly API
+        run: |
+          python -m py_compile scripts/hengce_finmind_tdcc_marketwide_corrected_probe.py
+          python scripts/hengce_finmind_tdcc_marketwide_corrected_probe.py
+      - name: Save metadata only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-marketwide-valid-date-proof
+          path: /tmp/hengce-finmind-marketwide-corrected/manifest.json
+          retention-days: 1
+          if-no-files-found: error
