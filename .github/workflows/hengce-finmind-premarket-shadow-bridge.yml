@@ -4,7 +4,9 @@ name: HENGCE FinMind PreMarket Shadow Bridge
   pull_request:
     paths:
       - 'scripts/hengce_finmind_premarket_bridge.py'
+      - 'scripts/hengce_two_time_scale_environment_display.py'
       - 'tests/engineering/test_hengce_finmind_premarket_bridge.py'
+      - 'tests/engineering/test_hengce_two_time_scale_environment_display.py'
       - 'docs/HENGCE_FINMIND_PREMARKET_BRIDGE_20261107.md'
       - '.github/workflows/hengce-finmind-premarket-shadow-bridge.yml'
   workflow_run:
@@ -39,8 +41,9 @@ jobs:
           python-version: '3.12'
       - name: Bridge unit tests
         run: |
-          python -m py_compile scripts/hengce_finmind_premarket_bridge.py
+          python -m py_compile scripts/hengce_finmind_premarket_bridge.py scripts/hengce_two_time_scale_environment_display.py
           python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_premarket_bridge.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_two_time_scale_environment_display.py' -v
       - name: Consume existing FinMind vessel outputs only
         shell: bash
         run: |
