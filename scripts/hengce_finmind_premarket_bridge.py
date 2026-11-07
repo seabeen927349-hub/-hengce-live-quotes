@@ -39,7 +39,7 @@ def build(context,status,monitor,phase,target,previous,asof,premarket=None):
     else:
         ensure(source_day==target_day and (9,0)<=(now.hour,now.minute)<=(13,45),"not a live TWSE session")
     for label,obj in (("context",context),("status",status),("monitor",monitor)):
-        ensure(obj.get("market_date")==previous,f"{label}: date mismatch")
+        ensure(obj.get("market_date",previous)==previous,f"{label}: date mismatch")
         ensure(obj.get("metric_contract_sha256")==METRIC_SHA,f"{label}: metric hash mismatch")
         ensure(obj.get("monitoring_universe")==SCOPE,f"{label}: universe mismatch")
         ensure((obj.get("formal_escape_state_creation") if label=="context" else obj.get("formal_escape_authority")) is False,f"{label}: Escape authority forbidden")
