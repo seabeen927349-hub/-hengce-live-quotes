@@ -1,0 +1,37 @@
+name: HENGCE FinMind vs Official TDCC 2025 Crosscheck (Research Only)
+"on":
+  push:
+    branches:
+      - research/tdcc-finmind-historical-backfill-20261107
+    paths:
+      - '.github/workflows/hengce-tdcc-finmind-crosscheck.yml'
+      - 'scripts/hengce_finmind_tdcc_crosscheck.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  overlap-quality:
+    if: github.ref == 'refs/heads/research/tdcc-finmind-historical-backfill-20261107'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile scripts
+        run: python -m py_compile scripts/hengce_finmind_tdcc_historical_backfill.py scripts/hengce_finmind_tdcc_crosscheck.py
+      - name: Fetch 2330 2025 overlapping TDCC sample
+        run: python scripts/hengce_finmind_tdcc_historical_backfill.py --mode probe --out /tmp/hengce-finmind-tdcc-probe
+      - name: Match 2025-11-07 FinMind tiers to official frozen snapshot
+        run: python scripts/hengce_finmind_tdcc_crosscheck.py
+      - name: Preserve non-secret verification receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-official-tdcc-crosscheck
+          path: /tmp/hengce-finmind-crosscheck/receipt.json
+          retention-days: 30
+          if-no-files-found: warn
