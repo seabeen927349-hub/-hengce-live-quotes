@@ -1,0 +1,69 @@
+{
+  "schema": "HENGCE_BEHAVIOR_ATLAS_G3_A1_RESULTS_V1",
+  "status": "PASS_EXECUTED_RESEARCH_DESCRIPTIVE_ONLY",
+  "pre_registered_experiment": "A1",
+  "scope": "2018-2022 DISCOVERY ONLY",
+  "no_forward_returns_computed": true,
+  "future_price_targets_read": false,
+  "point_in_time_predictive_authority": false,
+  "source_daily_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+  "source_weekly_scope_sha256": "0d708990cafdc679a7f92ab0ca49363acbde93bf64490e446a81c2ffdb414cb6",
+  "statistics": {
+    "week_anchors": 63,
+    "stock_week_episodes": 45712,
+    "equal_weight_anchor_mean_spearman": 0.3516219155283265,
+    "anchor_median_spearman": 0.36092201116386297,
+    "week_anchor_bootstrap_95pct": [
+      0.3357882800767638,
+      0.36765810273453153
+    ],
+    "within_week_ticker_shuffle_permutations": 499,
+    "two_sided_empirical_p": 0.002,
+    "conservative_six_test_bonferroni_p_upper": 0.012,
+    "same_sign_years_out_of_five": 5,
+    "all_discovery_years": {
+      "2018": {
+        "anchors": 12,
+        "total_stockepisodes": 7776,
+        "mean_rho": 0.3374836764623122,
+        "median_rho": 0.36166568335856153
+      },
+      "2019": {
+        "anchors": 13,
+        "total_stockepisodes": 8237,
+        "mean_rho": 0.36305755182325833,
+        "median_rho": 0.37148302014403667
+      },
+      "2020": {
+        "anchors": 13,
+        "total_stockepisodes": 9904,
+        "mean_rho": 0.32267100147673017,
+        "median_rho": 0.3461082238348436
+      },
+      "2021": {
+        "anchors": 12,
+        "total_stockepisodes": 9154,
+        "mean_rho": 0.37264403800607054,
+        "median_rho": 0.39821976295563444
+      },
+      "2022": {
+        "anchors": 13,
+        "total_stockepisodes": 10641,
+        "mean_rho": 0.3627828393664718,
+        "median_rho": 0.35702633911412474
+      }
+    },
+    "exclude_flagged_current_roster_identity_conflict_mean_rho": 0.35162191552832656,
+    "total_flagged_identity_rows_in_experiments": 0,
+    "pre_registered_candidate_qualifies": true,
+    "experiment_budget_used": 1,
+    "experiment_budget_max": 6
+  },
+  "cautions": [
+    "Association not individual psychology and not causal",
+    "Correlation is not holding-to-return alpha",
+    "No 2023-2024 replication inspected",
+    "Historical TDCC first-release time not known",
+    "Even qualifying candidate must pass G4 to be called recurrent"
+  ]
+}
