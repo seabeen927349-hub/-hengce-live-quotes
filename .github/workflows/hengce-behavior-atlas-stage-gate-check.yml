@@ -1,0 +1,25 @@
+name: HENGCE Behavior Atlas Stage Gate Lock Check
+
+"on":
+  push:
+    branches:
+      - research/behavior-atlas-protocol-lock-20261107
+    paths:
+      - 'research/behavior_atlas_20261107/**'
+      - '.github/workflows/hengce-behavior-atlas-stage-gate-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-governance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate stage order, literature gate and study cap without executing any model
+        run: python research/behavior_atlas_20261107/validate_stage_gates.py
