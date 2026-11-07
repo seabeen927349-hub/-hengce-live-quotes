@@ -138,14 +138,15 @@
     "economic_alpha_gate": "BLOCKED_CORPORATE_ACTION_AND_PIT_NOT_CERTIFIED"
   },
   "experiment_budget": {
-    "family_count": 1,
+    "family_count": 3,
     "registered_primary_experiments": 6,
     "max_total_tests": 6,
     "retest_after_validation": 0,
     "data_QA_method_fix_max_per_verified_bug": 1,
     "do_not_run_G3_as_part_of_G2": true,
     "fail_stop_if_no_replicable_nonaccounting_effect": true,
-    "reserved_investor_return_tests": 0
+    "reserved_investor_return_tests": 0,
+    "family_definition": "3 fixed horizons: 4w/20d,12w/60d,24w/120d; 2 direction tests per horizon"
   },
   "data_snooping": "Historical datasets and A1 results previously inspected; chronological 2023–24 split is retrospective only, not genuinely untouched external holdout.",
   "authorization": {
@@ -155,5 +156,13 @@
     "N2_restarted": false,
     "production_authority": false,
     "trading_authority": false
-  }
+  },
+  "G2_prelock_change_log": [
+    {
+      "reason": "Align family_count with original protocol three horizon families × two directional implementations; no data outcomes inspected",
+      "when": "2026-11-07",
+      "previous_family_count": 1,
+      "replacement": 3
+    }
+  ]
 }
