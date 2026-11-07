@@ -1,0 +1,49 @@
+name: HENGCE Research Restore 2026-10-14 EOD Margin Full Fields
+on:
+  push:
+    branches: [research/long-horizon-source-recovery-20261107]
+    paths: ['.github/workflows/hengce-research-repair-20261014-margin-archive.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export-original-eod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/long-horizon-source-recovery-20261107
+      - name: Validate and export original full margin fields
+        run: |
+          python3 - <<'PY'
+          import csv, hashlib, json
+          from pathlib import Path
+          root=Path('eod/20261014')
+          files=sorted(root.glob('margin_[1-9].csv'))
+          assert len(files)>=6, files
+          out=Path('out');out.mkdir(exist_ok=True)
+          rows=[]; seen=set(); src=[]
+          for p in files:
+              raw=p.read_bytes()
+              src.append({'name':p.name,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)})
+              with p.open(newline='',encoding='utf-8-sig') as f:
+                  reader=csv.DictReader(f)
+                  for row in reader:
+                      key=(row['Date'],row['Ticker'])
+                      assert key[0]=='2026-10-14' and key not in seen,key
+                      seen.add(key);rows.append(row)
+          assert len(rows)>1000
+          needed=['Date','Ticker','MarginBuy','MarginSell','MarginCashRepayment','MarginPreviousBalance','MarginBalance','ShortBuy','ShortSell','ShortStockRepayment','ShortPreviousBalance','ShortBalance','Offset']
+          assert all(all(r.get(k) is not None and r.get(k)!='' for k in needed) for r in rows)
+          with (out/'margin_20261014_full.csv').open('w',newline='',encoding='utf-8') as f:
+              w=csv.DictWriter(f,fieldnames=list(rows[0].keys()));w.writeheader();w.writerows(sorted(rows,key=lambda r:r['Ticker']))
+          manifest={'status':'PASS','date':'2026-10-14','source':'EXISTING_HENGCE_GITHUB_EOD_ONLY','record_count':len(rows),'files':src,'csv_sha256':hashlib.sha256((out/'margin_20261014_full.csv').read_bytes()).hexdigest(),'canonical_mutated':False}
+          (out/'receipt.json').write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hengce-20261014-margin-original-field-recovery
+          path: out/
+          retention-days: 30
+          if-no-files-found: error
