@@ -42,7 +42,7 @@ def build(context,status,monitor,phase,target,previous,asof,premarket=None):
         ensure(obj.get("market_date")==previous,f"{label}: date mismatch")
         ensure(obj.get("metric_contract_sha256")==METRIC_SHA,f"{label}: metric hash mismatch")
         ensure(obj.get("monitoring_universe")==SCOPE,f"{label}: universe mismatch")
-        ensure(obj.get("formal_escape_authority") is False,f"{label}: Escape authority forbidden")
+        ensure((obj.get("formal_escape_state_creation") if label=="context" else obj.get("formal_escape_authority")) is False,f"{label}: Escape authority forbidden")
         ensure(obj.get("trading_authority") is False,f"{label}: trading authority forbidden")
         ensure(stamp(obj["generated_at_taipei"])<=now,f"{label}: future timestamp")
     ensure(status.get("state")=="SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY","FinMind not ready")
