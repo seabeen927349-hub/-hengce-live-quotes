@@ -31,6 +31,9 @@ jobs:
           mod=importlib.util.module_from_spec(spec)
           spec.loader.exec_module(mod)
           core.get_json=mod.fetch_exact
+          # Saturday make-up sessions have fewer institutional transactions than normal weekdays.
+          # Validate genuine dated TWSE payload and identifiers, not a weekday volume floor.
+          mod.MIN_ROWS.update({'price':500,'institutional':100,'margin':200})
           root=Path('out');root.mkdir(exist_ok=True)
           report={'schema':'HENGCE_TWSE_2018_SATURDAY_SOURCE_REPAIR','days':{},'historical_calendar_override':['2018-03-31','2018-12-22'],'canonical_mutated':False}
           for ds in ('20180331','20181222'):
