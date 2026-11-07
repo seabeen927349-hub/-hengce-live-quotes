@@ -38,8 +38,14 @@ jobs:
             --out /tmp/hengce-finmind-tdcc-probe
       - name: Compile marketwide access probe
         run: python -m py_compile scripts/hengce_finmind_tdcc_marketwide_probe.py
-      - name: Test marketwide historical query without data_id
+      - name: Test marketwide historical query without data_id (non-blocking feasibility)
+        continue-on-error: true
         run: python scripts/hengce_finmind_tdcc_marketwide_probe.py
+      - name: Pilot 25 frozen universe stocks, per-symbol 2018-2025
+        run: |
+          python scripts/hengce_finmind_tdcc_historical_backfill.py \
+            --mode sample --start 2018-01-01 --end 2025-10-30 \
+            --limit 25 --out /tmp/hengce-finmind-tdcc-sample
       - name: Preserve research proof or explicit blocker (no credentials)
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,5 +54,6 @@ jobs:
           path: |
             /tmp/hengce-finmind-tdcc-probe/
             /tmp/hengce-finmind-market-probe/
+            /tmp/hengce-finmind-tdcc-sample/
           if-no-files-found: warn
           retention-days: 30
