@@ -24,6 +24,16 @@ from pathlib import Path
 SOURCE = "TaiwanStockTradingDailyReportSecIdAgg"
 BRANCH = "1470"
 FIRST_AVAILABLE = date(2021, 6, 30)
+# TWSE 2026 official trading calendar; no-trade settlement dates must NOT be
+# misclassified as failed vendor downloads.
+# https://www.twse.com.tw/holidaySchedule/holidaySchedule?response=html
+NONTRADING_2026 = frozenset({
+    "2026-01-01", "2026-02-12", "2026-02-13", "2026-02-16",
+    "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20",
+    "2026-02-27", "2026-04-03", "2026-04-06", "2026-05-01",
+    "2026-06-19", "2026-09-25", "2026-09-28", "2026-10-09",
+    "2026-10-26", "2026-12-25",
+})
 FIELDS = ("date", "stock_id", "securities_trader_id", "buy_volume", "sell_volume")
 SCHEMA = "HENGCE_MS1470_HISTORICAL_RESEARCH_BACKFILL_V1"
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -55,15 +65,16 @@ def research_output_dir(value: str) -> Path:
 
 
 def weekdays(start: date, end: date):
-    today = datetime.now().astimezone().date()
     # Do not infer the Taiwan local date from the runner's UTC clock.
     from zoneinfo import ZoneInfo
     today = datetime.now(ZoneInfo("Asia/Taipei")).date()
+    if start.year != 2026 or end.year != 2026:
+        raise ValueError("THIS_CALENDAR_VALIDATED_ONLY_FOR_2026")
     if start < FIRST_AVAILABLE or end >= today or start > end:
         raise ValueError("INVALID_HISTORICAL_DATE_RANGE")
     day = start
     while day <= end:
-        if day.weekday() < 5:
+        if day.weekday() < 5 and day.isoformat() not in NONTRADING_2026:
             yield day
         day += timedelta(days=1)
 
@@ -186,15 +197,18 @@ def backfill(start: date, end: date, output: Path, *, strict: bool = False) -> d
         "broker_owns_trades": False,
         "study_start": start.isoformat(),
         "study_end": end.isoformat(),
-        "status": "COMPLETE_REQUESTED_WEEKDAYS" if not failed else "PARTIAL_UNVERIFIED_MISSING_DATES",
+        "status": "COMPLETE_REQUESTED_TRADING_DATES" if not failed else "PARTIAL_UNVERIFIED_MISSING_DATES",
         "weekdays_requested": len(dates),
+        "expected_trading_sessions": len(dates),
+        "twse_trading_calendar_source": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?response=html",
+        "excluded_2026_holidays": sorted(x for x in NONTRADING_2026 if start.isoformat() <= x <= end.isoformat()),
         "successful_source_dates": len(validated),
         "failed_source_dates": failed,
         "source_audit": validated,
         "historical_source_revision_class": "RETROSPECTIVE_VENDOR_SNAPSHOT_NON_PIT",
         "volume_unit": "shares_from_vendor_fields; no conversion to lots",
         "stock_universe": "FOUR_DIGIT_NON_91XX_PROXY_NOT_VERIFIED_ORDINARY_SHARES",
-        "twse_trading_calendar_audited": False,
+        "twse_trading_calendar_audited": True,
         "interpretation": "broker_branch_customer_orders_not_proprietary_holdings",
         "raw_vendor_rows_persisted": False,
         "vendor_raw_storage": "temporary_directory_deleted_per_day",
@@ -223,6 +237,7 @@ def self_test() -> None:
     assert normalize_ticker(" 2330 ") == "2330"
     assert normalize_ticker("7") == "0007"
     assert (date(2026, 1, 2) + timedelta(days=4 - date(2026, 1, 2).weekday())).isoformat() == "2026-01-02"
+    assert list(weekdays(date(2026, 2, 11), date(2026, 2, 23))) == [date(2026, 2, 11), date(2026, 2, 23)]
     assert BRANCH == "1470"
     assert SOURCE == "TaiwanStockTradingDailyReportSecIdAgg"
     print('{"self_test":"PASS","production_eod_changed":false}')
