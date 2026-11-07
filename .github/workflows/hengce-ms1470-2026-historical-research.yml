@@ -1,0 +1,125 @@
+name: HENGCE MS1470 2026 historical broker-branch research
+
+# Independent research, no edits to original EOD/mother/trading workflows.
+# Raw licensed FinMind parquet exists only in runner temp and is deleted.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-ms1470-2026-historical-research.yml'
+permissions:
+  contents: read
+concurrency:
+  group: hengce-ms1470-2026-historical-research
+  cancel-in-progress: false
+
+jobs:
+  historical-probe:
+    name: Prove SponsorPro historical access for 2026-01-02
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install research dependencies
+        run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]' pandas numpy pyarrow
+      - name: Self-test
+        run: python scripts/hengce_ms1470_historical_research.py --mode self-test
+      - name: Historical source authorization, branch identity and schema probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_ms1470_historical_research.py --mode backfill --start 2026-01-02 --end 2026-01-02 --output-dir "${RUNNER_TEMP}/ms1470-probe" --strict
+      - name: Upload research-only probe receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_MS1470_PROBE_20260102
+          path: ${{ runner.temp }}/ms1470-probe/
+          if-no-files-found: warn
+          retention-days: 7
+
+  historical-months:
+    name: Download and aggregate ${{ matrix.month }}
+    needs: historical-probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        month: ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10','2026-11']
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+      MONTH: ${{ matrix.month }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install research dependencies
+        run: python -m pip install --disable-pip-version-check 'finmind-mcp[parquet]' pandas numpy pyarrow
+      - name: Historical downloads and audited weekly/monthly aggregation
+        shell: bash
+        run: |
+          set -euo pipefail
+          read -r START END < <(python - <<'PY'
+          import calendar,os
+          from datetime import date
+          year,month=map(int,os.environ["MONTH"].split("-"))
+          first=date(year,month,1)
+          last=date(year,month,calendar.monthrange(year,month)[1])
+          print(max(first,date(2026,1,2)).isoformat(),min(last,date(2026,11,6)).isoformat())
+          PY
+          )
+          DEST="${RUNNER_TEMP}/ms1470-${MONTH}"
+          mkdir -p "$DEST"
+          set +e
+          python scripts/hengce_ms1470_historical_research.py --mode backfill --start "$START" --end "$END" --output-dir "$DEST"
+          RC=$?
+          set -e
+          printf '%s\n' "$RC" > "$DEST/exit_code.txt"
+          echo "Research month=$MONTH, exit_code=$RC; manifest retains every missing date."
+      - name: Preserve only audited aggregated research (no licensed source parquet)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_MS1470_2026_${{ matrix.month }}
+          path: ${{ runner.temp }}/ms1470-${{ matrix.month }}/
+          if-no-files-found: warn
+          retention-days: 7
+
+  merge:
+    name: Assemble factual 2026 YTD report
+    needs: [historical-probe, historical-months]
+    if: ${{ always() && needs.historical-probe.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: HENGCE_MS1470_2026_*
+          path: ${{ runner.temp }}/ms1470-months
+          merge-multiple: false
+      - name: Merge and verify source receipts and file hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_ms1470_research_merge.py --input-root "${RUNNER_TEMP}/ms1470-months" --output-dir "${RUNNER_TEMP}/ms1470-annual"
+      - name: Upload verified YTD weekly/monthly study
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_MS1470_YTD_2026_RESEARCH
+          path: ${{ runner.temp }}/ms1470-annual/
+          if-no-files-found: warn
+          retention-days: 7
