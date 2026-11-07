@@ -1,0 +1,36 @@
+{
+  "schema": "HENGCE_BEHAVIOR_ATLAS_G2_SOURCE_HASH_LOCK_V1",
+  "locked_date": "2026-11-07",
+  "sources": [
+    {
+      "name": "TWSE_OFFICIAL_FULL_MARKET_DAILY_THREE_LEG",
+      "path": "/HENGCE_CANONICAL/RESEARCH/HIST_FULL_MARKET_MOTHER_2018_2026_20261107/HENGCE_FULL_MARKET_MOTHER_RESEARCH_2018_2026.csv.gz",
+      "sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+      "rows": 2111682
+    },
+    {
+      "name": "TDCC_FOURTH_LEG_WEEKLY_CSV_INSIDE_ARCHIVE",
+      "path": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_FOURTH_LEG_WEEKLY_2018_2026_RESEARCH_SIDECAR_20261107.zip",
+      "sha256_internal": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
+      "rows": 1013961,
+      "snapshots": 457
+    },
+    {
+      "name": "G1_TDCC_TWSE_WEEKLY_DESCRIPTIVE_SCOPE",
+      "path": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/G1_TDCC_TWSE_DESCRIPTIVE_ELIGIBLE_2018_2026.csv.gz",
+      "sha256": "0d708990cafdc679a7f92ab0ca49363acbde93bf64490e446a81c2ffdb414cb6",
+      "rows": 443341
+    },
+    {
+      "name": "G1_ASOF_TWSE_IDENTITY_AUDIT",
+      "path": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/G1_TDCC_TWSE_ASOF_ROSTER_SCOPE_AUDIT_20261107.json",
+      "status": "SOURCE_VERIFIED"
+    }
+  ],
+  "not_yet_authorized": [
+    "G5_PIT_CLAIMS",
+    "G6_ECONOMIC_BACKTEST",
+    "TRADING_PROMOTION"
+  ],
+  "no_source_lookahead_override": true
+}
