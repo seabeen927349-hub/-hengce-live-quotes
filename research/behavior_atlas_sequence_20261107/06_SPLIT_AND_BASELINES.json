@@ -1,0 +1,159 @@
+{
+  "schema": "HENGCE_BEHAVIOR_SEQUENCE_G2_PREREG_V1",
+  "title": "2018–2026 全市場TDCC-法人-融資群體先後順序｜獨立續篇",
+  "locked_local_date": "2026-11-07",
+  "parent_closed_research_ref": "research/behavior_atlas_20261107/STAGE_GATE_STATE.json",
+  "parent_terminal_outcome": "DESCRIPTIVE_ONLY",
+  "scope_authority": "RETROSPECTIVE_BEHAVIOR_ONLY_NO_RETURN_NO_TRADING",
+  "literature_gate_path": "research/behavior_atlas_sequence_20261107/LITERATURE_GATE.json",
+  "G0": "PASS_INHERITED_STRICT_SCOPE",
+  "G1": "PASS_RESTRICTED_RETROSPECTIVE_SCOPE_ONLY",
+  "G2": "PENDING_UNTIL_ALL_FILES_AND_CHECKS_EXIST",
+  "research_question": "Do observed TDCC large-holder structural changes temporally precede or lag aggregate institutional trades and margin changes in a repeated, non-accounting-only pattern, beyond common date/liquidity composition? Not psychological causality or alpha.",
+  "null_hypotheses": [
+    "H0a: across stocks, earlier aggregate-group behavior has no association with later other-group behavior after week/size-conditioned shuffle",
+    "H0b: any observed lag association has no advantage over the reverse direction for the same holder-flow pairing, suggesting persistence/mechanical accounting rather than ordering",
+    "H0c: apparent groups are driven by common market/sector information or stock ownership accounting and do not replicate by calendar year"
+  ],
+  "sources": [
+    {
+      "kind": "TWSE_DAILY_THREE_LEG",
+      "library": "/HENGCE_CANONICAL/RESEARCH/HIST_FULL_MARKET_MOTHER_2018_2026_20261107/HENGCE_FULL_MARKET_MOTHER_RESEARCH_2018_2026.csv.gz",
+      "rows": 2111682,
+      "sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93"
+    },
+    {
+      "kind": "TDCC_WEEKLY_FOURTH_LEG",
+      "library": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_FOURTH_LEG_WEEKLY_2018_2026_RESEARCH_SIDECAR_20261107.zip",
+      "weekly_rows": 1013961,
+      "weekly_snapshots": 457,
+      "inner_gzip_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3"
+    },
+    {
+      "kind": "G1_TWSE_OBSERVED_NONDR_TDCC_SCOPE",
+      "library": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/G1_TDCC_TWSE_DESCRIPTIVE_ELIGIBLE_2018_2026.csv.gz",
+      "weekly_rows": 443341,
+      "sha256": "0d708990cafdc679a7f92ab0ca49363acbde93bf64490e446a81c2ffdb414cb6"
+    }
+  ],
+  "sample_constraints": {
+    "market": "TWSE-listed-appearing-four-digit non-obvious-DR per reference-week actual source row; not a complete PIT ordinary-share legal roster",
+    "covers_large_caps": true,
+    "main_universe": "all qualifying market candidates; non-defensive subgroups cannot be asserted without historical industry classification",
+    "exclude_survivorship_filter": true,
+    "preserve_later_delisted": true,
+    "historical_identity_conflict_rows": 81,
+    "historical_identity_conflicts": "all analyses repeated excluding current-roster date-conflict-flagged observations; if result depends on them => fail or only descriptive",
+    "tdcc_invalid_grades": 418,
+    "missing_close_rows": 6641,
+    "missingness": "missing source values retain NULL and flag; no imputation of finance/TDCC to zero, no forward filling of TDCC days",
+    "stock_time_episode": "Ticker × fixed globally anchored NONOVERLAPPING time block; statistical independent unit is calendar anchor, NOT each stock-week",
+    "provenance_between_sources": "SourceKind retained; stock runs crossing source changes are separately sensitivity-marked; no claim vendor retrieval date equals original TDCC publication date"
+  },
+  "time_alignment": {
+    "weekly_index": "sorted global TDCC SnapshotDate unique reference weeks; T is weekly index within separate discovery/replication/stress phase",
+    "anchor_rule": "For weekly horizon L select anchor indexes T=L, L+2L, L+4L etc while T+L < phase week count. Previous and future weekly blocks [T-L,T] and [T,T+L] share boundary only; no event overlap between consecutive anchors.",
+    "trading_session_calendar": "sorted unique TWSE Date; daily institutional previous N sessions are <= weekly reference date, next N sessions are > weekly reference date; weekends/special Saturday trading days follow historical TWSE calendar, not guessed weekdays",
+    "weekly_scale": [
+      4,
+      12,
+      24
+    ],
+    "sessions_per_scale": [
+      20,
+      60,
+      120
+    ],
+    "window_stock_coverage": "for each stock each institutional window requires >=80% (ceil(0.8*N)) of global TWSE market days with valid positive Volume and relevant net flow; no missing cell imputed; disclose surviving stocks/anchors",
+    "margin_window_requirements": "for margin changes require valid >=0 baseline and terminal balance on corresponding observed trade days, not cash flow or identifiable investor",
+    "tdcc_endpoint_requirement": "TDCC valid tier at all required weekly endpoints, no cross-week smoothing/interpolation, source-change boundaries flagged",
+    "phase_no_crossing": true,
+    "phase_boundaries": {
+      "discovery": [
+        "2018-01-05",
+        "2022-12-31"
+      ],
+      "replication": [
+        "2023-01-01",
+        "2024-12-31"
+      ],
+      "stress": [
+        "2025-01-01",
+        "2026-11-06"
+      ],
+      "prospective": "only newly observed releases after 2026-11-07 can ever qualify, separate post-registered process"
+    },
+    "reference_date_is_not_release_date": true,
+    "PIT_for_prediction": false
+  },
+  "variables": {
+    "tdcc_holder_vector": [
+      "Big400Pct_T-minus-L_to_T_change_in_percentage_points",
+      "Big1000Pct_T-minus-L_to_T_change_in_percentage_points",
+      "log1p(Big400Holders_T)-log1p(Big400Holders_T-minus-L)",
+      "log1p(Big1000Holders_T)-log1p(Big1000Holders_T-minus-L)"
+    ],
+    "institution_margin_vector": [
+      "sum(ForeignNet)/sum(Volume) over N global TWSE trading sessions",
+      "sum(TrustNet)/sum(Volume) over N global TWSE trading sessions",
+      "sum(DealerNet)/sum(Volume) over N global TWSE trading sessions",
+      "log1p(Margin_MarginBalance_last)-log1p(Margin_MarginBalance_first)"
+    ],
+    "comparisons": "4×4=16 fixed pairings per direction/horizon. First principal discovery statistic uses max absolute across all sixteen with max-statistic permutation correction (no posthoc selection without correction).",
+    "persistence_accounting_caveat": "TDCC large-holder cohorts and institutional holdings may be the same owners; large/small proportions mathematically sum to total; no same-window mechanical association is allowed as a new behavioral law.",
+    "price_usage": "Historical price, turnover, and market-week common conditions ONLY; no future stock return or target optimization in G3 or G4.",
+    "future_stock_return_labels_explicitly_forbidden": [
+      "63D",
+      "126D",
+      "252D",
+      "next_close",
+      "next_price",
+      "next_trade_profit",
+      "holdout_alpha"
+    ]
+  },
+  "testing_design": {
+    "anchor_cross_section": "At each nonoverlapping weekly anchor, Spearman rho across eligible stocks for all 16 predeclared TDCC-flow/margin variable pairings; exclude pair at anchor with <100 eligible stocks.",
+    "aggregate_stat": "For each of sixteen pairs average anchor-wise rho equally across eligible anchors; main study statistic T=max(abs(mean_rho(pair))) among 16. Deterministic tie-break lexical variable order.",
+    "null": "Within same anchor, permute the whole future-side multivariate outcome vector over ticker identities within quintiles of trailing-20-market-session median Turnover (quintiles determined separately in each anchor from its prior information). Preserve TDCC/finance co-dependence within group vectors. Do not shuffle fields individually.",
+    "permutations": 999,
+    "seed": 20261107,
+    "p_value": "(1+# null values >= observed T)/(999+1). Holm step-down across all 6 registered primary tests, familywise 0.05.",
+    "effect_size_qualification": "Selected max-pair |average anchor rho| >=0.08 AND at least 4 out of 5 discovery years have matching selected-pair sign AND Holm adjusted p<0.05.",
+    "directional_asymmetry": "Same selected pair across both directions at same horizon: effect abs(mean_rho_this_direction) - abs(mean_rho_opposite_direction) >= 0.05 required for any 'leads' language; otherwise both directions may be descriptive persistent co-movement only.",
+    "bootstrap": "Across nonoverlapping weekly anchors; do not bootstrap each stock-week as an independent human or each TDCC row as a separate event.",
+    "sector_common_information": "No historical PIT sector data certified; not allowed to claim market/industry-factor adjusted independence; industry effects and self-overlap explicitly remain unresolved, even with week and size-stratified controls.",
+    "mechanism_upgrade": "Never assert independent actor interaction, intention, causality or smart money from these associations; only observational temporal correlation.",
+    "label_type": "RETROSPECTIVE_DESCRIPTIVE_LEAD_LAG"
+  },
+  "minimum_evidence": {
+    "discovery_independent_anchors_min": 8,
+    "replication_independent_anchors_min": 4,
+    "discovery_years_min": 4,
+    "replication_each_year_anchors_min": 2,
+    "pair_anchor_stocks_min": 100,
+    "24week_constraint": "Expected discovery 5 and 2023-24 replication 2 nonoverlapping anchors from calendar only. Therefore both 24w experiments are preclassified UNDERPOWERED_FOR_CONFIRMATION and may only supply non-inferential descriptive coverage, even if many stocks appear per anchor. No parameter retuning to rescue.",
+    "cross_year_replication": "Selected discovery pair and direction fixed without revising nulls; 2023 and 2024 each separately same sign, annual |rho|>=0.05 and reverse-direction superiority threshold if leadership claimed.",
+    "trading_prediction_gate": "BLOCKED_HISTORICAL_TDCC_FIRST_PUBLICATION_UNKNOWN",
+    "economic_alpha_gate": "BLOCKED_CORPORATE_ACTION_AND_PIT_NOT_CERTIFIED"
+  },
+  "experiment_budget": {
+    "family_count": 1,
+    "registered_primary_experiments": 6,
+    "max_total_tests": 6,
+    "retest_after_validation": 0,
+    "data_QA_method_fix_max_per_verified_bug": 1,
+    "do_not_run_G3_as_part_of_G2": true,
+    "fail_stop_if_no_replicable_nonaccounting_effect": true,
+    "reserved_investor_return_tests": 0
+  },
+  "data_snooping": "Historical datasets and A1 results previously inspected; chronological 2023–24 split is retrospective only, not genuinely untouched external holdout.",
+  "authorization": {
+    "G2_only": true,
+    "G3_allowed_only_after_lock_validation": true,
+    "G5_and_G6_authorized": false,
+    "N2_restarted": false,
+    "production_authority": false,
+    "trading_authority": false
+  }
+}
