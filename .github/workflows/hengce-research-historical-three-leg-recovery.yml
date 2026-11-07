@@ -1,0 +1,134 @@
+name: HENGCE Research Historical TWSE 2018-2022 Three-Leg Recovery
+
+on:
+  push:
+    branches:
+      - research/long-horizon-source-recovery-20261107
+    paths:
+      - "scripts/hengce_historical_three_leg_recovery_2018_2022.py"
+      - ".github/workflows/hengce-research-historical-three-leg-recovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: hengce-historical-2018-2022-recovery
+  cancel-in-progress: false
+
+jobs:
+  source-recovery:
+    name: Recover official TWSE three-leg data ${{ matrix.year }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        year: [2018, 2019, 2020, 2021, 2022]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/long-horizon-source-recovery-20261107
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing vessel dependencies
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Verify original parser has not been substituted
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, 'scripts')
+          import hengce_eod_incremental_ingest as m
+          assert set(m.FETCH)=={'price','institutional','margin'}
+          assert 'Date' in m.COLS['price'] and 'ForeignNet' in m.COLS['institutional']
+          assert 'MarginCashRepayment' in m.COLS['margin']
+          PY
+      - name: Official TWSE full-year historical source capture
+        run: |
+          python scripts/hengce_historical_three_leg_recovery_2018_2022.py \
+             --year "${{ matrix.year }}" \
+             --out "research/long_horizon_data_recovery_20261107/twse_2018_2022_candidate/${{ matrix.year }}"
+      - name: Upload source bytes, three-leg history and audit receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-history-${{ matrix.year }}
+          path: research/long_horizon_data_recovery_20261107/twse_2018_2022_candidate/${{ matrix.year }}/
+          retention-days: 30
+          if-no-files-found: error
+  publish-source-candidate:
+    needs: source-recovery
+    if: needs.source-recovery.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/long-horizon-source-recovery-20261107
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hengce-history-*
+          path: research/long_horizon_data_recovery_20261107/twse_2018_2022_candidate
+          merge-multiple: false
+      - name: Normalize artifact year directories and fail closed
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, gzip, csv, hashlib, shutil
+          base=Path('research/long_horizon_data_recovery_20261107/twse_2018_2022_candidate')
+          receipt={'schema':'HENGCE_HISTORICAL_RECOVERY_RESEARCH_CANDIDATE_V1','canonical_mutated':False,'model_or_trade_authority':False,'years':{}}
+          for year in range(2018,2023):
+              source=base/f'hengce-history-{year}'
+              target=base/str(year)
+              if not source.exists(): raise SystemExit('MISSING_YEAR_ARTIFACT:'+str(year))
+              if target.exists(): shutil.rmtree(target)
+              source.rename(target)
+              manifest=json.loads((target/'manifest.json').read_text())
+              if manifest['status']!='PASS' or manifest['failed_trading_dates']:
+                  raise SystemExit('HIST_SOURCE_REJECTED:'+str(year))
+              dates=set(manifest['dates'])
+              assert len(dates)==manifest['complete_dates']
+              assert 220<=len(dates)<=255
+              cover={}
+              for leg in ('price','institutional','margin'):
+                  p=target/(leg+'.csv.gz')
+                  assert hashlib.sha256(p.read_bytes()).hexdigest()==manifest['files'][leg]['sha256']
+                  with gzip.open(p,'rt',encoding='utf-8',newline='') as f:
+                      rdr=csv.DictReader(f)
+                      count=0
+                      observed=set()
+                      for row in rdr:
+                          count+=1
+                          observed.add(row['Date'])
+                      assert count==manifest['files'][leg]['rows'] and observed==dates,(year,leg,count,len(observed))
+                  cover[leg]=count
+              assert set(cover)=={'price','institutional','margin'}
+              for session in manifest['sessions']:
+                  for leg,met in session['legs'].items():
+                      if met.get('state')=='VALID':
+                          p=target/met['raw_archive']
+                          assert p.exists() and hashlib.sha256(p.read_bytes()).hexdigest()==met['raw_archive_sha256']
+                          with gzip.open(p,'rb') as f: raw=f.read()
+                          assert hashlib.sha256(raw).hexdigest()==met['sha256']
+              receipt['years'][str(year)]={'trade_days':len(dates),'rows':cover,'official_source_receipt':'manifest.json'}
+          (base/'RESEARCH_DATA_QA_PASS.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
+          print(json.dumps(receipt))
+          PY
+      - name: Commit verified archival candidate ONLY to research branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-historical-recovery'
+          git config user.email 'hengce-historical-recovery@users.noreply.github.com'
+          git add research/long_horizon_data_recovery_20261107/twse_2018_2022_candidate
+          if git diff --cached --quiet; then
+            echo 'Verified recovery material already in research candidate'
+            exit 0
+          fi
+          git commit -m 'data(research): restore historical TWSE 2018-22 three-leg candidate with QA and source archives'
+          git pull --rebase origin research/long-horizon-source-recovery-20261107
+          git push origin HEAD:research/long-horizon-source-recovery-20261107
