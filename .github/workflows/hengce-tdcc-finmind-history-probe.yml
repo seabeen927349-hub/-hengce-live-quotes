@@ -1,0 +1,45 @@
+name: HENGCE TDCC FinMind Historical Backfill Probe (Research Only)
+
+"on":
+  push:
+    branches:
+      - research/tdcc-finmind-historical-backfill-20261107
+    paths:
+      - 'scripts/hengce_finmind_tdcc_historical_backfill.py'
+      - '.github/workflows/hengce-tdcc-finmind-history-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-finmind-tdcc-history-research-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  historical-probe:
+    if: github.ref == 'refs/heads/research/tdcc-finmind-historical-backfill-20261107'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile fail-closed historical TDCC client
+        run: python -m py_compile scripts/hengce_finmind_tdcc_historical_backfill.py
+      - name: Probe 2018, 2024, 2025 historical permission and schema
+        run: |
+          python scripts/hengce_finmind_tdcc_historical_backfill.py \
+            --mode probe \
+            --out /tmp/hengce-finmind-tdcc-probe
+      - name: Preserve research proof or explicit blocker (no credentials)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-historical-probe
+          path: /tmp/hengce-finmind-tdcc-probe/
+          if-no-files-found: warn
+          retention-days: 30
