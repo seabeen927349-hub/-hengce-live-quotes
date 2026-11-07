@@ -22,9 +22,9 @@ def load_universe():
     if sha256(PARENT.read_bytes())!=PARENT_SHA: raise RuntimeError('PARENT_SHA_MISMATCH')
     with gzip.open(PARENT,'rt',encoding='utf-8',newline='') as f:
         codes=sorted({str(r.get('Ticker','')).strip() for r in csv.DictReader(f)})
-    if len(codes)!=3091 or any(re.fullmatch(r'[1-9]\\d{3}',s) is None for s in codes):
+    if len(codes)!=3091 or any(re.fullmatch(r'[1-9]\d{3}',s) is None for s in codes):
         raise RuntimeError('CANDIDATE_UNIVERSE_INVALID')
-    if sha256(('Ticker\\n'+'\\n'.join(codes)+'\\n').encode())!=UNION_SHA:
+    if sha256(('Ticker\n'+'\n'.join(codes)+'\n').encode())!=UNION_SHA:
         raise RuntimeError('CANDIDATE_UNION_SHA_MISMATCH')
     return codes
 
@@ -89,7 +89,7 @@ def main():
         receipt.update(status='BLOCKED_FAIL_CLOSED',error_type=type(e).__name__,
             blocker=str(e).splitlines()[0][:180])
     finally:
-        (out/'manifest.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\\n',encoding='utf-8')
+        (out/'manifest.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         print('HENGCE_FINMIND_SHARD_RESULT',receipt['status'],
               'valid',receipt.get('valid_stocks'),'rows',receipt.get('total_tier_rows'),flush=True)
     return 0 if receipt['status']=='PASS_RESEARCH_CANDIDATE' else 2
