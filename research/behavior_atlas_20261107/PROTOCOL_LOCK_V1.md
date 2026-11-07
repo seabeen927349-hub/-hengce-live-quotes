@@ -32,7 +32,7 @@
 
 ## 三、絕對執行順序與每一關的交付物
 
-每關只有四種狀態：**NOT_STARTED、BLOCKED、PASS、FAIL_STOP**。每次只能操作「目前關卡」；如果 FAIL_STOP，所有下游關卡不得開始。PASS 要有可重算檔案、負面與反例、覆蓋統計和簽核紀錄。
+每關只有四種狀態：**NOT_STARTED、BLOCKED、PASS、FAIL_STOP**。每次只能操作「目前關卡」；如果 FAIL_STOP，所有下游**研究／模型測試**不得開始，必須直接進入 G7 **無研究性操作的結案程序**。G7 是唯一例外，不能把結案當成繼續實驗的後門。PASS 要有可重算檔案、負面與反例、覆蓋統計和簽核紀錄。
 
 ### G0　專項文獻與既有成果盤點（目前關卡）
 
@@ -112,11 +112,11 @@
 
 **STOP**：無經濟效益報 **NO_MONETIZABLE_EDGE**；保留行為地圖作研究成果，不改參數找績效。
 
-### G7　前瞻新資料與最終結案
+### G7　前瞻新資料與最終結案（**無條件結案例外**）
 
-**工作**：G2 起凍結方法與每次運行版本；2026-11-07 之後的週資料只按實際初見時間入庫，預測與實際結果追加寫入。63／126／252 天尚未成熟的事件保留 PENDING，不提前裁決。
+**工作**：只要 G0–G6 任一關 FAIL_STOP，立刻跳入 G7 撰寫結案報告，**不執行未授權的後續實驗**。只有 G5／G6 都 PASS 的路線，才啟用前瞻觀測；2026-11-07 之後的週資料只按實際初見時間入庫，預測與實際結果追加寫入。63／126／252 天尚未成熟的事件保留 PENDING，不提前裁決。
 
-**產物**：18_PROSPECTIVE_APPEND_ONLY_LEDGER.jsonl、19_FINAL_HENGCE_BEHAVIOR_ATLAS_REPORT.md、20_CLOSURE_AND_HANDOFF.md。
+**產物**：所有結案一律必備 19_FINAL_HENGCE_BEHAVIOR_ATLAS_REPORT.md、20_CLOSURE_AND_HANDOFF.md；只有進入合格前瞻研究的路線才另交付 18_PROSPECTIVE_APPEND_ONLY_LEDGER.jsonl。
 
 **結案種類**：BEHAVIOR_LAW_REPRODUCED / DESCRIPTIVE_ONLY / DATA_OR_PIT_BLOCKED / NO_STABLE_BEHAVIOR_LAW / NO_PREDICTIVE_BEHAVIOR_EDGE / NO_MONETIZABLE_EDGE。任一類都可以是一個誠實完成的研究結果；不得因未找到獲利模型而永遠不結案。
 
@@ -149,3 +149,15 @@
 ## 六、起始工作
 
 目前 G0=BLOCKED／LITERATURE_REVIEW_ONLY；主文獻底座已達 P1 PROVISIONALLY_SATURATED，但此新專題**尚未取得獨立 LITERATURE_GATE PASS**。可先盤點過去失敗與專題全文、做 G1 純資料核驗；不得直接創造新指標或跑行為預測。這份文件是程序鎖定，不是研究結果、模型或買賣授權。
+
+## 七、強制停止決策樹
+
+- **G0 兩輪補強後不通過** → LITERATURE_NOT_READY，立刻 G7 結案，不再追加閱讀或偷建模型。
+- **G1 核心身分／PIT／來源缺口兩種補法均失敗** → DATA_OR_PIT_BLOCKED，立刻 G7 結案；如能維持描述研究但不能預測，明示縮小研究層級且不得跑 G5/G6。
+- **G3 6 個預登記主要配方仍無非平凡候選** → NO_REPRODUCIBLE_PATTERN_CANDIDATE，立刻 G7 結案，沒有第7個模型。
+- **G4 跨年／跨股規律不重現** → NO_STABLE_BEHAVIOR_LAW，立刻 G7 結案，不為挽救績效重新分群。
+- **G5 事前辨識不勝過簡單基準** → DESCRIPTIVE_ONLY / NO_PREDICTIVE_BEHAVIOR_EDGE，立刻 G7 結案，不能跳過轉做報酬回測。
+- **G6 沒有合格含息報酬／成本／下市／PIT** → ECONOMIC_VALIDATION_BLOCKED；有資料但無優勢 → NO_MONETIZABLE_EDGE，立刻 G7 結案。
+- **G6 通過** → 可以 G7 前瞻追加驗證，報告成熟度、錯誤與淘汰；沒有成熟結果則為 PENDING，不可以自稱已獲利。
+
+研究結案可以交付「不存在穩定可用規律」的成果；**不能交付的是無限迴圈**。
