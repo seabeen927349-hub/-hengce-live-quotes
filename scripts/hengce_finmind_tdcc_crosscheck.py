@@ -79,6 +79,8 @@ def main():
         report["error"]=f"{type(ex).__name__}:{ex}"
     OUT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print("HENGCE_FINMIND_TDCC_OFFICIAL_CROSSCHECK",report["status"],flush=True)
+    if "error" in report:
+        print("HENGCE_FINMIND_CROSSCHECK_ERROR",report["error"],flush=True)
     if "comparison" in report:
         print("HENGCE_FINMIND_TDCC_DELTAS",json.dumps(report["comparison"],ensure_ascii=False),flush=True)
     return 0 if report["status"]=="PASS_EXACT_OR_WITHIN_ROUNDING" else 2
