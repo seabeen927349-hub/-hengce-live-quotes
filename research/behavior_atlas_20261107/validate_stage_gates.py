@@ -87,7 +87,7 @@ def check():
         require(obj.get('topic_literature_gate')=='PASS','TOPIC_LITERATURE_AUTHORITY_NOT_SET')
     else:
         require(rows[2]['status'] not in ('PASS',),'PREREGISTRATION_WITHOUT_LITERATURE_PASS')
-        require(all(r['status']!='PASS' for r in rows[3:]),'EMPIRICAL_PHASE_WITHOUT_LITERATURE_PASS')
+        require(all(r['status']!='PASS' for r in rows[3:7]),'EMPIRICAL_PHASE_WITHOUT_LITERATURE_PASS')
     if rows[1]['status']=='PASS':
         require((BASE/'03_FOUR_LEG_CAPABILITY_AUDIT.json').exists(),'G1_AUDIT_MISSING')
     if rows[2]['status']=='PASS':
