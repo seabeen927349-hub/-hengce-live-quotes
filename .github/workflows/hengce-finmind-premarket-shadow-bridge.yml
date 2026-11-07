@@ -12,6 +12,7 @@ name: HENGCE FinMind PreMarket Shadow Bridge
   workflow_run:
     workflows:
       - HENGCE Escape TWSE Common FinMind Shadow
+      - HENGCE Governed SOX VIX Premarket EOD
     types:
       - completed
   workflow_dispatch:
