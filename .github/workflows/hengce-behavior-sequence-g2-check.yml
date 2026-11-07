@@ -1,0 +1,22 @@
+name: HENGCE Behavior Atlas Sequence G2 Preregistration Lock
+"on":
+  push:
+    branches:
+      - research/behavior-atlas-sequence-20261107
+    paths:
+      - research/behavior_atlas_sequence_20261107/**
+      - .github/workflows/hengce-behavior-sequence-g2-check.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  g2-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fail closed on changed prereg sources or experimental authority
+        run: python research/behavior_atlas_sequence_20261107/validate_g2_preregistration.py
