@@ -1,0 +1,54 @@
+name: HENGCE TDCC Complete Fourth-Leg 2018-2026 Mother Integration
+
+"on":
+  push:
+    branches:
+      - research/tdcc-finmind-historical-backfill-20261107
+    paths:
+      - '.github/workflows/hengce-tdcc-fourth-leg-2018-2026-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: hengce-tdcc-fourth-leg-once-2018-2026
+  cancel-in-progress: false
+
+jobs:
+  integrate-history-and-official:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout frozen research branch and original TDCC evidence
+        uses: actions/checkout@v4
+        with:
+          ref: research/tdcc-finmind-historical-backfill-20261107
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch verified FinMind retrospective eight-year panel
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-eight-year-research-panel
+          run-id: 42362609462
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/hengce-finmind-history-2018-2025
+      - name: Compile immutable source-priority and weekly join
+        run: python -m py_compile scripts/hengce_tdcc_compose_fourth_leg_2018_2026.py
+      - name: Merge 2018-2025 vendor history plus 2025-2026 official TDCC without daily forward fill
+        run: |
+          set -euo pipefail
+          python scripts/hengce_tdcc_compose_fourth_leg_2018_2026.py \
+            --historical-dir /tmp/hengce-finmind-history-2018-2025 \
+            --out /tmp/hengce-fourth-leg-integration
+      - name: Preserve separate verified four-leg mother sidecar and audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-fourth-leg-2018-2026-integrated-mother
+          path: /tmp/hengce-fourth-leg-integration/
+          retention-days: 7
+          if-no-files-found: error
