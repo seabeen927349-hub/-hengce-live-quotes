@@ -4,13 +4,12 @@
   "protocol_path": "research/behavior_atlas_20261107/PROTOCOL_LOCK_V1.md",
   "state_date": "2026-11-07",
   "scope": "2018–2026 TWSE four-leg human aggregate behavior research",
-  "current_focus": "G3",
+  "current_focus": "G4",
   "current_permissions": [
-    "LOCKED_NON_RETURN_BEHAVIOR_DISCOVERY",
-    "NO_FORWARD_RETURN_INSPECTION",
-    "NO_G5_OR_G6"
+    "ONE_LOCKED_2023_2024_BEHAVIORAL_REPLICATION",
+    "NO_FORWARD_PRICE_OR_RETURN_TARGET"
   ],
-  "research_phase": "G3_DESCRIPTIVE_DISCOVERY_ONLY",
+  "research_phase": "HISTORICAL_REPLICATION_ONLY",
   "model_authority": false,
   "trading_authority": false,
   "master_corpus_p1": "PROVISIONALLY_SATURATED_ALL_AT_2026_11_02",
@@ -171,7 +170,7 @@
     {
       "id": "G3",
       "title": "無報酬導向行為模式發掘",
-      "status": "NOT_STARTED",
+      "status": "PASS",
       "blocking_gates": [
         "G2"
       ],
@@ -187,7 +186,27 @@
       "max_method_families": 3,
       "max_implementations_per_family": 2,
       "max_major_experiments": 6,
-      "major_experiments_run": 0
+      "major_experiments_run": 1,
+      "executed": [
+        "A1"
+      ],
+      "unexecuted": [
+        "A2",
+        "B1",
+        "B2",
+        "C1",
+        "C2"
+      ],
+      "pass_scope": "ONE_RETROSPECTIVE_DISCOVERY_CANDIDATE_NOT_VALIDATED_OR_CAUSAL",
+      "evidence_files": [
+        "08_DISCOVERY_ALL_PATTERNS.csv",
+        "09_DISCOVERY_NULLS_AND_COUNTEREXAMPLES.csv",
+        "10_DERIVED_BEHAVIOR_ATLAS_DRAFT.md",
+        "EXPERIMENT_LOG.jsonl",
+        "G3_A1_RESULT_RECEIPT.json"
+      ],
+      "mechanical_overlap_caveat": "ForeignNet buys may be directly reflected in large TDCC account ownership; A1 cannot establish investor psychology or independent smart-money informational edge",
+      "no_forward_return_inspection": true
     },
     {
       "id": "G4",
@@ -196,7 +215,7 @@
       "blocking_gates": [
         "G3"
       ],
-      "allowed_now": false,
+      "allowed_now": true,
       "deliverables": [
         "11_REPLICATION_SCORECARD.csv",
         "12_STRUCTURAL_BREAK_AND_FAILURE_REPORT.md"
@@ -347,6 +366,13 @@
       "from": "G2_NOT_STARTED",
       "to": "G2_PASS_G3_ACTIVE",
       "reason": "G0 PASS, G1 retrospective descriptive scope PASS; locked source hashes, 2018-22 discovery/2023-24 replication, six maximum TDCC-centered recipes A1-A2-B1-B2-C1-C2, no target returns."
+    },
+    {
+      "date": "2026-11-07",
+      "event": "G3_PASS_A1_ONLY",
+      "from": "G3_NOT_STARTED",
+      "to": "G3_PASS_G4_ACTIVE",
+      "reason": "A1 2018-22 63 anchors 45712 stock-week episodes, mean rho 0.35162, 5/5 years same sign, 499 perm p=0.002, 6-test Bonferroni upper 0.012; 5 other recipes deliberately NOT_EXECUTED; no forward returns."
     }
   ],
   "terminal_outcome": null,
