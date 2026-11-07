@@ -1,0 +1,94 @@
+{
+  "schema": "HENGCE_HBA_RETAIL_HEADCOUNT_G1_CAPABILITY_GATE_V2",
+  "gate_status": "BLOCKED",
+  "gate_reason": "Raw 'people' by each of 15 share-holding tiers has been verified in sampled weeks and 2018–2025 base archives exist, but a 457-week, 443341-stockweek match and consistent denominator/source-grade QA for new headcount features has not been signed off in this G2 amendment.",
+  "source_scope": "TDCC original 15-grade person/account counts (NOT legal natural-person retail registry)",
+  "evidence_from_prior_work": {
+    "raw_finmind_archives": "Library /HENGCE/Research Outputs/TDCC_FINMIND_20261107/HENGCE_FINMIND_TDCC_FULLMARKET_<year>_20261107.zip, years 2018–2025",
+    "prior_all_15_grade_scan_snapshots": 404,
+    "prior_finmind_stockweeks": 858654,
+    "source_week_range": [
+      "2018-01-05",
+      "2025-10-23"
+    ],
+    "already_verified_sample_weeks": [
+      "2018-01-05",
+      "2025-01-03"
+    ],
+    "sample_raw_field_names": [
+      "HoldingSharesLevel",
+      "date",
+      "people",
+      "percent",
+      "stock_id",
+      "unit"
+    ],
+    "tail_2025_official_weeks": 9,
+    "year_2026_official_weeks": 44,
+    "total_expected_weeks": 457,
+    "note": "404/457 means only the historic FinMind block was earlier scanned to usable 15-grade original sources; not proof that the other 53 weeks meet identical account-count definitions."
+  },
+  "retail_headcount_contract": {
+    "retail_small_le_10_lots": {
+      "level_codes": [
+        1,
+        2,
+        3
+      ],
+      "max_held_shares": 10000,
+      "aggregation": "sum(original_people)",
+      "is_unique_humans": false
+    },
+    "retail_midsmall_10_to_50_lots": {
+      "level_codes": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "min_held_shares": 10001,
+      "max_held_shares": 50000,
+      "aggregation": "sum(original_people)",
+      "is_unique_humans": false
+    },
+    "odd_lot_qa": {
+      "level_codes": [
+        1
+      ],
+      "min_held_shares": 1,
+      "max_held_shares": 999,
+      "only": "NON_CONFIRMATORY_QA"
+    },
+    "retail_le_50_lots_qa": {
+      "level_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "only": "NON_CONFIRMATORY_QA"
+    },
+    "different_account_same_natural_person": "not deduplicated across securities",
+    "institution_in_small_tiers": "possible; not uniquely retail persons"
+  },
+  "pass_requires": [
+    "Each needed week and ticker has original 15-tier grade-level `people` extraction with original source/sha, timestamp and raw level map (including official tail/2026).",
+    "Match to G1 actual TWSE-observed candidate stockweek by SnapshotDate+Ticker; report match and nonmatch by year and week, preserve full mother denominator.",
+    "Reject duplicated `(SnapshotDate,Ticker,grade)` unless original source proves allowed; match all 15 grade definitions or explicitly report subset.",
+    "Validate people per level is nonnegative integer and total holder accounting reconciliation including separate non-shareholder adjustment rows; quarantine anomaly locally.",
+    "Do not replace missing small tiers by 100%-Big400Pct, TotalHolders-Big400Holders, or other accounting complements.",
+    "Mark 10000/50000-share boundary crossings and corporate actions as possible reclassification, not new investor identity.",
+    "Retain documented restrictions on historical TDCC first-publication time; retrospective description only.",
+    "Pre-register that newly matched headcount `people` is only holder-size account proxy, not distinct retail human ID."
+  ],
+  "partial_research_allowed": "Original V1 historical source and old group values may be read/QA'd but V2's 24-pair G3 discovery cannot run while this gate is BLOCKED.",
+  "small_local_missingness_policy": "PER-STOCKWEEK_NULL; not automatic entire-panel rejection",
+  "prediction_or_trade_authority": false,
+  "approved_v2_G3_for_expanded_variables": false,
+  "future_status_rule": "After source-based QA produces dated per-week coverage and raw SHA verified evidence, change gate to PASS only on independent sign-off, while preserving prior BLOCKED receipt."
+}
