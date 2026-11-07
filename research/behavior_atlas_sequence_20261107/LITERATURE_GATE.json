@@ -1,0 +1,106 @@
+{
+  "topic_id": "HENGCE_BEHAVIOR_ATLAS_SEQUENCE_V2_20261107",
+  "topic_title": "台灣全市場群體持股與機構交易的先後順序（原HBA研究續篇）",
+  "review_date": "2026-11-07",
+  "literature_status": "PASS",
+  "literature_review_complete": true,
+  "topic_gate_rounds_completed": 2,
+  "topic_gate_rounds_max": 2,
+  "scope_definition": "STRICT SUBSET of prior PASS: retrospective lead-lag association between historical weekly TDCC Big400/Big1000 large-holder structure and TWSE daily foreign/trust/dealer order-flow plus margin proxy, 4/12/24 weekly changes paired with exactly 20/60/120 observed market sessions; no identity, causality, forward-return or tradability assertion",
+  "search_boundary": "Inherited HENGCE_BEHAVIOR_ATLAS_2018_2026 G0/P1 FULL_READ and counterevidence. Earlier subject PASS expressly covers behavior sequencing; specific two-sided panel lead-lag checks are only a scoped instance, not a novel additional methodological family. 00_METHOD_AND_SCOPE_GATE.md documents bounded comparison with panel dependence, mechanical ownership overlap and snooping. No new paper claimed FULL_READ in this continuation.",
+  "canonical_ledger_reference": "/HENGCE_CANONICAL/RESEARCH/TAIWAN_STOCK_MARKET/HENGCE_TAIWAN_STOCK_MARKET_MASTER_LITERATURE_LEDGER_v1.xlsx",
+  "canonical_ledger_version": "2026-11-02 version 29 as accessible in Library",
+  "topic_specific_evidence_subset": "research/behavior_atlas_sequence_20261107/00_METHOD_AND_SCOPE_GATE.md",
+  "prior_results_registry": "research/behavior_atlas_20261107/01_PRIOR_WORK_AND_NEGATIVE_LEDGER.md",
+  "master_domain_saturation_status": "15 P1 domains PROVISIONALLY_SATURATED_ALL at 2026-11-02; this is not a topic gate pass",
+  "full_read_count": 12,
+  "partial_count": 7,
+  "found_only_count": 0,
+  "count_scope": "Inherited prior topic gate FULL_READ/PARTIAL counts; NO new full-text review claimed. Scope is only a narrowed lead-lag descriptive test within existing behavioral sequence G0 authority.",
+  "newly_fully_read_in_this_round": 0,
+  "supportive_evidence_reviewed": true,
+  "counterevidence_reviewed": true,
+  "null_results_reviewed": true,
+  "limitations_recorded": true,
+  "identification_threats_recorded": true,
+  "abstracts_not_promoted_to_full_read": true,
+  "prior_ledger_sources": [
+    "BF-TW-001",
+    "BF-TW-002",
+    "BF-TW-003",
+    "BF-TW-004",
+    "BF-TW-005",
+    "TW-MKT-130",
+    "TW-MKT-138",
+    "TW-MKT-142",
+    "TW-MKT-143",
+    "TW-MKT-144",
+    "TW-MKT-147"
+  ],
+  "saturation_assessment": "SUFFICIENT_FOR_BOUNDED_AGGREGATE_BEHAVIOR_DISCOVERY_METHOD_PREREGISTRATION_ONLY. No evidence of universal group psychology, economic alpha, or perfect historical PIT; if actual G2 chooses new method not covered, it must be treated as distinct future proposal, not silently change this one.",
+  "unresolved_material_conflicts": [
+    "Psychological motives cannot be identified from aggregate flows or holding tiers; compete against common information and institutional constraints",
+    "Financial time-series cross-sectional and serial dependence invalidates iid row-level inference; select appropriate tests only in G2",
+    "Cluster methods can yield arbitrary or unstable groupings; null hypothesis of no useful natural groups must be retained",
+    "Missing nodes/weekly publication data can bias transition descriptions; restricted sampling must be disclosed in G1",
+    "Historical delisting/common-stock identity and retrospective TDCC first-published time are DATA G1 gates, not unreviewed literature gates",
+    "ForeignNet may represent buying by the same TDCC large holders; even long lead-lag may be persistence/inventory accounting, not information flow between distinct actors",
+    "120-session / 24-week outcome horizon has limited independent calendar blocks in a 2-year replication period; no strong statistical confirmation if effective temporal blocks insufficient"
+  ],
+  "reviewer": "Inherited parent scoped literature review, method applicability explicitly constrained; no independent external human peer review",
+  "no_model_or_backtest_preceded_gate": true,
+  "authority_created": [
+    "NEW_SCOPED_G2_PREREGISTRATION_PERMITTED",
+    "RETROSPECTIVE_BEHAVIORAL_SEQUENCE_DISCOVERY_ONLY_AFTER_G2_VERIFIED"
+  ],
+  "forbidden": [
+    "REOPEN_CLOSED_A1",
+    "REUSE_OLD_HISTORICAL_RESULTS_AS_BLIND_OOS",
+    "TARGET_RETURN_INSPECTION_FOR_DISCOVERY",
+    "TDCC_AS_OF_PUBLICATION_ASSUMPTION",
+    "G5_PIT_PREDICTION",
+    "G6_STOCK_RETURN_BACKTEST",
+    "N2_RESTART",
+    "PRODUCTION_TRADING"
+  ],
+  "model_authority": false,
+  "trading_authority": false,
+  "new_full_read_entries": [
+    {
+      "authors": "Klassen; Tatusch; Conrad",
+      "year": 2023,
+      "doi": "10.1007/s10489-022-04231-7",
+      "status": "FULL_HTML_METHODS_RESULTS_CONCLUSION_REVIEWED",
+      "limit": "Data sets not Taiwan listed stocks; stability not economic alpha"
+    },
+    {
+      "authors": "Iglesias Vazquez; Zseby",
+      "year": 2024,
+      "doi": "10.1007/s10994-023-06462-2",
+      "status": "FULL_HTML_METHODS_RESULTS_CONCLUSION_REVIEWED",
+      "limit": "Synthetic drift and stream validation cannot prove real investor motives"
+    },
+    {
+      "authors": "Holder; Middlehurst; Bagnall",
+      "year": 2024,
+      "doi": "10.1007/s10115-023-01952-0",
+      "status": "FULL_HTML_METHODS_RESULTS_CONCLUSION_REVIEWED",
+      "limit": "UCR time series not Taiwan four-leg panel; DTW not automatically superior"
+    },
+    {
+      "authors": "Djurdjevac Conrad; Tonello; Zonker; Siebert",
+      "year": 2025,
+      "doi": "10.1007/s41109-024-00687-3",
+      "status": "FULL_HTML_METHODS_RESULTS_CONCLUSION_REVIEWED",
+      "limit": "Missing nodes/edges and temporal resolution distort network; public stock data not investor network"
+    }
+  ],
+  "second_review_path": "research/behavior_atlas_20261107/G0_SECOND_BOUNDED_METHOD_REVIEW_20261107.md",
+  "literature_inheritance": {
+    "parent_topic_id": "HENGCE_BEHAVIOR_ATLAS_2018_2026",
+    "parent_gate_ref": "research/behavior_atlas_20261107/LITERATURE_GATE.json",
+    "parent_status": "PASS",
+    "is_strict_subset": true,
+    "no_new_full_read_claimed": true
+  }
+}
