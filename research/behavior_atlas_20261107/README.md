@@ -1,7 +1,7 @@
 # 衡策 HENGCE｜群體行為研究執行看板
 
 **研究 ID**：HENGCE HUMAN BEHAVIOR ATLAS｜**建立日**：2026-11-07｜**當前唯一研究主線**：群體行為共通規律。  
-**當前關卡**：**G0 BLOCKED（專項文獻尚未 PASS）**；G1 源資料品質稽核可以與 G0 並行，但不得先跑行為模式／預測／報酬。  
+**當前關卡**：**G0 BLOCKED（1／2輪文獻證據審查已完成，專項方法尚未PASS）**；**G1 BLOCKED（1／2輪正式資料QA完成，FinMind證券身分第一來源查核完成1／2，歷史PIT仍不完整）**。不得先跑行為模式／預測／報酬。  
 **不重新啟動**：N2、TOP1、既有單一資金買賣因子。  
 **研究專案**：程序封存於 `PROTOCOL_LOCK_V1.md`；機器狀態於 `STAGE_GATE_STATE.json`；檢查程式 `validate_stage_gates.py`。
 
@@ -40,7 +40,15 @@
 
 ## 現在的下一個合法動作
 
-**先做 G0**：在台股 master ledger 和行為金融文獻庫核對群體互動、資訊與共同約束的專題全文及反證，整理曾失敗路線；**只讀核對** G1 的四腿來源、普通股時點身分、週資料發布時間。  
+**G0下一步**：僅用第2次且最後一次有界限文獻核對，解決跨年序列／分群穩定性及多重搜尋假象的完整方法證據；無法核實即按協議結案本提案。**G1下一步**：查TWSE官方歷史證券身分與入退市日期作第二來源；歷史TDCC公布時刻、企業行動須標明是否可合法重建。已完成的G1完整原始雙母體重掃發現：**6,641筆實際Close缺值（含4,648筆--哨兵）**及**564,390筆未見於同年度TWSE母體的TDCC股票週**，均保留在G1稽核檔。  
 **禁止現在做**：新分群結果、股價報酬回測、改樣本去追勝率、重啟 N2。每一步需要 Gate PASS 才推進。
 
 **本文件是研究操作看板，不是任何新行為規律或超額報酬已被實證支持的證明。**
+
+## 首輪實際工作與可下載稽核證據
+
+- G0：`01_PRIOR_WORK_AND_NEGATIVE_LEDGER.md`、`02_BEHAVIOR_EVIDENCE_MAP.md`、`LITERATURE_GATE.json`，均已建立；專項 Gate 尚未PASS。
+- G1：正式母體（2,111,682日股）和TDCC（1,013,961週股）由原檔逐筆掃描，兩份SHA匹配，零重複鍵，零有數字的開高低收矛盾，418筆TDCC級距無效保持空值。
+- 來源行證據：Library `/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/03_FOUR_LEG_CAPABILITY_AUDIT.json`、`04_PIT_AND_UNIVERSE_GAPS.csv`（21,208筆年度證券對照）、`g1_corrected_full_scan.py`。
+- 現有FinMind `TaiwanStockInfo` 原始分類可辨識TWSE／TPEx／emerging及DR類別，但不能證明過去每期PIT；GitHub run `42371717381`，Library同一G1資料夾保存摘要。
+- **研究結果**：目前僅完成文獻與原始資料稽核，尚未實作任何群體行為模式、分群或報酬回測。所有G3/G4/G5/G6次數皆為0。
