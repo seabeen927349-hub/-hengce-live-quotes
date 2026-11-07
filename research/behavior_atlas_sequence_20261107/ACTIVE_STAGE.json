@@ -1,0 +1,39 @@
+{
+  "project": "HENGCE_ORIGINAL_BEHAVIOR_ATLAS_REVIEW_ROUTER",
+  "instruction_date": "2026-11-07",
+  "user_directive": "回g1",
+  "active_stage": "G1",
+  "mode": "SOURCE_DATA_QA_ONLY",
+  "sequence_research_status": "PAUSED_BEFORE_PREREGISTRATION_AND_ANY_EXPERIMENT",
+  "original_study": "research/behavior_atlas_20261107/",
+  "original_study_locked_terminal": "DESCRIPTIVE_ONLY",
+  "original_locked_stage_results_unchanged": true,
+  "authorizations": [
+    "read verified research mother and TDCC sidecar",
+    "audit full/15-tier TDCC weekly provenance and coverage",
+    "audit historical stock eligibility and TDCC publication timestamps",
+    "classify localized vs systemic issues"
+  ],
+  "prohibited": [
+    "G2_NEW_PREREGISTRATION",
+    "G3_NEW_BEHAVIOR_EXPERIMENT",
+    "G4_NEW_REPLICATION",
+    "G5_PREDICTIVE_TEST",
+    "G6_RETURN_BACKTEST",
+    "N2_RESTART",
+    "REWRITE_CLOSED_STUDY_GATE_STATE"
+  ],
+  "priority_questions": [
+    "What TDCC original 15-level data is available for each of the 457 historical weeks and how does it map to the 4-tier research sidecar?",
+    "Which historical stock-weeks are TWSE ordinary shares versus other securities, without survivorship filtering?",
+    "Are TDCC historical weekly snapshot release timestamps proven or only proxies?",
+    "Are important coverage/denominator changes systematic, rather than isolated local NULLs?"
+  ],
+  "preserve_full_tdcc": true,
+  "localized_418_invalid_stockweeks_not_global_block": true,
+  "historical_pit_predictive_claims_unapproved": true,
+  "source_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+  "source_tdcc_weekly_sha256": "e78b967042bd0d9058c0eded1b7c2b80ae03cb9c0c7fbc1ca660844d0126f7a3",
+  "existing_G1_conclusion": "PASS_SCOPED_RETROSPECTIVE_DESCRIPTIVE_ONLY, NOT FULL_PREDICTIVE_PIT",
+  "no_new_data_claims_made_in_this_reentry": true
+}
