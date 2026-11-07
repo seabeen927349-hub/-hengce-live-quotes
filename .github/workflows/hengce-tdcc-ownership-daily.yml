@@ -3,6 +3,8 @@ name: HENGCE TDCC Ownership Canonical Vessel
 on:
   schedule:
     - cron: '25 15 * * *'  # 23:25 Asia/Taipei — formal daily ownership check
+    - cron: '45 15 * * 5'  # Every Friday 23:45 Asia/Taipei — explicit weekly TDCC download/check
+    - cron: '15 21 * * 5'  # Saturday 05:15 Asia/Taipei — retry Friday TDCC after publication
     - cron: '7,17,27,37,47,57 * * * *'  # prospective first-observed carrier
   workflow_dispatch:
   push:
