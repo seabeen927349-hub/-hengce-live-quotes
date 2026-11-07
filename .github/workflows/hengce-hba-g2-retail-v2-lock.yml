@@ -1,0 +1,22 @@
+name: HENGCE HBA G2 Retail Headcounts Amendment Lock
+"on":
+  push:
+    branches:
+      - research/behavior-atlas-sequence-g2-retail-v2-20261107
+    paths:
+      - 'research/behavior_atlas_sequence_g2_retail_v2_20261107/**'
+      - '.github/workflows/hengce-hba-g2-retail-v2-lock.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preregretail:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate new TDCC headcount preregistration and prohibit premature model execution
+        run: python research/behavior_atlas_sequence_g2_retail_v2_20261107/validate_g2_retail_v2.py
