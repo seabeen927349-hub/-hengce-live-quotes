@@ -1,0 +1,64 @@
+name: HENGCE TWSE 2018 Weekend Make-up Sessions Repair
+on:
+  push:
+    branches: [research/long-horizon-source-recovery-20261107]
+    paths:
+      - '.github/workflows/hengce-research-2018-weekend-session-repair.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  recover-weekends:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/long-horizon-source-recovery-20261107
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests
+      - name: Fetch official 2018 Saturday trade sessions via existing HENGCE parser
+        run: |
+          PYTHONPATH=scripts python - <<'PY'
+          import importlib.util,csv,gzip,hashlib,json
+          from pathlib import Path
+          import hengce_daily_command_center_core_legacy as core
+          import hengce_eod_incremental_ingest as vessel
+          path=Path('scripts/hengce_historical_three_leg_recovery_2018_2022.py')
+          spec=importlib.util.spec_from_file_location('hengce_hist_recovery',path)
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          core.get_json=mod.fetch_exact
+          root=Path('out');root.mkdir(exist_ok=True)
+          report={'schema':'HENGCE_TWSE_2018_SATURDAY_SOURCE_REPAIR','days':{},'historical_calendar_override':['2018-03-31','2018-12-22'],'canonical_mutated':False}
+          for ds in ('20180331','20181222'):
+              iso=f'{ds[:4]}-{ds[4:6]}-{ds[6:]}'
+              out=root/ds;out.mkdir(exist_ok=True)
+              rec={}
+              for leg in ('price','institutional','margin'):
+                  mod.ACTIVE={'leg':leg}
+                  rows=vessel.FETCH[leg](ds,iso)
+                  info=mod.check_rows(leg,rows,iso)
+                  c=mod.CAPTURE[leg]
+                  assert c['record']['api_date']==ds and c['record']['stat']=='OK'
+                  payload=out/(leg+'.csv.gz')
+                  with gzip.open(payload,'wt',newline='',encoding='utf-8') as f:
+                      w=csv.DictWriter(f,fieldnames=vessel.COLS[leg]);w.writeheader();w.writerows(sorted(rows,key=lambda r:r['Ticker']))
+                  raw=out/(leg+'_raw.json.gz')
+                  with gzip.open(raw,'wb') as f:f.write(c['raw'])
+                  rec[leg]={'rows':len(rows),'sha256':hashlib.sha256(payload.read_bytes()).hexdigest(),
+                           'raw_sha256':c['record']['sha256'],
+                           'raw_gzip_sha256':hashlib.sha256(raw.read_bytes()).hexdigest(),
+                           'source_url':c['record']['url']}
+              report['days'][iso]=rec
+          (root/'manifest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          print(json.dumps(report,ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hengce-2018-weekend-session-repair
+          path: out/
+          retention-days: 30
+          if-no-files-found: error
