@@ -95,18 +95,24 @@ def build_display(
         "meaning": "僅反映隔夜海外市場對台股開盤的預報，不代表中長期資金轉向",
     }
     if (isinstance(prediction, dict)
-        and prediction.get("status") == "PIT_SCHEMA_VERIFIED_UPSTREAM"
+        and prediction.get("status") == "VERIFIED_GOVERNED_OVERSEAS_SOX_VIX"
+        and prediction.get("vendor_price_integrity") is True
+        and type(prediction.get("source_receipt_sha256")) is str
+        and _SHA.fullmatch(prediction["source_receipt_sha256"]) is not None
         and type(prediction.get("grade")) is int
         and prediction["grade"] in TODAY_LABELS
         and _finite_number(prediction.get("expected_gap_log_pct"))):
         today.update(
             label=TODAY_LABELS[prediction["grade"]],
-            status="RESEARCH_SHADOW_UPSTREAM_SCHEMA_ONLY",
+            status="GOVERNED_OVERSEAS_VERIFIED_RESEARCH_ONLY",
             grade=prediction["grade"],
             expected_open_gap_log_pct=prediction["expected_gap_log_pct"],
-            caution="海外原始價格及發布時間尚須在正式血管完成獨立核實；非交易訊號",
+            caution="已宣告海外資料與時戳經治理血管查驗；仍只作研究環境顯示，無交易授權",
         )
 
+    if (isinstance(prediction, dict) and
+        prediction.get("status") == "PIT_SCHEMA_VERIFIED_UPSTREAM"):
+        today["status"] = "OVERSEAS_PACKET_SCHEMA_ONLY_NOT_SOURCE_VERIFIED"
     capital: dict[str, Any] = {
         "title": "長期資金環境",
         "label": UNKNOWN,
