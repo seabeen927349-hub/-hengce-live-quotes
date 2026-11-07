@@ -92,6 +92,8 @@ def validate(rows: list[dict], ticker: str, start: str, end: str) -> dict:
     observed_dates = set()
     levels = set()
     keys = set()
+    adjustment_rows = 0
+    adjustment_keys = []
     for row in rows:
         if not isinstance(row, dict) or any(k not in row for k in FIELDS):
             raise ValueError("SCHEMA_MISSING_FIELDS")
@@ -112,14 +114,25 @@ def validate(rows: list[dict], ticker: str, start: str, end: str) -> dict:
             units = int(row["unit"])
         except (TypeError, ValueError):
             raise ValueError("NUMERIC_FIELD_INVALID") from None
-        if not (0 <= p <= 100 and 0 <= people and 0 <= units):
+        # FinMind/TDCC sometimes includes signed accounting reconciliation rows,
+        # e.g. 差異數調整（說明4） with unit=-1999. Preserve these verbatim
+        # but they are NOT a shareholder holding tier and MUST be excluded
+        # from the Big400/Big1000 aggregations.
+        is_adjustment = "差異數調整" in lvl
+        if not (0 <= p <= 100 and people >= 0 and (units >= 0 or is_adjustment)):
             raise ValueError(f"NUMERIC_OUT_OF_RANGE stock={ticker} date={ds} level={lvl} percent={p} people={people} unit={units}")
+        if is_adjustment:
+            adjustment_rows += 1
+            adjustment_keys.append({"date": ds, "level": lvl, "unit": units})
     return {
         "rows": len(rows),
         "snapshots": len(observed_dates),
         "first_snapshot": min(observed_dates) if observed_dates else None,
         "last_snapshot": max(observed_dates) if observed_dates else None,
         "levels": sorted(levels),
+        "accounting_adjustment_rows": adjustment_rows,
+        "accounting_adjustment_examples": adjustment_keys[:10],
+        "holding_tier_only_derived_metrics": False,
     }
 
 
