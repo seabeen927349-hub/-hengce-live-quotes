@@ -1,0 +1,95 @@
+name: HENGCE FinMind TDCC 2018-2025 Full-History Big400 Big1000 Research Sidecar
+
+"on":
+  push:
+    branches:
+      - research/tdcc-finmind-historical-backfill-20261107
+    paths:
+      - .github/workflows/hengce-finmind-tdcc-8year-merge.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  research-sidecar-merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download validated FinMind TDCC year 2018
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2018
+          run-id: 42361237687
+          github-token: ${{ github.token }}
+          path: /tmp/hengce-finmind-merge-input/2018
+      - name: Download validated FinMind TDCC year 2019
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2019
+          run-id: 42361361615
+          github-token: ${{ github.token }}
+          path: /tmp/hengce-finmind-merge-input/2019
+      - name: Download validated FinMind TDCC year 2020
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2020
+          run-id: 42361361615
+          github-token: ${{ github.token }}
+          path: /tmp/hengce-finmind-merge-input/2020
+      - name: Download validated FinMind TDCC year 2021
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2021
+          run-id: 42361361615
+          github-token: ${{ github.token }}
+          path: /tmp/hengce-finmind-merge-input/2021
+      - name: Download validated FinMind TDCC year 2022
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2022
+          run-id: 42361361615
+          github-token: ${{ github.token }}
+          path: /tmp/hengce-finmind-merge-input/2022
+      - name: Download validated FinMind TDCC year 2023
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2023-repair
+          run-id: 42362132686
+          github-token: ${{ github.token }}
+          path: /tmp/hengce-finmind-merge-input/2023
+      - name: Download validated FinMind TDCC year 2024
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2024
+          run-id: 42361361615
+          github-token: ${{ github.token }}
+          path: /tmp/hengce-finmind-merge-input/2024
+      - name: Download validated FinMind TDCC year 2025
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-full-market-2025
+          run-id: 42361361615
+          github-token: ${{ github.token }}
+          path: /tmp/hengce-finmind-merge-input/2025
+
+      - name: Validate and merge eight historical weekly source archives
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/hengce_finmind_tdcc_merge_research_sidecar.py
+          python scripts/hengce_finmind_tdcc_merge_research_sidecar.py \
+            --root /tmp/hengce-finmind-merge-input \
+            --out /tmp/hengce-finmind-8y-sidecar
+      - name: Preserve candidate sidecar privately (never commit paid dataset to Git)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-tdcc-2018-2025-big400-big1000-sidecar-research
+          path: /tmp/hengce-finmind-8y-sidecar/
+          retention-days: 1
+          if-no-files-found: error
