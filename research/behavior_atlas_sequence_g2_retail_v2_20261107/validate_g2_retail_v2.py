@@ -24,8 +24,8 @@ def check():
     insist(original_state.get("research_phase")=="CLOSED_DESCRIPTIVE_ONLY","ORIGINAL_PARENT_STUDY_REOPENED")
     for key,name in [("protocol","05_PREREGISTRATION_LOCK.md"),("methods","06_SPLIT_AND_BASELINES.json"),("budget","07_EXPERIMENT_BUDGET.json")]:
         insist(git_blob(OLD/name)==lock["base_prereg_docs_git_blob_shas"][key],"IMMUTABLE_V1_"+key)
-    insist(state["stage"]=="G2" and state["G2_status"]=="PASS_METHOD_LOCKED","V2_NOT_METHOD_LOCKED")
-    insist(state["G3_experiments_executed"]==0,"G3_EXECUTED_BEFORE_G1_READY")
+    insist(state["stage"] in ("G2","G3") and state["G2_status"]=="PASS_METHOD_LOCKED","V2_NOT_METHOD_LOCKED")
+    insist(0<=state["G3_experiments_executed"]<=6,"G3_BUDGET_OVERRUN")
     insist(e["activated_primary_experiments"]==0,"BUDGET_ALREADY_USED")
     insist(e["experiment_count_cap"]==6 and e["number_of_primary_test_families"]==3,"BUDGET_CHANGED")
     insist(e["experiment_order"]==["S4A","S4B","S12A","S12B","S24A","S24B"],"WRONG_TEST_SEQUENCE")
@@ -41,9 +41,22 @@ def check():
     insist(s["sample_constraints"]["retail_15grade_coverage_gate"]=="BLOCKED_PENDING_MATCHED_ALL_PERIOD_SOURCE_QA","UNVERIFIED_SAMPLE_APPROVED")
     insist(s["time_alignment"]["PIT_for_prediction"] is False,"PIT_NOT_PROVEN")
     insist(g1["gate_status"] in ("BLOCKED","PASS"),"G1_UNKNOWN_STATUS")
-    if g1["gate_status"]!="PASS":
+    # Preserve the original G1 BLOCKED document's preregistered Git blob SHA.
+    # An append-only PASS evidence receipt is the only way to authorize G3.
+    new_gate=ROOT/"G1_RETAIL_COVERAGE_GATE_PASS_20261107.json"
+    if new_gate.exists():
+        passed=load(new_gate)
+        ev=passed.get("evidence",{})
+        insist(passed.get("pass_status")=="PASS_SCOPED_RETROSPECTIVE_BEHAVIOR_ONLY","BAD_G1_PASS_RECORD")
+        insist(ev.get("original_G1_scoped_candidate_stockweeks")==443341 and ev.get("full_15_grade_original_people_matches")==443341,"SCOPE_COVERAGE_CHANGED")
+        insist(ev.get("valid_account_holder_grade_stockweeks")==443207 and ev.get("invalid_local_grade_stockweeks")==134,"G1_RAW_GRADE_QA_CHANGED")
+        insist(ev.get("aggregate_source_sha256")=="71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88","G1_RAW_SOURCE_HASH_CHANGED")
+        insist(ev.get("raw_finmind_archive_weeks")==404 and ev.get("raw_official_2025_tail_2026_weeks")==53,"WEEK_SOURCE_MISSING")
+        insist(state["G3_enabled"] is True and state["G1_new_retail_count_grade_source_status"].startswith("PASS"),"G1_PASS_BUT_G3_UNAUTHORIZED")
+    else:
         insist(state["G3_enabled"] is False and state["G1_new_retail_count_grade_source_status"].startswith("BLOCKED"),"UNAUTHORIZED_G3_UNBLOCKED")
-        insist(g1["approved_v2_G3_for_expanded_variables"] is False,"G3_UNAUTHORIZED_IN_G1")
+        insist(state["G3_experiments_executed"]==0,"UNAUTHORIZED_G3_EXECUTION")
+    insist(g1["approved_v2_G3_for_expanded_variables"] is False,"ORIGINAL_BLOCKED_G1_DOCUMENT_MUTATED")
     insist(state["trading_authority"] is False and state["model_authority"] is False,"UNAUTHORIZED_MODEL_OR_TRADING")
     insist(len(lock["v2_docs"])==5,"MISSING_LOCK_DOCS")
     for d in lock["v2_docs"]:
@@ -53,7 +66,7 @@ def check():
     original_spec=load(OLD/"SOURCE_HASH_LOCK.json")
     insist(original_spec["original_study_must_remain_closed"] is True,"V1_SOURCE_LOCK_MISMATCH")
     insist(lock["new_15_level_source_status"].startswith("PARTIAL_"),"UNVERIFIED_FULL_COVERAGE_CLAIM")
-    print("HENGCE_G2_RETAIL_HEADCOUNT_V2_VALID: two holder count strata (1–10 and 10–50 lots); six fixed tests; 24 pairings; 0 G3 tests; new G1 source gate BLOCKED")
+    print("HENGCE_G2_RETAIL_HEADCOUNT_V2_VALID: 6 fixed tests; 24 pairings; G1 retail source pass=" + str(new_gate.exists()) + "; G3 completed=" + str(state["G3_experiments_executed"]))
 if __name__=="__main__":
     try:check()
     except Exception as error:
