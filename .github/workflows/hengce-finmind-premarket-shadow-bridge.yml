@@ -93,10 +93,12 @@ jobs:
           git add escape_live/finmind_premarket_bridge_shadow.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'data(shadow): refresh governed FinMind premarket environment'
-          for attempt in 1 2 3; do
-            if git push origin HEAD:main; then exit 0; fi
-            git pull --rebase origin main
-            sleep "$attempt"
-          done
-          echo 'Unable to publish shadow context' >&2
-          exit 1
+          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
+      - name: Preserve publication arbitration receipts
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-premarket-lease
+          path: ${{ runner.temp }}/hengce-publication
+          if-no-files-found: ignore
+          retention-days: 7
