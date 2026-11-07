@@ -19,7 +19,12 @@ name: HENGCE Governed SOX VIX Premarket EOD
           - probe
           - run
   schedule:
-    - cron: '10,30 0 * * 1-5'  # 08:10 and 08:30 Asia/Taipei; second is retry
+    # Reuse the successful Q017 early-morning timing pattern (UTC Sun-Thu => Mon-Fri Taipei).
+    - cron: '45 21 * * 0-4'  # Taipei 05:45
+    - cron: '15 22 * * 0-4'  # Taipei 06:15
+    - cron: '15 23 * * 0-4'  # Taipei 07:15
+    - cron: '10 0 * * 1-5'   # Taipei 08:10
+    - cron: '30 0 * * 1-5'   # Taipei 08:30 final retry
 
 permissions:
   contents: write
