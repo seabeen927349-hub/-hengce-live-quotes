@@ -4,6 +4,8 @@ on:
     # Asia/Taipei Mon–Fri 08:38 and 08:53 (retries after governed SOX/VIX producer)
     - cron: '38 0 * * 1-5'
     - cron: '53 0 * * 1-5'
+    # Asia/Taipei Mon–Fri 23:05 close-of-day reconciliation after governed EOD ingest
+    - cron: '5 15 * * 1-5'
   workflow_dispatch:
 permissions:
   contents: write
