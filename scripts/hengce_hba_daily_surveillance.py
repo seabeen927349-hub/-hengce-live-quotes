@@ -101,7 +101,7 @@ def env(root,target):
        'vix_band':(x.get('risk_forecast') or {}).get('vix_risk_band'),
        'gap_log_pct':dc.get('expected_taiex_open_gap_log_pct'),'packet_sha256':claimed,'source_path':str(p)}
 
-def scan(root, target, limit=25):
+def scan(root, target, limit=15):
     days,stocks=eod(root); latest=days[-1] if days else None
     meta,holding=tdcc(root,target); macro=env(root,target)
     report={'schema':SCOPE,'target_tw_date':target,'latest_verified_eod':latest,
@@ -159,8 +159,14 @@ def scan(root, target, limit=25):
         if macro['status']!='已核對':counter.append('正式當日SOX/VIX環境未知')
         elif macro['label'] in ('強烈偏空','偏空'):counter.append('隔夜海外環境偏空，與個股訊號需交叉檢查')
         if len(td)<2:counter.append('TDCC可用週資料不足，不能認定累積完成')
+        macro_alignment=('UNKNOWN_HOLD' if macro['status']!='已核對' else
+                         'HEADWIND' if macro['label'] in ('強烈偏空','偏空') else
+                         'TAILWIND' if macro['label'] in ('強烈偏多','偏多') else 'NEUTRAL')
+        decision_readiness=('CROSS_ENVIRONMENT_REVIEW_PENDING' if macro_alignment in ('UNKNOWN_HOLD','HEADWIND') else
+                            'MANUAL_CATALYST_AND_EXECUTION_REVIEW' if confirmed and stage!='撤退警戒' else
+                            'WATCH_ONLY')
         candidates.append({'ticker':t,'name':a['name'],'stage':stage,'evidence_domains':sorted(domains),
-          'positive_evidence':signs,'counter_evidence':counter,'eod_date':latest,
+          'positive_evidence':signs,'counter_evidence':counter,'macro_alignment':macro_alignment,'decision_readiness':decision_readiness,'eod_date':latest,
           'ownership_snapshot':td[-1]['date'] if td else None,'institution_5d_net_volume_pct':round(f5*100,2),
           'institution_10d_net_volume_pct':round(f10*100,2),'tdcc_big400_delta_pp':delta,
           'tdcc_total_holders_change_pct':round(hchange,2) if hchange is not None else None,
@@ -176,7 +182,8 @@ def scan(root, target, limit=25):
     report['new_or_escalated']=[{'ticker':c['ticker'],'name':c['name'],'prior':old_registry.get(c['ticker']),'now':c['stage']}
        for c in candidates if (c['ticker'] not in old_registry or priority.get(c['stage'],9)<priority.get(old_registry[c['ticker']],9)) and c['stage']!='撤退警戒'][:100]
     report['cleared']=[t for t in old_registry if t not in report['candidate_registry']][:100]
-    report['candidates']=candidates[:limit]
+    report['candidates']=[c for c in candidates if c['stage']!='撤退警戒'][:limit]
+    report['exit_alerts']=[c for c in candidates if c['stage']=='撤退警戒'][:10]
     report['stage_counts']={stage:sum(c['stage']==stage for c in candidates) for stage in priority}
     report['explanations']=['觀察分層不是勝率/預測機率，沒有交易授權；只供研究偵查與人工覆核',
        'TDCC持股級距不等於法人身分；公開法人買賣超是淨額，不能辨識特定資金意圖',
@@ -196,13 +203,18 @@ def markdown(report):
         lines.extend([f"### {c['ticker']} {c['name']} — {c['stage']}",
           f"- 正面證據：{'；'.join(c['positive_evidence']) or '無'}",
           f"- 反面／缺口：{'；'.join(c['counter_evidence']) or '未見此批指標明確反證'}",
+          f"- 外部環境交叉檢查：{c['macro_alignment']}；處置狀態：{c['decision_readiness']}",
           f"- 觀察：{c['monitor_next']}",''])
     if not a['candidates']:lines.append('沒有足夠獨立證據形成候選；缺資料時不虛構名單。')
+    lines+=['','## 持股分散／撤退風險（獨立警報，非買進候選）','']
+    for c in a.get('exit_alerts',[]):
+        lines.append(f"- {c['ticker']} {c['name']}：法人5日淨買超比 {c['institution_5d_net_volume_pct']}%；TDCC大額持股週變化 {c['tdcc_big400_delta_pp']}pp")
+    if not a.get('exit_alerts'):lines.append('本次未觸發這組撤退代理條件。')
     lines+=['','## 研究邊界',*['- '+x for x in a['explanations']],*['- '+x for x in a['exclusions']]]
     return '\n'.join(lines)+'\n'
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,default=Path('.'));p.add_argument('--target-tw-date',default=dt.datetime.now(TZ).date().isoformat());p.add_argument('--out',type=Path,default=Path('research/hba_surveillance/latest.json'));p.add_argument('--limit',type=int,default=25)
+    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,default=Path('.'));p.add_argument('--target-tw-date',default=dt.datetime.now(TZ).date().isoformat());p.add_argument('--out',type=Path,default=Path('research/hba_surveillance/latest.json'));p.add_argument('--limit',type=int,default=15)
     a=p.parse_args();result=scan(a.root,a.target_tw_date,a.limit)
     a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(result,ensure_ascii=False,indent=2,sort_keys=True)+'\n',encoding='utf-8')
     md=a.out.with_suffix('.md');md.write_text(markdown(result),encoding='utf-8')
