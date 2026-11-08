@@ -4,8 +4,9 @@ on:
     # Asia/Taipei Mon–Fri 08:38 and 08:53 (retries after governed SOX/VIX producer)
     - cron: '38 0 * * 1-5'
     - cron: '53 0 * * 1-5'
-    # Asia/Taipei Mon–Fri 23:05 close-of-day reconciliation after governed EOD ingest
-    - cron: '5 15 * * 1-5'
+    # Asia/Taipei Mon–Fri 23:35 and 23:55, after usual governed EOD completion
+    - cron: '35 15 * * 1-5'
+    - cron: '55 15 * * 1-5'
   workflow_dispatch:
 permissions:
   contents: write
@@ -37,6 +38,39 @@ jobs:
           assert d['not_an_order'] is True and d['no_formula_profit_claim'] is True
           assert d['data_gate'] != 'BLOCKED', 'FAIL_CLOSED: no fresh EOD'
           PY
+      - name: Integrate existing market environment and long-term gross flow (read-only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          # This cache is an optional already-verified derivative of the nine-year mother.
+          # Do not rebuild or download historical data inside the scheduled job.
+          SUMMARY="research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv"
+          if [ -f "$SUMMARY" ]; then
+            python scripts/hengce_hba_context_bridge_v1.py \
+              --root . --hba-input research/hba_surveillance/latest.json \
+              --mother-summary "$SUMMARY" \
+              --out research/hba_surveillance/integrated_latest.json
+          else
+            python scripts/hengce_hba_context_bridge_v1.py \
+              --root . --hba-input research/hba_surveillance/latest.json \
+              --out research/hba_surveillance/integrated_latest.json
+          fi
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('research/hba_surveillance')
+          p=root/'integrated_latest.json'
+          raw=p.read_bytes(); d=json.loads(raw)
+          assert d['authority']['trade'] is False and d['authority']['new_selection'] is False
+          assert d['readiness'] in ('RESEARCH_READY','EOD_READY_LONG_TERM_MISSING','BLOCKED')
+          sha=hashlib.sha256(raw).hexdigest()
+          history=root/'integrated_history'/f"{d['target_tw_date'].replace('-','')}_{sha[:16]}.json"
+          history.parent.mkdir(parents=True,exist_ok=True)
+          if history.exists(): assert history.read_bytes()==raw
+          else: history.write_bytes(raw)
+          (root/'last_integrated_history_path.txt').write_text(str(history)+'\n')
+          print('HBA_INTEGRATED_CONTEXT:',d['readiness'],history)
+          PY
       - name: Append immutable daily research receipt and publish latest
         shell: bash
         run: |
@@ -57,6 +91,7 @@ jobs:
           git config user.name 'hengce-hba-surveillance-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add research/hba_surveillance/latest.json research/hba_surveillance/latest.md "$(cat research/hba_surveillance/last_history_path.txt)"
+          git add research/hba_surveillance/integrated_latest.json research/hba_surveillance/integrated_latest.md "$(cat research/hba_surveillance/last_integrated_history_path.txt)"
           git diff --cached --quiet && exit 0
           git commit -m 'research(sidecar): daily HBA surveillance with PIT macro and capital evidence'
           # Race protection: guarded publisher handles immutable write paths.
@@ -70,6 +105,8 @@ jobs:
           path: |
             research/hba_surveillance/latest.json
             research/hba_surveillance/latest.md
+            research/hba_surveillance/integrated_latest.json
+            research/hba_surveillance/integrated_latest.md
             ${{ runner.temp }}/hengce-hba-publication
           if-no-files-found: ignore
           retention-days: 14
