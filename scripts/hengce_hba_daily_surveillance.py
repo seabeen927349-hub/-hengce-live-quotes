@@ -178,7 +178,7 @@ def scan(root, target, limit=15):
     report['total_candidates_before_limit']=len(candidates)
     report['candidate_registry']={c['ticker']:c['stage'] for c in candidates}
     old=jread(root/'research/hba_surveillance/latest.json') or {}
-    old_registry=old.get('candidate_registry',{}) if old.get('latest_verified_eod','')<latest else {}
+    old_registry=old.get('candidate_registry',{}) if old.get('latest_verified_eod','')<=latest else {}
     report['new_or_escalated']=[{'ticker':c['ticker'],'name':c['name'],'prior':old_registry.get(c['ticker']),'now':c['stage']}
        for c in candidates if (c['ticker'] not in old_registry or priority.get(c['stage'],9)<priority.get(old_registry[c['ticker']],9)) and c['stage']!='撤退警戒'][:100]
     report['cleared']=[t for t in old_registry if t not in report['candidate_registry']][:100]
