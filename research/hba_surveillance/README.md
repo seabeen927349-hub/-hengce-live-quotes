@@ -24,7 +24,9 @@
 
 `python scripts/hengce_hba_daily_surveillance.py --root . --out research/hba_surveillance/latest.json`
 
-資料完整時產生 `latest.json` 和 `latest.md`，History 由獨立 sidecar GitHub Action 上傳 immutable 檔。每個平日台北時間 08:38 與 08:53 重跑，依最新已完成 EOD 與已發布海外資料更新；週末不假裝有新 EOD。
+資料完整時產生 `latest.json` 和 `latest.md`，History 由獨立 sidecar GitHub Action 上傳 immutable 檔。每個平日台北時間 08:38、08:53 與 23:05 重跑，依最新已完成 EOD 與已發布海外資料更新；週末不假裝有新 EOD。
+
+前 15 檔只展示仍需偵查的候選；撤退警戒獨立展示最多 10 檔。當海外環境缺失或逆風時，decision_readiness 必須保留交叉審核，不得視為已取得交易許可。
 
 新 sidecar 不更動 N2、Selection Core、Market State / Q017、Escape、Canonical 原母體或交易權限。GitHub Actions 延遲與外部來源異常時，輸出時間可能晚於 09:00，不能保證即時。
 
