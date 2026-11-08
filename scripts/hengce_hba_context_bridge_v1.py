@@ -114,11 +114,29 @@ def build(root, original, summary=None):
     recorded=str(fugle.get('generated_at_taipei') or '')[:10]
     denied=any('HTTP_403' in str(err) for err in (fugle.get('errors') or []))
     finmind=load(root/'escape_live/finmind_twse_common_status.json') or {}
+    monitor=load(root/'escape_live/intraday_monitor.json') or {}
+    monitor_date=str(monitor.get('market_date') or '')
+    full_coverage=monitor.get('active_universe_transport_full_coverage') is True
+    finmind_source=monitor.get('source')=='FinMind taiwan_stock_tick_snapshot'
+    matched_monitor=(finmind_source and monitor_date==day and full_coverage and
+                     monitor.get('monitor_state')=='LIVE_CONTEXT_READY' and
+                     monitor.get('formal_escape_authority') is False and
+                     monitor.get('formal_eod_authority') is False)
     overseas=original.get('external_environment') or {}
     output['market_environment']={'canonical':e,'overseas':{'label':overseas.get('label','資料不足'),
          'status':overseas.get('status','資料不足')},
          's5':{'status':'NOT_PROVIDED','reason':'未取得原凍結9特徵的正式分類憑證，不能由下跌家數擅自推定'},
          'escape':{'status':'NOT_PROVIDED','reason':'只接受既有狀態機結果，不能自行製造L0至L6'},
+         'full_market_intraday_monitor':{
+            'primary_source':'FinMind taiwan_stock_tick_snapshot',
+            'observed_market_date':monitor_date or None,
+            'status':'OBSERVED_SAME_SESSION_SHADOW' if matched_monitor else 'NO_MATCHING_FINMIND_SHADOW',
+            'transport_full_coverage':full_coverage if matched_monitor else None,
+            'active_required_count':monitor.get('active_required_count') if matched_monitor else None,
+            'valid_metric_count':monitor.get('finmind_metric_observation_count') if matched_monitor else None,
+            'unknown_metric_count':monitor.get('metric_unknown_count') if matched_monitor else None,
+            'authority':'DESCRIPTIVE_PRICE_LIQUIDITY_ONLY_NO_FORMAL_ESCAPE_OR_EOD',
+            'note':'GitHub紀錄中的全股盤中監控使用FinMind；資料可能是歷史觀測，不能視為查詢當下即時行情'},
          'fugle_whole_market_batch':{'last_attempt_date':recorded or None,
             'status':'HISTORICAL_403' if denied and recorded !=day else
                      'CURRENT_403' if denied else 'NO_CURRENT_VERIFIED_BATCH_SNAPSHOT',
@@ -148,7 +166,8 @@ def markdown(x):
      f"- 原始EOD三腿：{market.get('canonical_eod','資料不足')}",
      f"- 收盤環境：上漲 {breadth.get('advancing_count','?')}／下跌 {breadth.get('declining_count','?')}（有效 {breadth.get('observed_count','?')} 檔）",
      f"- 前一筆廣度觀測：{(market.get('prior_breadth') or {}).get('date','資料不足')}",
-     f"- Fugle全市場批次：{x['market_environment'].get('fugle_whole_market_batch',{}).get('status')}",
+     f"- 全上市監控（FinMind）：{x['market_environment'].get('full_market_intraday_monitor',{}).get('status')}（盤中影子，非正式EOD）",
+     f"- Fugle全市場批次（非主要監控）：{x['market_environment'].get('fugle_whole_market_batch',{}).get('status')}",
      '- S5及Escape正式級別：缺來源憑證時保持「資料不足」，不自行新增評級',
      f"- 多年資金紀錄：{mother.get('status','資料不足')}",'']
     if mother.get('status')=='AVAILABLE_RESEARCH_PROXY':
