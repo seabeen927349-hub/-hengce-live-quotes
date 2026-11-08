@@ -16,6 +16,7 @@ class IntegrationTests(unittest.TestCase):
     'change_rate_eligible_count':1085,'declining_share':down/1085}}}))
   (self.root/'escape_live').mkdir()
   (self.root/'escape_live/twse_common_status.json').write_text(json.dumps({'generated_at_taipei':'2026-11-03T16:38:44+08:00','errors':['HTTP_403: Forbidden']}))
+  (self.root/'escape_live/intraday_monitor.json').write_text(json.dumps({'market_date':'2026-11-06','source':'FinMind taiwan_stock_tick_snapshot','monitor_state':'LIVE_CONTEXT_READY','active_universe_transport_full_coverage':True,'formal_escape_authority':False,'formal_eod_authority':False,'active_required_count':1088,'finmind_metric_observation_count':1085,'metric_unknown_count':3}))
   self.summary=self.root/'summary.csv'
   with self.summary.open('w',newline='') as f:
    w=csv.DictWriter(f,fieldnames=['ticker','first_date','last_date','valid_stock_days','gross_buy_shares','gross_sell_shares','net_shares'])
@@ -31,7 +32,14 @@ class IntegrationTests(unittest.TestCase):
   self.assertEqual(x['market_environment']['canonical']['prior_breadth']['declining_count'],857)
   self.assertEqual(x['market_environment']['canonical']['breadth']['declining_count'],953)
   self.assertEqual(x['market_environment']['fugle_whole_market_batch']['status'],'HISTORICAL_403')
+  self.assertEqual(x['market_environment']['full_market_intraday_monitor']['primary_source'],'FinMind taiwan_stock_tick_snapshot')
+  self.assertEqual(x['market_environment']['full_market_intraday_monitor']['status'],'OBSERVED_SAME_SESSION_SHADOW')
+  self.assertEqual(x['market_environment']['full_market_intraday_monitor']['valid_metric_count'],1085)
   self.assertFalse(x['authority']['trade'])
+ def test_monitor_mismatched_day_does_not_become_current(self):
+  x=json.loads((self.root/'escape_live/intraday_monitor.json').read_text());x['market_date']='2026-11-05';(self.root/'escape_live/intraday_monitor.json').write_text(json.dumps(x))
+  y=build(self.root,self.original,self.summary)
+  self.assertEqual(y['market_environment']['full_market_intraday_monitor']['status'],'NO_MATCHING_FINMIND_SHADOW')
  def test_lifelong_gross_not_net_only(self):
   m,x=read_lifelong_summary(self.summary,'2026-11-06')
   self.assertEqual(m['status'],'AVAILABLE_RESEARCH_PROXY')
