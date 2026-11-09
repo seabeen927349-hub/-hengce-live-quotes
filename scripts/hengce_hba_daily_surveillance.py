@@ -108,7 +108,7 @@ def scan(root, target, limit=15):
       'source_scope':'TWSE original-vessel 3-leg + canonical TDCC + governed overseas packet',
       'source_coverage':{'available_eod_days':len(days),'available_tdcc_snapshots':len({r['date'] for v in holding.values() for r in v})},
       'external_environment':macro,'long_term_capital_environment':{'label':'資料不足','reason':'尚無正式20/60/120日資金環境核准憑證；個股法人淨額不可代替跨境資金流'},
-      'data_gate':'BLOCKED','candidates':[],'stage_counts':{},'exclusions':[],'explanations':[],
+      'data_gate':'BLOCKED','candidates':[],'all_candidates':[],'stage_counts':{},'exclusions':[],'explanations':[],
       'not_an_order':True,'no_formula_profit_claim':True,'rules_fixed_ex_ante_for_forward_surveillance':True,
       'capital_cycle_claim_gate':{'status':'HISTORICAL_CYCLE_UNVERIFIED',
         'stage_scope':'SHORT_WINDOW_SURVEILLANCE_ONLY','historical_phase_claim_authorized':False,
@@ -185,6 +185,10 @@ def scan(root, target, limit=15):
     candidates.sort(key=lambda r:(priority[r['stage']],-len(r['evidence_domains']),-r['institution_5d_net_volume_pct'],r['ticker']))
     report['total_candidates_before_limit']=len(candidates)
     report['candidate_registry']={c['ticker']:c['stage'] for c in candidates}
+    # Preserve every existing HBA alert with its evidence and counterevidence.
+    # Only the Markdown/compact display is limited to the first `limit` rows.
+    # No additional vendor fetch, historical phase claim, or selection authority.
+    report['all_candidates']=candidates
     old=jread(root/'research/hba_surveillance/latest.json') or {}
     old_registry=old.get('candidate_registry',{}) if old.get('latest_verified_eod','')<=latest else {}
     report['new_or_escalated']=[{'ticker':c['ticker'],'name':c['name'],'prior':old_registry.get(c['ticker']),'now':c['stage']}
