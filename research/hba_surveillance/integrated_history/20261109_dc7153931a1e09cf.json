@@ -1,0 +1,3268 @@
+{
+  "authority": {
+    "capital": false,
+    "formal_escape": false,
+    "new_selection": false,
+    "trade": false
+  },
+  "candidate_coverage": {
+    "authority": "SHORT_WINDOW_SURVEILLANCE_ONLY_NO_SELECTION_OR_TRADING",
+    "original_total": 318,
+    "represented": 318,
+    "source": "ORIGINAL_HBA_FULL_REGISTRY",
+    "truncated": false
+  },
+  "candidates": [
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "行情確認（待人工評估）",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6443"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "行情確認（待人工評估）",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6890"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "行情確認（待人工評估）",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6472"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "行情確認（待人工評估）",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6446"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "行情確認（待人工評估）",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1416"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2610"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1515"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6757"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9802"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9914"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3703"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9921"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2723"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1810"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1477"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3005"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4763"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2543"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8033"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2428"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1536"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7722"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6515"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8210"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2030"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2101"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6831"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2609"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6805"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2634"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2359"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2332"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6226"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3583"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6442"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2376"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2637"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2374"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2360"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2241"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6715"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3533"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1101"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4526"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6854"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2636"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6719"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3338"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1708"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2406"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4770"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6533"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2618"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9904"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8462"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2501"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4736"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9941"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4583"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2851"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2201"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9933"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1537"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "準備監控",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1802"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1232"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9939"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2607"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2539"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2442"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9910"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2204"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3705"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4766"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2417"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1102"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2472"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4536"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6235"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5880"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1227"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2231"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8374"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3694"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8454"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4585"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2542"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8261"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3376"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2645"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6451"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2646"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8478"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2034"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2023"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6215"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2753"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3032"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1808"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2207"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9958"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6781"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4764"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5471"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6541"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "9938"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3504"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2233"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1707"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3532"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2375"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4551"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2615"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7799"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2485"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3135"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3596"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1795"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2365"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2630"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6449"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2884"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1476"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2351"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3059"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6426"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2059"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6409"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2425"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6869"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6782"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6412"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7765"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4566"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7786"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2489"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4771"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2816"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2478"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1231"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6191"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4938"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3090"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2069"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6139"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3645"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2546"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3026"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2484"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1558"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2887"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2377"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2385"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8028"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6861"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6742"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3029"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7795"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3055"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7769"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1617"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8039"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3229"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4306"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2010"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6753"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3576"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8341"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6491"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3413"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5234"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6192"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6116"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3535"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1709"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1727"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6579"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2801"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3406"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6197"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6415"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4956"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6658"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2495"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2493"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6224"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1623"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3450"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2481"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2369"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2338"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2395"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8926"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6024"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5222"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6706"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5284"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2882"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2486"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6277"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3311"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3312"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2367"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3515"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2426"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1514"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2379"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8103"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6477"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7711"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3094"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3481"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8110"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3048"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2106"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7788"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2305"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2405"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1905"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6414"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6669"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2382"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3013"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4949"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2413"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6592"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3047"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3023"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2468"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "疑似症狀",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2603"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2465"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4720"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3518"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4960"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2455"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3673"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6456"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6269"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1560"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3715"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6278"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2464"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4722"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6213"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6202"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3605"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3702"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6937"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3030"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3006"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "7750"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4958"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2337"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3060"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4927"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2444"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1303"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2303"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6672"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2352"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3653"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6282"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5243"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4916"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3189"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4540"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5388"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4967"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1409"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6438"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2327"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2313"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8021"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6271"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6257"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4576"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6691"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4976"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1721"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2383"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3661"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2408"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3037"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2449"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4912"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6153"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5236"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "4590"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3545"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2402"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3035"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6196"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2324"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6206"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2301"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "5469"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8114"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2436"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2009"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2344"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6770"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8150"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2363"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2392"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2454"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2328"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3231"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6799"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6944"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3543"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6120"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3356"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "3416"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1605"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1609"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "6165"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "8163"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "2420"
+    },
+    {
+      "historical_cycle_stage": "HISTORICAL_CYCLE_UNVERIFIED",
+      "historical_flow": null,
+      "historical_flow_available": false,
+      "historical_phase_claim_authorized": false,
+      "original_decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
+      "original_stage": "撤退警戒",
+      "original_stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+      "ticker": "1723"
+    }
+  ],
+  "capital_cycle_claim_gate": {
+    "governance": "governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.json",
+    "gross_total_summary_is_longitudinal_event_path": false,
+    "historical_phase_claim_authorized": false,
+    "reason": "累計gross總和與最近5日/兩週警報均不足以判定多年播種、施肥或收割",
+    "short_window_alerts_are_historical_phases": false,
+    "status": "HISTORICAL_CYCLE_UNVERIFIED"
+  },
+  "market_environment": {
+    "canonical": {
+      "breadth": {
+        "advancing_count": 105,
+        "declining_count": 953,
+        "declining_share": 0.8783410138248848,
+        "equal_weight_change_pct_vendor": -3.0117603686635945,
+        "observed_count": 1085,
+        "source_latest_timestamp": "2026-11-06 15:00:00.000000",
+        "status": "SHADOW_DESCRIPTIVE_ONLY"
+      },
+      "canonical_eod": "COMPLETE",
+      "canonical_mother_status": "COMPLETE",
+      "date": "2026-11-06",
+      "declining_share_change_pp": 8.85,
+      "prior_breadth": {
+        "date": "2026-11-05",
+        "declining_count": 857,
+        "declining_share": 0.7898617511520737
+      }
+    },
+    "escape": {
+      "reason": "只接受既有狀態機結果，不能自行製造L0至L6",
+      "status": "NOT_PROVIDED"
+    },
+    "finmind_shadow": {
+      "latest_source_timestamp": "2026-11-09 11:35:19.861474",
+      "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
+      "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
+    },
+    "fugle_whole_market_batch": {
+      "last_attempt_date": "2026-11-03",
+      "note": "個股報價可用不代表全上市批次端點有權限；不阻斷canonical EOD",
+      "status": "HISTORICAL_403"
+    },
+    "full_market_intraday_monitor": {
+      "active_required_count": null,
+      "authority": "DESCRIPTIVE_PRICE_LIQUIDITY_ONLY_NO_FORMAL_ESCAPE_OR_EOD",
+      "note": "GitHub紀錄中的全股盤中監控使用FinMind；資料可能是歷史觀測，不能視為查詢當下即時行情",
+      "observed_market_date": "2026-11-09",
+      "primary_source": "FinMind taiwan_stock_tick_snapshot",
+      "status": "NO_MATCHING_FINMIND_SHADOW",
+      "transport_full_coverage": null,
+      "unknown_metric_count": null,
+      "valid_metric_count": null
+    },
+    "overseas": {
+      "label": "資料不足",
+      "status": "資料不足"
+    },
+    "s5": {
+      "reason": "未取得原凍結9特徵的正式分類憑證，不能由下跌家數擅自推定",
+      "status": "NOT_PROVIDED"
+    }
+  },
+  "mother": {
+    "reason": "多年研究母庫摘要未掛載，禁止以短期EOD代替",
+    "status": "NOT_MOUNTED"
+  },
+  "observed_eod_date": "2026-11-06",
+  "readiness": "EOD_READY_LONG_TERM_MISSING",
+  "schema": "HENGCE_HBA_INTEGRATED_CONTEXT_RESEARCH_V1",
+  "target_tw_date": "2026-11-09"
+}
