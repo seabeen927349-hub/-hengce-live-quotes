@@ -7,6 +7,7 @@ selection/position/order authority. All comparisons are point-in-time safe.
 import argparse
 import csv
 import json
+from datetime import date, timedelta
 from pathlib import Path
 
 SCHEMA = 'HENGCE_HBA_INTEGRATED_CONTEXT_RESEARCH_V1'
@@ -101,6 +102,133 @@ def read_lifelong_summary(path, day):
     return meta,stocks
 
 
+
+def fold_verified_original_eod(root, day, mother, stocks):
+    """Fold post-cache formal EOD days into the existing *in-memory* research proxy.
+
+    The frozen nine-year mother summary on disk is immutable here; the original
+    eod/YYYYMMDD institutional + price legs supply only newer verified rows.
+    Missing days, bad provenance or missing numeric legs fail closed.
+    """
+    if mother.get('status') not in ('AVAILABLE_RESEARCH_PROXY','STALE_RESEARCH_SUMMARY'):
+        return mother, stocks
+    base = mother.get('asof')
+    if not isinstance(base,str) or base >= day:
+        return mother, stocks
+    def stale(reason):
+        return dict(mother, status='STALE_RESEARCH_SUMMARY',
+                    reason=reason, expected_eod=day, source_base_asof=base), stocks
+
+    # Never skip a potentially open weekday without canonical session proof.
+    pending = []
+    d = date.fromisoformat(base) + timedelta(days=1)
+    until = date.fromisoformat(day)
+    while d <= until:
+        if d.weekday() < 5:
+            pending.append(d.isoformat())
+        d += timedelta(days=1)
+    if not pending:
+        return stale('NO_NEW_VERIFIED_MARKET_SESSION')
+    totals = {t:dict(v) for t,v in stocks.items()}
+    raw_fields = ('ForeignBuy','ForeignSell','ForeignDealerBuy','ForeignDealerSell',
+                  'TrustBuy','TrustSell','DealerProprietaryBuy','DealerProprietarySell',
+                  'DealerHedgeBuy','DealerHedgeSell')
+    increments = 0
+    for trade_day in pending:
+        folder = root/'eod'/trade_day.replace('-','')
+        status = load(folder/'status.json') or {}
+        receipt = load(folder/'receipts/mother.json') or {}
+        if not (status.get('formal_complete_day') is True and
+                status.get('downstream_ready') is True and
+                status.get('mother_status') == 'COMPLETE' and
+                all(status.get(leg+'_date')==trade_day for leg in ('price','institutional','margin')) and
+                receipt.get('target_date')==trade_day and
+                receipt.get('mother_latest_date')==trade_day and
+                receipt.get('status') in ('PASS','COMPLETE') and
+                receipt.get('second_mother') is False and
+                set(receipt.get('promoted_legs') or ()) == {'price','institutional','margin'}):
+            return stale('GAP_OR_UNVERIFIED_CANONICAL_DAY:'+trade_day)
+        hashes = receipt.get('promoted_leg_sha256') or {}
+        if any(hashes.get(leg)!=status.get(leg+'_sha256') or not hashes.get(leg)
+               for leg in ('price','institutional','margin')):
+            return stale('ORIGINAL_EOD_LEG_HASH_MISMATCH:'+trade_day)
+        # Read the original published bytes, not any new vendor endpoint.
+        def rows_for(leg):
+            paths = sorted(folder.glob(leg+'_[1-9].csv'))
+            if not paths:
+                raise ValueError(leg.upper()+'_FILES_MISSING')
+            seen=set()
+            out={}
+            for p in paths:
+                with p.open('r',encoding='utf-8-sig',newline='') as f:
+                    reader=csv.DictReader(f)
+                    required={'Date','Ticker'} | (set(raw_fields) if leg=='institutional' else set())
+                    if not required.issubset(reader.fieldnames or []):
+                        raise ValueError(leg.upper()+'_SCHEMA_MISMATCH')
+                    for row in reader:
+                        ticker=str(row['Ticker'])
+                        if row['Date']!=trade_day or len(ticker)!=4 or not ticker.isdigit() or ticker in seen:
+                            raise ValueError(leg.upper()+'_DATE_TICKER_INVALID')
+                        seen.add(ticker)
+                        out[ticker]=row
+            reported=status.get(leg+'_rows')
+            if isinstance(reported,int) and len(out)!=reported:
+                raise ValueError(leg.upper()+'_ROW_COUNT_MISMATCH')
+            return out
+        try:
+            prices = rows_for('price')
+            inst = rows_for('institutional')
+        except (OSError,UnicodeError,csv.Error,ValueError) as exc:
+            return stale('EOD_ORIGINAL_SOURCE_INVALID:'+trade_day+':'+str(exc)[:90])
+        valid_on_day = 0
+        for ticker, row in inst.items():
+            if ticker not in prices:
+                continue
+            try:
+                # Distinguish zero from missing; do not infer a buy/sell leg.
+                nums=[]
+                for field in raw_fields:
+                    raw=str(row.get(field) or '').strip().replace(',','')
+                    if not raw or not raw.isdecimal():
+                        raise ValueError('MISSING_OR_INVALID_T86_LEG')
+                    nums.append(int(raw))
+            except ValueError:
+                continue
+            buy=sum(nums[::2])
+            sell=sum(nums[1::2])
+            prev=totals.get(ticker)
+            if prev and prev['last_date']>=trade_day:
+                continue
+            if prev:
+                x=prev
+                x['gross_buy_shares']+=buy
+                x['gross_sell_shares']+=sell
+                x['net_shares']=x['gross_buy_shares']-x['gross_sell_shares']
+                x['observed_stock_days']+=1
+                x['last_date']=trade_day
+            else:
+                x={'first_date':trade_day,'last_date':trade_day,
+                   'gross_buy_shares':buy,'gross_sell_shares':sell,
+                   'net_shares':buy-sell,'observed_stock_days':1}
+                totals[ticker]=x
+            gross=x['gross_buy_shares']+x['gross_sell_shares']
+            x['net_abs_to_gross_pct']=round(100*abs(x['net_shares'])/gross,4) if gross else None
+            valid_on_day+=1
+        if valid_on_day==0:
+            return stale('NO_VALID_INTERSECTING_T86_PRICE_ROWS:'+trade_day)
+        increments+=valid_on_day
+    # Descriptive gross total, not a historical phase/selection assertion.
+    updated=dict(mother, status='AVAILABLE_RESEARCH_PROXY', asof=day,
+                 distinct_tickers=len(totals), valid_stock_days=sum(x['observed_stock_days'] for x in totals.values()),
+                 gross_buy_shares=sum(x['gross_buy_shares'] for x in totals.values()),
+                 gross_sell_shares=sum(x['gross_sell_shares'] for x in totals.values()),
+                 net_below_one_percent_count=sum(x['net_abs_to_gross_pct'] is not None and x['net_abs_to_gross_pct']<1 for x in totals.values()),
+                 original_cache_asof=base, incremental_eod_dates=pending,
+                 incremental_valid_stock_days=increments,
+                 source_scope='EXISTING_VERIFIED_EOD_PRICE_AND_T86_FOLD_NO_SECOND_MOTHER')
+    return updated, totals
+
+
 def build(root, original, summary=None):
     target=original.get('target_tw_date')
     day=original.get('latest_verified_eod')
@@ -151,6 +279,7 @@ def build(root, original, summary=None):
             'latest_source_timestamp':finmind.get('latest_source_timestamp'),
             'role':'INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY'}}
     m,stocks=read_lifelong_summary(summary,day)
+    m,stocks=fold_verified_original_eod(root,day,m,stocks)
     output['mother']=m
     # Consume the existing HBA full evidence list, not its top-15 display subset.
     full=original.get('all_candidates')
