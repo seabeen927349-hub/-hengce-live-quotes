@@ -30,6 +30,7 @@ on:
     # Reuse the SAME original EOD producer's successful completion; do not start a new collector.
     workflows: ['HENGCE original EOD ingest']
     types: [completed]
+  # 2026-11-09: on-demand refresh after canonical 2026-11-09 mother receipt PASS; unchanged scan logic.
   workflow_dispatch:
 permissions:
   contents: write
