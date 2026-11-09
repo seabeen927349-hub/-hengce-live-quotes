@@ -10,7 +10,9 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
       - 'scripts/hengce_finmind_intraday_freshness_gate.py'
+      - 'scripts/hengce_finmind_trigger_gate.py'
       - 'tests/engineering/test_hengce_finmind_intraday_freshness_gate.py'
+      - 'tests/engineering/test_hengce_finmind_schedule_recovery.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   pull_request:
@@ -20,15 +22,24 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
       - 'scripts/hengce_finmind_intraday_freshness_gate.py'
+      - 'scripts/hengce_finmind_trigger_gate.py'
       - 'tests/engineering/test_hengce_finmind_intraday_freshness_gate.py'
+      - 'tests/engineering/test_hengce_finmind_schedule_recovery.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   workflow_dispatch:
+  # Backup wake-up by an existing independent scheduled HENGCE workflow.
+  # It invokes THIS SAME FinMind job, never a parallel collector or market universe.
+  workflow_run:
+    workflows:
+      - HENGCE Frozen Single-Name Live Quotes
+    types: [completed]
   schedule:
-    # Offset each five-minute slot away from the GitHub Actions top-of-hour backlog.
-    # UTC 01:02–05:32 = Asia/Taipei 09:02–13:32 (weekday only).
-    - cron: "2-57/5 1-4 * * 1-5"
-    - cron: "2-32/5 5 * * 1-5"
+    # Re-register the schedule actor and use offset 03,08,... (UTC/Taipei +8).
+    # UTC 01:03–05:33 = Asia/Taipei 09:03–13:33, weekday only.
+    # GitHub schedule is best effort: it may be delayed or dropped.
+    - cron: "3-58/5 1-4 * * 1-5"
+    - cron: "3-33/5 5 * * 1-5"
 
 permissions:
   contents: write
@@ -39,7 +50,21 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  trigger-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      allowed: ${{ steps.guard.outputs.allowed }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate workflow_run origin and TWSE session timing
+        id: guard
+        shell: bash
+        run: python scripts/hengce_finmind_trigger_gate.py
+
   shadow-context:
+    needs: trigger-gate
+    if: needs.trigger-gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 9
     env:
@@ -64,7 +89,9 @@ jobs:
           python -m py_compile scripts/hengce_escape_intraday_monitor_adapter.py
           python -m py_compile scripts/hengce_finmind_intraday_freshness_gate.py
       - name: FinMind stale, future, hash and authority offline regressions
-        run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_intraday_freshness_gate.py' -v
+        run: |
+          python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_intraday_freshness_gate.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_schedule_recovery.py' -v
       - name: Build non-raw aggregate shadow context
         if: github.event_name != 'pull_request'
         shell: bash
