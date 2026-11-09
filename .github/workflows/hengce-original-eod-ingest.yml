@@ -269,7 +269,44 @@ jobs:
             echo 'No original-vessel changes.'
           else
             git commit -m "HENGCE original EOD ingest ${{ steps.target.outputs.date }}"
-            git pull --rebase origin main
+            if ! git pull --rebase origin main; then
+              # Resolve only the known same-day EOD/FinMind auxiliary add/add
+              # race. All other conflicts remain fail-closed.
+              mapfile -t conflicts < <(git diff --name-only --diff-filter=U)
+              if [ "${#conflicts[@]}" -eq 0 ]; then
+                echo 'REBASE_FAILED_WITHOUT_EXPECTED_CONFLICT' >&2
+                exit 1
+              fi
+              for f in "${conflicts[@]}"; do
+                case "$f" in
+                  "eod/$C/status.json"|"eod/$C/market_state_finmind_context.json"|"eod/$C/receipts/market_state_finmind_shadow.json")
+                    git checkout --theirs -- "$f"
+                    git add -- "$f"
+                    ;;
+                  *)
+                    echo "UNEXPECTED_REBASE_CONFLICT:$f" >&2
+                    exit 1
+                    ;;
+                esac
+              done
+              GIT_EDITOR=true git rebase --continue
+            fi
+            # Reject malformed conflict-marker JSON before publishing.
+            python - "$C" <<'PY'
+          import json,sys
+          from pathlib import Path
+          c=sys.argv[1]
+          root=Path('eod')/c
+          status=json.loads((root/'status.json').read_text(encoding='utf-8'))
+          assert status.get('target_date')==f'{c[:4]}-{c[4:6]}-{c[6:]}'
+          for rel in ('market_state_finmind_context.json','receipts/market_state_finmind_shadow.json'):
+              json.loads((root/rel).read_text(encoding='utf-8'))
+          for leg in ('price','institutional','margin'):
+              if status.get(f'{leg}_status')=='COMPLETE':
+                  rec=json.loads((root/'receipts'/f'{leg}.json').read_text(encoding='utf-8'))
+                  assert rec.get('status')=='COMPLETE' and rec.get('sha256')==status.get(f'{leg}_sha256')
+          print('ORIGINAL_EOD_POST_REBASE_JSON_AND_RECEIPT_PASS')
+          PY
             git push origin HEAD:main
           fi
 
