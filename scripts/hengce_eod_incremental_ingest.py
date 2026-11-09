@@ -9,8 +9,9 @@ these same eod/YYYYMMDD files.
 """
 from __future__ import annotations
 import argparse, csv, hashlib, json, re
-from datetime import date
+from datetime import date, datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 import hengce_daily_command_center_core_legacy as core
 
 LEGS=('price','institutional','margin')
@@ -22,6 +23,25 @@ COLS={
 SRC={'price':core.TWSE_PRICE,'institutional':core.TWSE_INST,'margin':core.TWSE_MARGIN}
 
 class NotReady(RuntimeError): pass
+
+def resolve_scheduled_eod_target(asof=None):
+    """Use the original 23:00 Taipei EOD slot, not delayed runner wall date.
+
+    A scheduled run may start after local midnight. For the unambiguous 23:00
+    slot, same-day 23:xx maps to that day; next 00:00–10:59 maps to the
+    previous day. Other times fail closed, never guess a session.
+    """
+    now = (asof or datetime.now(ZoneInfo('Asia/Taipei'))).astimezone(ZoneInfo('Asia/Taipei'))
+    if now.hour == 23:
+        target = now.date()
+    elif now.hour < 11:
+        target = now.date() - timedelta(days=1)
+    else:
+        raise RuntimeError('EOD_SCHEDULE_TARGET_OUTSIDE_VERIFIABLE_23H_SLOT')
+    if target.weekday() >= 5:
+        raise RuntimeError('EOD_SCHEDULE_TARGET_NOT_WEEKDAY')
+    return target
+
 
 def _files(out,leg): return sorted(out.glob(f'{leg}_[1-9].csv'))
 def _digest(files):
@@ -174,7 +194,8 @@ def ingest(target=None):
 def self_test():
  print(json.dumps({'self_test':'PASS','original_eod_tree_only':True,'second_mother':False,'no_wait_for_margin':True,'mother_gate':True,'q017_model_change':False,'e2_model_change':False},ensure_ascii=False))
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--mode',choices=('ingest','self-test'),required=True);ap.add_argument('--date');a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--mode',choices=('ingest','self-test','schedule-date'),required=True);ap.add_argument('--date');a=ap.parse_args()
  if a.mode=='self-test':self_test();return 0
+ if a.mode=='schedule-date':print(resolve_scheduled_eod_target().isoformat());return 0
  x=ingest(date.fromisoformat(a.date) if a.date else None);print(json.dumps(x,ensure_ascii=False,indent=2));return 0
 if __name__=='__main__':raise SystemExit(main())

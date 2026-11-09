@@ -66,6 +66,9 @@ jobs:
       - name: EOD three-leg closure no-network regression
         run: python scripts/hengce_eod_guarded_ingest.py --mode self-test
 
+      - name: Original EOD incremental and delayed schedule target regression
+        run: python scripts/test_hengce_eod_original_vessel_incremental.py
+
       - name: Broker same-vessel governance regression
         run: python scripts/hengce_eod_broker_aux.py --mode self-test
 
