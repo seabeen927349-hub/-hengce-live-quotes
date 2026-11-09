@@ -7,6 +7,7 @@ on:
     paths:
       - 'scripts/hengce_hba_daily_surveillance.py'
       - 'scripts/hengce_hba_context_bridge_v1.py'
+      - 'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
       - 'tests/hba_surveillance/**'
       - '.github/workflows/hengce-hba-daily-surveillance.yml'
   pull_request:
@@ -15,6 +16,7 @@ on:
       - 'governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md'
       - 'scripts/hengce_hba_daily_surveillance.py'
       - 'scripts/hengce_hba_context_bridge_v1.py'
+      - 'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
       - 'tests/hba_surveillance/**'
       - '.github/workflows/hengce-hba-daily-surveillance.yml'
   schedule:
