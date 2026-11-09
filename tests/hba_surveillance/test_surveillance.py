@@ -21,6 +21,13 @@ class Surveillance(unittest.TestCase):
  def tearDown(self):self.d.cleanup()
  def test_missing_macro_not_neutral(self):
   r=scan(self.root,'2026-11-09');self.assertEqual(r['external_environment']['label'],'資料不足');self.assertEqual(r['data_gate'],'EOD_VALID_MACRO_UNKNOWN');self.assertGreater(len(r['candidates']),0)
+ def test_all_alert_evidence_kept_even_when_display_limit_zero(self):
+  x=scan(self.root,'2026-11-09',limit=0)
+  self.assertEqual(x['candidates'],[])
+  self.assertGreater(x['total_candidates_before_limit'],0)
+  self.assertEqual(len(x['all_candidates']),x['total_candidates_before_limit'])
+  self.assertTrue(any(c['ticker']=='1101' for c in x['all_candidates']))
+  self.assertTrue(all(c['historical_cycle_stage']=='HISTORICAL_CYCLE_UNVERIFIED' for c in x['all_candidates']))
  def test_bad_hash_not_allowed(self):
   p=self.root/'overseas_premarket/latest.json';p.parent.mkdir(parents=True);p.write_text(json.dumps({'status':'PASS_VERIFIED_VENDOR_EOD','target_tw_date':'2026-11-09','packet_sha256':'bad'}));self.assertEqual(env(self.root,'2026-11-09')['label'],'資料不足')
  def test_stale_eod_blocked(self):
