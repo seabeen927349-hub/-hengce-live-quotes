@@ -26,6 +26,69 @@ class IntegrationTests(unittest.TestCase):
     'data_gate':'EOD_VALID_MACRO_UNKNOWN','candidates':[{'ticker':'2330','stage':'觀察'}],
     'external_environment':{'label':'資料不足','status':'資料不足'}}
  def tearDown(self):self.tmp.cleanup()
+ def test_increment_only_after_original_eod_receipt_and_never_rewrites_cache(self):
+  # 2026-11-09 is the next weekday following the 2026-11-06 frozen mother.
+  day='2026-11-09';folder=self.root/'eod/20261109'
+  folder.mkdir(parents=True)
+  (folder/'status.json').write_text(json.dumps({
+   'formal_complete_day':True,'downstream_ready':True,'mother_status':'COMPLETE',
+   'price_date':day,'institutional_date':day,'margin_date':day,
+   'price_sha256':'p','institutional_sha256':'i','margin_sha256':'m',
+   'price_rows':1,'institutional_rows':1
+  }))
+  (folder/'receipts').mkdir()
+  (folder/'receipts/mother.json').write_text(json.dumps({
+   'target_date':day,'mother_latest_date':day,'status':'PASS',
+   'second_mother':False,'promoted_legs':['price','institutional','margin'],
+   'promoted_leg_sha256':{'price':'p','institutional':'i','margin':'m'}
+  }))
+  with (folder/'price_2.csv').open('w',newline='') as f:
+   w=csv.DictWriter(f,fieldnames=['Date','Ticker']);w.writeheader();w.writerow({'Date':day,'Ticker':'2330'})
+  fields=['Date','Ticker','ForeignBuy','ForeignSell','ForeignDealerBuy','ForeignDealerSell',
+          'TrustBuy','TrustSell','DealerProprietaryBuy','DealerProprietarySell',
+          'DealerHedgeBuy','DealerHedgeSell']
+  with (folder/'institutional_2.csv').open('w',newline='') as f:
+   w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerow({
+     'Date':day,'Ticker':'2330','ForeignBuy':100,'ForeignSell':50,
+     'ForeignDealerBuy':10,'ForeignDealerSell':5,'TrustBuy':20,'TrustSell':15,
+     'DealerProprietaryBuy':30,'DealerProprietarySell':25,
+     'DealerHedgeBuy':40,'DealerHedgeSell':35
+  })
+  baseline=self.summary.read_bytes()
+  from hengce_hba_context_bridge_v1 import fold_verified_original_eod
+  m,stocks=read_lifelong_summary(self.summary,day)
+  self.assertEqual(m['status'],'STALE_RESEARCH_SUMMARY')
+  a,new=fold_verified_original_eod(self.root,day,m,stocks)
+  self.assertEqual(a['status'],'AVAILABLE_RESEARCH_PROXY')
+  self.assertEqual(a['incremental_eod_dates'],[day])
+  self.assertEqual(a['incremental_valid_stock_days'],1)
+  self.assertEqual(new['2330']['gross_buy_shares'],400)
+  self.assertEqual(new['2330']['gross_sell_shares'],310)
+  self.assertEqual(new['2330']['net_shares'],90)
+  self.assertEqual(new['2330']['observed_stock_days'],4)
+  again,new_again=fold_verified_original_eod(self.root,day,m,stocks)
+  self.assertEqual(again['gross_buy_shares'],a['gross_buy_shares'])
+  self.assertEqual(new_again,new)
+  self.assertEqual(self.summary.read_bytes(),baseline)
+  self.original['latest_verified_eod']=day
+  integrated=build(self.root,self.original,self.summary)
+  self.assertEqual(integrated['readiness'],'RESEARCH_READY')
+  self.assertTrue(integrated['candidates'][0]['historical_flow_available'])
+  self.assertEqual(integrated['mother']['incremental_valid_stock_days'],1)
+  receipt=json.loads((folder/'receipts/mother.json').read_text())
+  receipt['promoted_leg_sha256']['institutional']='BAD'
+  (folder/'receipts/mother.json').write_text(json.dumps(receipt))
+  blocked=build(self.root,self.original,self.summary)
+  self.assertEqual(blocked['mother']['status'],'STALE_RESEARCH_SUMMARY')
+  self.assertEqual(blocked['readiness'],'EOD_READY_LONG_TERM_MISSING')
+
+ def test_gap_with_no_canonical_market_day_fails_closed(self):
+  from hengce_hba_context_bridge_v1 import fold_verified_original_eod
+  m,stocks=read_lifelong_summary(self.summary,'2026-11-10')
+  meta,_=fold_verified_original_eod(self.root,'2026-11-10',m,stocks)
+  self.assertEqual(meta['status'],'STALE_RESEARCH_SUMMARY')
+  self.assertIn('2026-11-09',meta['reason'])
+
  def test_cross_day_breadth_and_old_403(self):
   x=build(self.root,self.original,self.summary)
   self.assertEqual(x['readiness'],'RESEARCH_READY')
