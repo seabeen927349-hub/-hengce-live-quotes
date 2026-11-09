@@ -9,6 +9,8 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'scripts/hengce_escape_intraday_monitor_adapter.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
+      - 'scripts/hengce_finmind_intraday_freshness_gate.py'
+      - 'tests/engineering/test_hengce_finmind_intraday_freshness_gate.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   pull_request:
@@ -17,24 +19,29 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'scripts/hengce_escape_intraday_monitor_adapter.py'
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
+      - 'scripts/hengce_finmind_intraday_freshness_gate.py'
+      - 'tests/engineering/test_hengce_finmind_intraday_freshness_gate.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   workflow_dispatch:
   schedule:
-    - cron: "*/5 1-4 * * 1-5"
-    - cron: "0-30/5 5 * * 1-5"
+    # Offset each five-minute slot away from the GitHub Actions top-of-hour backlog.
+    # UTC 01:02–05:32 = Asia/Taipei 09:02–13:32 (weekday only).
+    - cron: "2-57/5 1-4 * * 1-5"
+    - cron: "2-32/5 5 * * 1-5"
 
 permissions:
   contents: write
 
 concurrency:
   group: hengce-escape-twse-common-finmind-${{ github.ref }}
-  cancel-in-progress: true
+  # Never cancel a half-published monitor when the next scheduled tick arrives.
+  cancel-in-progress: false
 
 jobs:
   shadow-context:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 9
     env:
       FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
     steps:
@@ -47,6 +54,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install official FinMind client
+        if: github.event_name != 'pull_request'
         run: python -m pip install --disable-pip-version-check finmind-mcp
       - name: Compile monitor vessel
         run: |
@@ -54,7 +62,11 @@ jobs:
           python -m py_compile scripts/hengce_twse_session_status_probe.py
           python -m py_compile scripts/hengce_escape_finmind_twse_common_shadow.py
           python -m py_compile scripts/hengce_escape_intraday_monitor_adapter.py
+          python -m py_compile scripts/hengce_finmind_intraday_freshness_gate.py
+      - name: FinMind stale, future, hash and authority offline regressions
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_finmind_intraday_freshness_gate.py' -v
       - name: Build non-raw aggregate shadow context
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail
@@ -64,6 +76,7 @@ jobs:
             --context /tmp/hengce-finmind-shadow/context.json \
             --status /tmp/hengce-finmind-shadow/status.json
       - name: Build intraday monitor payload
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail
@@ -72,6 +85,7 @@ jobs:
             --status /tmp/hengce-finmind-shadow/status.json \
             --out /tmp/hengce-finmind-shadow/intraday_monitor.json
       - name: Assert authority and frozen metric boundary
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail
@@ -143,7 +157,17 @@ jobs:
               'payload_sha256': monitor['payload_sha256'],
           }, ensure_ascii=False, sort_keys=True))
           PY
+      - name: Verify FinMind receipt integrity, coverage and current-session freshness
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_finmind_intraday_freshness_gate.py \
+            --context /tmp/hengce-finmind-shadow/context.json \
+            --status /tmp/hengce-finmind-shadow/status.json \
+            --monitor /tmp/hengce-finmind-shadow/intraday_monitor.json
       - name: Upload non-raw aggregate monitor receipt
+        if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: hengce-finmind-twse-common-monitor
@@ -167,12 +191,17 @@ jobs:
             exit 0
           fi
           git commit -m "data(escape): refresh FinMind aggregate intraday monitor"
-          for attempt in 1 2 3; do
-            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
-              exit 0
-            fi
-            git pull --rebase origin "${GITHUB_REF_NAME}"
-            sleep $((attempt * 2))
-          done
-          echo "Unable to publish aggregate intraday monitor state"
-          exit 1
+          # Use the existing governed exact-lease publisher. Never blindly
+          # rebase a snapshot onto a changed source or overwrite a newer run.
+          python scripts/hengce_publish.py \
+            --profile conservative-all \
+            --report-dir "${RUNNER_TEMP}/hengce-finmind-publication"
+
+      - name: Retain FinMind governed publication diagnostics
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-finmind-governed-publication
+          path: ${{ runner.temp }}/hengce-finmind-publication
+          if-no-files-found: ignore
+          retention-days: 7
