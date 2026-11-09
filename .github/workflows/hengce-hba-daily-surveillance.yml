@@ -1,5 +1,13 @@
 name: HENGCE HBA Daily Surveillance Research Sidecar
 on:
+  pull_request:
+    paths:
+      - 'governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.*'
+      - 'governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md'
+      - 'scripts/hengce_hba_daily_surveillance.py'
+      - 'scripts/hengce_hba_context_bridge_v1.py'
+      - 'tests/hba_surveillance/**'
+      - '.github/workflows/hengce-hba-daily-surveillance.yml'
   schedule:
     # Asia/Taipei Mon–Fri 08:38 and 08:53 (retries after governed SOX/VIX producer)
     - cron: '38 0 * * 1-5'
@@ -20,7 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
@@ -28,6 +35,7 @@ jobs:
       - name: Unit tests (fail closed)
         run: python -m unittest discover -s tests/hba_surveillance -p 'test_*.py' -v
       - name: Scan existing governed vessels only
+        if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
           TZ=Asia/Taipei python scripts/hengce_hba_daily_surveillance.py --root . --out research/hba_surveillance/latest.json
@@ -39,6 +47,7 @@ jobs:
           assert d['data_gate'] != 'BLOCKED', 'FAIL_CLOSED: no fresh EOD'
           PY
       - name: Integrate existing market environment and long-term gross flow (read-only)
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail
@@ -72,6 +81,7 @@ jobs:
           print('HBA_INTEGRATED_CONTEXT:',d['readiness'],history)
           PY
       - name: Append immutable daily research receipt and publish latest
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail
@@ -98,7 +108,7 @@ jobs:
           git restore --worktree -- research/hba_surveillance/last_history_path.txt || true
           python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-hba-publication"
       - name: Upload run receipt
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: hengce-hba-daily-surveillance
