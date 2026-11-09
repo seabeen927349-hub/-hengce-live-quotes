@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import json, tempfile
-from datetime import date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from unittest.mock import patch
 import hengce_daily_command_center_core_legacy as core
@@ -39,7 +40,21 @@ def write_mother_receipt(root,status):
     obj={'system':'HENGCE','artifact':'CANONICAL_HIST_MOTHER_PROMOTION_RECEIPT','target_date':ISO,'status':'PASS','promoted_legs':promoted,'promoted_leg_sha256':{x:status[f'{x}_sha256'] for x in promoted},'mother_latest_date':ISO,'mother_sha256':'test-mother-sha','second_mother':False}
     p.write_text(json.dumps(obj),encoding='utf-8')
 
+def test_schedule_slot_midnight_boundaries():
+    tz=ZoneInfo('Asia/Taipei')
+    f=inc.resolve_scheduled_eod_target
+    # 11/06 Fri 23:00 UTC 15:00; 11/07 Sat 04:45 actual scheduled run.
+    assert f(datetime(2026,11,6,23,15,tzinfo=tz)) == date(2026,11,6)
+    assert f(datetime(2026,11,7,4,45,tzinfo=tz)) == date(2026,11,6)
+    assert f(datetime(2026,11,10,3,30,tzinfo=tz)) == date(2026,11,9)
+    for bad in (datetime(2026,11,9,12,10,tzinfo=tz),
+                datetime(2026,11,9,7,10,tzinfo=tz)):
+        try: f(bad)
+        except RuntimeError: pass
+        else: raise AssertionError('ambiguous or weekend target must fail closed')
+
 def main():
+    test_schedule_slot_midnight_boundaries()
     contract=Path(__file__).resolve().parents[1]/'hengce/HENGCE_THREE_LEG_ORIGINAL_VESSEL_INCREMENTAL_POLICY_LOCK_v1_0_20261020.json'
     c=json.loads(contract.read_text(encoding='utf-8')); assert c['policy']['create_parallel_pipeline'] is False and c['policy']['do_not_wait_for_margin_before_promoting_price_or_institutional'] is True
     with tempfile.TemporaryDirectory() as td:
@@ -69,5 +84,5 @@ def main():
         try: run_case(Path(td),price(899))
         except RuntimeError as e: assert 'EOD_INTEGRITY_REJECTION' in str(e) and 'ROWS_TOO_SMALL' in str(e)
         else: raise AssertionError('corrupt row count must be rejected')
-    print(json.dumps({'status':'PASS','price_only':True,'price_plus_institutional':True,'price_plus_margin':True,'all_three':True,'idempotent_rerun':True,'wrong_date_rejected':True,'corrupt_row_count_rejected':True,'original_eod_tree_only':True,'second_mother':False,'mother_gate':True,'q017_e2_model_change':False},ensure_ascii=False))
+    print(json.dumps({'status':'PASS','price_only':True,'price_plus_institutional':True,'price_plus_margin':True,'all_three':True,'idempotent_rerun':True,'wrong_date_rejected':True,'corrupt_row_count_rejected':True,'original_eod_tree_only':True,'second_mother':False,'mother_gate':True,'q017_e2_model_change':False,'schedule_date_midnight_guard':True},ensure_ascii=False))
 if __name__=='__main__': main()
