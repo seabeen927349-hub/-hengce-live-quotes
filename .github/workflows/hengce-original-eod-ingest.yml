@@ -50,6 +50,9 @@ jobs:
       - name: Install original-vessel runtime dependencies
         run: python -m pip install --disable-pip-version-check requests openpyxl 'finmind-mcp[parquet]' numpy pandas pyarrow
 
+      - name: Verify original EOD target-date resolution
+        run: python scripts/test_hengce_eod_original_vessel_incremental.py
+
       - name: Resolve target date
         id: target
         shell: bash
@@ -58,6 +61,9 @@ jobs:
           MANUAL='${{ inputs.date }}'
           if [ -n "$MANUAL" ]; then
             D="$MANUAL"
+          elif [ '${{ github.event_name }}' = 'schedule' ]; then
+            # GitHub may delay the original 23:00 Taipei schedule past midnight.
+            D="$(python scripts/hengce_eod_incremental_ingest.py --mode schedule-date)"
           else
             D="$(TZ=Asia/Taipei date '+%F')"
           fi
