@@ -1,0 +1,74 @@
+{
+  "system": "HENGCE",
+  "artifact": "LONGITUDINAL_CAPITAL_CYCLE_RESEARCH_HARD_GATE",
+  "version": "v1.0.0",
+  "status": "ACTIVE_FAIL_CLOSED_HISTORICAL_PHASE_CLAIMS",
+  "effective_date": "2026-11-09",
+  "normative_document": "governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.md",
+  "scope": [
+    "all_research",
+    "daily_hba",
+    "individual_stock",
+    "whole_market",
+    "environment_interpretation",
+    "cross_stock_rotation",
+    "future_chats"
+  ],
+  "institutional_proxy": "foreign_plus_investment_trust_plus_dealer_proprietary_plus_dealer_hedge_as_hypothetical_aggregate_not_proof_of_common_controller",
+  "research_unit": "observed_multiyear_path_with_data_driven_turning_points_no_forced_fixed_holding_period",
+  "short_window_surveillance": {
+    "permitted": true,
+    "label": "SHORT_WINDOW_SURVEILLANCE_ONLY",
+    "can_assert_historical_sowing_fertilizing_harvesting_or_rotation": false
+  },
+  "gross_turnover_summary": {
+    "permitted_for": "historical_total_buy_sell_description",
+    "sufficient_to_assign_historical_cycle_stage": false
+  },
+  "required_evidence_for_historical_phase_claim": [
+    "multi_year_original_daily_gross_buy_and_sell_by_existing_canonical_sources",
+    "synchronized_price_volume_path_and_trading_value_proxy_limits",
+    "all_relevant_pit_eligible_tdcc_weekly_history_not_only_last_week",
+    "evidence_based_turning_points_and_repeated_buy_sell_cycles",
+    "success_failure_withdrawal_reentry_and_counterevidence_under_equal_standard",
+    "recorded_source_hashes_dates_coverage_missingness_and_first_observed_times",
+    "aligned_multi_stock_paths_when_cross_stock_rotation_is_claimed"
+  ],
+  "prohibited_as_sufficient_evidence": [
+    "single_day_net_flows",
+    "last_one_week_tdcc",
+    "last_five_weeks_tdcc",
+    "last_twelve_weeks_tdcc",
+    "fixed_five_or_ten_day_surveillance_window",
+    "twenty_sixty_one_twenty_day_rolling_window_alone",
+    "start_end_ownership_changes_alone",
+    "gross_turnover_totals_without_sequence",
+    "one_day_price_rally_or_breadth_change",
+    "missing_same_day_institutional_data_used_to_erase_prior_positions"
+  ],
+  "unknown_historical_phase_state": "HISTORICAL_CYCLE_UNVERIFIED",
+  "evidence_standard": "balanced_support_counterevidence_no_100_percent_proof_demand",
+  "invalidated_short_window_phase_claims": {
+    "date": "2026-11-09",
+    "ticker_set": [
+      "2330",
+      "2454",
+      "2317",
+      "2408",
+      "6239",
+      "6446",
+      "3653",
+      "2412"
+    ],
+    "prior_interpretations": "PROVISIONAL_INVALID_AS_HISTORICAL_PHASE_CLAIM",
+    "original_raw_evidence_retained": true
+  },
+  "governance": {
+    "can_modify_existing_hba_short_window_observer_formula": false,
+    "changes_original_canonical_vessels": false,
+    "grants_s5_or_escape_model_authority": false,
+    "grants_selection_or_trade_authority": false,
+    "literature_first_constitution_still_required": true,
+    "weakening_requires_explicit_user_authorization": true
+  }
+}
