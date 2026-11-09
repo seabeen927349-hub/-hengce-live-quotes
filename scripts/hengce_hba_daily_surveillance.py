@@ -109,7 +109,11 @@ def scan(root, target, limit=15):
       'source_coverage':{'available_eod_days':len(days),'available_tdcc_snapshots':len({r['date'] for v in holding.values() for r in v})},
       'external_environment':macro,'long_term_capital_environment':{'label':'資料不足','reason':'尚無正式20/60/120日資金環境核准憑證；個股法人淨額不可代替跨境資金流'},
       'data_gate':'BLOCKED','candidates':[],'stage_counts':{},'exclusions':[],'explanations':[],
-      'not_an_order':True,'no_formula_profit_claim':True,'rules_fixed_ex_ante_for_forward_surveillance':True}
+      'not_an_order':True,'no_formula_profit_claim':True,'rules_fixed_ex_ante_for_forward_surveillance':True,
+      'capital_cycle_claim_gate':{'status':'HISTORICAL_CYCLE_UNVERIFIED',
+        'stage_scope':'SHORT_WINDOW_SURVEILLANCE_ONLY','historical_phase_claim_authorized':False,
+        'governance':'governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.json',
+        'reason':'5日法人／相鄰兩週TDCC警報不是多年播種、收割、撤退或跨股輪動階段；需全部歷史路徑驗證'}}
     if not days:
         report['exclusions'].append('缺少可核對的正式三腿 EOD');return report
     if (dt.date.fromisoformat(target)-dt.date.fromisoformat(latest)).days>5:
@@ -165,7 +169,11 @@ def scan(root, target, limit=15):
         decision_readiness=('CROSS_ENVIRONMENT_REVIEW_PENDING' if macro_alignment in ('UNKNOWN_HOLD','HEADWIND') else
                             'MANUAL_CATALYST_AND_EXECUTION_REVIEW' if confirmed and stage!='撤退警戒' else
                             'WATCH_ONLY')
-        candidates.append({'ticker':t,'name':a['name'],'stage':stage,'evidence_domains':sorted(domains),
+        candidates.append({'ticker':t,'name':a['name'],'stage':stage,
+          'stage_scope':'SHORT_WINDOW_SURVEILLANCE_ONLY',
+          'historical_cycle_stage':'HISTORICAL_CYCLE_UNVERIFIED',
+          'historical_phase_claim_authorized':False,
+          'evidence_domains':sorted(domains),
           'positive_evidence':signs,'counter_evidence':counter,'macro_alignment':macro_alignment,'decision_readiness':decision_readiness,'eod_date':latest,
           'ownership_snapshot':td[-1]['date'] if td else None,'institution_5d_net_volume_pct':round(f5*100,2),
           'institution_10d_net_volume_pct':round(f10*100,2),'tdcc_big400_delta_pp':delta,
@@ -185,7 +193,8 @@ def scan(root, target, limit=15):
     report['candidates']=[c for c in candidates if c['stage']!='撤退警戒'][:limit]
     report['exit_alerts']=[c for c in candidates if c['stage']=='撤退警戒'][:10]
     report['stage_counts']={stage:sum(c['stage']==stage for c in candidates) for stage in priority}
-    report['explanations']=['觀察分層不是勝率/預測機率，沒有交易授權；只供研究偵查與人工覆核',
+    report['explanations']=['5日法人與相鄰兩週TDCC只屬短期偵查，不得命名為多年播種／施肥／收割；歷史階段未經完整路徑稽核',
+       '觀察分層不是勝率/預測機率，沒有交易授權；只供研究偵查與人工覆核',
        'TDCC持股級距不等於法人身分；公開法人買賣超是淨額，不能辨識特定資金意圖',
        '單日收盤確認只意味觀察訊號成立，不保證次日可以合理價格成交',
        '外部封包缺失不會填入中性，也不會以舊數據冒充當日']
@@ -196,6 +205,7 @@ def markdown(report):
       f"- 最近正式EOD：{a['latest_verified_eod'] or '資料不足'}；資料門檻：{a['data_gate']}",
       f"- 海外 SOX/VIX：**{macro['label']}**；封包日期：{macro.get('packet_date') or '無'}；{macro.get('reason','已核對正式來源')}",
       '- 長期資金環境：**資料不足**（尚缺獨立正式20/60/120日憑證；不以每日淨買超代替）',
+      '- **歷史播種／施肥／收割階段：未判定（HISTORICAL_CYCLE_UNVERIFIED）**；短期5日／兩週警報只供偵查，不能升格為多年階段。',
       f"- 當日市場廣度代理：{a.get('market_breadth_proxy',{}).get('advancing_share','未知')}（收盤後描述性訊號）",'',
       '## 偵查統計',f"候選股票 {a.get('total_candidates_before_limit',0)} 檔；"+'；'.join(f'{k} {v}' for k,v in a['stage_counts'].items()),'',
       '## 新增／升級',f"新增或升級 {len(a.get('new_or_escalated',[]))} 檔（首次建立基線時均屬新增）",'', '## 需要優先人工覆核的股票','']
