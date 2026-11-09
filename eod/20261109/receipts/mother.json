@@ -1,0 +1,41 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE_RECEIPT",
+  "target_date": "2026-11-09",
+  "status": "PASS",
+  "second_mother": false,
+  "promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "pending_legs": [],
+  "promoted_leg_sha256": {
+    "institutional": "de450decbca14946bd58dcca38ed31fb126fd176b6c3cfaeb3b20eed3695ae6f",
+    "margin": "09b8d5c11953a74dcb560740d1813a6aa79a195bebfa971879b247495311605f",
+    "price": "5ce94b1eaa7a8ad647922d141f271aac41b6387bd36de3496ceda1c8a3350fcf"
+  },
+  "canonical_leg_sha256": {
+    "price": "00c86895304f0b9394d64c4f297251ef1d4371c17fbf348c144bc8a0a08c3edf",
+    "institutional": "39a6751d48209e013643152b1078bada55e989d6e6507da2f2267b221375bbda",
+    "margin": "3fe4450575518268d8bdf65939ef3539d58734fee52e838d029f7381f10f8676"
+  },
+  "mother_latest_date": "2026-11-09",
+  "mother_rows": 1030992,
+  "mother_sha256": "0a8f783f2403880e5bdd7ea4dc4b25bf3ea26b2480f720f6affc730d9a36cd80",
+  "canonical_mother_path": "/HENGCE_CANONICAL/HENGCE_2026_HIST_MOTHER.csv",
+  "rule": "PRICE_ROW_UNIVERSE_LEFT_JOIN_MARGIN_AND_INSTITUTIONAL_MISSING_EVIDENCE_NULL",
+  "missing_evidence_is_null": true,
+  "formal_daily_close_ready": true,
+  "three_leg_complete": true,
+  "integrity_result": "/HENGCE_CANONICAL/HENGCE_CANONICAL_INTEGRITY_RESULT_20261109.json",
+  "integrity_status": "PASS",
+  "model_or_schema_mutated": false,
+  "updated_at_taipei": "2026-11-09T23:33:12+08:00",
+  "source_eod_path": "eod/20261109",
+  "source_workflow_run_id": 42636458164,
+  "source_workflow_commit": "551f588621463ce9ab5d18c545c9b3523966bf44",
+  "target_price_rows": 1091,
+  "target_institutional_rows": 1084,
+  "target_margin_rows": 1062
+}
