@@ -1,0 +1,32 @@
+{
+  "schema": "HENGCE_LIFELONG_GROSS_SUMMARY_AUDIT_V2",
+  "source_filename": "HENGCE_FULL_MARKET_MOTHER_RESEARCH_2018_2026.csv.gz",
+  "source_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+  "output_csv": "research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv",
+  "output_sha256": "63a499d67295d4c18d982ed2d6eb6961642eccdd1b694c7bde69ee03737bd84c",
+  "asof": "2026-11-06",
+  "first_trade_date": "2018-01-02",
+  "source_stock_days": 2111682,
+  "valid_gross_stock_days": 2014311,
+  "missing_any_gross_field_days": 97371,
+  "distinct_tickers": 1147,
+  "gross_buy_shares": 2650983145689,
+  "gross_sell_shares": 2657087225996,
+  "net_shares": -6104080307,
+  "source_fields_gross_buy": [
+    "ForeignBuy",
+    "TrustBuy",
+    "DealerProprietaryBuy",
+    "DealerHedgeBuy"
+  ],
+  "source_fields_gross_sell": [
+    "ForeignSell",
+    "TrustSell",
+    "DealerProprietarySell",
+    "DealerHedgeSell"
+  ],
+  "quality_policy": "Keep all days with eight gross institutional legs present; do not apply price, trading-volume, fixed-window or ex-post outcome filters. Record missing rows, never impute 0.",
+  "net_flow_reconciliation": "ALL_2014311_VALID_STOCK_DAYS_EXACT_MATCH_TO_MOTHER_TOTALNET",
+  "old_summary_excluded_valid_gross_stock_days": 267,
+  "role": "RESEARCH_GROSS_FLOW_PROXY_ONLY_NO_REALIZED_PROFIT_OR_TRADING_AUTHORITY"
+}
