@@ -2,6 +2,8 @@
 
 **目的**：不是找必中公式，而是每天從既有正式原始血管辨識「疑似症狀 → 準備監控 → 行情確認（人工覆核）」與「撤退警戒」。個股不預設機構是同一帳戶；法人彙總僅作研究對手盤代理，TDCC 大額持股級距亦不能宣稱是真外資。
 
+> **長期播種／施肥／收割的強制研究邊界（2026-11-09）**：本頁所列5日法人訊號、相鄰兩週TDCC與短期價量門檻，只能產生 \`SHORT_WINDOW_SURVEILLANCE_ONLY\` 的人工偵查提示。**不得直接命名或確認多年播種、施肥、分批收割、撤回、重試或跨股輪動。** 歷史階段必須另行使用多年逐日原始 gross 買／賣、完整價格路徑及全部當時可取得的集保週序列，依真實轉折事件判斷並保留失敗與反證。僅有多年買賣「總和」也不足以判斷階段。缺完整路徑稽核則設為 \`HISTORICAL_CYCLE_UNVERIFIED\`；原短期提示仍保留。詳細強制規則：[\`governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.md\`](../../governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.md)。
+
 ## 輸入與資料治理
 
 - 台股 `eod/YYYYMMDD/{price,institutional,margin}_*.csv`，只接受 status.json `formal_complete_day=true`、三腿同日與 `downstream_ready=true` 的觀測。
