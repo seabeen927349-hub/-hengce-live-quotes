@@ -19,7 +19,12 @@ name: HENGCE Governed SOX VIX Premarket EOD
           - probe
           - run
   schedule:
-    # Reuse the successful Q017 early-morning timing pattern (UTC Sun-Thu => Mon-Fri Taipei).
+    # Use this original source workflow only. Early retries mitigate observed
+    # 3h+ GitHub schedule latency; never waive the actual preopen/PIT guard.
+    # If promptly executed before the latest US EOD is published, fail closed.
+    - cron: '10 21 * * 0-4'  # Taipei 05:10 (earlier scheduled retry)
+    - cron: '25 21 * * 0-4'  # Taipei 05:25 (earlier scheduled retry)
+    - cron: '35 21 * * 0-4'  # Taipei 05:35 (earlier scheduled retry)
     - cron: '45 21 * * 0-4'  # Taipei 05:45
     - cron: '15 22 * * 0-4'  # Taipei 06:15
     - cron: '15 23 * * 0-4'  # Taipei 07:15
