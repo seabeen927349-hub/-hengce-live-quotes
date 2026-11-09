@@ -106,7 +106,13 @@ def build(root, original, summary=None):
     day=original.get('latest_verified_eod')
     output={'schema':SCHEMA,'target_tw_date':target,'observed_eod_date':day,
       'authority':{'formal_escape':False,'new_selection':False,'trade':False,'capital':False},
-      'readiness':'BLOCKED','market_environment':{},'mother':{},'candidates':[]}
+      'readiness':'BLOCKED','market_environment':{},'mother':{},'candidates':[],
+      'capital_cycle_claim_gate':{'status':'HISTORICAL_CYCLE_UNVERIFIED',
+        'historical_phase_claim_authorized':False,
+        'short_window_alerts_are_historical_phases':False,
+        'gross_total_summary_is_longitudinal_event_path':False,
+        'governance':'governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.json',
+        'reason':'累計gross總和與最近5日/兩週警報均不足以判定多年播種、施肥或收割'}}
     if not isinstance(day,str) or not isinstance(target,str) or not day or day>target:
         output['reason']='原HBA無可核對的歷史EOD時間；不得使用未來資料';return output
     e=market_context(root,day)
@@ -149,6 +155,9 @@ def build(root, original, summary=None):
     for item in (original.get('candidates') or [])+(original.get('exit_alerts') or []):
         ticker=str(item.get('ticker'))
         output['candidates'].append({'ticker':ticker,'original_stage':item.get('stage'),
+           'original_stage_scope':'SHORT_WINDOW_SURVEILLANCE_ONLY',
+           'historical_cycle_stage':'HISTORICAL_CYCLE_UNVERIFIED',
+           'historical_phase_claim_authorized':False,
            'historical_flow':stocks.get(ticker),
            'historical_flow_available':ticker in stocks,
            'original_decision_readiness':item.get('decision_readiness')})
@@ -169,7 +178,8 @@ def markdown(x):
      f"- 全上市監控（FinMind）：{x['market_environment'].get('full_market_intraday_monitor',{}).get('status')}（盤中影子，非正式EOD）",
      f"- Fugle全市場批次（非主要監控）：{x['market_environment'].get('fugle_whole_market_batch',{}).get('status')}",
      '- S5及Escape正式級別：缺來源憑證時保持「資料不足」，不自行新增評級',
-     f"- 多年資金紀錄：{mother.get('status','資料不足')}",'']
+     f"- 多年資金紀錄：{mother.get('status','資料不足')}",
+     '- **多年播種／施肥／收割：歷史階段未判定**。累計買賣總和與短期偵查警示不能代替完整逐日資金＋集保時序稽核。','']
     if mother.get('status')=='AVAILABLE_RESEARCH_PROXY':
         lines.extend([f"- 期間 {mother['first_date']} 至 {mother['asof']}：{mother['distinct_tickers']:,}檔，完整買進 {mother['gross_buy_shares']:,}股，完整賣出 {mother['gross_sell_shares']:,}股",
           f"- 期末累計淨差占總買賣量小於1%：{mother['net_below_one_percent_count']:,}檔（描述性，不是買進門檻）"])
