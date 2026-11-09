@@ -1,0 +1,90 @@
+{
+  "asof_taipei": "2026-11-09T09:58:31.394132+08:00",
+  "escape_formal_state": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
+  "finmind": {
+    "context_digest": "9a4b5b15c2f08eb3e9957e84dc632859381d0d8d3cb9b2ba09b425c04f15f445",
+    "current_session_coverage": 0.98805147,
+    "data_role": "CURRENT_INTRADAY_OBSERVATION",
+    "existing_transport": "taiwan_stock_tick_snapshot",
+    "generated_at_taipei": "2026-11-09T09:57:55.853871+08:00",
+    "latest_source_taipei": "2026-11-09T09:57:49.431187+08:00",
+    "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+    "monitor_digest": "85e5b21d5505da8e1fc00754c0f1b16e0edd18b68b4b405cf9273c69346ee383",
+    "observed_count": 1075,
+    "required_count": 1088,
+    "source_market_date": "2026-11-09",
+    "status_digest": "fd0d844b16383bd1c3936b6e41e2ca912ee3a7525c8af25c4d6463212893657e",
+    "unknown_count": 13
+  },
+  "governance": {
+    "canonical_eod_replaced": false,
+    "equity_flow_is_net_remittance": false,
+    "formal_buy_sell_created": false,
+    "formal_state_mutated": false,
+    "new_finmind_fetch": false,
+    "new_market_universe": false,
+    "raw_vendor_rows_persisted": false,
+    "trading_authority": "NONE"
+  },
+  "macro_regime": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
+  "observed_breadth": {
+    "advancer_share_directional": 0.86164122,
+    "advancers": 903,
+    "decliners": 145,
+    "equal_weight_change_rate_vendor_units": 3.3260093,
+    "interpretation": "Historical session observations, NOT future fund flows or formal Escape metrics.",
+    "unchanged": 27,
+    "vendor_turnover_units": 373515792750.0
+  },
+  "premarket_forecast": {
+    "expected_gap_log_pct": null,
+    "grade": null,
+    "status": "NO_VERIFIED_OVERSEAS_PACKET"
+  },
+  "schema": "HENGCE_FINMIND_PREMARKET_BRIDGE_V1",
+  "status": "PASS_READ_ONLY_CONTEXT",
+  "target_tw_date": "2026-11-09",
+  "two_time_scale_display": {
+    "decision_policy": {
+      "formal_escape_effect": "NONE",
+      "formal_selection_effect": "NONE",
+      "independent_axes": true,
+      "missing_input_is_neutral": false,
+      "no_composite_bullish_score": true,
+      "one_day_overseas_rebound_may_not_reset_capital_withdrawal": true,
+      "one_day_taiwan_decline_may_not_create_capital_withdrawal": true,
+      "trading_authority": "NONE"
+    },
+    "long_term_capital_environment": {
+      "allowed_labels": [
+        "持續累積",
+        "資金輪動",
+        "資金撤退",
+        "恢復中",
+        "資料不足"
+      ],
+      "label": "資料不足",
+      "meaning": "依已驗證的中長期資金證據判斷；不可用 FinMind 即時漲跌代替",
+      "source_scope": "CANONICAL_20_60_120D_FLOWS",
+      "status": "NO_GOVERNED_CANONICAL_CAPITAL_RECEIPT",
+      "title": "長期資金環境"
+    },
+    "schema": "HENGCE_TWO_TIME_SCALE_ENVIRONMENT_DISPLAY_V1",
+    "target_tw_date": "2026-11-09",
+    "today_market_environment": {
+      "allowed_labels": [
+        "強烈偏多",
+        "偏多",
+        "中性",
+        "偏空",
+        "強烈偏空"
+      ],
+      "grade": null,
+      "label": "資料不足",
+      "meaning": "僅反映隔夜海外市場對台股開盤的預報，不代表中長期資金轉向",
+      "source_scope": "SOX_VIX_PREMARKET",
+      "status": "UNVERIFIED",
+      "title": "今日市場環境"
+    }
+  }
+}
