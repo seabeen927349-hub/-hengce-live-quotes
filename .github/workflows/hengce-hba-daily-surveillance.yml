@@ -1,5 +1,14 @@
 name: HENGCE HBA Daily Surveillance Research Sidecar
 on:
+  # Run the SAME existing HBA research workflow when its code is merged to main.
+  # Generated reports do not match these paths and cannot trigger a write loop.
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_hba_daily_surveillance.py'
+      - 'scripts/hengce_hba_context_bridge_v1.py'
+      - 'tests/hba_surveillance/**'
+      - '.github/workflows/hengce-hba-daily-surveillance.yml'
   pull_request:
     paths:
       - 'governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.*'

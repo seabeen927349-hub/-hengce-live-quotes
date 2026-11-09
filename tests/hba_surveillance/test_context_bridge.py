@@ -36,6 +36,15 @@ class IntegrationTests(unittest.TestCase):
   self.assertEqual(x['market_environment']['full_market_intraday_monitor']['status'],'OBSERVED_SAME_SESSION_SHADOW')
   self.assertEqual(x['market_environment']['full_market_intraday_monitor']['valid_metric_count'],1085)
   self.assertFalse(x['authority']['trade'])
+ def test_integrated_bridge_uses_full_hba_evidence_not_top15_only(self):
+  self.original['total_candidates_before_limit']=2
+  self.original['all_candidates']=[{'ticker':'2330','stage':'觀察'}, {'ticker':'6782','stage':'準備監控'}]
+  x=build(self.root,self.original,self.summary)
+  self.assertEqual([c['ticker'] for c in x['candidates']],['2330','6782'])
+  self.assertEqual(x['candidate_coverage']['source'],'ORIGINAL_HBA_FULL_REGISTRY')
+  self.assertFalse(x['candidate_coverage']['truncated'])
+  self.assertFalse(x['candidates'][1]['historical_flow_available'])
+  self.assertFalse(x['authority']['new_selection'])
  def test_monitor_mismatched_day_does_not_become_current(self):
   x=json.loads((self.root/'escape_live/intraday_monitor.json').read_text());x['market_date']='2026-11-05';(self.root/'escape_live/intraday_monitor.json').write_text(json.dumps(x))
   y=build(self.root,self.original,self.summary)

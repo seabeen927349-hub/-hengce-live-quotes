@@ -28,7 +28,7 @@
 
 資料完整時產生 `latest.json` 和 `latest.md`，History 由獨立 sidecar GitHub Action 上傳 immutable 檔。每個平日台北時間 08:38、08:53 與 23:05 重跑，依最新已完成 EOD 與已發布海外資料更新；週末不假裝有新 EOD。
 
-前 15 檔只展示仍需偵查的候選；撤退警戒獨立展示最多 10 檔。當海外環境缺失或逆風時，decision_readiness 必須保留交叉審核，不得視為已取得交易許可。
+前 15 檔只作精簡文字展示；`latest.json` 的 `all_candidates` 保留原 HBA 所有通過既有短期偵查條件的逐股證據與反證（含撤退警戒），`integrated_latest.json` 也讀取此完整候選名單；`candidate_registry` 保留全部候選索引。沒有通過短期偵查條件的多年研究對象，仍須另以原有歷史母庫研究，不能因未入短期 HBA 就宣稱不存在。撤退警戒在文字摘要獨立展示最多 10 檔。當海外環境缺失或逆風時，decision_readiness 必須保留交叉審核，不得視為已取得交易許可。
 
 新 sidecar 不更動 N2、Selection Core、Market State / Q017、Escape、Canonical 原母體或交易權限。GitHub Actions 延遲與外部來源異常時，輸出時間可能晚於 09:00，不能保證即時。
 
