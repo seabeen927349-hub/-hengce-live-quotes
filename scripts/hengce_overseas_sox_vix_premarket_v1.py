@@ -120,6 +120,11 @@ def build(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
     us_v=max(d for d in vix if d<target) if any(d<target for d in vix) else None
     require(us_s is not None and us_v is not None and us_s==us_v,"LATEST_US_SOURCE_SESSION_MISMATCH")
     latest=us_s
+    # For a normal Taipei weekday, only the preceding US weekday is the
+    # expected latest EOD. On US holidays this intentionally fails closed
+    # without an independently verified US-market holiday calendar.
+    expected = target-dt.timedelta(days=3 if target.weekday()==0 else 1)
+    require(latest>=expected,"LATEST_EXPECTED_US_EOD_NOT_VERIFIED")
     require(latest.weekday()<5 and (target-latest).days<=4,"STALE_OR_NONTRADING_US_SESSION")
     common=sorted(d for d in set(sox)&set(vix) if d<=latest)
     require(len(common)>=2 and common[-1]==latest,"NO_TWO_ALIGNED_US_EOD_SESSIONS")
