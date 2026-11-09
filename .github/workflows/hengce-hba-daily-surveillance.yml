@@ -26,6 +26,10 @@ on:
     # Asia/Taipei Mon–Fri 23:35 and 23:55, after usual governed EOD completion
     - cron: '35 15 * * 1-5'
     - cron: '55 15 * * 1-5'
+  workflow_run:
+    # Reuse the SAME original EOD producer's successful completion; do not start a new collector.
+    workflows: ['HENGCE original EOD ingest']
+    types: [completed]
   workflow_dispatch:
 permissions:
   contents: write
@@ -34,6 +38,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   scan:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
