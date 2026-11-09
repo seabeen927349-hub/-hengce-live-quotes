@@ -152,7 +152,20 @@ def build(root, original, summary=None):
             'role':'INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY'}}
     m,stocks=read_lifelong_summary(summary,day)
     output['mother']=m
-    for item in (original.get('candidates') or [])+(original.get('exit_alerts') or []):
+    # Consume the existing HBA full evidence list, not its top-15 display subset.
+    full=original.get('all_candidates')
+    has_full=isinstance(full,list)
+    observed=full if has_full else (original.get('candidates') or [])+(original.get('exit_alerts') or [])
+    observed=[row for row in observed if isinstance(row,dict)]
+    total=original.get('total_candidates_before_limit')
+    output['candidate_coverage']={
+        'source':'ORIGINAL_HBA_FULL_REGISTRY' if has_full else 'LEGACY_HBA_DISPLAY_SUBSET',
+        'original_total':total if isinstance(total,int) else None,
+        'represented':len(observed),
+        'truncated':bool(isinstance(total,int) and len(observed)<total),
+        'authority':'SHORT_WINDOW_SURVEILLANCE_ONLY_NO_SELECTION_OR_TRADING',
+    }
+    for item in observed:
         ticker=str(item.get('ticker'))
         output['candidates'].append({'ticker':ticker,'original_stage':item.get('stage'),
            'original_stage_scope':'SHORT_WINDOW_SURVEILLANCE_ONLY',
