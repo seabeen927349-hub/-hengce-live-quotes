@@ -1,0 +1,268 @@
+{
+  "status": "RESEARCH_DESCRIPTIVE_NOT_CAUSAL",
+  "N": 553,
+  "quintile_pretrend": [
+    {
+      "group": 1,
+      "n": 110,
+      "median_forward_ret": -16.878,
+      "median_pre_1007_1028": -9.308,
+      "median_pre_1022_1028": 2.92,
+      "prior_positive_pct": 17.3
+    },
+    {
+      "group": 2,
+      "n": 111,
+      "median_forward_ret": -11.84,
+      "median_pre_1007_1028": -4.404,
+      "median_pre_1022_1028": 2.159,
+      "prior_positive_pct": 29.7
+    },
+    {
+      "group": 3,
+      "n": 110,
+      "median_forward_ret": -8.589,
+      "median_pre_1007_1028": -3.533,
+      "median_pre_1022_1028": 1.25,
+      "prior_positive_pct": 29.1
+    },
+    {
+      "group": 4,
+      "n": 111,
+      "median_forward_ret": -4.96,
+      "median_pre_1007_1028": 0,
+      "median_pre_1022_1028": 0.21,
+      "prior_positive_pct": 49.5
+    },
+    {
+      "group": 5,
+      "n": 111,
+      "median_forward_ret": -0.739,
+      "median_pre_1007_1028": 1.154,
+      "median_pre_1022_1028": 0,
+      "prior_positive_pct": 63.1
+    }
+  ],
+  "corr_prior_1007_1028": 0.41867160532797254,
+  "corr_prior_1022_1028": -0.16424902961075766,
+  "bottom_examples": [
+    {
+      "ticker": "3406",
+      "name": "玉晶光",
+      "ret": -29.398,
+      "prior": 22.581,
+      "prior_week": 14.655,
+      "margin_pct": -11.222,
+      "inst_pct": 3.928
+    },
+    {
+      "ticker": "2360",
+      "name": "致茂",
+      "ret": -27.764,
+      "prior": -15.208,
+      "prior_week": 2.778,
+      "margin_pct": -7.615,
+      "inst_pct": 0.689
+    },
+    {
+      "ticker": "7750",
+      "name": "新代",
+      "ret": -25.686,
+      "prior": 0.501,
+      "prior_week": 10.773,
+      "margin_pct": -7.648,
+      "inst_pct": -0.208
+    },
+    {
+      "ticker": "2455",
+      "name": "全新",
+      "ret": -25,
+      "prior": -8.408,
+      "prior_week": 9.636,
+      "margin_pct": -8.613,
+      "inst_pct": -2.52
+    },
+    {
+      "ticker": "3532",
+      "name": "台勝科",
+      "ret": -23.687,
+      "prior": -20.175,
+      "prior_week": 0.862,
+      "margin_pct": -31.445,
+      "inst_pct": 14.022
+    },
+    {
+      "ticker": "4919",
+      "name": "新唐",
+      "ret": -23.592,
+      "prior": -10.972,
+      "prior_week": 5.576,
+      "margin_pct": -16.243,
+      "inst_pct": -7.17
+    },
+    {
+      "ticker": "6209",
+      "name": "今國光",
+      "ret": -23.366,
+      "prior": 11.111,
+      "prior_week": 2.02,
+      "margin_pct": -23.921,
+      "inst_pct": -3.56
+    },
+    {
+      "ticker": "6278",
+      "name": "台表科",
+      "ret": -23.292,
+      "prior": 13.972,
+      "prior_week": -1.721,
+      "margin_pct": -12.922,
+      "inst_pct": -1.408
+    },
+    {
+      "ticker": "2316",
+      "name": "楠梓電",
+      "ret": -22.772,
+      "prior": -15.363,
+      "prior_week": 1,
+      "margin_pct": -17.43,
+      "inst_pct": -10.899
+    },
+    {
+      "ticker": "4764",
+      "name": "雙鍵",
+      "ret": -22.05,
+      "prior": -22.034,
+      "prior_week": 0,
+      "margin_pct": -21.912,
+      "inst_pct": 20.587
+    },
+    {
+      "ticker": "3026",
+      "name": "禾伸堂",
+      "ret": -21.971,
+      "prior": -10.489,
+      "prior_week": -0.661,
+      "margin_pct": -12.778,
+      "inst_pct": 8.364
+    },
+    {
+      "ticker": "3376",
+      "name": "新日興",
+      "ret": -21.944,
+      "prior": -5.621,
+      "prior_week": -7.536,
+      "margin_pct": -13.927,
+      "inst_pct": 19.304
+    }
+  ],
+  "top_examples": [
+    {
+      "ticker": "4526",
+      "name": "東台",
+      "ret": 21.45,
+      "prior": 48.43,
+      "prior_week": 20.95,
+      "margin_pct": -2.308,
+      "inst_pct": 4.108
+    },
+    {
+      "ticker": "2465",
+      "name": "麗臺",
+      "ret": 21.359,
+      "prior": 15.73,
+      "prior_week": 7.069,
+      "margin_pct": 1.04,
+      "inst_pct": -0.975
+    },
+    {
+      "ticker": "3321",
+      "name": "同泰",
+      "ret": 13.846,
+      "prior": 10.482,
+      "prior_week": 20.743,
+      "margin_pct": null,
+      "inst_pct": 5.045
+    },
+    {
+      "ticker": "1786",
+      "name": "科妍",
+      "ret": 13.469,
+      "prior": -5.066,
+      "prior_week": -0.882,
+      "margin_pct": -0.152,
+      "inst_pct": -7.642
+    },
+    {
+      "ticker": "2033",
+      "name": "佳大",
+      "ret": 12.555,
+      "prior": 28.759,
+      "prior_week": 0.884,
+      "margin_pct": -5.999,
+      "inst_pct": 1.681
+    },
+    {
+      "ticker": "1201",
+      "name": "味全",
+      "ret": 11.538,
+      "prior": 2.183,
+      "prior_week": 2.183,
+      "margin_pct": 68.083,
+      "inst_pct": -7.4
+    },
+    {
+      "ticker": "2468",
+      "name": "華經",
+      "ret": 10.345,
+      "prior": 31.661,
+      "prior_week": 0.182,
+      "margin_pct": -9.633,
+      "inst_pct": 0.71
+    },
+    {
+      "ticker": "4562",
+      "name": "穎漢",
+      "ret": 10.277,
+      "prior": 1.49,
+      "prior_week": 3.723,
+      "margin_pct": 13.505,
+      "inst_pct": 5.789
+    },
+    {
+      "ticker": "2254",
+      "name": "巨鎧精密-創",
+      "ret": 7.608,
+      "prior": 9.3,
+      "prior_week": 2.043,
+      "margin_pct": -8.511,
+      "inst_pct": -0.154
+    },
+    {
+      "ticker": "1232",
+      "name": "大統益",
+      "ret": 6.051,
+      "prior": 1.948,
+      "prior_week": 1.948,
+      "margin_pct": -0.901,
+      "inst_pct": 37.313
+    },
+    {
+      "ticker": "1416",
+      "name": "廣豐",
+      "ret": 5.204,
+      "prior": 13.502,
+      "prior_week": 1.509,
+      "margin_pct": 10.256,
+      "inst_pct": -2.732
+    },
+    {
+      "ticker": "2466",
+      "name": "冠西電",
+      "ret": 4.754,
+      "prior": 74.792,
+      "prior_week": 20.881,
+      "margin_pct": -2.758,
+      "inst_pct": 0.332
+    }
+  ]
+}
