@@ -10,6 +10,7 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
       - 'scripts/hengce_finmind_intraday_freshness_gate.py'
+      - 'scripts/hengce_finmind_trigger_gate.py'
       - 'tests/engineering/test_hengce_finmind_intraday_freshness_gate.py'
       - 'tests/engineering/test_hengce_finmind_schedule_recovery.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
@@ -21,7 +22,9 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'scripts/hengce_finmind_twse_common_snapshot_probe.py'
       - 'scripts/hengce_twse_session_status_probe.py'
       - 'scripts/hengce_finmind_intraday_freshness_gate.py'
+      - 'scripts/hengce_finmind_trigger_gate.py'
       - 'tests/engineering/test_hengce_finmind_intraday_freshness_gate.py'
+      - 'tests/engineering/test_hengce_finmind_schedule_recovery.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
   workflow_dispatch:
@@ -53,40 +56,12 @@ jobs:
     outputs:
       allowed: ${{ steps.guard.outputs.allowed }}
     steps:
+      - uses: actions/checkout@v4
       - name: Validate workflow_run origin and TWSE session timing
         id: guard
         shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import json,os
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          now=datetime.now(ZoneInfo('Asia/Taipei'))
-          event=os.environ['GITHUB_EVENT_NAME']
-          reason='DIRECT_OR_PR'
-          allowed=True
-          if event in ('workflow_run','schedule'):
-              minutes=now.hour*60+now.minute
-              allowed=now.weekday()<5 and 9*60<=minutes<=13*60+40
-              reason='TWSE_SESSION_WINDOW' if allowed else 'OUTSIDE_TWSE_SESSION'
-          if event=='workflow_run':
-              try:
-                  payload=json.load(open(os.environ['GITHUB_EVENT_PATH'],encoding='utf-8'))
-                  upstream=payload.get('workflow_run') or {}
-                  approved=(upstream.get('conclusion')=='success'
-                    and upstream.get('head_branch')=='main'
-                    and (upstream.get('head_repository') or {}).get('full_name')==os.environ['GITHUB_REPOSITORY']
-                    and upstream.get('event') in ('schedule','workflow_dispatch'))
-                  allowed=allowed and approved
-                  if not approved:reason='UNVERIFIED_UPSTREAM_OR_NOT_SCHEDULED'
-              except (OSError,ValueError,TypeError):
-                  allowed=False;reason='INVALID_UPSTREAM_PAYLOAD'
-          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
-              f.write('allowed='+str(allowed).lower()+'\n')
-          print(json.dumps({'event':event,'taipei_now':now.isoformat(),
-              'allowed':allowed,'reason':reason,'role':'SAME_FINMIND_VESSEL_ONLY'},ensure_ascii=False))
-          PY
+        run: python scripts/hengce_finmind_trigger_gate.py
+
   shadow-context:
     needs: trigger-gate
     if: needs.trigger-gate.outputs.allowed == 'true'
