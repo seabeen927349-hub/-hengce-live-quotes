@@ -1,0 +1,93 @@
+{
+  "artifact": "EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST",
+  "available_legs": [
+    "price",
+    "institutional"
+  ],
+  "broker_hhi_blocks_core_three_leg_or_mother": false,
+  "broker_hhi_capital_authority_created": false,
+  "broker_hhi_date": "2026-11-10",
+  "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
+  "broker_hhi_model_authority_created": false,
+  "broker_hhi_receipt": "receipts/broker_hhi.json",
+  "broker_hhi_rows": 2331,
+  "broker_hhi_sha256": "6c8806b9a0f06132738d913caa648332df55ec69713f50626e344b9a091bbca3",
+  "broker_hhi_source_revision_class": "FORWARD_COLLECTED_VENDOR_SNAPSHOT",
+  "broker_hhi_status": "COMPLETE",
+  "broker_hhi_trading_authority_created": false,
+  "broker_order_execution": false,
+  "data_vessel_governance": "ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR",
+  "downstream_ready": false,
+  "error_legs": [],
+  "formal_complete_day": false,
+  "institutional_date": "2026-11-10",
+  "institutional_rows": 1082,
+  "institutional_sha256": "5a882b0044e6e0dce2552b680080272b682f297b134a8380758e6794dbbd001a",
+  "institutional_source": "https://www.twse.com.tw/rwd/zh/fund/T86",
+  "institutional_status": "COMPLETE",
+  "last_run_results": [
+    {
+      "leg": "price",
+      "result": "PROMOTED",
+      "rows": 1091,
+      "sha256": "765ca96f296e1c75f7044d3dfcf713d29dd4406be1b9feb425f2d24be3eec327"
+    },
+    {
+      "leg": "institutional",
+      "result": "PROMOTED",
+      "rows": 1082,
+      "sha256": "5a882b0044e6e0dce2552b680080272b682f297b134a8380758e6794dbbd001a"
+    },
+    {
+      "leg": "margin",
+      "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
+      "result": "PENDING"
+    }
+  ],
+  "margin_pending_reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
+  "margin_status": "PENDING",
+  "market_state_finmind_context_path": "market_state_finmind_context.json",
+  "market_state_finmind_context_sha256": "59ab0e911a7bd945e886a720f0fb9dd69faab489f01f94677f2cc055e7458450",
+  "market_state_finmind_context_status": "ATTACHED_RESEARCH_SHADOW",
+  "market_state_finmind_finmind_latest_lag_seconds": 19651.796,
+  "market_state_finmind_market_scope_definition": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING",
+  "market_state_finmind_primary_scope": "twse_all_listed_equities",
+  "market_state_finmind_shadow_blocks_core_three_leg_or_mother": false,
+  "market_state_finmind_shadow_formal_classifier_mutated": false,
+  "market_state_finmind_shadow_model_authority_created": false,
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-10T20:27:31.796096+08:00",
+  "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
+  "market_state_finmind_shadow_status": "OBSERVED_CONTEXT_ATTACHED",
+  "market_state_finmind_shadow_trading_authority_created": false,
+  "market_state_finmind_twse_current_date_count": 1085,
+  "market_state_finmind_twse_current_date_coverage_ratio": 0.9963269054178145,
+  "market_state_finmind_twse_equity_membership_count": 1089,
+  "market_state_finmind_twse_snapshot_presence_ratio": 0.9990817263544536,
+  "market_state_finmind_twse_snapshot_present_count": 1088,
+  "model_authority_created": false,
+  "mother_pending_legs": [
+    "price",
+    "institutional"
+  ],
+  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
+  "mother_promotion_required": true,
+  "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+  "mother_status": "PENDING",
+  "parallel_eod_tree": false,
+  "parallel_universe": false,
+  "pending_legs": [
+    "margin"
+  ],
+  "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
+  "price_date": "2026-11-10",
+  "price_rows": 1091,
+  "price_sha256": "765ca96f296e1c75f7044d3dfcf713d29dd4406be1b9feb425f2d24be3eec327",
+  "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+  "price_status": "COMPLETE",
+  "second_mother": false,
+  "status": "PARTIAL",
+  "system": "HENGCE",
+  "target_date": "2026-11-10",
+  "three_leg_complete": false,
+  "updated_at_taipei": "2026-11-10T20:27:31.502000+08:00"
+}

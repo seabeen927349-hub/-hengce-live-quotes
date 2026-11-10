@@ -1,0 +1,167 @@
+{
+  "artifact": "MARKET_STATE_FINMIND_DERIVED_CONTEXT",
+  "authority": "RESEARCH_SHADOW_DESCRIPTIVE_CONTEXT_ONLY_NO_MODEL_OR_TRADING_AUTHORITY",
+  "capital_effect": "NONE",
+  "context_snapshot_digest_sha256": "cea8ca424573135490f6a3df57447ec0d37207e2ec3eac26843d774f7ee96091",
+  "coverage_gate": {
+    "twse_snapshot_presence_min": 0.98
+  },
+  "data_vessel": "EXISTING_HENGCE_ORIGINAL_EOD_VESSEL",
+  "electronics100_membership": {
+    "path": "hengce/legacy/live_universe.json",
+    "role": "DIAGNOSTIC_ONLY",
+    "version": "HENGCE_TWSE_ELECTRONICS100_20261110"
+  },
+  "escape_effect": "NONE",
+  "finmind_endpoint": "taiwan_stock_tick_snapshot",
+  "formal_classifier_effect": "NONE",
+  "formal_market_state_classifier": "hengce/market_state/HENGCE_MARKET_STATE_CLASSIFIER_FREEZE_v1_0_20261102.json",
+  "forward_outcomes_used": false,
+  "market_scope_definition": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING",
+  "membership_authority": "OFFICIAL_TWSE_CURRENT_MASTER",
+  "observed_at_taipei": "2026-11-10T20:27:31.796096+08:00",
+  "payload_sha256": "59ab0e911a7bd945e886a720f0fb9dd69faab489f01f94677f2cc055e7458450",
+  "per_ticker_vendor_rows_persisted": false,
+  "primary_scope": "twse_all_listed_equities",
+  "promotion_required_before_formal_use": true,
+  "raw_membership_rows_persisted": false,
+  "raw_vendor_snapshot_persisted": false,
+  "schema": "HENGCE_MARKET_STATE_FINMIND_DERIVED_CONTEXT_V5",
+  "scopes": {
+    "hengce_electronics100_diagnostic": {
+      "abs_change_rate_median_vendor_units": 3.0549999999999997,
+      "advancing_count": 79,
+      "advancing_share": 0.79,
+      "breadth_balance": 0.61,
+      "change_rate_eligible_count": 100,
+      "change_rate_mean_vendor_units": 3.7478999999999996,
+      "change_rate_median_vendor_units": 3.02,
+      "change_rate_q25_vendor_units": 0.79,
+      "change_rate_q75_vendor_units": 7.2475000000000005,
+      "close_at_or_above_average_price_share": 0.32,
+      "close_at_or_above_open_share": 0.55,
+      "current_date_coverage_ratio": 1.0,
+      "current_date_row_count": 100,
+      "declining_count": 18,
+      "declining_share": 0.18,
+      "missing_code_count": 0,
+      "missing_code_sample": [],
+      "raw_rows_persisted": false,
+      "requested_code_count": 100,
+      "scope": "HENGCE_ELECTRONICS100_DIAGNOSTIC_ONLY",
+      "snapshot_presence_ratio": 1.0,
+      "snapshot_present_count": 100,
+      "stale_code_count": 0,
+      "stale_code_sample": [],
+      "turnover_top10_share": 0.4704457964428625,
+      "turnover_total_vendor_units": 707634966700.0,
+      "unchanged_count": 3,
+      "volume_ratio_eligible_count": 100,
+      "volume_ratio_median": 1.12,
+      "volume_ratio_q75": 1.9425,
+      "volume_ratio_q90": 3.0370000000000004
+    },
+    "twse_all_listed_equities": {
+      "abs_change_rate_median_vendor_units": 1.4,
+      "advancing_count": 526,
+      "advancing_share": 0.4847926267281106,
+      "breadth_balance": 0.03225806451612903,
+      "change_rate_eligible_count": 1085,
+      "change_rate_mean_vendor_units": 0.5894009216589862,
+      "change_rate_median_vendor_units": 0.0,
+      "change_rate_q25_vendor_units": -1.16,
+      "change_rate_q75_vendor_units": 1.77,
+      "close_at_or_above_average_price_share": 0.38341013824884795,
+      "close_at_or_above_open_share": 0.4073732718894009,
+      "current_date_coverage_ratio": 0.9963269054178145,
+      "current_date_row_count": 1085,
+      "declining_count": 491,
+      "declining_share": 0.4525345622119816,
+      "missing_code_count": 1,
+      "missing_code_sample": [
+        "1589"
+      ],
+      "raw_rows_persisted": false,
+      "requested_code_count": 1089,
+      "scope": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES",
+      "snapshot_presence_ratio": 0.9990817263544536,
+      "snapshot_present_count": 1088,
+      "stale_code_count": 3,
+      "stale_code_sample": [
+        "1538",
+        "2314",
+        "3714"
+      ],
+      "turnover_top10_share": 0.3813696152759918,
+      "turnover_total_vendor_units": 905504444160.0,
+      "unchanged_count": 68,
+      "volume_ratio_eligible_count": 1085,
+      "volume_ratio_median": 1.0,
+      "volume_ratio_q75": 1.41,
+      "volume_ratio_q90": 2.03
+    }
+  },
+  "selection_effect": "NONE",
+  "source_revision_class": "FORWARD_COLLECTED_VENDOR_SNAPSHOT",
+  "source_snapshot_audit_digest_sha256": "2f2e970b022c5eff5cac4741642b1714e042b9c2c9178d077ae3b3a1d1e67544",
+  "source_snapshot_latest_timestamp": "2026-11-10 15:00:00.000000",
+  "system": "HENGCE",
+  "target_date": "2026-11-10",
+  "trading_effect": "NONE",
+  "twse_membership": {
+    "emerging_included": false,
+    "finmind_membership_used": false,
+    "market_scope_rule": "twse_only_excludes_tpex_and_emerging",
+    "membership_authority": "OFFICIAL_TWSE_CURRENT_MASTER",
+    "membership_endpoint": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
+    "membership_sha256": "89fc59ee38d6485bdedb046f26f75fe8eab4739f65fa566de7a836e6c2877a0c",
+    "raw_membership_rows_persisted": false,
+    "target_date": "2026-11-10",
+    "tdr_excluded_count": 4,
+    "tdr_exclusion_meta": [
+      {
+        "code": "9103",
+        "industry": "91",
+        "markers": {
+          "full_name_depositary_receipt": false,
+          "industry_91": true,
+          "short_name_dr": true
+        },
+        "short_name": "美德醫療-DR"
+      },
+      {
+        "code": "9105",
+        "industry": "91",
+        "markers": {
+          "full_name_depositary_receipt": false,
+          "industry_91": true,
+          "short_name_dr": true
+        },
+        "short_name": "泰金寶-DR"
+      },
+      {
+        "code": "9110",
+        "industry": "91",
+        "markers": {
+          "full_name_depositary_receipt": false,
+          "industry_91": true,
+          "short_name_dr": true
+        },
+        "short_name": "越南控-DR"
+      },
+      {
+        "code": "9136",
+        "industry": "91",
+        "markers": {
+          "full_name_depositary_receipt": false,
+          "industry_91": true,
+          "short_name_dr": true
+        },
+        "short_name": "巨騰-DR"
+      }
+    ],
+    "tpex_included": false,
+    "twse_count": 1089,
+    "twse_master_report_date": "1151109"
+  }
+}
