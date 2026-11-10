@@ -34,7 +34,7 @@ COLUMNS = ["Date", "Ticker", "Close", "Volume", "Turnover"]
 
 
 def _finite(raw, *, positive=False, integral=False, optional=False):
-    if raw is None or str(raw).strip() == "":
+    if raw is None or str(raw).strip() == "" or (optional and str(raw).strip() == "--"):
         if optional:
             return ""
         raise DataBlocked("MOTHER_REQUIRED_NUMERIC_MISSING")
