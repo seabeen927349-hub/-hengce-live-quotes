@@ -1,0 +1,43 @@
+name: HENGCE V2.2 original-screen research scan receipt validation
+"on":
+  pull_request:
+    paths:
+      - 'scripts/hengce_scan_once_router.py'
+      - 'research/retail_top5/v22_research_latest.json'
+      - 'tests/engineering/test_hengce_v22_scan_research_observation.py'
+      - '.github/workflows/hengce-v22-research-scan-view.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+jobs:
+  validate-research-view-no-trading:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test original V2.2 historical receipt display and zero authority
+        run: |
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22_scan_research_observation.py' -v
+          python -m py_compile scripts/hengce_scan_once_router.py
+      - name: Assert no formal selection or orders can emerge
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          import json
+          from scripts.hengce_scan_once_router import report
+          x=report(datetime(2026,11,10,21,29,tzinfo=ZoneInfo('Asia/Taipei')),Path('.'))
+          assert x['status']=='NO_ACTIVE_SELECTION_STRATEGY' and x['rows']==[]
+          assert x['reporting']['top10']==[] and x['broker_order_execution'] is False
+          v=x['reporting']['v22_research_top5']
+          assert v['status']=='HISTORICAL_RESEARCH_TOP5_VERIFIED'
+          assert v['source_date']=='2026-11-06' and v['current_selection'] is False
+          assert len(v['top5'])==5 and all(r['authorized_lots']==0 for r in v['top5'])
+          assert v['broker_execution'] is False and v['buy_signal'] is False
+          print('RESEARCH_SCAN_DISPLAY_PASS: historical date 2026-11-06, formal trading disabled')
+          PY
