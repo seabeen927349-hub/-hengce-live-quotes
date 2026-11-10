@@ -186,7 +186,7 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
         if stage=='撤退警戒':
             group_name='風險優先覆核'
         elif stage=='行情確認（待人工評估）':
-            if (margin is not None and margin>=12) or (five is not None and five>=20):
+            if (margin is not None and margin>=20) or (five is not None and five>=20):
                 group_name='風險優先覆核'
             elif pattern=='DOWN_OTHER_SHARE_GAIN' and today is not None and today>0:
                 group_name='優先人工追蹤'
