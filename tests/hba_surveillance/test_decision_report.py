@@ -94,7 +94,7 @@ class DecisionResearchIntegrationTests(unittest.TestCase):
     def test_different_stock_paths_have_different_explanations_and_falsifiers(self):
         x=self.result()
         cases={r['ticker']:r for r in x['human_review_examples']}
-        self.assertEqual(cases['3703']['review_group'],'風險優先覆核') # leverage warning
+        self.assertEqual(cases['3703']['review_group'],'優先人工追蹤') # rebound warrants review; leverage remains a separate risk
         self.assertEqual(cases['6443']['review_group'],'等待價格確認')
         self.assertEqual(cases['1416']['review_group'],'風險優先覆核')
         self.assertIn('其他持有人占比增加',cases['3703']['why'])
