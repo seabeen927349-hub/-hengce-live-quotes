@@ -609,6 +609,11 @@ def markdown(x):
         '- 散戶＝集保1至3級距實股及人數；其他＝集保總股數扣除散戶實股。股數移動與人數不等價。',
         '- 只核驗相鄰有效集保週；2026完整13週歷史未接續時，禁止推估多年或13週連續籌碼階段。',
         '- 原HBA 5日訊號及其排序僅保留作原始警報；不得把下列側錄誤認為正式買進順位。'])
+    patterns=tg.get('price_share_pattern_counts') or {}
+    lines.extend([
+        f"- 同週股價／兩方持股：{(tg.get('price_pair') or {}).get('status','資料不足')}；上漲其他占比增加 {patterns.get('UP_OTHER_SHARE_GAIN',0):,}、上漲散戶占比增加 {patterns.get('UP_SMALL_SHARE_GAIN',0):,}、下跌散戶承接 {patterns.get('DOWN_SMALL_SHARE_GAIN',0):,}、下跌其他增加 {patterns.get('DOWN_OTHER_SHARE_GAIN',0):,}。",
+        '- 一週價籌配對不是已確認的跨週A/B完整循環；不得轉為正式選股順位。',
+    ])
     if mother.get('status')=='AVAILABLE_RESEARCH_PROXY':
         lines.extend([f"- 期間 {mother['first_date']} 至 {mother['asof']}：{mother['distinct_tickers']:,}檔，完整買進 {mother['gross_buy_shares']:,}股，完整賣出 {mother['gross_sell_shares']:,}股",
           f"- 期末累計淨差占總買賣量小於1%：{mother['net_below_one_percent_count']:,}檔（描述性，不是買進門檻）"])
