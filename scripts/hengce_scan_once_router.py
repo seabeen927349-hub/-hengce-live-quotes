@@ -69,6 +69,38 @@ def advisory(now, root=None):
         info["status"]="UNREADABLE_RESEARCH_RECEIPT"
     return info
 
+def selected_model_preference(root=None):
+    """Report the user's designated V2.2 preference without activating selection."""
+    root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
+    path=root/"hengce/HENGCE_SELECTION_MODEL_CHOICE_LATEST.json"
+    result={"status":"PREFERENCE_UNAVAILABLE","model_id":None,
+            "formal_selection_authority":False,"signal_authority":False,
+            "capital_authority_twd":0,"broker_execution":False}
+    try:
+        x=json.loads(path.read_text(encoding="utf-8"))
+        valid=(x.get("schema")=="HENGCE_SELECTION_MODEL_CHOICE_V1"
+               and x.get("model_package")=="HENGCE_SELECTION_MODEL_V2_2_TOP5"
+               and x.get("choice_status")=="PREFERRED_PENDING_PROMOTION"
+               and x.get("formal_selection_authority") is False
+               and x.get("buy_sell_signal_authority") is False
+               and x.get("capital_authority_twd")==0
+               and x.get("broker_execution") is False
+               and x.get("authorized_lots")==0)
+        if not valid:
+            result["status"]="PREFERENCE_INVALID_FAIL_CLOSED"
+            return result
+        result.update(status="PREFERRED_RESEARCH_MODEL_NOT_LIVE",
+                      model_id=x.get("model_id"),
+                      model_name=x.get("model_name"),
+                      package_version=x.get("model_package"),
+                      source_pull_request=x.get("source_pull_request"),
+                      promotion_blockers=x.get("why_blocked"),
+                      ranking="TOP5_MEDIAN_TURNOVER",
+                      data_latest=x.get("reference_data_through"))
+    except (OSError,ValueError,TypeError):
+        pass
+    return result
+
 def report(now=None, root=None):
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
@@ -84,7 +116,8 @@ def report(now=None, root=None):
         "reason":"ALL_SELECTION_FAMILIES_RETIRED",
         "reporting":{"status":"NO_ACTIVE_STRATEGY","active_strategy_count":0,
           "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None},
-          "research_advisory":advisory(now,root)},
+          "research_advisory":advisory(now,root),
+          "selected_model_preference":selected_model_preference(root)},
         "retirement_lock":"hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
         "market_data_collectors":"SEPARATE_UNCHANGED"}
 def main():
