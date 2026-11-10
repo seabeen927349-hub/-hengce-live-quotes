@@ -35,12 +35,12 @@
     {
       "date": "2026-10-14",
       "rows": 1087,
-      "missing_close": 0
+      "missing_close": 3
     },
     {
       "date": "2026-10-15",
       "rows": 1085,
-      "missing_close": 0
+      "missing_close": 2
     },
     {
       "date": "2026-10-16",
@@ -50,7 +50,7 @@
     {
       "date": "2026-10-19",
       "rows": 1087,
-      "missing_close": 0
+      "missing_close": 5
     }
   ],
   "recovery_stage_required": "FORMAL_2026_PRICE_LEG",
