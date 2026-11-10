@@ -6,7 +6,6 @@
   "status": "RETROSPECTIVE_V22_TOP5_READY",
   "decision_date": "2026-11-06",
   "source_observed_date": "2026-11-06",
-  "recorded_at_taipei": "2026-11-10T21:46:07+08:00",
   "source_workflow_run": "https://github.com/seabeen927349-hub/-hengce-live-quotes/actions/runs/42827400295",
   "source_artifact_id": 13769224243,
   "source_artifact_name": "v22-original-screen-g1-retrospective-no-trading",
@@ -97,5 +96,9 @@
   "authorized_lots": 0,
   "for_scan_once_only": true,
   "not_live_quotes": true,
-  "disclaimer": "2026-11-06 historical research replay from original V2.2 code, recomputed on 2026-11-10; no real-time/official PIT selection or order permission"
+  "disclaimer": "2026-11-06 historical research replay from original V2.2 code, recomputed on 2026-11-10; no real-time/official PIT selection or order permission",
+  "source_run_completed_at_utc": "2026-11-10T13:46:07Z",
+  "original_research_decision_date": "2026-11-06",
+  "delivery_channel": "GITHUB_COMMITTED_RESEARCH_OBSERVATION_FROM_SUCCESSFUL_CI_REPLAY",
+  "decision_is_current": false
 }
