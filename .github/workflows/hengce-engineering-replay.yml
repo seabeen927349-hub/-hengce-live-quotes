@@ -25,17 +25,12 @@ jobs:
         run: python -m pip install requests==2.32.5 openpyxl==3.1.5 PyYAML==6.0.3
       - name: Synthetic scripts-only PR trigger regression
         run: python -B tests/engineering/test_replay_workflow.py
-      - name: Offline historical before and after replay
-        env:
-          BEFORE_SHA: ${{ github.event.pull_request.base.sha || 'cc7d4cac9d389107ac2d9caa95ec662ae23cfdf7' }}
-          AFTER_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Verify current Q017 retirement and live research monitoring
+        run: python -B tests/engineering/test_current_retirement_monitoring.py
+      - name: Replay frozen pre-retirement single-HENGCE baseline (historical only)
         run: >-
-          python -B tests/engineering/replay_equivalence_single_hengce.py
-          --before "$BEFORE_SHA"
-          --after "$AFTER_SHA"
-          --report "$RUNNER_TEMP/hengce-replay.json"
-      - name: Verify STOP-on-difference detector
-        run: python -B tests/engineering/replay_equivalence_single_hengce.py --self-test
+          python -B tests/engineering/run_retired_suite.py
+          --suite replay --report "$RUNNER_TEMP/hengce-replay.json"
       - name: Upload replay evidence
         if: always()
         uses: actions/upload-artifact@v4
