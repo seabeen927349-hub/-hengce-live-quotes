@@ -1,10 +1,53 @@
 #!/usr/bin/env python3
 """HENGCE scan once: no active strategy and no order authority."""
 import argparse,json
-from datetime import datetime
+from datetime import datetime,date
+from pathlib import Path
 from zoneinfo import ZoneInfo
 TZ=ZoneInfo("Asia/Taipei")
-def report(now=None):
+ADVISORY_PATH="research/hba_surveillance/decision_latest.json"
+def advisory(now, root=None):
+    """Read ONLY the existing read-only HBA advisory; formal selector remains retired."""
+    root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
+    info={"authority":"RESEARCH_ONLY_NO_BUY_SELL_OR_ORDER",
+          "status":"NOT_AVAILABLE","path":ADVISORY_PATH,
+          "observed_eod_date":None,"examples":[]}
+    try:
+        x=json.loads((root/ADVISORY_PATH).read_text(encoding="utf-8"))
+        a=x.get("authority") or {}
+        d=x.get("observed_eod_date")
+        if (x.get("schema")!="HENGCE_HBA_RESEARCH_DECISION_V1_20261110"
+                or x.get("status")!="RESEARCH_ADVISORY_READY"
+                or a.get("active_selection_strategy_count")!=0
+                or a.get("formal_selection") is not False
+                or a.get("trading") is not False
+                or a.get("broker_execution") is not False
+                or a.get("capital_twd")!=0
+                or not isinstance(d,str)):
+            info["status"]="UNVERIFIED_RESEARCH_RECEIPT"
+            return info
+        age=(now.date()-date.fromisoformat(d)).days
+        if age<0 or age>5:
+            info["status"]="STALE_OR_FUTURE_EOD"
+            return info
+        items=x.get("human_review_examples") or []
+        if not isinstance(items,list) or len(items)>12:
+            info["status"]="INVALID_DISPLAY"
+            return info
+        info.update(status="RESEARCH_ADVISORY_READY",
+                    observed_eod_date=d,
+                    market_covered=(x.get("research_summary") or {}).get("market_covered"),
+                    research_only=True,
+                    examples=[{"ticker":k.get("ticker"),"name":k.get("name"),
+                               "review_group":k.get("review_group"),"why":k.get("why"),
+                               "risks":k.get("risks"),
+                               "change_of_view":k.get("change_of_view")}
+                              for k in items if isinstance(k,dict)])
+    except (OSError,ValueError,TypeError):
+        info["status"]="UNREADABLE_RESEARCH_RECEIPT"
+    return info
+
+def report(now=None, root=None):
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
     return {
@@ -18,7 +61,8 @@ def report(now=None):
         "capital_authority_twd":0,"broker_order_execution":False,
         "reason":"ALL_SELECTION_FAMILIES_RETIRED",
         "reporting":{"status":"NO_ACTIVE_STRATEGY","active_strategy_count":0,
-          "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None}},
+          "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None},
+          "research_advisory":advisory(now,root)},
         "retirement_lock":"hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
         "market_data_collectors":"SEPARATE_UNCHANGED"}
 def main():
