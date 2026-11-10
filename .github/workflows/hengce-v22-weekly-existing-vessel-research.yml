@@ -1,0 +1,154 @@
+name: HENGCE V2.2 weekly Top5 using existing original EOD and TDCC
+"on":
+  pull_request:
+    paths:
+      - 'scripts/hengce_v22_weekly_research_runner.py'
+      - 'tests/engineering/test_hengce_v22_weekly_research_runner.py'
+      - 'scripts/hengce_scan_once_router.py'
+      - 'tests/engineering/test_hengce_v22_weekly_research_reader.py'
+      - '.github/workflows/hengce-v22-weekly-existing-vessel-research.yml'
+  workflow_dispatch:
+    inputs:
+      decision:
+        description: 'Friday YYYY-MM-DD; blank uses latest Friday Asia/Taipei'
+        type: string
+        required: false
+  schedule:
+    # Taiwan Saturday 00:55, after original Friday EOD ingest and Friday readiness.
+    - cron: '55 16 * * 5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-v22-weekly-research-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  research-screen-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      decision: ${{ steps.result.outputs.decision }}
+      approved_for_publish: ${{ steps.result.outputs.approved_for_publish }}
+    steps:
+      - name: Checkout existing HENGCE original price and TDCC vessels
+        uses: actions/checkout@v4
+      - name: Checkout pinned original unmodified V2.2 (no second selection model)
+        uses: actions/checkout@v4
+        with:
+          ref: 4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6
+          path: original_v22_model
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original V2.2 numerical libraries
+        run: python -m pip install --disable-pip-version-check numpy pandas
+      - name: Test real HENGCE mother/TDCC and 11-06 original V2.2 Top5 regression
+        run: |
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22_weekly_research_runner.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22_weekly_research_reader.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22_scan_research_observation.py' -v
+      - name: Calculate Friday research Top5 from original EOD, TDCC and existing mothers
+        id: result
+        env:
+          DECISION_INPUT: ${{ inputs.decision }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEST="$RUNNER_TEMP/v22_research_weekly"
+          if [[ -n "${DECISION_INPUT:-}" ]]; then
+            [[ "$DECISION_INPUT" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || exit 2
+            python scripts/hengce_v22_weekly_research_runner.py \
+              --original-model-checkout "$GITHUB_WORKSPACE/original_v22_model" \
+              --decision "$DECISION_INPUT" --output "$DEST"
+          else
+            python scripts/hengce_v22_weekly_research_runner.py \
+              --original-model-checkout "$GITHUB_WORKSPACE/original_v22_model" \
+              --output "$DEST"
+          fi
+          python - "$DEST/v22_weekly_research.json" "$GITHUB_OUTPUT" <<'PY'
+          import json,sys
+          x=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert x['mode']=='RESEARCH_TOP5_ONLY_NO_ORDER'
+          assert x['original_screen_commit']=='4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6'
+          assert x['buy_signal'] is False and x['sell_signal'] is False
+          assert x['broker_execution'] is False and x['authorized_lots']==0
+          assert x['selection_authority'] is False and x['capital_authority_twd']==0
+          assert len(x['top5'])<=5
+          with open(sys.argv[2],'a') as f:
+              f.write('decision='+x['decision_date']+'\n')
+              f.write('approved_for_publish=true\n')
+          print('RESEARCH_ONLY:',x['decision_date'],[r['ticker'] for r in x['top5']])
+          PY
+      - name: Archive verified research result (not executable broker orders)
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-v22-weekly-research-no-orders
+          path: ${{ runner.temp }}/v22_research_weekly/
+          if-no-files-found: error
+
+  publish-research-only-receipt:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: research-screen-and-validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout existing main (only derived research files may be updated)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Download validated research-only receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-v22-weekly-research-no-orders
+          path: ${{ runner.temp }}/v22_research_weekly/
+      - name: Publish date-stamped research report and latest pointer, no model promotion
+        shell: bash
+        env:
+          DECISION: ${{ needs.research-screen-and-validate.outputs.decision }}
+          APPROVED: ${{ needs.research-screen-and-validate.outputs.approved_for_publish }}
+        run: |
+          set -euo pipefail
+          [[ "$APPROVED" == "true" ]] || exit 2
+          SRC="$RUNNER_TEMP/v22_research_weekly/v22_weekly_research.json"
+          python - "$SRC" "$DECISION" <<'PY'
+          import json,sys
+          v=json.load(open(sys.argv[1]))
+          assert v['decision_date']==sys.argv[2] and v['research_only'] is True
+          assert v['broker_execution'] is False and v['authorized_lots']==0
+          assert v['selection_authority'] is False and v['capital_authority_twd']==0
+          assert len(v['all_qualified'])>=len(v['top5'])
+          PY
+          DATE8="${DECISION//-/}"
+          mkdir -p research/retail_top5/history
+          ARCHIVE="research/retail_top5/history/v22_${DATE8}.json"
+          LATEST="research/retail_top5/v22_weekly_latest.json"
+          if [[ -f "$ARCHIVE" ]]; then
+            cmp -s "$ARCHIVE" "$SRC" || { echo "HISTORY_IMMUTABILITY_CONFLICT"; exit 2; }
+          else
+            cp "$SRC" "$ARCHIVE"
+          fi
+          if [[ -f "$LATEST" ]]; then
+            python - "$LATEST" "$DECISION" <<'PY'
+          import json,sys
+          old=json.load(open(sys.argv[1]))
+          if old.get('decision_date','') > sys.argv[2]:
+              raise SystemExit('REFUSE_ROLLBACK_TO_OLDER_RESEARCH_DECISION')
+          PY
+          fi
+          cp "$SRC" "$LATEST"
+          git config user.name "hengce-research-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$ARCHIVE" "$LATEST"
+          if git diff --cached --quiet; then
+            echo "ALREADY_PUBLISHED_SAME_RESEARCH_RECEIPT"
+            exit 0
+          fi
+          git commit -m "HENGCE V2.2 original-vessel research Top5 ${DECISION} (no orders)"
+          git pull --rebase origin main
+          git push origin HEAD:main
