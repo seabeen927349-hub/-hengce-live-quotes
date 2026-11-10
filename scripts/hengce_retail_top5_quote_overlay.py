@@ -66,9 +66,52 @@ def number(value, *, positive=False):
     return out
 
 
-def valid_candidate_receipt(selection):
+def _verified_original_vessel_weekly_receipt(root, selection, asof):
+    """Consume existing HENGCE weekly research output through the original scan reader.
+
+    Does not create a source or model. The weekly research report must exist
+    at its canonical derived path and pass the unchanged scan-once validator.
+    """
+    if root is None or asof is None or asof.tzinfo is None:
+        raise EvidenceBlocked("WEEKLY_RESEARCH_SOURCE_AND_ASOF_REQUIRED")
+    committed = read_json(Path(root) / "research/retail_top5/v22_weekly_latest.json")
+    if not isinstance(committed, dict) or committed != selection:
+        raise EvidenceBlocked("WEEKLY_RESEARCH_NOT_COMMITTED_OR_MISMATCHED")
+    path = Path(root) / "scripts" / "hengce_scan_once_router.py"
+    if not path.is_file():
+        raise EvidenceBlocked("HENGCE_ORIGINAL_SCAN_READER_UNAVAILABLE")
+    spec = importlib.util.spec_from_file_location("hengce_scan_reader_for_v22_quote", path)
+    if spec is None or spec.loader is None:
+        raise EvidenceBlocked("HENGCE_SCAN_READER_UNLOADABLE")
+    reader = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(reader)
+        verified = reader.weekly_v22_research_observation(asof, root)
+    except (OSError, TypeError, ValueError, AttributeError, KeyError) as exc:
+        raise EvidenceBlocked("WEEKLY_RESEARCH_SCAN_READER_FAILED") from exc
+    if (not isinstance(verified, dict)
+        or verified.get("status") not in ("WEEKLY_RESEARCH_TOP5_READY",
+                                          "STALE_WEEKLY_RESEARCH_TOP5")
+        or verified.get("source_date") != selection.get("decision_date")
+        or verified.get("research_only") is not True
+        or verified.get("broker_execution") is not False
+        or verified.get("authorized_lots") != 0):
+        raise EvidenceBlocked("WEEKLY_RESEARCH_SELECTION_NOT_VERIFIED")
+    rows = verified.get("top5")
+    if not isinstance(rows, list) or not 1 <= len(rows) <= 5:
+        raise EvidenceBlocked("WEEKLY_RESEARCH_HAS_NO_QUALIFIED_TOP5")
+    if any(not isinstance(r, dict) or r.get("rank") != i
+           or r.get("authorized_lots") != 0
+           for i, r in enumerate(rows, 1)):
+        raise EvidenceBlocked("WEEKLY_TOP5_MEMBERSHIP_INVALID")
+    return date.fromisoformat(selection["decision_date"]), rows
+
+
+def valid_candidate_receipt(selection, *, root=None, asof=None):
     if not isinstance(selection, dict):
         raise EvidenceBlocked("V22_RECEIPT_MISSING")
+    if selection.get("schema") == "HENGCE_V22_WEEKLY_RESEARCH_SCREEN_V1":
+        return _verified_original_vessel_weekly_receipt(root, selection, asof)
     if (selection.get("version") != V22 or
         selection.get("mode") != "research_selection" or
         selection.get("authority") != NO_AUTH or
@@ -287,16 +330,21 @@ def refresh_uncovered_from_fugle(root, report, api_key, *, fetcher=None, pause=N
             if volume is not None and volume < 0:
                 volume = None
             traded = number(last.get("price"), positive=True)
-            # Existing transport uses lastTrade microsecond timestamps (not trial quotes).
+            # The EXISTING Fugle transport may return a numeric Unix timestamp
+            # or an offset-aware ISO8601 trade timestamp.
             ts = last.get("time")
             try:
-                value = float(ts)
-                if value >= 1e14:
-                    value /= 1000000
-                elif value >= 1e11:
-                    value /= 1000
-                trade_dt = datetime.fromtimestamp(value, TW)
-                trade_time = trade_dt.isoformat() if trade_dt <= seen else None
+                if isinstance(ts, str) and ("T" in ts or "+" in ts or ts.endswith("Z")):
+                    trade_dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+                    trade_dt = trade_dt.astimezone(TW) if trade_dt.tzinfo else None
+                else:
+                    value = float(ts)
+                    if value >= 1e14:
+                        value /= 1000000
+                    elif value >= 1e11:
+                        value /= 1000
+                    trade_dt = datetime.fromtimestamp(value, TW)
+                trade_time = trade_dt.isoformat() if trade_dt and trade_dt <= seen else None
             except (TypeError, ValueError, OverflowError, OSError):
                 trade_time = None
             if is_trial:
@@ -355,7 +403,11 @@ def overlay(root, selection, asof):
     if asof.tzinfo is None:
         raise EvidenceBlocked("ASOF_MUST_BE_TIMEZONE_AWARE")
     asof = asof.astimezone(TW)
-    decision, rows = valid_candidate_receipt(selection)
+    decision, rows = valid_candidate_receipt(selection, root=root, asof=asof)
+    weekly_scope = (isinstance(selection, dict) and
+                    selection.get("schema") == "HENGCE_V22_WEEKLY_RESEARCH_SCREEN_V1")
+    scope = ("HENGCE_EXISTING_EOD_TDCC_WEEKLY_RESEARCH_ONLY" if weekly_scope
+             else "BUNDLED_REFERENCE_ONLY")
     if decision > asof.date():
         raise EvidenceBlocked("SELECTION_DECISION_IN_FUTURE")
     sources = existing_quote_sources(Path(root))
@@ -391,7 +443,7 @@ def overlay(root, selection, asof):
                    "session_quote_is_current": False,
                    "official_eod_close": None, "tradable_authority": False}
         out.append({"rank": item["rank"], "ticker": ticker,
-                    "ranking_source": "V2.2_FROZEN_FRIDAY_RESEARCH",
+                    "ranking_source": "V2.2_ORIGINAL_HENGCE_FRIDAY_RESEARCH" if weekly_scope else "V2.2_FROZEN_FRIDAY_RESEARCH",
                     "selection_reference_close": item.get("reference_close"), **rec})
     fresh = sum(x["session_quote_is_current"] for x in out)
     return {
@@ -399,7 +451,7 @@ def overlay(root, selection, asof):
         "system": "HENGCE", "model": "V2.2_TOP5",
         "mode": "RESEARCH_QUOTE_OBSERVATION_ONLY",
         "asof_taipei": asof.isoformat(), "selection_decision": decision.isoformat(),
-        "selection_scope": "BUNDLED_REFERENCE_ONLY",
+        "selection_scope": scope,
         "status": "ALL_TOP5_QUOTES_CURRENT" if fresh == len(out)
                   else "PARTIAL_OR_STALE_TOP5_QUOTES",
         "top5_rows": len(out), "current_session_quotes": fresh,
