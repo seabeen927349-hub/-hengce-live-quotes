@@ -62,10 +62,8 @@ def replay(root: Path, original_repo: Path, decision=DECISION, *, today=None):
     today = today or datetime.now(TW).date()
     if today < DECISION:
         raise DataBlocked("DECISION_IN_FUTURE")
-    raw_prices, price_receipt = assemble(root, decision, today=today)
+    price_receipt, raw_prices = assemble(root, decision, today=today)
     retail_rows, retail_manifest = verified_panel(root, decision)
-    if (not price_receipt and not raw_prices):
-        raise DataBlocked("RESEARCH_PRICE_UNAVAILABLE")
     if not price_receipt["research_price_continuity"] or len(price_receipt["origin_by_day"]) != 21:
         raise DataBlocked("RESEARCH_PRICE_21_DAY_RECOVERY_BLOCKED")
     if price_receipt["historical_pit_certified"] is not False:
