@@ -9,6 +9,13 @@ name: HENGCE Governed SOX VIX Premarket EOD
       - 'tests/engineering/test_hengce_finmind_premarket_bridge.py'
       - '.github/workflows/hengce-overseas-sox-vix-premarket.yml'
       - '.github/workflows/hengce-finmind-premarket-shadow-bridge.yml'
+  # Reuse already governed workflows as independent preopen wake-ups.
+  # This adds no collector, market universe or data source.
+  workflow_run:
+    workflows:
+      - HENGCE original EOD ingest
+      - HENGCE HBA Daily Surveillance Research Sidecar
+    types: [completed]
   workflow_dispatch:
     inputs:
       mode:
@@ -27,9 +34,14 @@ name: HENGCE Governed SOX VIX Premarket EOD
     - cron: '35 21 * * 0-4'  # Taipei 05:35 (earlier scheduled retry)
     - cron: '45 21 * * 0-4'  # Taipei 05:45
     - cron: '15 22 * * 0-4'  # Taipei 06:15
+    - cron: '47 22 * * 0-4'  # Taipei 06:47 independent offset
     - cron: '15 23 * * 0-4'  # Taipei 07:15
+    - cron: '39 23 * * 0-4'  # Taipei 07:39 independent offset
+    - cron: '4 0 * * 1-5'    # Taipei 08:04
     - cron: '10 0 * * 1-5'   # Taipei 08:10
-    - cron: '30 0 * * 1-5'   # Taipei 08:30 final retry
+    - cron: '19 0 * * 1-5'   # Taipei 08:19 independent offset
+    - cron: '30 0 * * 1-5'   # Taipei 08:30
+    - cron: '41 0 * * 1-5'   # Taipei 08:41 final bounded retry
 
 permissions:
   contents: write
@@ -40,6 +52,9 @@ concurrency:
 
 jobs:
   overseas-eod:
+    # workflow_run must come from an independent trusted main-branch schedule.
+    # Never give a PR-triggered upstream run repository write privileges.
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'schedule')
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
@@ -48,12 +63,55 @@ jobs:
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
           fetch-depth: 0
+      - name: Guard real Taipei preopen time and idempotent same-day receipt
+        id: preopen_gate
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_run' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'run')
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from datetime import date, datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          import json, os, sys
+          sys.path.insert(0, "scripts")
+          from hengce_overseas_sox_vix_premarket_v1 import MODEL, SOX_URL, VIX_URL, canonical
+          now = datetime.now(ZoneInfo("Asia/Taipei"))
+          # Never rewrite a delayed afternoon execution as an earlier forecast.
+          if now.weekday() >= 5 or now.hour >= 9:
+              print("BLOCKED_PREOPEN_MISSED: actual Taipei time", now.isoformat())
+              raise SystemExit(2)
+          p = Path("overseas_premarket/latest.json")
+          try:
+              obj = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+              created = datetime.fromisoformat(obj["generated_at_taipei"]).astimezone(ZoneInfo("Asia/Taipei"))
+              sources = obj["sources"]
+              valid = (
+                  obj.get("status") == "PASS_VERIFIED_VENDOR_EOD"
+                  and obj.get("model") == MODEL
+                  and obj.get("target_tw_date") == now.date().isoformat()
+                  and created.date() == now.date() and created.hour < 9
+                  and obj.get("packet_sha256") == canonical({k: v for k, v in obj.items() if k != "packet_sha256"})
+                  and sources["sox"]["publisher"] == "Nasdaq"
+                  and str(sources["sox"]["url"]).startswith(SOX_URL + "?")
+                  and sources["vix"]["publisher"] == "Cboe"
+                  and sources["vix"]["url"] == VIX_URL
+              )
+          except (OSError, ValueError, KeyError, TypeError, AttributeError):
+              valid = False
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+              fh.write("produce=false\n" if valid else "produce=true\n")
+          print("ALREADY_PUBLISHED_VERIFIED_PREOPEN_PACKET" if valid else "PREOPEN_SOURCE_CAPTURE_ALLOWED", now.isoformat())
+          PY
       - uses: actions/setup-python@v5
+        if: steps.preopen_gate.outputs.produce != 'false'
         with:
           python-version: '3.12'
       - name: Install vendor XLSX reader
+        if: steps.preopen_gate.outputs.produce != 'false'
         run: python -m pip install 'openpyxl>=3.1,<4'
       - name: Regression, parser and PIT tests
+        if: steps.preopen_gate.outputs.produce != 'false'
         run: |
           python -m py_compile scripts/hengce_overseas_sox_vix_premarket_v1.py scripts/hengce_finmind_premarket_bridge.py
           python -m unittest discover -s tests/engineering -p 'test_hengce_overseas_sox_vix_premarket.py' -v
@@ -64,11 +122,11 @@ jobs:
         run: |
           python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode probe
       - name: Produce current preopen vendor-verified packet
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'run')
+        if: steps.preopen_gate.outputs.produce == 'true'
         run: |
           python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode run --out /tmp/hengce_sox_vix_premarket.json
       - name: Publish overseas shadow with exact lease
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'run'))
+        if: github.ref == 'refs/heads/main' && steps.preopen_gate.outputs.produce == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -105,7 +163,7 @@ jobs:
           git commit -m 'data(shadow): governed SOX/VIX official-source EOD preopen packet'
           python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
       - name: Save guarded publisher receipts
-        if: always() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: hengce-sox-vix-source-publication
