@@ -541,9 +541,9 @@ def build(root, original, summary=None):
         # Full receipt/date/coverage/provenance is retained in two_group_research;
         # all numerically meaningful stock-level shares and changes remain here.
         rec={k:row[k] for k in (
-            'small_holders','small_shares','other_shares','total_shares',
+            'small_holders','small_shares','other_shares',
             'small_holders_delta','small_shares_delta','other_shares_delta',
-            'small_share_delta_pp','holder_shares_disagree','two_group_direction')}
+            'small_share_delta_pp','two_group_direction')}
         rec['ticker']=ticker
         delta=price_changes.get(ticker)
         rec['same_week_price_return_pct']=round(delta,4) if delta is not None else None
@@ -556,9 +556,9 @@ def build(root, original, summary=None):
         else:pattern='FLAT_OR_UNCLASSIFIED'
         patterns[pattern]+=1
         rec['same_week_price_ownership_pattern']=pattern
-        rec['selection_authority']=False
         market_registry.append(rec)
-    tg_meta['market_registry_stock_fields']='ticker,small_holders,small_shares,other_shares,total_shares,small_holders_delta,small_shares_delta,other_shares_delta,small_share_delta_pp,holder_shares_disagree,two_group_direction,same_week_price_return_pct,same_week_price_ownership_pattern,selection_authority'
+    tg_meta['market_registry_stock_fields']='ticker,small_holders,small_shares,other_shares,small_holders_delta,small_shares_delta,other_shares_delta,small_share_delta_pp,two_group_direction,same_week_price_return_pct,same_week_price_ownership_pattern'
+    tg_meta['derived_per_stock_fields']='total_shares=small_shares+other_shares; holder_shares_disagree=(small_holders_delta*small_shares_delta<0); selection_authority=false at output.authority'
     tg_meta['per_stock_provenance_ref']='two_group_research.verified_raw_sha256 and first_observed_taipei'
     tg_meta['price_share_pattern_counts']=patterns
     tg_meta['market_registry_total']=len(market_registry)

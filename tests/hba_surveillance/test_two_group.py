@@ -131,7 +131,7 @@ class TwoGroupExistingVesselTests(unittest.TestCase):
         x=output['two_group_market_registry'][0]
         self.assertEqual(x['same_week_price_ownership_pattern'],'UP_SMALL_SHARE_GAIN')
         self.assertEqual(x['same_week_price_return_pct'],10.0)
-        self.assertFalse(x['selection_authority'])
+        self.assertEqual(x['small_shares']+x['other_shares'],10500)
         self.assertFalse(output['authority']['new_selection'])
         self.assertFalse(output['two_group_research']['multiweek_a_to_b_cycle_validated'])
 
@@ -174,7 +174,7 @@ class TwoGroupExistingVesselTests(unittest.TestCase):
         result=build(repo,original,summary)
         self.assertEqual(len(result['two_group_market_registry']),1082)
         encoded=json.dumps(result,ensure_ascii=False,sort_keys=True,indent=2).encode('utf-8')
-        self.assertLess(len(encoded),1_000_000,
+        self.assertLess(len(encoded),950_000,
                         'Integrated JSON too large for normal GitHub contents read')
         self.assertFalse(result['authority']['new_selection'])
         self.assertFalse(result['authority']['trade'])
