@@ -6,6 +6,12 @@ on:
       - 'tests/engineering/test_hengce_retail_top5_quote_overlay.py'
       - '.github/workflows/hengce-retail-top5-quote-overlay.yml'
   workflow_dispatch:
+    inputs:
+      selection_path:
+        description: 'Path to an independently verified V2.2 research selection.json in this branch (no live selection authorization)'
+        required: false
+        type: string
+        default: ''
 permissions:
   contents: read
 jobs:
@@ -32,3 +38,34 @@ jobs:
           assert 'do_not_infer_quote_coverage_from_market_aggregate": True' in code
           print("QUOTE_RESEARCH_ONLY_BOUNDARY_PASS")
           PY
+
+  manual-quote-observation:
+    if: github.event_name == 'workflow_dispatch' && inputs.selection_path != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Observe V2.2 research Top5 through existing Fugle function
+        env:
+          FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+          SELECTION_PATH: ${{ inputs.selection_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$SELECTION_PATH" =~ ^[A-Za-z0-9_./-]+\.json$ ]] || [[ "$SELECTION_PATH" == /* ]] || [[ "$SELECTION_PATH" == *..* ]]; then
+            echo 'INVALID_SELECTION_PATH'
+            exit 2
+          fi
+          test -f "$SELECTION_PATH" || { echo 'SELECTION_NOT_FOUND'; exit 2; }
+          python scripts/hengce_retail_top5_quote_overlay.py \
+            --selection "$SELECTION_PATH" \
+            --output "$RUNNER_TEMP/retail_top5_quote_overlay.json" \
+            --refresh-uncovered
+      - uses: actions/upload-artifact@v4
+        with:
+          name: retail-top5-observation-no-orders
+          path: ${{ runner.temp }}/retail_top5_quote_overlay.json
+          if-no-files-found: error
