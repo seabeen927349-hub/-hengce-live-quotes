@@ -101,6 +101,112 @@ def selected_model_preference(root=None):
         pass
     return result
 
+
+V22_RESEARCH_PATH="research/retail_top5/v22_research_latest.json"
+
+def research_top5_observation(now=None, root=None):
+    """Show an independently reproduced V2.2 research Top5, NEVER a live signal.
+
+    This deliberately reads only a checked-in, versioned research receipt.
+    It neither runs the unmerged selection strategy nor reaches a broker.
+    """
+    import math
+    now=now or datetime.now(TZ)
+    now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
+    root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
+    report={"status":"NOT_AVAILABLE","research_only":True,
+            "current_selection":False,"source_date":None,
+            "ranking_authority":False,"formal_selection_authority":False,
+            "buy_signal":False,"sell_signal":False,"authorized_lots":0,
+            "capital_authority_twd":0,"broker_execution":False,
+            "top5":[],"source_path":V22_RESEARCH_PATH}
+    if selected_model_preference(root).get("status")!="PREFERRED_RESEARCH_MODEL_NOT_LIVE":
+        report["status"]="V22_PREFERENCE_UNVERIFIED"
+        return report
+    try:
+        d=json.loads((root/V22_RESEARCH_PATH).read_text(encoding="utf-8"))
+        decision=date.fromisoformat(d["decision_date"])
+        chip_dates=[date.fromisoformat(x.replace("-","")[:4]+"-"+x.replace("-","")[4:6]+"-"+x.replace("-","")[6:8]) for x in d["tdcc_snapshot_dates"]]
+        if not (d.get("schema")=="HENGCE_V22_RESEARCH_TOP5_SCAN_OBSERVATION_V1"
+                and d.get("system")=="HENGCE"
+                and d.get("status")=="RETROSPECTIVE_V22_TOP5_READY"
+                and d.get("model_id")=="all_qualified_top5_v1"
+                and d.get("original_v22_screen_pinned_commit")=="4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6"
+                and d.get("source_workflow_run")=="https://github.com/seabeen927349-hub/-hengce-live-quotes/actions/runs/42827400295"
+                and d.get("source_artifact_id")==13769224243
+                and d.get("source_parent_mother_sha256")=="b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93"
+                and d.get("source_parent_tdcc_sha256")=="71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88"
+                and d.get("research_only") is True
+                and d.get("official_pit_certified") is False
+                and d.get("model_literature_gate")=="NOT_PASSED"
+                and d.get("clean_oos_or_live_validated") is False
+                and d.get("formal_selection_authority") is False
+                and d.get("buy_signal") is False and d.get("sell_signal") is False
+                and d.get("broker_execution") is False
+                and d.get("authorized_lots")==0 and d.get("capital_authority_twd")==0
+                and d.get("not_live_quotes") is True
+                and d.get("decision_is_current") is False
+                and d.get("source_observed_date")==d.get("decision_date")
+                and decision==date(2026,11,6) and decision<=now.date()
+                and d.get("original_eod_days")==13 and d.get("mother_backfill_days")==8
+                and d.get("price_input_rows")==22865 and d.get("tdcc_input_rows")==3248
+                and len(chip_dates)==3
+                and chip_dates==[date(2026,10,8),date(2026,10,16),date(2026,10,22)]
+                and (decision-max(chip_dates)).days>=14
+                and d.get("qualified_count")==7):
+            report["status"]="RESEARCH_RECEIPT_NOT_VERIFIED"
+            return report
+        records=d.get("top5")
+        if not isinstance(records,list) or len(records)!=5:
+            report["status"]="RESEARCH_RANKING_INVALID"
+            return report
+        validated=[]; seen=set()
+        for i,x in enumerate(records,1):
+            ticker=x.get("ticker") if isinstance(x,dict) else None
+            if not (isinstance(ticker,str) and len(ticker)==4 and ticker.isdigit()
+                    and ticker not in seen and x.get("rank")==i
+                    and x.get("authorized_lots")==0
+                    and x.get("source")=="ORIGINAL_V22_SCREEN_P64_AT_PINNED_COMMIT"
+                    and x.get("chip_date")=="2026-10-22"):
+                report["status"]="RESEARCH_RANKING_INVALID"
+                return report
+            seen.add(ticker)
+            for key in ("reference_close","r20_pct","r5_pct","retail_2week_pct","median_20d_turnover_twd"):
+                value=x.get(key)
+                if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value):
+                    report["status"]="RESEARCH_METRICS_INVALID"
+                    return report
+            if not (x["reference_close"]>0 and x["r20_pct"]>=5
+                    and x["r5_pct"]>=0 and x["retail_2week_pct"]<=-1
+                    and x["median_20d_turnover_twd"]>=10_000_000):
+                report["status"]="RESEARCH_METRICS_INVALID"
+                return report
+            validated.append({
+                "rank":i,"ticker":ticker,"reference_close_on_decision":x["reference_close"],
+                "r20_pct":x["r20_pct"],"r5_pct":x["r5_pct"],
+                "retail_2week_pct":x["retail_2week_pct"],
+                "median_20d_turnover_twd":x["median_20d_turnover_twd"],
+                "research_only":True,"authorized_lots":0,
+                "reference_price_is_not_live_quote":True})
+        if any(validated[i]["median_20d_turnover_twd"]<validated[i+1]["median_20d_turnover_twd"]
+               for i in range(4)):
+            report["status"]="RESEARCH_RANKING_ORDER_INVALID"
+            return report
+        report.update(status="HISTORICAL_RESEARCH_TOP5_VERIFIED",
+                      source_date=decision.isoformat(),
+                      reconstructed_at="2026-11-10",
+                      age_calendar_days=(now.date()-decision).days,
+                      source_kind="EXISTING_HENGCE_MOTHER_RETROSPECTIVE",
+                      model_original_commit=d["original_v22_screen_pinned_commit"],
+                      source_workflow_run=d["source_workflow_run"],
+                      qualified_count=d["qualified_count"],
+                      retrospective_only=True,not_current_recommendations=True,
+                      pit_evidence="HISTORICAL_FIRST_OBSERVED_UNVERIFIED",
+                      top5=validated)
+    except (OSError,ValueError,TypeError,KeyError,AttributeError):
+        report["status"]="RESEARCH_RECEIPT_UNREADABLE"
+    return report
+
 def report(now=None, root=None):
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
@@ -117,7 +223,8 @@ def report(now=None, root=None):
         "reporting":{"status":"NO_ACTIVE_STRATEGY","active_strategy_count":0,
           "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None},
           "research_advisory":advisory(now,root),
-          "selected_model_preference":selected_model_preference(root)},
+          "selected_model_preference":selected_model_preference(root),
+          "v22_research_top5":research_top5_observation(now,root)},
         "retirement_lock":"hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
         "market_data_collectors":"SEPARATE_UNCHANGED"}
 def main():
