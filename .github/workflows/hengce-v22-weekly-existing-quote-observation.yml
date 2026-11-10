@@ -1,0 +1,97 @@
+name: HENGCE V2.2 weekly research Top5 existing Fugle quote observation
+"on":
+  pull_request:
+    paths:
+      - 'scripts/hengce_retail_top5_quote_overlay.py'
+      - 'tests/engineering/test_hengce_v22_weekly_quote_overlay.py'
+      - '.github/workflows/hengce-v22-weekly-existing-quote-observation.yml'
+  workflow_dispatch:
+  schedule:
+    # Two same-session read-only observations: 11:30 and 13:40 Taiwan, weekdays.
+    - cron: '30 3 * * 1-5'
+    - cron: '40 5 * * 1-5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hengce-v22-existing-fugle-observation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify-original-data-and-quote-adapter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout HENGCE original live EOD and TDCC paths
+        uses: actions/checkout@v4
+      - name: Checkout original pinned V2.2 without duplicating the selection model
+        uses: actions/checkout@v4
+        with:
+          ref: 4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6
+          path: original_v22_model
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Dependencies for existing HENGCE original V2.2 computation
+        run: python -m pip install --disable-pip-version-check numpy pandas
+      - name: Test existing HENGCE Fugle transport and original weekly research Top5 quote mapping
+        run: |
+          python -m unittest discover -s tests/engineering -p 'test_hengce_retail_top5_quote_overlay.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22_weekly_quote_overlay.py' -v
+          python -m py_compile scripts/hengce_retail_top5_quote_overlay.py
+
+  observe-research-top5-through-existing-fugle:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: verify-original-data-and-quote-adapter
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    permissions:
+      contents: read
+    steps:
+      - name: Use existing main and committed weekly research Top5
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Check actual weekly research receipt is present
+        id: check
+        shell: bash
+        run: |
+          if [[ -f research/retail_top5/v22_weekly_latest.json ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "USING_EXISTING_HENGCE_WEEKLY_RESEARCH_RECEIPT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "NO_COMMITTED_WEEKLY_V22_RESEARCH_RECEIPT_YET; NOT_INVENTING_TOP5"
+          fi
+      - name: Overlay original Fugle source onto existing weekly Top5, no re-ranking
+        if: steps.check.outputs.available == 'true'
+        env:
+          FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_retail_top5_quote_overlay.py \
+            --selection research/retail_top5/v22_weekly_latest.json \
+            --output "$RUNNER_TEMP/hengce_v22_existing_fugle_quote_observation.json" \
+            --refresh-uncovered
+          python - "$RUNNER_TEMP/hengce_v22_existing_fugle_quote_observation.json" <<'PY'
+          import json,sys
+          s=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert s['selection_scope']=='HENGCE_EXISTING_EOD_TDCC_WEEKLY_RESEARCH_ONLY'
+          assert s['ranking_changed'] is False
+          assert s['formal_eod_replaced'] is False
+          assert s['formal_tdcc_replaced'] is False
+          assert s['broker_execution'] is False and s['authorized_lots']==0
+          assert not s['buy_signal'] and not s['sell_signal']
+          assert len(s['quotes'])<=5
+          print('TOP5_EXISTING_FUGLE_QUOTES:',[(q['ticker'],q['quote_status']) for q in s['quotes']])
+          PY
+      - name: Upload research-only existing transport observation; no original vessel writes
+        if: steps.check.outputs.available == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-v22-original-fugle-top5-quote-observation-no-orders
+          path: ${{ runner.temp }}/hengce_v22_existing_fugle_quote_observation.json
+          if-no-files-found: error
