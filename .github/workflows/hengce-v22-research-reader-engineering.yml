@@ -1,0 +1,44 @@
+name: HENGCE V2.2 research receipt reader engineering safety
+"on":
+  pull_request:
+    paths:
+      - 'scripts/hengce_scan_once_router.py'
+      - 'tests/fixtures/v22_screen_replay_20261106_historical_no_authority.json'
+      - 'tests/engineering/test_hengce_v22_scan_research_observation.py'
+      - '.github/workflows/hengce-v22-research-reader-engineering.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-reader-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test replay provenance and fail-closed scan with NO production model publication
+        run: |
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22_scan_research_observation.py' -v
+          python -m py_compile scripts/hengce_scan_once_router.py
+      - name: Check formal scan no-signal boundary and missing research receipt
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from scripts.hengce_scan_once_router import report
+          result=report(datetime(2026,11,10,21,29,tzinfo=ZoneInfo('Asia/Taipei')),Path('.'))
+          assert result['status']=='NO_ACTIVE_SELECTION_STRATEGY'
+          assert result['rows']==[] and result['reporting']['top10']==[]
+          assert result['broker_order_execution'] is False
+          assert result['reporting']['action_card']['status']=='NO_BUY'
+          observation=result['reporting']['v22_research_top5']
+          assert observation['status']=='RESEARCH_RECEIPT_UNREADABLE'
+          assert observation['top5']==[] and observation['authorized_lots']==0
+          assert observation['buy_signal'] is False and observation['broker_execution'] is False
+          print('RESEARCH_VIEWER_FAIL_CLOSED_NO_PUBLISHED_CANDIDATE_PASS')
+          PY
