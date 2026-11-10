@@ -229,6 +229,206 @@ def fold_verified_original_eod(root, day, mother, stocks):
     return updated, totals
 
 
+
+def read_existing_two_group_tdcc(root, target, observed_eod):
+    """Audit small-holder (grades 1-3) vs all-other REAL shares from the original TDCC vessel.
+
+    This is a descriptive, read-only sidecar. It never changes the HBA's frozen
+    short-window formula, its original candidate registry, or a trading signal.
+    """
+    import hashlib
+    import re
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+
+    meta={'status':'NOT_AVAILABLE','role':'RESEARCH_ONLY_NO_SELECTION_OR_TRADING',
+          'small_definition':'TDCC grades 1-3, 1 to 10000 shares',
+          'other_definition':'grade 17 total minus grades 1-3 shares',
+          'source':'EXISTING_TDCC_1_5_RAW_AND_RECEIPTS',
+          'target_tw_date':target,'price_date':observed_eod,
+          'last_tdcc_date':None,'first_observed_taipei':None,
+          'historical_13week_continuity_verified':False,
+          'no_future_data':True,'stock_count':0,'comparable_stock_count':0,
+          'exclusions':{},'categories':{},
+          'authority':{'selection':False,'rank':False,'trade':False,'capital':False}}
+    if not isinstance(target,str) or not isinstance(observed_eod,str) or observed_eod>target:
+        return dict(meta,status='INVALID_TIME'), {}
+    price_folder=root/'eod'/observed_eod.replace('-','')
+    prices=set()
+    try:
+        for p in sorted(price_folder.glob('price_*.csv')):
+            with p.open(encoding='utf-8-sig',newline='') as f:
+                for row in csv.DictReader(f):
+                    ticker=str(row.get('Ticker') or '').strip()
+                    if row.get('Date')==observed_eod and re.fullmatch(r'[1-9]\d{3}',ticker):
+                        prices.add(ticker)
+    except (OSError, UnicodeError, csv.Error):
+        return dict(meta,status='INVALID_EOD_PRICE_VESSEL'), {}
+    if not prices:
+        return dict(meta,status='NO_VERIFIED_EOD_PRICE_ROWS'), {}
+    meta['stock_count']=len(prices)
+    tdcc_root=root/'ownership'/'tdcc'
+    available=[]
+    for folder in sorted(tdcc_root.glob('20??????')):
+        snap=folder.name
+        try:
+            snap_date=date.fromisoformat(snap[:4]+'-'+snap[4:6]+'-'+snap[6:])
+        except ValueError:
+            continue
+        if snap_date > date.fromisoformat(target) or snap_date > date.fromisoformat(observed_eod):
+            continue
+        receipt=load(folder/'receipt.json') or {}
+        if receipt.get('status')!='COMPLETE' or receipt.get('snapshot_date')!=snap:
+            continue
+        if receipt.get('source')!='https://opendata.tdcc.com.tw/getOD.ashx?id=1-5':
+            continue
+        obs=str(receipt.get('observed_at_taipei') or '')
+        try:
+            observed=datetime.fromisoformat(obs)
+            if observed.tzinfo is None:continue
+            at_tw=observed.astimezone(ZoneInfo('Asia/Taipei'))
+        except ValueError:
+            continue
+        if at_tw.date()>date.fromisoformat(target) or observed>datetime.now(ZoneInfo('Asia/Taipei')):
+            continue
+        raw=folder/'tdcc_1_5_raw.csv'
+        if not raw.is_file():
+            continue
+        try:
+            payload=raw.read_bytes()
+        except OSError:
+            continue
+        digest=hashlib.sha256(payload).hexdigest()
+        if digest!=receipt.get('source_sha256'):
+            continue
+        grades={}
+        bad=set()
+        try:
+            with raw.open(encoding='utf-8-sig',newline='') as f:
+                rd=csv.DictReader(f)
+                needed={'資料日期','證券代號','持股分級','人數','股數'}
+                if not needed.issubset(rd.fieldnames or []):
+                    continue
+                for row in rd:
+                    ticker=str(row.get('證券代號') or '').strip()
+                    if ticker not in prices:
+                        continue
+                    if row.get('資料日期')!=snap:
+                        bad.add(ticker)
+                        continue
+                    try:
+                        grade=int(str(row['持股分級']).strip())
+                        people=int(str(row['人數']).strip().replace(',',''))
+                        shares=int(str(row['股數']).strip().replace(',',''))
+                    except (ValueError, TypeError, OverflowError):
+                        bad.add(ticker)
+                        continue
+                    if not (1<=grade<=17) or min(people,shares)<0:
+                        bad.add(ticker)
+                        continue
+                    g=grades.setdefault(ticker,{})
+                    if grade in g:
+                        bad.add(ticker)
+                    g[grade]=(people,shares)
+        except (OSError,UnicodeError,csv.Error):
+            continue
+        validated={}
+        for ticker,g in grades.items():
+            if ticker in bad or not all(i in g for i in range(1,16)) or 17 not in g:
+                continue
+            total=g[17][1]
+            adj=g.get(16,(0,0))[1]
+            total15=sum(g[k][1] for k in range(1,16))
+            small_shares=sum(g[k][1] for k in range(1,4))
+            if total<=0 or small_shares>total or abs(total15-total)!=abs(adj):
+                continue
+            validated[ticker]={
+               'small_holders':sum(g[k][0] for k in range(1,4)),
+               'small_shares':small_shares,
+               'other_shares':total-small_shares,
+               'total_shares':total}
+        available.append((snap,obs,digest,validated))
+    if len(available)<2:
+        return dict(meta,status='INSUFFICIENT_VERIFIED_TDCC_SNAPSHOTS',
+                    validated_snapshot_count=len(available)),{}
+    old,cur=available[-2:]
+    old_date=date(int(old[0][:4]),int(old[0][4:6]),int(old[0][6:]))
+    cur_date=date(int(cur[0][:4]),int(cur[0][4:6]),int(cur[0][6:]))
+    gap=(cur_date-old_date).days
+    age=(date.fromisoformat(target)-cur_date).days
+    if not 5<=gap<=10 or age>14:
+        return dict(meta,status='GAPPED_OR_STALE_TDCC_SNAPSHOTS',
+                    last_tdcc_date=cur[0],last_gap_days=gap,age_days=age),{}
+    meta.update(status='VERIFIED_TWO_GROUP_RESEARCH',last_tdcc_date=cur[0],
+                previous_tdcc_date=old[0],first_observed_taipei=cur[1],
+                verified_raw_sha256={old[0]:old[2],cur[0]:cur[2]},
+                days_between_snapshots=gap,age_days=age,
+                representative_scope='ALL_MATCHED_TWSE_EOD_PRICE_ROWS',
+                share_change_threshold_pp_for_description=0.05,
+                caveat='The 0.05pp descriptive grouping is not a validated trade threshold; accounts may cross grades.')
+    groups={'其他持有人比重增加':0,'散戶持股比重增加':0,'變化不明顯':0}
+    excluded={'MISSING_OR_INVALID_TDCC_GRADES':0,'SHARE_CAPITAL_CHANGE_GT_1PCT':0}
+    result={}
+    for ticker in sorted(prices):
+        x=old[3].get(ticker);y=cur[3].get(ticker)
+        if not x or not y:
+            excluded['MISSING_OR_INVALID_TDCC_GRADES']+=1
+            continue
+        cap=100*(y['total_shares']/x['total_shares']-1)
+        if abs(cap)>1:
+            excluded['SHARE_CAPITAL_CHANGE_GT_1PCT']+=1
+            continue
+        small_share_pp=100*(y['small_shares']/y['total_shares']-
+                            x['small_shares']/x['total_shares'])
+        direction=('散戶持股比重增加' if small_share_pp>=0.05 else
+                   '其他持有人比重增加' if small_share_pp<=-0.05 else
+                   '變化不明顯')
+        groups[direction]+=1
+        small_change=y['small_shares']-x['small_shares']
+        people_change=y['small_holders']-x['small_holders']
+        result[ticker]={
+          'status':'COMPARABLE','snapshot_date':cur[0],
+          'first_observed_taipei':cur[1],
+          'previous_snapshot_date':old[0],
+          'small_holders':y['small_holders'],
+          'small_shares':y['small_shares'],'other_shares':y['other_shares'],
+          'total_shares':y['total_shares'],
+          'small_holders_delta':people_change,
+          'small_shares_delta':small_change,
+          'other_shares_delta':y['other_shares']-x['other_shares'],
+          'small_share_delta_pp':round(small_share_pp,6),
+          'other_share_delta_pp':round(-small_share_pp,6),
+          'capital_delta_pct':round(cap,6),
+          'holder_shares_disagree':small_change*people_change<0,
+          'two_group_direction':direction,
+          'price_relation':'PRICE_PATH_REQUIRES_SEPARATE_VALIDATED_EOD_COMPARISON',
+          'ownership_is_legal_identity':False,
+          'trade_authority':False}
+    meta['comparable_stock_count']=len(result)
+    meta['exclusions']=excluded
+    meta['categories']=groups
+    meta['people_and_shares_disagree_count']=sum(r['holder_shares_disagree'] for r in result.values())
+    meta['actual_small_shares_up_count']=sum(r['small_shares_delta']>0 for r in result.values())
+    meta['actual_small_shares_down_count']=sum(r['small_shares_delta']<0 for r in result.values())
+    if len(available)>=3:
+        prev=available[-3]
+        prev_date=date(int(prev[0][:4]),int(prev[0][4:6]),int(prev[0][6:]))
+        if 5<=(old_date-prev_date).days<=10:
+            up=down=0
+            for ticker,r in result.items():
+                z=prev[3].get(ticker);x=old[3].get(ticker)
+                if not z or not x or abs(100*(x['total_shares']/z['total_shares']-1))>1:continue
+                prior_delta=x['small_shares']-z['small_shares']
+                up+=int(prior_delta>0 and r['small_shares_delta']>0)
+                down+=int(prior_delta<0 and r['small_shares_delta']<0)
+            meta['two_consecutive_observed_intervals']={
+                'first':prev[0]+'..'+old[0],'second':old[0]+'..'+cur[0],
+                'small_shares_up_both':up,'small_shares_down_both':down,
+                'not_a_full_2026_13week_panel':True}
+    return meta,result
+
+
+
 def build(root, original, summary=None):
     target=original.get('target_tw_date')
     day=original.get('latest_verified_eod')
@@ -281,6 +481,10 @@ def build(root, original, summary=None):
     m,stocks=read_lifelong_summary(summary,day)
     m,stocks=fold_verified_original_eod(root,day,m,stocks)
     output['mother']=m
+    # Research annotation only: the original HBA thresholds, tiers and registry stay frozen.
+    # Raw TDCC grade 1-3 shares cannot be inferred from TotalHolders or Big400Pct.
+    tg_meta,tg_stocks=read_existing_two_group_tdcc(root,target,day)
+    output['two_group_research']=tg_meta
     # Consume the existing HBA full evidence list, not its top-15 display subset.
     full=original.get('all_candidates')
     has_full=isinstance(full,list)
@@ -302,6 +506,8 @@ def build(root, original, summary=None):
            'historical_phase_claim_authorized':False,
            'historical_flow':stocks.get(ticker),
            'historical_flow_available':ticker in stocks,
+           'two_group':tg_stocks.get(ticker),
+           'two_group_available':ticker in tg_stocks,
            'original_decision_readiness':item.get('decision_readiness')})
     if e['canonical_eod']=='COMPLETE' and original.get('data_gate')!='BLOCKED':
         output['readiness']='RESEARCH_READY' if m['status']=='AVAILABLE_RESEARCH_PROXY' else 'EOD_READY_LONG_TERM_MISSING'
@@ -322,6 +528,14 @@ def markdown(x):
      '- S5及Escape正式級別：缺來源憑證時保持「資料不足」，不自行新增評級',
      f"- 多年資金紀錄：{mother.get('status','資料不足')}",
      '- **多年播種／施肥／收割：歷史階段未判定**。累計買賣總和與短期偵查警示不能代替完整逐日資金＋集保時序稽核。','']
+    tg=x.get('two_group_research') or {}
+    lines.extend(['','## 散戶與其他所有持有人：原始實股側錄（不改原HBA分層）',
+        f"- 研究側錄狀態：{tg.get('status','資料不足')}；集保週：{tg.get('last_tdcc_date') or '無'}；最早可知收件：{tg.get('first_observed_taipei') or '未核對'}",
+        f"- 對應正式EOD上市股票 {tg.get('stock_count',0):,} 檔；股本穩定可比較 {tg.get('comparable_stock_count',0):,} 檔",
+        f"- 其他端占比增加 {tg.get('categories',{}).get('其他持有人比重增加',0):,}；散戶端占比增加 {tg.get('categories',{}).get('散戶持股比重增加',0):,}；變化不明顯 {tg.get('categories',{}).get('變化不明顯',0):,}（0.05pp僅分組觀察，不是選股門檻）",
+        '- 散戶＝集保1至3級距實股及人數；其他＝集保總股數扣除散戶實股。股數移動與人數不等價。',
+        '- 只核驗相鄰有效集保週；2026完整13週歷史未接續時，禁止推估多年或13週連續籌碼階段。',
+        '- 原HBA 5日訊號及其排序僅保留作原始警報；不得把下列側錄誤認為正式買進順位。'])
     if mother.get('status')=='AVAILABLE_RESEARCH_PROXY':
         lines.extend([f"- 期間 {mother['first_date']} 至 {mother['asof']}：{mother['distinct_tickers']:,}檔，完整買進 {mother['gross_buy_shares']:,}股，完整賣出 {mother['gross_sell_shares']:,}股",
           f"- 期末累計淨差占總買賣量小於1%：{mother['net_below_one_percent_count']:,}檔（描述性，不是買進門檻）"])
@@ -329,7 +543,9 @@ def markdown(x):
     for row in x['candidates']:
         h=row['historical_flow']
         details=(f"累計買{h['gross_buy_shares']:,}／賣{h['gross_sell_shares']:,}股；淨差占總量{h['net_abs_to_gross_pct']}%" if h else '多年資料未接上')
-        lines.append(f"- {row['ticker']}：{row['original_stage']}；{details}")
+        g=row.get('two_group')
+        actual=(f"；10張以下實股變化{g['small_shares_delta']:+,}股、其他實股變化{g['other_shares_delta']:+,}股；{g['two_group_direction']}" if g else '；兩方實股不可比或未核驗')
+        lines.append(f"- {row['ticker']}：原短期分層{row['original_stage']}；{details}{actual}")
     lines+=['','本輸出為研究附加觀測，沒有下單或資金調度權限。']
     return '\n'.join(lines)+'\n'
 
