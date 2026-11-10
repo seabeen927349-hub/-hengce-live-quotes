@@ -161,6 +161,24 @@ class TwoGroupExistingVesselTests(unittest.TestCase):
         price_meta,price_changes=price_pair_for_same_tdcc_weeks(repo,'20261030','20261106')
         self.assertEqual(price_meta['status'],'VERIFIED_REFERENCE_WEEK_PRICES')
         self.assertTrue(price_changes)
+
+    def test_real_market_registry_remains_readable_under_github_contents_limit(self):
+        repo=Path(__file__).resolve().parents[2]
+        original_path=repo/'research/hba_surveillance/latest.json'
+        if not original_path.is_file():
+            self.skipTest('Original HBA research file absent from partial checkout')
+        original=json.loads(original_path.read_text(encoding='utf-8'))
+        if original.get('latest_verified_eod')!='2026-11-09':
+            self.skipTest('Original HBA latest has advanced beyond frozen November 9 receipt')
+        summary=repo/'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
+        result=build(repo,original,summary)
+        self.assertEqual(len(result['two_group_market_registry']),1082)
+        encoded=json.dumps(result,ensure_ascii=False,sort_keys=True,indent=2).encode('utf-8')
+        self.assertLess(len(encoded),1_000_000,
+                        'Integrated JSON too large for normal GitHub contents read')
+        self.assertFalse(result['authority']['new_selection'])
+        self.assertFalse(result['authority']['trade'])
+
     def test_future_target_rejected(self):
         meta,rows=read_existing_two_group_tdcc(self.root,'2026-11-08','2026-11-09')
         self.assertEqual(meta['status'],'INVALID_TIME')
