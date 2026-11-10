@@ -1,0 +1,52 @@
+{
+  "schema": "HENGCE_SELECTION_MODEL_CHOICE_V1",
+  "recorded_on": "2026-11-10",
+  "decision": "USER_DESIGNATED_PREFERRED_SELECTION_MODEL",
+  "model_name": "HENGCE Selection Model V2.2 Top5",
+  "model_id": "all_qualified_top5_v1",
+  "model_package": "HENGCE_SELECTION_MODEL_V2_2_TOP5",
+  "source_pull_request": "https://github.com/seabeen927349-hub/-hengce-live-quotes/pull/64",
+  "source_branch": "research/retail-top5-v2-2-20261110",
+  "choice_status": "PREFERRED_PENDING_PROMOTION",
+  "mode": "RESEARCH_PREFERENCE_ONLY",
+  "selection_method": {
+    "decision": "FRIDAY_CLOSE",
+    "return_20d_min": 0.05,
+    "return_5d_min": 0,
+    "retail_le10_lots_people_two_period_total_change_max": -0.01,
+    "tdcc_lag_calendar_days": 14,
+    "median_20d_turnover_twd_min": 10000000,
+    "ranking": "MEDIAN_20D_TURNOVER_DESC_TICKER_ASC",
+    "top_n": 5,
+    "control_pair_required": false
+  },
+  "research_allocation": {
+    "shares_per_lot": 1000,
+    "max_positions": 5,
+    "max_each_nav": 0.18,
+    "min_cash": 0.1,
+    "missing_affordability": "SKIP_NO_REPLACEMENT"
+  },
+  "execution_status": "BLOCKED_NOT_DEPLOYED",
+  "why_blocked": [
+    "V2.2_MODEL_FIRST_LITERATURE_GATE_FAILED",
+    "NEW_PROSPECTIVE_AND_LIVE_EVIDENCE_NOT_VALIDATED",
+    "ORIGINAL_MODEL_CODE_REMAINS_UNMERGED"
+  ],
+  "reference_data_through": "2026-11-06",
+  "historical_profit_validated": false,
+  "formal_selection_authority": false,
+  "buy_sell_signal_authority": false,
+  "capital_authority_twd": 0,
+  "broker_execution": false,
+  "authorized_lots": 0,
+  "scan_once_behavior": "DISPLAY_PREFERENCE_METADATA_ONLY_DO_NOT_RUN_UNMERGED_MODEL",
+  "unchanged": [
+    "Q017_RETIRED",
+    "S5",
+    "ESCAPE",
+    "RMS",
+    "EXISTING_EOD_AND_TDCC_VESSELS"
+  ],
+  "next_action": "LITERATURE_AND_FRESH_PREREGISTERED_VALIDATION_BEFORE_FORMAL_MODEL_PROMOTION"
+}
