@@ -101,6 +101,9 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
            '一週價格與持股配對無法證實操作者意圖、買賣獲利、完整多年循環',
            '歷史MOM20及S5/三法人閘門曾在2024–2025失效；未證明這組描述性分類有超額報酬',
            '缺正式SOX/VIX、S5、Escape時保留未知，不可自行填中性']}
+    if raw_hba_hash is None or raw_integrated_hash is None:
+        out['missing_data'].append('原始報告SHA256缺失')
+        return out
     if not isinstance(original,dict) or not isinstance(integrated,dict):
         out['missing_data'].append('原HBA或整合報告不存在／不可解析');return out
     d=out['observed_eod_date']
@@ -217,7 +220,7 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
             risk.append('散戶人數與股數方向相反，不得用人數代替實股')
         # Contradiction checks are evidence instructions, never stop orders.
         falsifiers=[
-          '下次正式EOD：核對股價是否維持相對%d日觀察收盤價的強弱'%(int(d[-2:])),
+          '下次正式EOD：以%s收盤%.2f元作強弱觀察基準；突破或跌破都需重新評估，非停損指令'%(d,prices[ticker]['close']),
           '下次已公布TDCC：核對散戶與其他實股是否維持原方向；若反向需重估',
           '股本發生顯著變化／來源時滯不合格：撤銷價籌可比判斷']
         # Save concise evidence for every ticker: no duplicated prose causing
