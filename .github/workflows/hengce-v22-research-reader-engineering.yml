@@ -20,11 +20,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Test replay provenance and fail-closed scan with NO production model publication
+      - name: Test replay provenance and fail-closed scan with research-only publication
         run: |
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22_scan_research_observation.py' -v
           python -m py_compile scripts/hengce_scan_once_router.py
-      - name: Check formal scan no-signal boundary and missing research receipt
+      - name: Check formal scan no-signal boundary with historical or weekly research receipt
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -37,8 +37,14 @@ jobs:
           assert result['broker_order_execution'] is False
           assert result['reporting']['action_card']['status']=='NO_BUY'
           observation=result['reporting']['v22_research_top5']
-          assert observation['status']=='RESEARCH_RECEIPT_UNREADABLE'
-          assert observation['top5']==[] and observation['authorized_lots']==0
+          assert observation['status'] in (
+              'HISTORICAL_RESEARCH_TOP5_VERIFIED',
+              'WEEKLY_RESEARCH_TOP5_READY',
+              'STALE_WEEKLY_RESEARCH_TOP5',
+              'NO_QUALIFIED_WEEKLY_RESEARCH_STOCKS',
+          )
+          assert len(observation['top5'])<=5 and observation['authorized_lots']==0
+          assert observation['formal_selection_authority'] is False
           assert observation['buy_signal'] is False and observation['broker_execution'] is False
-          print('RESEARCH_VIEWER_FAIL_CLOSED_NO_PUBLISHED_CANDIDATE_PASS')
+          print('RESEARCH_VIEWER_READS_EXISTING_RESEARCH_WITH_NO_TRADING_AUTHORITY_PASS')
           PY
