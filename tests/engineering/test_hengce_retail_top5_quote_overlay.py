@@ -150,5 +150,54 @@ class QuoteOverlayTests(unittest.TestCase):
             m.overlay(self.root, x, self.now)
 
 
+    def test_refresh_uncovered_through_existing_fugle_fetcher(self):
+        calls = []
+        def mocked_fetch(symbol, key, telemetry):
+            calls.append((symbol, key))
+            return ({
+                "symbol": symbol, "date": "2026-11-10",
+                "lastTrade": {"price": 141.5, "time": int(self.now.timestamp() * 1_000_000)},
+                "total": {"tradeVolume": 9054}, "previousClose": 135,
+                "isTrial": False, "tradingHalt": {"isHalted": False},
+            }, {"attempts": 1}, None)
+        result = m.overlay(self.root, selection(), self.now)
+        result = m.refresh_uncovered_from_fugle(
+            self.root, result, "fake-key",
+            fetcher=mocked_fetch, pause=lambda _: None, clock=lambda: self.now)
+        self.assertEqual(calls, [("3042", "fake-key")])
+        self.assertEqual(result["current_session_quotes"], 2)
+        self.assertEqual(result["quotes"][1]["last_executed_price_reference"], 141.5)
+        self.assertEqual(result["quotes"][1]["source"], "FUGLE_EXISTING_TRANSPORT_ON_DEMAND")
+        self.assertTrue(result["on_demand_existing_fugle"]["used_existing_fetch_function"])
+        self.assertFalse(result["on_demand_existing_fugle"]["new_market_data_endpoint"])
+        self.assertFalse(result["broker_execution"])
+        self.assertFalse(result["buy_signal"])
+
+    def test_trial_only_direct_refresh_rejected(self):
+        def mocked_fetch(symbol, key, telemetry):
+            return ({
+                "symbol": symbol, "date": "2026-11-10",
+                "lastTrade": {},
+                "lastPrice": 150,
+                "total": {"tradeVolume": 100},
+                "isTrial": True,
+            }, {"attempts": 1}, None)
+        result = m.overlay(self.root, selection(), self.now)
+        result = m.refresh_uncovered_from_fugle(
+            self.root, result, "fake-key",
+            fetcher=mocked_fetch, clock=lambda: self.now)
+        self.assertEqual(result["quotes"][1]["quote_status"], "TRIAL_NOT_EXECUTED")
+        self.assertIsNone(result["quotes"][1]["last_executed_price_reference"])
+        self.assertEqual(result["current_session_quotes"], 1)
+
+    def test_historical_asof_refetch_forbidden(self):
+        result = m.overlay(self.root, selection(), self.now)
+        later = datetime(2026, 11, 10, 16, 45, tzinfo=TW)
+        with self.assertRaisesRegex(m.EvidenceBlocked, "HISTORICAL_REPLAY"):
+            m.refresh_uncovered_from_fugle(
+                self.root, result, "fake-key", fetcher=lambda *_:None,
+                clock=lambda: later)
+
+
 if __name__ == "__main__":
     unittest.main()
