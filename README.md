@@ -14,3 +14,7 @@
 研究流程：先接手既有母體/歷次失敗紀錄 → 搜尋並研讀專業原始文獻（支持＋反證＋無效結果）→ 說明學習與適用性 → Gate PASS 後事前註冊 → 才可依正式治理測試。**不懂先查專業資料，不靠猜測亂造公式，不把修資料當超額報酬；每輪交接必附文獻來源、閱讀狀態、反證與待學事項。**
 
 沒有取得全文或通過文獻門檻：研究維持 LITERATURE_REVIEW_ONLY，不得私自回測新模型。這條規則持續適用所有未來對話、研究分支與模型；不改變正式交易授權。
+
+## 已登錄研究選股模型：RETAIL Top5 V2.2（2026-11-10）
+
+[整合文件](docs/HENGCE_RETAIL_TOP5_V2_2_INTEGRATION_20261110.md)｜[模型程式](research/selection_models/retail_top5_v2_2)｜[研究模型登錄表](governance/HENGCE_RESEARCH_SELECTION_MODEL_REGISTRY_20261110.json)。已保存原始程式、固定參考資料與回歸測試；**研究選股模型已加入，但無正式選股／交易授權**。Q017 退役、掃描契約、EOD/TDCC、S5、Escape、RMS及下單規則均維持不變。

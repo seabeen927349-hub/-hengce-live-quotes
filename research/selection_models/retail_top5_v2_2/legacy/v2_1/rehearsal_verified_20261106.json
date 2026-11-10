@@ -1,0 +1,80 @@
+{
+  "version": "retail_forward_v2_1",
+  "kind": "rehearsal",
+  "authority": "NO_TRADING_AUTHORITY",
+  "verification_scope": "BUNDLED_REFERENCE_ONLY",
+  "decision": "2026-11-06",
+  "generated_at": "2026-11-10T17:52:11.541829+08:00",
+  "price_rows": 1091,
+  "price_sha256": "3732f7d4421ba24d30c4b6c4f8ff9a17a5540a0f3ef2ec546615176898d3e5e7",
+  "chip_sha256": "170719a629b112c58562d55d713f246f025cfce44fcf1ea405fdb5956c88ab49",
+  "contract_sha256": "2cbe2ce3ab857a20460a6554c465cdfe0c7e31ae027f2cb70ad6680c87349dd3",
+  "code_sha256": {
+    "screen.py": "761397e2d0ead1d7c330dca0aa74203badc65d55e0f5e7bf837978492006f156",
+    "validation.py": "86d65f452cae4485d2e68ab0dfe88f3c7f9483ce3a92f745660ca04d72521cc6",
+    "provenance.py": "d60876b71f607b8f8c031941302c7eb9736c49baba247ed29b458127eee6f100",
+    "freeze.py": "f5bae4d83e8e0065bf4a9070e093e3093145b9be16d4c703e8c5ddee07f307fb",
+    "rank_whole_lot.py": "bc62d5a52649fbf7bee6d554274a0a1fda4bc87554b3de6e6db9312e7aaba961",
+    "select_stocks.py": "807064ae33bcbe6a22f32bb591eca1fcf6fb58daf1e3a999540561939e6bc789"
+  },
+  "integrity": "RECOMPUTABLE_NOT_SIGNED",
+  "official_publication_verified": false,
+  "intended_fill": null,
+  "lanes": {
+    "14": {
+      "chip_date": "2026-10-22",
+      "candidates": [
+        {
+          "decision": "2026-11-06T00:00:00.000",
+          "trade": null,
+          "lag": 14,
+          "ticker": "2254",
+          "control": "6689",
+          "liquidity": 329160848.0,
+          "chip_date": "2026-10-22T00:00:00.000",
+          "r5": 0.0628019324,
+          "r20": 0.0837438424,
+          "retail_delta": -0.0235250187,
+          "control_r5": 0.0170697013,
+          "control_r20": 0.1403508772,
+          "control_delta": -0.0072311884
+        },
+        {
+          "decision": "2026-11-06T00:00:00.000",
+          "trade": null,
+          "lag": 14,
+          "ticker": "6782",
+          "control": "6112",
+          "liquidity": 114103177.5,
+          "chip_date": "2026-10-22T00:00:00.000",
+          "r5": 0.0397727273,
+          "r20": 0.1857451404,
+          "retail_delta": -0.0358667805,
+          "control_r5": 0.0741901776,
+          "control_r20": 0.1511758119,
+          "control_delta": -0.0093257255
+        }
+      ]
+    },
+    "21": {
+      "chip_date": "2026-10-16",
+      "candidates": [
+        {
+          "decision": "2026-11-06T00:00:00.000",
+          "trade": null,
+          "lag": 21,
+          "ticker": "1476",
+          "control": "6782",
+          "liquidity": 448615140.5,
+          "chip_date": "2026-10-16T00:00:00.000",
+          "r5": 0.0811232449,
+          "r20": 0.1948275862,
+          "retail_delta": -0.0570886969,
+          "control_r5": 0.0397727273,
+          "control_r20": 0.1857451404,
+          "control_delta": -0.0053127678
+        }
+      ]
+    }
+  }
+}
