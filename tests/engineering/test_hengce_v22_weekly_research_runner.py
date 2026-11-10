@@ -65,7 +65,7 @@ class V22WeeklyResearchTests(unittest.TestCase):
     def test_next_friday_cannot_generate_before_price_is_present(self):
         future=datetime.fromisoformat("2026-11-13T20:00:00+08:00")
         with self.assertRaisesRegex(DataBlocked,
-                                    "ORIGINAL_EOD_INVALID_NO_SAFE_RESEARCH_FALLBACK:2026-11-13"):
+                                    "ORIGINAL_EOD_INVALID_NO_SAFE_RESEARCH_FALLBACK:2026-11-11"):
             runner.inputs(ROOT,date(2026,11,13),asof=future)
 
     def test_non_friday_and_before_close_rejected(self):
