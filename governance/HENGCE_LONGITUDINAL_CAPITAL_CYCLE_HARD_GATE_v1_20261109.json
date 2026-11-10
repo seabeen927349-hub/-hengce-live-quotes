@@ -68,7 +68,8 @@
     "changes_original_canonical_vessels": false,
     "grants_s5_or_escape_model_authority": false,
     "grants_selection_or_trade_authority": false,
-    "literature_first_constitution_still_required": true,
-    "weakening_requires_explicit_user_authorization": true
+    "literature_first_constitution_still_required": false,
+    "weakening_requires_explicit_user_authorization": true,
+    "literature_first_mandate_removed_by_user_on": "2026-11-10"
   }
 }

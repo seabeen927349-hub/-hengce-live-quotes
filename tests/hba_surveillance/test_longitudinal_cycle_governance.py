@@ -16,7 +16,6 @@ from hengce_hba_context_bridge_v1 import build
 
 CONTRACT = ROOT / "governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.json"
 RULE = ROOT / "governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.md"
-CONSTITUTION = ROOT / "governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md"
 UNVERIFIED = "HISTORICAL_CYCLE_UNVERIFIED"
 
 
@@ -27,14 +26,13 @@ class LongitudinalCapitalCycleGateTests(unittest.TestCase):
         self.assertEqual(cfg["unknown_historical_phase_state"], UNVERIFIED)
         self.assertFalse(cfg["short_window_surveillance"]["can_assert_historical_sowing_fertilizing_harvesting_or_rotation"])
         self.assertFalse(cfg["gross_turnover_summary"]["sufficient_to_assign_historical_cycle_stage"])
-        self.assertTrue(cfg["governance"]["literature_first_constitution_still_required"])
+        self.assertFalse(cfg["governance"]["literature_first_constitution_still_required"])
         self.assertFalse(cfg["governance"]["grants_selection_or_trade_authority"])
         rule = RULE.read_text(encoding="utf-8")
         self.assertIn("不得先指定每輪", rule)
         self.assertIn("失敗", rule)
         self.assertIn("反證", rule)
         self.assertIn("短期雷達", rule)
-        self.assertIn(CONTRACT.name, CONSTITUTION.read_text(encoding="utf-8"))
 
     def test_prior_eight_stock_phase_claims_marked_invalid(self):
         cfg = json.loads(CONTRACT.read_text(encoding="utf-8"))
