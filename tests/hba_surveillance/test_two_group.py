@@ -140,6 +140,27 @@ class TwoGroupExistingVesselTests(unittest.TestCase):
         self.assertEqual(meta['status'],'MISSING_VERIFIED_MATCHED_WEEKLY_EOD_PRICES')
         self.assertEqual(prices,{})
 
+
+    def test_frozen_real_full_market_snapshot_consistency(self):
+        # Reference week and read-only price snapshot exist in the original GitHub
+        # vessel. Verify the new code reproduces the *previously frozen* 2026-11-10
+        # historical audit instead of validating only synthetic mini fixtures.
+        repo=Path(__file__).resolve().parents[2]
+        if not (repo/'ownership/tdcc/20261106/tdcc_1_5_raw.csv').is_file():
+            self.skipTest('Full TDCC original vessel not mounted in partial checkout')
+        meta,rows=read_existing_two_group_tdcc(repo,'2026-11-10','2026-11-09')
+        self.assertEqual(meta['status'],'VERIFIED_TWO_GROUP_RESEARCH')
+        self.assertEqual(meta['stock_count'],1091)
+        self.assertEqual(meta['comparable_stock_count'],1082)
+        self.assertEqual(meta['exclusions']['SHARE_CAPITAL_CHANGE_GT_1PCT'],9)
+        self.assertEqual(meta['categories']['其他持有人比重增加'],371)
+        self.assertEqual(meta['categories']['散戶持股比重增加'],226)
+        self.assertEqual(meta['categories']['變化不明顯'],485)
+        self.assertEqual(rows['3042']['small_shares_delta'],2998517)
+        self.assertEqual(rows['2317']['small_shares_delta'],-10152531)
+        price_meta,price_changes=price_pair_for_same_tdcc_weeks(repo,'20261030','20261106')
+        self.assertEqual(price_meta['status'],'VERIFIED_REFERENCE_WEEK_PRICES')
+        self.assertTrue(price_changes)
     def test_future_target_rejected(self):
         meta,rows=read_existing_two_group_tdcc(self.root,'2026-11-08','2026-11-09')
         self.assertEqual(meta['status'],'INVALID_TIME')
