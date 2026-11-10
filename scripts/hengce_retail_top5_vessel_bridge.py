@@ -218,6 +218,16 @@ def audit(root, decision):
         record['status']='SOURCE_DATA_PREPARED_RESEARCH_ONLY'
     return record,daily,weekly
 
+def validate_output_target(repo_root: Path, output: Path):
+    """Never write even derived output into the canonical repository/vessels."""
+    root=repo_root.resolve()
+    target=output.resolve()
+    if target==root or root in target.parents:
+        raise DataBlocked('OUTPUT_MUST_BE_OUTSIDE_HENGCE_REPOSITORY')
+    if target.exists():
+        raise DataBlocked('OUTPUT_PATH_ALREADY_EXISTS')
+    return target
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('--repo-root',type=Path,default=Path(__file__).resolve().parents[1])
@@ -226,13 +236,13 @@ def main():
     a=ap.parse_args()
     try:
         d=date.fromisoformat(a.decision)
-        if a.output.exists():raise DataBlocked('OUTPUT_PATH_ALREADY_EXISTS')
+        target=validate_output_target(a.repo_root,a.output)
         report,day,week=audit(a.repo_root,d)
-        a.output.mkdir(parents=True,exist_ok=False)
-        (a.output/'bridge_status.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        target.mkdir(parents=True,exist_ok=False)
+        (target/'bridge_status.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         if report['status']=='SOURCE_DATA_PREPARED_RESEARCH_ONLY':
             for name,header,rows in [('daily.csv',DAILY_FIELDS,day),('weekly.csv',CHIP_FIELDS,week)]:
-                with (a.output/name).open('x',encoding='utf-8-sig',newline='') as f:
+                with (target/name).open('x',encoding='utf-8-sig',newline='') as f:
                     w=csv.writer(f);w.writerow(header);w.writerows(rows)
         print(json.dumps({'status':report['status'],'decision':a.decision,
                           'eod_days':report['verified_eod_day_count'],
