@@ -73,6 +73,11 @@ class BridgeTests(unittest.TestCase):
         out,_,_=b.audit(self.root,self.decision)
         self.assertEqual(out['status'],'BLOCKED')
         self.assertTrue(any('NOT_KNOWN' in q for q in out['blockers']))
+    def test_output_cannot_write_inside_canonical_repository(self):
+        with self.assertRaisesRegex(b.DataBlocked,'OUTPUT_MUST_BE_OUTSIDE_HENGCE_REPOSITORY'):
+            b.validate_output_target(self.root,self.root/'eod'/'shadow'/'output')
+        target=Path(self.tmp.name).parent/('bridge-'+self.root.name)
+        self.assertEqual(b.validate_output_target(self.root,target),target)
     def test_auxiliary_not_substituted(self):
         x=b.aux_status(self.root,self.decision)
         self.assertEqual(x['finmind']['status'],'UNAVAILABLE_OR_STALE')
