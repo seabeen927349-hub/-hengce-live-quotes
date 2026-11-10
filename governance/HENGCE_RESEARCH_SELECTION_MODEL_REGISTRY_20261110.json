@@ -1,0 +1,49 @@
+{
+  "schema": "HENGCE_RESEARCH_SELECTION_MODEL_REGISTRY_V1",
+  "date": "2026-11-10",
+  "model_id": "all_qualified_top5_v1",
+  "package_version": "HENGCE_SELECTION_MODEL_V2_2_TOP5",
+  "location": "research/selection_models/retail_top5_v2_2/",
+  "source": "User-approved uploaded V2.2 package; exact bundled historical reference stored in repository",
+  "registration_status": "INSTALLED_RESEARCH_SELECTION_MODEL",
+  "run_mode": "HISTORICAL_RESEARCH_ONLY",
+  "formal_selection_authority": false,
+  "signal_authority": false,
+  "capital_authority_twd": 0,
+  "broker_execution": false,
+  "q017": "RETIRED_UNCHANGED",
+  "live_market_data_integration": "NOT_CONNECTED",
+  "validated_historical_data_latest": "2026-11-06",
+  "selection_spec": {
+    "decision": "Friday close",
+    "r20_min": 0.05,
+    "r5_min": 0,
+    "retail_people_2period_delta_max": -0.01,
+    "lag_calendar_days": 14,
+    "turnover_20day_median_min_twd": 10000000,
+    "ranking": "turnover_median_desc_then_ticker_asc",
+    "top_n": 5,
+    "control_match_required": false
+  },
+  "whole_lot_research_spec": {
+    "max_positions": 5,
+    "max_each_nav": 0.18,
+    "min_cash_reserve": 0.1,
+    "lot_shares": 1000,
+    "fee_slippage_buy": 0.0025,
+    "unaffordable": "SKIP_NO_REPLACEMENT",
+    "authorized_lots": 0
+  },
+  "unchanged_contracts": [
+    "governance/HENGCE_ACTIVE_STRATEGY_AUTHORITY_20261105.json",
+    "hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json",
+    "hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json"
+  ],
+  "prerequisites_for_live_activation": [
+    "official EOD + TDCC disclosure-time and completeness evidence",
+    "multi-year independent out-of-sample/forward testing of new unpaired Top5 rules",
+    "formal RMS/S5/Escape source binding",
+    "broker/account/price/time validation",
+    "separate authorized strategy-governance change"
+  ]
+}

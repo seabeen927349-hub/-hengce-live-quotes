@@ -1,0 +1,68 @@
+{
+  "version": "retail_forward_v1",
+  "kind": "rehearsal",
+  "decision": "2026-11-06",
+  "generated_at": "2026-11-10T14:01:29.970022+08:00",
+  "price_rows": 1091,
+  "price_sha256": "200527f7d0bc1366da1d274f23f170b7c52ff5ab447be3fdf5d314d9babda15e",
+  "chip_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
+  "model_sha256": "29d96551155742f68aaae385c1d9f340fd8738a455e7567e9da02b2597783a3e",
+  "intended_fill": "next verified exchange session open",
+  "lanes": {
+    "14": {
+      "chip_date": "2026-10-22",
+      "candidates": [
+        {
+          "decision": "2026-11-06T00:00:00.000",
+          "trade": null,
+          "lag": 14,
+          "ticker": "2254",
+          "control": "6689",
+          "liquidity": 329160848.0,
+          "chip_date": "2026-10-22T00:00:00.000",
+          "r5": 0.0628019324,
+          "r20": 0.0837438424,
+          "retail_delta": -0.0235250187,
+          "control_r5": 0.0170697013,
+          "control_r20": 0.1403508772,
+          "control_delta": -0.0072311884
+        },
+        {
+          "decision": "2026-11-06T00:00:00.000",
+          "trade": null,
+          "lag": 14,
+          "ticker": "6782",
+          "control": "6112",
+          "liquidity": 114103177.5,
+          "chip_date": "2026-10-22T00:00:00.000",
+          "r5": 0.0397727273,
+          "r20": 0.1857451404,
+          "retail_delta": -0.0358667805,
+          "control_r5": 0.0741901776,
+          "control_r20": 0.1511758119,
+          "control_delta": -0.0093257255
+        }
+      ]
+    },
+    "21": {
+      "chip_date": "2026-10-16",
+      "candidates": [
+        {
+          "decision": "2026-11-06T00:00:00.000",
+          "trade": null,
+          "lag": 21,
+          "ticker": "1476",
+          "control": "6782",
+          "liquidity": 448615140.5,
+          "chip_date": "2026-10-16T00:00:00.000",
+          "r5": 0.0811232449,
+          "r20": 0.1948275862,
+          "retail_delta": -0.0570886969,
+          "control_r5": 0.0397727273,
+          "control_r20": 0.1857451404,
+          "control_delta": -0.0053127678
+        }
+      ]
+    }
+  }
+}

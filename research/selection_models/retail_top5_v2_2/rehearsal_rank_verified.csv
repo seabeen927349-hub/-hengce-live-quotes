@@ -1,0 +1,7 @@
+<PARSED TEXT FOR SHEET: 1 / 1 TABS
+TAB NAME: rehearsal_rank_verified.csv>index,decision,research_only,authority,rank,ticker,reference_price,r20_pct,r5_pct,retail_people_2week_pct,median_20d_turnover,reference_control,lots_for_manual_review,authorized_lots,gate_all_pass,authorization_status,input_gate_all_pass,simulation_lots,simulation_enabled,simulation_status,status
+0,2026-11-06,True,NO_TRADING_AUTHORITY,1,6446,1270.0,8.085,6.723,-1.431,2294990190,,0,0,False,OFFICIAL_EVIDENCE_UNAVAILABLE,False,0,False,未啟用假設資金模擬,缺正式來源及RMS/S5/Escape證據鏈；授權張數固定為0
+1,2026-11-06,True,NO_TRADING_AUTHORITY,2,2412,163.5,12.371,2.188,-1.478,1789698138,,0,0,False,OFFICIAL_EVIDENCE_UNAVAILABLE,False,0,False,未啟用假設資金模擬,缺正式來源及RMS/S5/Escape證據鏈；授權張數固定為0
+2,2026-11-06,True,NO_TRADING_AUTHORITY,3,1476,346.5,19.483,8.112,-8.813,448615140,,0,0,False,OFFICIAL_EVIDENCE_UNAVAILABLE,False,0,False,未啟用假設資金模擬,缺正式來源及RMS/S5/Escape證據鏈；授權張數固定為0
+3,2026-11-06,True,NO_TRADING_AUTHORITY,4,2610,21.2,5.473,5.211,-1.865,350989216,,0,0,False,OFFICIAL_EVIDENCE_UNAVAILABLE,False,0,False,未啟用假設資金模擬,缺正式來源及RMS/S5/Escape證據鏈；授權張數固定為0
+4,2026-11-06,True,NO_TRADING_AUTHORITY,5,2254,110.0,8.374,6.28,-2.353,329160848,6689.0,0,0,False,OFFICIAL_EVIDENCE_UNAVAILABLE,False,0,False,未啟用假設資金模擬,缺正式來源及RMS/S5/Escape證據鏈；授權張數固定為0
