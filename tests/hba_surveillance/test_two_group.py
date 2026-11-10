@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
-from hengce_hba_context_bridge_v1 import read_existing_two_group_tdcc
+from hengce_hba_context_bridge_v1 import read_existing_two_group_tdcc, price_pair_for_same_tdcc_weeks, build
 
 
 class TwoGroupExistingVesselTests(unittest.TestCase):
@@ -101,6 +101,44 @@ class TwoGroupExistingVesselTests(unittest.TestCase):
         meta,rows=read_existing_two_group_tdcc(self.root,'2026-11-10','2026-11-09')
         self.assertEqual(meta['status'],'GAPPED_OR_STALE_TDCC_SNAPSHOTS')
         self.assertEqual(rows,{})
+
+
+    def test_same_week_prices_and_full_market_registry_are_not_buy_signals(self):
+        # Price change must be 10/30 -> 11/06, not 10/30 -> 11/09.
+        for snap,close in [('20261030',100),('20261106',110)]:
+            p=self.root/'eod'/snap
+            p.mkdir(parents=True,exist_ok=True)
+            day=snap[:4]+'-'+snap[4:6]+'-'+snap[6:]
+            (p/'status.json').write_text(json.dumps({
+                'formal_complete_day':True,'downstream_ready':True,
+                'price_date':day,'institutional_date':day,'margin_date':day}))
+            with (p/'price_1.csv').open('w',newline='') as f:
+                w=csv.DictWriter(f,fieldnames=['Date','Ticker','Close'])
+                w.writeheader()
+                w.writerow({'Date':day,'Ticker':'1101','Close':close})
+        meta,prices=price_pair_for_same_tdcc_weeks(self.root,'20261030','20261106')
+        self.assertEqual(meta['status'],'VERIFIED_REFERENCE_WEEK_PRICES')
+        self.assertEqual(prices['1101'],10.0)
+        original={'target_tw_date':'2026-11-10','latest_verified_eod':'2026-11-09',
+                  'data_gate':'EOD_VALID_MACRO_UNKNOWN',
+                  'all_candidates':[],'total_candidates_before_limit':0,
+                  'external_environment':{'label':'資料不足','status':'資料不足'}}
+        # Existing short-window alert list is empty, but the validated all-market
+        # two-group research registry must still include the stock.
+        output=build(self.root,original)
+        self.assertEqual(output['candidates'],[])
+        self.assertEqual(len(output['two_group_market_registry']),1)
+        x=output['two_group_market_registry'][0]
+        self.assertEqual(x['same_week_price_ownership_pattern'],'UP_SMALL_SHARE_GAIN')
+        self.assertEqual(x['same_week_price_return_pct'],10.0)
+        self.assertFalse(x['selection_authority'])
+        self.assertFalse(output['authority']['new_selection'])
+        self.assertFalse(output['two_group_research']['multiweek_a_to_b_cycle_validated'])
+
+    def test_pair_rejects_missing_reference_week_instead_of_using_current_eod(self):
+        meta,prices=price_pair_for_same_tdcc_weeks(self.root,'20261030','20261106')
+        self.assertEqual(meta['status'],'MISSING_VERIFIED_MATCHED_WEEKLY_EOD_PRICES')
+        self.assertEqual(prices,{})
 
     def test_future_target_rejected(self):
         meta,rows=read_existing_two_group_tdcc(self.root,'2026-11-08','2026-11-09')
