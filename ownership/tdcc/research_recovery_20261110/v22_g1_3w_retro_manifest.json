@@ -1,0 +1,35 @@
+{
+  "schema": "HENGCE_V22_G1_TDCC_3W_MOTHER_EXTRACT_V1",
+  "parent_library_path": "/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/RETAIL_HEADCOUNTS_V2/HENGCE_G1_TDCC_RETAIL_457_WEEK_MATCHED_PANEL_2018_2026.csv.gz",
+  "parent_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
+  "parent_audit_status": "SOURCE_FULL_WEEK_PANEL_AUDITED_RESTRICTED_RETROSPECTIVE_ONLY",
+  "parent_matched_stockweeks": 443341,
+  "parent_source_generated_as_of": "2026-11-07",
+  "decision": "2026-11-06",
+  "lag_calendar_days": 14,
+  "cutoff": "2026-10-23",
+  "weekly_dates": [
+    "20261008",
+    "20261016",
+    "20261022"
+  ],
+  "rows_by_week": {
+    "20261008": 1082,
+    "20261016": 1082,
+    "20261022": 1084
+  },
+  "raw_source_sha256_by_week": {
+    "20261008": "6031bad8b0e053fc1bef9244455496ce295942290dcf653c52b28a832dd79385",
+    "20261016": "96afe96211f82c3c2fddb0ed3ee26a1f22171441f25bff33a8c2b5837484c3b2",
+    "20261022": "3da86219dc7f100e70fc9e08df79010534b88ed217f142c4cee6dc56c23c7523"
+  },
+  "extracted_total_rows": 3248,
+  "extracted_sha256": "65d6d4e14cab9520296453c8af1ea8b98b1521af32ed8d47f29427c9ad7d595e",
+  "extracted_path": "ownership/tdcc/research_recovery_20261110/v22_g1_retail_20261008_16_22_retro.csv",
+  "first_observed_proof": "UNVERIFIED_FOR_ALL_HISTORICAL_SLICES",
+  "research_authority": "RETROSPECTIVE_ONLY_NOT_POINT_IN_TIME_APPROVED",
+  "formal_tdcc_vessel_mutated": false,
+  "formal_selection_authority": false,
+  "trading_authority": false,
+  "authorized_lots": 0
+}
