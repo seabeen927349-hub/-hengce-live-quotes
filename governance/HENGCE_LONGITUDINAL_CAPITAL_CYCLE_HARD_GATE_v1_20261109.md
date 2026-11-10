@@ -67,6 +67,6 @@
 
 ## 7. 上位規則與變更
 
-本規則強化既有 \`governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md\`、HENGCE PIT、Canonical母庫、TDCC四腿、S5與Escape治理規範，不取消文獻優先、事前登錄、OOS、來源隔離或交易授權規定。歷史描述可繼續保留，但不能把資料研究偷偷升格為新模型。
+依使用者 2026-11-10 明確指示，文獻優先強制 Gate 已撤銷。此長期資金循環證據規則仍維持 HENGCE PIT、Canonical 母庫、TDCC、S5、Escape、來源隔離與交易授權等要求；歷史推論必須保留證據與反證，研究選股不等於自動下單。
 
 若要弱化本規則，需使用者**明確授權**且留下治理變更紀錄；聊天中的簡短敘述、短期雷達的高分或自動化跑成功都不能覆蓋。跨聊天研究必須先讀此規則。
