@@ -55,7 +55,7 @@ def market_readiness(root: Path, decision: date, *, today: date | None = None,
         "decision": decision.isoformat(),
         "source_owner": "HENGCE_EXISTING_EOD_AND_TDCC_ONLY",
         "source_status": "BLOCKED",
-        "governance_status": "V2_2_MODEL_FIRST_NO_CLEAN_LITERATURE_PASS",
+        "governance_status": "LITERATURE_FIRST_MANDATE_REMOVED_RESEARCH_ONLY",
         "selection_status": "NOT_RUN_UNMERGED_MODEL_AND_NO_PROMOTION",
         "selection_attempted": False,
         "top5": [],
@@ -129,8 +129,8 @@ def market_readiness(root: Path, decision: date, *, today: date | None = None,
         status["blockers"].append("CANONICAL_INPUT_RECEIPT_NOT_READY")
     status["source_status"] = ("SOURCE_DATA_PREPARED_RESEARCH_ONLY"
                                if not status["blockers"] else "BLOCKED")
-    # Even when all data are ready, V2.2 is pre-literature contaminated:
-    # never call select_stocks, return a trading signal or populate Top5 here.
+    # This is strictly a DATA readiness audit, not a selector.
+    # Selection belongs to a separate research pipeline; no broker authority.
     return status, daily if status["source_status"] == "SOURCE_DATA_PREPARED_RESEARCH_ONLY" else [], (
         weekly if status["source_status"] == "SOURCE_DATA_PREPARED_RESEARCH_ONLY" else []
     )
