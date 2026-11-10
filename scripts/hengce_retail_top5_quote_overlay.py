@@ -8,9 +8,12 @@ Unknown, stale, trial-only and missing quotes are explicit rather than zero-fill
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import math
+import os
 import re
+import time
 from datetime import date, datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -204,6 +207,150 @@ def finmind_aggregate_context(root, asof):
             "note": "Aggregate-only: cannot synthesize any ticker quote or EOD close."}
 
 
+def original_fugle_fetcher(root):
+    """Reuse the HENGCE original Fugle transport function, never another endpoint."""
+    source = Path(root) / "scripts" / "hengce_live_quote_transport.py"
+    if not source.is_file():
+        raise EvidenceBlocked("ORIGINAL_FUGLE_TRANSPORT_UNAVAILABLE")
+    spec = importlib.util.spec_from_file_location("hengce_existing_fugle_transport", source)
+    if spec is None or spec.loader is None:
+        raise EvidenceBlocked("ORIGINAL_FUGLE_TRANSPORT_UNLOADABLE")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if not callable(getattr(module, "fetch_quote", None)):
+        raise EvidenceBlocked("ORIGINAL_FUGLE_FETCH_FUNCTION_MISSING")
+    return module.fetch_quote
+
+
+def refresh_uncovered_from_fugle(root, report, api_key, *, fetcher=None, pause=None, clock=None):
+    """Explicit on-demand quote fill for uncovered V2.2 Top5 via EXISTING Fugle function.
+
+    Never fetches the whole market, never changes membership/ranking, no canonical
+    writes. This is a source observation, not a new strategy or a trading signal.
+    """
+    if not isinstance(report, dict) or report.get("schema") != "HENGCE_RETAIL_TOP5_EXISTING_QUOTE_OVERLAY_V1":
+        raise EvidenceBlocked("RESEARCH_OVERLAY_RECEIPT_REQUIRED")
+    if report.get("broker_execution") is not False or report.get("authorized_lots") != 0:
+        raise EvidenceBlocked("NO_TRADING_AUTHORITY_REQUIRED")
+    if not api_key:
+        raise EvidenceBlocked("FUGLE_API_KEY_MISSING")
+    clock = clock or (lambda: datetime.now(TW))
+    pause = pause or time.sleep
+    observed = clock()
+    prior = timestamp(report.get("asof_taipei"))
+    if not prior or observed.tzinfo is None or abs((observed.astimezone(TW)-prior).total_seconds()) > 120:
+        raise EvidenceBlocked("HISTORICAL_REPLAY_CANNOT_BE_REFETCHED_AS_LIVE")
+    fetcher = fetcher or original_fugle_fetcher(root)
+    telemetry = {
+        "request_attempt_count": 0, "rate_limit_event_count": 0,
+        "rate_limit_symbols": set(), "rate_limit_recovered_count": 0,
+        "terminal_429_count": 0, "server_retry_event_count": 0,
+        "network_retry_event_count": 0, "total_retry_wait_seconds": 0.0,
+    }
+    attempts = []
+    targets = [x for x in report["quotes"] if x.get("session_quote_is_current") is not True]
+    if len(targets) > 5:
+        raise EvidenceBlocked("TOP5_TARGET_LIMIT")
+    for i, item in enumerate(targets):
+        if i:
+            pause(0.65)
+        ticker = item["ticker"]
+        error = None
+        raw = None
+        try:
+            raw, meta, error = fetcher(ticker, api_key, telemetry)
+        except (ValueError, RuntimeError, OSError, TypeError) as ex:
+            error = "FETCH_EXCEPTION_" + type(ex).__name__
+        seen = clock()
+        if seen.tzinfo is None:
+            raise EvidenceBlocked("CLOCK_WITHOUT_TIMEZONE")
+        seen = seen.astimezone(TW)
+        outcome = "FUGLE_FETCH_FAILED"
+        price = None
+        previous = None
+        pct = None
+        volume = None
+        trade_time = None
+        qdate_text = None
+        if error is None and isinstance(raw, dict) and str(raw.get("symbol")) == ticker:
+            qdate_text = str(raw.get("date") or "")
+            try:
+                qdate = date.fromisoformat(qdate_text)
+            except ValueError:
+                qdate = None
+            last = raw.get("lastTrade") if isinstance(raw.get("lastTrade"), dict) else {}
+            total = raw.get("total") if isinstance(raw.get("total"), dict) else {}
+            is_trial = raw.get("isTrial") is True
+            halt = raw.get("tradingHalt") if isinstance(raw.get("tradingHalt"), dict) else {}
+            previous = number(raw.get("previousClose"), positive=True)
+            volume = number(total.get("tradeVolume"))
+            if volume is not None and volume < 0:
+                volume = None
+            traded = number(last.get("price"), positive=True)
+            # Existing transport uses lastTrade microsecond timestamps (not trial quotes).
+            ts = last.get("time")
+            try:
+                value = float(ts)
+                if value >= 1e14:
+                    value /= 1000000
+                elif value >= 1e11:
+                    value /= 1000
+                trade_dt = datetime.fromtimestamp(value, TW)
+                trade_time = trade_dt.isoformat() if trade_dt <= seen else None
+            except (TypeError, ValueError, OverflowError, OSError):
+                trade_time = None
+            if is_trial:
+                outcome = "TRIAL_NOT_EXECUTED"
+            elif halt.get("isHalted") is True:
+                outcome = "HALTED_REVIEW"
+            elif qdate is None or qdate > seen.date():
+                outcome = "QUOTE_DATE_INVALID"
+            elif traded is None or trade_time is None or volume is None:
+                outcome = "EXECUTED_TRADE_NOT_PROVEN"
+            else:
+                price = traded
+                pct = (traded / previous - 1) * 100 if previous else None
+                outcome = "CURRENT_SESSION_SNAPSHOT" if qdate == seen.date() else "PRIOR_SESSION_ONLY"
+        elif error is None:
+            error = "SYMBOL_OR_PAYLOAD_INVALID"
+        attempts.append({"ticker": ticker, "result": outcome, "error_code": error})
+        if outcome == "CURRENT_SESSION_SNAPSHOT":
+            item.update(
+                source="FUGLE_EXISTING_TRANSPORT_ON_DEMAND",
+                quote_status=outcome,
+                quote_date=qdate_text,
+                fetched_at_taipei=seen.isoformat(),
+                last_trade_time=trade_time,
+                last_executed_price_reference=price,
+                previous_close_reference=previous,
+                change_percent_reference=pct,
+                volume_reference=volume,
+                session_quote_is_current=True,
+                official_eod_close=None,
+                tradable_authority=False,
+            )
+        elif item.get("session_quote_is_current") is not True:
+            item["quote_status"] = outcome
+            item["refresh_error_code"] = error
+    report["asof_taipei"] = clock().astimezone(TW).isoformat()
+    report["current_session_quotes"] = sum(bool(x.get("session_quote_is_current")) for x in report["quotes"])
+    report["uncovered_or_stale_tickers"] = [
+        x["ticker"] for x in report["quotes"] if not x.get("session_quote_is_current")]
+    report["status"] = ("ALL_TOP5_QUOTES_CURRENT" if report["current_session_quotes"] == len(report["quotes"])
+                        else "PARTIAL_OR_STALE_TOP5_QUOTES")
+    report["on_demand_existing_fugle"] = {
+        "used_existing_fetch_function": True, "new_market_data_endpoint": False,
+        "attempt_count": len(attempts),
+        "current_session_fills": sum(z["result"] == "CURRENT_SESSION_SNAPSHOT" for z in attempts),
+        "attempts": attempts,
+        "request_attempt_count": telemetry["request_attempt_count"],
+        "rate_limit_event_count": telemetry["rate_limit_event_count"],
+        "terminal_429_count": telemetry["terminal_429_count"],
+        "no_broker_or_signal_authority": True,
+    }
+    return report
+
+
 def overlay(root, selection, asof):
     if asof.tzinfo is None:
         raise EvidenceBlocked("ASOF_MUST_BE_TIMEZONE_AWARE")
@@ -287,6 +434,8 @@ def main():
     parser.add_argument("--selection", type=Path, required=True, help="Verified V2.2 research selection.json; not a live trade signal")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--asof", help="Offset-aware ISO8601 Taiwan observation time")
+    parser.add_argument("--refresh-uncovered", action="store_true",
+                        help="Explicitly refresh missing Top5 quotes using the EXISTING Fugle fetch function (requires FUGLE_API_KEY)")
     args = parser.parse_args()
     try:
         s = read_json(args.selection)
@@ -294,6 +443,11 @@ def main():
         if now is None:
             raise EvidenceBlocked("BAD_ASOF")
         report = overlay(args.repo_root, s, now)
+        if args.refresh_uncovered:
+            if args.asof:
+                raise EvidenceBlocked("CANNOT_FETCH_HISTORICAL_ASOF")
+            report = refresh_uncovered_from_fugle(
+                args.repo_root, report, os.environ.get("FUGLE_API_KEY"))
         write_output(args.repo_root, args.output, report)
         print(json.dumps({"status": report["status"], "top5": report["top5_rows"],
                           "current_quote_count": report["current_session_quotes"],
