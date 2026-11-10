@@ -12,7 +12,7 @@ from pathlib import Path
 import unittest
 
 import yaml
-import replay_equivalence as replay
+import run_retired_suite as retired
 
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github/workflows/hengce-engineering-replay.yml"
@@ -64,15 +64,20 @@ class WorkflowAdmissionTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "paths"):
             assert_admitted(self, old, scripts_only_pr())
 
-    def test_snapshot_is_still_pinned_and_base_head_are_dynamic(self):
-        self.assertEqual(replay.SNAPSHOT, "900b0bc862e03a2b496129b0fc68d066c39542bf")
-        self.assertEqual(replay.DAY, "2026-10-21")
+    def test_retired_historical_replay_is_pinned_and_current_guard_is_separate(self):
+        self.assertEqual(retired.REPLAY_BASE, "5d411cf4fa298baddd34eb945bb341597f68793e")
+        self.assertEqual(retired.SAFETY_BASE, "42f4d4edd4b327c693290416d54d1e7622733969")
         job = self.config["jobs"]["replay"]
-        step = next(s for s in job["steps"] if "--report" in s.get("run", ""))
-        self.assertIn("github.event.pull_request.base.sha", step["env"]["BEFORE_SHA"])
-        self.assertIn("github.event.pull_request.head.sha", step["env"]["AFTER_SHA"])
-        self.assertIn('--before "$BEFORE_SHA"', step["run"])
-        self.assertIn('--after "$AFTER_SHA"', step["run"])
+        replay_step = next(s for s in job["steps"] if "--report" in s.get("run", ""))
+        self.assertIn("run_retired_suite.py", replay_step["run"])
+        self.assertIn("--suite replay", replay_step["run"])
+        self.assertIn("--report", replay_step["run"])
+        self.assertNotIn("BEFORE_SHA", replay_step.get("env", {}))
+        self.assertNotIn("AFTER_SHA", replay_step.get("env", {}))
+        self.assertFalse(any("replay_equivalence_single_hengce.py" in s.get("run", "")
+                             for s in job["steps"]))
+        self.assertTrue(any("test_current_retirement_monitoring.py" in s.get("run", "")
+                            for s in job["steps"]))
         self.assertEqual(self.config["permissions"], {"contents": "read"})
 
 
