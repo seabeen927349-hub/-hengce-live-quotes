@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """HENGCE scan once: no active strategy and no order authority."""
-import argparse,json
+import argparse,json,hashlib
 from datetime import datetime,date
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -13,9 +13,16 @@ def advisory(now, root=None):
           "status":"NOT_AVAILABLE","path":ADVISORY_PATH,
           "observed_eod_date":None,"examples":[]}
     try:
+        contract=json.loads((root/"hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json").read_text(encoding="utf-8"))
+        if (contract.get("status")!="NO_ACTIVE_SELECTION_STRATEGY"
+                or contract.get("active_strategy_count")!=0
+                or contract.get("broker_order_execution") is not False):
+            info["status"]="RETIREMENT_CONTRACT_UNVERIFIED"
+            return info
         x=json.loads((root/ADVISORY_PATH).read_text(encoding="utf-8"))
         a=x.get("authority") or {}
         d=x.get("observed_eod_date")
+        target=x.get("target_tw_date")
         if (x.get("schema")!="HENGCE_HBA_RESEARCH_DECISION_V1_20261110"
                 or x.get("status")!="RESEARCH_ADVISORY_READY"
                 or a.get("active_selection_strategy_count")!=0
@@ -23,19 +30,34 @@ def advisory(now, root=None):
                 or a.get("trading") is not False
                 or a.get("broker_execution") is not False
                 or a.get("capital_twd")!=0
-                or not isinstance(d,str)):
+                or x.get("not_live_quotes") is not True
+                or x.get("historical_alpha_validated") is not False
+                or not isinstance(d,str) or not isinstance(target,str)
+                or d>target):
             info["status"]="UNVERIFIED_RESEARCH_RECEIPT"
             return info
         age=(now.date()-date.fromisoformat(d)).days
-        if age<0 or age>5:
+        target_age=(now.date()-date.fromisoformat(target)).days
+        if age<0 or age>5 or target_age<0 or target_age>5:
             info["status"]="STALE_OR_FUTURE_EOD"
             return info
+        # The research document must match BOTH published evidence files.
+        # A newer HBA or integrated receipt invalidates an old decision card.
+        for short_name, source_path in (
+                ("original_hba","research/hba_surveillance/latest.json"),
+                ("integrated_hba","research/hba_surveillance/integrated_latest.json")):
+            raw=(root/source_path).read_bytes()
+            expected=(x.get("input_sha256") or {}).get(short_name)
+            if expected!=hashlib.sha256(raw).hexdigest():
+                info["status"]="RESEARCH_EVIDENCE_HASH_MISMATCH"
+                return info
         items=x.get("human_review_examples") or []
         if not isinstance(items,list) or len(items)>12:
             info["status"]="INVALID_DISPLAY"
             return info
         info.update(status="RESEARCH_ADVISORY_READY",
                     observed_eod_date=d,
+                    advisory_target_tw_date=target,
                     market_covered=(x.get("research_summary") or {}).get("market_covered"),
                     research_only=True,
                     examples=[{"ticker":k.get("ticker"),"name":k.get("name"),
