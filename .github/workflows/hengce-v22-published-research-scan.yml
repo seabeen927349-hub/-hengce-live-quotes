@@ -1,0 +1,39 @@
+name: HENGCE V2.2 published historical research scan
+"on":
+  pull_request:
+    paths:
+      - 'research/retail_top5/v22_research_latest.json'
+      - 'tests/engineering/test_hengce_v22_published_historical_receipt.py'
+      - '.github/workflows/hengce-v22-published-research-scan.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  published-historical-research-receipt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact published historical research receipt is read by scan-once
+        run: |
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22_published_historical_receipt.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22_scan_research_observation.py' -v
+      - name: Show research-only receipt and zero order authority
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime
+          from scripts.hengce_scan_once_router import report
+          r=report(datetime.fromisoformat('2026-11-10T22:38:00+08:00'))
+          x=r['reporting']['v22_research_top5']
+          assert x['source_date']=='2026-11-06'
+          assert x['status']=='HISTORICAL_RESEARCH_TOP5_VERIFIED'
+          assert x['broker_execution'] is False and r['broker_order_execution'] is False
+          assert r['rows']==[]
+          print(json.dumps({'source_date':x['source_date'],
+                            'historical_research_top5':[v['ticker'] for v in x['top5']],
+                            'formal_orders':False},ensure_ascii=False))
+          PY
