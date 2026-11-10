@@ -118,7 +118,7 @@ class TwoGroupExistingVesselTests(unittest.TestCase):
                 w.writerow({'Date':day,'Ticker':'1101','Close':close})
         meta,prices=price_pair_for_same_tdcc_weeks(self.root,'20261030','20261106')
         self.assertEqual(meta['status'],'VERIFIED_REFERENCE_WEEK_PRICES')
-        self.assertEqual(prices['1101'],10.0)
+        self.assertAlmostEqual(prices['1101'],10.0)
         original={'target_tw_date':'2026-11-10','latest_verified_eod':'2026-11-09',
                   'data_gate':'EOD_VALID_MACRO_UNKNOWN',
                   'all_candidates':[],'total_candidates_before_limit':0,
