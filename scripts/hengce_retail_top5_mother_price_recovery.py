@@ -170,7 +170,11 @@ def assemble(root: Path, decision: date, *, today: date | None = None,
                 out["canonical_eod_days"] += 1
             except (DataBlocked, OSError, csv.Error) as exc:
                 reason = str(exc)
-                if reason not in PERMITTED_RESEARCH_FALLBACK_ERRORS:
+                expected_status = root / "eod" / day.replace("-", "") / "status.json"
+                absent_source = (not expected_status.exists()
+                                 and reason.startswith("UNREADABLE_JSON:")
+                                 and reason.endswith(":FileNotFoundError"))
+                if reason not in PERMITTED_RESEARCH_FALLBACK_ERRORS and not absent_source:
                     out["blockers"].append("CANONICAL_EOD_INTEGRITY_ERROR:" + day + ":" + reason)
                     continue
                 if day not in mother:
