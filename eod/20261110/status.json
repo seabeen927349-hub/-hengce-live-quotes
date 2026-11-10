@@ -8,7 +8,7 @@
   "broker_hhi_blocks_core_three_leg_or_mother": false,
   "broker_hhi_capital_authority_created": false,
   "broker_hhi_date": "2026-11-10",
-  "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
+  "broker_hhi_last_result": "ALREADY_COMPLETE_IMMUTABLE",
   "broker_hhi_model_authority_created": false,
   "broker_hhi_receipt": "receipts/broker_hhi.json",
   "broker_hhi_rows": 2331,
@@ -29,36 +29,38 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1091,
       "sha256": "765ca96f296e1c75f7044d3dfcf713d29dd4406be1b9feb425f2d24be3eec327"
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1082,
       "sha256": "5a882b0044e6e0dce2552b680080272b682f297b134a8380758e6794dbbd001a"
     },
     {
       "leg": "margin",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1062,
       "sha256": "0bf03cbde627e8cff657570d4cfde5cb785f664a5af23547ac8f7a218c67b38f"
     }
   ],
+  "margin_date": "2026-11-10",
+  "margin_rows": 1062,
+  "margin_sha256": "0bf03cbde627e8cff657570d4cfde5cb785f664a5af23547ac8f7a218c67b38f",
+  "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
   "margin_status": "COMPLETE",
-  "market_state_finmind_context_path": "market_state_finmind_context.json",
-  "market_state_finmind_context_sha256": "59ab0e911a7bd945e886a720f0fb9dd69faab489f01f94677f2cc055e7458450",
-  "market_state_finmind_context_status": "ATTACHED_RESEARCH_SHADOW",
+  "market_state_finmind_context_status": "NOT_ATTACHED_CURRENT_RUN",
   "market_state_finmind_finmind_latest_lag_seconds": 19651.796,
   "market_state_finmind_market_scope_definition": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING",
   "market_state_finmind_primary_scope": "twse_all_listed_equities",
   "market_state_finmind_shadow_blocks_core_three_leg_or_mother": false,
   "market_state_finmind_shadow_formal_classifier_mutated": false,
   "market_state_finmind_shadow_model_authority_created": false,
-  "market_state_finmind_shadow_observed_at_taipei": "2026-11-10T20:27:31.796096+08:00",
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-11T05:15:05.282868+08:00",
   "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
-  "market_state_finmind_shadow_status": "OBSERVED_CONTEXT_ATTACHED",
+  "market_state_finmind_shadow_status": "SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT",
   "market_state_finmind_shadow_trading_authority_created": false,
   "market_state_finmind_twse_current_date_count": 1085,
   "market_state_finmind_twse_current_date_coverage_ratio": 0.9963269054178145,
@@ -66,9 +68,18 @@
   "market_state_finmind_twse_snapshot_presence_ratio": 0.9990817263544536,
   "market_state_finmind_twse_snapshot_present_count": 1088,
   "model_authority_created": false,
+  "mother_latest_date": "2026-11-10",
   "mother_pending_legs": [],
-  "mother_promotion_required": false,
+  "mother_promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "mother_promotion_required": true,
   "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+  "mother_receipt": "receipts/mother.json",
+  "mother_receipt_status": "PASS",
+  "mother_sha256": "0d6a6e034a8c305da9286c6284ce90781afadc99929667370563da42b92f1589",
   "mother_status": "COMPLETE",
   "parallel_eod_tree": false,
   "parallel_universe": false,
@@ -84,18 +95,5 @@
   "system": "HENGCE",
   "target_date": "2026-11-10",
   "three_leg_complete": true,
-  "updated_at_taipei": "2026-11-10T22:34:17.700530+08:00",
-  "margin_date": "2026-11-10",
-  "margin_rows": 1062,
-  "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
-  "margin_sha256": "0bf03cbde627e8cff657570d4cfde5cb785f664a5af23547ac8f7a218c67b38f",
-  "mother_receipt": "receipts/mother.json",
-  "mother_receipt_status": "PASS",
-  "mother_sha256": "0d6a6e034a8c305da9286c6284ce90781afadc99929667370563da42b92f1589",
-  "mother_latest_date": "2026-11-10",
-  "mother_promoted_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ]
+  "updated_at_taipei": "2026-11-11T05:15:04.991819+08:00"
 }
