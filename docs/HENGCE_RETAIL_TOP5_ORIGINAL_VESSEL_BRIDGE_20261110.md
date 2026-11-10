@@ -17,7 +17,7 @@ python scripts/hengce_retail_top5_vessel_bridge.py \
   --repo-root . --decision 2026-11-06 --output /tmp/retail_bridge_20261106
 ```
 
-狀態檔 `bridge_status.json` 一律輸出；只有原血管 21 個以上可驗證日線交易日、決策當日 EOD、三期具首次觀測證據的連續 TDCC 快照皆完整時，才輸出 `daily.csv` 與 `weekly.csv`。若阻擋，程式以 exit 2 結束、**不產生可冒充選股輸入的 CSV**。所有輸出只可寫至明確新建的路徑，原血管內容完全不變。
+狀態檔 `bridge_status.json` 一律輸出；只有原血管 21 個以上可驗證日線交易日、決策當日 EOD、三期具首次觀測證據的連續 TDCC 快照皆完整時，才輸出 `daily.csv` 與 `weekly.csv`。若阻擋，程式以 exit 2 結束、**不產生可冒充選股輸入的 CSV**。所有輸出只可寫至**衡策 GitHub 倉庫根目錄之外**的明確新建路徑；即使指定原 EOD、TDCC 或研究目錄的子目錄也會拒絕，原血管內容完全不變。
 
 `daily.csv` / `weekly.csv` 欄位形式與 V2.2 相容，但 V2.2 原版 `provenance.py` **只允許鎖定 2026-11-06 原附件位元組**，本橋不修改其 SHA、不啟動 model CLI、不繞開來源契約；須另經文獻 Gate、首次觀測驗證、外樣本測試及正式治理後才能建立新的受控資料基準並啟用模型。PR #64 仍維持 DRAFT。
 
