@@ -1,0 +1,71 @@
+{
+  "schema": "HENGCE_V22_MOTHER_PRICE_RECOVERY_MANIFEST_V1",
+  "role": "READ_ONLY_DERIVED_RESEARCH_PRICE_GAP_REPAIR_NOT_NEW_MOTHER",
+  "canonical_source_library_path": "/HENGCE_CANONICAL/RESEARCH/HIST_FULL_MARKET_MOTHER_2018_2026_20261107/HENGCE_FULL_MARKET_MOTHER_RESEARCH_2018_2026.csv.gz",
+  "canonical_source_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+  "canonical_source_total_rows": 2111682,
+  "canonical_source_start_date": "2018-01-02",
+  "canonical_source_end_date": "2026-11-06",
+  "canonical_independent_qa_status": "PASS",
+  "canonical_source_not_available_before": "2026-11-07",
+  "slice_path": "eod/source_recovery_20261110/mother_research_backfill_8dates.csv",
+  "slice_sha256": "1832a9766a6bbefe68fa4a3290f25c046409cdeab4aebdd4dc33d627b29ce678",
+  "slice_total_rows": 8692,
+  "slice_dates": [
+    {
+      "date": "2026-10-06",
+      "rows": 1087,
+      "missing_close": 0
+    },
+    {
+      "date": "2026-10-08",
+      "rows": 1086,
+      "missing_close": 3
+    },
+    {
+      "date": "2026-10-12",
+      "rows": 1087,
+      "missing_close": 3
+    },
+    {
+      "date": "2026-10-13",
+      "rows": 1087,
+      "missing_close": 2
+    },
+    {
+      "date": "2026-10-14",
+      "rows": 1087,
+      "missing_close": 0
+    },
+    {
+      "date": "2026-10-15",
+      "rows": 1085,
+      "missing_close": 0
+    },
+    {
+      "date": "2026-10-16",
+      "rows": 1086,
+      "missing_close": 5
+    },
+    {
+      "date": "2026-10-19",
+      "rows": 1087,
+      "missing_close": 0
+    }
+  ],
+  "recovery_stage_required": "FORMAL_2026_PRICE_LEG",
+  "original_source_tier_required": "TWSE_2026_CANONICAL_PRICE",
+  "point_in_time": "RETROSPECTIVE_EXPLORATION_ONLY_NOT_CLEAN_DECISION_TIME_PROOF",
+  "may_replace_formal_eod": false,
+  "may_replace_formal_tdcc": false,
+  "selection_authority": false,
+  "model_authority": false,
+  "capital_authority_twd": 0,
+  "broker_execution": false,
+  "blocked_integrations": [
+    "FORMAL_V2_2_TOP5",
+    "TRADING_ORDERS",
+    "CLEAN_OOS"
+  ],
+  "original_vessels_mutated": false
+}
