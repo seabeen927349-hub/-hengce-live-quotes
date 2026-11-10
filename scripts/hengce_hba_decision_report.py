@@ -109,6 +109,14 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
        original.get('data_gate')=='BLOCKED' or integrated.get('readiness')!='RESEARCH_READY' or \
        integrated.get('observed_eod_date')!=d or integrated.get('target_tw_date')!=target:
         out['missing_data'].append('EOD/整合報告日期不一致、未通過資料閘門或尚未完成');return out
+    try:
+        age=(date.fromisoformat(target)-date.fromisoformat(d)).days
+        if age<0 or age>5:
+            out['missing_data'].append('正式EOD超過5日或日期在未來')
+            return out
+    except ValueError:
+        out['missing_data'].append('交易日期無法解析')
+        return out
     contract=read_json(root/'hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json') or {}
     if contract.get('status')!='NO_ACTIVE_SELECTION_STRATEGY' or \
        contract.get('active_strategy_count')!=0 or contract.get('broker_order_execution') is not False:
@@ -142,6 +150,7 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
     if any(x.get('stage') not in VALID_STAGES for x in hba.values()):
         out['missing_data'].append('HBA分層未知，不得自訂強弱等級');return out
     seen=set()
+    examples=[]
     group=Counter()
     for x in registry:
         if not isinstance(x,dict):continue
@@ -211,6 +220,8 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
           '下次正式EOD：核對股價是否維持相對%d日觀察收盤價的強弱'%(int(d[-2:])),
           '下次已公布TDCC：核對散戶與其他實股是否維持原方向；若反向需重估',
           '股本發生顯著變化／來源時滯不合格：撤銷價籌可比判斷']
+        # Save concise evidence for every ticker: no duplicated prose causing
+        # original GitHub report to exceed the normal 1MB contents API limit.
         row={'ticker':ticker,'name':prices[ticker]['name'],
              'review_group':group_name,'hba_stage':stage,
              'last_verified_eod':d,'latest_eod_close':prices[ticker]['close'],
@@ -218,11 +229,17 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
              'small_shares_delta':int(small),'other_shares_delta':int(other),
              'small_holders_delta':int(fnum(x.get('small_holders_delta')) or 0),
              'small_share_delta_pp':round(pp,6),
-             'why':'；'.join(rationale),
-             'risks':'；'.join(risk),
-             'change_of_view':'；'.join(falsifiers),
-             'authority':'RESEARCH_ONLY'}
+             'eod_day_return_pct':today,'eod_5day_return_pct':five,
+             'margin_5day_change_pct':margin}
         out['full_market_observations'].append(row)
+        # Narrative evidence is rendered only for the finite audit/display
+        # examples; complete compact data still survives for every ticker.
+        if stage in ('行情確認（待人工評估）','撤退警戒'):
+            narrative=dict(row, why='；'.join(rationale),
+                           risks='；'.join(risk),
+                           change_of_view='；'.join(falsifiers),
+                           authority='RESEARCH_ONLY')
+            examples.append(narrative)
         group[group_name]+=1
     if len(out['full_market_observations'])!=tg.get('comparable_stock_count'):
         out['missing_data'].append('全市場與集保可比數量不一致')
@@ -230,12 +247,13 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
         return out
     # Display is editorial only: all registered stocks are retained, no scoring,
     # fitted weighting, probability, recommended order, or "top" buy list.
-    eligible=[x for x in out['full_market_observations'] if x['hba_stage'] in
-             ('行情確認（待人工評估）','撤退警戒')]
-    eligible.sort(key=lambda x:(ORDER.get(x['review_group'],9),
-                              0 if x['hba_stage']=='行情確認（待人工評估）' else 1,
-                              x['ticker']))
-    out['human_review_examples']=eligible[:12]
+    # Always surface ALL of the original four high-attention alerts before the
+    # risk-watch examples, so an 87-name exit-watch queue cannot drown them out.
+    attention=sorted((x for x in examples if x['hba_stage']=='行情確認（待人工評估）'),
+                     key=lambda x:(ORDER.get(x['review_group'],9),x['ticker']))
+    risk_watch=sorted((x for x in examples if x['hba_stage']=='撤退警戒'),
+                      key=lambda x:x['ticker'])
+    out['human_review_examples']=(attention[:6]+risk_watch[:6])[:12]
     out['research_summary']={
        'market_covered':len(out['full_market_observations']),
        'hba_all_candidate_count':len(hba),
