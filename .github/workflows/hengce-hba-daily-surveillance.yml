@@ -7,11 +7,13 @@ on:
     paths:
       - 'scripts/hengce_hba_daily_surveillance.py'
       - 'scripts/hengce_hba_context_bridge_v1.py'
+      - 'scripts/hengce_hba_decision_report.py'
       - 'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
       - 'tests/hba_surveillance/**'
       - '.github/workflows/hengce-hba-daily-surveillance.yml'
   pull_request:
     paths:
+      - 'scripts/hengce_hba_decision_report.py'
       - 'governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.*'
       - 'governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md'
       - 'scripts/hengce_hba_daily_surveillance.py'
@@ -97,6 +99,41 @@ jobs:
           (root/'last_integrated_history_path.txt').write_text(str(history)+'\n')
           print('HBA_INTEGRATED_CONTEXT:',d['readiness'],history)
           PY
+      - name: Produce governed HBA human-decision report (research only)
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_hba_decision_report.py \
+            --root . \
+            --original research/hba_surveillance/latest.json \
+            --integrated research/hba_surveillance/integrated_latest.json \
+            --out research/hba_surveillance/decision_latest.json
+          python - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          root=Path('research/hba_surveillance')
+          file=root/'decision_latest.json'
+          raw=file.read_bytes()
+          x=json.loads(raw)
+          assert x['status']=='RESEARCH_ADVISORY_READY'
+          assert x['authority']['active_selection_strategy_count']==0
+          assert x['authority']['formal_selection'] is False
+          assert x['authority']['trading'] is False
+          assert x['authority']['broker_execution'] is False
+          assert x['authority']['capital_twd']==0
+          assert x['not_live_quotes'] is True
+          assert x['historical_alpha_validated'] is False
+          assert x['research_summary']['market_covered']==len(x['full_market_observations'])
+          assert len(raw)<950000, 'GitHub file read limit threatened'
+          sha=hashlib.sha256(raw).hexdigest()
+          history=root/'decision_history'/f"{x['target_tw_date'].replace('-','')}_{sha[:16]}.json"
+          history.parent.mkdir(parents=True,exist_ok=True)
+          if history.exists():assert history.read_bytes()==raw
+          else:history.write_bytes(raw)
+          (root/'last_decision_history_path.txt').write_text(str(history)+'\n')
+          print('HBA_DECISION_RESEARCH:',x['status'],len(x['full_market_observations']),history)
+          PY
       - name: Append immutable daily research receipt and publish latest
         if: github.event_name != 'pull_request'
         shell: bash
@@ -119,6 +156,7 @@ jobs:
           git config user.email 'actions@users.noreply.github.com'
           git add research/hba_surveillance/latest.json research/hba_surveillance/latest.md "$(cat research/hba_surveillance/last_history_path.txt)"
           git add research/hba_surveillance/integrated_latest.json research/hba_surveillance/integrated_latest.md "$(cat research/hba_surveillance/last_integrated_history_path.txt)"
+          git add research/hba_surveillance/decision_latest.json research/hba_surveillance/decision_latest.md "$(cat research/hba_surveillance/last_decision_history_path.txt)"
           git diff --cached --quiet && exit 0
           git commit -m 'research(sidecar): daily HBA surveillance with PIT macro and capital evidence'
           # Race protection: guarded publisher handles immutable write paths.
@@ -134,6 +172,8 @@ jobs:
             research/hba_surveillance/latest.md
             research/hba_surveillance/integrated_latest.json
             research/hba_surveillance/integrated_latest.md
+            research/hba_surveillance/decision_latest.json
+            research/hba_surveillance/decision_latest.md
             ${{ runner.temp }}/hengce-hba-publication
           if-no-files-found: ignore
           retention-days: 14
