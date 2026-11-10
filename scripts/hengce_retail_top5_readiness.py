@@ -15,7 +15,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from hengce_retail_top5_vessel_bridge import audit, validate_output_target
+from hengce_retail_top5_vessel_bridge import DataBlocked, audit, validate_output_target
 from hengce_twse_calendar import load_manifest, is_trading_day
 
 TW = ZoneInfo("Asia/Taipei")
@@ -174,7 +174,7 @@ def main():
             "broker_execution": False,
         }, ensure_ascii=False))
         return 0  # Blocked data is an explicit research artifact, not a failed ingestion.
-    except (ValueError, OSError, TypeError) as exc:
+    except (DataBlocked, ValueError, OSError, TypeError) as exc:
         cli.exit(2, "READINESS_PIPELINE_ERROR:" + str(exc) + "\n")
 
 
