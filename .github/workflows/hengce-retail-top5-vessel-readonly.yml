@@ -1,0 +1,44 @@
+name: HENGCE Retail Top5 original-vessel read-only bridge
+on:
+  pull_request:
+    paths:
+      - 'scripts/hengce_retail_top5_vessel_bridge.py'
+      - 'tests/engineering/test_hengce_retail_top5_vessel_bridge.py'
+      - '.github/workflows/hengce-retail-top5-vessel-readonly.yml'
+  workflow_dispatch:
+    inputs:
+      decision:
+        description: 'Friday decision date YYYY-MM-DD; read-only original vessel capability audit'
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  original-vessel-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test fail-closed bridge
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_retail_top5_vessel_bridge.py' -v
+      - name: Audit original vessels (no selection, no mutation)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          DECISION: ${{ inputs.decision }}
+        shell: bash
+        run: |
+          set -uo pipefail
+          python scripts/hengce_retail_top5_vessel_bridge.py --decision "$DECISION" --output /tmp/hengce_retail_bridge
+          EXIT_CODE=$?
+          echo "Data bridge exit code: $EXIT_CODE (2 means blocked, expected if evidence incomplete)"
+          cat /tmp/hengce_retail_bridge/bridge_status.json
+          if [ "$EXIT_CODE" != "0" ] && [ "$EXIT_CODE" != "2" ]; then exit "$EXIT_CODE"; fi
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          name: retail-top5-readonly-audit
+          path: /tmp/hengce_retail_bridge/bridge_status.json
+          if-no-files-found: error
