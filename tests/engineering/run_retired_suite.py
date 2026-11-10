@@ -23,6 +23,7 @@ SUITES = {
     "writer": (SAFETY_BASE, [
         ["tests/engineering/test_health_dependency_audit.py"],
         ["tests/engineering/test_writer_workflows.py"],
+        ["tests/engineering/test_writer_races.py"],
     ]),
     "recovery": (SAFETY_BASE, [
         ["tests/engineering/test_recovery_workflows.py"],
