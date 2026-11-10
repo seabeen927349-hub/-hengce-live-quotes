@@ -104,12 +104,143 @@ def selected_model_preference(root=None):
 
 V22_RESEARCH_PATH="research/retail_top5/v22_research_latest.json"
 
+
+WEEKLY_V22_PATH="research/retail_top5/v22_weekly_latest.json"
+
+def weekly_v22_research_observation(now=None, root=None):
+    """Read ONLY a committed weekly V2.2 result from existing HENGCE vessels.
+
+    This is an informational research ranking and never a formal trading strategy.
+    If no weekly file exists, the historical immutable 2026-11-06 report remains
+    available under the old receipt path. An invalid weekly receipt is NOT
+    silently replaced with older data.
+    """
+    import math
+    now=now or datetime.now(TZ)
+    now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
+    root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
+    path=root/WEEKLY_V22_PATH
+    if not path.exists():
+        return None
+    result={
+        "status":"WEEKLY_RESEARCH_RECEIPT_UNVERIFIED",
+        "research_only":True,"source_path":WEEKLY_V22_PATH,
+        "top5":[],"qualified_count":0,"source_date":None,
+        "current_selection":False,"formal_selection_authority":False,
+        "ranking_authority":False,"buy_signal":False,"sell_signal":False,
+        "authorized_lots":0,"capital_authority_twd":0,"broker_execution":False,
+        "not_live_quotes":True,
+    }
+    if selected_model_preference(root).get("status")!="PREFERRED_RESEARCH_MODEL_NOT_LIVE":
+        result["status"]="V22_PREFERENCE_UNVERIFIED"
+        return result
+    try:
+        d=json.loads(path.read_text(encoding="utf-8"))
+        decision=date.fromisoformat(d["decision_date"])
+        if (d.get("schema")!="HENGCE_V22_WEEKLY_RESEARCH_SCREEN_V1"
+            or d.get("mode")!="RESEARCH_TOP5_ONLY_NO_ORDER"
+            or d.get("system")!="HENGCE"
+            or d.get("original_screen_commit")!="4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6"
+            or d.get("research_only") is not True
+            or d.get("fully_prospective_performance_verified") is not False
+            or d.get("selection_authority") is not False
+            or d.get("formal_strategy_promoted") is not False
+            or d.get("buy_signal") is not False or d.get("sell_signal") is not False
+            or d.get("broker_execution") is not False
+            or d.get("authorized_lots")!=0 or d.get("capital_authority_twd")!=0
+            or not isinstance(d.get("historical_asof_proof_missing"),bool)
+            or decision.weekday()!=4 or decision<date(2026,11,6)
+            or decision>now.date()):
+            return result
+        lineage=d.get("source_lineage")
+        if not isinstance(lineage,dict):
+            return result
+        snaps=lineage.get("tdcc_snapshots")
+        days=lineage.get("price_days")
+        if (lineage.get("decision")!=d["decision_date"]
+            or lineage.get("source_mode")!="HENGCE_ORIGINAL_EOD_PLUS_EXISTING_RESEARCH_MOTHER_AND_TDCC"
+            or lineage.get("eod_research_mother_sha256")!="b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93"
+            or lineage.get("tdcc_g1_457_week_mother_sha256")!="71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88"
+            or not isinstance(days,list) or len(days)!=21
+            or not isinstance(snaps,list) or len(snaps)!=3
+            or len({x.get("date") for x in days if isinstance(x,dict)})!=21
+            or days[-1].get("date")!=d["decision_date"]
+            or any(z.get("source") not in
+                   ("HENGCE_CANONICAL_EOD","HENGCE_VERIFIED_GAP_MOTHER_RETROSPECTIVE")
+                   for z in days if isinstance(z,dict))):
+            return result
+        cutoff=date.fromisoformat(lineage["source_cutoff"])
+        if cutoff!=(decision-__import__("datetime").timedelta(days=14)):
+            return result
+        snapdates=[date.fromisoformat(z["snapshot_date"][:4]+"-"+
+                                       z["snapshot_date"][4:6]+"-"+
+                                       z["snapshot_date"][6:8]) for z in snaps]
+        if (snapdates!=sorted(snapdates) or snapdates[-1]>cutoff
+            or (cutoff-snapdates[-1]).days>7
+            or any((b-a).days<5 or (b-a).days>10
+                   for a,b in zip(snapdates,snapdates[1:]))
+            or any(z.get("source_type") not in (
+                "HENGCE_EXISTING_G1_457_WEEK_RESEARCH_MOTHER",
+                "CANONICAL_TDCC_FIRST_OBSERVED_STRICT",
+                "CANONICAL_TDCC_FIRST_OBSERVED_RECONCILED_RESEARCH_ONLY")
+                for z in snaps)):
+            return result
+        rows=d.get("all_qualified")
+        top=d.get("top5")
+        if (not isinstance(rows,list) or not isinstance(top,list)
+            or len(top)!=min(5,len(rows)) or len(rows)!=d.get("qualified_count")
+            or len(rows)>3000 or top!=rows[:len(top)]):
+            return result
+        seen=set(); prev_turnover=None
+        for i,rr in enumerate(rows,1):
+            if not isinstance(rr,dict):
+                return result
+            ticker=rr.get("ticker")
+            if (not isinstance(ticker,str) or len(ticker)!=4 or not ticker.isdigit()
+                or ticker.startswith("0") or ticker in seen or rr.get("rank")!=i
+                or rr.get("authorized_lots")!=0
+                or rr.get("chip_date")!=snapdates[-1].isoformat()):
+                return result
+            seen.add(ticker)
+            for key in ("reference_close","r20_pct","r5_pct",
+                        "retail_2week_pct","median_20d_turnover_twd"):
+                n=rr.get(key)
+                if isinstance(n,bool) or not isinstance(n,(int,float)) or not math.isfinite(n):
+                    return result
+            if not (rr["reference_close"]>0 and rr["r20_pct"]>=5
+                    and rr["r5_pct"]>=0 and rr["retail_2week_pct"]<=-1
+                    and rr["median_20d_turnover_twd"]>=10_000_000):
+                return result
+            turn=rr["median_20d_turnover_twd"]
+            if prev_turnover is not None and (turn>prev_turnover):
+                return result
+            prev_turnover=turn
+        age=(now.date()-decision).days
+        result.update(
+            status=("NO_QUALIFIED_WEEKLY_RESEARCH_STOCKS" if not top
+                    else ("WEEKLY_RESEARCH_TOP5_READY" if age<=14
+                          else "STALE_WEEKLY_RESEARCH_TOP5")),
+            source_date=decision.isoformat(),age_calendar_days=age,
+            qualified_count=len(rows),top5=top,
+            original_model_commit=d["original_screen_commit"],
+            historical_asof_proof_missing=d["historical_asof_proof_missing"],
+            research_not_trade=True,not_current_recommendations=True,
+            source_kind="HENGCE_ORIGINAL_EOD_TDCC_RESEARCH_ONLY",
+            current_selection=False,
+        )
+    except (OSError,KeyError,ValueError,TypeError,AttributeError):
+        return result
+    return result
+
 def research_top5_observation(now=None, root=None):
     """Show an independently reproduced V2.2 research Top5, NEVER a live signal.
 
     This deliberately reads only a checked-in, versioned research receipt.
     It neither runs the unmerged selection strategy nor reaches a broker.
     """
+    current=weekly_v22_research_observation(now,root)
+    if current is not None:
+        return current
     import math
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
