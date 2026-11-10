@@ -85,17 +85,17 @@ class ReadonlyOriginalV22ResearchScanTests(unittest.TestCase):
             ("original_v22_screen_pinned_commit","not-original"),
         ):
             with self.subTest(field=field):
-                (self.root/OBS).write_bytes((ROOT/OBS).read_bytes())
+                (self.root/OBS).write_bytes((ROOT/"tests/fixtures/v22_screen_replay_20261106_historical_no_authority.json").read_bytes())
                 self.mutate(lambda d:d.update({field:value}))
                 self.assertEqual(self.candidate()["status"],"RESEARCH_RECEIPT_NOT_VERIFIED")
 
     def test_wrong_order_and_invalid_thresholds_are_rejected(self):
         self.mutate(lambda d:d["top5"][0].update({"r20_pct":3.0}))
         self.assertEqual(self.candidate()["status"],"RESEARCH_METRICS_INVALID")
-        (self.root/OBS).write_bytes((ROOT/OBS).read_bytes())
+        (self.root/OBS).write_bytes((ROOT/"tests/fixtures/v22_screen_replay_20261106_historical_no_authority.json").read_bytes())
         self.mutate(lambda d:d["top5"][0].update({"rank":5}))
         self.assertEqual(self.candidate()["status"],"RESEARCH_RANKING_INVALID")
-        (self.root/OBS).write_bytes((ROOT/OBS).read_bytes())
+        (self.root/OBS).write_bytes((ROOT/"tests/fixtures/v22_screen_replay_20261106_historical_no_authority.json").read_bytes())
         self.mutate(lambda d:d["top5"][0].update({"median_20d_turnover_twd":10000000}))
         self.assertEqual(self.candidate()["status"],"RESEARCH_RANKING_ORDER_INVALID")
 
