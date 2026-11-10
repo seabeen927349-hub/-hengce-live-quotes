@@ -138,6 +138,31 @@ class DecisionResearchIntegrationTests(unittest.TestCase):
         self.assertEqual(x['research_summary']['s5'],'NOT_PROVIDED')
         self.assertEqual(x['research_summary']['escape'],'NOT_PROVIDED')
         self.assertIn('沒有買賣訊號',markdown(x))
+    def test_full_repository_20261109_market_snapshot(self):
+        # Verify the actual original 1,082-name market snapshot instead of
+        # passing only handcrafted three-stock fixtures.
+        repo=Path(__file__).resolve().parents[2]
+        import hashlib
+        original_file=repo/'research/hba_surveillance/latest.json'
+        integrated_file=repo/'research/hba_surveillance/integrated_latest.json'
+        if not original_file.is_file() or not integrated_file.is_file():
+            self.skipTest('Original full-market reports are not checked out')
+        orig=json.loads(original_file.read_text(encoding='utf-8'))
+        integ=json.loads(integrated_file.read_text(encoding='utf-8'))
+        if (orig.get('latest_verified_eod')!='2026-11-09' or
+                integ.get('observed_eod_date')!='2026-11-09'):
+            self.skipTest('Frozen replay date no longer matches, not a live backfill')
+        x=build(repo,orig,integ,
+                hashlib.sha256(original_file.read_bytes()).hexdigest(),
+                hashlib.sha256(integrated_file.read_bytes()).hexdigest())
+        self.assertEqual(x['status'],'RESEARCH_ADVISORY_READY',x['missing_data'])
+        self.assertEqual(x['research_summary']['market_covered'],1082)
+        self.assertEqual(x['research_summary']['hba_all_candidate_count'],307)
+        ids={y['ticker'] for y in x['human_review_examples']}
+        self.assertTrue({'3703','2406','6443','1416'}.issubset(ids))
+        self.assertEqual(x['authority']['active_selection_strategy_count'],0)
+        self.assertLess(len(json.dumps(x,ensure_ascii=False,separators=(',',':')).encode('utf-8')),950000)
+
     def test_wrong_market_count_blocks(self):
         self.integrated['two_group_research']['comparable_stock_count']=4
         x=self.result()
