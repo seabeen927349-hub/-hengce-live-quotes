@@ -429,6 +429,48 @@ def read_existing_two_group_tdcc(root, target, observed_eod):
 
 
 
+
+def price_pair_for_same_tdcc_weeks(root, old_snapshot, new_snapshot):
+    """Verified EOD closes matching the actual TDCC reference dates, never a future close."""
+    def closes(snapshot):
+        if not isinstance(snapshot,str) or len(snapshot)!=8 or not snapshot.isdigit():
+            return None
+        day=snapshot[:4]+'-'+snapshot[4:6]+'-'+snapshot[6:8]
+        folder=root/'eod'/snapshot
+        status=load(folder/'status.json') or {}
+        if not (status.get('formal_complete_day') is True and
+                status.get('downstream_ready') is True and
+                all(status.get(leg+'_date')==day for leg in ('price','institutional','margin'))):
+            return None
+        prices={}
+        files=sorted(folder.glob('price_*.csv'))
+        if not files:return None
+        try:
+            for file in files:
+                with file.open(encoding='utf-8-sig',newline='') as f:
+                    reader=csv.DictReader(f)
+                    if not {'Date','Ticker','Close'}.issubset(reader.fieldnames or ()):
+                        return None
+                    for row in reader:
+                        t=str(row.get('Ticker') or '')
+                        if row.get('Date')!=day or len(t)!=4 or not t.isdigit():continue
+                        try:
+                            p=float(str(row['Close']).replace(',',''))
+                            if 0<p<float('inf'):prices[t]=p
+                        except (ValueError,TypeError):pass
+        except (OSError,UnicodeError,csv.Error):
+            return None
+        return prices or None
+    a=closes(old_snapshot)
+    b=closes(new_snapshot)
+    if not a or not b:
+        return {'status':'MISSING_VERIFIED_MATCHED_WEEKLY_EOD_PRICES'},{}
+    changes={t:100*(v/a[t]-1) for t,v in b.items() if t in a and a[t]>0}
+    return {'status':'VERIFIED_REFERENCE_WEEK_PRICES',
+            'first_eod_date':old_snapshot,'last_eod_date':new_snapshot,
+            'data_role':'RETROSPECTIVE_SAME_WEEK_PAIR_NOT_TRADE_SIGNAL'},changes
+
+
 def build(root, original, summary=None):
     target=original.get('target_tw_date')
     day=original.get('latest_verified_eod')
@@ -485,6 +527,37 @@ def build(root, original, summary=None):
     # Raw TDCC grade 1-3 shares cannot be inferred from TotalHolders or Big400Pct.
     tg_meta,tg_stocks=read_existing_two_group_tdcc(root,target,day)
     output['two_group_research']=tg_meta
+    # Full-market research registry: independent of original 307 short-window HBA alerts.
+    # Price is paired with the same two reference TDCC weeks, NOT current-day EOD.
+    price_meta, price_changes=price_pair_for_same_tdcc_weeks(
+        root,tg_meta.get('previous_tdcc_date'),tg_meta.get('last_tdcc_date'))
+    tg_meta['price_pair']=price_meta
+    patterns={'UP_OTHER_SHARE_GAIN':0,'UP_SMALL_SHARE_GAIN':0,
+              'DOWN_SMALL_SHARE_GAIN':0,'DOWN_OTHER_SHARE_GAIN':0,
+              'FLAT_OR_UNCLASSIFIED':0,'PRICE_PAIR_MISSING':0}
+    market_registry=[]
+    for ticker,row in sorted(tg_stocks.items()):
+        rec=dict(row)
+        rec['ticker']=ticker
+        delta=price_changes.get(ticker)
+        rec['same_week_price_return_pct']=round(delta,4) if delta is not None else None
+        small=row['small_share_delta_pp']
+        if delta is None: pattern='PRICE_PAIR_MISSING'
+        elif delta>0 and small<=-0.05:pattern='UP_OTHER_SHARE_GAIN'
+        elif delta>0 and small>=0.05:pattern='UP_SMALL_SHARE_GAIN'
+        elif delta<0 and small>=0.05:pattern='DOWN_SMALL_SHARE_GAIN'
+        elif delta<0 and small<=-0.05:pattern='DOWN_OTHER_SHARE_GAIN'
+        else:pattern='FLAT_OR_UNCLASSIFIED'
+        patterns[pattern]+=1
+        rec['same_week_price_ownership_pattern']=pattern
+        rec['pattern_scope']='ONE_VERIFIED_REFERENCE_WEEK_RESEARCH_ONLY'
+        rec['selection_authority']=False
+        market_registry.append(rec)
+    tg_meta['price_share_pattern_counts']=patterns
+    tg_meta['market_registry_total']=len(market_registry)
+    tg_meta['multiweek_a_to_b_cycle_validated']=False
+    output['two_group_market_registry']=market_registry
+    tg_index={x['ticker']:x for x in market_registry}
     # Consume the existing HBA full evidence list, not its top-15 display subset.
     full=original.get('all_candidates')
     has_full=isinstance(full,list)
@@ -506,8 +579,8 @@ def build(root, original, summary=None):
            'historical_phase_claim_authorized':False,
            'historical_flow':stocks.get(ticker),
            'historical_flow_available':ticker in stocks,
-           'two_group':tg_stocks.get(ticker),
-           'two_group_available':ticker in tg_stocks,
+           'two_group':tg_index.get(ticker),
+           'two_group_available':ticker in tg_index,
            'original_decision_readiness':item.get('decision_readiness')})
     if e['canonical_eod']=='COMPLETE' and original.get('data_gate')!='BLOCKED':
         output['readiness']='RESEARCH_READY' if m['status']=='AVAILABLE_RESEARCH_PROXY' else 'EOD_READY_LONG_TERM_MISSING'
