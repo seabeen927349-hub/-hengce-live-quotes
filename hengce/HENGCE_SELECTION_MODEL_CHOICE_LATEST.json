@@ -27,9 +27,8 @@
     "min_cash": 0.1,
     "missing_affordability": "SKIP_NO_REPLACEMENT"
   },
-  "execution_status": "BLOCKED_NOT_DEPLOYED",
+  "execution_status": "RESEARCH_SELECTION_INTEGRATION_PENDING_NOT_FORMAL_TRADING",
   "why_blocked": [
-    "V2.2_MODEL_FIRST_LITERATURE_GATE_FAILED",
     "NEW_PROSPECTIVE_AND_LIVE_EVIDENCE_NOT_VALIDATED",
     "ORIGINAL_MODEL_CODE_REMAINS_UNMERGED"
   ],
@@ -40,7 +39,7 @@
   "capital_authority_twd": 0,
   "broker_execution": false,
   "authorized_lots": 0,
-  "scan_once_behavior": "DISPLAY_PREFERENCE_METADATA_ONLY_DO_NOT_RUN_UNMERGED_MODEL",
+  "scan_once_behavior": "SHOW_RESEARCH_RESULT_IF_VERIFIED_RECEIPT_PRESENT_WITH_DECISION_DATE_NO_TRADE_AUTHORITY",
   "unchanged": [
     "Q017_RETIRED",
     "S5",
@@ -48,5 +47,7 @@
     "RMS",
     "EXISTING_EOD_AND_TDCC_VESSELS"
   ],
-  "next_action": "LITERATURE_AND_FRESH_PREREGISTERED_VALIDATION_BEFORE_FORMAL_MODEL_PROMOTION"
+  "next_action": "CONNECT_V2_2_RESEARCH_MODEL_TO_EXISTING_VERIFIED_EOD_TDCC_WHILE_PRESERVING_NO_ORDER_AUTHORITY",
+  "literature_first_governance": "REMOVED_PER_USER_DIRECTION_2026-11-10",
+  "research_candidate_publication_literature_gate_required": false
 }
