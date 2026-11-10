@@ -1,0 +1,81 @@
+name: HENGCE V2.2 original-screen G1 mother retrospective replay
+"on":
+  pull_request:
+    paths:
+      - 'ownership/tdcc/research_recovery_20261110/**'
+      - 'scripts/hengce_retail_top5_g1_retail_recovery.py'
+      - 'scripts/hengce_retail_top5_original_v22_retro_replay.py'
+      - 'tests/engineering/test_hengce_retail_top5_g1_retail_recovery.py'
+      - 'tests/engineering/test_hengce_retail_top5_original_v22_retro_replay.py'
+      - '.github/workflows/hengce-retail-top5-g1-mother-research-replay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  retrospective-source-and-original-v22-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - name: Checkout HENGCE existing canonical research vessels read-only
+        uses: actions/checkout@v4
+      - name: Checkout IMMUTABLE original V2.2 screen from unmerged PR64 as research ONLY
+        uses: actions/checkout@v4
+        with:
+          ref: 4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6
+          path: original_v22_model
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install V2.2 original pinned research dependencies
+        run: python -m pip install --disable-pip-version-check numpy pandas
+      - name: Verify G1 mother extraction and actual original V2.2 screening
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests/engineering -p 'test_hengce_retail_top5_g1_retail_recovery.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_retail_top5_original_v22_retro_replay.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_retail_top5_mother_price_recovery.py' -v
+      - name: Prepare existing 457-week G1 three-week holders research-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_retail_top5_g1_retail_recovery.py \
+            --decision 2026-11-06 \
+            --output "$RUNNER_TEMP/g1_retro_20261106"
+      - name: Prepare existing 21-session canonical-mother EOD research-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_retail_top5_mother_price_recovery.py \
+            --decision 2026-11-06 \
+            --output "$RUNNER_TEMP/price_retro_20261106"
+      - name: Call ORIGINAL V2.2 screen.py on recovered data; no order or formal selection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/hengce_retail_top5_original_v22_retro_replay.py \
+            --repo-root "$GITHUB_WORKSPACE" \
+            --original-model-checkout "$GITHUB_WORKSPACE/original_v22_model" \
+            --decision 2026-11-06 \
+            --output "$RUNNER_TEMP/original_v22_retro_20261106"
+          python - <<'PY'
+          from pathlib import Path
+          import json,os
+          x=json.loads((Path(os.environ["RUNNER_TEMP"])/"original_v22_retro_20261106/historical_research_replay.json").read_text())
+          assert x["original_unmerged_model_commit"]=="4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6"
+          assert x["official_pit_certified"] is False
+          assert x["formal_selection_performed"] is False
+          assert x["model_literature_gate"]=="NOT_PASSED"
+          assert x["broker_execution"] is False and x["authorized_lots"]==0
+          print("HISTORICAL V2.2 RESEARCH TOP5",x["historical_research_top5"])
+          PY
+      - name: Preserve retrospective evidence only; no official selector or broker orders
+        uses: actions/upload-artifact@v4
+        with:
+          name: v22-original-screen-g1-retrospective-no-trading
+          path: |
+            ${{ runner.temp }}/g1_retro_20261106/
+            ${{ runner.temp }}/price_retro_20261106/
+            ${{ runner.temp }}/original_v22_retro_20261106/
+          if-no-files-found: error
