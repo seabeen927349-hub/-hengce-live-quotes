@@ -155,7 +155,7 @@ class FridayReadinessTests(unittest.TestCase):
 
     def test_never_mutates_original_repo(self):
         state, daily, weekly = self.check()
-        with self.assertRaisesRegex(ValueError, "OUTPUT_MUST_BE_OUTSIDE_HENGCE_REPOSITORY"):
+        with self.assertRaisesRegex(mod.DataBlocked, "OUTPUT_MUST_BE_OUTSIDE_HENGCE_REPOSITORY"):
             mod.write_checkpoint(self.root, self.root / "eod" / "new", state, daily, weekly)
 
 
