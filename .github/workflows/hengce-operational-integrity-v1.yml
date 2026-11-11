@@ -1,0 +1,66 @@
+name: HENGCE Operational Integrity (read only, no Q017)
+
+"on":
+  pull_request:
+    paths:
+      - "scripts/hengce_operational_integrity_v1.py"
+      - "tests/engineering/test_hengce_operational_integrity_v1.py"
+      - ".github/workflows/hengce-operational-integrity-v1.yml"
+  workflow_dispatch:
+  schedule:
+    # Intended Taipei weekday 09:35 and 17:35. Actual GitHub start may be late.
+    # Never backdate production reports; audit uses actual Asia/Taipei clock.
+    - cron: "35 1 * * 1-5"
+    - cron: "35 9 * * 1-5"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: hengce-readonly-operational-integrity-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  offline-integration-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout original HENGCE vessels read-only
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python 3.12 standard-library only
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile current-vessel evaluator, no retired Q017 runner
+        run: python -m py_compile scripts/hengce_operational_integrity_v1.py
+      - name: All fail-closed health and no-order regression tests
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_operational_integrity_v1.py' -v
+      - name: Read existing current HENGCE receipts and GitHub workflow metadata
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/hengce_operational_integrity_v1.py \
+            --fetch-runs --out "$RUNNER_TEMP/hengce-operational-integrity.json"
+          python - "$RUNNER_TEMP/hengce-operational-integrity.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d['authority']=={'selection_authority':False,'signal_authority':False,'capital_authority_twd':0,'broker_order_execution':False}
+          assert d['no_new_data_collector'] is True
+          assert d['formal_health_not_inferred_from_old_q017'] is True
+          assert d['modules']['governance']['state']=='PASS'
+          print('CURRENT_HENGCE_OPERATIONAL_HEALTH',d['overall'])
+          for module,evidence in d['modules'].items():
+              print(module,evidence['state'],evidence['reason'])
+          PY
+      - name: Upload immutable run-specific read-only health receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-operational-integrity-readonly
+          path: ${{ runner.temp }}/hengce-operational-integrity.json
+          if-no-files-found: ignore
+          retention-days: 14
