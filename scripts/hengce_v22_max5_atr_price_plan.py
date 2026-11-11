@@ -13,7 +13,7 @@ import hashlib
 import json
 import math
 import sys
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, time
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -428,7 +428,11 @@ def build_price_plan(asof: datetime | None = None, root: Path | None = None,
     # structurally valid actual holdings list; exits do not release capacity
     # until the user confirms them in the subsequent account snapshot.
     selected_code = None
-    if holdings is None:
+    entry_window_open = (asof.date() < target or
+                         (asof.date() == target and asof.time() < time(9, 0)))
+    if not entry_window_open:
+        capacity = "NEXT_OPEN_ENTRY_WINDOW_PASSED_NO_NEW_ENTRY"
+    elif holdings is None:
         capacity = "ACTUAL_ACCOUNT_HOLDINGS_REQUIRED"
     elif len(holdings) >= 5:
         capacity = "MAX5_FULL_NO_NEW_ENTRY"
