@@ -366,7 +366,7 @@ def research_top5_observation(now=None, root=None):
         report["status"]="RESEARCH_RECEIPT_UNREADABLE"
     return report
 
-def report(now=None, root=None, *, holdings=None, journal=None, previous=None):
+def report(now=None, root=None, *, holdings=None, journal=None, previous=None, vessel=None):
     """Read-only full scan: separate historical ranking from actual-account review."""
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
@@ -381,7 +381,7 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None):
     except ModuleNotFoundError:
         from hengce_v22d_max5_operations import worklist as max5_worklist
     account_review=max5_worklist(now,root,holdings=holdings,
-                                 journal=journal,previous=previous,selection=v22d)
+                                 journal=journal,previous=previous,selection=v22d,vessel=vessel)
     return {
         "schema_version":3,"system":"HENGCE","module":"HENGCE_SCAN_ONCE_ROUTER",
         "generated_at_taipei":now.isoformat(),"trade_date":now.date().isoformat(),
