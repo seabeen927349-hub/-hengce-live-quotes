@@ -351,6 +351,19 @@ def build_price_plan(asof: datetime | None = None, root: Path | None = None,
         out["portfolio_input_status"] = "USER_SUPPLIED_NOT_BROKER_VERIFIED"
         out["existing_position_risk"] = [
             _holding_plan(h, asof.date(), cal, vessel) for h in holdings]
+    # V2.2-D is the new research preference; the previously developed
+    # MAX5 ATR formula is retained, but an archived 11/05 V2.2-D ranking
+    # is not proof of a current daily model prediction or a current buy price.
+    if isinstance(verified_v22, dict) and verified_v22.get("model") == "V2.2-D":
+        out["model"] = "HENGCE_SELECTION_MODEL_V2_2_D_DAILY_TOP5"
+        out["source_selection_status"] = verified_v22.get("status")
+        out["status"] = "WAITING_CURRENT_VERIFIED_V22D_DAILY_FORECAST"
+        out["reason"] = ("V2.2-D daily source has historical 2026-11-05 research only; "
+                         "no verified current PIT daily model forecast or next-session trade price. "
+                         "Do not use the legacy V2.2 Top5 as today's replacement.")
+        out["v22_selection_unchanged"] = False
+        out["v22d_selection_primary"] = True
+        return out
     if verified_v22 is None:
         out["status"] = "WAITING_EXISTING_VERIFIED_V22_WEEKLY_READER"
         out["reason"] = "No weekly receipt passed to this price layer; no independent ranking."
