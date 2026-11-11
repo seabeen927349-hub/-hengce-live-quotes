@@ -64,16 +64,31 @@ def original_eod_closes(root, day):
                     return {}
                 for row in reader:
                     ticker=str(row.get('Ticker') or '')
+                    # Keep every original EOD row accounted for; silently
+                    # dropping malformed or duplicate rows would mask defects.
                     if row.get('Date')!=day or len(ticker)!=4 or not ticker.isdigit() or ticker in prices:
-                        continue
-                    close=fnum(str(row.get('Close') or '').replace(',',''))
-                    if close is None or close<=0:continue
+                        return {}
+                    close_text=str(row.get('Close') or '').strip().replace(',','')
+                    close=fnum(close_text)
+                    if close is None or close<=0:
+                        # '--' OHLC means that the original official row has no
+                        # regular-session close (e.g. 1538/2314 on 2026-11-10).
+                        # Record missing as null; never use the previous close,
+                        # quote, zero, or a fabricated EOD price.
+                        if close_text!='--' or any(
+                            str(row.get(k) or '--').strip()!='--'
+                            for k in ('Open','High','Low')
+                        ):
+                            return {}
+                        close=None
                     prices[ticker]={'name':row.get('Name') or ticker,'close':close}
     except (OSError,UnicodeError,csv.Error):
         return {}
     count=status.get('price_rows')
     if isinstance(count,int) and len(prices)!=count:
-        return {}  # Do not build recommendations from silently partial prices.
+        return {}  # Original row count must still match, including no-close rows.
+    if not any(x['close'] is not None for x in prices.values()):
+        return {}  # The whole market cannot be interpreted without any real close.
     return prices
 
 def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=None):
@@ -186,7 +201,9 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
             out['missing_data'].append('未知的同週價籌分類');return {**out,'full_market_observations':[]}
         # These are editorial HUMAN-REVIEW categories, not fitted alphas,
         # probabilities, formal selection ranks or enter/exit thresholds.
-        if stage=='撤退警戒':
+        if prices[ticker]['close'] is None:
+            group_name='兩方資料缺失'  # Preserve observation, suppress price conclusions.
+        elif stage=='撤退警戒':
             group_name='風險優先覆核'
         elif stage=='行情確認（待人工評估）':
             if (margin is not None and margin>=20) or (five is not None and five>=20):
@@ -206,6 +223,8 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
             rationale.append('原HBA：'+stage)
         if today is not None:rationale.append('最新EOD單日%+.2f%%'%today)
         risk=[]
+        if prices[ticker]['close'] is None:
+            risk.append('最新正式EOD無有效收盤價，暫停本股價格推論')
         if stage=='撤退警戒':risk.append('原HBA撤退警戒，僅為研究風險旗標')
         if margin is not None and margin>=12:risk.append('近5日融資增加%.1f%%，須覆核追價及槓桿'%margin)
         if five is not None and five>=20:risk.append('近5日股價已大漲%.1f%%，須避免把已發生行情當成未來保證'%five)
@@ -219,8 +238,13 @@ def build(root, original, integrated, raw_hba_hash=None, raw_integrated_hash=Non
            small*fnum(x.get('small_holders_delta'))<0:
             risk.append('散戶人數與股數方向相反，不得用人數代替實股')
         # Contradiction checks are evidence instructions, never stop orders.
+        price_review=(
+            '下次正式EOD：以%s收盤%.2f元作強弱觀察基準；突破或跌破都需重新評估，非停損指令'%(d,prices[ticker]['close'])
+            if prices[ticker]['close'] is not None else
+            '下次正式EOD：%s缺少有效收盤價，先確認首次可驗證新價格，禁止使用零值或昨收代替'%d
+        )
         falsifiers=[
-          '下次正式EOD：以%s收盤%.2f元作強弱觀察基準；突破或跌破都需重新評估，非停損指令'%(d,prices[ticker]['close']),
+          price_review,
           '下次已公布TDCC：核對散戶與其他實股是否維持原方向；若反向需重估',
           '股本發生顯著變化／來源時滯不合格：撤銷價籌可比判斷']
         # Save concise evidence for every ticker: no duplicated prose causing
@@ -294,8 +318,10 @@ def markdown(obj):
         lines.append(f'- {g}：{n:,} 檔')
     lines.extend(['','## 優先人工覆核案例（僅由既有HBA明顯警報選出，非全市場最佳投資排名）'])
     for row in obj['human_review_examples']:
+        close_display=(f"{row['latest_eod_close']:.2f}元"
+                       if row['latest_eod_close'] is not None else '缺有效收盤價')
         lines.extend(['',f"### {row['ticker']} {row['name']}｜{row['review_group']}",
-          f"- 最新**正式EOD**收盤：{row['latest_eod_close']:.2f}元（{row['last_verified_eod']}），不是盤中報價",
+          f"- 最新**正式EOD**收盤：{close_display}（{row['last_verified_eod']}），不是盤中報價",
           '- 理由：'+row['why'],
           '- 風險及反證：'+row['risks'],
           '- 何時重估：'+row['change_of_view']])
