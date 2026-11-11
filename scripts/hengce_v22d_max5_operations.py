@@ -289,10 +289,31 @@ def worklist(asof=None, root=None, holdings=None, journal=None, previous=None,
     if len(codes)!=len(set(codes)):
         result["status"]="BLOCKED_DUPLICATE_ACCOUNT_HOLDINGS"
         return result
-    if any(code not in codes for code in prev):
-        result["status"]="BLOCKED_ACCOUNT_POSITION_DISAPPEARED_WITHOUT_SELL_RECEIPT"
-        result["missing_prior_positions"]=sorted(set(prev)-set(codes))
-        return result
+    disappeared=sorted(set(prev)-set(codes))
+    if disappeared:
+        verified_closures=[]
+        for code in disappeared:
+            prior=prev[code]
+            try:
+                prior_date=date.fromisoformat(str(previous["as_of_taipei"])[:10])
+                old_qty=_positive(prior["quantity"],"PRIOR_QUANTITY")
+                sales=sum(_positive(x.get("quantity"),"SOLD_QUANTITY")
+                          for x in (journal or []) if isinstance(x,dict)
+                          and str(x.get("ticker"))==code and x.get("side")=="SELL"
+                          and x.get("status")=="FILLED"
+                          and prior_date<=date.fromisoformat(str(x.get("trade_date"))))
+            except (KeyError,TypeError,ValueError,OperationsBlocked) as e:
+                result["status"]="BLOCKED_PRIOR_POSITION_SELL_RECONCILIATION"
+                result["reason"]=str(e)
+                return result
+            if sales<old_qty:
+                result["status"]="BLOCKED_ACCOUNT_POSITION_DISAPPEARED_WITHOUT_SELL_RECEIPT"
+                result["missing_prior_positions"]=disappeared
+                return result
+            verified_closures.append({
+                "ticker":code,"shares_reported_sold":sales,
+                "closing_status":"USER_DECLARED_FILLED_NOT_BROKER_VERIFIED"})
+        result["reported_closed_positions"]=verified_closures
     result["account_status"]="USER_SUPPLIED_NOT_BROKER_VERIFIED"
     result["position_count"]=len(holdings)
     result["remaining_slots"]=5-len(holdings)
