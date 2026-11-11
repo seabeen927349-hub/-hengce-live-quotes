@@ -116,6 +116,56 @@ class DecisionResearchIntegrationTests(unittest.TestCase):
         self.assertEqual(x['status'],'BLOCKED')
         self.assertEqual(x['human_review_examples'],[])
         self.assertEqual(x['full_market_observations'],[])
+    def add_no_close_eod(self, *, open_='--', high='--', low='--', close='--',
+                         include_ohlc=True):
+        path=self.root/'eod/20261109'
+        status=json.loads((path/'status.json').read_text())
+        status['price_rows']=4
+        (path/'status.json').write_text(json.dumps(status))
+        columns=['Date','Ticker','Name','Close']
+        if include_ohlc:
+            columns += ['Open','High','Low']
+        with (path/'price_2.csv').open('w',newline='',encoding='utf-8') as f:
+            w=csv.DictWriter(f,fieldnames=columns)
+            w.writeheader()
+            row={'Date':self.day,'Ticker':'1538','Name':'正峰','Close':close}
+            if include_ohlc:row.update(Open=open_,High=high,Low=low)
+            w.writerow(row)
+        tg=self.integrated['two_group_research']
+        tg['market_registry_total']=4
+        tg['comparable_stock_count']=4
+        self.integrated['two_group_market_registry'].append({
+            'ticker':'1538','small_shares_delta':-4001,
+            'other_shares_delta':4001,'small_holders_delta':0,
+            'small_share_delta_pp':-0.012387,
+            'same_week_price_return_pct':None,
+            'same_week_price_ownership_pattern':'PRICE_PAIR_MISSING'})
+
+    def test_explicit_no_trade_eod_close_retained_unknown(self):
+        self.add_no_close_eod()
+        closes=original_eod_closes(self.root,self.day)
+        self.assertEqual(len(closes),4)
+        self.assertIsNone(closes['1538']['close'])
+        x=self.result()
+        self.assertEqual(x['status'],'RESEARCH_ADVISORY_READY',x['missing_data'])
+        self.assertEqual(len(x['full_market_observations']),4)
+        miss=next(r for r in x['full_market_observations'] if r['ticker']=='1538')
+        self.assertIsNone(miss['latest_eod_close'])
+        self.assertEqual(miss['review_group'],'兩方資料缺失')
+        self.assertEqual(x['research_summary']['groups']['兩方資料缺失'],1)
+        self.assertIn('3703',{r['ticker'] for r in x['human_review_examples']})
+        self.assertFalse(x['authority']['broker_execution'])
+
+    def test_malformed_no_close_with_executed_ohlc_blocks(self):
+        self.add_no_close_eod(high='7.5')
+        self.assertEqual(original_eod_closes(self.root,self.day),{})
+        self.assertEqual(self.result()['status'],'BLOCKED')
+
+    def test_malformed_no_close_without_ohlc_provenance_blocks(self):
+        self.add_no_close_eod(include_ohlc=False)
+        self.assertEqual(original_eod_closes(self.root,self.day),{})
+        self.assertEqual(self.result()['status'],'BLOCKED')
+
     def test_future_or_mismatched_integrated_date_fails_closed(self):
         self.integrated['observed_eod_date']='2026-11-10'
         x=self.result()
