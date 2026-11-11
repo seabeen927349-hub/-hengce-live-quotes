@@ -148,6 +148,8 @@ class V22MAX5ATRPriceResearchTests(unittest.TestCase):
         self.assertEqual(p["research_initial_floor_from_observed_open"], 94)
         self.assertEqual(p["status"], "OFFICIAL_OPEN_RESEARCH_REFERENCE_NOT_BROKER_FILL")
         self.assertTrue(p["research_buy_fill_not_verified"])
+        self.assertEqual(x["entry_capacity_status"], "NEXT_OPEN_ENTRY_WINDOW_PASSED_NO_NEW_ENTRY")
+        self.assertIsNone(x["one_research_entry_candidate"])
 
     def test_missing_one_official_day_blocks_price_not_buys(self):
         self.populate()
