@@ -62,11 +62,18 @@ class V22WeeklyResearchTests(unittest.TestCase):
         with self.assertRaisesRegex(DataBlocked,"TDCC_NOT_KNOWN_AT_DECISION|TDCC_RECEIPT_PROOF_TIME_MISMATCH"):
             runner._parse_canonical_compat(ROOT,"20261030",decision=date(2026,10,30))
 
-    def test_next_friday_cannot_generate_before_price_is_present(self):
+    def test_next_friday_cannot_generate_if_price_receipt_is_invalid(self):
+        # Replay a deliberately rejected ORIGINAL EOD receipt. Never assume
+        # that 11/11 is still absent: the existing original vessel advances.
         future=datetime.fromisoformat("2026-11-13T20:00:00+08:00")
+        def broken_original_receipt(root,d):
+            if d==date(2026,11,11):
+                raise DataBlocked("SYNTHETIC_ORIGINAL_PRICE_RECEIPT_MISMATCH_TEST")
+            return runner.read_eod_price(root,d)
         with self.assertRaisesRegex(DataBlocked,
                                     "ORIGINAL_EOD_INVALID_NO_SAFE_RESEARCH_FALLBACK:2026-11-11"):
-            runner.inputs(ROOT,date(2026,11,13),asof=future)
+            runner.inputs(ROOT,date(2026,11,13),asof=future,
+                          price_reader=broken_original_receipt)
 
     def test_non_friday_and_before_close_rejected(self):
         with self.assertRaisesRegex(DataBlocked,"V22_RESEARCH_DECISION_NOT_2026_FRIDAY"):
