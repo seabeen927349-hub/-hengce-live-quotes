@@ -366,7 +366,7 @@ def research_top5_observation(now=None, root=None):
         report["status"]="RESEARCH_RECEIPT_UNREADABLE"
     return report
 
-def report(now=None, root=None, *, holdings=None, journal=None, previous=None):
+def report(now=None, root=None, *, holdings=None, journal=None, previous=None, vessel=None):
     """Read-only full scan: separate historical ranking from actual-account review."""
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
@@ -381,7 +381,7 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None):
     except ModuleNotFoundError:
         from hengce_v22d_max5_operations import worklist as max5_worklist
     account_review=max5_worklist(now,root,holdings=holdings,
-                                 journal=journal,previous=previous,selection=v22d)
+                                 journal=journal,previous=previous,selection=v22d,vessel=vessel)
     return {
         "schema_version":3,"system":"HENGCE","module":"HENGCE_SCAN_ONCE_ROUTER",
         "generated_at_taipei":now.isoformat(),"trade_date":now.date().isoformat(),
@@ -408,8 +408,42 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--now");parser.add_argument("--display-only",action="store_true")
+    parser.add_argument("--account-holdings",help="private user-account holdings CSV")
+    parser.add_argument("--account-journal",help="private actual trade journal CSV")
+    parser.add_argument("--previous-worklist",help="previous research-only worklist JSON")
+    parser.add_argument("--original-canonical-2026",help="existing SHA-pinned Library canonical mother CSV, local")
+    parser.add_argument("--original-tdcc-781",help="existing SHA-pinned G1 457-week TDCC cohort, local")
     args=parser.parse_args()
-    now=datetime.fromisoformat(args.now) if args.now else None
-    print(json.dumps(report(now),ensure_ascii=False,indent=2,allow_nan=False))
-    return 0
+    if bool(args.original_canonical_2026)!=bool(args.original_tdcc_781):
+        parser.error("Both original canonical and G1 TDCC original files are required together.")
+    try:
+        try:
+            from scripts.hengce_v22d_max5_operations import _load_csv, HOLDING_COLS, JOURNAL_COLS
+        except ModuleNotFoundError:
+            from hengce_v22d_max5_operations import _load_csv, HOLDING_COLS, JOURNAL_COLS
+        holdings=(_load_csv(args.account_holdings,HOLDING_COLS[:4])
+                  if args.account_holdings else None)
+        journal=(_load_csv(args.account_journal,JOURNAL_COLS)
+                 if args.account_journal else None)
+        previous=(json.loads(Path(args.previous_worklist).read_text(encoding="utf-8"))
+                  if args.previous_worklist else None)
+        vessel=None
+        if args.original_canonical_2026:
+            try:
+                from scripts.hengce_v22d_existing_canonical_atr import OriginalCanonicalMotherATR
+            except ModuleNotFoundError:
+                from hengce_v22d_existing_canonical_atr import OriginalCanonicalMotherATR
+            vessel=OriginalCanonicalMotherATR(
+                Path(args.original_canonical_2026),Path(args.original_tdcc_781))
+        now=datetime.fromisoformat(args.now) if args.now else None
+        result=report(now,holdings=holdings,journal=journal,
+                      previous=previous,vessel=vessel)
+        print(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False))
+        return 0
+    except (OSError,ValueError,TypeError) as e:
+        print(json.dumps({"status":"BLOCKED_INPUT_VALIDATION",
+                          "reason":str(e),"broker_order_execution":False,
+                          "buy_signal":False,"sell_signal":False},
+                         ensure_ascii=False,allow_nan=False))
+        return 2
 if __name__=="__main__":raise SystemExit(main())
