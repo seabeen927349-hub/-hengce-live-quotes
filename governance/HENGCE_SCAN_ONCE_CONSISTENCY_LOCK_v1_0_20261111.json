@@ -1,0 +1,97 @@
+{
+  "schema": "HENGCE_SCAN_ONCE_CONSISTENCY_LOCK_V1",
+  "system": "HENGCE",
+  "command": "衡策掃一次",
+  "effective_date": "2026-11-11",
+  "policy_role": "READ_ONLY_REPORT_CONSISTENCY_NO_SELECTION_OR_EXECUTION_AUTHORITY",
+  "source_of_truth": "GitHub main current files + immutable historical merge receipts + current workflow evidence",
+  "no_new_data_vessel": true,
+  "formal_selection_authority": false,
+  "buy_sell_signal_authority": false,
+  "capital_authority_twd": 0,
+  "broker_execution": false,
+  "preservation": [
+    "HENGCE existing original EOD and historical mother",
+    "TDCC existing canonical and weekly first-observed data",
+    "Existing Fugle / FinMind transport",
+    "V2.2 original research selection",
+    "S5",
+    "Escape",
+    "RMS",
+    "retired Q017"
+  ],
+  "repairs": [
+    {
+      "id": "HBA_NO_CLOSE_EOD",
+      "pr": 77,
+      "merged_commit": "67cb1a4adc164cbd2dc6cf78ecc38075bbc2576b",
+      "deployment": "MERGED",
+      "verification": "HBA_WORKFLOW_COMPLETED_SUCCESS",
+      "verified_run_id": 42938647976,
+      "verified_date": "2026-11-11",
+      "scope": "HBA reporting accepts official OHLC -- without faking a close"
+    },
+    {
+      "id": "READ_ONLY_HEALTH_AUDITOR",
+      "pr": 79,
+      "merged_commit": "3a8888b8922e0d94952d45574134ca400113feef",
+      "deployment": "MERGED",
+      "verification": "MERGE_ONLY_NOT_ALL_MODULES_HEALTHY",
+      "verified_run_id": null,
+      "verified_date": "2026-11-11",
+      "scope": "Independent read-only health evaluator, no Q017"
+    },
+    {
+      "id": "V22_EXISTING_EOD_TDCC_RESEARCH",
+      "pr": 75,
+      "merged_commit": "34271b1a58e66b5ab3da15d448b394427dfefcda",
+      "deployment": "MERGED",
+      "verification": "MERGE_ONLY_NOT_FORMAL_SELECTOR",
+      "verified_run_id": null,
+      "verified_date": "2026-11-10",
+      "scope": "Weekly original V2.2 research using existing EOD and TDCC"
+    },
+    {
+      "id": "V22_EXISTING_FUGLE_OVERLAY",
+      "pr": 76,
+      "merged_commit": "023c7489b2e623becbff75557f38c951bb804e01",
+      "deployment": "MERGED",
+      "verification": "MERGE_ONLY_NOT_CURRENT_QUOTE_COVERAGE",
+      "verified_run_id": null,
+      "verified_date": "2026-11-10",
+      "scope": "Read-only Fugle Top5 observation using existing quote transport"
+    }
+  ],
+  "status_definitions": {
+    "VERIFIED_WORKING": "Timestamped current evidence verifies this specific module; not automatically the whole system",
+    "VERIFIED_FAILED": "Newer directly observed failed run, failed receipt or reproducible regression for this specific module",
+    "AWAITING_SCHEDULE": "Expected production schedule has not arrived; never call this a failure",
+    "AWAITING_PUBLISH_CONFIRMATION": "Schedule time has passed but new output not verified; never infer a failed workflow",
+    "NOT_ENABLED": "Formal model or trading authority not enabled, not a defect",
+    "STALE": "Source old or cache expired, not the same as a code regression",
+    "UNKNOWN_UNVERIFIED": "Missing evidence; do not assert success or failure"
+  },
+  "reporting_order": [
+    "as_of_and_source_versions",
+    "repair_baselines_and_regression_evidence",
+    "current_eod_tdcc_data_dates",
+    "V2.2_research_ranking_date",
+    "S5_Escape_RMS_and_macro_evidence",
+    "positions_and_quote_date",
+    "changes_vs_last_verified_scan"
+  ],
+  "required_rules": [
+    "Read this repository lock before each scan once, including in a new ChatGPT conversation.",
+    "Preserve an earlier verified repair baseline until a NEWER explicit contradicting run or deterministic regression test; never silently reclassify it as broken.",
+    "A merged code fix does not prove that all future workflows succeeded; report repair status separately from current data readiness.",
+    "Different data as-of timestamps can change market outputs; changes must cite input date/version, and same source snapshot plus same model revision must be reproducible.",
+    "Missing today's EOD before its scheduled 23:00 Taipei weekday workflow is AWAITING_SCHEDULE, not FAILED.",
+    "After scheduled time with no receipt, status is AWAITING_PUBLISH_CONFIRMATION until a current GitHub Actions run proves failure or absence.",
+    "V2.2 preferred research mode is NOT_ENABLED for formal selection unless a separate explicit promotion is verified; do not revive Q017.",
+    "Do not equate old live/status.json expired cache with proof that all current Fugle quotes are broken.",
+    "Never claim a complete new scan if only reading previously stored reports; call it read-only inspection.",
+    "Never self-upgrade market data, change trading authority, rebuild vessels, or replace models as part of a reporting-consistency fix."
+  ],
+  "original_eod_schedule_taipei": "23:00 Monday-Friday (GitHub cron may be delayed)",
+  "human_owner_override_allowed_only_with_new_dated_verifiable_evidence": true
+}

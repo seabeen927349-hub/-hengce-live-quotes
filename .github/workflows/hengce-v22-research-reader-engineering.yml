@@ -3,6 +3,9 @@ name: HENGCE V2.2 research receipt reader engineering safety
   pull_request:
     paths:
       - 'scripts/hengce_scan_once_router.py'
+      - 'scripts/hengce_scan_consistency.py'
+      - 'governance/HENGCE_SCAN_ONCE_CONSISTENCY_LOCK_v1_0_20261111.json'
+      - 'tests/engineering/test_hengce_scan_consistency.py'
       - 'tests/fixtures/v22_screen_replay_20261106_historical_no_authority.json'
       - 'tests/engineering/test_hengce_v22_scan_research_observation.py'
       - '.github/workflows/hengce-v22-research-reader-engineering.yml'
@@ -23,7 +26,8 @@ jobs:
       - name: Test replay provenance and fail-closed scan with research-only publication
         run: |
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22_scan_research_observation.py' -v
-          python -m py_compile scripts/hengce_scan_once_router.py
+          python -m unittest discover -s tests/engineering -p 'test_hengce_scan_consistency.py' -v
+          python -m py_compile scripts/hengce_scan_once_router.py scripts/hengce_scan_consistency.py
       - name: Check formal scan no-signal boundary with historical or weekly research receipt
         run: |
           python - <<'PY'
