@@ -78,7 +78,7 @@ def advisory(now, root=None):
     return info
 
 def selected_model_preference(root=None):
-    """Report the user's designated V2.2 preference without activating selection."""
+    """User-selected research version; legacy V2.2 remains separately verifiable."""
     root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
     path=root/"hengce/HENGCE_SELECTION_MODEL_CHOICE_LATEST.json"
     result={"status":"PREFERENCE_UNAVAILABLE","model_id":None,
@@ -86,26 +86,46 @@ def selected_model_preference(root=None):
             "capital_authority_twd":0,"broker_execution":False}
     try:
         x=json.loads(path.read_text(encoding="utf-8"))
-        valid=(x.get("schema")=="HENGCE_SELECTION_MODEL_CHOICE_V1"
-               and x.get("model_package")=="HENGCE_SELECTION_MODEL_V2_2_TOP5"
-               and x.get("choice_status")=="PREFERRED_PENDING_PROMOTION"
-               and x.get("formal_selection_authority") is False
-               and x.get("buy_sell_signal_authority") is False
-               and x.get("capital_authority_twd")==0
-               and x.get("broker_execution") is False
-               and x.get("authorized_lots")==0)
-        if not valid:
+        safety=(x.get("schema")=="HENGCE_SELECTION_MODEL_CHOICE_V1"
+                and x.get("formal_selection_authority") is False
+                and x.get("buy_sell_signal_authority") is False
+                and type(x.get("capital_authority_twd")) is int
+                and x.get("capital_authority_twd")==0
+                and x.get("broker_execution") is False
+                and type(x.get("authorized_lots")) is int
+                and x.get("authorized_lots")==0)
+        if not safety:
             result["status"]="PREFERENCE_INVALID_FAIL_CLOSED"
             return result
-        result.update(status="PREFERRED_RESEARCH_MODEL_NOT_LIVE",
-                      model_id=x.get("model_id"),
-                      model_name=x.get("model_name"),
-                      package_version=x.get("model_package"),
-                      source_pull_request=x.get("source_pull_request"),
-                      promotion_blockers=x.get("why_blocked"),
-                      ranking="TOP5_MEDIAN_TURNOVER",
-                      data_latest=x.get("reference_data_through"))
-    except (OSError,ValueError,TypeError):
+        if (x.get("model_package")=="HENGCE_SELECTION_MODEL_V2_2_D_DAILY_TOP5"
+                and x.get("choice_status")=="PREFERRED_DAILY_RESEARCH_PENDING_PROSPECTIVE"):
+            try:
+                from scripts.hengce_v22d_daily_reader import selected_v22d
+            except ModuleNotFoundError:
+                from hengce_v22d_daily_reader import selected_v22d
+            if not selected_v22d(root):
+                result["status"]="PREFERENCE_INVALID_FAIL_CLOSED"
+                return result
+            result.update(status="PREFERRED_DAILY_RESEARCH_MODEL_NOT_LIVE",
+                          model_id=x["model_id"],model_name=x["model_name"],
+                          package_version=x["model_package"],
+                          promotion_blockers=x.get("why_blocked"),
+                          ranking="V22D_SCORE_ELIGIBILITY_TURNOVER_TOP5",
+                          legacy_v22_role="BENCHMARK_ONLY_NOT_PRIMARY",
+                          data_latest=x.get("reference_data_through"))
+        elif (x.get("model_package")=="HENGCE_SELECTION_MODEL_V2_2_TOP5"
+              and x.get("choice_status")=="PREFERRED_PENDING_PROMOTION"):
+            result.update(status="PREFERRED_RESEARCH_MODEL_NOT_LIVE",
+                          model_id=x.get("model_id"),
+                          model_name=x.get("model_name"),
+                          package_version=x.get("model_package"),
+                          source_pull_request=x.get("source_pull_request"),
+                          promotion_blockers=x.get("why_blocked"),
+                          ranking="TOP5_MEDIAN_TURNOVER",
+                          data_latest=x.get("reference_data_through"))
+        else:
+            result["status"]="PREFERENCE_INVALID_FAIL_CLOSED"
+    except (OSError,ValueError,TypeError,KeyError):
         pass
     return result
 
@@ -139,7 +159,7 @@ def weekly_v22_research_observation(now=None, root=None):
         "authorized_lots":0,"capital_authority_twd":0,"broker_execution":False,
         "not_live_quotes":True,
     }
-    if selected_model_preference(root).get("status")!="PREFERRED_RESEARCH_MODEL_NOT_LIVE":
+    if selected_model_preference(root).get("status") not in ("PREFERRED_RESEARCH_MODEL_NOT_LIVE","PREFERRED_DAILY_RESEARCH_MODEL_NOT_LIVE"):
         result["status"]="V22_PREFERENCE_UNVERIFIED"
         return result
     try:
@@ -259,7 +279,7 @@ def research_top5_observation(now=None, root=None):
             "buy_signal":False,"sell_signal":False,"authorized_lots":0,
             "capital_authority_twd":0,"broker_execution":False,
             "top5":[],"source_path":V22_RESEARCH_PATH}
-    if selected_model_preference(root).get("status")!="PREFERRED_RESEARCH_MODEL_NOT_LIVE":
+    if selected_model_preference(root).get("status") not in ("PREFERRED_RESEARCH_MODEL_NOT_LIVE","PREFERRED_DAILY_RESEARCH_MODEL_NOT_LIVE"):
         report["status"]="V22_PREFERENCE_UNVERIFIED"
         return report
     try:
@@ -350,6 +370,11 @@ def report(now=None, root=None):
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
     v22=research_top5_observation(now,root)
+    try:
+        from scripts.hengce_v22d_daily_reader import observation as v22d_observation
+    except ModuleNotFoundError:
+        from hengce_v22d_daily_reader import observation as v22d_observation
+    v22d=v22d_observation(now,root)
     return {
         "schema_version":3,"system":"HENGCE","module":"HENGCE_SCAN_ONCE_ROUTER",
         "generated_at_taipei":now.isoformat(),"trade_date":now.date().isoformat(),
@@ -364,8 +389,11 @@ def report(now=None, root=None):
           "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None},
           "research_advisory":advisory(now,root),
           "selected_model_preference":selected_model_preference(root),
+          "v22d_primary_research_top5":v22d,
           "v22_research_top5":v22,
+          "v22_legacy_benchmark_only":True,
           "v22_atr_max5_price_plan":build_price_plan(now,root,verified_v22=v22),
+          "v22d_atr_max5_price_plan":build_price_plan(now,root,verified_v22=v22d),
           "consistency_evidence":consistency_snapshot(now,root)},
         "retirement_lock":"hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
         "market_data_collectors":"SEPARATE_UNCHANGED"}
