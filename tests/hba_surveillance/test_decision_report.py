@@ -166,6 +166,64 @@ class DecisionResearchIntegrationTests(unittest.TestCase):
         self.assertEqual(original_eod_closes(self.root,self.day),{})
         self.assertEqual(self.result()['status'],'BLOCKED')
 
+    def test_official_no_close_row_preserves_market_coverage(self):
+        # A real original-EOD row can have no traded close.  It must be
+        # accounted for in price_rows, never substituted with a quote or zero,
+        # and must not cause unrelated researched stocks to disappear.
+        p=self.root/'eod/20261109'
+        status=json.loads((p/'status.json').read_text())
+        status['price_rows']=4
+        (p/'status.json').write_text(json.dumps(status))
+        with (p/'price_1.csv').open('w', newline='', encoding='utf-8') as f:
+            w=csv.DictWriter(f,fieldnames=[
+                'Date','Ticker','Name','Open','High','Low','Close'])
+            w.writeheader()
+            for t,name,close in [('3703','欣陸','22.45'),
+                                 ('6443','元晶','27'),
+                                 ('1416','廣豐','17.95')]:
+                w.writerow({'Date':self.day,'Ticker':t,'Name':name,
+                            'Open':close,'High':close,'Low':close,'Close':close})
+            w.writerow({'Date':self.day,'Ticker':'1538','Name':'正峰',
+                        'Open':'--','High':'--','Low':'--','Close':'--'})
+        self.integrated['two_group_research']['market_registry_total']=4
+        self.integrated['two_group_research']['comparable_stock_count']=4
+        self.integrated['two_group_market_registry'].append({
+            'ticker':'1538','small_shares_delta':-4001,
+            'other_shares_delta':4001,'small_holders_delta':0,
+            'small_share_delta_pp':-0.012387,
+            'same_week_price_return_pct':None,
+            'same_week_price_ownership_pattern':'PRICE_PAIR_MISSING'})
+        prices=original_eod_closes(self.root,self.day)
+        self.assertEqual(len(prices),4)
+        self.assertIsNone(prices['1538']['close'])
+        result=self.result()
+        self.assertEqual(result['status'],'RESEARCH_ADVISORY_READY',result['missing_data'])
+        self.assertEqual(result['research_summary']['market_covered'],4)
+        missing={row['ticker']:row for row in result['full_market_observations']}['1538']
+        self.assertIsNone(missing['latest_eod_close'])
+        self.assertEqual(missing['review_group'],'兩方資料缺失')
+        self.assertEqual(result['authority']['active_selection_strategy_count'],0)
+        self.assertFalse(result['authority']['broker_execution'])
+
+    def test_no_close_with_nonblank_ohlc_fails_closed(self):
+        p=self.root/'eod/20261109'
+        status=json.loads((p/'status.json').read_text())
+        status['price_rows']=4
+        (p/'status.json').write_text(json.dumps(status))
+        with (p/'price_1.csv').open('w',newline='',encoding='utf-8') as f:
+            w=csv.DictWriter(f,fieldnames=[
+                'Date','Ticker','Name','Open','High','Low','Close'])
+            w.writeheader()
+            for t,name,close in [('3703','欣陸','22.45'),
+                                 ('6443','元晶','27'),
+                                 ('1416','廣豐','17.95')]:
+                w.writerow({'Date':self.day,'Ticker':t,'Name':name,
+                            'Open':close,'High':close,'Low':close,'Close':close})
+            w.writerow({'Date':self.day,'Ticker':'1538','Name':'正峰',
+                        'Open':'7.00','High':'--','Low':'--','Close':'--'})
+        self.assertEqual(original_eod_closes(self.root,self.day),{})
+        self.assertEqual(self.result()['status'],'BLOCKED')
+
     def test_future_or_mismatched_integrated_date_fails_closed(self):
         self.integrated['observed_eod_date']='2026-11-10'
         x=self.result()
