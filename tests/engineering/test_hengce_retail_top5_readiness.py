@@ -24,6 +24,8 @@ class FridayReadinessTests(unittest.TestCase):
             "model_package": "HENGCE_SELECTION_MODEL_V2_2_TOP5",
             "choice_status": "PREFERRED_PENDING_PROMOTION",
             "formal_selection_authority": False,
+            "buy_sell_signal_authority": False,
+            "capital_authority_twd": 0,
             "broker_execution": False
         }), encoding="utf-8")
         (self.root / mod.STRATEGY_AUTHORITY).write_text(json.dumps({
@@ -84,6 +86,21 @@ class FridayReadinessTests(unittest.TestCase):
         self.assertEqual(status["calendar_lineage"], "test-lineage")
         self.assertEqual(len(daily), 1)
         self.assertEqual(len(weekly), 1)
+
+    def test_v22d_primary_still_allows_original_weekly_benchmark_readiness(self):
+        pref=json.loads((self.root/mod.MODEL_CHOICE).read_text(encoding="utf-8"))
+        pref.update({
+            "model_package":"HENGCE_SELECTION_MODEL_V2_2_D_DAILY_TOP5",
+            "choice_status":"PREFERRED_DAILY_RESEARCH_PENDING_PROSPECTIVE",
+            "model_id":"v22d_daily_nowcast_liquidity_top5_v1",
+            "original_v22_weekly_status":"RETAINED_READ_ONLY_BENCHMARK_NOT_CURRENT_PRIMARY"
+        })
+        (self.root/mod.MODEL_CHOICE).write_text(json.dumps(pref),encoding="utf-8")
+        state, daily, weekly=self.check()
+        self.assertEqual(state["source_status"],"SOURCE_DATA_PREPARED_RESEARCH_ONLY")
+        self.assertEqual(state["top5"],[])
+        self.assertEqual(len(daily),1)
+        self.assertEqual(len(weekly),1)
 
     def test_one_missing_trading_day_blocks_even_if_source_claims_ready(self):
         self.receipt["sources"]["eod"] = self.receipt["sources"]["eod"][1:]

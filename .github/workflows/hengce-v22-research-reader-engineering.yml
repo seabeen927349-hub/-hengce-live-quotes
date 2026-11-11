@@ -3,6 +3,10 @@ name: HENGCE V2.2 research receipt reader engineering safety
   pull_request:
     paths:
       - 'scripts/hengce_scan_once_router.py'
+      - 'scripts/hengce_v22d_daily_reader.py'
+      - 'hengce/HENGCE_SELECTION_MODEL_CHOICE_LATEST.json'
+      - 'research/retail_top5/v22d_historical_20261105.json'
+      - 'tests/engineering/test_hengce_v22d_primary_switch.py'
       - 'scripts/hengce_v22_max5_atr_price_plan.py'
       - 'governance/HENGCE_V22_ATR_MAX5_PRICE_PLAN_RESEARCH_v1_20261111.json'
       - 'tests/engineering/test_hengce_v22_max5_atr_price_plan.py'
@@ -30,8 +34,10 @@ jobs:
         run: |
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22_scan_research_observation.py' -v
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22_max5_atr_price_plan.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22d_primary_switch.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_retail_top5_readiness.py' -v
           python -m unittest discover -s tests/engineering -p 'test_hengce_scan_consistency.py' -v
-          python -m py_compile scripts/hengce_scan_once_router.py scripts/hengce_scan_consistency.py scripts/hengce_v22_max5_atr_price_plan.py
+          python -m py_compile scripts/hengce_scan_once_router.py scripts/hengce_scan_consistency.py scripts/hengce_v22_max5_atr_price_plan.py scripts/hengce_v22d_daily_reader.py
       - name: Check formal scan no-signal boundary with historical or weekly research receipt
         run: |
           python - <<'PY'

@@ -80,11 +80,24 @@ def market_readiness(root: Path, decision: date, *, today: date | None = None,
     if decision.year != 2026:
         status["blockers"].append("TWSE_PINNED_CALENDAR_YEAR_UNSUPPORTED")
     preference = read_json(root / MODEL_CHOICE)
+    # V2.2 remains the original verified weekly BENCHMARK after the user
+    # designates V2.2-D daily as primary. Do not treat the preference switch
+    # as evidence that the original EOD/TDCC data vessel is broken.
+    legacy = (isinstance(preference,dict)
+              and preference.get("model_package")=="HENGCE_SELECTION_MODEL_V2_2_TOP5"
+              and preference.get("choice_status")=="PREFERRED_PENDING_PROMOTION")
+    v22d = (isinstance(preference,dict)
+            and preference.get("model_package")=="HENGCE_SELECTION_MODEL_V2_2_D_DAILY_TOP5"
+            and preference.get("choice_status")=="PREFERRED_DAILY_RESEARCH_PENDING_PROSPECTIVE"
+            and preference.get("model_id")=="v22d_daily_nowcast_liquidity_top5_v1"
+            and preference.get("original_v22_weekly_status")=="RETAINED_READ_ONLY_BENCHMARK_NOT_CURRENT_PRIMARY")
     if not isinstance(preference, dict) or (
-        preference.get("model_package") != "HENGCE_SELECTION_MODEL_V2_2_TOP5"
-        or preference.get("choice_status") != "PREFERRED_PENDING_PROMOTION"
+        not (legacy or v22d)
         or preference.get("formal_selection_authority") is not False
         or preference.get("broker_execution") is not False
+        or preference.get("buy_sell_signal_authority") is not False
+        or type(preference.get("capital_authority_twd")) is not int
+        or preference.get("capital_authority_twd") != 0
     ):
         status["blockers"].append("V22_USER_MODEL_CHOICE_UNVERIFIED")
     formal = read_json(root / STRATEGY_AUTHORITY)
