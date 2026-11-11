@@ -157,7 +157,11 @@ def observation(now=None,root=None):
         base["reason"]="Uncertified daily receipt may not replace original trained model evidence"
         return base
     d=_read(root/FROZEN)
-    if not validate_historical(d,now):
+    try:
+        validated=validate_historical(d,now)
+    except (ValueError, TypeError, KeyError, OverflowError):
+        validated=False
+    if not validated:
         base["status"]="V22D_HISTORICAL_SOURCE_UNVERIFIED"
         return base
     base.update(status="HISTORICAL_V22D_TOP5_VERIFIED",
