@@ -264,6 +264,27 @@ def worklist(asof=None, root=None, holdings=None, journal=None, previous=None,
     if not isinstance(holdings,list) or len(holdings)>5 or any(not isinstance(x,dict) for x in holdings):
         result["status"]="BLOCKED_MAX5_OR_INVALID_HOLDINGS"
         return result
+    # Never inspect a current-day EOD before the existing 23:00 Taipei
+    # original-vessel schedule. Weekend/holiday reviews use last official day.
+    # This is a conservative time guard; real receipt availability is checked
+    # by OriginalPriceVessel and its unmodified SHA/mother proofs.
+    review_day=asof.date()
+    if review_day.year!=2026:
+        result["status"]="BLOCKED_CALENDAR_COVERAGE"
+        return result
+    if (not is_trading_day(review_day,cal)
+        or asof.time() < time(23,0)):
+        probe=review_day-timedelta(days=1)
+        for _ in range(15):
+            if probe.year==2026 and is_trading_day(probe,cal):
+                review_day=probe
+                break
+            probe-=timedelta(days=1)
+        else:
+            result["status"]="BLOCKED_NO_PRIOR_OFFICIAL_SESSION"
+            return result
+    result["review_eod_session"]=review_day.isoformat()
+    result["new_intraday_quote_claimed"]=False
     codes=[str(h.get("ticker","")).strip() for h in holdings]
     if len(codes)!=len(set(codes)):
         result["status"]="BLOCKED_DUPLICATE_ACCOUNT_HOLDINGS"
@@ -276,7 +297,7 @@ def worklist(asof=None, root=None, holdings=None, journal=None, previous=None,
     result["position_count"]=len(holdings)
     result["remaining_slots"]=5-len(holdings)
     for holding in holdings:
-        p=_review_holding(holding,asof.date(),cal,instrument,prev)
+        p=_review_holding(holding,review_day,cal,instrument,prev)
         result["position_states"].append(p)
         if p["status"]=="EXIT_PENDING_MANUAL_CONFIRMATION":
             result["tasks"].append({
@@ -295,7 +316,7 @@ def worklist(asof=None, root=None, holdings=None, journal=None, previous=None,
     result["v22d_selection_status"]=daily.get("status") if isinstance(daily,dict) else "INVALID"
     possible=(isinstance(daily,dict)
               and daily.get("status")=="CURRENT_V22D_PIT_TOP5_VERIFIED"
-              and daily.get("source_date")==asof.date().isoformat()
+              and daily.get("source_date")==review_day.isoformat()
               and daily.get("current_selection") is True
               and daily.get("formal_selection_authority") is False
               and daily.get("broker_execution") is False
@@ -319,7 +340,7 @@ def worklist(asof=None, root=None, holdings=None, journal=None, previous=None,
         # A verified current daily Top5 can arrive after official EOD. Its
         # entry is NEXT session open, not today's close or tomorrow's guessed price.
         try:
-            target=next_trading_day(asof.date(),cal)
+            target=next_trading_day(review_day,cal)
             proposals=daily.get("top5")
             if not isinstance(proposals,list) or len(proposals)>5:
                 raise OperationsBlocked("V22D_TOP5_SCHEMA_INVALID")
@@ -330,9 +351,9 @@ def worklist(asof=None, root=None, holdings=None, journal=None, previous=None,
                     raise OperationsBlocked("V22D_TOP5_TICKER_INVALID")
                 if ticker in used:
                     continue
-                info=instrument.atr20(asof.date(),ticker,cal)
+                info=instrument.atr20(review_day,ticker,cal)
                 result["candidate"]={
-                    "ticker":ticker,"signal_date":asof.date().isoformat(),
+                    "ticker":ticker,"signal_date":review_day.isoformat(),
                     "planned_next_session":target,
                     "signal_day_official_close":info["official_close"],
                     "signal_atr20":info["atr20"],
