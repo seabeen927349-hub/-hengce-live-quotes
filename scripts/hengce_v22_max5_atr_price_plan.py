@@ -12,9 +12,14 @@ import csv
 import hashlib
 import json
 import math
+import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
+
+SCRIPTS = Path(__file__).resolve().parent
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
 
 from hengce_twse_calendar import (
     _effective, _validate_base_manifest, validate_extraordinary_manifest,
@@ -407,6 +412,30 @@ def build_price_plan(asof: datetime | None = None, root: Path | None = None,
         except (PriceEvidenceBlocked, ValueError) as e:
             row["block_reason"] = str(e)
         out["candidate_price_plans"].append(row)
+    # Never issue five simultaneous buy recommendations from the Top5 list.
+    # A single weekly entry candidate can be determined only with a supplied,
+    # structurally valid actual holdings list; exits do not release capacity
+    # until the user confirms them in the subsequent account snapshot.
+    selected_code = None
+    if holdings is None:
+        capacity = "ACTUAL_ACCOUNT_HOLDINGS_REQUIRED"
+    elif len(holdings) >= 5:
+        capacity = "MAX5_FULL_NO_NEW_ENTRY"
+    else:
+        held_codes = {str(h["ticker"]).strip() for h in holdings}
+        eligible = [r for r in out["candidate_price_plans"]
+                    if r["ticker"] not in held_codes
+                    and r["status"] != "BLOCKED_ATR_EVIDENCE"]
+        if eligible:
+            selected_code = eligible[0]["ticker"]
+            capacity = "ONE_WEEKLY_RESEARCH_ENTRY_SLOT_AVAILABLE"
+        else:
+            capacity = "NO_VERIFIED_ELIGIBLE_RESEARCH_ENTRY"
+    out["entry_capacity_status"] = capacity
+    out["one_research_entry_candidate"] = selected_code
+    for row in out["candidate_price_plans"]:
+        row["within_one_weekly_entry_limit"] = row["ticker"] == selected_code
+        row["account_order_approval_required"] = True
     if not top:
         out["status"] = "VERIFIED_V22_NO_QUALIFIED_CANDIDATES"
     elif all(r["status"] == "BLOCKED_ATR_EVIDENCE" for r in out["candidate_price_plans"]):
