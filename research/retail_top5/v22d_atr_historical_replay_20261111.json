@@ -1,0 +1,83 @@
+{
+  "schema": "HENGCE_V22D_MAX5_ATR_HISTORICAL_REPLAY_V1",
+  "decision_date": "2026-11-11",
+  "built_on": "2026-11-11",
+  "source_kind": "LIBRARY_ORIGINAL_MARKET_MOTHER_AND_EXISTING_CANONICAL_TWSE_EOD_RETROSPECTIVE",
+  "historical_primary_v22d_top5": [
+    "1802",
+    "2886",
+    "2618",
+    "1476",
+    "2610"
+  ],
+  "source_price_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+  "source_canonical_mother_20261111_sha256": "67cc7454094a884c4769d0fa5172bdfba175fc7b95182714a40ced3c42d28d5f",
+  "model_checkpoint_manifest": "research/retail_top5/HENGCE_V22D_ORIGINAL_MODEL_CHECKPOINT_PROVENANCE_20261111.json",
+  "replay_published_before_decision": false,
+  "official_tdcc_true_first_published_time_certified": false,
+  "price_method": "SMA20_TR_20_DAYS_USING_21_CONSECUTIVE_SESSION_OHLC",
+  "next_market_buy_price": null,
+  "buy_price_known": false,
+  "broker_fill_known": false,
+  "entry_formula": "ACTUAL_BROKER_ENTRY_FILL - 2 * SIGNAL_SESSION_ATR20",
+  "trail_formula": "POST_ENTRY_PEAK_CLOSE >= 1.2 * ENTRY_FILL THEN MAX(PREVIOUS_RISK_FLOOR, PEAK_CLOSE-4*CURRENT_SESSION_ATR20)",
+  "exit_formula": "CLOSE<=FLOOR => MANUAL_REVIEW_NEXT_VALID_OPEN; NOT_GUARANTEED_FILL",
+  "rows": [
+    {
+      "ticker": "1802",
+      "close": 76.7,
+      "atr20": 5.48,
+      "rank": 1,
+      "initial_floor_distance_twd": 10.96,
+      "entry_fill_price_twd": null,
+      "initial_risk_floor_twd": null,
+      "risk_floor_is_guaranteed_execution": false
+    },
+    {
+      "ticker": "2886",
+      "close": 54.2,
+      "atr20": 1.775,
+      "rank": 2,
+      "initial_floor_distance_twd": 3.55,
+      "entry_fill_price_twd": null,
+      "initial_risk_floor_twd": null,
+      "risk_floor_is_guaranteed_execution": false
+    },
+    {
+      "ticker": "2618",
+      "close": 47.6,
+      "atr20": 1.2925,
+      "rank": 3,
+      "initial_floor_distance_twd": 2.585,
+      "entry_fill_price_twd": null,
+      "initial_risk_floor_twd": null,
+      "risk_floor_is_guaranteed_execution": false
+    },
+    {
+      "ticker": "1476",
+      "close": 352.5,
+      "atr20": 11.775,
+      "rank": 4,
+      "initial_floor_distance_twd": 23.55,
+      "entry_fill_price_twd": null,
+      "initial_risk_floor_twd": null,
+      "risk_floor_is_guaranteed_execution": false
+    },
+    {
+      "ticker": "2610",
+      "close": 23.5,
+      "atr20": 0.5775,
+      "rank": 5,
+      "initial_floor_distance_twd": 1.155,
+      "entry_fill_price_twd": null,
+      "initial_risk_floor_twd": null,
+      "risk_floor_is_guaranteed_execution": false
+    }
+  ],
+  "research_only": true,
+  "buy_signal": false,
+  "sell_signal": false,
+  "broker_execution": false,
+  "capital_authority_twd": 0,
+  "authorized_lots": 0
+}

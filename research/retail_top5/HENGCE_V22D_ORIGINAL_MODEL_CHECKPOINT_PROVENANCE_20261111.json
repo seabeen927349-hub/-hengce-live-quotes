@@ -1,0 +1,106 @@
+{
+  "schema": "HENGCE_V22D_ORIGINAL_MODEL_REHYDRATION_EVIDENCE_V1",
+  "recorded_on": "2026-11-11",
+  "model": "ORIGINAL_V22D_DAILY_MON_THU_LGBM",
+  "historical_model_archive": "HENGCE_V22_DAILY_NOWCAST_UNLIMITED_2024_2026_RESEARCH_20261111.zip",
+  "history_sources": {
+    "price_original_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+    "tdcc_g1_457_week_mother_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
+    "eod_2026_updated_through": "2026-11-11",
+    "eod_original_mother_20261111_sha256": "67cc7454094a884c4769d0fa5172bdfba175fc7b95182714a40ced3c42d28d5f",
+    "canonical_2026_price_20261111_sha256": "135a7bf4e7d85944cdd34baeac3449654353a4be16b999b04e66cd0a6caabfa8"
+  },
+  "training": {
+    "classification": "LGBMClassifier",
+    "training_period": "2019-01-01 through 2022-12-31",
+    "validation_year": 2023,
+    "training_rows": 481862,
+    "regressor_training_rows": 481862,
+    "hyperparams": {
+      "n_estimators": 180,
+      "num_leaves": 15,
+      "max_depth": 5,
+      "learning_rate": 0.045,
+      "min_child_samples": 250,
+      "reg_lambda": 10,
+      "random_state": 11011
+    },
+    "feature_columns": [
+      "weekday",
+      "known_lag",
+      "log_known",
+      "last_known_delta",
+      "prior_known_delta",
+      "ret1",
+      "ret5",
+      "ret10",
+      "ret20",
+      "turnratio5_20",
+      "margin10",
+      "intradayrange",
+      "logturn20",
+      "thiswk_turnratio",
+      "thiswkret",
+      "netfrac"
+    ]
+  },
+  "original_models_sha256": {
+    "classifier": "db47b6f2276150610972d50a8f2b1a9d816eb89fc415d41db5c81b12c1c94a97",
+    "regressor": "8e6931fa9b4ca4324db3b24feb47312bbcbdb9030388e00ab5e8f2e36b014c06",
+    "known_only_comparison_classifier": "09ee213796b24c3c815c815b20d77365ade4d82b055bbc31a0a45e632a8350f0"
+  },
+  "model_weights_location": {
+    "kind": "PRIVATE_USER_CHATGPT_LIBRARY",
+    "library_path": "/HENGCE/Research Outputs/HENGCE_V22D_ORIGINAL_REHYDRATED_MODEL_PROOF_20261111.zip",
+    "artifact_sha256": "412a703074cd76d5a8d258a39b4be7db55bf1c10fc4da5a5c50b9451104e0edb",
+    "public_github_weights_published": false,
+    "required_to_produce_new_predictions": true
+  },
+  "reproducibility": {
+    "frozen_20261105_predictions_compared": 737,
+    "frozen_20261105_predictions_matched": 737,
+    "max_abs_score_difference": 2.7619171172332813e-8,
+    "max_abs_week_end_holder_estimate_difference": 0.05,
+    "replayed_official_data_through": "2026-11-11",
+    "replay_dates": [
+      "2026-11-05",
+      "2026-11-09",
+      "2026-11-10",
+      "2026-11-11"
+    ],
+    "replay_20261111_historical_top5": [
+      "1802",
+      "2886",
+      "2618",
+      "1476",
+      "2610"
+    ]
+  },
+  "strategy": {
+    "daily_prediction_scope": "MONDAY_THROUGH_THURSDAY_OFFICIAL_SESSION_POST_CLOSE",
+    "official_asof_tdcc_lag_calendar_days_min": 14,
+    "score_field": "unadjusted_week_end_le10_holder_decline_score",
+    "score_min": 0.5,
+    "price_gates": "RETAIN_ORIGINAL_V22D_PRICE_GATES",
+    "ranking": "20D_MEDIAN_TURNOVER_DESC_TICKER_ASC",
+    "max_top5": 5,
+    "real_daily_retail_holders_known": false,
+    "score_is_calibrated_probability": false
+  },
+  "limitations": [
+    "MODEL_REHYDRATED_RETROSPECTIVELY_ON_2026_11_11_NOT_PROSPECTIVELY_FROZEN_BEFORE_EACH_DECISION",
+    "OFFICIAL_TDCC_FIRST_PUBLICATION_TIMESTAMPS_NOT_FULLY_VERIFIED_14DAY_PROXY",
+    "NO_LIVE_MODEL_DEPLOYMENT_TO_GITHUB_ACTIONS_PRIVATE_MODEL_WEIGHTS_NOT_PUBLIC",
+    "OUTSIDE_ORDER_AND_BROKER_AUTHORITY",
+    "CURRENT_OFFICIAL_EOD_21_DAY_SOURCE_RECEIPTS_IN_PUBLIC_GITHUB_INCOMPLETE",
+    "NO_ACTUAL_ACCOUNT_ENTRY_DATE_FILL_AND_HISTORICAL_SIGNAL_ATR_PROOF"
+  ],
+  "current_status": "PRIVATE_MODEL_CHECKPOINT_REHYDRATED_AND_SOURCE_PINNED_NOT_LIVE",
+  "not_a_daily_live_signal": true,
+  "formal_selection_authority": false,
+  "buy_signal": false,
+  "sell_signal": false,
+  "broker_execution": false,
+  "capital_authority_twd": 0,
+  "authorized_lots": 0
+}

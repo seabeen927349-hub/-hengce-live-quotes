@@ -4,6 +4,9 @@ name: HENGCE V2.2 research receipt reader engineering safety
     paths:
       - 'scripts/hengce_scan_once_router.py'
       - 'scripts/hengce_v22d_daily_reader.py'
+      - 'research/retail_top5/HENGCE_V22D_ORIGINAL_MODEL_CHECKPOINT_PROVENANCE_20261111.json'
+      - 'research/retail_top5/v22d_atr_historical_replay_20261111.json'
+      - 'tests/engineering/test_hengce_v22d_checkpoint_provenance.py'
       - 'scripts/hengce_v22d_max5_operations.py'
       - 'tests/engineering/test_hengce_v22d_max5_operations.py'
       - 'hengce/HENGCE_SELECTION_MODEL_CHOICE_LATEST.json'
@@ -37,6 +40,7 @@ jobs:
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22_scan_research_observation.py' -v
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22_max5_atr_price_plan.py' -v
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22d_primary_switch.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22d_checkpoint_provenance.py' -v
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22d_max5_operations.py' -v
           python -m unittest discover -s tests/engineering -p 'test_hengce_retail_top5_readiness.py' -v
           python -m unittest discover -s tests/engineering -p 'test_hengce_scan_consistency.py' -v
