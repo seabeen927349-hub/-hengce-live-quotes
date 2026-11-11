@@ -57,3 +57,29 @@ python scripts/hengce_v22d_max5_operations.py \
 - 兩方 V2.2-D 輸出的是尚未公布的週末 TDCC 戶數**推估分數**，不是真正每天的戶數，也不是未來股價上漲機率。
 - MAX5 單人限制與 ATR 風控規則是**操作研究版**，不是已證明優於原 V2.2 的完整實盤績效。
 - 若缺已知 ATR20、官方21交易日 EOD、帳戶更新、PIT 模型或正式公告時間，明確顯示 `WAITING` / `BLOCKED`，絕不編造 Top5、買賣價或「沒有候選股」。
+
+
+## 已有原血管的 781 檔 ATR20 讀取（可選，2026-11-11 歷史母體）
+
+2026-11-12 新增唯讀適配器 `scripts/hengce_v22d_existing_canonical_atr.py`。它**不是第二條行情血管**，只讀原本已存在於衡策私人 Library 的兩份原始檔，先做完整 SHA256 與固定 781 檔 cohort 驗證；不另行下載行情、不改動集保母體。
+
+- 原始檔一：`/HENGCE_CANONICAL/HENGCE_2026_HIST_MOTHER.csv`，SHA256 `67cc7454094a884c4769d0fa5172bdfba175fc7b95182714a40ced3c42d28d5f`。
+- 原始檔二：`/HENGCE_CANONICAL/RESEARCH/BEHAVIOR_ATLAS_20261107/G1/RETAIL_HEADCOUNTS_V2/HENGCE_G1_TDCC_RETAIL_457_WEEK_MATCHED_PANEL_2018_2026.csv.gz`，SHA256 `71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88`。
+- 此 SHA 封存母體**只含至 2026-11-11**；11/12 以後任何新行情都必須重新取得已驗證、已封存的原血管資料，不可沿用舊數據產生新訊號。若日期超過封存日就直接阻擋，**不能把歷史 ATR 當作今日 ATR**。
+- 實算 781 檔，718 檔資料可完整核對 21 個交易日 OHLC、63 檔缺少必要資料或不符合來源驗證。結果留在使用者私人 Library `/HENGCE/Research Outputs/HENGCE_V22D_ORIGINAL_781_ATR20_20261111.csv`，僅統計與 SHA 摘要寫在公開 Repo。
+
+在電腦上**自行將上述兩份原檔安全下載至私有本機路徑**後，可選擇讓既有 `衡策掃一次` 讀取，例：
+
+```bash
+python scripts/hengce_scan_once_router.py \
+  --now '2026-11-12T00:50:00+08:00' \
+  --account-holdings /secure/holdings.csv \
+  --account-journal /secure/trade_journal.csv \
+  --previous-worklist /secure/previous_worklist.json \
+  --original-canonical-2026 /secure/HENGCE_2026_HIST_MOTHER.csv \
+  --original-tdcc-781 /secure/HENGCE_G1_TDCC_RETAIL_457_WEEK_MATCHED_PANEL_2018_2026.csv.gz
+```
+
+- `--previous-worklist` 在**首次**使用時可省略，其後延續已觸發的退出狀態；不可把上一期已觸發退出的工作單刻意省略來消除該待辦。
+- 原 EOD 主血管與模型研究未更動。此操作需要真實的**入場日期、實際成交價、入場訊號當時 ATR**；以上任何一項不存在，風控價就保持 `BLOCKED`。
+- 此接線先驗收歷史 ATR 與人工帳戶風控讀取；它不替代真正 V2.2-D 每日事前封存模型、TDCC 首見發表時戳、企業行動處理，或券商成交確認。依舊 `buy_signal/sell_signal=false`、`broker_execution=false`。
