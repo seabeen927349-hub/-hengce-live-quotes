@@ -4,6 +4,10 @@ import argparse,json,hashlib
 from datetime import datetime,date
 from pathlib import Path
 from zoneinfo import ZoneInfo
+try:
+    from scripts.hengce_scan_consistency import consistency_snapshot
+except ModuleNotFoundError:  # python scripts/hengce_scan_once_router.py
+    from hengce_scan_consistency import consistency_snapshot
 TZ=ZoneInfo("Asia/Taipei")
 ADVISORY_PATH="research/hba_surveillance/decision_latest.json"
 def advisory(now, root=None):
@@ -355,7 +359,8 @@ def report(now=None, root=None):
           "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None},
           "research_advisory":advisory(now,root),
           "selected_model_preference":selected_model_preference(root),
-          "v22_research_top5":research_top5_observation(now,root)},
+          "v22_research_top5":research_top5_observation(now,root),
+          "consistency_evidence":consistency_snapshot(now,root)},
         "retirement_lock":"hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
         "market_data_collectors":"SEPARATE_UNCHANGED"}
 def main():
