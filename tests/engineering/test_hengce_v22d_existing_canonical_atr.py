@@ -41,7 +41,7 @@ class OriginalCanonicalATRTests(unittest.TestCase):
             dest.parent.mkdir(parents=True,exist_ok=True)
             dest.write_bytes((ROOT/path).read_bytes())
         cls.cal=_calendar(cls.root)
-        cls.days=_sessions_ending(cls.cal,DAY,21)
+        cls.days=_sessions_ending(cls.cal,DAY,22)
         cls.mother=cls.root/"original_2026_mother.csv"
         cls.tdcc=cls.root/"original_fixed_781_tdcc.csv.gz"
         with cls.mother.open("w",encoding="utf-8",newline="") as f:
@@ -77,7 +77,7 @@ class OriginalCanonicalATRTests(unittest.TestCase):
         x=v.atr20(DAY,"1802",self.cal)
         self.assertEqual(x["atr20"],3)
         self.assertEqual(x["official_close"],102)
-        self.assertEqual(x["start_session"],self.days[0].isoformat())
+        self.assertEqual(x["start_session"],self.days[-21].isoformat())
         self.assertEqual(x["through_session"],DAY.isoformat())
         self.assertEqual(x["observation_sessions"],21)
         self.assertEqual(x["method"],"SMA20_OF_TRUE_RANGE")
