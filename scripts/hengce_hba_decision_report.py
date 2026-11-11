@@ -75,10 +75,10 @@ def original_eod_closes(root, day):
                         # regular-session close (e.g. 1538/2314 on 2026-11-10).
                         # Record missing as null; never use the previous close,
                         # quote, zero, or a fabricated EOD price.
-                        if close_text!='--' or any(
-                            str(row.get(k) or '--').strip()!='--'
-                            for k in ('Open','High','Low')
-                        ):
+                        if (close_text!='--'
+                            or not {'Open','High','Low'}.issubset(reader.fieldnames or ())
+                            or any(str(row.get(k) or '').strip()!='--'
+                                   for k in ('Open','High','Low'))):
                             return {}
                         close=None
                     prices[ticker]={'name':row.get('Name') or ticker,'close':close}
