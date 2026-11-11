@@ -167,7 +167,7 @@ class DecisionResearchIntegrationTests(unittest.TestCase):
         self.assertEqual(self.result()['status'],'BLOCKED')
 
     def test_official_no_close_row_preserves_market_coverage(self):
-        # A real original-EOD row can have no traded close.  It must be
+        # A real original-EOD row can lack a regular-session close.  It must be
         # accounted for in price_rows, never substituted with a quote or zero,
         # and must not cause unrelated researched stocks to disappear.
         p=self.root/'eod/20261109'
@@ -246,6 +246,22 @@ class DecisionResearchIntegrationTests(unittest.TestCase):
         self.assertEqual(x['research_summary']['s5'],'NOT_PROVIDED')
         self.assertEqual(x['research_summary']['escape'],'NOT_PROVIDED')
         self.assertIn('沒有買賣訊號',markdown(x))
+    def test_real_original_20261110_eod_no_close_rows(self):
+        # Exercise the original immutable HENGCE EOD, rather than only
+        # artificial fixtures. Two names have an official missing regular
+        # session close, yet all 1,091 rows must remain accounted for.
+        repo=Path(__file__).resolve().parents[2]
+        day=repo/'eod/20261110/status.json'
+        if not day.is_file():
+            self.skipTest('2026-11-10 EOD not available in checkout')
+        status=json.loads(day.read_text(encoding='utf-8'))
+        self.assertEqual(status['price_rows'],1091)
+        prices=original_eod_closes(repo,'2026-11-10')
+        self.assertEqual(len(prices),1091)
+        self.assertEqual({t for t,v in prices.items() if v['close'] is None},
+                         {'1538','2314'})
+        self.assertAlmostEqual(prices['3042']['close'],141.5)
+
     def test_full_repository_20261109_market_snapshot(self):
         # Verify the actual original 1,082-name market snapshot instead of
         # passing only handcrafted three-stock fixtures.
