@@ -1,0 +1,93 @@
+{
+  "schema": "HENGCE_V22D_ORIGINAL_CANONICAL_ATR_781_AUDIT_V1",
+  "research_asof_date": "2026-11-11",
+  "recorded_date": "2026-11-12",
+  "date_range_21_sessions": [
+    "2026-10-12",
+    "2026-10-13",
+    "2026-10-14",
+    "2026-10-15",
+    "2026-10-16",
+    "2026-10-19",
+    "2026-10-20",
+    "2026-10-21",
+    "2026-10-22",
+    "2026-10-27",
+    "2026-10-28",
+    "2026-10-29",
+    "2026-10-30",
+    "2026-11-02",
+    "2026-11-03",
+    "2026-11-04",
+    "2026-11-05",
+    "2026-11-06",
+    "2026-11-09",
+    "2026-11-10",
+    "2026-11-11"
+  ],
+  "fixed_original_2018_big400_ge50_universe_count": 781,
+  "price_valid_atr20_count": 718,
+  "price_invalid_or_missing_atr20_count": 63,
+  "source_existing_mother_2026_sha256": "67cc7454094a884c4769d0fa5172bdfba175fc7b95182714a40ced3c42d28d5f",
+  "source_existing_tdcc_457_week_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
+  "result_csv_sha256": "afe8047e5bae8974bbf5c9deb06a22f88c2a736203822991d25131c7a9032e00",
+  "result_csv_private_library_path": "/HENGCE/Research Outputs/HENGCE_V22D_ORIGINAL_781_ATR20_20261111.csv",
+  "result_summary_private_library_path": "/HENGCE/Research Outputs/HENGCE_V22D_ORIGINAL_781_ATR20_20261111_summary.json",
+  "model_selection_source": "RECONSTRUCTED_ORIGINAL_V22D_MODEL_RETROSPECTIVE",
+  "entry_atr20": "SIMPLE_AVERAGE_OF_20_TRUE_RANGES_ON_21_VERIFIED_OFFICIAL_SESSIONS",
+  "not_adjusted_for_corporate_actions": true,
+  "historical_exante_certified": false,
+  "daily_tdcc_true_observed_count": false,
+  "retrospective_only": true,
+  "top5_historical": [
+    {
+      "ticker": "1802",
+      "official_close": 76.7,
+      "atr20": 5.48,
+      "two_atr_distance": 10.96
+    },
+    {
+      "ticker": "2886",
+      "official_close": 54.2,
+      "atr20": 1.775,
+      "two_atr_distance": 3.55
+    },
+    {
+      "ticker": "2618",
+      "official_close": 47.6,
+      "atr20": 1.2925,
+      "two_atr_distance": 2.585
+    },
+    {
+      "ticker": "1476",
+      "official_close": 352.5,
+      "atr20": 11.775,
+      "two_atr_distance": 23.55
+    },
+    {
+      "ticker": "2610",
+      "official_close": 23.5,
+      "atr20": 0.5775,
+      "two_atr_distance": 1.155
+    }
+  ],
+  "position_reference_3042": {
+    "official_close": 145.5,
+    "atr20": 11.2,
+    "two_atr_distance": 22.4,
+    "actual_entry_signal_atr_unknown": true,
+    "not_an_actual_stop_or_buy_price": true
+  },
+  "formal_selection_authority": false,
+  "buy_signal": false,
+  "sell_signal": false,
+  "broker_execution": false,
+  "capital_authority_twd": 0,
+  "authorized_lots": 0,
+  "missing_to_go_live": [
+    "EXACT_NEW_DAY_OFFICIAL_CANONICAL_EOD_AFTER_20261111",
+    "TRUE_FIRST_PUBLISHED_TDCC_TIMESTAMPS",
+    "PRIVATE_MODEL_SECURE_PROSPECTIVE_EXECUTION_AND_TIMESTAMP_RECEIPT",
+    "ACTUAL_ACCOUNT_ENTRY_DATE_ENTRY_FILL_AND_ENTRY_SIGNAL_ATR20"
+  ]
+}
