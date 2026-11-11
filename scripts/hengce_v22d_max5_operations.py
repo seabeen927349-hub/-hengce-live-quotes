@@ -312,9 +312,16 @@ def worklist(asof=None, root=None, holdings=None, journal=None, previous=None,
     journal_status,week=_journal_checks(journal,holdings,asof.date())
     result["journal_status"]=journal_status
     result["weekly_buy_usage"]=week
-    daily=selection if selection is not None else observation(asof,root)
+    # A caller-supplied ranking cannot counterfeit the canonical model
+    # receipt. The source reader (which currently fails closed on absent PIT
+    # checkpoint evidence) MUST independently return the identical snapshot.
+    canonical=observation(asof,root)
+    daily=canonical if selection is None else selection
+    source_bound=(isinstance(daily,dict) and daily==canonical)
     result["v22d_selection_status"]=daily.get("status") if isinstance(daily,dict) else "INVALID"
-    possible=(isinstance(daily,dict)
+    result["source_receipt_matches_repo_reader"]=source_bound
+    possible=(source_bound
+              and isinstance(daily,dict)
               and daily.get("status")=="CURRENT_V22D_PIT_TOP5_VERIFIED"
               and daily.get("source_date")==review_day.isoformat()
               and daily.get("current_selection") is True
