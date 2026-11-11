@@ -366,7 +366,8 @@ def research_top5_observation(now=None, root=None):
         report["status"]="RESEARCH_RECEIPT_UNREADABLE"
     return report
 
-def report(now=None, root=None):
+def report(now=None, root=None, *, holdings=None, journal=None, previous=None):
+    """Read-only full scan: separate historical ranking from actual-account review."""
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
     v22=research_top5_observation(now,root)
@@ -375,6 +376,12 @@ def report(now=None, root=None):
     except ModuleNotFoundError:
         from hengce_v22d_daily_reader import observation as v22d_observation
     v22d=v22d_observation(now,root)
+    try:
+        from scripts.hengce_v22d_max5_operations import worklist as max5_worklist
+    except ModuleNotFoundError:
+        from hengce_v22d_max5_operations import worklist as max5_worklist
+    account_review=max5_worklist(now,root,holdings=holdings,
+                                 journal=journal,previous=previous,selection=v22d)
     return {
         "schema_version":3,"system":"HENGCE","module":"HENGCE_SCAN_ONCE_ROUTER",
         "generated_at_taipei":now.isoformat(),"trade_date":now.date().isoformat(),
@@ -390,6 +397,7 @@ def report(now=None, root=None):
           "research_advisory":advisory(now,root),
           "selected_model_preference":selected_model_preference(root),
           "v22d_primary_research_top5":v22d,
+          "v22d_max5_daily_account_worklist":account_review,
           "v22_research_top5":v22,
           "v22_legacy_benchmark_only":True,
           "v22_atr_max5_price_plan":build_price_plan(now,root,verified_v22=v22),
