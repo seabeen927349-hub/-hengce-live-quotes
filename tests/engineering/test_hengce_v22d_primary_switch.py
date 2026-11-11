@@ -22,7 +22,12 @@ class V22DPrimarySwitchTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name)
-        for file in (PREF,V22D,V22):
+        for file in (
+            PREF, V22D, V22,
+            "governance/HENGCE_V22_ATR_MAX5_PRICE_PLAN_RESEARCH_v1_20261111.json",
+            "governance/TWSE_TRADING_CALENDAR_2026_v1.json",
+            "governance/TWSE_EXTRAORDINARY_CLOSURES_2026_v1.json",
+        ):
             target=self.root/file
             target.parent.mkdir(parents=True,exist_ok=True)
             target.write_bytes((ROOT/file).read_bytes())
