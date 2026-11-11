@@ -8,6 +8,10 @@ try:
     from scripts.hengce_scan_consistency import consistency_snapshot
 except ModuleNotFoundError:  # python scripts/hengce_scan_once_router.py
     from hengce_scan_consistency import consistency_snapshot
+try:
+    from scripts.hengce_v22_max5_atr_price_plan import build_price_plan
+except ModuleNotFoundError:  # python scripts/hengce_scan_once_router.py
+    from hengce_v22_max5_atr_price_plan import build_price_plan
 TZ=ZoneInfo("Asia/Taipei")
 ADVISORY_PATH="research/hba_surveillance/decision_latest.json"
 def advisory(now, root=None):
@@ -345,6 +349,7 @@ def research_top5_observation(now=None, root=None):
 def report(now=None, root=None):
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
+    v22=research_top5_observation(now,root)
     return {
         "schema_version":3,"system":"HENGCE","module":"HENGCE_SCAN_ONCE_ROUTER",
         "generated_at_taipei":now.isoformat(),"trade_date":now.date().isoformat(),
@@ -359,7 +364,8 @@ def report(now=None, root=None):
           "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None},
           "research_advisory":advisory(now,root),
           "selected_model_preference":selected_model_preference(root),
-          "v22_research_top5":research_top5_observation(now,root),
+          "v22_research_top5":v22,
+          "v22_atr_max5_price_plan":build_price_plan(now,root,verified_v22=v22),
           "consistency_evidence":consistency_snapshot(now,root)},
         "retirement_lock":"hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
         "market_data_collectors":"SEPARATE_UNCHANGED"}
