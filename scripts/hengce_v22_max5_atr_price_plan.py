@@ -322,7 +322,9 @@ def build_price_plan(asof: datetime | None = None, root: Path | None = None,
                 and isinstance(safety, dict)
                 and all(safety.get(k) is False for k in
                         ("broker_execution", "formal_selection_authority",
-                         "buy_signal", "sell_signal", "capital_authority_twd"))
+                         "buy_signal", "sell_signal"))
+                and type(safety.get("capital_authority_twd")) is int
+                and safety["capital_authority_twd"] == 0
                 and all(safety.get(k) is True for k in
                         ("no_new_market_data_vessels", "no_second_mother",
                          "no_synthetic_ATR",
