@@ -314,11 +314,20 @@ def build_price_plan(asof: datetime | None = None, root: Path | None = None,
     }
     try:
         spec = _json(root / LOCK)
+        safety = spec.get("safety", {})
         if not (spec.get("schema") == "HENGCE_V22_ATR_MAX5_PRICE_RESEARCH_V1"
                 and spec.get("model") == out["model"]
-                and spec.get("no_complete_data_behavior", "").startswith("BLOCK_")
-                and spec.get("safety", {}).get("broker_execution") is False
-                and spec.get("safety", {}).get("formal_selection_authority") is False):
+                and isinstance(spec.get("no_complete_data_behavior"), str)
+                and spec["no_complete_data_behavior"].startswith("BLOCK_")
+                and isinstance(safety, dict)
+                and all(safety.get(k) is False for k in
+                        ("broker_execution", "formal_selection_authority",
+                         "buy_signal", "sell_signal", "capital_authority_twd"))
+                and all(safety.get(k) is True for k in
+                        ("no_new_market_data_vessels", "no_second_mother",
+                         "no_synthetic_ATR",
+                         "cannot_use_unverified_retrospective_weekly_top5_for_current_entry",
+                         "needs_21_consecutive_official_OHLC_sessions"))):
             raise PriceEvidenceBlocked("MAX5_PRICE_POLICY_UNVERIFIED")
         out["policy_version"] = spec["schema"]
         cal = _calendar(root)
