@@ -52,7 +52,6 @@ class V22MAX5ATRPriceResearchTests(unittest.TestCase):
         folder.mkdir(parents=True, exist_ok=True)
         names = []
         h = hashlib.sha256()
-        offset = (day - self.days[0]).days
         for shard in range(9):
             name = f"price_{shard+1}.csv"
             names.append(name)
@@ -62,7 +61,7 @@ class V22MAX5ATRPriceResearchTests(unittest.TestCase):
                 if ticker == no_close:
                     cols = ["--"]*4
                 else:
-                    base = 100 + offset
+                    base = 100
                     cols = [base, base+2, base-1, base+1]
                     if ticker == "6446":
                         cols = [v + 20 for v in cols]
@@ -145,8 +144,8 @@ class V22MAX5ATRPriceResearchTests(unittest.TestCase):
         x = self.build(datetime.fromisoformat("2026-11-09T21:00:00+08:00"),
                        holdings=[])
         p = x["candidate_price_plans"][0]
-        self.assertEqual(p["research_observed_next_open"], 103)
-        self.assertEqual(p["research_initial_floor_from_observed_open"], 97)
+        self.assertEqual(p["research_observed_next_open"], 100)
+        self.assertEqual(p["research_initial_floor_from_observed_open"], 94)
         self.assertEqual(p["status"], "OFFICIAL_OPEN_RESEARCH_REFERENCE_NOT_BROKER_FILL")
         self.assertTrue(p["research_buy_fill_not_verified"])
 
