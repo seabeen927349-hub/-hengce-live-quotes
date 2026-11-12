@@ -83,6 +83,19 @@ class Surveillance(unittest.TestCase):
   source.write_text(json.dumps(p))
   self.assertNotIn('individual_sources',env(self.root,'2026-11-12'))
 
+ def test_existing_finmind_success_refreshes_original_hba_without_recursive_source(self):
+  root=Path(__file__).resolve().parents[2]
+  workflow=(root/'.github/workflows/hengce-hba-daily-surveillance.yml').read_text()
+  self.assertIn('HENGCE Escape TWSE Common FinMind Shadow',workflow)
+  self.assertIn("github.event.workflow_run.name == 'HENGCE Escape TWSE Common FinMind Shadow'",workflow)
+  self.assertIn("github.event.workflow_run.head_branch == 'main'",workflow)
+  self.assertIn('github.event.workflow_run.head_repository.full_name == github.repository',workflow)
+  self.assertIn("github.event.workflow_run.conclusion == 'success'",workflow)
+  self.assertIn("github.event.workflow_run.event == 'workflow_run'",workflow)
+  finmind_gate=(root/'scripts/hengce_finmind_trigger_gate.py').read_text()
+  self.assertIn('if source.get("event") not in ("schedule","workflow_dispatch"):',finmind_gate)
+  # A workflow_run HBA run cannot re-trigger FinMind from the same workflow.
+
  def test_stale_eod_blocked(self):
   self.assertEqual(scan(self.root,'2026-12-01')['data_gate'],'BLOCKED')
 if __name__=='__main__':unittest.main()
