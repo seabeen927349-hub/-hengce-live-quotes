@@ -3,6 +3,7 @@ import copy
 import datetime as dt
 import hashlib
 import json
+import math
 import tempfile
 import unittest
 from pathlib import Path
@@ -27,6 +28,23 @@ def signed(obj):
 
 
 def fixture():
+    # Synthetic test-only attribution; the actual private checkpoint is
+    # verified separately against source SHA and its real model predictions.
+    score = 0.5752304792404175
+    raw = math.log(score/(1-score))
+    audit = {
+        "method": "LIGHTGBM_TREE_SHAP_RAW_LOG_ODDS",
+        "model_target": "CURRENT_WEEK_LE10_HOLDERS_VS_TWO_WEEKS_PRIOR_DECREASE_GE_1PCT",
+        "baseline_raw_log_odds": 0.0,
+        "feature_inputs": {feature: 0.0 for feature in FEATURES},
+        "feature_contributions_raw_log_odds":
+            {feature: (raw if feature=="ret20" else 0.0) for feature in FEATURES},
+        "raw_log_odds": raw,
+        "sum_reconstructed_raw_log_odds": raw,
+        "sigmoid_reconstructed_score": score,
+        "score_is_calibrated_probability": False,
+        "score_is_expected_stock_return": False,
+    }
     return signed({
         "schema": "HENGCE_V22D_PRIVATE_ORIGINAL_CHECKPOINT_REPLAY_V1",
         "system": "HENGCE", "model_id": "v22d_daily_nowcast_liquidity_top5_v1",
@@ -35,6 +53,11 @@ def fixture():
         "generated_at_taipei": "2026-11-12T09:40:00+08:00",
         "fixed_cohort_count": 781, "feature_coverage": 737,
         "qualified_count": 1,
+        "score_formula": "SIGMOID(BASE_LOG_ODDS_PLUS_16_FEATURE_CONTRIBUTIONS)",
+        "score_feature_order": list(FEATURES),
+        "target_event": "CURRENT_WEEK_LE10_HOLDERS_VS_TWO_WEEKS_PRIOR_DECREASE_GE_1PCT",
+        "score_cutoff": 0.50,
+        "score_explanations_are_causal_effects": False,
         "last_assumed_tdcc_snapshot": "2026-10-22",
         "source_sha256": {
             "original_prices": PRICE_HASH, "original_tdcc": TDCC_HASH,
@@ -54,7 +77,8 @@ def fixture():
                   "last_assumed_available_tdcc_date": "2026-10-22",
                   "last_known_le10_holder_count": 191579.0,
                   "estimated_week_end_le10_holder_count": 190423.8,
-                  "last_verified_close": 76.7}]
+                  "last_verified_close": 76.7,
+                  "score_explanation": audit}]
     })
 
 
@@ -85,6 +109,8 @@ class V22DPrivateOriginalTests(unittest.TestCase):
                          "PRIVATE_V22D_ORIGINAL_REPLAY_VERIFIED_RESEARCH_ONLY")
         self.assertEqual([y["ticker"] for y in x["top5"]], ["1802"])
         self.assertEqual(x["model_coverage"], 737)
+        self.assertEqual(x["score_audit"],
+                         "ALL_TOP5_16_FEATURE_CONTRIBUTIONS_RECONSTRUCTED")
         self.assertFalse(x["buy_signal"])
         self.assertFalse(x["current_selection"])
         self.assertFalse(x["formal_selection_authority"])
@@ -94,6 +120,24 @@ class V22DPrivateOriginalTests(unittest.TestCase):
         p = fixture()
         p["top5"][0]["ticker"] = "3042"
         self.assertEqual(self.put(p)["status"], "PRIVATE_REPLAY_RECEIPT_REJECTED")
+
+    def test_resigned_fake_score_or_missing_feature_rejected(self):
+        p = fixture()
+        p["top5"][0]["daily_decline_score"] = 0.9
+        self.assertEqual(self.put(signed(p))["status"],
+                         "PRIVATE_REPLAY_SCORE_AUDIT_REJECTED")
+        p = fixture()
+        p["top5"][0]["score_explanation"]["feature_contributions_raw_log_odds"]["ret20"] += 0.15
+        self.assertEqual(self.put(signed(p))["status"],
+                         "PRIVATE_REPLAY_SCORE_AUDIT_REJECTED")
+        p = fixture()
+        p["top5"][0]["score_explanation"]["feature_inputs"].pop("netfrac")
+        self.assertEqual(self.put(signed(p))["status"],
+                         "PRIVATE_REPLAY_SCORE_AUDIT_REJECTED")
+        p = fixture()
+        p["score_feature_order"] = list(reversed(FEATURES))
+        self.assertEqual(self.put(signed(p))["status"],
+                         "PRIVATE_REPLAY_RECEIPT_REJECTED")
 
     def test_all_authority_and_source_substitutions_rejected(self):
         for field, bad in [
@@ -112,6 +156,16 @@ class V22DPrivateOriginalTests(unittest.TestCase):
         p = fixture()
         p["source_sha256"]["classifier"] = "0" * 64
         self.assertEqual(self.put(signed(p))["status"], "PRIVATE_REPLAY_RECEIPT_REJECTED")
+
+    def test_tdcc_snapshot_newer_than_original_model_cutoff_rejected(self):
+        p=fixture()
+        p["top5"][0]["last_assumed_available_tdcc_date"]="2026-11-06"
+        self.assertEqual(self.put(signed(p))["status"],
+                         "PRIVATE_REPLAY_TDCC_ASOF_REJECTED")
+        p=fixture()
+        p["top5"][0]["last_assumed_available_tdcc_date"]="2026-09-01"
+        self.assertEqual(self.put(signed(p))["status"],
+                         "PRIVATE_REPLAY_TDCC_ASOF_REJECTED")
 
     def test_missing_private_model_never_falls_back_to_v22(self):
         bad = {"schema": "HENGCE_V22D_PRIVATE_ORIGINAL_CHECKPOINT_REPLAY_V1",
