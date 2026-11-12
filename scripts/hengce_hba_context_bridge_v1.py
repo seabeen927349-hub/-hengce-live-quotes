@@ -509,7 +509,8 @@ def build(root, original, summary=None):
          'official_source_observation':overseas.get('individual_sources'),
          'observation_role':'SOURCE_ONLY_NOT_GOVERNED_COMPOSITE_FORECAST' if overseas.get('individual_sources') else 'NOT_AVAILABLE',
          'preopen_individual_sources':overseas.get('individual_sources_preopen'),
-         'postopen_individual_sources':overseas.get('individual_sources_postopen')},
+         'postopen_individual_sources':overseas.get('individual_sources_postopen'),
+         'anytime_individual_sources':overseas.get('individual_sources_anytime')},
          's5':{'status':'NOT_PROVIDED','reason':'未取得原凍結9特徵的正式分類憑證，不能由下跌家數擅自推定'},
          'escape':{'status':'NOT_PROVIDED','reason':'只接受既有狀態機結果，不能自行製造L0至L6'},
          'full_market_intraday_monitor':{
