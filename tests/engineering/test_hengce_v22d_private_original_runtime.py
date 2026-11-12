@@ -12,6 +12,7 @@ from scripts.hengce_v22d_private_original_inference import (
     MODEL_HASH, REG_HASH, PRICE_HASH, TDCC_HASH,
     KNOWN_20261111_CANONICAL_HASH, FEATURES)
 from scripts.hengce_v22d_private_replay_reader import read_private_replay
+from scripts.hengce_v22d_a2_observer import observe_a2, repeat_lift
 from scripts.hengce_scan_once_router import report
 
 NOW = dt.datetime.fromisoformat("2026-11-12T09:50:00+08:00")
@@ -166,6 +167,46 @@ class V22DPrivateOriginalTests(unittest.TestCase):
         p["top5"][0]["last_assumed_available_tdcc_date"]="2026-09-01"
         self.assertEqual(self.put(signed(p))["status"],
                          "PRIVATE_REPLAY_TDCC_ASOF_REJECTED")
+
+    def test_a2_missing_sources_keep_original_and_no_trade(self):
+        self.put(fixture())
+        out = report(NOW, ROOT, v22d_private_report=str(self.path))
+        a2 = out["reporting"]["v22d_a2_shadow_observation"]
+        self.assertEqual(a2["status"], "A2_WAITING_FOR_PRIVATE_CANONICAL_AND_TDCC")
+        self.assertEqual(a2["original_top5"], ["1802"])
+        self.assertEqual(a2["top5_observations"], [])
+        self.assertFalse(a2["ranking_authority"])
+        self.assertFalse(a2["buy_signal"])
+        self.assertFalse(a2["broker_execution"])
+        self.assertEqual(out["rows"], [])
+        self.assertFalse(out["broker_order_execution"])
+
+    def test_a2_sha_tamper_is_blocked(self):
+        replay = self.put(fixture())
+        self.assertEqual(replay["status"],
+                         "PRIVATE_V22D_ORIGINAL_REPLAY_VERIFIED_RESEARCH_ONLY")
+        bad = Path(self.temp.name) / "tampered.csv"
+        bad.write_text("untrusted", encoding="utf-8")
+        a2 = observe_a2(replay, bad, bad, NOW)
+        self.assertEqual(a2["status"], "A2_SOURCE_BLOCKED")
+        self.assertIn("CANONICAL_SHA_MISMATCH", a2["blocker"])
+        self.assertEqual(a2["top5_observations"], [])
+        self.assertFalse(a2["broker_execution"])
+
+    def test_a2_does_not_label_repeated_rises_market_manipulation(self):
+        start = dt.date(2026, 9, 1)
+        closes = [100.0] * 30
+        closes[3] = 106.0
+        closes[7] = 100.0
+        closes[10] = 107.0
+        sample = [
+            {"date": (start + dt.timedelta(days=i)).isoformat(), "close": v}
+            for i, v in enumerate(closes)
+        ]
+        a2 = repeat_lift(sample)
+        self.assertTrue(a2["candidate"])
+        self.assertFalse(a2["manipulation_or_operator_inference"])
+        self.assertEqual(a2["last_pair"]["second"], sample[10]["date"])
 
     def test_missing_private_model_never_falls_back_to_v22(self):
         bad = {"schema": "HENGCE_V22D_PRIVATE_ORIGINAL_CHECKPOINT_REPLAY_V1",
