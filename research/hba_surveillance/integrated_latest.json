@@ -8949,8 +8949,9 @@
     },
     "finmind_shadow": {
       "latest_source_timestamp": "2026-11-09 11:35:19.861474",
+      "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
-      "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
+      "status": "STALE_FINMIND_SHADOW"
     },
     "fugle_whole_market_batch": {
       "last_attempt_date": "2026-11-03",
@@ -8963,13 +8964,17 @@
       "note": "GitHub紀錄中的全股盤中監控使用FinMind；資料可能是歷史觀測，不能視為查詢當下即時行情",
       "observed_market_date": "2026-11-09",
       "primary_source": "FinMind taiwan_stock_tick_snapshot",
-      "status": "NO_MATCHING_FINMIND_SHADOW",
+      "status": "STALE_PRIOR_SESSION_MONITOR",
       "transport_full_coverage": null,
       "unknown_metric_count": null,
       "valid_metric_count": null
     },
     "overseas": {
       "label": "資料不足",
+      "observation_role": "NOT_AVAILABLE",
+      "official_source_observation": null,
+      "postopen_individual_sources": null,
+      "preopen_individual_sources": null,
       "status": "資料不足"
     },
     "s5": {
