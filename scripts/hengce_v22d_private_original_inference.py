@@ -217,6 +217,9 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         "broker_execution": False, "capital_authority_twd": 0,
         "authorized_lots": 0,
     }
+    result["receipt_sha256"] = hashlib.sha256(
+        json.dumps(result, ensure_ascii=False, sort_keys=True,
+                   separators=(",", ":")).encode("utf-8")).hexdigest()
     return result
 
 
