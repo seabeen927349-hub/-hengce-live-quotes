@@ -169,6 +169,20 @@ class OverseasProducerTests(unittest.TestCase):
         self.assertEqual(obs["sources"]["vix"]["source_status"],"EXPECTED_US_EOD_NOT_YET_PUBLISHED")
         self.assertFalse(obs["composite_forecast_emitted"])
 
+    def test_original_official_source_workflow_monitors_all_taipei_hours(self):
+        source=(Path(__file__).resolve().parents[2]/
+                ".github/workflows/hengce-overseas-sox-vix-premarket.yml").read_text()
+        self.assertIn("- cron: '17 */2 * * *'",source)
+        self.assertIn("--mode observe --observations-out",source)
+        self.assertIn("source_status_anytime_latest.json",source)
+        self.assertIn("group: hengce-hba-surveillance-research",source)
+        self.assertIn("steps.observe_official_us_eod.outcome == 'success'",source)
+        self.assertIn("continue-on-error: true",source)
+        self.assertIn("steps.official_preopen_model.outcome == 'success'",source)
+        self.assertIn("PREOPEN_MODEL_WINDOW_CLOSED; 24H_SOURCE_MONITOR_STILL_RUNS",source)
+        self.assertNotIn("BLOCKED_PREOPEN_MISSED",source)
+        self.assertIn("--profile conservative-all",source)
+
     def test_synthetic_vendor_parsing(self):
         self.assertEqual(self.s[dt.date(2026,11,6)],9390.25)
         self.assertEqual(self.v[dt.date(2026,11,6)],25.64)
