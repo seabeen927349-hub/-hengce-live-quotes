@@ -19,35 +19,32 @@ name: HENGCE Governed SOX VIX Premarket EOD
   workflow_dispatch:
     inputs:
       mode:
-        description: 'probe = official-source download without publication; run = preopen governed publish'
+        description: 'probe = source download only; observe = unrestricted signed official EOD monitoring; run = governed preopen forecast'
         type: choice
         default: probe
         options:
           - probe
           - run
+          - observe
   schedule:
-    # Use this original source workflow only. Early retries mitigate observed
-    # 3h+ GitHub schedule latency; never waive the actual preopen/PIT guard.
-    # If promptly executed before the latest US EOD is published, fail closed.
-    - cron: '10 21 * * 0-4'  # Taipei 05:10 (earlier scheduled retry)
-    - cron: '25 21 * * 0-4'  # Taipei 05:25 (earlier scheduled retry)
-    - cron: '35 21 * * 0-4'  # Taipei 05:35 (earlier scheduled retry)
-    - cron: '45 21 * * 0-4'  # Taipei 05:45
-    - cron: '15 22 * * 0-4'  # Taipei 06:15
-    - cron: '47 22 * * 0-4'  # Taipei 06:47 independent offset
-    - cron: '15 23 * * 0-4'  # Taipei 07:15
-    - cron: '39 23 * * 0-4'  # Taipei 07:39 independent offset
-    - cron: '4 0 * * 1-5'    # Taipei 08:04
-    - cron: '10 0 * * 1-5'   # Taipei 08:10
-    - cron: '19 0 * * 1-5'   # Taipei 08:19 independent offset
-    - cron: '30 0 * * 1-5'   # Taipei 08:30
-    - cron: '41 0 * * 1-5'   # Taipei 08:41 final bounded retry
+    # Continuous official vendor EOD observations, including weekends and
+    # Taiwanese holidays. Best-effort GitHub schedule; NO Taipei 09:00 cutoff.
+    # UTC 00/02/.../22 :17 = Taipei 08/10/.../06 :17.
+    - cron: '17 */2 * * *'
+    # Additional attempts around the US close and Taiwan opening; these
+    # never turn a delayed index release into a fabricated earlier forecast.
+    - cron: '13 21 * * 0-4'  # Taipei 05:13
+    - cron: '13 22 * * 0-4'  # Taipei 06:13
+    - cron: '13 23 * * 0-4'  # Taipei 07:13
+    - cron: '13 0 * * 1-5'   # Taipei 08:13
 
 permissions:
   contents: write
 
 concurrency:
-  group: hengce-overseas-premarket-${{ github.ref }}
+  # Serialize against existing HBA/FinMind GitHub writers; keep fail-closed
+  # conservative-all publisher and do not rebase over changed dependencies.
+  group: hengce-hba-surveillance-research
   cancel-in-progress: false
 
 jobs:
@@ -82,26 +79,12 @@ jobs:
           if now.weekday() >= 5:
               with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
                   fh.write("produce=false\nsource_only=false\n")
-              print("NON_TW_TRADING_WEEKDAY_SKIP", now.isoformat())
+              print("NO_TW_PREOPEN_MODEL_ON_WEEKEND; VENDOR_MONITOR_STILL_RUNS",now.isoformat())
               raise SystemExit(0)
           if now.hour >= 9:
-              source = Path("overseas_premarket/source_status_postopen_latest.json")
-              try:
-                  obj = json.loads(source.read_text(encoding="utf-8")) if source.exists() else {}
-                  proof = obj.get("source_observation_sha256")
-                  signed = canonical({k:v for k,v in obj.items() if k!="source_observation_sha256"})
-                  done = (obj.get("target_tw_date")==now.date().isoformat()
-                          and obj.get("observation_window")=="POST_OPEN_SOURCE_ONLY"
-                          and obj.get("status")=="OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY"
-                          and obj.get("composite_forecast_emitted") is False
-                          and obj.get("trading_authority") is False
-                          and obj.get("capital_authority") is False and signed==proof)
-              except (OSError,ValueError,TypeError,AttributeError):
-                  done = False
               with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
-                  fh.write("produce=false\nsource_only="+("false" if done else "true")+"\n")
-              print("POSTOPEN_SOURCE_ALREADY_VERIFIED" if done else
-                    "POSTOPEN_OFFICIAL_SOURCE_CAPTURE_ONLY_NOT_FORECAST", now.isoformat())
+                  fh.write("produce=false\nsource_only=false\n")
+              print("PREOPEN_MODEL_WINDOW_CLOSED; 24H_SOURCE_MONITOR_STILL_RUNS",now.isoformat())
               raise SystemExit(0)
           p = Path("overseas_premarket/latest.json")
           try:
@@ -127,14 +110,14 @@ jobs:
           print("ALREADY_PUBLISHED_VERIFIED_PREOPEN_PACKET" if valid else "PREOPEN_SOURCE_CAPTURE_ALLOWED", now.isoformat())
           PY
       - uses: actions/setup-python@v5
-        if: steps.preopen_gate.outputs.produce != 'false' || steps.preopen_gate.outputs.source_only == 'true'
+        if: always()
         with:
           python-version: '3.12'
       - name: Install vendor XLSX reader
-        if: steps.preopen_gate.outputs.produce != 'false' || steps.preopen_gate.outputs.source_only == 'true'
+        if: always()
         run: python -m pip install 'openpyxl>=3.1,<4'
       - name: Regression, parser and PIT tests
-        if: steps.preopen_gate.outputs.produce != 'false' || steps.preopen_gate.outputs.source_only == 'true'
+        if: always()
         run: |
           python -m py_compile scripts/hengce_overseas_sox_vix_premarket_v1.py scripts/hengce_finmind_premarket_bridge.py
           python -m unittest discover -s tests/engineering -p 'test_hengce_overseas_sox_vix_premarket.py' -v
@@ -145,75 +128,13 @@ jobs:
         run: |
           python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode probe
       - name: Produce current preopen vendor-verified packet
+        id: official_preopen_model
+        continue-on-error: true
         if: steps.preopen_gate.outputs.produce == 'true'
         run: |
           python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode run --out /tmp/hengce_sox_vix_premarket.json --observations-out /tmp/hengce_official_source_observations.json
-      - name: Capture late official EOD sources without issuing a preopen forecast
-        if: steps.preopen_gate.outputs.source_only == 'true'
-        run: |
-          python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode late-source --observations-out /tmp/hengce_postopen_source_observations.json
-      - name: Publish delayed independent official source observations on original governed route
-        if: always() && github.ref == 'refs/heads/main' && steps.preopen_gate.outputs.source_only == 'true' && github.event_name != 'pull_request'
-        shell: bash
-        run: |
-          set -euo pipefail
-          src="/tmp/hengce_postopen_source_observations.json"
-          if [ ! -s "$src" ]; then
-            echo 'No verified postopen source observation was produced'
-            exit 2
-          fi
-          python - <<'PY'
-          from pathlib import Path
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          import json,sys
-          sys.path.insert(0,"scripts")
-          from hengce_overseas_sox_vix_premarket_v1 import canonical
-          p=Path('/tmp/hengce_postopen_source_observations.json')
-          obj=json.loads(p.read_text(encoding='utf-8'))
-          signature=obj.get('source_observation_sha256')
-          signed={k:v for k,v in obj.items() if k!='source_observation_sha256'}
-          taipei=ZoneInfo('Asia/Taipei')
-          now=datetime.now(taipei)
-          stamp=datetime.fromisoformat(obj['observed_at_taipei']).astimezone(taipei)
-          assert obj['schema']=='HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1'
-          assert obj['status']=='OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY'
-          assert obj['observation_window']=='POST_OPEN_SOURCE_ONLY'
-          assert obj['composite_readiness']=='POST_OPEN_SOURCE_ONLY_NO_PREOPEN_FORECAST'
-          assert signature==canonical(signed)
-          assert obj['target_tw_date']==now.date().isoformat()
-          assert stamp.date()==now.date() and stamp.hour>=9
-          assert obj['composite_forecast_emitted'] is False
-          assert obj['trading_authority'] is False and obj['capital_authority'] is False
-          for key,publisher in (('sox','Nasdaq'),('vix','Cboe')):
-              leg=obj['sources'][key]
-              assert leg['publisher']==publisher
-              assert leg['latest_close']>0 and leg['prior_close']>0
-              assert len(leg['raw_sha256'])==64
-          root=Path('overseas_premarket')
-          root.mkdir(parents=True,exist_ok=True)
-          out=root/'source_status_postopen_latest.json'
-          hist=root/'history'/'source_observation_postopen'/f"{now:%Y%m%d}_{signature[:16]}.json"
-          hist.parent.mkdir(parents=True,exist_ok=True)
-          raw=p.read_bytes()
-          if hist.exists():
-              assert hist.read_bytes()==raw,'IMMUTABLE_POSTOPEN_SOURCE_OBSERVATION_CONFLICT'
-          else:
-              hist.write_bytes(raw)
-          out.write_bytes(raw)
-          Path('/tmp/hengce_postopen_source_history_path').write_text(str(hist))
-          PY
-          git config user.name 'hengce-overseas-eod-bot'
-          git config user.email 'hengce-overseas-eod-bot@users.noreply.github.com'
-          git add overseas_premarket/source_status_postopen_latest.json "$(cat /tmp/hengce_postopen_source_history_path)"
-          if git diff --cached --quiet; then
-            echo 'No changed postopen source observation'
-            exit 0
-          fi
-          git commit -m 'data(shadow): late independent official SOX/VIX closes without forecast'
-          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
       - name: Publish overseas shadow with exact lease
-        if: github.ref == 'refs/heads/main' && steps.preopen_gate.outputs.produce == 'true'
+        if: github.ref == 'refs/heads/main' && steps.official_preopen_model.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
@@ -305,6 +226,91 @@ jobs:
             exit 0
           fi
           git commit -m 'data(shadow): source-aligned SOX and VIX individual official EOD observations'
+          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
+      - name: Observe published Nasdaq SOX and Cboe VIX closes at any Taipei time
+        id: observe_official_us_eod
+        # Same original two official vendor endpoints, no new collector. Source
+        # capture is NEVER a retrospective preopen prediction.
+        if: always() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_run' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'observe'))
+        run: |
+          python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode observe --observations-out /tmp/hengce_anytime_sox_vix_sources.json
+      - name: Publish continuous official EOD source observations on original blood vessel
+        if: always() && github.ref == 'refs/heads/main' && steps.observe_official_us_eod.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime,timedelta
+          from zoneinfo import ZoneInfo
+          import json,sys
+          sys.path.insert(0,"scripts")
+          from hengce_overseas_sox_vix_premarket_v1 import canonical,last_completed_us_weekday
+          p=Path('/tmp/hengce_anytime_sox_vix_sources.json')
+          obj=json.loads(p.read_text(encoding='utf-8'))
+          proof=obj.get('source_observation_sha256')
+          signed={k:v for k,v in obj.items() if k!='source_observation_sha256'}
+          now=datetime.now(ZoneInfo("Asia/Taipei"))
+          observed=datetime.fromisoformat(obj['observed_at_taipei']).astimezone(ZoneInfo("Asia/Taipei"))
+          assert obj.get('schema')=='HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1'
+          assert obj.get('status')=='OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY'
+          assert obj.get('observation_window')=='ANYTIME_SOURCE_ONLY'
+          assert obj.get('expected_us_session_basis')=='US_EASTERN_1600_WEEKDAY_CLOCK_ONLY'
+          assert obj.get('composite_readiness')=='ANYTIME_SOURCE_ONLY_NO_PREOPEN_FORECAST'
+          assert obj.get('reference_prev_tw_date') is None
+          assert proof==canonical(signed)
+          assert obj['target_tw_date']==observed.date().isoformat()
+          # Publication may cross midnight in Taipei; never reject a genuine
+          # shortly-previous observation purely for crossing a calendar date.
+          assert timedelta(0)<=now-observed<=timedelta(hours=2)
+          assert obj['expected_us_session']==last_completed_us_weekday(observed).isoformat()
+          assert obj.get('composite_forecast_emitted') is False
+          assert obj.get('trading_authority') is False and obj.get('capital_authority') is False
+          for k,publisher in (('sox','Nasdaq'),('vix','Cboe')):
+              leg=obj['sources'][k]
+              assert leg.get('publisher')==publisher and leg.get('symbol')==k.upper()
+              assert leg.get('latest_close',0)>0 and leg.get('prior_close',0)>0
+              assert len(leg.get('raw_sha256',''))==64
+              latest=leg['latest_us_session']
+              assert latest and latest<=obj['expected_us_session']
+          root=Path('overseas_premarket')
+          root.mkdir(parents=True,exist_ok=True)
+          latest=root/'source_status_anytime_latest.json'
+          old=json.loads(latest.read_text()) if latest.exists() else {}
+          # Update when source actually changes or at least once every 6 h
+          # to leave an accurate heartbeat, even across a Taiwan holiday.
+          fingerprints=lambda x:{k:tuple((x.get('sources') or {}).get(k,{}).get(field)
+                  for field in ('latest_us_session','prior_us_session','latest_close',
+                                'prior_close','raw_sha256')) for k in ('sox','vix')}
+          try:
+              old_time=datetime.fromisoformat(old['observed_at_taipei']).astimezone(ZoneInfo('Asia/Taipei'))
+              age=(observed-old_time).total_seconds()
+              changed=(old.get('observation_window')!='ANYTIME_SOURCE_ONLY' or
+                       fingerprints(old)!=fingerprints(obj) or age>=6*3600 or age<0)
+          except (KeyError,ValueError,TypeError):
+              changed=True
+          if not changed:
+              print('SOX_VIX_VERIFIED_NO_SOURCE_CHANGE',observed.isoformat())
+              raise SystemExit(0)
+          history=root/'history'/'source_observation_anytime'/f"{observed:%Y%m%d_%H%M%S}_{proof[:16]}.json"
+          history.parent.mkdir(parents=True,exist_ok=True)
+          raw=p.read_bytes()
+          if history.exists():
+              assert history.read_bytes()==raw,'IMMUTABLE_CONTINUOUS_SOURCE_HISTORY_CONFLICT'
+          else:
+              history.write_bytes(raw)
+          latest.write_bytes(raw)
+          Path('/tmp/hengce_sox_vix_anytime_history_path').write_text(str(history))
+          print('OFFICIAL_EOD_ONLY',observed.isoformat(),fingerprints(obj))
+          PY
+          if [ ! -s /tmp/hengce_sox_vix_anytime_history_path ]; then
+            echo 'Verified sources unchanged; no duplicate GitHub publication'
+            exit 0
+          fi
+          git config user.name 'hengce-overseas-eod-bot'
+          git config user.email 'hengce-overseas-eod-bot@users.noreply.github.com'
+          git add overseas_premarket/source_status_anytime_latest.json "$(cat /tmp/hengce_sox_vix_anytime_history_path)"
+          git commit -m 'data(shadow): continuously observed official US SOX/VIX closes (no prediction)'
           python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
       - name: Save guarded publisher receipts
         if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
