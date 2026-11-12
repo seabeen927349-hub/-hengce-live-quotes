@@ -366,7 +366,7 @@ def research_top5_observation(now=None, root=None):
         report["status"]="RESEARCH_RECEIPT_UNREADABLE"
     return report
 
-def report(now=None, root=None, *, holdings=None, journal=None, previous=None, vessel=None):
+def report(now=None, root=None, *, holdings=None, journal=None, previous=None, vessel=None, v22d_private_report=None):
     """Read-only full scan: separate historical ranking from actual-account review."""
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
@@ -376,6 +376,11 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
     except ModuleNotFoundError:
         from hengce_v22d_daily_reader import observation as v22d_observation
     v22d=v22d_observation(now,root)
+    try:
+        from scripts.hengce_v22d_private_replay_reader import read_private_replay
+    except ModuleNotFoundError:
+        from hengce_v22d_private_replay_reader import read_private_replay
+    private_replay=read_private_replay(v22d_private_report,now)
     try:
         from scripts.hengce_v22d_max5_operations import worklist as max5_worklist
     except ModuleNotFoundError:
@@ -397,6 +402,7 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
           "research_advisory":advisory(now,root),
           "selected_model_preference":selected_model_preference(root),
           "v22d_primary_research_top5":v22d,
+          "v22d_private_original_model_replay":private_replay,
           "v22d_max5_daily_account_worklist":account_review,
           "v22_research_top5":v22,
           "v22_legacy_benchmark_only":True,
@@ -411,6 +417,7 @@ def main():
     parser.add_argument("--account-holdings",help="private user-account holdings CSV")
     parser.add_argument("--account-journal",help="private actual trade journal CSV")
     parser.add_argument("--previous-worklist",help="previous research-only worklist JSON")
+    parser.add_argument("--v22d-private-report",help="local original-checkpoint replay receipt; informational only")
     parser.add_argument("--original-canonical-2026",help="existing SHA-pinned Library canonical mother CSV, local")
     parser.add_argument("--original-tdcc-781",help="existing SHA-pinned G1 457-week TDCC cohort, local")
     args=parser.parse_args()
@@ -437,7 +444,7 @@ def main():
                 Path(args.original_canonical_2026),Path(args.original_tdcc_781))
         now=datetime.fromisoformat(args.now) if args.now else None
         result=report(now,holdings=holdings,journal=journal,
-                      previous=previous,vessel=vessel)
+                      previous=previous,vessel=vessel,v22d_private_report=args.v22d_private_report)
         print(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False))
         return 0
     except (OSError,ValueError,TypeError) as e:
