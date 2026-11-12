@@ -22,6 +22,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 TAIPEI=ZoneInfo("Asia/Taipei")
+NEW_YORK=ZoneInfo("America/New_York")
 SOX_URL="https://indexes.nasdaq.com/Index/ExportHistory/SOX"
 VIX_URL="https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
 MODEL="HENGCE_SOX_VIX_TAIEX_OPEN_GAP_OLS_TRAIN_20181109_20241231_V1"
@@ -190,7 +191,24 @@ def vendor_url(target):
     end=(target+dt.timedelta(days=1)).isoformat()+"T00:00:00.000"
     return SOX_URL+"?startDate="+start+"&endDate="+end+"&timeOfDay=EOD"
 
-def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,late_source_only=False):
+def last_completed_us_weekday(asof):
+    """Latest possible completed US stock close in NY wall clock.
+
+    This is a weekday clock gate for *source observations*, not a certified
+    US exchange holiday calendar and NOT an official-publisher freshness
+    guarantee. The two vendors' actual sessions and publication lags always
+    remain separate.
+    """
+    local=asof.astimezone(NEW_YORK)
+    close=dt.datetime.combine(local.date(),dt.time(16,0),NEW_YORK)
+    candidate=local.date() if local>=close else local.date()-dt.timedelta(days=1)
+    while candidate.weekday()>=5:
+        candidate-=dt.timedelta(days=1)
+    return candidate
+
+
+def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,
+                       late_source_only=False,continuous_source_only=False):
     """Independent official index observations; NEVER a composite model receipt.
 
     The US EOD session date is in America/New_York market time, not the
@@ -198,20 +216,28 @@ def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,late_sourc
     """
     now=asof.astimezone(TAIPEI)
     target=now.date()
-    if late_source_only:
-        require(target.weekday()<5 and now.hour>=9,"NOT_POSTOPEN_TAIWAN_WEEKDAY")
+    require(not(late_source_only and continuous_source_only),"SOURCE_OBSERVATION_MODE_CONFLICT")
+    if continuous_source_only:
+        # Pure source observations have no Taipei weekday/hour gate. The
+        # underlying US session MUST have completed by US/Eastern 16:00.
+        previous_date=None
+        expected=last_completed_us_weekday(asof)
     else:
-        require(target.weekday()<5 and now.hour<9,"NOT_TAIWAN_PREOPEN_WEEKDAY")
-    prev=dt.date.fromisoformat(tw_previous)
-    if late_source_only:
-        previous_date=(prev.isoformat() if prev<target and (target-prev).days<=7 else None)
-    else:
-        require(prev<target and (target-prev).days<=7,"STALE_PREVIOUS_TW_SESSION")
-        previous_date=prev.isoformat()
-    expected=target-dt.timedelta(days=3 if target.weekday()==0 else 1)
+        if late_source_only:
+            require(target.weekday()<5 and now.hour>=9,"NOT_POSTOPEN_TAIWAN_WEEKDAY")
+        else:
+            require(target.weekday()<5 and now.hour<9,"NOT_TAIWAN_PREOPEN_WEEKDAY")
+        prev=dt.date.fromisoformat(tw_previous)
+        if late_source_only:
+            previous_date=(prev.isoformat() if prev<target and (target-prev).days<=7 else None)
+        else:
+            require(prev<target and (target-prev).days<=7,"STALE_PREVIOUS_TW_SESSION")
+            previous_date=prev.isoformat()
+        expected=target-dt.timedelta(days=3 if target.weekday()==0 else 1)
 
     def leg(symbol,publisher,url,rows,raw):
-        valid=sorted(d for d in rows if d<target and d.weekday()<5)
+        valid=sorted(d for d in rows if d.weekday()<5 and
+                     d<=(expected if continuous_source_only else target-dt.timedelta(days=1)))
         latest=valid[-1] if valid else None
         prior=valid[-2] if len(valid)>=2 else None
         return {"symbol":symbol,"publisher":publisher,"url":url,
@@ -235,11 +261,18 @@ def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,late_sourc
             "target_tw_date":target.isoformat(),
             "reference_prev_tw_date":previous_date,
             "observed_at_taipei":now.isoformat(),
-            "observation_window":"POST_OPEN_SOURCE_ONLY" if late_source_only else "PREOPEN_SOURCE_ONLY",
+            "observation_window":("ANYTIME_SOURCE_ONLY" if continuous_source_only
+                                  else "POST_OPEN_SOURCE_ONLY" if late_source_only
+                                  else "PREOPEN_SOURCE_ONLY"),
+            "expected_us_session_basis":("US_EASTERN_1600_WEEKDAY_CLOCK_ONLY"
+                                        if continuous_source_only else
+                                        "TAIPEI_PREMARKET_PREVIOUS_WEEKDAY"),
             "expected_us_session":expected.isoformat(),
             "sources":{"sox":a,"vix":b},
-            "composite_readiness":("POST_OPEN_SOURCE_ONLY_NO_PREOPEN_FORECAST" if late_source_only
-                    else "BOTH_SOURCES_READY_FOR_SEPARATE_FORMAL_VALIDATION"
+            "composite_readiness":("ANYTIME_SOURCE_ONLY_NO_PREOPEN_FORECAST"
+                    if continuous_source_only else
+                    "POST_OPEN_SOURCE_ONLY_NO_PREOPEN_FORECAST" if late_source_only else
+                    "BOTH_SOURCES_READY_FOR_SEPARATE_FORMAL_VALIDATION"
                     if aligned else "BLOCKED_PENDING_ALIGNED_US_EOD"),
             "composite_forecast_emitted":False,
             "trading_authority":False,"capital_authority":False}
@@ -275,7 +308,7 @@ def produce(asof,previous,observations_out=None):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("--mode",required=True,choices=("run","probe","late-source"))
+    p.add_argument("--mode",required=True,choices=("run","probe","late-source","observe"))
     p.add_argument("--context",type=Path,default=Path("escape_live/finmind_twse_common_context.json"))
     p.add_argument("--out",type=Path)
     p.add_argument("--observations-out",type=Path)
@@ -290,6 +323,23 @@ def main():
            "vix_latest_values":[v[x] for x in sorted(v)[-3:]],
            "sha256":{"sox":sha(sr),"vix":sha(vr)}}
         print(json.dumps(z,ensure_ascii=False))
+        return 0
+    if args.mode=="observe":
+        require(args.observations_out is not None,"SOURCE_OBSERVATION_OUTPUT_REQUIRED")
+        now=dt.datetime.now(TAIPEI)
+        url=vendor_url(now.date())
+        sr=fetch(url);vr=fetch(VIX_URL)
+        observation=source_observation(now,None,nasdaq_rows(sr),cboe_rows(vr),
+                       sr,vr,url,continuous_source_only=True)
+        args.observations_out.parent.mkdir(parents=True,exist_ok=True)
+        args.observations_out.write_text(json.dumps(observation,indent=2,
+                       sort_keys=True,ensure_ascii=False)+"\n",encoding="utf-8")
+        print(json.dumps({"status":observation["status"],
+          "window":observation["observation_window"],
+          "expected_us_session":observation["expected_us_session"],
+          "composite_forecast_emitted":False,
+          "sox_session":observation["sources"]["sox"]["latest_us_session"],
+          "vix_session":observation["sources"]["vix"]["latest_us_session"]},ensure_ascii=False))
         return 0
     if args.mode=="late-source":
         require(args.observations_out is not None,"SOURCE_OBSERVATION_OUTPUT_REQUIRED")
