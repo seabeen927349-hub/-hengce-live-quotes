@@ -10,7 +10,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts"))
 from hengce_overseas_sox_vix_premarket_v1 import (
-    build, nasdaq_rows, cboe_rows, vendor_url, canonical, COEFFICIENTS, CUTS, MODEL
+    build, nasdaq_rows, cboe_rows, vendor_url, canonical, COEFFICIENTS, CUTS, MODEL,
+    source_observation
 )
 
 TZ=ZoneInfo("Asia/Taipei")
@@ -34,6 +35,43 @@ class OverseasProducerTests(unittest.TestCase):
         self.s=nasdaq_rows(self.sraw);self.v=cboe_rows(self.vraw)
     def packet(self,when=NOW,previous=PREVIOUS):
         return build(when,previous,self.s,self.v,self.sraw,self.vraw,vendor_url(when.date()))
+    def test_individual_official_closes_survive_vendor_session_lag(self):
+        expected=dt.date(2026,11,11)
+        prior=dt.date(2026,11,10)
+        self.s[prior]=9998.33;self.s[expected]=10564.11
+        self.v[prior]=19.46
+        observed=dt.datetime(2026,11,12,8,10,tzinfo=TZ)
+        p=source_observation(observed,"2026-11-11",self.s,self.v,
+                             self.sraw,self.vraw,vendor_url(observed.date()))
+        self.assertEqual(p["sources"]["sox"]["latest_us_session"],"2026-11-11")
+        self.assertEqual(p["sources"]["sox"]["latest_close"],10564.11)
+        self.assertEqual(p["sources"]["vix"]["latest_us_session"],"2026-11-10")
+        self.assertEqual(p["sources"]["vix"]["source_status"],"EXPECTED_US_EOD_NOT_YET_PUBLISHED")
+        self.assertEqual(p["composite_readiness"],"BLOCKED_PENDING_ALIGNED_US_EOD")
+        self.assertFalse(p["composite_forecast_emitted"])
+        self.assertFalse(p["trading_authority"])
+        self.assertEqual(p["source_observation_sha256"],
+            canonical({k:v for k,v in p.items() if k!="source_observation_sha256"}))
+        with self.assertRaisesRegex(ValueError,"LATEST_US_SOURCE_SESSION_MISMATCH"):
+            build(observed,"2026-11-11",self.s,self.v,
+                  self.sraw,self.vraw,vendor_url(observed.date()))
+
+    def test_individual_observation_not_from_future_or_after_taipei_open(self):
+        with self.assertRaisesRegex(ValueError,"NOT_TAIWAN_PREOPEN_WEEKDAY"):
+            source_observation(dt.datetime(2026,11,12,9,1,tzinfo=TZ),
+                "2026-11-11",self.s,self.v,self.sraw,self.vraw,
+                vendor_url(dt.date(2026,11,12)))
+
+    def test_two_individual_sources_ready_still_not_model_authorized(self):
+        expected=dt.date(2026,11,11);prior=dt.date(2026,11,10)
+        self.s[prior]=9998.33;self.s[expected]=10564.11
+        self.v[prior]=19.46;self.v[expected]=19.25
+        observed=dt.datetime(2026,11,12,8,10,tzinfo=TZ)
+        p=source_observation(observed,"2026-11-11",self.s,self.v,
+                             self.sraw,self.vraw,vendor_url(observed.date()))
+        self.assertEqual(p["composite_readiness"],"BOTH_SOURCES_READY_FOR_SEPARATE_FORMAL_VALIDATION")
+        self.assertFalse(p["composite_forecast_emitted"])
+
     def test_synthetic_vendor_parsing(self):
         self.assertEqual(self.s[dt.date(2026,11,6)],9390.25)
         self.assertEqual(self.v[dt.date(2026,11,6)],25.64)
