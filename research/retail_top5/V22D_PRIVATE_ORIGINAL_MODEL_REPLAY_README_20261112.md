@@ -1,3 +1,28 @@
+## 私有每日原血管接續（PR #91）
+
+**程式已提供可重跑的每日執行入口，但未暗中啟動使用者曾停用的排程，也未把私人權重存到公有 GitHub。**
+
+在能讀取 PRIVATE Library 模型及原始母體的安全執行端，將現有 HENGCE GitHub main checkout 持續更新（僅用既有 EOD 資料，不增加資料來源），執行：
+
+```sh
+python scripts/hengce_v22d_private_daily_runner.py \
+  --repo-root . \
+  --original-price-mother /private/HENGCE_FULL_MARKET_MOTHER_RESEARCH_2018_2026.csv.gz \
+  --original-tdcc-mother /private/HENGCE_G1_TDCC_RETAIL_457_WEEK_MATCHED_PANEL_2018_2026.csv.gz \
+  --original-2026-canonical /private/HENGCE_2026_HIST_MOTHER.csv \
+  --private-original-model /private/HENGCE_V22D_ORIGINAL_REHYDRATED_MODEL_PROOF_20261111.zip \
+  --private-work-dir /private/hengce_v22d_output
+```
+
+未提供 `--decision-date` 時，使用既有 GitHub 原 EOD **已完成的最新週一至週四** 交易日；同時檢查當日與最新資料之間，不能超過一個正式交易日，避免把過期報告冒充最新報告。若尚未有新的正式收據，程式僅能對最近有效的歷史資料產出**明確標註研究性質**的報告，絕不可稱為今日正式選股訊號。
+
+* `eod/YYYYMMDD/status.json`、`receipts/mother.json`、`receipts/price.json`、`receipts/margin.json`、`receipts/institutional.json` 必須一致。每個原始 shard 以原有檔名＋NUL＋檔案內容＋NUL SHA 計算方式覆核，任何缺檔／SHA／日期／當時未見的收據均阻擋。
+* 僅將新交易日的三腿資訊以價格股票清單為基礎合併，**不改寫、不覆蓋**私人原始 2026 canonical 母檔；在權限 0700 的私人工作目錄產出臨時 CSV、V2.2D 研究 JSON 和含該研究欄位的「衡策掃一次」JSON。
+* 研究收據含私有來源模型雜湊、16 特徵分數稽核、交易日、集保當時已知的保守代理欄位與 EOD 原始三腿逐日驗證收據。
+* 沒有自動下載新行情、沒有重訓替代模型、沒有公開私有權重、沒有下單與資金授權。正式 PIT（集保實際首次公告時間）尚未完成，報告不可提升為正式前瞻買進訊號。
+
+部署到真正每日自動化必須由**獲授權、能持續掛載私人 Library 的執行端**建立排程。公開 GitHub Actions 無法直接讀取使用者的 ChatGPT Library，故此版本沒有假裝已開啟雲端每日自動運算。
+
 # 衡策 V2.2D 原版模型：原血管的私人研究接線
 
 ## V2.2D 分數逐項計算與稽核（2026-11-12 修正）
