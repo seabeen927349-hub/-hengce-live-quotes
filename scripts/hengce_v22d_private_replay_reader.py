@@ -138,6 +138,18 @@ def read_private_replay(path=None, now=None):
                                      rel_tol=0,abs_tol=1e-6)):
                 info["status"] = "PRIVATE_REPLAY_SCORE_AUDIT_REJECTED"
                 return info
+            # Original daily model uses TDCC rows at least 14 calendar
+            # days old, with at most seven further days of snapshot lag.
+            # This is still only a historical PIT proxy, not release proof.
+            try:
+                known=dt.date.fromisoformat(row["last_assumed_available_tdcc_date"])
+            except (ValueError, KeyError, TypeError):
+                info["status"]="PRIVATE_REPLAY_TDCC_ASOF_REJECTED"
+                return info
+            cutoff=date-dt.timedelta(days=14)
+            if not cutoff-dt.timedelta(days=7) <= known <= cutoff:
+                info["status"]="PRIVATE_REPLAY_TDCC_ASOF_REJECTED"
+                return info
             seen.add(ticker)
             prior_turnover = turnover
         info.update(status="PRIVATE_V22D_ORIGINAL_REPLAY_VERIFIED_RESEARCH_ONLY",
