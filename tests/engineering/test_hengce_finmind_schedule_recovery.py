@@ -80,6 +80,20 @@ class ScheduleRecoveryTests(unittest.TestCase):
         self.assertIn("HENGCE Governed SOX VIX Premarket EOD",y)
         self.assertIn("HENGCE HBA Daily Surveillance Research Sidecar",y)
 
+    def test_original_hba_and_finmind_use_same_fail_closed_writer_lease(self):
+        finmind=(ROOT/".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml").read_text()
+        hba=(ROOT/".github/workflows/hengce-hba-daily-surveillance.yml").read_text()
+        shared="group: hengce-hba-surveillance-research"
+        self.assertIn(shared,finmind)
+        self.assertIn(shared,hba)
+        self.assertIn("cancel-in-progress: false",finmind)
+        self.assertIn("cancel-in-progress: false",hba)
+        # Keep the original conservative-all fail-closed publisher, not a
+        # rebase onto concurrently written evidence.
+        self.assertIn("--profile conservative-all",finmind)
+        self.assertIn("--profile conservative-all",hba)
+        self.assertNotIn("git pull --rebase",finmind)
+
     def test_same_monitor_workflow_and_existing_source(self):
         y=(ROOT/".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml").read_text(encoding="utf-8")
         source=(ROOT/".github/workflows/hengce-frozen-single-name-live-quotes.yml").read_text(encoding="utf-8")
