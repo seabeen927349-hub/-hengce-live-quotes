@@ -8,6 +8,10 @@ import argparse,csv,datetime as dt,hashlib,json,statistics
 from collections import defaultdict
 from pathlib import Path
 from zoneinfo import ZoneInfo
+try:
+    from hengce_overseas_sox_vix_premarket_v1 import last_completed_us_weekday
+except ModuleNotFoundError:
+    from scripts.hengce_overseas_sox_vix_premarket_v1 import last_completed_us_weekday
 
 TZ=ZoneInfo('Asia/Taipei')
 SCOPE='HENGCE_HBA_SURVEILLANCE_RESEARCH_ONLY_V1'
@@ -97,18 +101,26 @@ def individual_overseas_sources(root,target,source_path="source_status_latest.js
     try:
         stamp=dt.datetime.fromisoformat(x['observed_at_taipei']).astimezone(TZ)
         target_day=dt.date.fromisoformat(target)
-        expected=target_day-dt.timedelta(days=3 if target_day.weekday()==0 else 1)
         window=x.get('observation_window','PREOPEN_SOURCE_ONLY')
-        if (stamp.date()!=target_day or
-            window not in ('PREOPEN_SOURCE_ONLY','POST_OPEN_SOURCE_ONLY') or
-            ((window=='PREOPEN_SOURCE_ONLY')!=(stamp.hour<9)) or
-            (source_path=='source_status_postopen_latest.json')!=(window=='POST_OPEN_SOURCE_ONLY') or
-            x.get('expected_us_session')!=expected.isoformat()):return None
+        anytime=(source_path=='source_status_anytime_latest.json')
+        if anytime:
+            expected=last_completed_us_weekday(stamp)
+            if (window!='ANYTIME_SOURCE_ONLY' or
+                x.get('expected_us_session_basis')!='US_EASTERN_1600_WEEKDAY_CLOCK_ONLY' or
+                x.get('composite_readiness')!='ANYTIME_SOURCE_ONLY_NO_PREOPEN_FORECAST' or
+                x.get('reference_prev_tw_date') is not None):return None
+        else:
+            expected=target_day-dt.timedelta(days=3 if target_day.weekday()==0 else 1)
+            if (window not in ('PREOPEN_SOURCE_ONLY','POST_OPEN_SOURCE_ONLY') or
+                ((window=='PREOPEN_SOURCE_ONLY')!=(stamp.hour<9)) or
+                (source_path=='source_status_postopen_latest.json')!=(window=='POST_OPEN_SOURCE_ONLY')):return None
+        if stamp.date()!=target_day or x.get('expected_us_session')!=expected.isoformat():return None
     except (TypeError,ValueError,KeyError):return None
     result={'expected_us_session':expected.isoformat(),
             'observed_at_taipei':stamp.isoformat(),
             'observation_window':window,
             'preopen_forecast_authority':False,
+            'data_role':'OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY',
             'source_observation_sha256':receipt}
     for key,publisher in (('sox','Nasdaq'),('vix','Cboe')):
         leg=(x.get('sources') or {}).get(key)
@@ -124,6 +136,7 @@ def individual_overseas_sources(root,target,source_path="source_status_latest.js
             return None
         try:
             if not(dt.date.fromisoformat(prior)<dt.date.fromisoformat(latest)<target_day):return None
+            if anytime and dt.date.fromisoformat(latest)>expected:return None
         except ValueError:return None
         status='當期已更新' if latest==expected.isoformat() else '官方資料待更新'
         result[key]={'latest_us_session':latest,'latest_close':close,
@@ -139,11 +152,14 @@ def env(root,target):
     result={'status':'資料不足','label':'資料不足','packet_date':None,'source_path':str(p),'reason':'未找到正式 SOX/VIX 盤前封包'}
     preopen_individual=individual_overseas_sources(root,target)
     postopen_individual=individual_overseas_sources(root,target,"source_status_postopen_latest.json")
+    anytime_individual=individual_overseas_sources(root,target,"source_status_anytime_latest.json")
     if preopen_individual is not None:
         result['individual_sources_preopen']=preopen_individual
     if postopen_individual is not None:
         result['individual_sources_postopen']=postopen_individual
-    individual=postopen_individual or preopen_individual
+    if anytime_individual is not None:
+        result['individual_sources_anytime']=anytime_individual
+    individual=anytime_individual or postopen_individual or preopen_individual
     if individual is not None:
         result['individual_sources']=individual
         result['individual_source_role']='OFFICIAL_EOD_OBSERVATION_ONLY_NOT_PREOPEN_FORECAST'
