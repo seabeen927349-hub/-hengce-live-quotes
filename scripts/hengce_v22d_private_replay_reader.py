@@ -160,6 +160,7 @@ def read_private_replay(path=None, now=None):
                     qualified_count=p["qualified_count"],
                     last_assumed_tdcc_snapshot=p.get("last_assumed_tdcc_snapshot"),
                     source_sha_claims_match_pins=True,
+                    source_2026_canonical_sha256=src["original_2026_canonical"],
                     model_pit_certified=False,
                     daily_top5_is_current_trading_signal=False)
     except (OSError, ValueError, TypeError, KeyError, AttributeError, OverflowError):
