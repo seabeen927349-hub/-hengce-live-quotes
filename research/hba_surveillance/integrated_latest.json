@@ -8948,10 +8948,10 @@
       "status": "NOT_PROVIDED"
     },
     "finmind_shadow": {
-      "latest_source_timestamp": "2026-11-09 11:35:19.861474",
+      "latest_source_timestamp": "2026-11-12 12:49:09.516488",
       "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
-      "status": "STALE_FINMIND_SHADOW"
+      "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
     },
     "fugle_whole_market_batch": {
       "last_attempt_date": "2026-11-03",
@@ -8959,15 +8959,15 @@
       "status": "HISTORICAL_403"
     },
     "full_market_intraday_monitor": {
-      "active_required_count": null,
+      "active_required_count": 1088,
       "authority": "DESCRIPTIVE_PRICE_LIQUIDITY_ONLY_NO_FORMAL_ESCAPE_OR_EOD",
       "note": "GitHub紀錄中的全股盤中監控使用FinMind；資料可能是歷史觀測，不能視為查詢當下即時行情",
-      "observed_market_date": "2026-11-09",
+      "observed_market_date": "2026-11-12",
       "primary_source": "FinMind taiwan_stock_tick_snapshot",
-      "status": "STALE_PRIOR_SESSION_MONITOR",
-      "transport_full_coverage": null,
-      "unknown_metric_count": null,
-      "valid_metric_count": null
+      "status": "OBSERVED_SAME_SESSION_SHADOW",
+      "transport_full_coverage": true,
+      "unknown_metric_count": 6,
+      "valid_metric_count": 1082
     },
     "overseas": {
       "label": "資料不足",

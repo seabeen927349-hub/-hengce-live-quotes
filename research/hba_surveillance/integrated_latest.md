@@ -4,7 +4,7 @@
 - 原始EOD三腿：COMPLETE
 - 收盤環境：上漲 634／下跌 369（有效 1084 檔）
 - 前一筆廣度觀測：2026-11-10
-- 全上市監控（FinMind）：STALE_PRIOR_SESSION_MONITOR（盤中影子，非正式EOD）
+- 全上市監控（FinMind）：OBSERVED_SAME_SESSION_SHADOW（盤中影子，非正式EOD）
 - Fugle全市場批次（非主要監控）：HISTORICAL_403
 - S5及Escape正式級別：缺來源憑證時保持「資料不足」，不自行新增評級
 - 多年資金紀錄：AVAILABLE_RESEARCH_PROXY
