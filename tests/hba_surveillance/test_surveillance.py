@@ -30,6 +30,34 @@ class Surveillance(unittest.TestCase):
   self.assertTrue(all(c['historical_cycle_stage']=='HISTORICAL_CYCLE_UNVERIFIED' for c in x['all_candidates']))
  def test_bad_hash_not_allowed(self):
   p=self.root/'overseas_premarket/latest.json';p.parent.mkdir(parents=True);p.write_text(json.dumps({'status':'PASS_VERIFIED_VENDOR_EOD','target_tw_date':'2026-11-09','packet_sha256':'bad'}));self.assertEqual(env(self.root,'2026-11-09')['label'],'資料不足')
+ def test_individual_overseas_sources_visible_without_composite(self):
+  from datetime import datetime,date
+  from zoneinfo import ZoneInfo
+  from hengce_overseas_sox_vix_premarket_v1 import source_observation,vendor_url
+  expected=date(2026,11,11);prior=date(2026,11,10)
+  when=datetime(2026,11,12,8,20,tzinfo=ZoneInfo('Asia/Taipei'))
+  obs=source_observation(when,'2026-11-11',
+       {prior:9998.33,expected:10564.11},{prior:19.46,date(2026,11,9):19.92},
+       b'PK-official-source-test'*7,b'CBOE-source-test'*12,vendor_url(when.date()))
+  path=self.root/'overseas_premarket/source_status_latest.json'
+  path.parent.mkdir(parents=True,exist_ok=True)
+  path.write_text(json.dumps(obs))
+  m=env(self.root,'2026-11-12')
+  self.assertEqual(m['label'],'資料不足')
+  self.assertEqual(m['status'],'資料不足')
+  self.assertEqual(m['individual_sources']['sox']['latest_us_session'],'2026-11-11')
+  self.assertEqual(m['individual_sources']['sox']['source_status'],'當期已更新')
+  self.assertEqual(m['individual_sources']['vix']['source_status'],'官方資料待更新')
+  self.assertEqual(m['individual_sources']['vix']['latest_us_session'],'2026-11-10')
+  self.assertNotIn('grade',m)
+  obs['sources']['sox']['latest_close']=1
+  path.write_text(json.dumps(obs))
+  self.assertNotIn('individual_sources',env(self.root,'2026-11-12'))
+  path.write_text(json.dumps(source_observation(when,'2026-11-11',
+       {prior:9998.33,expected:10564.11},{prior:19.46,date(2026,11,9):19.92},
+       b'PK-official-source-test'*7,b'CBOE-source-test'*12,vendor_url(when.date()))))
+  self.assertNotIn('individual_sources',env(self.root,'2026-11-13'))
+
  def test_stale_eod_blocked(self):
   self.assertEqual(scan(self.root,'2026-12-01')['data_gate'],'BLOCKED')
 if __name__=='__main__':unittest.main()
