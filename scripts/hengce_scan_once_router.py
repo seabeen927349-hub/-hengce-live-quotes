@@ -77,6 +77,53 @@ def advisory(now, root=None):
         info["status"]="UNREADABLE_RESEARCH_RECEIPT"
     return info
 
+def environment_monitoring(now, root=None, checked_advisory=None):
+    """Expose already-governed HBA environment, never infer S5/Escape levels.
+
+    Original and integrated HBA hashes must first match the existing
+    authoritative decision receipt (checked by advisory()). Missing or
+    previous-day snapshots remain explicitly unknown/stale.
+    """
+    root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
+    status={"status":"UNVERIFIED_RESEARCH_ENVIRONMENT",
+            "research_only":True,"formal_s5_authority":False,
+            "formal_escape_authority":False,"trading_authority":False,
+            "source_target_date":None,"observed_eod_date":None}
+    a=checked_advisory if checked_advisory is not None else advisory(now,root)
+    if a.get("status")!="RESEARCH_ADVISORY_READY":
+        status["status"]="HBA_SOURCE_NOT_VERIFIED"
+        status["source_reason"]=a.get("status")
+        return status
+    target=a.get("advisory_target_tw_date")
+    status["source_target_date"]=target
+    status["observed_eod_date"]=a.get("observed_eod_date")
+    if target!=now.date().isoformat():
+        status["status"]="HISTORICAL_HBA_ENVIRONMENT_NOT_CURRENT"
+        return status
+    try:
+        x=json.loads((root/"research/hba_surveillance/integrated_latest.json").read_text(encoding="utf-8"))
+        powers=x.get("authority") or {}
+        if (x.get("target_tw_date")!=target
+            or x.get("observed_eod_date")!=a.get("observed_eod_date")
+            or powers.get("trade") is not False
+            or powers.get("formal_escape") is not False
+            or powers.get("new_selection") is not False):
+            status["status"]="ENVIRONMENT_RESEARCH_EVIDENCE_INVALID"
+            return status
+        e=x.get("market_environment") or {}
+        status.update(
+          status="VERIFIED_HBA_RESEARCH_ENVIRONMENT_ONLY",
+          sox_vix=e.get("overseas") or {"status":"NOT_PROVIDED"},
+          finmind_monitor=e.get("full_market_intraday_monitor") or {"status":"NOT_PROVIDED"},
+          finmind_shadow=e.get("finmind_shadow") or {"status":"NOT_PROVIDED"},
+          s5=e.get("s5") or {"status":"NOT_PROVIDED"},
+          escape=e.get("escape") or {"status":"NOT_PROVIDED"},
+          canonical_eod=e.get("canonical") or {"status":"NOT_PROVIDED"})
+    except (OSError,ValueError,TypeError,AttributeError):
+        status["status"]="ENVIRONMENT_RESEARCH_EVIDENCE_UNREADABLE"
+    return status
+
+
 def selected_model_preference(root=None):
     """User-selected research version; legacy V2.2 remains separately verifiable."""
     root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
@@ -381,6 +428,8 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
     except ModuleNotFoundError:
         from hengce_v22d_private_replay_reader import read_private_replay
     private_replay=read_private_replay(v22d_private_report,now)
+    current_advisory=advisory(now,root)
+    current_environment=environment_monitoring(now,root,current_advisory)
     try:
         from scripts.hengce_v22d_max5_operations import worklist as max5_worklist
     except ModuleNotFoundError:
@@ -399,7 +448,8 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
         "reason":"ALL_SELECTION_FAMILIES_RETIRED",
         "reporting":{"status":"NO_ACTIVE_STRATEGY","active_strategy_count":0,
           "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None},
-          "research_advisory":advisory(now,root),
+          "research_advisory":current_advisory,
+          "environment_monitoring":current_environment,
           "selected_model_preference":selected_model_preference(root),
           "v22d_primary_research_top5":v22d,
           "v22d_private_original_model_replay":private_replay,
