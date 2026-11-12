@@ -126,6 +126,12 @@ def valid_day(root, day, observed_at=None):
         rec = read_json(folder / "receipts" / (leg + ".json"))
         files = sorted(folder.glob(leg + "_[1-9].csv"))
         expected_files = sorted(rec.get("files") or [])
+        try:
+            captured = datetime.fromisoformat(rec["promoted_at_taipei"]).astimezone(TZ)
+            if captured > observed_at.astimezone(TZ):
+                raise DailyBlocked("ORIGINAL_EOD_LEG_NOT_YET_OBSERVED:" + leg)
+        except (ValueError, TypeError, KeyError) as exc:
+            raise DailyBlocked("ORIGINAL_EOD_LEG_TIME_INVALID:" + leg) from exc
         if (rec.get("status") != "COMPLETE" or rec.get("target_date") != day.isoformat()
             or rec.get("leg") != leg or rec.get("model_authority_created") is not False
             or not files or expected_files != [f.name for f in files]):
@@ -230,12 +236,9 @@ def latest_original_day(repo_root, now=None):
     for p in (Path(repo_root) / "eod").glob("[0-9]" * 8):
         if p.is_dir():
             try:
-                d = date.strptime(p.name, "%Y%m%d")
-            except (ValueError, AttributeError):
-                try:
-                    d = datetime.strptime(p.name, "%Y%m%d").date()
-                except ValueError:
-                    continue
+                d = datetime.strptime(p.name, "%Y%m%d").date()
+            except ValueError:
+                continue
             if d <= today and d.weekday() <= 3 and (p / "status.json").exists():
                 # Candidate's complete three-leg and receipt is checked again
                 # in extend_original_mother before it can enter the model.
@@ -244,7 +247,11 @@ def latest_original_day(repo_root, now=None):
                     candidates.append(d)
     if not candidates:
         raise DailyBlocked("NO_COMPLETED_ORIGINAL_MON_THU_EOD")
-    return max(candidates)
+    latest = max(candidates)
+    # Avoid silently recycling an ancient research ranking on a later day.
+    if len(official_days(Path(repo_root), latest, today)) > 1:
+        raise DailyBlocked("LATEST_ORIGINAL_EOD_TOO_STALE_FOR_DAILY_REPLAY")
+    return latest
 
 
 def run(args):
@@ -258,6 +265,8 @@ def run(args):
     decision = date.fromisoformat(date_string)
     if decision.weekday() > 3 or decision > now.date():
         raise DailyBlocked("NOT_VALID_ORIGINAL_V22D_DECISION_SESSION")
+    if len(official_days(Path(args.repo_root), decision, now.date())) > 1:
+        raise DailyBlocked("REQUESTED_ORIGINAL_EOD_TOO_STALE_FOR_DAILY_REPLAY")
     p, sha, proofs = extend_original_mother(
         args.repo_root, args.original_2026_canonical, date_string,
         args.private_work_dir, observed_at=now)
