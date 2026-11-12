@@ -60,6 +60,40 @@ class ReadOnlyRouterTests(unittest.TestCase):
         self.assertEqual(a["status"],"RESEARCH_ADVISORY_READY")
         self.assertEqual(a["examples"][0]["ticker"],"3703")
         self.assertEqual(a["market_covered"],1082)
+    def test_scan_once_includes_hash_checked_environment_but_no_trade_signal(self):
+        path=self.root/"research/hba_surveillance/integrated_latest.json"
+        data={"target_tw_date":"2026-11-10","observed_eod_date":"2026-11-09",
+              "authority":{"trade":False,"formal_escape":False,
+                           "new_selection":False,"capital":False},
+              "market_environment":{
+                "overseas":{"status":"資料不足","label":"資料不足",
+                            "official_source_observation":None},
+                "finmind_shadow":{"status":"STALE_FINMIND_SHADOW"},
+                "full_market_intraday_monitor":{"status":"STALE_PRIOR_SESSION_MONITOR"},
+                "s5":{"status":"NOT_PROVIDED"},
+                "escape":{"status":"NOT_PROVIDED"},
+                "canonical":{"date":"2026-11-09","canonical_eod":"COMPLETE"}}}
+        path.write_text(json.dumps(data,ensure_ascii=False))
+        self.payload["input_sha256"]["integrated_hba"]=hashlib.sha256(path.read_bytes()).hexdigest()
+        self.write()
+        report_result=report(self.now,self.root)
+        state=report_result["reporting"]["environment_monitoring"]
+        self.assertEqual(state["status"],"VERIFIED_HBA_RESEARCH_ENVIRONMENT_ONLY")
+        self.assertEqual(state["finmind_shadow"]["status"],"STALE_FINMIND_SHADOW")
+        self.assertEqual(state["s5"]["status"],"NOT_PROVIDED")
+        self.assertEqual(state["escape"]["status"],"NOT_PROVIDED")
+        self.assertFalse(state["formal_escape_authority"])
+        self.assertFalse(report_result["buy_signal"])
+        path.write_text("{}")
+        tampered=report(self.now,self.root)["reporting"]["environment_monitoring"]
+        self.assertEqual(tampered["status"],"HBA_SOURCE_NOT_VERIFIED")
+
+    def test_environment_not_recycled_into_next_trading_day(self):
+        state=report(datetime(2026,11,11,12,tzinfo=ZoneInfo("Asia/Taipei")),self.root)
+        m=state["reporting"]["environment_monitoring"]
+        self.assertEqual(m["status"],"HISTORICAL_HBA_ENVIRONMENT_NOT_CURRENT")
+        self.assertFalse(m["trading_authority"])
+
     def test_changed_evidence_blocks_advisory(self):
         (self.root/"research/hba_surveillance/latest.json").write_text("{}")
         x=report(self.now,self.root)
