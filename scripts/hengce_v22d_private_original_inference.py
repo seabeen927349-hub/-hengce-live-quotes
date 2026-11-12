@@ -14,6 +14,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import math
 import zipfile
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -77,6 +78,9 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
             return lgb.Booster(model_str=raw.decode("utf-8"))
         classifier = load("V22D_original_2019_2022_classifier.txt", MODEL_HASH)
         regressor = load("V22D_original_2019_2022_regressor.txt", REG_HASH)
+    # Never let model feature order drift when the source code is refactored.
+    if classifier.feature_name() != FEATURES or regressor.feature_name() != FEATURES:
+        raise ValueError("ORIGINAL_CHECKPOINT_FEATURE_ORDER_MISMATCH")
 
     cols = ["SnapshotDate", "Ticker", "HolderLe10Lots",
             "RetailPeopleValid", "Big400Pct", "TierStatus"]
@@ -184,11 +188,39 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
                      d.valid_close.gt(0) & d.score.ge(.50))
     eligible = d[d.eligible].sort_values(
         ["turnmed20", "Ticker"], ascending=[False, True])
-    rows = eligible[["Ticker", "score", "ret20", "ret5", "turnmed20",
-                     "known_date", "known0", "estimated_weekend_holders", "Close"]].head(5).copy()
+    leading = eligible.head(5).copy()
+    # LightGBM TreeSHAP: base + all 16 contributions = raw log odds;
+    # sigmoid(raw log odds) = classifier probability-shaped score.
+    # These are attribution terms, NOT causal effects or percentage points.
+    if len(leading):
+        matrix = leading[FEATURES]
+        attribution = classifier.predict(matrix, pred_contrib=True)
+        raw = classifier.predict(matrix, raw_score=True)
+        if attribution.shape != (len(leading), len(FEATURES) + 1):
+            raise ValueError("V22D_SCORE_CONTRIBUTION_DIMENSION_MISMATCH")
+    else:
+        attribution = np.empty((0, len(FEATURES) + 1))
+        raw = np.empty((0,))
+    rows = leading[["Ticker", "score", "ret20", "ret5", "turnmed20",
+                    "known_date", "known0", "estimated_weekend_holders", "Close"]].copy()
     rows["known_date"] = rows.known_date.dt.strftime("%Y-%m-%d")
     top = []
-    for rank, row in enumerate(rows.to_dict("records"), 1):
+    for idx, (rank, row) in enumerate(enumerate(rows.to_dict("records"), 1)):
+        contributions = {key: float(attribution[idx, j])
+                         for j, key in enumerate(FEATURES)}
+        input_values = {key: (None if not math.isfinite(float(leading.iloc[idx][key]))
+                              else float(leading.iloc[idx][key]))
+                        for key in FEATURES}
+        z = float(raw[idx])
+        baseline = float(attribution[idx, -1])
+        checked_sum = baseline + sum(contributions.values())
+        # Numerically stable logistic; scores still not calibrated probabilities.
+        reconstructed = (1.0 / (1.0 + math.exp(-z)) if z >= 0
+                         else math.exp(z) / (1.0 + math.exp(z)))
+        if (not math.isclose(checked_sum, z, rel_tol=0, abs_tol=1e-6)
+                or not math.isclose(reconstructed, float(row["score"]),
+                                    rel_tol=0, abs_tol=1e-6)):
+            raise ValueError("V22D_SCORE_RECONSTRUCTION_MISMATCH")
         top.append({"rank": rank, "ticker": row["Ticker"],
                     "daily_decline_score": float(row["score"]),
                     "return_20d": float(row["ret20"]), "return_5d": float(row["ret5"]),
@@ -196,7 +228,19 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
                     "last_assumed_available_tdcc_date": row["known_date"],
                     "last_known_le10_holder_count": float(row["known0"]),
                     "estimated_week_end_le10_holder_count": float(row["estimated_weekend_holders"]),
-                    "last_verified_close": float(row["Close"])})
+                    "last_verified_close": float(row["Close"]),
+                    "score_explanation": {
+                        "method": "LIGHTGBM_TREE_SHAP_RAW_LOG_ODDS",
+                        "model_target": "CURRENT_WEEK_LE10_HOLDERS_VS_TWO_WEEKS_PRIOR_DECREASE_GE_1PCT",
+                        "baseline_raw_log_odds": baseline,
+                        "feature_inputs": input_values,
+                        "feature_contributions_raw_log_odds": contributions,
+                        "raw_log_odds": z,
+                        "sum_reconstructed_raw_log_odds": checked_sum,
+                        "sigmoid_reconstructed_score": reconstructed,
+                        "score_is_calibrated_probability": False,
+                        "score_is_expected_stock_return": False,
+                    }})
     generated = dt.datetime.now(ZoneInfo("Asia/Taipei"))
     result = {
         "schema": "HENGCE_V22D_PRIVATE_ORIGINAL_CHECKPOINT_REPLAY_V1",
@@ -205,6 +249,11 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         "decision_date": decision.isoformat(), "generated_at_taipei": generated.isoformat(),
         "fixed_cohort_count": 781, "feature_coverage": len(d),
         "qualified_count": len(eligible), "top5": top,
+        "score_formula": "SIGMOID(BASE_LOG_ODDS_PLUS_16_FEATURE_CONTRIBUTIONS)",
+        "score_feature_order": list(FEATURES),
+        "target_event": "CURRENT_WEEK_LE10_HOLDERS_VS_TWO_WEEKS_PRIOR_DECREASE_GE_1PCT",
+        "score_cutoff": 0.50,
+        "score_explanations_are_causal_effects": False,
         "last_assumed_tdcc_snapshot": d.known_date.max().strftime("%Y-%m-%d") if len(d) else None,
         "source_sha256": {"original_prices": PRICE_HASH, "original_tdcc": TDCC_HASH,
                           "original_2026_canonical": recent_sha256, "classifier": MODEL_HASH,
@@ -237,7 +286,8 @@ def main():
                    args.original_2026_canonical, args.private_original_model,
                    args.decision_date, args.canonical_sha256)
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2)
+    args.out.write_text(json.dumps(result, ensure_ascii=False, sort_keys=True,
+                                          indent=2, allow_nan=False)
                         + "\n", encoding="utf-8")
     print(json.dumps({"status": result["status"],
                       "date": result["decision_date"],
