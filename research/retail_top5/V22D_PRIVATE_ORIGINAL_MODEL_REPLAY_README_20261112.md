@@ -1,5 +1,20 @@
 # 衡策 V2.2D 原版模型：原血管的私人研究接線
 
+## V2.2D 分數逐項計算與稽核（2026-11-12 修正）
+
+分類目標為「本週 10 張以下小額持有人數，相比前兩週至少下降 1%」；原版訓練標籤為 `N_t/N_(t-2)-1 <= -0.01`，且檢查連續週的日期間隔。這是**散戶人數事件**，不是股票報酬率、不是已校準機率，也不是每日實際散戶數。
+
+原始 LightGBM classifier 180 棵樹、16 特徵：`weekday,known_lag,log_known,last_known_delta,prior_known_delta,ret1,ret5,ret10,ret20,turnratio5_20,margin10,intradayrange,logturn20,thiswk_turnratio,thiswkret,netfrac`。
+
+- `z=base_raw_log_odds+sum(16 feature_contributions_raw_log_odds)`。
+- `score=sigmoid(z)=1/(1+exp(-z))`，篩選 `score>=0.50`；這不是「預期報酬 50%」。
+- `estimated_week_end_le10_holder_count` 是**另一個原始 LightGBM regressor** 產生的預測人數，不能拿來當分類分數。
+- 過分數門檻且符合價格／成交額條件後，Top5 **按20日成交額中位數由高至低** 排序，分數不是排名權重。
+- 報告每檔包含 16 項特徵輸入與 TreeSHAP 原始 log-odds 貢獻；推論器核對 `z` 與 `sigmoid(z)`，讀取器再次驗證每個分數。這只是模型輸出拆解，**不代表特徵對股價有因果效應**。
+- 只允許 `decision_date-14天` 至 `decision_date-21天` 的 TDCC 週資料作為「當時已知」**保守代理**。真正首次公開時戳未完整查明，仍禁止發行正式事前選股／下單訊號。
+
+已以原模型 SHA 檢查及 2026-11-11 母體實際重算五檔分數、全16特徵貢獻；每檔 raw log-odds 經 sigmoid 重建後與原分數相差低於 10^-6。這是歷史重算，不是當日預先封存的選股報告。
+
 ## 本版實際連通範圍
 
 1. 使用既有 SHA-pinned 2018–2026 EOD 歷史母體、G1 457 週 TDCC 小額持有人母體、既有 2026 正式三腿母體（**不建立新下載器**）。
