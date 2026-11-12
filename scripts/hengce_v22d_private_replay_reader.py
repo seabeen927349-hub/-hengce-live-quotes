@@ -7,9 +7,12 @@ import math
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from scripts.hengce_v22d_private_original_inference import (
-    PRICE_HASH, TDCC_HASH, MODEL_HASH, REG_HASH
-)
+try:
+    from scripts.hengce_v22d_private_original_inference import (
+        PRICE_HASH, TDCC_HASH, MODEL_HASH, REG_HASH)
+except ModuleNotFoundError:  # directly executed scan router, scripts/ is sys.path
+    from hengce_v22d_private_original_inference import (
+        PRICE_HASH, TDCC_HASH, MODEL_HASH, REG_HASH)
 
 TZ = ZoneInfo("Asia/Taipei")
 
