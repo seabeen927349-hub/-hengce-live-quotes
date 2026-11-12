@@ -252,7 +252,7 @@ def produce(asof,previous,observations_out=None):
             observation=source_observation(current,previous,s,v,sr,vr,url)
             observations_out.parent.mkdir(parents=True,exist_ok=True)
             observations_out.write_text(
-                json.dumps(observation,indent=2,sort_keys=True,ensure_ascii=False)+"\\n",
+                json.dumps(observation,indent=2,sort_keys=True,ensure_ascii=False)+"\n",
                 encoding="utf-8")
         try:
             return build(current,previous,s,v,sr,vr,url)
