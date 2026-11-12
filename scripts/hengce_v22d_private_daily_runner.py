@@ -116,10 +116,10 @@ def valid_day(root, day, observed_at=None):
         raise DailyBlocked("ORIGINAL_EOD_MOTHER_RECEIPT_INVALID:" + day.isoformat())
     try:
         published = datetime.fromisoformat(st["updated_at_taipei"]).astimezone(TZ)
-        if published > observed_at.astimezone(TZ):
-            raise DailyBlocked("ORIGINAL_EOD_RECEIPT_FROM_FUTURE")
     except (ValueError, TypeError, KeyError) as exc:
         raise DailyBlocked("ORIGINAL_EOD_TIME_NOT_VERIFIED") from exc
+    if published > observed_at.astimezone(TZ):
+        raise DailyBlocked("ORIGINAL_EOD_RECEIPT_FROM_FUTURE")
     legs = {}
     proof = {"date": day.isoformat(), "mother_sha256": mother["mother_sha256"]}
     for leg in ("price", "margin", "institutional"):
@@ -128,10 +128,10 @@ def valid_day(root, day, observed_at=None):
         expected_files = sorted(rec.get("files") or [])
         try:
             captured = datetime.fromisoformat(rec["promoted_at_taipei"]).astimezone(TZ)
-            if captured > observed_at.astimezone(TZ):
-                raise DailyBlocked("ORIGINAL_EOD_LEG_NOT_YET_OBSERVED:" + leg)
         except (ValueError, TypeError, KeyError) as exc:
             raise DailyBlocked("ORIGINAL_EOD_LEG_TIME_INVALID:" + leg) from exc
+        if captured > observed_at.astimezone(TZ):
+            raise DailyBlocked("ORIGINAL_EOD_LEG_NOT_YET_OBSERVED:" + leg)
         if (rec.get("status") != "COMPLETE" or rec.get("target_date") != day.isoformat()
             or rec.get("leg") != leg or rec.get("model_authority_created") is not False
             or not files or expected_files != [f.name for f in files]):
