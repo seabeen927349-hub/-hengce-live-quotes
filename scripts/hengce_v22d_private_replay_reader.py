@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Read signed-source V2.2D PRIVATE retrospective receipts; never promote to live."""
 import datetime as dt
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -32,7 +33,14 @@ def read_private_replay(path=None, now=None):
         issued = dt.datetime.fromisoformat(p["generated_at_taipei"]).astimezone(TZ)
         src = p["source_sha256"]
         top = p["top5"]
+        signature = p.get("receipt_sha256")
+        content = {k:v for k,v in p.items() if k != "receipt_sha256"}
+        signed_hash = hashlib.sha256(json.dumps(
+            content, ensure_ascii=False, sort_keys=True,
+            separators=(",", ":")).encode("utf-8")).hexdigest()
         safe = (
+            type(signature) is str and signature == signed_hash
+            and isinstance(src, dict)
             p.get("schema") == "HENGCE_V22D_PRIVATE_ORIGINAL_CHECKPOINT_REPLAY_V1"
             and p.get("system") == "HENGCE"
             and p.get("model_id") == "v22d_daily_nowcast_liquidity_top5_v1"
@@ -91,9 +99,9 @@ def read_private_replay(path=None, now=None):
                     model_coverage=p["feature_coverage"],
                     qualified_count=p["qualified_count"],
                     last_assumed_tdcc_snapshot=p.get("last_assumed_tdcc_snapshot"),
-                    source_hashes_verified_by_producer=True,
+                    source_sha_claims_match_pins=True,
                     model_pit_certified=False,
                     daily_top5_is_current_trading_signal=False)
-    except (OSError, ValueError, TypeError, KeyError, OverflowError):
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, OverflowError):
         info["status"] = "PRIVATE_REPLAY_RECEIPT_UNREADABLE"
     return info
