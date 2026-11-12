@@ -11,7 +11,7 @@ from zoneinfo import ZoneInfo
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts"))
 from hengce_overseas_sox_vix_premarket_v1 import (
     build, nasdaq_rows, cboe_rows, vendor_url, canonical, COEFFICIENTS, CUTS, MODEL,
-    source_observation
+    source_observation, last_completed_us_weekday
 )
 
 TZ=ZoneInfo("Asia/Taipei")
@@ -104,6 +104,70 @@ class OverseasProducerTests(unittest.TestCase):
                self.sraw,self.vraw,vendor_url(noon.date()),late_source_only=True)
         self.assertIsNone(o["reference_prev_tw_date"])
         self.assertFalse(o["composite_forecast_emitted"])
+
+    def test_unrestricted_official_source_observation_us_winter_close(self):
+        # On 2026-11-12 04:30 Taipei, NY is still 15:30 on 11/11.
+        # 11/11 may appear prematurely in a source dump but MUST be ignored.
+        before=dt.datetime(2026,11,12,4,30,tzinfo=TZ)
+        self.s[dt.date(2026,11,10)]=9998.33
+        self.s[dt.date(2026,11,11)]=10564.11
+        self.v[dt.date(2026,11,10)]=19.46
+        self.v[dt.date(2026,11,11)]=19.2
+        self.assertEqual(last_completed_us_weekday(before),dt.date(2026,11,10))
+        early=source_observation(before,None,self.s,self.v,self.sraw,self.vraw,
+            vendor_url(before.date()),continuous_source_only=True)
+        self.assertEqual(early["expected_us_session"],"2026-11-10")
+        self.assertEqual(early["sources"]["sox"]["latest_us_session"],"2026-11-10")
+        self.assertFalse(early["composite_forecast_emitted"])
+        self.assertEqual(early["observation_window"],"ANYTIME_SOURCE_ONLY")
+        self.assertEqual(early["composite_readiness"],
+                         "ANYTIME_SOURCE_ONLY_NO_PREOPEN_FORECAST")
+        self.assertIsNone(early["reference_prev_tw_date"])
+        # At 05:30 Taiwan (NY 16:30) the US session is completed.
+        after=before.replace(hour=5,minute=30)
+        late=source_observation(after,None,self.s,self.v,self.sraw,self.vraw,
+            vendor_url(after.date()),continuous_source_only=True)
+        self.assertEqual(late["expected_us_session"],"2026-11-11")
+        self.assertEqual(late["sources"]["sox"]["latest_us_session"],"2026-11-11")
+        self.assertEqual(late["sources"]["vix"]["latest_us_session"],"2026-11-11")
+        self.assertFalse(late["trading_authority"])
+        self.assertEqual(late["source_observation_sha256"],canonical(
+            {k:v for k,v in late.items() if k!="source_observation_sha256"}))
+
+    def test_weekend_and_taipei_after_open_official_source_observation(self):
+        # No weekday or Taipei hour gate on pure source information.
+        t=dt.datetime(2026,11,14,19,17,tzinfo=TZ)
+        self.s[dt.date(2026,11,13)]=10000
+        self.v[dt.date(2026,11,13)]=21
+        obs=source_observation(t,None,self.s,self.v,self.sraw,self.vraw,
+             vendor_url(t.date()),continuous_source_only=True)
+        self.assertEqual(obs["target_tw_date"],"2026-11-14")
+        self.assertEqual(obs["expected_us_session"],"2026-11-13")
+        self.assertEqual(obs["sources"]["sox"]["source_status"],"EXPECTED_US_EOD_PRESENT")
+        self.assertEqual(obs["observation_window"],"ANYTIME_SOURCE_ONLY")
+        self.assertFalse(obs["composite_forecast_emitted"])
+        self.assertNotIn("direction_forecast",obs)
+        with self.assertRaisesRegex(ValueError,"SOURCE_OBSERVATION_MODE_CONFLICT"):
+            source_observation(t,None,self.s,self.v,self.sraw,self.vraw,
+                 vendor_url(t.date()),continuous_source_only=True,late_source_only=True)
+
+    def test_summer_daylight_savings_closing_cutoff(self):
+        # NY EDT close maps to Taipei 04:00 in July; EST maps to 05:00 in Nov.
+        self.assertEqual(last_completed_us_weekday(
+            dt.datetime(2026,7,16,3,59,tzinfo=TZ)),dt.date(2026,7,14))
+        self.assertEqual(last_completed_us_weekday(
+            dt.datetime(2026,7,16,4,5,tzinfo=TZ)),dt.date(2026,7,15))
+
+    def test_continuous_sources_can_have_different_publisher_dates(self):
+        t=dt.datetime(2026,11,12,13,35,tzinfo=TZ)
+        self.s[dt.date(2026,11,11)]=10564.11
+        self.v[dt.date(2026,11,10)]=19.46
+        obs=source_observation(t,None,self.s,self.v,self.sraw,self.vraw,
+                vendor_url(t.date()),continuous_source_only=True)
+        self.assertEqual(obs["sources"]["sox"]["latest_us_session"],"2026-11-11")
+        self.assertEqual(obs["sources"]["vix"]["latest_us_session"],"2026-11-10")
+        self.assertEqual(obs["sources"]["vix"]["source_status"],"EXPECTED_US_EOD_NOT_YET_PUBLISHED")
+        self.assertFalse(obs["composite_forecast_emitted"])
 
     def test_synthetic_vendor_parsing(self):
         self.assertEqual(self.s[dt.date(2026,11,6)],9390.25)
