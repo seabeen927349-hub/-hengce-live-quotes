@@ -190,7 +190,7 @@ def vendor_url(target):
     end=(target+dt.timedelta(days=1)).isoformat()+"T00:00:00.000"
     return SOX_URL+"?startDate="+start+"&endDate="+end+"&timeOfDay=EOD"
 
-def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
+def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,late_source_only=False):
     """Independent official index observations; NEVER a composite model receipt.
 
     The US EOD session date is in America/New_York market time, not the
@@ -198,9 +198,16 @@ def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
     """
     now=asof.astimezone(TAIPEI)
     target=now.date()
-    require(target.weekday()<5 and now.hour<9,"NOT_TAIWAN_PREOPEN_WEEKDAY")
+    if late_source_only:
+        require(target.weekday()<5 and now.hour>=9,"NOT_POSTOPEN_TAIWAN_WEEKDAY")
+    else:
+        require(target.weekday()<5 and now.hour<9,"NOT_TAIWAN_PREOPEN_WEEKDAY")
     prev=dt.date.fromisoformat(tw_previous)
-    require(prev<target and (target-prev).days<=7,"STALE_PREVIOUS_TW_SESSION")
+    if late_source_only:
+        previous_date=(prev.isoformat() if prev<target and (target-prev).days<=7 else None)
+    else:
+        require(prev<target and (target-prev).days<=7,"STALE_PREVIOUS_TW_SESSION")
+        previous_date=prev.isoformat()
     expected=target-dt.timedelta(days=3 if target.weekday()==0 else 1)
 
     def leg(symbol,publisher,url,rows,raw):
@@ -226,12 +233,14 @@ def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
     result={"schema":"HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1",
             "status":"OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY",
             "target_tw_date":target.isoformat(),
-            "reference_prev_tw_date":prev.isoformat(),
+            "reference_prev_tw_date":previous_date,
             "observed_at_taipei":now.isoformat(),
+            "observation_window":"POST_OPEN_SOURCE_ONLY" if late_source_only else "PREOPEN_SOURCE_ONLY",
             "expected_us_session":expected.isoformat(),
             "sources":{"sox":a,"vix":b},
-            "composite_readiness":"BOTH_SOURCES_READY_FOR_SEPARATE_FORMAL_VALIDATION"
-                                  if aligned else "BLOCKED_PENDING_ALIGNED_US_EOD",
+            "composite_readiness":("POST_OPEN_SOURCE_ONLY_NO_PREOPEN_FORECAST" if late_source_only
+                    else "BOTH_SOURCES_READY_FOR_SEPARATE_FORMAL_VALIDATION"
+                    if aligned else "BLOCKED_PENDING_ALIGNED_US_EOD"),
             "composite_forecast_emitted":False,
             "trading_authority":False,"capital_authority":False}
     result["source_observation_sha256"]=canonical(result)
@@ -266,7 +275,7 @@ def produce(asof,previous,observations_out=None):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("--mode",required=True,choices=("run","probe"))
+    p.add_argument("--mode",required=True,choices=("run","probe","late-source"))
     p.add_argument("--context",type=Path,default=Path("escape_live/finmind_twse_common_context.json"))
     p.add_argument("--out",type=Path)
     p.add_argument("--observations-out",type=Path)
@@ -281,6 +290,23 @@ def main():
            "vix_latest_values":[v[x] for x in sorted(v)[-3:]],
            "sha256":{"sox":sha(sr),"vix":sha(vr)}}
         print(json.dumps(z,ensure_ascii=False))
+        return 0
+    if args.mode=="late-source":
+        require(args.observations_out is not None,"SOURCE_OBSERVATION_OUTPUT_REQUIRED")
+        now=dt.datetime.now(TAIPEI)
+        require(now.weekday()<5 and now.hour>=9,"NOT_POSTOPEN_TAIWAN_WEEKDAY")
+        url=vendor_url(now.date())
+        sr=fetch(url);vr=fetch(VIX_URL)
+        context=json.loads(args.context.read_text(encoding="utf-8"))
+        observation=source_observation(now,context["market_date"],nasdaq_rows(sr),
+                 cboe_rows(vr),sr,vr,url,late_source_only=True)
+        args.observations_out.parent.mkdir(parents=True,exist_ok=True)
+        args.observations_out.write_text(json.dumps(observation,indent=2,
+             sort_keys=True,ensure_ascii=False)+"\n",encoding="utf-8")
+        print(json.dumps({"status":observation["status"],"window":observation["observation_window"],
+                          "composite_forecast_emitted":False,
+                          "sox_session":observation["sources"]["sox"]["latest_us_session"],
+                          "vix_session":observation["sources"]["vix"]["latest_us_session"]},ensure_ascii=False))
         return 0
     require(args.out is not None,"OUTPUT_PATH_REQUIRED")
     context=json.loads(args.context.read_text(encoding="utf-8"))
