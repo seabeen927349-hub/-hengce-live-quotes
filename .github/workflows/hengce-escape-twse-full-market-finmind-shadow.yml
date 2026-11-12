@@ -72,9 +72,13 @@ jobs:
     env:
       FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
     steps:
-      - name: Checkout
+      - name: Checkout current authoritative main for governed publication
         uses: actions/checkout@v4
         with:
+          # A push run can start from an OLD event SHA while HBA publishes
+          # newer evidence. Use live main for data runs; PRs still test the
+          # actual proposed PR head. Never rebase computed old inputs.
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5

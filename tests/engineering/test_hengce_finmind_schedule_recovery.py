@@ -95,6 +95,11 @@ class ScheduleRecoveryTests(unittest.TestCase):
         self.assertIn("python scripts/hengce_finmind_intraday_freshness_gate.py",y)
         self.assertIn("python scripts/hengce_publish.py",y)
         self.assertNotIn("git pull --rebase",y)
+        # The source must be current main for any live run, but pull
+        # requests still test their own head. This prevents old push event
+        # SHA checkout from failing exact lease when HBA advanced main.
+        self.assertIn("github.event.pull_request.head.sha || 'main'",y)
+        self.assertIn("Checkout current authoritative main for governed publication",y)
 
 if __name__=="__main__":
     unittest.main()
