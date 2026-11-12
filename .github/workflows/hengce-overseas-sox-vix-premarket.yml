@@ -259,8 +259,10 @@ jobs:
           assert obj.get('composite_readiness')=='ANYTIME_SOURCE_ONLY_NO_PREOPEN_FORECAST'
           assert obj.get('reference_prev_tw_date') is None
           assert proof==canonical(signed)
-          assert obj['target_tw_date']==now.date().isoformat()
-          assert observed.date()==now.date() and observed<=now
+          assert obj['target_tw_date']==observed.date().isoformat()
+          # Publication may cross midnight in Taipei; never reject a genuine
+          # shortly-previous observation purely for crossing a calendar date.
+          assert timedelta(0)<=now-observed<=timedelta(hours=2)
           assert obj['expected_us_session']==last_completed_us_weekday(observed).isoformat()
           assert obj.get('composite_forecast_emitted') is False
           assert obj.get('trading_authority') is False and obj.get('capital_authority') is False
