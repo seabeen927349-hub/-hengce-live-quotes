@@ -42,7 +42,9 @@ permissions:
   contents: write
 
 concurrency:
-  group: hengce-overseas-premarket-${{ github.ref }}
+  # Serialize against existing HBA/FinMind GitHub writers; keep fail-closed
+  # conservative-all publisher and do not rebase over changed dependencies.
+  group: hengce-hba-surveillance-research
   cancel-in-progress: false
 
 jobs:
