@@ -285,7 +285,8 @@ def run(args):
     replay_path.write_text(json.dumps(replay, ensure_ascii=False, sort_keys=True,
                                       indent=2, allow_nan=False) + "\n", encoding="utf-8")
     os.chmod(replay_path, 0o600)
-    scan = report(now, Path(args.repo_root), v22d_private_report=str(replay_path))
+    scan = report(now, Path(args.repo_root), v22d_private_report=str(replay_path),
+                  a2_canonical_2026=p, a2_tdcc_781=args.original_tdcc_mother)
     state = scan["reporting"]["v22d_private_original_model_replay"]["status"]
     if state != "PRIVATE_V22D_ORIGINAL_REPLAY_VERIFIED_RESEARCH_ONLY":
         raise DailyBlocked("SCAN_ROUTER_REJECTED_PRIVATE_REPLAY:" + state)
@@ -298,6 +299,7 @@ def run(args):
             "top5": [x["ticker"] for x in replay["top5"]],
             "eod_days_extended": [x["date"] for x in proofs],
             "report": str(replay_path), "scan": str(scan_path),
+            "a2_status": scan["reporting"]["v22d_a2_shadow_observation"]["status"],
             "trading_authority": False}
 
 
