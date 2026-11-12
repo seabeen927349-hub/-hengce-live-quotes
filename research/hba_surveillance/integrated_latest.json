@@ -9751,7 +9751,7 @@
       "latest_source_timestamp": "2026-11-12 12:49:09.516488",
       "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
-      "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
+      "status": "STALE_FINMIND_SHADOW"
     },
     "fugle_whole_market_batch": {
       "last_attempt_date": "2026-11-03",
@@ -9759,63 +9759,21 @@
       "status": "HISTORICAL_403"
     },
     "full_market_intraday_monitor": {
-      "active_required_count": 1088,
+      "active_required_count": null,
       "authority": "DESCRIPTIVE_PRICE_LIQUIDITY_ONLY_NO_FORMAL_ESCAPE_OR_EOD",
       "note": "GitHub紀錄中的全股盤中監控使用FinMind；資料可能是歷史觀測，不能視為查詢當下即時行情",
       "observed_market_date": "2026-11-12",
       "primary_source": "FinMind taiwan_stock_tick_snapshot",
-      "status": "OBSERVED_SAME_SESSION_SHADOW",
-      "transport_full_coverage": true,
-      "unknown_metric_count": 6,
-      "valid_metric_count": 1082
+      "status": "STALE_PRIOR_SESSION_MONITOR",
+      "transport_full_coverage": null,
+      "unknown_metric_count": null,
+      "valid_metric_count": null
     },
     "overseas": {
-      "anytime_individual_sources": {
-        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-        "expected_us_session": "2026-11-11",
-        "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-12T23:25:00.857991+08:00",
-        "preopen_forecast_authority": false,
-        "source_observation_sha256": "bdbcaf952c649241664231b98e22ee77c14e31686bc7b33eb433fea6fa493258",
-        "sox": {
-          "change_pct": 5.6588,
-          "latest_close": 10564.11112061831,
-          "latest_us_session": "2026-11-11",
-          "publisher": "Nasdaq",
-          "source_status": "當期已更新"
-        },
-        "vix": {
-          "change_pct": -10.1233,
-          "latest_close": 17.49,
-          "latest_us_session": "2026-11-11",
-          "publisher": "Cboe",
-          "source_status": "當期已更新"
-        }
-      },
+      "anytime_individual_sources": null,
       "label": "資料不足",
-      "observation_role": "SOURCE_ONLY_NOT_GOVERNED_COMPOSITE_FORECAST",
-      "official_source_observation": {
-        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-        "expected_us_session": "2026-11-11",
-        "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-12T23:25:00.857991+08:00",
-        "preopen_forecast_authority": false,
-        "source_observation_sha256": "bdbcaf952c649241664231b98e22ee77c14e31686bc7b33eb433fea6fa493258",
-        "sox": {
-          "change_pct": 5.6588,
-          "latest_close": 10564.11112061831,
-          "latest_us_session": "2026-11-11",
-          "publisher": "Nasdaq",
-          "source_status": "當期已更新"
-        },
-        "vix": {
-          "change_pct": -10.1233,
-          "latest_close": 17.49,
-          "latest_us_session": "2026-11-11",
-          "publisher": "Cboe",
-          "source_status": "當期已更新"
-        }
-      },
+      "observation_role": "NOT_AVAILABLE",
+      "official_source_observation": null,
       "postopen_individual_sources": null,
       "preopen_individual_sources": null,
       "status": "資料不足"
@@ -9849,7 +9807,7 @@
   "observed_eod_date": "2026-11-12",
   "readiness": "RESEARCH_READY",
   "schema": "HENGCE_HBA_INTEGRATED_CONTEXT_RESEARCH_V1",
-  "target_tw_date": "2026-11-12",
+  "target_tw_date": "2026-11-13",
   "two_group_market_registry": [
     {
       "other_shares": 6548966724,
@@ -23908,7 +23866,7 @@
   "two_group_research": {
     "actual_small_shares_down_count": 710,
     "actual_small_shares_up_count": 371,
-    "age_days": 6,
+    "age_days": 7,
     "authority": {
       "capital": false,
       "rank": false,
@@ -23961,7 +23919,7 @@
     "source": "EXISTING_TDCC_1_5_RAW_AND_RECEIPTS",
     "status": "VERIFIED_TWO_GROUP_RESEARCH",
     "stock_count": 1090,
-    "target_tw_date": "2026-11-12",
+    "target_tw_date": "2026-11-13",
     "two_consecutive_observed_intervals": {
       "first": "20261022..20261030",
       "not_a_full_2026_13week_panel": true,
