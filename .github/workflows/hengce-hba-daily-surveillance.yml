@@ -30,7 +30,7 @@ on:
     - cron: '55 15 * * 1-5'
   workflow_run:
     # Reuse the SAME original EOD producer's successful completion; do not start a new collector.
-    workflows: ['HENGCE original EOD ingest']
+    workflows: ['HENGCE original EOD ingest','HENGCE Governed SOX VIX Premarket EOD']
     types: [completed]
   # 2026-11-09: on-demand refresh after canonical 2026-11-09 mother receipt PASS; unchanged scan logic.
   workflow_dispatch:
@@ -41,7 +41,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   scan:
-    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'schedule' && github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
