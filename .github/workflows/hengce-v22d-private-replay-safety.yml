@@ -4,16 +4,20 @@ on:
     paths:
       - 'scripts/hengce_v22d_private_original_inference.py'
       - 'scripts/hengce_v22d_private_replay_reader.py'
+      - 'scripts/hengce_v22d_private_daily_runner.py'
       - 'scripts/hengce_scan_once_router.py'
       - 'tests/engineering/test_hengce_v22d_private_original_runtime.py'
+      - 'tests/engineering/test_hengce_v22d_private_daily_runner.py'
       - '.github/workflows/hengce-v22d-private-replay-safety.yml'
   push:
     branches: [main]
     paths:
       - 'scripts/hengce_v22d_private_original_inference.py'
       - 'scripts/hengce_v22d_private_replay_reader.py'
+      - 'scripts/hengce_v22d_private_daily_runner.py'
       - 'scripts/hengce_scan_once_router.py'
       - 'tests/engineering/test_hengce_v22d_private_original_runtime.py'
+      - 'tests/engineering/test_hengce_v22d_private_daily_runner.py'
       - '.github/workflows/hengce-v22d-private-replay-safety.yml'
 permissions:
   contents: read
@@ -29,8 +33,10 @@ jobs:
       - name: Original V2.2D private interface syntax and no-order tests
         run: |
           python -m py_compile scripts/hengce_v22d_private_original_inference.py \
-            scripts/hengce_v22d_private_replay_reader.py scripts/hengce_scan_once_router.py
+            scripts/hengce_v22d_private_replay_reader.py scripts/hengce_scan_once_router.py \
+            scripts/hengce_v22d_private_daily_runner.py
           python -m unittest discover -s tests/engineering -p 'test_hengce_v22d_private_original_runtime.py' -v
+          python -m unittest discover -s tests/engineering -p 'test_hengce_v22d_private_daily_runner.py' -v
       - name: Confirm never publish private model weights or replace an original vessel
         run: |
           test ! -e research/retail_top5/v22d_daily_latest.json
