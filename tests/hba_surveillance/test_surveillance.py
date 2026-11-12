@@ -58,6 +58,31 @@ class Surveillance(unittest.TestCase):
        b'PK-official-source-test'*7,b'CBOE-source-test'*12,vendor_url(when.date()))))
   self.assertNotIn('individual_sources',env(self.root,'2026-11-13'))
 
+ def test_postopen_original_source_observation_never_authorizes_macro_forecast(self):
+  from datetime import datetime,date
+  from zoneinfo import ZoneInfo
+  from hengce_overseas_sox_vix_premarket_v1 import source_observation,vendor_url
+  when=datetime(2026,11,12,12,10,tzinfo=ZoneInfo('Asia/Taipei'))
+  p=source_observation(when,'2026-11-11',
+       {date(2026,11,10):9998.33,date(2026,11,11):10564.11},
+       {date(2026,11,9):19.92,date(2026,11,10):19.46},
+       b'PK-official-source-test'*7,b'CBOE-source-test'*12,
+       vendor_url(when.date()),late_source_only=True)
+  source=self.root/'overseas_premarket/source_status_postopen_latest.json'
+  source.parent.mkdir(parents=True,exist_ok=True)
+  source.write_text(json.dumps(p))
+  m=env(self.root,'2026-11-12')
+  self.assertEqual(m['status'],'資料不足')
+  self.assertEqual(m['individual_sources']['observation_window'],'POST_OPEN_SOURCE_ONLY')
+  self.assertEqual(m['individual_sources']['sox']['latest_close'],10564.11)
+  self.assertEqual(m['individual_sources']['vix']['latest_us_session'],'2026-11-10')
+  self.assertFalse(m['individual_sources']['preopen_forecast_authority'])
+  self.assertNotIn('grade',m)
+  self.assertNotIn('individual_sources',env(self.root,'2026-11-13'))
+  p['sources']['vix']['latest_close']=777.7
+  source.write_text(json.dumps(p))
+  self.assertNotIn('individual_sources',env(self.root,'2026-11-12'))
+
  def test_stale_eod_blocked(self):
   self.assertEqual(scan(self.root,'2026-12-01')['data_gate'],'BLOCKED')
 if __name__=='__main__':unittest.main()
