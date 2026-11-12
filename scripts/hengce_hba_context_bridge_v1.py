@@ -500,7 +500,11 @@ def build(root, original, summary=None):
                      monitor.get('formal_eod_authority') is False)
     overseas=original.get('external_environment') or {}
     output['market_environment']={'canonical':e,'overseas':{'label':overseas.get('label','資料不足'),
-         'status':overseas.get('status','資料不足')},
+         'status':overseas.get('status','資料不足'),
+         'official_source_observation':overseas.get('individual_sources'),
+         'observation_role':'SOURCE_ONLY_NOT_GOVERNED_COMPOSITE_FORECAST' if overseas.get('individual_sources') else 'NOT_AVAILABLE',
+         'preopen_individual_sources':overseas.get('individual_sources_preopen'),
+         'postopen_individual_sources':overseas.get('individual_sources_postopen')},
          's5':{'status':'NOT_PROVIDED','reason':'未取得原凍結9特徵的正式分類憑證，不能由下跌家數擅自推定'},
          'escape':{'status':'NOT_PROVIDED','reason':'只接受既有狀態機結果，不能自行製造L0至L6'},
          'full_market_intraday_monitor':{
