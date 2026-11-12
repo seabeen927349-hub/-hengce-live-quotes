@@ -2,7 +2,7 @@
   "active_covered_count": 1088,
   "active_required_count": 1088,
   "active_universe_transport_full_coverage": true,
-  "context_payload_sha256": "b4b1dae7fa2db9d5e0a997fdd28cacc74cfaf8b0c29e91a724d0bd23759c3459",
+  "context_payload_sha256": "30828bc1f5e2059c1573f4b389c2e97c7a9c71b5d4c1c54766f5ae4022a07015",
   "current_market_date_count": 1082,
   "current_market_date_observed": true,
   "current_market_date_ratio": 0.99448529,
@@ -27,19 +27,19 @@
   "formal_eod_authority": false,
   "formal_escape_authority": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-09T11:35:28.549822+08:00",
+  "generated_at_taipei": "2026-11-12T12:49:15.114344+08:00",
   "healthy_transport": true,
   "intraday_metric_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
-  "latest_source_timestamp": "2026-11-09 11:35:19.861474",
+  "latest_source_timestamp": "2026-11-12 12:49:09.516488",
   "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
   "metric_unknown_count": 6,
   "metric_unknown_sample": [
     "1538",
-    "3593",
+    "1808",
     "3714",
-    "4581",
-    "4943",
-    "6641"
+    "5906",
+    "8443",
+    "8487"
   ],
   "missing_as_zero_forbidden": true,
   "monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
@@ -50,52 +50,52 @@
   "raw_twse_mis_rows_persisted": false,
   "rolling_metric_authority": false,
   "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_SHADOW_STATUS_V3",
-  "session_context_count": 1087,
+  "session_context_count": 1086,
   "session_context_may_substitute_metric_observation": false,
-  "session_context_ratio": 0.99908088,
+  "session_context_ratio": 0.99816176,
   "source": "FinMind",
   "source_binding_promotion_authority": false,
   "stale_or_noncurrent_count": 6,
   "stale_or_noncurrent_sample": [
     "1538",
-    "3593",
+    "1808",
     "3714",
-    "4581",
-    "4943",
-    "6641"
+    "5906",
+    "8443",
+    "8487"
   ],
   "stale_rows_neutralized_as_zero": false,
   "state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
   "trading_authority": false,
   "twse_common_master_count": 1089,
-  "twse_master_report_date": "1151108",
+  "twse_master_report_date": "1151111",
   "twse_mis_meta": {
-    "current_date_target_count": 5,
+    "current_date_target_count": 4,
     "query_time": {
       "sessionFromTime": "-1",
       "sessionLatestTime": "-1",
       "sessionStr": "UserSession",
       "showChart": "False",
-      "stockInfo": "13031",
-      "stockInfoItem": "9225",
-      "sysDate": "20261109",
-      "sysTime": "11:35:32"
+      "stockInfo": "15004",
+      "stockInfoItem": "10182",
+      "sysDate": "20261112",
+      "sysTime": "12:49:21"
     },
-    "target_match_count": 5
+    "target_match_count": 4
   },
   "twse_mis_metric_values_used": false,
   "twse_mis_secondary_session_status": "PARTIAL_CURRENT_SESSION_CONTEXT",
-  "twse_mis_session_unresolved_count": 1,
+  "twse_mis_session_unresolved_count": 2,
   "twse_mis_session_unresolved_sample": [
+    "1808",
     "3714"
   ],
-  "twse_mis_session_verified_count": 5,
+  "twse_mis_session_verified_count": 4,
   "twse_mis_session_verified_sample": [
     "1538",
-    "3593",
-    "4581",
-    "4943",
-    "6641"
+    "5906",
+    "8443",
+    "8487"
   ],
   "unexpected_missing_count": 0
 }
