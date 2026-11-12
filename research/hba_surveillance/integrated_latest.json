@@ -8970,6 +8970,7 @@
       "valid_metric_count": 1082
     },
     "overseas": {
+      "anytime_individual_sources": null,
       "label": "資料不足",
       "observation_role": "NOT_AVAILABLE",
       "official_source_observation": null,
