@@ -8970,10 +8970,52 @@
       "valid_metric_count": 1082
     },
     "overseas": {
-      "anytime_individual_sources": null,
+      "anytime_individual_sources": {
+        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
+        "expected_us_session": "2026-11-11",
+        "observation_window": "ANYTIME_SOURCE_ONLY",
+        "observed_at_taipei": "2026-11-12T15:40:09.691826+08:00",
+        "preopen_forecast_authority": false,
+        "source_observation_sha256": "365e8d5ac4ccc76c1cbdfa033fce444ece3fe0469c7d0e3480179b0881f342b5",
+        "sox": {
+          "change_pct": 5.6588,
+          "latest_close": 10564.11112061831,
+          "latest_us_session": "2026-11-11",
+          "publisher": "Nasdaq",
+          "source_status": "當期已更新"
+        },
+        "vix": {
+          "change_pct": -10.1233,
+          "latest_close": 17.49,
+          "latest_us_session": "2026-11-11",
+          "publisher": "Cboe",
+          "source_status": "當期已更新"
+        }
+      },
       "label": "資料不足",
-      "observation_role": "NOT_AVAILABLE",
-      "official_source_observation": null,
+      "observation_role": "SOURCE_ONLY_NOT_GOVERNED_COMPOSITE_FORECAST",
+      "official_source_observation": {
+        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
+        "expected_us_session": "2026-11-11",
+        "observation_window": "ANYTIME_SOURCE_ONLY",
+        "observed_at_taipei": "2026-11-12T15:40:09.691826+08:00",
+        "preopen_forecast_authority": false,
+        "source_observation_sha256": "365e8d5ac4ccc76c1cbdfa033fce444ece3fe0469c7d0e3480179b0881f342b5",
+        "sox": {
+          "change_pct": 5.6588,
+          "latest_close": 10564.11112061831,
+          "latest_us_session": "2026-11-11",
+          "publisher": "Nasdaq",
+          "source_status": "當期已更新"
+        },
+        "vix": {
+          "change_pct": -10.1233,
+          "latest_close": 17.49,
+          "latest_us_session": "2026-11-11",
+          "publisher": "Cboe",
+          "source_status": "當期已更新"
+        }
+      },
       "postopen_individual_sources": null,
       "preopen_individual_sources": null,
       "status": "資料不足"
