@@ -83,6 +83,43 @@ class Surveillance(unittest.TestCase):
   source.write_text(json.dumps(p))
   self.assertNotIn('individual_sources',env(self.root,'2026-11-12'))
 
+ def test_anytime_official_close_shows_without_preopen_prediction(self):
+  from datetime import datetime,date
+  from zoneinfo import ZoneInfo
+  from hengce_overseas_sox_vix_premarket_v1 import source_observation,vendor_url
+  when=datetime(2026,11,12,13,35,tzinfo=ZoneInfo('Asia/Taipei'))
+  obs=source_observation(when,None,
+        {date(2026,11,10):9998.33,date(2026,11,11):10564.11},
+        {date(2026,11,9):19.92,date(2026,11,10):19.46},
+        b'PK-official-source-test'*7,b'CBOE-source-test'*12,
+        vendor_url(when.date()),continuous_source_only=True)
+  path=self.root/'overseas_premarket/source_status_anytime_latest.json'
+  path.parent.mkdir(parents=True,exist_ok=True)
+  path.write_text(json.dumps(obs))
+  m=env(self.root,'2026-11-12')
+  self.assertEqual(m['label'],'資料不足')
+  self.assertNotIn('grade',m)
+  self.assertEqual(m['individual_sources']['observation_window'],'ANYTIME_SOURCE_ONLY')
+  self.assertFalse(m['individual_sources']['preopen_forecast_authority'])
+  self.assertEqual(m['individual_sources']['sox']['latest_close'],10564.11)
+  self.assertEqual(m['individual_sources']['vix']['latest_us_session'],'2026-11-10')
+  self.assertIn('individual_sources_anytime',m)
+  self.assertNotIn('individual_sources',env(self.root,'2026-11-13'))
+  obs['sources']['sox']['latest_close']=1.0
+  path.write_text(json.dumps(obs))
+  self.assertNotIn('individual_sources',env(self.root,'2026-11-12'))
+  # US session after the actual completed NY session is not valid.
+  obs=source_observation(when,None,{date(2026,11,10):9998.33,date(2026,11,11):10564.11},
+                        {date(2026,11,9):19.92,date(2026,11,10):19.46},
+                        b'PK-official-source-test'*7,b'CBOE-source-test'*12,
+                        vendor_url(when.date()),continuous_source_only=True)
+  obs['expected_us_session']='2026-11-12'
+  from hengce_overseas_sox_vix_premarket_v1 import canonical
+  obs['source_observation_sha256']=canonical(
+        {k:v for k,v in obs.items() if k!='source_observation_sha256'})
+  path.write_text(json.dumps(obs))
+  self.assertNotIn('individual_sources',env(self.root,'2026-11-12'))
+
  def test_existing_finmind_success_refreshes_original_hba_without_recursive_source(self):
   root=Path(__file__).resolve().parents[2]
   workflow=(root/'.github/workflows/hengce-hba-daily-surveillance.yml').read_text()
