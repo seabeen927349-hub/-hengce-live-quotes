@@ -41,7 +41,7 @@ def read_private_replay(path=None, now=None):
         safe = (
             type(signature) is str and signature == signed_hash
             and isinstance(src, dict)
-            p.get("schema") == "HENGCE_V22D_PRIVATE_ORIGINAL_CHECKPOINT_REPLAY_V1"
+            and p.get("schema") == "HENGCE_V22D_PRIVATE_ORIGINAL_CHECKPOINT_REPLAY_V1"
             and p.get("system") == "HENGCE"
             and p.get("model_id") == "v22d_daily_nowcast_liquidity_top5_v1"
             and p.get("status") == "RESEARCH_REPLAY_NOT_PIT_CERTIFIED"
