@@ -12,6 +12,10 @@ from zoneinfo import ZoneInfo
 
 TW=ZoneInfo("Asia/Taipei")
 UPSTREAM="HENGCE Frozen Single-Name Live Quotes"
+# Other EXISTING, independently scheduled HENGCE workflows may wake the SAME
+# guarded FinMind monitor; no new market collector or source is introduced.
+UPSTREAMS={UPSTREAM,"HENGCE Governed SOX VIX Premarket EOD",
+           "HENGCE HBA Daily Surveillance Research Sidecar"}
 
 
 def assess(event, now, repo, payload=None, current_ref=None):
@@ -37,7 +41,7 @@ def assess(event, now, repo, payload=None, current_ref=None):
     source=payload.get("workflow_run") or {}
     if not isinstance(source,dict):
         return False,"INVALID_UPSTREAM_RUN"
-    if source.get("name")!=UPSTREAM or source.get("conclusion")!="success":
+    if source.get("name") not in UPSTREAMS or source.get("conclusion")!="success":
         return False,"UPSTREAM_WORKFLOW_OR_CONCLUSION_INVALID"
     if source.get("head_branch")!="main" or (source.get("head_repository") or {}).get("full_name")!=repo:
         return False,"UPSTREAM_REPOSITORY_OR_BRANCH_INVALID"
