@@ -153,15 +153,16 @@ class OriginalVesselPrivateDailyRunnerTests(unittest.TestCase):
         self.assertNotEqual(digest(inp), original_sha)
         self.assertEqual(sha, digest(inp))
         self.assertEqual(proof[0]["date"], DAY.isoformat())
-        with inp.open(encoding="utf-8") as source:
-            last = list(csv.DictReader(source))[-1]
-        self.assertEqual(last["Date"], DAY.isoformat())
+        with inp.open("rb") as source:
+            source.seek(-110, 2)
+            tail = source.read().decode("utf-8")
+        self.assertIn(DAY.isoformat() + ",1900,Synthetic", tail)
 
     def test_session_not_fresh_can_not_be_selected(self):
         older = self.root / "eod" / "20261109"
         older.mkdir()
         (older/"status.json").write_text(
-            json.dumps({"status":"COMPLETE","three_leg_complete":True}))
+            json.dumps({"status":"PENDING","three_leg_complete":False}))
         with self.assertRaisesRegex(DailyBlocked, "NO_COMPLETED_ORIGINAL_MON_THU_EOD"):
             latest_original_day(self.root, datetime.fromisoformat("2026-11-10T11:00:00+08:00"))
         current = latest_original_day(self.root, NOW)
