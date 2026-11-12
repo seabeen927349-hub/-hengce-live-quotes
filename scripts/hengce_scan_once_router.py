@@ -413,7 +413,7 @@ def research_top5_observation(now=None, root=None):
         report["status"]="RESEARCH_RECEIPT_UNREADABLE"
     return report
 
-def report(now=None, root=None, *, holdings=None, journal=None, previous=None, vessel=None, v22d_private_report=None):
+def report(now=None, root=None, *, holdings=None, journal=None, previous=None, vessel=None, v22d_private_report=None, a2_canonical_2026=None, a2_tdcc_781=None):
     """Read-only full scan: separate historical ranking from actual-account review."""
     now=now or datetime.now(TZ)
     now=(now if now.tzinfo else now.replace(tzinfo=TZ)).astimezone(TZ)
@@ -428,6 +428,11 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
     except ModuleNotFoundError:
         from hengce_v22d_private_replay_reader import read_private_replay
     private_replay=read_private_replay(v22d_private_report,now)
+    try:
+        from scripts.hengce_v22d_a2_observer import observe_a2
+    except ModuleNotFoundError:
+        from hengce_v22d_a2_observer import observe_a2
+    a2_shadow=observe_a2(private_replay,a2_canonical_2026,a2_tdcc_781,now)
     current_advisory=advisory(now,root)
     current_environment=environment_monitoring(now,root,current_advisory)
     try:
@@ -453,6 +458,7 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
           "selected_model_preference":selected_model_preference(root),
           "v22d_primary_research_top5":v22d,
           "v22d_private_original_model_replay":private_replay,
+          "v22d_a2_shadow_observation":a2_shadow,
           "v22d_max5_daily_account_worklist":account_review,
           "v22_research_top5":v22,
           "v22_legacy_benchmark_only":True,
@@ -468,9 +474,13 @@ def main():
     parser.add_argument("--account-journal",help="private actual trade journal CSV")
     parser.add_argument("--previous-worklist",help="previous research-only worklist JSON")
     parser.add_argument("--v22d-private-report",help="local original-checkpoint replay receipt; informational only")
+    parser.add_argument("--a2-canonical-2026",help="original canonical source matching V22D private replay; A2 display only")
+    parser.add_argument("--a2-tdcc-781",help="original private G1 TDCC cohort; A2 display only")
     parser.add_argument("--original-canonical-2026",help="existing SHA-pinned Library canonical mother CSV, local")
     parser.add_argument("--original-tdcc-781",help="existing SHA-pinned G1 457-week TDCC cohort, local")
     args=parser.parse_args()
+    if bool(args.a2_canonical_2026)!=bool(args.a2_tdcc_781):
+        parser.error("A2 original canonical and G1 TDCC inputs are required together.")
     if bool(args.original_canonical_2026)!=bool(args.original_tdcc_781):
         parser.error("Both original canonical and G1 TDCC original files are required together.")
     try:
@@ -494,7 +504,9 @@ def main():
                 Path(args.original_canonical_2026),Path(args.original_tdcc_781))
         now=datetime.fromisoformat(args.now) if args.now else None
         result=report(now,holdings=holdings,journal=journal,
-                      previous=previous,vessel=vessel,v22d_private_report=args.v22d_private_report)
+                      previous=previous,vessel=vessel,v22d_private_report=args.v22d_private_report,
+                      a2_canonical_2026=args.a2_canonical_2026,
+                      a2_tdcc_781=args.a2_tdcc_781)
         print(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False))
         return 0
     except (OSError,ValueError,TypeError) as e:
