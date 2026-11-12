@@ -116,18 +116,27 @@ def build(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
     require(target.weekday()<5 and now.hour<9,"NOT_TAIWAN_PREOPEN_WEEKDAY")
     prev=dt.date.fromisoformat(tw_previous)
     require(prev<target and (target-prev).days<=7,"STALE_PREVIOUS_TW_SESSION")
-    us_s=max(d for d in sox if d<target) if any(d<target for d in sox) else None
-    us_v=max(d for d in vix if d<target) if any(d<target for d in vix) else None
-    require(us_s is not None and us_v is not None and us_s==us_v,"LATEST_US_SOURCE_SESSION_MISMATCH")
-    latest=us_s
-    # For a normal Taipei weekday, only the preceding US weekday is the
-    # expected latest EOD. On US holidays this intentionally fails closed
-    # without an independently verified US-market holiday calendar.
-    expected = target-dt.timedelta(days=3 if target.weekday()==0 else 1)
-    require(latest>=expected,"LATEST_EXPECTED_US_EOD_NOT_VERIFIED")
-    require(latest.weekday()<5 and (target-latest).days<=4,"STALE_OR_NONTRADING_US_SESSION")
-    common=sorted(d for d in set(sox)&set(vix) if d<=latest)
-    require(len(common)>=2 and common[-1]==latest,"NO_TWO_ALIGNED_US_EOD_SESSIONS")
+    # Each official publisher can expose newer rows at different times.
+    # Select the latest *common* completed weekday, never mixing sessions.
+    # A common session older than the expected US EOD remains BLOCKED.
+    us_s=max((d for d in sox if d<target and d.weekday()<5),default=None)
+    us_v=max((d for d in vix if d<target and d.weekday()<5),default=None)
+    common=sorted(d for d in set(sox)&set(vix)
+                  if d<target and d.weekday()<5)
+    latest=common[-1] if common else None
+    details=(" sox="+str(us_s)+" vix="+str(us_v)+
+             " common="+str(latest))
+    require(latest is not None,"LATEST_US_SOURCE_SESSION_MISMATCH"+details)
+    # This strict gate deliberately rejects a vendor that has not published
+    # yesterday's US EOD. No stale prior-day fallback and no synthetic row.
+    expected=target-dt.timedelta(days=3 if target.weekday()==0 else 1)
+    if us_s!=us_v and latest<expected:
+        raise ValueError("LATEST_US_SOURCE_SESSION_MISMATCH"+
+                         details+" expected="+str(expected))
+    require(latest>=expected,"LATEST_EXPECTED_US_EOD_NOT_VERIFIED"+
+            details+" expected="+str(expected))
+    require((target-latest).days<=4,"STALE_OR_NONTRADING_US_SESSION")
+    require(len(common)>=2,"NO_TWO_ALIGNED_US_EOD_SESSIONS")
     prior=common[-2]
     require((latest-prior).days<=5,"PREVIOUS_US_SESSION_TOO_OLD")
     sa,sb=sox[latest],sox[prior];va,vb=vix[latest],vix[prior]
@@ -183,9 +192,22 @@ def vendor_url(target):
 
 def produce(asof,previous):
     url=vendor_url(asof.astimezone(TAIPEI).date())
-    sr=fetch(url)
-    vr=fetch(VIX_URL)
-    return build(asof,previous,nasdaq_rows(sr),cboe_rows(vr),sr,vr,url)
+    # A just-closed US session can be published at different times.
+    # Re-fetch only from the two EXISTING official publishers before 09:00.
+    # Still block when the expected same-session EOD remains unavailable.
+    for attempt in range(3):
+        sr=fetch(url)
+        vr=fetch(VIX_URL)
+        try:
+            return build(dt.datetime.now(TAIPEI),previous,
+                         nasdaq_rows(sr),cboe_rows(vr),sr,vr,url)
+        except ValueError as error:
+            if not str(error).startswith(("LATEST_US_SOURCE_SESSION_MISMATCH",
+                                          "LATEST_EXPECTED_US_EOD_NOT_VERIFIED")) or attempt==2:
+                raise
+            print(json.dumps({"status":"RETRY_SOURCE_SESSION","attempt":attempt+1,
+                              "reason":str(error)},ensure_ascii=False),file=sys.stderr)
+            time.sleep(10*(attempt+1))
 
 def main():
     p=argparse.ArgumentParser()

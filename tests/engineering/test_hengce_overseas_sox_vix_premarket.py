@@ -55,6 +55,38 @@ class OverseasProducerTests(unittest.TestCase):
     def test_us_session_mismatch_rejected(self):
         self.v.pop(dt.date(2026,11,6))
         with self.assertRaisesRegex(ValueError,"LATEST_US_SOURCE_SESSION_MISMATCH"):self.packet()
+    def test_both_sources_publish_expected_wednesday(self):
+        # Thursday Taipei preopen must use Wednesday's US session,
+        # not whichever publisher happens to have the most rows.
+        w=dt.date(2026,11,11); t=dt.date(2026,11,10)
+        self.s[t]=9050.0; self.v[t]=23.0
+        self.s[w]=9150.0; self.v[w]=22.0
+        p=self.packet(dt.datetime(2026,11,12,8,15,tzinfo=TZ),
+                      previous="2026-11-11")
+        self.assertEqual(p["latest_us_session"],"2026-11-11")
+        self.assertEqual(p["base_us_session"],"2026-11-10")
+        self.assertEqual(p["status"],"PASS_VERIFIED_VENDOR_EOD")
+
+    def test_delayed_vix_never_falls_back_to_stale_common_day(self):
+        # Diagnostic must reveal each publisher's newest completed date.
+        t=dt.date(2026,11,10); w=dt.date(2026,11,11)
+        self.s[t]=9050.0; self.v[t]=23.0; self.s[w]=9150.0
+        when=dt.datetime(2026,11,12,8,15,tzinfo=TZ)
+        with self.assertRaisesRegex(ValueError,
+                 "LATEST_US_SOURCE_SESSION_MISMATCH sox=2026-11-11 "
+                 "vix=2026-11-10 common=2026-11-10 expected=2026-11-11"):
+            self.packet(when,previous="2026-11-11")
+
+    def test_unexpected_weekend_row_is_not_a_us_session(self):
+        self.s[dt.date(2026,11,7)]=99999.0
+        self.v[dt.date(2026,11,7)]=999.0
+        self.assertEqual(self.packet()["latest_us_session"],"2026-11-06")
+
+    def test_both_sources_stale_still_blocks(self):
+        when=dt.datetime(2026,11,12,8,15,tzinfo=TZ)
+        with self.assertRaisesRegex(ValueError,"LATEST_EXPECTED_US_EOD_NOT_VERIFIED"):
+            self.packet(when,previous="2026-11-11")
+
     def test_stale_us_friday_rejected(self):
         t=dt.datetime(2026,11,13,8,15,tzinfo=TZ)
         with self.assertRaisesRegex(ValueError,"LATEST_EXPECTED_US_EOD_NOT_VERIFIED"):
