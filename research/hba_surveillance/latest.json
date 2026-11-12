@@ -11299,6 +11299,73 @@
     "外部封包缺失不會填入中性，也不會以舊數據冒充當日"
   ],
   "external_environment": {
+    "individual_source_role": "OFFICIAL_EOD_OBSERVATION_ONLY_NOT_PREOPEN_FORECAST",
+    "individual_sources": {
+      "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
+      "expected_us_session": "2026-11-12",
+      "observation_window": "ANYTIME_SOURCE_ONLY",
+      "observed_at_taipei": "2026-11-13T05:50:02.946125+08:00",
+      "preopen_forecast_authority": false,
+      "source_observation_sha256": "f15c6e0d482c06130fee925f9958f06b4f896eedf9c0d77dfbe5cd507a44dbba",
+      "sox": {
+        "change_pct": 5.6588,
+        "latest_close": 10564.11112061831,
+        "latest_us_session": "2026-11-11",
+        "publisher": "Nasdaq",
+        "source_status": "官方資料待更新"
+      },
+      "vix": {
+        "change_pct": -10.1233,
+        "latest_close": 17.49,
+        "latest_us_session": "2026-11-11",
+        "publisher": "Cboe",
+        "source_status": "官方資料待更新"
+      }
+    },
+    "individual_sources_anytime": {
+      "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
+      "expected_us_session": "2026-11-12",
+      "observation_window": "ANYTIME_SOURCE_ONLY",
+      "observed_at_taipei": "2026-11-13T05:50:02.946125+08:00",
+      "preopen_forecast_authority": false,
+      "source_observation_sha256": "f15c6e0d482c06130fee925f9958f06b4f896eedf9c0d77dfbe5cd507a44dbba",
+      "sox": {
+        "change_pct": 5.6588,
+        "latest_close": 10564.11112061831,
+        "latest_us_session": "2026-11-11",
+        "publisher": "Nasdaq",
+        "source_status": "官方資料待更新"
+      },
+      "vix": {
+        "change_pct": -10.1233,
+        "latest_close": 17.49,
+        "latest_us_session": "2026-11-11",
+        "publisher": "Cboe",
+        "source_status": "官方資料待更新"
+      }
+    },
+    "individual_sources_preopen": {
+      "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
+      "expected_us_session": "2026-11-12",
+      "observation_window": "PREOPEN_SOURCE_ONLY",
+      "observed_at_taipei": "2026-11-13T05:50:00.878160+08:00",
+      "preopen_forecast_authority": false,
+      "source_observation_sha256": "416ab0f1bdb211fae520472bdd9f684a5134686127ac48c22048f8d7eefd5202",
+      "sox": {
+        "change_pct": 5.6588,
+        "latest_close": 10564.11112061831,
+        "latest_us_session": "2026-11-11",
+        "publisher": "Nasdaq",
+        "source_status": "官方資料待更新"
+      },
+      "vix": {
+        "change_pct": -10.1233,
+        "latest_close": 17.49,
+        "latest_us_session": "2026-11-11",
+        "publisher": "Cboe",
+        "source_status": "官方資料待更新"
+      }
+    },
     "label": "資料不足",
     "packet_date": null,
     "reason": "未找到正式 SOX/VIX 盤前封包",
