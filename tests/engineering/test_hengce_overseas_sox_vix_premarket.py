@@ -72,6 +72,39 @@ class OverseasProducerTests(unittest.TestCase):
         self.assertEqual(p["composite_readiness"],"BOTH_SOURCES_READY_FOR_SEPARATE_FORMAL_VALIDATION")
         self.assertFalse(p["composite_forecast_emitted"])
 
+    def test_postopen_existing_vendor_eod_never_creates_backdated_forecast(self):
+        expected=dt.date(2026,11,11)
+        prior=dt.date(2026,11,10)
+        self.s[prior]=9998.33
+        self.s[expected]=10564.11
+        self.v[prior]=19.46
+        noon=dt.datetime(2026,11,12,12,7,tzinfo=TZ)
+        observation=source_observation(noon,"2026-11-11",self.s,self.v,
+                self.sraw,self.vraw,vendor_url(noon.date()),late_source_only=True)
+        self.assertEqual(observation["observation_window"],"POST_OPEN_SOURCE_ONLY")
+        self.assertEqual(observation["sources"]["sox"]["latest_us_session"],"2026-11-11")
+        self.assertEqual(observation["sources"]["vix"]["latest_us_session"],"2026-11-10")
+        self.assertFalse(observation["composite_forecast_emitted"])
+        self.assertFalse(observation["trading_authority"])
+        self.assertEqual(observation["composite_readiness"],
+                         "POST_OPEN_SOURCE_ONLY_NO_PREOPEN_FORECAST")
+        self.assertEqual(observation["source_observation_sha256"],
+            canonical({k:v for k,v in observation.items()
+                       if k!="source_observation_sha256"}))
+        with self.assertRaisesRegex(ValueError,"NOT_TAIWAN_PREOPEN_WEEKDAY"):
+            build(noon,"2026-11-11",self.s,self.v,
+                  self.sraw,self.vraw,vendor_url(noon.date()))
+        with self.assertRaisesRegex(ValueError,"NOT_POSTOPEN_TAIWAN_WEEKDAY"):
+            source_observation(noon.replace(hour=8),"2026-11-11",self.s,self.v,
+                               self.sraw,self.vraw,vendor_url(noon.date()),late_source_only=True)
+
+    def test_late_official_observation_old_tdcc_context_not_promoted(self):
+        noon=dt.datetime(2026,11,12,12,10,tzinfo=TZ)
+        o=source_observation(noon,"2026-10-01",self.s,self.v,
+               self.sraw,self.vraw,vendor_url(noon.date()),late_source_only=True)
+        self.assertIsNone(o["reference_prev_tw_date"])
+        self.assertFalse(o["composite_forecast_emitted"])
+
     def test_synthetic_vendor_parsing(self):
         self.assertEqual(self.s[dt.date(2026,11,6)],9390.25)
         self.assertEqual(self.v[dt.date(2026,11,6)],25.64)
