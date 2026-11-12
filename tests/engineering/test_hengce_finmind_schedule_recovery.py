@@ -66,6 +66,20 @@ class ScheduleRecoveryTests(unittest.TestCase):
         self.assertFalse(assess("workflow_dispatch",NOW,REPO,None,"refs/heads/feature")[0])
         self.assertTrue(assess("workflow_dispatch",NOW,REPO,None,"refs/heads/main")[0])
 
+    def test_existing_hba_and_official_source_scheduled_wake_same_finmind_vessel(self):
+        for name in ("HENGCE Governed SOX VIX Premarket EOD",
+                     "HENGCE HBA Daily Surveillance Research Sidecar"):
+            with self.subTest(name=name):
+                p=event_payload()
+                p["workflow_run"]["name"]=name
+                self.assertEqual(assess("workflow_run",NOW,REPO,p,"refs/heads/main"),
+                                 (True,"INDEPENDENT_SCHEDULE_HEARTBEAT"))
+                p["workflow_run"]["event"]="pull_request"
+                self.assertFalse(assess("workflow_run",NOW,REPO,p,"refs/heads/main")[0])
+        y=(ROOT/".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml").read_text()
+        self.assertIn("HENGCE Governed SOX VIX Premarket EOD",y)
+        self.assertIn("HENGCE HBA Daily Surveillance Research Sidecar",y)
+
     def test_same_monitor_workflow_and_existing_source(self):
         y=(ROOT/".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml").read_text(encoding="utf-8")
         source=(ROOT/".github/workflows/hengce-frozen-single-name-live-quotes.yml").read_text(encoding="utf-8")

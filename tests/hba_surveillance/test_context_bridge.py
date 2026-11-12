@@ -96,8 +96,8 @@ class IntegrationTests(unittest.TestCase):
   self.assertEqual(x['market_environment']['canonical']['breadth']['declining_count'],953)
   self.assertEqual(x['market_environment']['fugle_whole_market_batch']['status'],'HISTORICAL_403')
   self.assertEqual(x['market_environment']['full_market_intraday_monitor']['primary_source'],'FinMind taiwan_stock_tick_snapshot')
-  self.assertEqual(x['market_environment']['full_market_intraday_monitor']['status'],'OBSERVED_SAME_SESSION_SHADOW')
-  self.assertEqual(x['market_environment']['full_market_intraday_monitor']['valid_metric_count'],1085)
+  self.assertEqual(x['market_environment']['full_market_intraday_monitor']['status'],'STALE_PRIOR_SESSION_MONITOR')
+  self.assertIsNone(x['market_environment']['full_market_intraday_monitor']['valid_metric_count'])
   self.assertFalse(x['authority']['trade'])
  def test_integrated_bridge_uses_full_hba_evidence_not_top15_only(self):
   self.original['total_candidates_before_limit']=2
@@ -111,7 +111,18 @@ class IntegrationTests(unittest.TestCase):
  def test_monitor_mismatched_day_does_not_become_current(self):
   x=json.loads((self.root/'escape_live/intraday_monitor.json').read_text());x['market_date']='2026-11-05';(self.root/'escape_live/intraday_monitor.json').write_text(json.dumps(x))
   y=build(self.root,self.original,self.summary)
-  self.assertEqual(y['market_environment']['full_market_intraday_monitor']['status'],'NO_MATCHING_FINMIND_SHADOW')
+  self.assertEqual(y['market_environment']['full_market_intraday_monitor']['status'],'STALE_PRIOR_SESSION_MONITOR')
+ def test_same_target_day_shadow_can_be_observed_without_formal_escape(self):
+  source=self.root/'escape_live/intraday_monitor.json'
+  packet=json.loads(source.read_text())
+  packet['market_date']='2026-11-09'
+  source.write_text(json.dumps(packet))
+  observed=build(self.root,self.original,self.summary)
+  result=observed['market_environment']['full_market_intraday_monitor']
+  self.assertEqual(result['status'],'OBSERVED_SAME_SESSION_SHADOW')
+  self.assertEqual(result['valid_metric_count'],1085)
+  self.assertFalse(observed['authority']['formal_escape'])
+  self.assertEqual(observed['market_environment']['escape']['status'],'NOT_PROVIDED')
  def test_lifelong_gross_not_net_only(self):
   m,x=read_lifelong_summary(self.summary,'2026-11-06')
   self.assertEqual(m['status'],'AVAILABLE_RESEARCH_PROXY')

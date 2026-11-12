@@ -494,19 +494,30 @@ def build(root, original, summary=None):
     monitor_date=str(monitor.get('market_date') or '')
     full_coverage=monitor.get('active_universe_transport_full_coverage') is True
     finmind_source=monitor.get('source')=='FinMind taiwan_stock_tick_snapshot'
-    matched_monitor=(finmind_source and monitor_date==day and full_coverage and
+    matched_monitor=(finmind_source and monitor_date==target and full_coverage and
                      monitor.get('monitor_state')=='LIVE_CONTEXT_READY' and
                      monitor.get('formal_escape_authority') is False and
                      monitor.get('formal_eod_authority') is False)
+    # EOD date is yesterday when published preopen. Intraday data must
+    # match THIS target session, not the last canonical EOD session.
+    latest_finmind_session=str(finmind.get('latest_source_timestamp') or '')[:10]
+    finmind_state=(finmind.get('state','NOT_AVAILABLE') if latest_finmind_session==target
+                   else 'STALE_FINMIND_SHADOW' if latest_finmind_session else 'NOT_AVAILABLE')
     overseas=original.get('external_environment') or {}
     output['market_environment']={'canonical':e,'overseas':{'label':overseas.get('label','資料不足'),
-         'status':overseas.get('status','資料不足')},
+         'status':overseas.get('status','資料不足'),
+         'official_source_observation':overseas.get('individual_sources'),
+         'observation_role':'SOURCE_ONLY_NOT_GOVERNED_COMPOSITE_FORECAST' if overseas.get('individual_sources') else 'NOT_AVAILABLE',
+         'preopen_individual_sources':overseas.get('individual_sources_preopen'),
+         'postopen_individual_sources':overseas.get('individual_sources_postopen')},
          's5':{'status':'NOT_PROVIDED','reason':'未取得原凍結9特徵的正式分類憑證，不能由下跌家數擅自推定'},
          'escape':{'status':'NOT_PROVIDED','reason':'只接受既有狀態機結果，不能自行製造L0至L6'},
          'full_market_intraday_monitor':{
             'primary_source':'FinMind taiwan_stock_tick_snapshot',
             'observed_market_date':monitor_date or None,
-            'status':'OBSERVED_SAME_SESSION_SHADOW' if matched_monitor else 'NO_MATCHING_FINMIND_SHADOW',
+            'status':'OBSERVED_SAME_SESSION_SHADOW' if matched_monitor else
+                      'STALE_PRIOR_SESSION_MONITOR' if monitor_date and monitor_date!=target else
+                      'NO_MATCHING_FINMIND_SHADOW',
             'transport_full_coverage':full_coverage if matched_monitor else None,
             'active_required_count':monitor.get('active_required_count') if matched_monitor else None,
             'valid_metric_count':monitor.get('finmind_metric_observation_count') if matched_monitor else None,
@@ -517,7 +528,8 @@ def build(root, original, summary=None):
             'status':'HISTORICAL_403' if denied and recorded !=day else
                      'CURRENT_403' if denied else 'NO_CURRENT_VERIFIED_BATCH_SNAPSHOT',
             'note':'個股報價可用不代表全上市批次端點有權限；不阻斷canonical EOD'},
-         'finmind_shadow':{'status':finmind.get('state','NOT_AVAILABLE'),
+         'finmind_shadow':{'status':finmind_state,
+             'original_recorded_state':finmind.get('state','NOT_AVAILABLE'),
             'latest_source_timestamp':finmind.get('latest_source_timestamp'),
             'role':'INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY'}}
     m,stocks=read_lifelong_summary(summary,day)

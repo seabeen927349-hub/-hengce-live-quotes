@@ -77,13 +77,13 @@ def tdcc(root,asof):
             series[t].append({'date':d,'pct':pct,'pct1000':p1000,'holders':holders,'observed':observed})
     return latest,series
 
-def individual_overseas_sources(root,target):
+def individual_overseas_sources(root,target,source_path="source_status_latest.json"):
     """Display independently sourced US closes; NOT a composite forecast.
 
     Read only the existing official-source producer's preopen observation
     receipt. An unverified or stale receipt never authorizes a macro label.
     """
-    p=root/'overseas_premarket/source_status_latest.json'
+    p=root/'overseas_premarket'/source_path
     x=jread(p)
     if not isinstance(x,dict):return None
     if (x.get('schema')!='HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1' or
@@ -98,10 +98,17 @@ def individual_overseas_sources(root,target):
         stamp=dt.datetime.fromisoformat(x['observed_at_taipei']).astimezone(TZ)
         target_day=dt.date.fromisoformat(target)
         expected=target_day-dt.timedelta(days=3 if target_day.weekday()==0 else 1)
-        if stamp.date()!=target_day or stamp.hour>=9 or x.get('expected_us_session')!=expected.isoformat():return None
+        window=x.get('observation_window','PREOPEN_SOURCE_ONLY')
+        if (stamp.date()!=target_day or
+            window not in ('PREOPEN_SOURCE_ONLY','POST_OPEN_SOURCE_ONLY') or
+            ((window=='PREOPEN_SOURCE_ONLY')!=(stamp.hour<9)) or
+            (source_path=='source_status_postopen_latest.json')!=(window=='POST_OPEN_SOURCE_ONLY') or
+            x.get('expected_us_session')!=expected.isoformat()):return None
     except (TypeError,ValueError,KeyError):return None
     result={'expected_us_session':expected.isoformat(),
             'observed_at_taipei':stamp.isoformat(),
+            'observation_window':window,
+            'preopen_forecast_authority':False,
             'source_observation_sha256':receipt}
     for key,publisher in (('sox','Nasdaq'),('vix','Cboe')):
         leg=(x.get('sources') or {}).get(key)
@@ -130,9 +137,16 @@ def env(root,target):
     # but the combined environment still REQUIRES a full current packet.
     p=root/'overseas_premarket/latest.json';x=jread(p)
     result={'status':'資料不足','label':'資料不足','packet_date':None,'source_path':str(p),'reason':'未找到正式 SOX/VIX 盤前封包'}
-    individual=individual_overseas_sources(root,target)
+    preopen_individual=individual_overseas_sources(root,target)
+    postopen_individual=individual_overseas_sources(root,target,"source_status_postopen_latest.json")
+    if preopen_individual is not None:
+        result['individual_sources_preopen']=preopen_individual
+    if postopen_individual is not None:
+        result['individual_sources_postopen']=postopen_individual
+    individual=postopen_individual or preopen_individual
     if individual is not None:
         result['individual_sources']=individual
+        result['individual_source_role']='OFFICIAL_EOD_OBSERVATION_ONLY_NOT_PREOPEN_FORECAST'
     if not isinstance(x,dict):return result
     result['packet_date']=x.get('target_tw_date')
     if x.get('status')!='PASS_VERIFIED_VENDOR_EOD' or x.get('target_tw_date')!=target:
