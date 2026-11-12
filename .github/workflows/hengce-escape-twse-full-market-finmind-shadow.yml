@@ -33,6 +33,8 @@ name: HENGCE Escape TWSE Common FinMind Shadow
   workflow_run:
     workflows:
       - HENGCE Frozen Single-Name Live Quotes
+      - HENGCE Governed SOX VIX Premarket EOD
+      - HENGCE HBA Daily Surveillance Research Sidecar
     types: [completed]
   schedule:
     # Re-register the schedule actor and use offset 03,08,... (UTC/Taipei +8).
