@@ -157,6 +157,16 @@ class V22DPrivateOriginalTests(unittest.TestCase):
         p["source_sha256"]["classifier"] = "0" * 64
         self.assertEqual(self.put(signed(p))["status"], "PRIVATE_REPLAY_RECEIPT_REJECTED")
 
+    def test_tdcc_snapshot_newer_than_original_model_cutoff_rejected(self):
+        p=fixture()
+        p["top5"][0]["last_assumed_available_tdcc_date"]="2026-11-06"
+        self.assertEqual(self.put(signed(p))["status"],
+                         "PRIVATE_REPLAY_TDCC_ASOF_REJECTED")
+        p=fixture()
+        p["top5"][0]["last_assumed_available_tdcc_date"]="2026-09-01"
+        self.assertEqual(self.put(signed(p))["status"],
+                         "PRIVATE_REPLAY_TDCC_ASOF_REJECTED")
+
     def test_missing_private_model_never_falls_back_to_v22(self):
         bad = {"schema": "HENGCE_V22D_PRIVATE_ORIGINAL_CHECKPOINT_REPLAY_V1",
                "status": "CURRENT_V22D_PIT_TOP5_VERIFIED",
