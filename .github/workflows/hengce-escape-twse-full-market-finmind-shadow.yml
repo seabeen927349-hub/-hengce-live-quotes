@@ -47,7 +47,10 @@ permissions:
   contents: write
 
 concurrency:
-  group: hengce-escape-twse-common-finmind-${{ github.ref }}
+  # Same writer lease as existing HBA surveillance: prevent concurrent HBA
+  # output changes from invalidating the conservative-all FinMind publisher.
+  # We KEEP the publisher's fail-closed dependency checks unchanged.
+  group: hengce-hba-surveillance-research
   # Never cancel a half-published monitor when the next scheduled tick arrives.
   cancel-in-progress: false
 
