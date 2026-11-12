@@ -124,7 +124,7 @@ jobs:
       - name: Produce current preopen vendor-verified packet
         if: steps.preopen_gate.outputs.produce == 'true'
         run: |
-          python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode run --out /tmp/hengce_sox_vix_premarket.json
+          python scripts/hengce_overseas_sox_vix_premarket_v1.py --mode run --out /tmp/hengce_sox_vix_premarket.json --observations-out /tmp/hengce_official_source_observations.json
       - name: Publish overseas shadow with exact lease
         if: github.ref == 'refs/heads/main' && steps.preopen_gate.outputs.produce == 'true'
         shell: bash
@@ -161,6 +161,63 @@ jobs:
             exit 0
           fi
           git commit -m 'data(shadow): governed SOX/VIX official-source EOD preopen packet'
+          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
+      - name: Preserve independent official SOX and VIX preopen observations
+        # Even when the combined predictor is blocked by a delayed VIX file,
+        # show the verified individual vendor download dates and index closes.
+        # Preserve failed producer status (not a successful composite signal).
+        if: always() && github.ref == 'refs/heads/main' && steps.preopen_gate.outputs.produce == 'true' && github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          src="/tmp/hengce_official_source_observations.json"
+          if [ ! -s "$src" ]; then
+            echo "No official-source observation receipt captured"
+            exit 0
+          fi
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          import hashlib,json,sys
+          sys.path.insert(0, "scripts")
+          from hengce_overseas_sox_vix_premarket_v1 import canonical
+          obj=json.loads(Path('/tmp/hengce_official_source_observations.json').read_text())
+          check=dict(obj);signature=check.pop('source_observation_sha256',None)
+          now=datetime.now(ZoneInfo("Asia/Taipei"))
+          observed=datetime.fromisoformat(obj['observed_at_taipei']).astimezone(ZoneInfo("Asia/Taipei"))
+          assert obj.get('schema')=='HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1'
+          assert obj.get('status')=='OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY'
+          assert signature==canonical(check)
+          assert obj.get('target_tw_date')==now.date().isoformat()
+          assert observed.date()==now.date() and observed.hour<9
+          assert obj.get('trading_authority') is False and obj.get('capital_authority') is False
+          assert obj.get('composite_forecast_emitted') is False
+          for key,publisher in (('sox','Nasdaq'),('vix','Cboe')):
+              leg=obj['sources'][key]
+              assert leg['publisher']==publisher and len(leg['raw_sha256'])==64
+              assert leg['latest_close']>0 and leg['prior_close']>0
+          root=Path('overseas_premarket')
+          root.mkdir(parents=True,exist_ok=True)
+          latest=root/'source_status_latest.json'
+          hist=root/'history'/'source_observation'/f"{now.strftime('%Y%m%d')}_{signature[:16]}.json"
+          hist.parent.mkdir(parents=True,exist_ok=True)
+          raw=Path('/tmp/hengce_official_source_observations.json').read_bytes()
+          if hist.exists():
+              assert hist.read_bytes()==raw,'IMMUTABLE_SOURCE_OBSERVATION_CONFLICT'
+          else:
+              hist.write_bytes(raw)
+          latest.write_bytes(raw)
+          Path('/tmp/hengce_official_source_observation_hist').write_text(str(hist))
+          PY
+          git config user.name 'hengce-overseas-eod-bot'
+          git config user.email 'hengce-overseas-eod-bot@users.noreply.github.com'
+          git add overseas_premarket/source_status_latest.json "$(cat /tmp/hengce_official_source_observation_hist)"
+          if git diff --cached --quiet; then
+            echo 'Unchanged official source observations'
+            exit 0
+          fi
+          git commit -m 'data(shadow): source-aligned SOX and VIX individual official EOD observations'
           python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
       - name: Save guarded publisher receipts
         if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

@@ -77,10 +77,62 @@ def tdcc(root,asof):
             series[t].append({'date':d,'pct':pct,'pct1000':p1000,'holders':holders,'observed':observed})
     return latest,series
 
+def individual_overseas_sources(root,target):
+    """Display independently sourced US closes; NOT a composite forecast.
+
+    Read only the existing official-source producer's preopen observation
+    receipt. An unverified or stale receipt never authorizes a macro label.
+    """
+    p=root/'overseas_premarket/source_status_latest.json'
+    x=jread(p)
+    if not isinstance(x,dict):return None
+    if (x.get('schema')!='HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1' or
+        x.get('status')!='OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY' or
+        x.get('target_tw_date')!=target or x.get('trading_authority') is not False or
+        x.get('capital_authority') is not False or
+        x.get('composite_forecast_emitted') is not False):return None
+    original=x.copy()
+    receipt=original.pop('source_observation_sha256',None)
+    if receipt!=stable_hash(original):return None
+    try:
+        stamp=dt.datetime.fromisoformat(x['observed_at_taipei']).astimezone(TZ)
+        target_day=dt.date.fromisoformat(target)
+        expected=target_day-dt.timedelta(days=3 if target_day.weekday()==0 else 1)
+        if stamp.date()!=target_day or stamp.hour>=9 or x.get('expected_us_session')!=expected.isoformat():return None
+    except (TypeError,ValueError,KeyError):return None
+    result={'expected_us_session':expected.isoformat(),
+            'observed_at_taipei':stamp.isoformat(),
+            'source_observation_sha256':receipt}
+    for key,publisher in (('sox','Nasdaq'),('vix','Cboe')):
+        leg=(x.get('sources') or {}).get(key)
+        if not isinstance(leg,dict) or leg.get('publisher')!=publisher or leg.get('symbol')!=key.upper():
+            return None
+        latest=leg.get('latest_us_session')
+        prior=leg.get('prior_us_session')
+        close=number(leg.get('latest_close'))
+        old_close=number(leg.get('prior_close'))
+        sha=leg.get('raw_sha256')
+        if (not latest or not prior or not isinstance(sha,str) or len(sha)!=64 or
+            close is None or close<=0 or old_close is None or old_close<=0):
+            return None
+        try:
+            if not(dt.date.fromisoformat(prior)<dt.date.fromisoformat(latest)<target_day):return None
+        except ValueError:return None
+        status='當期已更新' if latest==expected.isoformat() else '官方資料待更新'
+        result[key]={'latest_us_session':latest,'latest_close':close,
+                     'change_pct':round((close/old_close-1)*100,4),
+                     'source_status':status,'publisher':publisher}
+    return result
+
+
 def env(root,target):
-    # Governed overseas packet is mandatory for an affirmed current macro direction.
+    # Two separate official close observations are independently displayable,
+    # but the combined environment still REQUIRES a full current packet.
     p=root/'overseas_premarket/latest.json';x=jread(p)
     result={'status':'資料不足','label':'資料不足','packet_date':None,'source_path':str(p),'reason':'未找到正式 SOX/VIX 盤前封包'}
+    individual=individual_overseas_sources(root,target)
+    if individual is not None:
+        result['individual_sources']=individual
     if not isinstance(x,dict):return result
     result['packet_date']=x.get('target_tw_date')
     if x.get('status')!='PASS_VERIFIED_VENDOR_EOD' or x.get('target_tw_date')!=target:
@@ -96,10 +148,12 @@ def env(root,target):
     dc=x.get('direction_forecast') or {};grade=dc.get('grade');label=dc.get('label')
     if not isinstance(grade,int) or grade not in range(1,6) or label not in ('強烈偏空','偏空','中性','偏多','強烈偏多'):
         result['reason']='方向資訊不完整';return result
-    return {'status':'已核對','label':label,'grade':grade,'packet_date':target,
+    confirmed={'status':'已核對','label':label,'grade':grade,'packet_date':target,
        'us_session':x.get('latest_us_session'),'sox':a.get('latest_close'),'vix':b.get('latest_close'),
        'vix_band':(x.get('risk_forecast') or {}).get('vix_risk_band'),
        'gap_log_pct':dc.get('expected_taiex_open_gap_log_pct'),'packet_sha256':claimed,'source_path':str(p)}
+    if individual is not None:confirmed['individual_sources']=individual
+    return confirmed
 
 def scan(root, target, limit=15):
     days,stocks=eod(root); latest=days[-1] if days else None
@@ -213,6 +267,13 @@ def markdown(report):
       f"- 當日市場廣度代理：{a.get('market_breadth_proxy',{}).get('advancing_share','未知')}（收盤後描述性訊號）",'',
       '## 偵查統計',f"候選股票 {a.get('total_candidates_before_limit',0)} 檔；"+'；'.join(f'{k} {v}' for k,v in a['stage_counts'].items()),'',
       '## 新增／升級',f"新增或升級 {len(a.get('new_or_escalated',[]))} 檔（首次建立基線時均屬新增）",'', '## 需要優先人工覆核的股票','']
+    individual=macro.get('individual_sources')
+    if individual:
+        lines+=['',f"- 美國預期交易日：{individual['expected_us_session']}（台灣次一交易日盤前）"]
+        for key in ('sox','vix'):
+            leg=individual[key]
+            lines.append(f"- {key.upper()} {leg['latest_close']:,.2f}；美股 {leg['latest_us_session']}；"
+                         f"漲跌 {leg['change_pct']:+.2f}%；{leg['source_status']}（單項觀察，非綜合訊號）")
     for c in a['candidates']:
         lines.extend([f"### {c['ticker']} {c['name']} — {c['stage']}",
           f"- 正面證據：{'；'.join(c['positive_evidence']) or '無'}",

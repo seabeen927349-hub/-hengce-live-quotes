@@ -190,17 +190,72 @@ def vendor_url(target):
     end=(target+dt.timedelta(days=1)).isoformat()+"T00:00:00.000"
     return SOX_URL+"?startDate="+start+"&endDate="+end+"&timeOfDay=EOD"
 
-def produce(asof,previous):
+def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
+    """Independent official index observations; NEVER a composite model receipt.
+
+    The US EOD session date is in America/New_York market time, not the
+    Taipei capture date. Keep each publisher's actual latest session visible.
+    """
+    now=asof.astimezone(TAIPEI)
+    target=now.date()
+    require(target.weekday()<5 and now.hour<9,"NOT_TAIWAN_PREOPEN_WEEKDAY")
+    prev=dt.date.fromisoformat(tw_previous)
+    require(prev<target and (target-prev).days<=7,"STALE_PREVIOUS_TW_SESSION")
+    expected=target-dt.timedelta(days=3 if target.weekday()==0 else 1)
+
+    def leg(symbol,publisher,url,rows,raw):
+        valid=sorted(d for d in rows if d<target and d.weekday()<5)
+        latest=valid[-1] if valid else None
+        prior=valid[-2] if len(valid)>=2 else None
+        return {"symbol":symbol,"publisher":publisher,"url":url,
+                "raw_sha256":sha(raw),"raw_bytes":len(raw),
+                "latest_us_session":latest.isoformat() if latest else None,
+                "prior_us_session":prior.isoformat() if prior else None,
+                "latest_close":rows[latest] if latest else None,
+                "prior_close":rows[prior] if prior else None,
+                "source_status":"EXPECTED_US_EOD_PRESENT" if latest==expected
+                                 else "EXPECTED_US_EOD_NOT_YET_PUBLISHED"}
+
+    a=leg("SOX","Nasdaq",url,sox,sox_raw)
+    b=leg("VIX","Cboe",VIX_URL,vix,vix_raw)
+    common=sorted(d for d in set(sox)&set(vix)
+                  if d<target and d.weekday()<5)
+    aligned=(a["source_status"]=="EXPECTED_US_EOD_PRESENT" and
+             b["source_status"]=="EXPECTED_US_EOD_PRESENT" and
+             len(common)>=2 and common[-1]==expected)
+    result={"schema":"HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1",
+            "status":"OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY",
+            "target_tw_date":target.isoformat(),
+            "reference_prev_tw_date":prev.isoformat(),
+            "observed_at_taipei":now.isoformat(),
+            "expected_us_session":expected.isoformat(),
+            "sources":{"sox":a,"vix":b},
+            "composite_readiness":"BOTH_SOURCES_READY_FOR_SEPARATE_FORMAL_VALIDATION"
+                                  if aligned else "BLOCKED_PENDING_ALIGNED_US_EOD",
+            "composite_forecast_emitted":False,
+            "trading_authority":False,"capital_authority":False}
+    result["source_observation_sha256"]=canonical(result)
+    return result
+
+
+def produce(asof,previous,observations_out=None):
     url=vendor_url(asof.astimezone(TAIPEI).date())
-    # A just-closed US session can be published at different times.
-    # Re-fetch only from the two EXISTING official publishers before 09:00.
-    # Still block when the expected same-session EOD remains unavailable.
+    # Reuse ONLY the two existing official publisher downloads. Publish the
+    # individual observation separately even when their EOD dates differ;
+    # the existing composite model must continue failing closed.
     for attempt in range(3):
         sr=fetch(url)
         vr=fetch(VIX_URL)
+        current=dt.datetime.now(TAIPEI)
+        s=nasdaq_rows(sr);v=cboe_rows(vr)
+        if observations_out is not None:
+            observation=source_observation(current,previous,s,v,sr,vr,url)
+            observations_out.parent.mkdir(parents=True,exist_ok=True)
+            observations_out.write_text(
+                json.dumps(observation,indent=2,sort_keys=True,ensure_ascii=False)+"\n",
+                encoding="utf-8")
         try:
-            return build(dt.datetime.now(TAIPEI),previous,
-                         nasdaq_rows(sr),cboe_rows(vr),sr,vr,url)
+            return build(current,previous,s,v,sr,vr,url)
         except ValueError as error:
             if not str(error).startswith(("LATEST_US_SOURCE_SESSION_MISMATCH",
                                           "LATEST_EXPECTED_US_EOD_NOT_VERIFIED")) or attempt==2:
@@ -214,6 +269,7 @@ def main():
     p.add_argument("--mode",required=True,choices=("run","probe"))
     p.add_argument("--context",type=Path,default=Path("escape_live/finmind_twse_common_context.json"))
     p.add_argument("--out",type=Path)
+    p.add_argument("--observations-out",type=Path)
     args=p.parse_args()
     if args.mode=="probe":
         url=vendor_url(dt.datetime.now(TAIPEI).date())
@@ -229,7 +285,7 @@ def main():
     require(args.out is not None,"OUTPUT_PATH_REQUIRED")
     context=json.loads(args.context.read_text(encoding="utf-8"))
     asof=dt.datetime.now(TAIPEI)
-    packet=produce(asof,context["market_date"])
+    packet=produce(asof,context["market_date"],args.observations_out)
     args.out.parent.mkdir(parents=True,exist_ok=True)
     args.out.write_text(json.dumps(packet,indent=2,sort_keys=True,ensure_ascii=False)+"\n",encoding="utf-8")
     print(json.dumps({"status":packet["status"],"target":packet["target_tw_date"],
