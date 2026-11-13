@@ -435,6 +435,14 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
     a2_shadow=observe_a2(private_replay,a2_canonical_2026,a2_tdcc_781,now)
     current_advisory=advisory(now,root)
     current_environment=environment_monitoring(now,root,current_advisory)
+    # The only user-facing research ranking. Old V2.2 / 781 / HBA remains
+    # evidence-only in separate reporting fields, never a competing ranking.
+    try:
+        from scripts.hengce_unified_scan_publisher import build as unified_scan_build
+    except ModuleNotFoundError:
+        from hengce_unified_scan_publisher import build as unified_scan_build
+    main_root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
+    unified_main=unified_scan_build(main_root,now.date())
     try:
         from scripts.hengce_v22d_max5_operations import worklist as max5_worklist
     except ModuleNotFoundError:
@@ -452,6 +460,10 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
         "capital_authority_twd":0,"broker_order_execution":False,
         "reason":"ALL_SELECTION_FAMILIES_RETIRED",
         "reporting":{"status":"NO_ACTIVE_STRATEGY","active_strategy_count":0,
+          "user_facing_report_policy":"ONE_UNIFIED_MAIN_REPORT_ONLY",
+          "single_main_research_report":unified_main,
+          "single_main_research_ranking":unified_main.get("ranked",[]) if unified_main.get("status")=="RESEARCH_SCAN_READY" else [],
+          "legacy_v22d_hba_fields":"INTERNAL_REFERENCE_ONLY_NOT_A_SECOND_REPORT",
           "active_strategy":None,"top10":[],"action_card":{"status":"NO_BUY","ticker":None},
           "research_advisory":current_advisory,
           "environment_monitoring":current_environment,
