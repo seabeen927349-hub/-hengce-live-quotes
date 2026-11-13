@@ -190,6 +190,7 @@ def markdown(out):
         return '\n'.join(lines)+'\n'
     lines += [f'- V2.2D 原始權重研究合格：**{out["qualified_count"]} 檔**。',
               '- 市場：TWSE 全上市可比母體；上櫃尚未納入。',
+              '- 自動排程已部署的是單一報告發布與驗證。私人 V2.2D 權重未部署到 GitHub Actions；新交易日若尚無原始模型計分憑證，將阻擋更新，不沿用舊分數。',
               f'- 模型集保截至 {out["model_tdcc_date"]}；研究層 10 張以下持有人集保截至 {out["observed_tdcc_overlay_date"]}。',
               '- 舊 781 檔僅是歷史比較，不另製榜單。','',
               '## 唯一排名','',
