@@ -163,7 +163,7 @@ jobs:
           git commit -m 'research(sidecar): daily HBA surveillance with PIT macro and capital evidence'
           # Race protection: guarded publisher handles immutable write paths.
           git restore --worktree -- research/hba_surveillance/last_history_path.txt || true
-          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-hba-publication"
+          python scripts/hengce_publish.py --profile hba-surveillance --report-dir "${RUNNER_TEMP}/hengce-hba-publication"
       - name: Upload run receipt
         if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
