@@ -10,7 +10,7 @@ from pathlib import Path
 
 from scripts.hengce_v22d_private_original_inference import (
     MODEL_HASH, REG_HASH, PRICE_HASH, TDCC_HASH,
-    KNOWN_20261111_CANONICAL_HASH, FEATURES)
+    KNOWN_20261111_CANONICAL_HASH, FEATURES, eligible_full_market_ticker)
 from scripts.hengce_v22d_private_replay_reader import read_private_replay
 from scripts.hengce_v22d_a2_observer import observe_a2, repeat_lift
 from scripts.hengce_scan_once_router import report
@@ -84,6 +84,18 @@ def fixture():
 
 
 class V22DPrivateOriginalTests(unittest.TestCase):
+    def test_fullmarket_research_includes_99xx_ordinary_stock(self):
+        # Historical regression: 9933 passed V2.2D at 2026-11-13.
+        # Filtering all 9xxx stocks incorrectly turns 26 into 25.
+        self.assertTrue(eligible_full_market_ticker('9933'))
+        self.assertTrue(eligible_full_market_ticker('9945'))
+        self.assertTrue(eligible_full_market_ticker('1802'))
+        self.assertFalse(eligible_full_market_ticker('9103'))  # TDR
+        self.assertFalse(eligible_full_market_ticker('9136'))  # TDR
+        self.assertFalse(eligible_full_market_ticker('0001'))
+        self.assertFalse(eligible_full_market_ticker('2330A'))
+        self.assertFalse(eligible_full_market_ticker(''))
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
