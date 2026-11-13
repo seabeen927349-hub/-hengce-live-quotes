@@ -53,14 +53,19 @@ def check_hash(path, wanted):
 
 
 def infer(base, tdcc, recent, checkpoint, decision_day,
-          recent_sha256=KNOWN_20261111_CANONICAL_HASH):
+          recent_sha256=KNOWN_20261111_CANONICAL_HASH,
+          universe_mode="FIXED_781"):
+    """FIXED_781 is immutable legacy; ALL_TWSE_10LOT_RESEARCH is a distinct sidecar."""
     """Reproduce original features/LightGBM; never infer a live trading signal."""
     import numpy as np
     import pandas as pd
     import lightgbm as lgb
 
     decision = dt.date.fromisoformat(decision_day)
-    if decision.weekday() > 3:
+    if universe_mode not in ("FIXED_781", "ALL_TWSE_10LOT_RESEARCH"):
+        raise ValueError("UNKNOWN_V22D_RESEARCH_UNIVERSE_MODE")
+    if decision.weekday() > 3 and not (
+            universe_mode == "ALL_TWSE_10LOT_RESEARCH" and decision.weekday() == 4):
         raise ValueError("V22D_ONLY_MONDAY_THROUGH_THURSDAY")
     if decision > dt.datetime.now(ZoneInfo("Asia/Taipei")).date():
         raise ValueError("FUTURE_DECISION_DATE_FORBIDDEN")
@@ -87,12 +92,28 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
     w = pd.read_csv(tdcc, usecols=cols,
                     dtype={"Ticker": str, "SnapshotDate": str}, low_memory=False)
     w["SnapshotDate"] = pd.to_datetime(w.SnapshotDate, format="%Y%m%d", errors="coerce")
-    first = (w[(w.SnapshotDate.dt.year == 2018) & w.TierStatus.eq("VALID")]
-             .sort_values(["Ticker", "SnapshotDate"])
-             .groupby("Ticker").first())
-    cohort = set(first[first.Big400Pct >= 50].index)
-    if len(cohort) != 781:
-        raise ValueError("FIXED_2018_781_COHORT_MISMATCH")
+    if universe_mode == "FIXED_781":
+        # Original checkpoint replay contract is preserved byte-for-byte in its
+        # universe selection. Never silently change historical 781 comparators.
+        first = (w[(w.SnapshotDate.dt.year == 2018) & w.TierStatus.eq("VALID")]
+                 .sort_values(["Ticker", "SnapshotDate"])
+                 .groupby("Ticker").first())
+        cohort = set(first[first.Big400Pct >= 50].index)
+        if len(cohort) != 781:
+            raise ValueError("FIXED_2018_781_COHORT_MISMATCH")
+    else:
+        # Existing G1 weekly TDCC mother already covers historical TWSE issues
+        # outside the original 781. This is a NEW RESEARCH UNIVERSE, not a
+        # retrained model. Require actual valid <=10-lot holder observations
+        # no later than the original 14-day information cutoff.
+        cutoff = pd.Timestamp(decision - dt.timedelta(days=14))
+        mask = (w.TierStatus.eq("VALID") &
+                w.RetailPeopleValid.astype(str).str.lower().isin(["true", "1"]) &
+                w.SnapshotDate.le(cutoff) &
+                w.Ticker.str.fullmatch(r"[1-8][0-9]{3}", na=False))
+        cohort = set(w.loc[mask, "Ticker"].unique())
+        if len(cohort) < 900:
+            raise ValueError("FULL_TWSE_TDCC_COVERAGE_INSUFFICIENT")
     w = w[w.Ticker.isin(cohort)].copy()
     w["N"] = pd.to_numeric(w.HolderLe10Lots, errors="coerce").where(
         w.RetailPeopleValid.astype(str).str.lower().isin(["true", "1"]))
@@ -201,6 +222,21 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
     else:
         attribution = np.empty((0, len(FEATURES) + 1))
         raw = np.empty((0,))
+    full_rank = []
+    if universe_mode == "ALL_TWSE_10LOT_RESEARCH":
+        # Publish every qualifying ticker for a single ranked report, not a
+        # second top5. No post-decision TDCC is ever a model feature here.
+        for rank, (_, rr) in enumerate(eligible.iterrows(), 1):
+            full_rank.append({
+                "rank": rank, "ticker": str(rr["Ticker"]),
+                "close": float(rr["Close"]), "score": float(rr["score"]),
+                "ret20": float(rr["ret20"]), "ret5": float(rr["ret5"]),
+                "turnover20_median": float(rr["turnmed20"]),
+                "known_date": rr["known_date"].strftime("%Y-%m-%d"),
+                "last_known_le10_holder_count": float(rr["known0"]),
+                "estimated_week_end_le10_holder_count":
+                    float(rr["estimated_weekend_holders"]),
+            })
     rows = leading[["Ticker", "score", "ret20", "ret5", "turnmed20",
                     "known_date", "known0", "estimated_weekend_holders", "Close"]].copy()
     rows["known_date"] = rows.known_date.dt.strftime("%Y-%m-%d")
@@ -247,8 +283,14 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         "system": "HENGCE", "model_id": "v22d_daily_nowcast_liquidity_top5_v1",
         "status": "RESEARCH_REPLAY_NOT_PIT_CERTIFIED",
         "decision_date": decision.isoformat(), "generated_at_taipei": generated.isoformat(),
-        "fixed_cohort_count": 781, "feature_coverage": len(d),
+        "fixed_cohort_count": 781 if universe_mode == "FIXED_781" else None,
+        "universe_mode": universe_mode,
+        "research_universe_count": len(cohort),
+        "friday_shadow_only": decision.weekday() == 4,
+        "feature_coverage": len(d),
         "qualified_count": len(eligible), "top5": top,
+        **({"all_qualified": full_rank} if universe_mode == "ALL_TWSE_10LOT_RESEARCH"
+           else {}),
         "score_formula": "SIGMOID(BASE_LOG_ODDS_PLUS_16_FEATURE_CONTRIBUTIONS)",
         "score_feature_order": list(FEATURES),
         "target_event": "CURRENT_WEEK_LE10_HOLDERS_VS_TWO_WEEKS_PRIOR_DECREASE_GE_1PCT",
@@ -279,12 +321,15 @@ def main():
     p.add_argument("--original-2026-canonical", type=Path, required=True)
     p.add_argument("--private-original-model", type=Path, required=True)
     p.add_argument("--decision-date", required=True)
+    p.add_argument("--universe-mode", choices=["FIXED_781", "ALL_TWSE_10LOT_RESEARCH"],
+                   default="FIXED_781")
     p.add_argument("--canonical-sha256", default=KNOWN_20261111_CANONICAL_HASH)
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
     result = infer(args.original_price_mother, args.original_tdcc_mother,
                    args.original_2026_canonical, args.private_original_model,
-                   args.decision_date, args.canonical_sha256)
+                   args.decision_date, args.canonical_sha256,
+                   universe_mode=args.universe_mode)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, ensure_ascii=False, sort_keys=True,
                                           indent=2, allow_nan=False)
