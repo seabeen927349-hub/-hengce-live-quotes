@@ -170,8 +170,8 @@ def bridge(model, eod, integrated, names, previous=None, now=None):
     exiting = []
     if isinstance(previous, dict) and previous.get("status") == "RESEARCH_SCAN_READY":
         old_date = as_date(previous.get("decision_date"))
-        require(old_date < decision, "PREVIOUS_REPORT_NOT_EARLIER")
-        for item in previous.get("ranked", []):
+        require(old_date <= decision, "PREVIOUS_REPORT_FROM_FUTURE")
+        for item in (previous.get("ranked", []) if old_date < decision else []):
             ticker = item.get("ticker")
             if ticker not in seen:
                 evidence = sc.get(ticker)
