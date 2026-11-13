@@ -14,5 +14,26 @@
   "runtime_router": "scripts/hengce_scan_once_router.py",
   "cross_chat_restore_required": false,
   "contract_inheritance_required": false,
-  "retirement_lock": "hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json"
+  "retirement_lock": "hengce/HENGCE_Q017_RETIREMENT_LOCK_20261105.json",
+  "research_scan_20261114": {
+    "user_approved_switch": true,
+    "published_mode": "ONE_UNIFIED_REPORT",
+    "primary_research_model": "V2.2D_ORIGINAL_WEIGHTS",
+    "current_research_universe": "TWSE_LISTED_COMPARABLE_ALL_TICKERS_NOT_2018_781_CORE",
+    "small_holders": "TDCC_GRADES_1_3_LE_10000_SHARES",
+    "large_holders": "ALL_REMAINING_HOLDERS",
+    "previous_winners": "TRACK_EXITS_WITH_REASON_OR_UNVERIFIED_FLAG",
+    "unified_receipt": "research/retail_top5/unified_scan/latest.json",
+    "unified_main_report": "research/retail_top5/unified_scan/report_latest.md",
+    "unified_main_json": "research/retail_top5/unified_scan/report_latest.json",
+    "publisher": "scripts/hengce_unified_scan_publisher.py",
+    "automated_workflow": ".github/workflows/hengce-unified-v22d-research.yml",
+    "source_model_status": "PRIVATE_ORIGINAL_WEIGHT_CHECKPOINT_NOT_DEPLOYED_IN_GITHUB_ACTIONS",
+    "when_new_model_unavailable": "BLOCK_NEW_RANKING_AND_SHOW_EXPLICIT_REASON",
+    "legacy_hba_v22": "INTERNAL_RESEARCH_OBSERVATIONS_ONLY_NO_SECOND_MAIN_REPORT",
+    "existing_EOD_TDCC_FUGLE_FINMIND_SOX_S5_ESCAPE_RMS": "UNCHANGED",
+    "trading_strategy_status": "NO_ACTIVE_SELECTION_STRATEGY",
+    "broker_execution": false,
+    "authorized_lots": 0
+  }
 }
