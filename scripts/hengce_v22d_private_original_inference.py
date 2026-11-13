@@ -36,6 +36,18 @@ PRICE_COLS = [
 ]
 
 
+def eligible_full_market_ticker(ticker):
+    """TWSE research candidate identifier: include ordinary 99xx shares.
+    
+    The original EOD price universe supplies actual membership; this only
+    excludes obvious nonstock/TDR codes before the verified EOD intersection.
+    Do not mistake first digit 9 for a security type.
+    """
+    return (isinstance(ticker, str) and len(ticker) == 4
+            and ticker.isdecimal() and ticker[0] != "0"
+            and not ticker.startswith("91"))
+
+
 def digest(path):
     h = hashlib.sha256()
     with Path(path).open("rb") as f:
@@ -110,8 +122,7 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         mask = (w.TierStatus.eq("VALID") &
                 w.RetailPeopleValid.astype(str).str.lower().isin(["true", "1"]) &
                 w.SnapshotDate.le(cutoff) &
-                w.Ticker.str.fullmatch(r"[1-9][0-9]{3}", na=False) &
-                ~w.Ticker.str.startswith("91"))
+                w.Ticker.map(eligible_full_market_ticker))
         cohort = set(w.loc[mask, "Ticker"].unique())
         if len(cohort) < 900:
             raise ValueError("FULL_TWSE_TDCC_COVERAGE_INSUFFICIENT")
