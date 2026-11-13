@@ -58,6 +58,26 @@ PROFILES = {
     # No producer consumes health output. Exempt only that namespace, including
     # for default-profile writers; real/unknown inputs remain dependencies.
     'conservative-all': {'writes': ('**',), 'unrelated': OBSERVABILITY_ONLY},
+    # HBA only reads the original EOD/TDCC, governed overseas packets,
+    # explicit Escape intraday status and its own prior research outputs.
+    # The *premarket bridge shadow* is an independent downstream display:
+    # none of the three HBA producer scripts opens this file. Treat only
+    # this exact path as unrelated; changes to the actual FinMind intraday
+    # monitor/status, EOD, TDCC, code or unknown paths still fail closed.
+    'hba-surveillance': {
+        'writes': (
+            'research/hba_surveillance/latest.json',
+            'research/hba_surveillance/latest.md',
+            'research/hba_surveillance/history/**',
+            'research/hba_surveillance/integrated_latest.json',
+            'research/hba_surveillance/integrated_latest.md',
+            'research/hba_surveillance/integrated_history/**',
+            'research/hba_surveillance/decision_latest.json',
+            'research/hba_surveillance/decision_latest.md',
+            'research/hba_surveillance/decision_history/**',
+        ),
+        'unrelated': OBSERVABILITY_ONLY + ('escape_live/finmind_premarket_bridge_shadow.json',),
+    },
     'health-only': {'writes': ('hengce/health/latest.json',), 'unrelated': OBSERVABILITY_ONLY},
     'q017-primary-capture': {
         'writes': PRIMARY_CAPTURE_WRITES,
