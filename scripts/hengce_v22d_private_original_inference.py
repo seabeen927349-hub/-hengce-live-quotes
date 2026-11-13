@@ -110,7 +110,8 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         mask = (w.TierStatus.eq("VALID") &
                 w.RetailPeopleValid.astype(str).str.lower().isin(["true", "1"]) &
                 w.SnapshotDate.le(cutoff) &
-                w.Ticker.str.fullmatch(r"[1-8][0-9]{3}", na=False))
+                w.Ticker.str.fullmatch(r"[1-9][0-9]{3}", na=False) &
+                ~w.Ticker.str.startswith("91"))
         cohort = set(w.loc[mask, "Ticker"].unique())
         if len(cohort) < 900:
             raise ValueError("FULL_TWSE_TDCC_COVERAGE_INSUFFICIENT")
