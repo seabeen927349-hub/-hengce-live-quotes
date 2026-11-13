@@ -89,6 +89,25 @@ class Checks(unittest.TestCase):
             (root/mod.INPUT).write_text(json.dumps(x))
             self.assertEqual(mod.build(root,TODAY)['reason'],'TDCC_LOOKAHEAD')
 
+    def test_auto_exit_survives_blocked_intermediate_day(self):
+        tmp,root,x,e=fixture()
+        with tmp:
+            old=mod.build(root,TODAY)
+            old['status']='RESEARCH_SCAN_READY'
+            old['decision_date']='2026-11-12'
+            old['ranked']=[{'ticker':'1802','name':'台玻'}, {'ticker':'6446','name':'藥華藥'}]
+            (root/mod.OUTPUT_JSON).parent.mkdir(parents=True,exist_ok=True)
+            (root/mod.OUTPUT_JSON).write_text(json.dumps(old))
+            today=mod.build(root,TODAY)
+            self.assertEqual([x['ticker'] for x in today['exited']],['1802'])
+            self.assertIn('台玻',mod.markdown(today))
+            self.assertEqual(today['exited'][0]['score_date'], '2026-11-13')
+            st=root/'eod/20261116/status.json';st.parent.mkdir(parents=True)
+            e['target_date']='2026-11-16';st.write_text(json.dumps(e))
+            blocked=mod.build(root,date(2026,11,16))
+            self.assertEqual(blocked['ranked'],[])
+            self.assertEqual(blocked['last_verified_reference']['decision_date'],'2026-11-12')
+
     def test_wrong_eod_hash_blocks(self):
         tmp,root,x,_=fixture()
         with tmp:
