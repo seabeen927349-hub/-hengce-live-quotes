@@ -243,7 +243,31 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         attribution = np.empty((0, len(FEATURES) + 1))
         raw = np.empty((0,))
     full_rank = []
+    all_scored = []
     if universe_mode == "ALL_TWSE_10LOT_RESEARCH":
+        # Needed for previous-qualifier exit audit. A missing ticker is
+        # UNKNOWN, never an inferred score failure. No separate market rank.
+        for _, z in d.iterrows():
+            price_gate = (pd.notna(z["ret20"]) and z["ret20"] >= .05
+                          and pd.notna(z["ret5"]) and z["ret5"] >= 0
+                          and pd.notna(z["turnmed20"]) and z["turnmed20"] >= 1e7
+                          and pd.notna(z["volatility20"]) and z["volatility20"] > 0
+                          and pd.notna(z["valid_close"]) and z["valid_close"] > 0)
+            all_scored.append({
+                "ticker": str(z["Ticker"]),
+                "score": float(z["score"]),
+                "close": float(z["Close"]),
+                "ret20": (float(z["ret20"]) if pd.notna(z["ret20"]) else None),
+                "ret5": (float(z["ret5"]) if pd.notna(z["ret5"]) else None),
+                "turnover20_median": (float(z["turnmed20"]) if pd.notna(z["turnmed20"]) else None),
+                "volatility20": (float(z["volatility20"]) if pd.notna(z["volatility20"]) else None),
+                "price_gate": bool(price_gate),
+                "model_gate": bool(z["eligible"]),
+            })
+        if (len(all_scored) != len(d) or
+                sum(item["model_gate"] for item in all_scored) != len(eligible)):
+            raise ValueError("FULLMARKET_SCORE_AUDIT_DISAGREES_WITH_QUALIFIED")
+
         # Publish every qualifying ticker for a single ranked report, not a
         # second top5. No post-decision TDCC is ever a model feature here.
         for rank, (_, rr) in enumerate(eligible.iterrows(), 1):
@@ -309,8 +333,10 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         "friday_shadow_only": decision.weekday() == 4,
         "feature_coverage": len(d),
         "qualified_count": len(eligible), "top5": top,
-        **({"all_qualified": full_rank} if universe_mode == "ALL_TWSE_10LOT_RESEARCH"
-           else {}),
+        **({"all_qualified": full_rank,
+            "all_scored_for_exit_audit": all_scored,
+            "price_gate_count": sum(z["price_gate"] for z in all_scored)}
+           if universe_mode == "ALL_TWSE_10LOT_RESEARCH" else {}),
         "score_formula": "SIGMOID(BASE_LOG_ODDS_PLUS_16_FEATURE_CONTRIBUTIONS)",
         "score_feature_order": list(FEATURES),
         "target_event": "CURRENT_WEEK_LE10_HOLDERS_VS_TWO_WEEKS_PRIOR_DECREASE_GE_1PCT",
