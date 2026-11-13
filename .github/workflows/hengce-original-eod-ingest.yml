@@ -4,6 +4,7 @@ name: HENGCE original EOD ingest
 # Manual original-vessel EOD retry for 2026-11-06 after stale-run rebase conflict; no workflow logic change.
 # Manual original-vessel three-leg EOD refresh requested 2026-11-11; existing collector and mother bridge unchanged.
 # Manual original-vessel three-leg EOD refresh requested 2026-11-12; existing collector and mother bridge unchanged.
+# Manual original-vessel three-leg EOD ingest and canonical mother refresh requested 2026-11-13; workflow behavior unchanged.
 # Existing HENGCE blood vessel. Research auxiliaries attach inside this same
 # eod/YYYYMMDD path; no parallel collector, mother, universe, or model authority.
 
