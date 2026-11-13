@@ -81,8 +81,13 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         raise ValueError("V22D_ONLY_MONDAY_THROUGH_THURSDAY")
     if decision > dt.datetime.now(ZoneInfo("Asia/Taipei")).date():
         raise ValueError("FUTURE_DECISION_DATE_FORBIDDEN")
-    for path, wanted in ((base, PRICE_HASH), (tdcc, TDCC_HASH),
-                         (recent, recent_sha256)):
+    # The all-TWSE sidecar only needs the SHA-verified last 100-calendar-day
+    # original canonical mother; no duplicate nine-year historical collector.
+    # Legacy FIXED_781 retains ALL its original pinned input requirements.
+    sources = (((tdcc, TDCC_HASH), (recent, recent_sha256))
+               if universe_mode == "ALL_TWSE_10LOT_RESEARCH" else
+               ((base, PRICE_HASH), (tdcc, TDCC_HASH), (recent, recent_sha256)))
+    for path, wanted in sources:
         check_hash(path, wanted)
     if decision > dt.date(2026, 11, 11) and recent_sha256 == KNOWN_20261111_CANONICAL_HASH:
         raise ValueError("NEWER_CANONICAL_SHA_REQUIRED_FOR_LATER_DECISION")
@@ -152,8 +157,11 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
             part = ch.loc[keep]
             if len(part):
                 yield part
-    parts = list(price_chunks(base))
-    parts.extend(price_chunks(recent, after=pd.Timestamp("2026-11-06")))
+    if universe_mode == "ALL_TWSE_10LOT_RESEARCH":
+        parts = list(price_chunks(recent))
+    else:
+        parts = list(price_chunks(base))
+        parts.extend(price_chunks(recent, after=pd.Timestamp("2026-11-06")))
     if not parts:
         raise ValueError("NO_PRICE_HISTORY_FROM_EXISTING_VESSELS")
     p = (pd.concat(parts, ignore_index=True)
@@ -309,7 +317,9 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         "score_cutoff": 0.50,
         "score_explanations_are_causal_effects": False,
         "last_assumed_tdcc_snapshot": d.known_date.max().strftime("%Y-%m-%d") if len(d) else None,
-        "source_sha256": {"original_prices": PRICE_HASH, "original_tdcc": TDCC_HASH,
+        "source_sha256": {"original_prices": (
+            PRICE_HASH if universe_mode == "FIXED_781" else None),
+            "original_tdcc": TDCC_HASH,
                           "original_2026_canonical": recent_sha256, "classifier": MODEL_HASH,
                           "regressor": REG_HASH},
         "historical_tdcc_first_observed_pit_certified": False,
