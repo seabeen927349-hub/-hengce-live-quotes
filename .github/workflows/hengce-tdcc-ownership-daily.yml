@@ -1,4 +1,5 @@
 name: HENGCE TDCC Ownership Canonical Vessel
+# Manual canonical fourth-leg TDCC publication check requested 2026-11-13; existing ingestion and idempotency unchanged.
 
 on:
   schedule:
