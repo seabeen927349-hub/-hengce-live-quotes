@@ -218,6 +218,11 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
     d["prior_known_delta"] = (d.known1 / d.known2 - 1).clip(-.5, .5).astype("float32")
     d = d[d.known0.gt(0) & d.known1.gt(0) & d.known2.gt(0) &
           d.last_age.between(0, 7) & d.known_lag.between(1, 5)].copy()
+    if universe_mode == "ALL_TWSE_10LOT_RESEARCH":
+        # Full-market research reports only currently priced/tradable issues
+        # as scorable; 1538 on 2026-11-13 had no valid price. Retain its
+        # source row in the original mother, but not the selection universe.
+        d = d[d.valid_close.gt(0)].copy()
     for col in FEATURES:
         d[col] = d[col].replace([np.inf, -np.inf], np.nan)
     d["score"] = classifier.predict(d[FEATURES]).astype("float32")
