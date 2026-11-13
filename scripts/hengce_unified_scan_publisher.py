@@ -80,6 +80,16 @@ def validate_rows(source):
 def build(root, today=None):
     today=today or dt.datetime.now(TZ).date()
     eod_date,eod=last_verified_eod(root)
+    # The prior verified members survive a blocked day as REFERENCE ONLY.
+    # They are never promoted to today's ranking or a buy/sell instruction.
+    prior=read(root/OUTPUT_JSON)
+    prior_reference=None
+    if isinstance(prior,dict) and prior.get('status')=='RESEARCH_SCAN_READY':
+        if isinstance(prior.get('ranked'),list):
+            prior_reference={'decision_date':prior.get('decision_date'),
+                             'ranked':prior['ranked']}
+    elif isinstance(prior,dict) and isinstance(prior.get('last_verified_reference'),dict):
+        prior_reference=prior['last_verified_reference']
     base={'schema':'HENGCE_UNIFIED_SCAN_PUBLISHED_REPORT_V1','system':'HENGCE',
           'report_date':eod_date.isoformat() if eod_date else today.isoformat(), 'verified_eod_date':eod_date.isoformat() if eod_date else None,
           'ranked':[], 'exited':[], 'top5':[], 'qualified_count':0,
@@ -89,7 +99,8 @@ def build(root, today=None):
           'output_policy':'ONE_MAIN_REPORT_ONE_RANKING_NO_FALLBACK'}
     def blocked(reason):
         return dict(base,status='RESEARCH_SCAN_BLOCKED',reason=reason,
-                    model_updated=False, historical_rankings_not_promoted=True)
+                    model_updated=False, historical_rankings_not_promoted=True,
+                    last_verified_reference=prior_reference)
     if eod_date is None: return blocked('NO_VERIFIED_CANONICAL_EOD')
     if eod_date>today: return blocked('FUTURE_EOD_DATE')
     if (today-eod_date).days>4: return blocked('STALE_CANONICAL_EOD')
@@ -128,6 +139,26 @@ def build(root, today=None):
         return blocked('INVALID_EXIT_TRACKING')
     if not all(isinstance(x,dict) and isinstance(x.get('ticker'),str) and isinstance(x.get('reason'),str) for x in exiting):
         return blocked('INVALID_EXIT_ROWS')
+    # On a later research day, derive the EXIT membership from last verified
+    # scores, even if an intervening day was blocked for missing model input.
+    # Never reuse yesterday's score as today's score when today's proof is absent.
+    if prior_reference and prior_reference.get('decision_date') and prior_reference['decision_date']<source['decision_date']:
+        old={x['ticker']:x for x in prior_reference['ranked'] if isinstance(x,dict) and isinstance(x.get('ticker'),str)}
+        new={x['ticker'] for x in source['all_qualified']}
+        explained={x['ticker']:x for x in exiting if isinstance(x,dict) and isinstance(x.get('ticker'),str)}
+        exiting=[]
+        for ticker,row in old.items():
+            if ticker in new: continue
+            today_evidence=explained.get(ticker)
+            item={'ticker':ticker,'name':row.get('name',ticker)}
+            if today_evidence is None:
+                item.update(reason='NO_LONGER_QUALIFIED_CURRENT_GATE_NOT_VERIFIED',
+                            score=None,score_date=None)
+            else:
+                item.update(reason=today_evidence['reason'],
+                            score=today_evidence.get('score'),
+                            score_date=source['decision_date'])
+            exiting.append(item)
     # Do not publish a stale HBA model or produce two independent ranked reports.
     result=dict(base,status='RESEARCH_SCAN_READY', reason=None,
                 model_updated=True, decision_date=source['decision_date'],
@@ -139,6 +170,8 @@ def build(root, today=None):
                 rank_rule='20D_MEDIAN_TURNOVER_DESC',
                 baseline_781_qualified=source.get('original_781_qualified'),
                 ranked=source['all_qualified'],top5=source['top5'],
+                last_verified_reference={'decision_date':source['decision_date'],
+                                         'ranked':source['all_qualified']},
                 qualified_count=len(source['all_qualified']),exited=exiting,
                 previous_decision_date=source.get('previous_research_decision_date'),
                 input_receipt_sha256=hashlib.sha256((root/INPUT).read_bytes()).hexdigest(),
@@ -168,7 +201,9 @@ def markdown(out):
             '|代碼|名稱|目前V2.2D分數|退出原因|',
             '|---|---|---:|---|']
     for row in out['exited']:
-        lines.append(f'|{row["ticker"]}|{row.get("name") or row["ticker"]}|{row.get("score",float("nan")):.4f}|{row["reason"]}|')
+        score=row.get('score')
+        shown=f'{score:.4f}' if isinstance(score,(int,float)) and math.isfinite(score) else '未驗證'
+        lines.append(f'|{row["ticker"]}|{row.get("name") or row["ticker"]}|{shown}|{row["reason"]}|')
     if not out['exited']: lines.append('|—|本次無退出紀錄|—|—|')
     lines+=['','### 證據範圍',
             f'- 11/13 這份來源是 **{("週五研究影子重算" if out["friday_shadow_only"] else "原 V2.2D 研究重算")}**，未通過完整前瞻首次公告時間戳認證。',
