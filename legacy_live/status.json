@@ -1,9 +1,9 @@
 {
   "schema_version": 3,
   "service": "HENGCE TWSE ELECTRONICS 100 LIVE QUOTES",
-  "snapshot_id": "20261113T153344+0800",
-  "generated_at_taipei": "2026-11-13T15:36:17.656891+08:00",
-  "cache_expires_at_taipei": "2026-11-13T15:43:44.328226+08:00",
+  "snapshot_id": "20261113T204244+0800",
+  "generated_at_taipei": "2026-11-13T20:45:19.718650+08:00",
+  "cache_expires_at_taipei": "2026-11-13T20:52:44.494001+08:00",
   "cache_ttl_seconds": 600,
   "market_phase": "closed",
   "universe_policy": "TWSE_LISTED_ELECTRONICS_100_HARD_BIND",
