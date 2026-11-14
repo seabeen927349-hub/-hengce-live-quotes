@@ -66,7 +66,7 @@ def check_hash(path, wanted):
 
 def infer(base, tdcc, recent, checkpoint, decision_day,
           recent_sha256=KNOWN_20261111_CANONICAL_HASH,
-          universe_mode="FIXED_781"):
+          universe_mode="FIXED_781", tdcc_sha256=None):
     """FIXED_781 is immutable legacy; ALL_TWSE_10LOT_RESEARCH is a distinct sidecar."""
     """Reproduce original features/LightGBM; never infer a live trading signal."""
     import numpy as np
@@ -84,9 +84,17 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
     # The all-TWSE sidecar only needs the SHA-verified last 100-calendar-day
     # original canonical mother; no duplicate nine-year historical collector.
     # Legacy FIXED_781 retains ALL its original pinned input requirements.
-    sources = (((tdcc, TDCC_HASH), (recent, recent_sha256))
-               if universe_mode == "ALL_TWSE_10LOT_RESEARCH" else
-               ((base, PRICE_HASH), (tdcc, TDCC_HASH), (recent, recent_sha256)))
+    if universe_mode == "ALL_TWSE_10LOT_RESEARCH":
+        # The G1 original 457-week panel is SHA-pinned separately; the PRIVATE
+        # 2026 rolling research derivative has a distinct byte hash. Never
+        # disable integrity checks or falsely claim that hashes are equal.
+        if (not isinstance(tdcc_sha256, str) or len(tdcc_sha256) != 64):
+            raise ValueError("PRIVATE_DERIVED_TDCC_SHA_REQUIRED")
+        sources = ((tdcc, tdcc_sha256), (recent, recent_sha256))
+    else:
+        if tdcc_sha256 is not None:
+            raise ValueError("LEGACY_ORIGINAL_TDCC_SHA_OVERRIDE_FORBIDDEN")
+        sources = ((base, PRICE_HASH), (tdcc, TDCC_HASH), (recent, recent_sha256))
     for path, wanted in sources:
         check_hash(path, wanted)
     if decision > dt.date(2026, 11, 11) and recent_sha256 == KNOWN_20261111_CANONICAL_HASH:
@@ -350,7 +358,8 @@ def infer(base, tdcc, recent, checkpoint, decision_day,
         "last_assumed_tdcc_snapshot": d.known_date.max().strftime("%Y-%m-%d") if len(d) else None,
         "source_sha256": {"original_prices": (
             PRICE_HASH if universe_mode == "FIXED_781" else None),
-            "original_tdcc": TDCC_HASH,
+            "original_tdcc": (TDCC_HASH if universe_mode == "FIXED_781"
+                              else tdcc_sha256),
                           "original_2026_canonical": recent_sha256, "classifier": MODEL_HASH,
                           "regressor": REG_HASH},
         "historical_tdcc_first_observed_pit_certified": False,
@@ -374,6 +383,8 @@ def main():
     p.add_argument("--original-2026-canonical", type=Path, required=True)
     p.add_argument("--private-original-model", type=Path, required=True)
     p.add_argument("--decision-date", required=True)
+    p.add_argument("--tdcc-sha256",
+                   help="Required fullmarket SHA-verified PRIVATE G1 rolling cache digest")
     p.add_argument("--universe-mode", choices=["FIXED_781", "ALL_TWSE_10LOT_RESEARCH"],
                    default="FIXED_781")
     p.add_argument("--canonical-sha256", default=KNOWN_20261111_CANONICAL_HASH)
@@ -382,7 +393,7 @@ def main():
     result = infer(args.original_price_mother, args.original_tdcc_mother,
                    args.original_2026_canonical, args.private_original_model,
                    args.decision_date, args.canonical_sha256,
-                   universe_mode=args.universe_mode)
+                   universe_mode=args.universe_mode, tdcc_sha256=args.tdcc_sha256)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, ensure_ascii=False, sort_keys=True,
                                           indent=2, allow_nan=False)
