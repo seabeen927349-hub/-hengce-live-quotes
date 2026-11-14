@@ -435,14 +435,31 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
     a2_shadow=observe_a2(private_replay,a2_canonical_2026,a2_tdcc_781,now)
     current_advisory=advisory(now,root)
     current_environment=environment_monitoring(now,root,current_advisory)
-    # The only user-facing research ranking. Old V2.2 / 781 / HBA remains
-    # evidence-only in separate reporting fields, never a competing ranking.
-    try:
-        from scripts.hengce_unified_scan_publisher import build as unified_scan_build
-    except ModuleNotFoundError:
-        from hengce_unified_scan_publisher import build as unified_scan_build
+    # The only user-facing report is the PRIVATE original-model publisher.
+    # This public EOD repository supplies existing vessels but MUST NOT emit
+    # another competing or stale V2.2D ranking.
     main_root=Path(root) if root is not None else Path(__file__).resolve().parents[1]
-    unified_main=unified_scan_build(main_root,now.date())
+    unified_main={"status":"PRIVATE_CANONICAL_POINTER_UNVERIFIED_FAIL_CLOSED",
+                  "ranked":[],"top5":[],"broker_execution":False}
+    try:
+        p=json.loads((main_root/"research/retail_top5/unified_scan/report_latest.json").read_text(encoding="utf-8"))
+        if (p.get("schema")=="HENGCE_UNIFIED_PRIVATE_SINGLE_SOURCE_POINTER_V1"
+                and p.get("status")=="PRIVATE_CANONICAL_REPORT_POINTER_ONLY"
+                and p.get("main_report_repository")=="seabeen927349-hub/twse--backfill-test"
+                and p.get("main_report_path")=="hengce/private_v22d_autoscan/reports/latest.md"
+                and p.get("broker_execution") is False
+                and p.get("ranked")==[] and p.get("top5")==[]):
+            unified_main={
+                "status":"PRIVATE_CANONICAL_REPORT_POINTER_ONLY",
+                "repository":p["main_report_repository"],
+                "report_path":p["main_report_path"],
+                "report_url":p["main_report_url"],
+                "ranked":[],"top5":[],
+                "source_research_authority":"PRIVATE_ORIGINAL_V22D_10LOT",
+                "broker_execution":False,
+                "reason":"Open one verified private report; no public duplicate rankings"}
+    except (OSError,ValueError,TypeError):
+        pass
     try:
         from scripts.hengce_v22d_max5_operations import worklist as max5_worklist
     except ModuleNotFoundError:
