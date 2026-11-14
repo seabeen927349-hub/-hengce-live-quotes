@@ -7518,9 +7518,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-13",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-14T23:10:57.553505+08:00",
+        "observed_at_taipei": "2026-11-15T04:47:42.026990+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "f436f3ee2bac72aadb94f7fd46602152bf4bc97755aa6842ab1e16d085cc4d17",
+        "source_observation_sha256": "e1b50509b2afb38ded12b3b49b8bf11b90239f6288e07ca58eb684a05e5c0802",
         "sox": {
           "change_pct": -3.4297,
           "latest_close": 10146.32311915594,
@@ -7542,9 +7542,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-13",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-14T23:10:57.553505+08:00",
+        "observed_at_taipei": "2026-11-15T04:47:42.026990+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "f436f3ee2bac72aadb94f7fd46602152bf4bc97755aa6842ab1e16d085cc4d17",
+        "source_observation_sha256": "e1b50509b2afb38ded12b3b49b8bf11b90239f6288e07ca58eb684a05e5c0802",
         "sox": {
           "change_pct": -3.4297,
           "latest_close": 10146.32311915594,
@@ -7594,7 +7594,7 @@
   "observed_eod_date": "2026-11-13",
   "readiness": "RESEARCH_READY",
   "schema": "HENGCE_HBA_INTEGRATED_CONTEXT_RESEARCH_V1",
-  "target_tw_date": "2026-11-14",
+  "target_tw_date": "2026-11-15",
   "two_group_market_registry": [
     {
       "other_shares": 6552588712,
@@ -21679,7 +21679,7 @@
   "two_group_research": {
     "actual_small_shares_down_count": 661,
     "actual_small_shares_up_count": 422,
-    "age_days": 1,
+    "age_days": 2,
     "authority": {
       "capital": false,
       "rank": false,
@@ -21732,7 +21732,7 @@
     "source": "EXISTING_TDCC_1_5_RAW_AND_RECEIPTS",
     "status": "VERIFIED_TWO_GROUP_RESEARCH",
     "stock_count": 1090,
-    "target_tw_date": "2026-11-14",
+    "target_tw_date": "2026-11-15",
     "two_consecutive_observed_intervals": {
       "first": "20261030..20261106",
       "not_a_full_2026_13week_panel": true,
