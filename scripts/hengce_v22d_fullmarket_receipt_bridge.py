@@ -100,8 +100,24 @@ def bridge(model, eod, integrated, names, previous=None, now=None):
             "EXISTING_ORIGINAL_EOD_NOT_VERIFIED")
     # This version requires the identical canonical mother bytes. A future
     # derived rolling cache must prove its per-day EOD chain in a new contract.
-    require(eod.get("mother_sha256") == original.get("original_2026_canonical"),
-            "CANONICAL_MOTHER_HASH_MISMATCH")
+    cache_mode = model.get("source_canonical_input_kind")
+    if cache_mode == "DERIVED_VERIFIED_ROLLING_CACHE_FROM_ORIGINAL_MOTHER":
+        # Parent is the original EOD canonical mother, never the derived
+        # rolling subset. The model's own SHA is the verified private input.
+        require(model.get("source_canonical_parent_sha256") ==
+                eod.get("mother_sha256"),
+                "CANONICAL_MOTHER_PARENT_HASH_MISMATCH")
+        require(model.get("source_seed_full_canonical_sha256_20261113") ==
+                "76db96b5b9d52027b954ef6088d37d1f644e53ceb32466dbef721f290c87cd63",
+                "ORIGINAL_PARENT_SEED_UNVERIFIED")
+        proofs=model.get("source_eod_proofs")
+        require(isinstance(proofs,list) and proofs and
+                proofs[-1].get("date")==model.get("decision_date") and
+                proofs[-1].get("mother_sha256")==eod.get("mother_sha256"),
+                "ORIGINAL_EOD_SHA_PROOF_MISSING")
+    else:
+        require(eod.get("mother_sha256") == original.get("original_2026_canonical"),
+                "CANONICAL_MOTHER_HASH_MISMATCH")
     tdcc_known = as_date(model.get("last_assumed_tdcc_snapshot"))
     require(tdcc_known <= decision - dt.timedelta(days=14), "TDCC_MODEL_LOOKAHEAD")
     require(integrated.get("observed_eod_date") == decision.isoformat(),
