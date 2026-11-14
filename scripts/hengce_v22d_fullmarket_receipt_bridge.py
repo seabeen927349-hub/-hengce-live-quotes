@@ -102,6 +102,15 @@ def bridge(model, eod, integrated, names, previous=None, now=None):
     # derived rolling cache must prove its per-day EOD chain in a new contract.
     cache_mode = model.get("source_canonical_input_kind")
     if cache_mode == "DERIVED_VERIFIED_ROLLING_CACHE_FROM_ORIGINAL_MOTHER":
+        require(model.get("source_g1_full_parent_sha256") ==
+                "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
+                "ORIGINAL_G1_TDCC_PARENT_SHA_UNVERIFIED")
+        require(model.get("source_g1_private_seed_sha256") ==
+                "87ae56488ad28baa9d7c32594e796e48930aa321cc683c33f6a467889b1c0b3a",
+                "PRIVATE_G1_TDCC_SEED_SHA_UNVERIFIED")
+        require(isinstance(original.get("original_tdcc"), str) and
+                len(original["original_tdcc"]) == 64,
+                "PRIVATE_G1_TDCC_ROLLING_SHA_MISSING")
         # Parent is the original EOD canonical mother, never the derived
         # rolling subset. The model's own SHA is the verified private input.
         require(model.get("source_canonical_parent_sha256") ==
