@@ -1,72 +1,32 @@
-name: HENGCE Single Unified V2.2D 10-Lot Research Report
+name: HENGCE Public Unified Report Pointer Safety
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ['HENGCE original EOD ingest']
-    types: [completed]
-  schedule:
-    # Asia/Taipei 00:20 Tue-Sat, after the governed previous-session EOD/TDCC.
-    - cron: '20 16 * * 1-5'
-  push:
-    branches: [main]
+  pull_request:
     paths:
+      - 'scripts/hengce_scan_once_router.py'
       - 'scripts/hengce_unified_scan_publisher.py'
       - 'tests/engineering/test_hengce_unified_scan_publisher.py'
-      - 'research/retail_top5/unified_scan/latest.json'
       - '.github/workflows/hengce-unified-v22d-research.yml'
 permissions:
-  contents: write
-concurrency:
-  group: hengce-one-unified-research-publisher
-  cancel-in-progress: false
+  contents: read
 jobs:
-  research-report:
-    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository)
+  original-research-report-safety:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 6
     steps:
-      - name: Checkout existing HENGCE vessels and frozen model receipt
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: main
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Fail-closed single-report regression tests
-        run: python -m unittest discover -s tests/engineering -p 'test_hengce_unified_scan_publisher.py' -v
-      - name: Build ONE read-only report from the exact original EOD and signed research receipt
+      - name: Verify no second PUBLIC model scan is published
         run: |
-          set -euo pipefail
-          python scripts/hengce_unified_scan_publisher.py \
-            --root . \
-            --out-json research/retail_top5/unified_scan/report_latest.json \
-            --out-md research/retail_top5/unified_scan/report_latest.md
+          python -m unittest discover -s tests/engineering -p 'test_hengce_unified_scan_publisher.py' -v
           python - <<'PY'
           import json
           from pathlib import Path
-          x=json.loads(Path('research/retail_top5/unified_scan/report_latest.json').read_text())
-          assert x['broker_execution'] is False and x['authorized_lots']==0
-          assert x['status'] in {'RESEARCH_SCAN_READY','RESEARCH_SCAN_BLOCKED'}
-          if x['status']!='RESEARCH_SCAN_READY':
-              assert x['ranked']==[] and x['top5']==[]
-              print('FAIL_CLOSED:',x['reason'])
-          else:
-              assert x['top5']==x['ranked'][:5]
-              print('ONE_UNIFIED_RANKING:',x['decision_date'],len(x['ranked']))
+          r=json.loads(Path('research/retail_top5/unified_scan/report_latest.json').read_text())
+          assert r['status']=='PRIVATE_CANONICAL_REPORT_POINTER_ONLY'
+          assert r.get('ranked')==[] and r.get('top5')==[]
+          assert r['broker_execution'] is False
+          print('ONE_PRIVATE_CANONICAL_REPORT_WITH_PUBLIC_POINTER')
           PY
-      - name: Publish only one main research report and one status receipt
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name hengce-unified-research-bot
-          git config user.email actions@users.noreply.github.com
-          git add research/retail_top5/unified_scan/report_latest.json \
-                  research/retail_top5/unified_scan/report_latest.md
-          if git diff --cached --quiet; then
-            echo 'Same source and same output: no duplicate report.'
-            exit 0
-          fi
-          git commit -m 'research: publish one verified V2.2D 10-lot scan or fail-closed status'
-          git pull --rebase origin main
-          git push origin HEAD:main
