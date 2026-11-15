@@ -8733,9 +8733,9 @@
       "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
       "expected_us_session": "2026-11-13",
       "observation_window": "ANYTIME_SOURCE_ONLY",
-      "observed_at_taipei": "2026-11-16T01:15:31.273277+08:00",
+      "observed_at_taipei": "2026-11-16T06:56:39.254806+08:00",
       "preopen_forecast_authority": false,
-      "source_observation_sha256": "bd9c5d48d2bb2c05a59d07b144ce0ab2843e53f29db828d20f54b93437bdd218",
+      "source_observation_sha256": "b465e1797397ca31fd375152c8b7f93033f83ba912d3c4494981167b794b415f",
       "sox": {
         "change_pct": -3.4297,
         "latest_close": 10146.32311915594,
