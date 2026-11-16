@@ -8,7 +8,7 @@
   "broker_hhi_blocks_core_three_leg_or_mother": false,
   "broker_hhi_capital_authority_created": false,
   "broker_hhi_date": "2026-11-16",
-  "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
+  "broker_hhi_last_result": "ALREADY_COMPLETE_IMMUTABLE",
   "broker_hhi_model_authority_created": false,
   "broker_hhi_receipt": "receipts/broker_hhi.json",
   "broker_hhi_rows": 2338,
@@ -29,19 +29,19 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1091,
       "sha256": "62d0acddda14929b0a384277c7cd07397b30515eee4cc653f552578007729421"
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1082,
       "sha256": "96ca2de779d769b22e09d0791de5d43f6e66012320ddf175978567c3ef5ac09a"
     },
     {
       "leg": "margin",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1063,
       "sha256": "bb084a4661334e7bc3b1e1282eedd9aec7048d06599a188a73c5e14803b2ca6b"
     }
@@ -51,18 +51,16 @@
   "margin_sha256": "bb084a4661334e7bc3b1e1282eedd9aec7048d06599a188a73c5e14803b2ca6b",
   "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
   "margin_status": "COMPLETE",
-  "market_state_finmind_context_path": "market_state_finmind_context.json",
-  "market_state_finmind_context_sha256": "78f20ee824b59d1c413765fe12641f685bb6456d10a4f53b546eb2dccb6eb31b",
-  "market_state_finmind_context_status": "ATTACHED_RESEARCH_SHADOW",
+  "market_state_finmind_context_status": "NOT_ATTACHED_CURRENT_RUN",
   "market_state_finmind_finmind_latest_lag_seconds": 32288.112,
   "market_state_finmind_market_scope_definition": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING",
   "market_state_finmind_primary_scope": "twse_all_listed_equities",
   "market_state_finmind_shadow_blocks_core_three_leg_or_mother": false,
   "market_state_finmind_shadow_formal_classifier_mutated": false,
   "market_state_finmind_shadow_model_authority_created": false,
-  "market_state_finmind_shadow_observed_at_taipei": "2026-11-16T23:58:08.111909+08:00",
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-17T07:41:51.265002+08:00",
   "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
-  "market_state_finmind_shadow_status": "OBSERVED_CONTEXT_ATTACHED",
+  "market_state_finmind_shadow_status": "SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT",
   "market_state_finmind_shadow_trading_authority_created": false,
   "market_state_finmind_twse_current_date_count": 1084,
   "market_state_finmind_twse_current_date_coverage_ratio": 0.9954086317722681,
@@ -93,5 +91,5 @@
   "system": "HENGCE",
   "target_date": "2026-11-16",
   "three_leg_complete": true,
-  "updated_at_taipei": "2026-11-16T23:58:07.852340+08:00"
+  "updated_at_taipei": "2026-11-17T07:41:50.999719+08:00"
 }
