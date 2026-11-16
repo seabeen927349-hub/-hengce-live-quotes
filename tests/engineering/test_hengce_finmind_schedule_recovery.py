@@ -91,7 +91,10 @@ class ScheduleRecoveryTests(unittest.TestCase):
         # Keep the original conservative-all fail-closed publisher, not a
         # rebase onto concurrently written evidence.
         self.assertIn("--profile conservative-all",finmind)
-        self.assertIn("--profile conservative-all",hba)
+        # HBA uses its governed HBA-only fail-closed profile; it must not be
+        # rewritten to the FinMind conservative-all profile just to satisfy
+        # this regression. The shared concurrency lease remains identical.
+        self.assertIn("--profile hba-surveillance",hba)
         self.assertNotIn("git pull --rebase",finmind)
 
     def test_same_monitor_workflow_and_existing_source(self):
