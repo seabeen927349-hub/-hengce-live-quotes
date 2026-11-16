@@ -1,20 +1,20 @@
 {
-  "asof_taipei": "2026-11-16T06:58:04.035513+08:00",
+  "asof_taipei": "2026-11-16T11:03:48.459718+08:00",
   "escape_formal_state": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
   "finmind": {
-    "context_digest": "14519fd4b90c696f7a51ffe88a187dd36d731040c3526878e5d1263899fd8fb4",
-    "current_session_coverage": 0.99448529,
-    "data_role": "PREVIOUS_COMPLETED_TW_SESSION",
+    "context_digest": "f236fe55fffcd87b58aa051309530b8e16115ed4fdfb8d8375ea1ddb65de39be",
+    "current_session_coverage": 0.98621324,
+    "data_role": "CURRENT_INTRADAY_OBSERVATION",
     "existing_transport": "taiwan_stock_tick_snapshot",
-    "generated_at_taipei": "2026-11-12T12:49:15.114344+08:00",
-    "latest_source_taipei": "2026-11-12T12:49:09.516488+08:00",
+    "generated_at_taipei": "2026-11-16T11:03:03.945959+08:00",
+    "latest_source_taipei": "2026-11-16T11:02:59.580250+08:00",
     "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
-    "monitor_digest": "f1777cb4214473c7d5f2a9133a92211d81426f83c562124badca45c67491bff0",
-    "observed_count": 1082,
+    "monitor_digest": "27a01678296df4158b4178367cfba5633d0761b6acdd405560850e699124c81e",
+    "observed_count": 1073,
     "required_count": 1088,
-    "source_market_date": "2026-11-12",
-    "status_digest": "c608b06022389e32cfdbb5ea2c8412b209ec88ba76db15062f947909a38a8097",
-    "unknown_count": 6
+    "source_market_date": "2026-11-16",
+    "status_digest": "91ebe2720a680b176fec876522d1c3e3310caf5ad780f557d28d54331b939558",
+    "unknown_count": 15
   },
   "governance": {
     "canonical_eod_replaced": false,
@@ -28,42 +28,18 @@
   },
   "macro_regime": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
   "observed_breadth": {
-    "advancer_share_directional": 0.3668993,
-    "advancers": 368,
-    "decliners": 635,
-    "equal_weight_change_rate_vendor_units": -0.61365989,
+    "advancer_share_directional": 0.20672601,
+    "advancers": 209,
+    "decliners": 802,
+    "equal_weight_change_rate_vendor_units": -2.31535881,
     "interpretation": "Historical session observations, NOT future fund flows or formal Escape metrics.",
-    "unchanged": 79,
-    "vendor_turnover_units": 772839786300.0
+    "unchanged": 62,
+    "vendor_turnover_units": 440612450470.0
   },
   "premarket_forecast": {
-    "expected_gap_log_pct": -0.49673425,
-    "grade": 1,
-    "overseas_source_sessions": {
-      "base": "2026-11-12",
-      "latest": "2026-11-13"
-    },
-    "source_notice": "Official-vendor EOD captured by governed shadow; not an independently signed data feed or trading signal.",
-    "source_receipt_sha256": "f0963e28db4d2e07364261c1318a55b5c0ecd43b5ee575aef21a40c0a0b06585",
-    "source_url": {
-      "sox": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-22T00:00:00.000&endDate=2026-11-17T00:00:00.000&timeOfDay=EOD",
-      "vix": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
-    },
-    "sox": {
-      "change_pct": -3.42973181,
-      "latest_close": 10146.32311915594
-    },
-    "status": "VERIFIED_GOVERNED_OVERSEAS_SOX_VIX",
-    "vendor_price_integrity": true,
-    "vix": {
-      "change_pct": 3.20855615,
-      "latest_close": 19.3,
-      "risk_band": "NORMAL"
-    },
-    "vix_risk": {
-      "vix_level": 19.3,
-      "vix_risk_band": "NORMAL"
-    }
+    "expected_gap_log_pct": null,
+    "grade": null,
+    "status": "NO_VERIFIED_OVERSEAS_PACKET"
   },
   "schema": "HENGCE_FINMIND_PREMARKET_BRIDGE_V1",
   "status": "PASS_READ_ONLY_CONTEXT",
@@ -103,13 +79,11 @@
         "偏空",
         "強烈偏空"
       ],
-      "caution": "已宣告海外資料與時戳經治理血管查驗；仍只作研究環境顯示，無交易授權",
-      "expected_open_gap_log_pct": -0.49673425,
-      "grade": 1,
-      "label": "強烈偏空",
+      "grade": null,
+      "label": "資料不足",
       "meaning": "僅反映隔夜海外市場對台股開盤的預報，不代表中長期資金轉向",
       "source_scope": "SOX_VIX_PREMARKET",
-      "status": "GOVERNED_OVERSEAS_VERIFIED_RESEARCH_ONLY",
+      "status": "UNVERIFIED",
       "title": "今日市場環境"
     }
   }
