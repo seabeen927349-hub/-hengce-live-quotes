@@ -101,6 +101,12 @@ def main():
                     try:
                         path=f"valid/{ticker}.html"
                         body=z.read(path)
+                        if date=="20251212" and ticker=="1303":
+                            probe=[]
+                            frames=pd.read_html(io.StringIO(decode(body)))
+                            for fi,frame in enumerate(frames[:8]):
+                                probe.append({"table":fi,"columns":[str(c) for c in frame.columns],"first_rows":frame.head(5).astype(str).values.tolist(),"last_rows":frame.tail(3).astype(str).values.tolist()})
+                            (OUT/"AB56_HTML_TABLE_DIAGNOSTIC.json").write_text(json.dumps(probe,ensure_ascii=False,indent=2),encoding="utf-8")
                         g,total=parse_grades(body)
                         old=summary.get(ticker)
                         if not old:raise ValueError("No summary row")
