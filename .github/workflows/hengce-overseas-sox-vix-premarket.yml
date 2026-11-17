@@ -43,7 +43,7 @@ permissions:
 
 concurrency:
   # Serialize against existing HBA/FinMind GitHub writers; keep fail-closed
-  # conservative-all publisher and do not rebase over changed dependencies.
+  # scoped overseas-eod publisher: block changed upstream dependencies, not downstream displays.
   group: hengce-hba-surveillance-research
   cancel-in-progress: false
 
@@ -169,7 +169,7 @@ jobs:
             exit 0
           fi
           git commit -m 'data(shadow): governed SOX/VIX official-source EOD preopen packet'
-          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
+          python scripts/hengce_publish.py --profile overseas-eod --report-dir "${RUNNER_TEMP}/hengce-publication"
       - name: Preserve independent official SOX and VIX preopen observations
         # Even when the combined predictor is blocked by a delayed VIX file,
         # show the verified individual vendor download dates and index closes.
@@ -226,7 +226,7 @@ jobs:
             exit 0
           fi
           git commit -m 'data(shadow): source-aligned SOX and VIX individual official EOD observations'
-          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
+          python scripts/hengce_publish.py --profile overseas-eod --report-dir "${RUNNER_TEMP}/hengce-publication"
       - name: Observe published Nasdaq SOX and Cboe VIX closes at any Taipei time
         id: observe_official_us_eod
         # Same original two official vendor endpoints, no new collector. Source
@@ -311,7 +311,7 @@ jobs:
           git config user.email 'hengce-overseas-eod-bot@users.noreply.github.com'
           git add overseas_premarket/source_status_anytime_latest.json "$(cat /tmp/hengce_sox_vix_anytime_history_path)"
           git commit -m 'data(shadow): continuously observed official US SOX/VIX closes (no prediction)'
-          python scripts/hengce_publish.py --profile conservative-all --report-dir "${RUNNER_TEMP}/hengce-publication"
+          python scripts/hengce_publish.py --profile overseas-eod --report-dir "${RUNNER_TEMP}/hengce-publication"
       - name: Save guarded publisher receipts
         if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
