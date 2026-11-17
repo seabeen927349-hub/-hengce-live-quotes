@@ -66,7 +66,7 @@
     "trigger": "衡策掃一次",
     "private_repository": "seabeen927349-hub/twse--backfill-test",
     "canonical_contract": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "canonical_contract_git_blob_sha": "c8085c966e0d7743c4d48e052a1377181e9fe74f",
+    "canonical_contract_git_blob_sha": "97f1012b772ec7adbc585968cf7fc3cf5244ff5b",
     "readout_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
     "readout_markdown": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
     "cross_chat_read_required": true,
@@ -76,6 +76,42 @@
     "strong_decline": "A_ONLY_8PCT_RELATIVE_TWO_WEEK_REDUCTION_LABEL_ONLY",
     "preserve_historical_model_outputs": true,
     "maintain_no_trading_authority": true,
-    "missing_sources": "BLOCK_NOT_INFER_OR_MIX_WITH_STALE"
+    "missing_sources": "BLOCK_NOT_INFER_OR_MIX_WITH_STALE",
+    "display_policy_id": "HENGCE_SCAN_ONCE_FIXED_VISIBLE_REPORT_20261117",
+    "display_order": [
+      "PROTOCOL_AND_DATA_DATE",
+      "SINGLE_ORIGINAL_V22D_MODEL",
+      "A_B_POSTSCORE_STATUS",
+      "A_STRONG_DECLINE_LABEL",
+      "ENVIRONMENT_AND_DATA_VESSELS",
+      "MISSING_OR_BLOCKED",
+      "SOURCE_AND_EXECUTION_AUTHORITY"
+    ],
+    "visible_modules": [
+      "ORIGINAL_V22D",
+      "A_B_POSTSCORE",
+      "A_STRONG_DECLINE_LABEL",
+      "ORIGINAL_EOD_THREE_LEGS",
+      "HISTORICAL_MOTHER",
+      "TDCC_PIT",
+      "SOX_VIX_US_SESSION_AND_TW_TARGET",
+      "FUGLE_TIMESTAMPED_SINGLE_NAME_OBSERVATION",
+      "FINMIND_TIMESTAMPED_INTRADAY",
+      "RMS_RESEARCH_STATUS",
+      "LEGACY_HEALTH_DATE_ONLY",
+      "MISSING_DATA_AND_NO_ORDER_AUTHORITY",
+      "GITHUB_PROVENANCE"
+    ],
+    "hidden_modules": [
+      "S5",
+      "Escape"
+    ],
+    "never_render_hidden_modules_even_if_unverified": true,
+    "cross_chat_display_must_match_private_main": true,
+    "user_requested_display_lock_date": "2026-11-17",
+    "verified_report_is_the_only_user_visible_report": true,
+    "fugle_live_quotes": "TIMESTAMPED_OBSERVATION_NOT_ORIGINAL_MODEL",
+    "source_date_semantics": "US_DATE_TO_TW_EXPECTED_SESSION_ORIGINALLY_VERIFIED",
+    "no_change_without_explicit_user_authorization": true
   }
 }
