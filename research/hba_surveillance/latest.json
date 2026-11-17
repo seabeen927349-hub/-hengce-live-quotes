@@ -9030,67 +9030,7 @@
     "stage_scope": "SHORT_WINDOW_SURVEILLANCE_ONLY",
     "status": "HISTORICAL_CYCLE_UNVERIFIED"
   },
-  "cleared": [
-    "1201",
-    "1303",
-    "1319",
-    "1709",
-    "1802",
-    "2211",
-    "2313",
-    "2340",
-    "2351",
-    "2352",
-    "2363",
-    "2367",
-    "2383",
-    "2405",
-    "2426",
-    "2449",
-    "2471",
-    "2474",
-    "2481",
-    "2607",
-    "2881",
-    "3026",
-    "3030",
-    "3149",
-    "3305",
-    "3338",
-    "3406",
-    "3535",
-    "4562",
-    "4576",
-    "4720",
-    "4736",
-    "4915",
-    "4919",
-    "4967",
-    "4968",
-    "5469",
-    "5522",
-    "5880",
-    "6112",
-    "6152",
-    "6168",
-    "6177",
-    "6191",
-    "6214",
-    "6269",
-    "6271",
-    "6719",
-    "6782",
-    "6799",
-    "6834",
-    "6890",
-    "6902",
-    "8213",
-    "8454",
-    "9904",
-    "9938",
-    "9939",
-    "9958"
-  ],
+  "cleared": [],
   "data_gate": "EOD_VALID_MACRO_UNKNOWN",
   "exclusions": [],
   "exit_alerts": [
@@ -9412,15 +9352,15 @@
     "individual_source_role": "OFFICIAL_EOD_OBSERVATION_ONLY_NOT_PREOPEN_FORECAST",
     "individual_sources": {
       "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-      "expected_us_session": "2026-11-16",
+      "expected_us_session": "2026-11-17",
       "observation_window": "ANYTIME_SOURCE_ONLY",
-      "observed_at_taipei": "2026-11-17T21:35:45.823046+08:00",
+      "observed_at_taipei": "2026-11-18T06:29:29.969607+08:00",
       "preopen_forecast_authority": false,
-      "source_observation_sha256": "f56b002fb93288d331c5e70fd07e344653bff5b77922dcdee062049f1229b7bd",
+      "source_observation_sha256": "90ac39320d2101d68fb0f322df1588edc43066d26c9964b12b5d6056950cbbd3",
       "sox": {
-        "change_pct": -5.2795,
-        "latest_close": 9610.6523270452,
-        "latest_us_session": "2026-11-16",
+        "change_pct": 0.3353,
+        "latest_close": 9642.87797921929,
+        "latest_us_session": "2026-11-17",
         "publisher": "Nasdaq",
         "source_status": "當期已更新"
       },
@@ -9429,20 +9369,20 @@
         "latest_close": 22.91,
         "latest_us_session": "2026-11-16",
         "publisher": "Cboe",
-        "source_status": "當期已更新"
+        "source_status": "官方資料待更新"
       }
     },
     "individual_sources_anytime": {
       "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-      "expected_us_session": "2026-11-16",
+      "expected_us_session": "2026-11-17",
       "observation_window": "ANYTIME_SOURCE_ONLY",
-      "observed_at_taipei": "2026-11-17T21:35:45.823046+08:00",
+      "observed_at_taipei": "2026-11-18T06:29:29.969607+08:00",
       "preopen_forecast_authority": false,
-      "source_observation_sha256": "f56b002fb93288d331c5e70fd07e344653bff5b77922dcdee062049f1229b7bd",
+      "source_observation_sha256": "90ac39320d2101d68fb0f322df1588edc43066d26c9964b12b5d6056950cbbd3",
       "sox": {
-        "change_pct": -5.2795,
-        "latest_close": 9610.6523270452,
-        "latest_us_session": "2026-11-16",
+        "change_pct": 0.3353,
+        "latest_close": 9642.87797921929,
+        "latest_us_session": "2026-11-17",
         "publisher": "Nasdaq",
         "source_status": "當期已更新"
       },
@@ -9451,27 +9391,27 @@
         "latest_close": 22.91,
         "latest_us_session": "2026-11-16",
         "publisher": "Cboe",
-        "source_status": "當期已更新"
+        "source_status": "官方資料待更新"
       }
     },
     "individual_sources_preopen": {
       "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-      "expected_us_session": "2026-11-16",
+      "expected_us_session": "2026-11-17",
       "observation_window": "PREOPEN_SOURCE_ONLY",
-      "observed_at_taipei": "2026-11-17T07:42:59.508771+08:00",
+      "observed_at_taipei": "2026-11-18T06:29:27.421894+08:00",
       "preopen_forecast_authority": false,
-      "source_observation_sha256": "769a24b1124fb07c74b3b4c8a57b4ba4c788794dd843874d43d7548f0eb87224",
+      "source_observation_sha256": "4c49555b2661d06da4a3939280cfcf9934e7bbb5886613e5166409205b97fad0",
       "sox": {
-        "change_pct": -5.2795,
-        "latest_close": 9610.6523270452,
-        "latest_us_session": "2026-11-16",
+        "change_pct": 0.3353,
+        "latest_close": 9642.87797921929,
+        "latest_us_session": "2026-11-17",
         "publisher": "Nasdaq",
         "source_status": "當期已更新"
       },
       "vix": {
-        "change_pct": 3.2086,
-        "latest_close": 19.3,
-        "latest_us_session": "2026-11-13",
+        "change_pct": 18.7047,
+        "latest_close": 22.91,
+        "latest_us_session": "2026-11-16",
         "publisher": "Cboe",
         "source_status": "官方資料待更新"
       }
@@ -9493,452 +9433,7 @@
     "date": "2026-11-17",
     "observed_stocks": 1054
   },
-  "new_or_escalated": [
-    {
-      "name": "中鼎",
-      "now": "行情確認（待人工評估）",
-      "prior": "準備監控",
-      "ticker": "9933"
-    },
-    {
-      "name": "LINEPAY",
-      "now": "行情確認（待人工評估）",
-      "prior": "疑似症狀",
-      "ticker": "7722"
-    },
-    {
-      "name": "八貫",
-      "now": "行情確認（待人工評估）",
-      "prior": null,
-      "ticker": "1342"
-    },
-    {
-      "name": "億豐",
-      "now": "行情確認（待人工評估）",
-      "prior": null,
-      "ticker": "8464"
-    },
-    {
-      "name": "中信金",
-      "now": "準備監控",
-      "prior": "疑似症狀",
-      "ticker": "2891"
-    },
-    {
-      "name": "和泰車",
-      "now": "準備監控",
-      "prior": null,
-      "ticker": "2207"
-    },
-    {
-      "name": "統一",
-      "now": "準備監控",
-      "prior": "疑似症狀",
-      "ticker": "1216"
-    },
-    {
-      "name": "兆豐金",
-      "now": "準備監控",
-      "prior": "疑似症狀",
-      "ticker": "2886"
-    },
-    {
-      "name": "中華電",
-      "now": "準備監控",
-      "prior": "疑似症狀",
-      "ticker": "2412"
-    },
-    {
-      "name": "沛爾生醫*-創",
-      "now": "準備監控",
-      "prior": null,
-      "ticker": "6949"
-    },
-    {
-      "name": "材料*-KY",
-      "now": "準備監控",
-      "prior": null,
-      "ticker": "4763"
-    },
-    {
-      "name": "天虹",
-      "now": "準備監控",
-      "prior": null,
-      "ticker": "6937"
-    },
-    {
-      "name": "伊雲谷",
-      "now": "準備監控",
-      "prior": "疑似症狀",
-      "ticker": "6689"
-    },
-    {
-      "name": "力成",
-      "now": "準備監控",
-      "prior": null,
-      "ticker": "6239"
-    },
-    {
-      "name": "台驊控股",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2636"
-    },
-    {
-      "name": "新產",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2850"
-    },
-    {
-      "name": "中磊",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "5388"
-    },
-    {
-      "name": "上海商銀",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "5876"
-    },
-    {
-      "name": "聯華食",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "1231"
-    },
-    {
-      "name": "聯華",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "1229"
-    },
-    {
-      "name": "和大",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "1536"
-    },
-    {
-      "name": "東哥遊艇",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "8478"
-    },
-    {
-      "name": "國建",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2501"
-    },
-    {
-      "name": "統一超",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2912"
-    },
-    {
-      "name": "碩天",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3617"
-    },
-    {
-      "name": "銘鈺",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "4545"
-    },
-    {
-      "name": "蔚華科",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3055"
-    },
-    {
-      "name": "禾榮科",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "7799"
-    },
-    {
-      "name": "立隆電",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2472"
-    },
-    {
-      "name": "暉盛-創",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "7730"
-    },
-    {
-      "name": "王品",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2727"
-    },
-    {
-      "name": "盟立",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2464"
-    },
-    {
-      "name": "國泰金",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2882"
-    },
-    {
-      "name": "中保科",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "9917"
-    },
-    {
-      "name": "可寧衛*",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "8422"
-    },
-    {
-      "name": "佳能",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2374"
-    },
-    {
-      "name": "根基",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2546"
-    },
-    {
-      "name": "柏文",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "8462"
-    },
-    {
-      "name": "新代",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "7750"
-    },
-    {
-      "name": "大東電",
-      "now": "疑似症狀",
-      "prior": "撤退警戒",
-      "ticker": "1623"
-    },
-    {
-      "name": "達興材料",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "5234"
-    },
-    {
-      "name": "康霈*",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "6919"
-    },
-    {
-      "name": "海華",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3694"
-    },
-    {
-      "name": "國票金",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2889"
-    },
-    {
-      "name": "晶豪科",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3006"
-    },
-    {
-      "name": "弘憶股",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3312"
-    },
-    {
-      "name": "旭隼",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "6409"
-    },
-    {
-      "name": "大立光",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3008"
-    },
-    {
-      "name": "威鋒電子",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "6756"
-    },
-    {
-      "name": "牧德",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3563"
-    },
-    {
-      "name": "中揚光",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "6668"
-    },
-    {
-      "name": "遠東新",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "1402"
-    },
-    {
-      "name": "台塑",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "1301"
-    },
-    {
-      "name": "健策",
-      "now": "疑似症狀",
-      "prior": "撤退警戒",
-      "ticker": "3653"
-    },
-    {
-      "name": "鉅祥",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2476"
-    },
-    {
-      "name": "宇瞻",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "8271"
-    },
-    {
-      "name": "台新新光金",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2887"
-    },
-    {
-      "name": "勤誠",
-      "now": "疑似症狀",
-      "prior": "撤退警戒",
-      "ticker": "8210"
-    },
-    {
-      "name": "辛耘",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3583"
-    },
-    {
-      "name": "祥碩",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "5269"
-    },
-    {
-      "name": "光聖",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "6442"
-    },
-    {
-      "name": "眾達-KY",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "4977"
-    },
-    {
-      "name": "直得",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "1597"
-    },
-    {
-      "name": "永擎",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "7711"
-    },
-    {
-      "name": "鈺邦",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "6449"
-    },
-    {
-      "name": "鴻勁",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "7769"
-    },
-    {
-      "name": "創見",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2451"
-    },
-    {
-      "name": "台泥",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "1101"
-    },
-    {
-      "name": "志聖",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2467"
-    },
-    {
-      "name": "承啟",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2425"
-    },
-    {
-      "name": "騰輝電子-KY",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "6672"
-    },
-    {
-      "name": "日成-KY",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "4807"
-    },
-    {
-      "name": "百容",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "2483"
-    },
-    {
-      "name": "富采",
-      "now": "疑似症狀",
-      "prior": null,
-      "ticker": "3714"
-    }
-  ],
+  "new_or_escalated": [],
   "no_formula_profit_claim": true,
   "not_an_order": true,
   "rules_fixed_ex_ante_for_forward_surveillance": true,
@@ -9954,6 +9449,6 @@
     "疑似症狀": 111,
     "行情確認（待人工評估）": 4
   },
-  "target_tw_date": "2026-11-17",
+  "target_tw_date": "2026-11-18",
   "total_candidates_before_limit": 247
 }

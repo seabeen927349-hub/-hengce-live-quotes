@@ -7907,7 +7907,7 @@
       "latest_source_timestamp": "2026-11-17 13:05:10.785974",
       "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
-      "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
+      "status": "STALE_FINMIND_SHADOW"
     },
     "fugle_whole_market_batch": {
       "last_attempt_date": "2026-11-03",
@@ -7915,28 +7915,28 @@
       "status": "HISTORICAL_403"
     },
     "full_market_intraday_monitor": {
-      "active_required_count": 1088,
+      "active_required_count": null,
       "authority": "DESCRIPTIVE_PRICE_LIQUIDITY_ONLY_NO_FORMAL_ESCAPE_OR_EOD",
       "note": "GitHub紀錄中的全股盤中監控使用FinMind；資料可能是歷史觀測，不能視為查詢當下即時行情",
       "observed_market_date": "2026-11-17",
       "primary_source": "FinMind taiwan_stock_tick_snapshot",
-      "status": "OBSERVED_SAME_SESSION_SHADOW",
-      "transport_full_coverage": true,
-      "unknown_metric_count": 4,
-      "valid_metric_count": 1084
+      "status": "STALE_PRIOR_SESSION_MONITOR",
+      "transport_full_coverage": null,
+      "unknown_metric_count": null,
+      "valid_metric_count": null
     },
     "overseas": {
       "anytime_individual_sources": {
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-        "expected_us_session": "2026-11-16",
+        "expected_us_session": "2026-11-17",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-17T21:35:45.823046+08:00",
+        "observed_at_taipei": "2026-11-18T06:29:29.969607+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "f56b002fb93288d331c5e70fd07e344653bff5b77922dcdee062049f1229b7bd",
+        "source_observation_sha256": "90ac39320d2101d68fb0f322df1588edc43066d26c9964b12b5d6056950cbbd3",
         "sox": {
-          "change_pct": -5.2795,
-          "latest_close": 9610.6523270452,
-          "latest_us_session": "2026-11-16",
+          "change_pct": 0.3353,
+          "latest_close": 9642.87797921929,
+          "latest_us_session": "2026-11-17",
           "publisher": "Nasdaq",
           "source_status": "當期已更新"
         },
@@ -7945,22 +7945,22 @@
           "latest_close": 22.91,
           "latest_us_session": "2026-11-16",
           "publisher": "Cboe",
-          "source_status": "當期已更新"
+          "source_status": "官方資料待更新"
         }
       },
       "label": "資料不足",
       "observation_role": "SOURCE_ONLY_NOT_GOVERNED_COMPOSITE_FORECAST",
       "official_source_observation": {
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-        "expected_us_session": "2026-11-16",
+        "expected_us_session": "2026-11-17",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-17T21:35:45.823046+08:00",
+        "observed_at_taipei": "2026-11-18T06:29:29.969607+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "f56b002fb93288d331c5e70fd07e344653bff5b77922dcdee062049f1229b7bd",
+        "source_observation_sha256": "90ac39320d2101d68fb0f322df1588edc43066d26c9964b12b5d6056950cbbd3",
         "sox": {
-          "change_pct": -5.2795,
-          "latest_close": 9610.6523270452,
-          "latest_us_session": "2026-11-16",
+          "change_pct": 0.3353,
+          "latest_close": 9642.87797921929,
+          "latest_us_session": "2026-11-17",
           "publisher": "Nasdaq",
           "source_status": "當期已更新"
         },
@@ -7969,28 +7969,28 @@
           "latest_close": 22.91,
           "latest_us_session": "2026-11-16",
           "publisher": "Cboe",
-          "source_status": "當期已更新"
+          "source_status": "官方資料待更新"
         }
       },
       "postopen_individual_sources": null,
       "preopen_individual_sources": {
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-        "expected_us_session": "2026-11-16",
+        "expected_us_session": "2026-11-17",
         "observation_window": "PREOPEN_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-17T07:42:59.508771+08:00",
+        "observed_at_taipei": "2026-11-18T06:29:27.421894+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "769a24b1124fb07c74b3b4c8a57b4ba4c788794dd843874d43d7548f0eb87224",
+        "source_observation_sha256": "4c49555b2661d06da4a3939280cfcf9934e7bbb5886613e5166409205b97fad0",
         "sox": {
-          "change_pct": -5.2795,
-          "latest_close": 9610.6523270452,
-          "latest_us_session": "2026-11-16",
+          "change_pct": 0.3353,
+          "latest_close": 9642.87797921929,
+          "latest_us_session": "2026-11-17",
           "publisher": "Nasdaq",
           "source_status": "當期已更新"
         },
         "vix": {
-          "change_pct": 3.2086,
-          "latest_close": 19.3,
-          "latest_us_session": "2026-11-13",
+          "change_pct": 18.7047,
+          "latest_close": 22.91,
+          "latest_us_session": "2026-11-16",
           "publisher": "Cboe",
           "source_status": "官方資料待更新"
         }
@@ -8029,7 +8029,7 @@
   "observed_eod_date": "2026-11-17",
   "readiness": "RESEARCH_READY",
   "schema": "HENGCE_HBA_INTEGRATED_CONTEXT_RESEARCH_V1",
-  "target_tw_date": "2026-11-17",
+  "target_tw_date": "2026-11-18",
   "two_group_market_registry": [
     {
       "other_shares": 6552588712,
@@ -22114,7 +22114,7 @@
   "two_group_research": {
     "actual_small_shares_down_count": 661,
     "actual_small_shares_up_count": 422,
-    "age_days": 4,
+    "age_days": 5,
     "authority": {
       "capital": false,
       "rank": false,
@@ -22167,7 +22167,7 @@
     "source": "EXISTING_TDCC_1_5_RAW_AND_RECEIPTS",
     "status": "VERIFIED_TWO_GROUP_RESEARCH",
     "stock_count": 1091,
-    "target_tw_date": "2026-11-17",
+    "target_tw_date": "2026-11-18",
     "two_consecutive_observed_intervals": {
       "first": "20261030..20261106",
       "not_a_full_2026_13week_panel": true,
