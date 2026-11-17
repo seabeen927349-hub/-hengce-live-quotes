@@ -66,7 +66,10 @@ jobs:
               'WEEKLY_RESEARCH_TOP5_READY',
               'STALE_WEEKLY_RESEARCH_TOP5',
               'NO_QUALIFIED_WEEKLY_RESEARCH_STOCKS',
+              'WEEKLY_RESEARCH_RECEIPT_UNVERIFIED',  # newer 11/13 weekly > frozen 11/10
           )
+          if observation['status']=='WEEKLY_RESEARCH_RECEIPT_UNVERIFIED':
+              assert observation['top5']==[]  # enforce no future/backfilled picks
           assert len(observation['top5'])<=5 and observation['authorized_lots']==0
           assert observation['formal_selection_authority'] is False
           assert observation['buy_signal'] is False and observation['broker_execution'] is False
