@@ -56,14 +56,17 @@ def parse_grades(raw):
         grades={};total=None
         for _,r in frame.iterrows():
             token=str(r[ordinal]).strip(); cat=str(r[category]).strip()
+            label=cat.replace(" ","").replace("\u3000","")
+            if "合計" in label or "總計" in label or "合計" in token or "總計" in token:
+                if total is not None:raise ValueError("duplicate total row")
+                total=parse_num(r[shares])
+                continue
             m=re.fullmatch(r"(\d{1,2})(?:\.0)?",token)
             if m:
                 g=int(m.group(1))
-                if not (1<=g<=15 or g==17):continue # Grade16 is adjustment, may be negative
+                if not 1<=g<=15:continue # grade16 adjustment can be signed; never include
                 if g in grades:raise ValueError("duplicate grade "+str(g))
                 grades[g]=parse_num(r[shares])
-            elif ("合計" in token or "總計" in token or "合計" in cat or "總計" in cat):
-                total=parse_num(r[shares])
         if total is None:total=grades.get(17)
         if not set(range(1,16)).issubset(grades) or not total:continue
         if not 0<=sum(grades[g] for g in (1,2,3))<=total:raise ValueError("invalid small share count")
