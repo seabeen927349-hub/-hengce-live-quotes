@@ -4,6 +4,7 @@ name: HENGCE Governed SOX VIX Premarket EOD
   pull_request:
     paths:
       - 'scripts/hengce_overseas_sox_vix_premarket_v1.py'
+      - 'scripts/hengce_publish.py'
       - 'scripts/hengce_finmind_premarket_bridge.py'
       - 'tests/engineering/test_hengce_overseas_sox_vix_premarket.py'
       - 'tests/engineering/test_hengce_finmind_premarket_bridge.py'
