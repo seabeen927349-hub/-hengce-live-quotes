@@ -1,0 +1,44 @@
+name: HENGCE AB56 Grade Restoration (Isolated Research)
+on:
+  push:
+    branches:
+      - research/ab56-grade-recovery-20261117
+    paths:
+      - .github/workflows/hengce-ab56-grade-recovery.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/ab56-grade-recovery-20261117
+          fetch-depth: 1
+          sparse-checkout: |
+            research/ab56
+            .github/workflows/hengce-ab56-grade-recovery.yml
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install parser
+        run: python -m pip install --disable-pip-version-check pandas==2.2.3 lxml==5.4.0 requests==2.32.5
+      - name: Verify TDCC original raw grades and stock-level 400+ crosscheck
+        run: python research/ab56/restore_original_grades.py
+      - name: Save recovered research records on isolated branch
+        if: always()
+        run: |
+          if [ -d research/ab56/artifacts ]; then
+            git config user.name 'hengce-ab56-research'
+            git config user.email 'actions@users.noreply.github.com'
+            git add research/ab56/artifacts
+            git diff --cached --quiet || (git commit -m 'research: save verified AB56 historical grade shares' && git push origin HEAD:research/ab56-grade-recovery-20261117)
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hengce-ab56-raw-grades
+          path: research/ab56/artifacts
+          if-no-files-found: warn
