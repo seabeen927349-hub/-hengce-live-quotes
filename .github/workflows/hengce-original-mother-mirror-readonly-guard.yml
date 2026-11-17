@@ -1,0 +1,26 @@
+name: HENGCE Original Mother Mirror Readonly Guard
+
+"on":
+  pull_request:
+    paths:
+      - 'eod/**/receipts/mother.json'
+      - 'eod/**/status.json'
+      - 'tests/engineering/test_hengce_original_mother_mirror.py'
+      - '.github/workflows/hengce-original-mother-mirror-readonly-guard.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'eod/**/receipts/mother.json'
+      - 'eod/**/status.json'
+      - 'tests/engineering/test_hengce_original_mother_mirror.py'
+      - '.github/workflows/hengce-original-mother-mirror-readonly-guard.yml'
+permissions:
+  contents: read
+jobs:
+  mother-mirror-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify original EOD Mother receipt and SHA invariants
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_original_mother_mirror.py' -v
