@@ -112,6 +112,15 @@
     "verified_report_is_the_only_user_visible_report": true,
     "fugle_live_quotes": "TIMESTAMPED_OBSERVATION_NOT_ORIGINAL_MODEL",
     "source_date_semantics": "US_DATE_TO_TW_EXPECTED_SESSION_ORIGINALLY_VERIFIED",
-    "no_change_without_explicit_user_authorization": true
+    "no_change_without_explicit_user_authorization": true,
+    "fugle_live_quote_display_required": true,
+    "fugle_live_quote_scope": "ALL_CURRENT_PRIVATE_AB_SCREENED_MAIN_STOCKS",
+    "fugle_live_quote_source": "CURRENT_FUGLE_CONNECTOR_OBSERVATION_OR_FRESH_EXISTING_FUGLE_WORKFLOW_SNAPSHOT",
+    "fugle_live_quote_private_observation_path": "hengce/private_v22d_autoscan/reports/realtime_quote_observations_latest.json",
+    "fugle_live_quote_private_readout_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
+    "fugle_live_quote_freshness_minutes": 10,
+    "fugle_live_quote_on_command": "REFRESH_AT_EACH_SCAN_ONCE_NO_STALE_AS_REALTIME",
+    "fugle_live_quote_scope_limit": "RESEARCH_DISPLAY_ONLY_NEVER_MODEL_RANKING_OR_MOTHER",
+    "fugle_live_quote_status": "PERSISTED_CONTRACT_AND_ONE_VERIFIED_SNAPSHOT_SCHEDULE_NOT_YET_VALIDATED"
   }
 }
