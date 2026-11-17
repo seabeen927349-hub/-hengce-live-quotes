@@ -205,7 +205,7 @@ class OverseasProducerTests(unittest.TestCase):
         self.assertIn("steps.official_preopen_model.outcome == 'success'",source)
         self.assertIn("PREOPEN_MODEL_WINDOW_CLOSED; 24H_SOURCE_MONITOR_STILL_RUNS",source)
         self.assertNotIn("BLOCKED_PREOPEN_MISSED",source)
-        self.assertIn("--profile conservative-all",source)
+        self.assertEqual(source.count("--profile overseas-eod"),3)
 
     def test_synthetic_vendor_parsing(self):
         self.assertEqual(self.s[dt.date(2026,11,6)],9390.25)
