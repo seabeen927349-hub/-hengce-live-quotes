@@ -29,6 +29,30 @@ def synthetic_xlsx():
 
 VIX=b"DATE,OPEN,HIGH,LOW,CLOSE\n11/05/2026,28.18,28.18,28.18,28.18\n11/06/2026,25.64,25.64,25.64,25.64\n"
 
+class OverseasPublicationScopeTests(unittest.TestCase):
+    def test_existing_overseas_profile_preserves_upstream_guards(self):
+        import hengce_publish as publisher
+        p=publisher.PROFILES["overseas-eod"]
+        for output in ("overseas_premarket/latest.json",
+                       "overseas_premarket/source_status_latest.json",
+                       "overseas_premarket/source_status_anytime_latest.json",
+                       "overseas_premarket/history/20261117_sha.json"):
+            self.assertTrue(publisher.matches(output,p["writes"]))
+        for downstream in ("escape_live/finmind_premarket_bridge_shadow.json",
+                           "research/hba_surveillance/latest.json",
+                           "hengce/health/latest.json"):
+            self.assertTrue(publisher.matches(downstream,p["unrelated"]))
+        for upstream in ("eod/20261116/status.json",
+                         "ownership/tdcc/latest.json",
+                         "scripts/hengce_overseas_sox_vix_premarket_v1.py",
+                         "overseas_premarket/latest.json"):
+            self.assertFalse(publisher.matches(upstream,p["unrelated"]))
+        workflow=(Path(__file__).resolve().parents[2]/
+            ".github/workflows/hengce-overseas-sox-vix-premarket.yml").read_text()
+        self.assertEqual(workflow.count("--profile overseas-eod"),3)
+        self.assertNotIn("--profile conservative-all",workflow)
+
+
 class OverseasProducerTests(unittest.TestCase):
     def setUp(self):
         self.sraw=synthetic_xlsx();self.vraw=VIX
@@ -175,13 +199,14 @@ class OverseasProducerTests(unittest.TestCase):
         self.assertIn("- cron: '17 */2 * * *'",source)
         self.assertIn("--mode observe --observations-out",source)
         self.assertIn("source_status_anytime_latest.json",source)
-        self.assertIn("group: hengce-hba-surveillance-research",source)
+        self.assertIn("|| 'hengce-hba-surveillance-research'",source)
+        self.assertIn("hengce-overseas-eod-pr-",source)
         self.assertIn("steps.observe_official_us_eod.outcome == 'success'",source)
         self.assertIn("continue-on-error: true",source)
         self.assertIn("steps.official_preopen_model.outcome == 'success'",source)
         self.assertIn("PREOPEN_MODEL_WINDOW_CLOSED; 24H_SOURCE_MONITOR_STILL_RUNS",source)
         self.assertNotIn("BLOCKED_PREOPEN_MISSED",source)
-        self.assertIn("--profile conservative-all",source)
+        self.assertEqual(source.count("--profile overseas-eod"),3)
 
     def test_synthetic_vendor_parsing(self):
         self.assertEqual(self.s[dt.date(2026,11,6)],9390.25)
