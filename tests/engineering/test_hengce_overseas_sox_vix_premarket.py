@@ -47,12 +47,10 @@ class OverseasPublicationScopeTests(unittest.TestCase):
                          "scripts/hengce_overseas_sox_vix_premarket_v1.py",
                          "overseas_premarket/latest.json"):
             self.assertFalse(publisher.matches(upstream,p["unrelated"]))
-        import yaml
-        workflow=yaml.safe_load((Path(__file__).resolve().parents[2]/
-            ".github/workflows/hengce-overseas-sox-vix-premarket.yml").read_text())
-        scripts=[s.get("run","") for s in workflow["jobs"]["overseas-eod"]["steps"]]
-        self.assertEqual(sum("--profile overseas-eod" in s for s in scripts),3)
-        self.assertFalse(any("--profile conservative-all" in s for s in scripts))
+        workflow=(Path(__file__).resolve().parents[2]/
+            ".github/workflows/hengce-overseas-sox-vix-premarket.yml").read_text()
+        self.assertEqual(workflow.count("--profile overseas-eod"),3)
+        self.assertNotIn("--profile conservative-all",workflow)
 
 
 class OverseasProducerTests(unittest.TestCase):
