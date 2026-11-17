@@ -2,25 +2,25 @@
   "capital_authority": false,
   "composite_forecast_emitted": false,
   "composite_readiness": "ANYTIME_SOURCE_ONLY_NO_PREOPEN_FORECAST",
-  "expected_us_session": "2026-11-16",
+  "expected_us_session": "2026-11-17",
   "expected_us_session_basis": "US_EASTERN_1600_WEEKDAY_CLOCK_ONLY",
   "observation_window": "ANYTIME_SOURCE_ONLY",
-  "observed_at_taipei": "2026-11-17T21:35:45.823046+08:00",
+  "observed_at_taipei": "2026-11-18T06:29:29.969607+08:00",
   "reference_prev_tw_date": null,
   "schema": "HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1",
-  "source_observation_sha256": "f56b002fb93288d331c5e70fd07e344653bff5b77922dcdee062049f1229b7bd",
+  "source_observation_sha256": "90ac39320d2101d68fb0f322df1588edc43066d26c9964b12b5d6056950cbbd3",
   "sources": {
     "sox": {
-      "latest_close": 9610.6523270452,
-      "latest_us_session": "2026-11-16",
-      "prior_close": 10146.32311915594,
-      "prior_us_session": "2026-11-13",
+      "latest_close": 9642.87797921929,
+      "latest_us_session": "2026-11-17",
+      "prior_close": 9610.6523270452,
+      "prior_us_session": "2026-11-16",
       "publisher": "Nasdaq",
-      "raw_bytes": 7705,
-      "raw_sha256": "1543b45e19480e1066525f7bef02aa7544398866a87e11c12fdbaefd979beda3",
+      "raw_bytes": 7680,
+      "raw_sha256": "673e2515fa9e9356374327eb01b698a486561b4dc87d6d50c81dae8e6163070e",
       "source_status": "EXPECTED_US_EOD_PRESENT",
       "symbol": "SOX",
-      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-23T00:00:00.000&endDate=2026-11-18T00:00:00.000&timeOfDay=EOD"
+      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-24T00:00:00.000&endDate=2026-11-19T00:00:00.000&timeOfDay=EOD"
     },
     "vix": {
       "latest_close": 22.91,
@@ -30,12 +30,12 @@
       "publisher": "Cboe",
       "raw_bytes": 474910,
       "raw_sha256": "311c6cf4c34f712b60c3604747652aa47df0ba25058d35651ac1cf8d93bf5119",
-      "source_status": "EXPECTED_US_EOD_PRESENT",
+      "source_status": "EXPECTED_US_EOD_NOT_YET_PUBLISHED",
       "symbol": "VIX",
       "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
     }
   },
   "status": "OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY",
-  "target_tw_date": "2026-11-17",
+  "target_tw_date": "2026-11-18",
   "trading_authority": false
 }
