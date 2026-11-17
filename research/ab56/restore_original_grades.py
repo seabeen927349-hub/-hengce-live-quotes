@@ -59,7 +59,7 @@ def parse_grades(raw):
             m=re.fullmatch(r"(\d{1,2})(?:\.0)?",token)
             if m:
                 g=int(m.group(1))
-                if not (1<=g<=17):continue
+                if not (1<=g<=15 or g==17):continue # Grade16 is adjustment, may be negative
                 if g in grades:raise ValueError("duplicate grade "+str(g))
                 grades[g]=parse_num(r[shares])
             elif ("合計" in token or "總計" in token or "合計" in cat or "總計" in cat):
