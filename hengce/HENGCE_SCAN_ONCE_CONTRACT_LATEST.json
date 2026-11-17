@@ -90,6 +90,7 @@
     "visible_modules": [
       "ORIGINAL_V22D",
       "ORIGINAL_V22D_FULL_PRE_AB_WITH_AB_DISPOSITION",
+      "HISTORICAL_MODEL_EXIT_WATCHLIST",
       "A_B_POSTSCORE",
       "A_STRONG_DECLINE_LABEL",
       "ORIGINAL_EOD_THREE_LEGS",
@@ -161,6 +162,13 @@
     "finmind_market_freshness_policy": "VERIFY_12_MIN_GENERATED_AND_25_MIN_SOURCE_OR_EXPLICIT_ARCHIVED_NOT_CURRENT",
     "finmind_market_individual_prices": "NOT_IN_AGGREGATE_CANNOT_SUBSTITUTE_FUGLE",
     "finmind_market_no_formal_v22d_or_eod_authority": true,
-    "finmind_market_private_readout": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json"
+    "finmind_market_private_readout": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
+    "historical_model_exit_watchlist_required": true,
+    "historical_model_exit_watchlist_source": "PRIVATE_HISTORICAL_V22D_REPORTS_WITH_MODEL_HASH_DATE_VALIDATION",
+    "historical_model_exit_watchlist_tracked_stocks": [
+      "1802"
+    ],
+    "historical_model_exit_watchlist_policy": "REPORT_PRIOR_VERIFIED_EXIT_SCORE_WITH_PRIOR_DATE_BUT_NEVER_AS_TODAY_MODEL_SCORE",
+    "historical_model_exit_watchlist_never_reinsert_into_v22d_ab": true
   }
 }
