@@ -1,32 +1,32 @@
 {
   "status": "INCOMPLETE",
   "expected_unique_stock_weeks": 90,
-  "verified_unique_stock_weeks": 0,
+  "verified_unique_stock_weeks": 23,
   "source_archive_weeks": 17,
   "source_check_results": [
     {
       "date": "20251212",
       "observed_git_blob_sha1": "22134e535fafcb3b7489d8a00cdd162be400a01a",
       "archive_bytes": 48124560,
-      "verified_stock_count": 0
+      "verified_stock_count": 1
     },
     {
       "date": "20251219",
       "observed_git_blob_sha1": "0acce34e9368c9fccd69390d059c01ca64882774",
       "archive_bytes": 48117798,
-      "verified_stock_count": 0
+      "verified_stock_count": 2
     },
     {
       "date": "20251226",
       "observed_git_blob_sha1": "46d10163c21816ce8a4e7b5b3876af9ffeedd3e5",
       "archive_bytes": 48116620,
-      "verified_stock_count": 0
+      "verified_stock_count": 2
     },
     {
       "date": "20260102",
       "observed_git_blob_sha1": "14efbb7a157793fe31c953a0acc10d3c827a5027",
       "archive_bytes": 48124262,
-      "verified_stock_count": 0
+      "verified_stock_count": 1
     },
     {
       "date": "20260109",
@@ -44,7 +44,7 @@
       "date": "20260206",
       "observed_git_blob_sha1": "81f5b4de694e98ee2508a9460d6655385f59808d",
       "archive_bytes": 48141191,
-      "verified_stock_count": 0
+      "verified_stock_count": 1
     },
     {
       "date": "20260213",
@@ -56,7 +56,7 @@
       "date": "20260226",
       "observed_git_blob_sha1": "73f1f8501e716e2a4a59d9bf05e197af7a523923",
       "archive_bytes": 48146566,
-      "verified_stock_count": 0
+      "verified_stock_count": 2
     },
     {
       "date": "20260306",
@@ -74,47 +74,42 @@
       "date": "20260320",
       "observed_git_blob_sha1": "cc25a131d6de80d05a5992cedb31d69da74e46bd",
       "archive_bytes": 48139924,
-      "verified_stock_count": 0
+      "verified_stock_count": 1
     },
     {
       "date": "20260327",
       "observed_git_blob_sha1": "82a37c8a7982d78bbda8126addb2b76e190cd1cf",
       "archive_bytes": 48145923,
-      "verified_stock_count": 0
+      "verified_stock_count": 4
     },
     {
       "date": "20260402",
       "observed_git_blob_sha1": "b6fc52b5bd1ecad827b2316da44f3b43877d4c42",
       "archive_bytes": 48143602,
-      "verified_stock_count": 0
+      "verified_stock_count": 4
     },
     {
       "date": "20260410",
       "observed_git_blob_sha1": "d40e8527205db5bb06c63c161714a99069705819",
       "archive_bytes": 48145977,
-      "verified_stock_count": 0
+      "verified_stock_count": 2
     },
     {
       "date": "20260417",
       "observed_git_blob_sha1": "0f7c8e4cb8db11c1c01b9b7d9a7ae31304bac2e1",
       "archive_bytes": 48147876,
-      "verified_stock_count": 0
+      "verified_stock_count": 2
     },
     {
       "date": "20260424",
       "observed_git_blob_sha1": "7c06b76d30a6e81623b11ad99d23f10b16565286",
       "archive_bytes": 48152186,
-      "verified_stock_count": 0
+      "verified_stock_count": 1
     }
   ],
   "row_errors": [
     {
       "date": "20251212",
-      "ticker": "1303",
-      "reason": "Noninteger shares -30000"
-    },
-    {
-      "date": "20251212",
       "ticker": "1802",
       "reason": "Official 15-grade + total table not matched"
     },
@@ -140,18 +135,8 @@
     },
     {
       "date": "20251219",
-      "ticker": "1802",
-      "reason": "Noninteger shares -7000"
-    },
-    {
-      "date": "20251219",
       "ticker": "2308",
       "reason": "Official 15-grade + total table not matched"
-    },
-    {
-      "date": "20251219",
-      "ticker": "2330",
-      "reason": "Noninteger shares -80000"
     },
     {
       "date": "20251219",
@@ -182,11 +167,6 @@
       "date": "20251226",
       "ticker": "1802",
       "reason": "Official 15-grade + total table not matched"
-    },
-    {
-      "date": "20251226",
-      "ticker": "2308",
-      "reason": "Noninteger shares -1000"
     },
     {
       "date": "20251226",
@@ -205,11 +185,6 @@
     },
     {
       "date": "20251226",
-      "ticker": "2449",
-      "reason": "Noninteger shares -10000"
-    },
-    {
-      "date": "20251226",
       "ticker": "2454",
       "reason": "Official 15-grade + total table not matched"
     },
@@ -222,11 +197,6 @@
       "date": "20251226",
       "ticker": "8046",
       "reason": "Official 15-grade + total table not matched"
-    },
-    {
-      "date": "20260102",
-      "ticker": "2330",
-      "reason": "Noninteger shares -177000"
     },
     {
       "date": "20260102",
@@ -314,11 +284,6 @@
       "reason": "Official 15-grade + total table not matched"
     },
     {
-      "date": "20260206",
-      "ticker": "6213",
-      "reason": "Noninteger shares -1000"
-    },
-    {
       "date": "20260213",
       "ticker": "2059",
       "reason": "Official 15-grade + total table not matched"
@@ -337,16 +302,6 @@
       "date": "20260226",
       "ticker": "2059",
       "reason": "Official 15-grade + total table not matched"
-    },
-    {
-      "date": "20260226",
-      "ticker": "2603",
-      "reason": "Noninteger shares -110000"
-    },
-    {
-      "date": "20260226",
-      "ticker": "6213",
-      "reason": "Noninteger shares -3000"
     },
     {
       "date": "20260306",
@@ -385,11 +340,6 @@
     },
     {
       "date": "20260320",
-      "ticker": "2317",
-      "reason": "Noninteger shares -92301"
-    },
-    {
-      "date": "20260320",
       "ticker": "2327",
       "reason": "Official 15-grade + total table not matched"
     },
@@ -425,16 +375,6 @@
     },
     {
       "date": "20260327",
-      "ticker": "2317",
-      "reason": "Noninteger shares -25000"
-    },
-    {
-      "date": "20260327",
-      "ticker": "2327",
-      "reason": "Noninteger shares -5000"
-    },
-    {
-      "date": "20260327",
       "ticker": "2345",
       "reason": "Official 15-grade + total table not matched"
     },
@@ -442,16 +382,6 @@
       "date": "20260327",
       "ticker": "2360",
       "reason": "Official 15-grade + total table not matched"
-    },
-    {
-      "date": "20260327",
-      "ticker": "2382",
-      "reason": "Noninteger shares -3000"
-    },
-    {
-      "date": "20260327",
-      "ticker": "2408",
-      "reason": "Noninteger shares -1000"
     },
     {
       "date": "20260327",
@@ -480,16 +410,6 @@
     },
     {
       "date": "20260402",
-      "ticker": "2317",
-      "reason": "Noninteger shares -11000"
-    },
-    {
-      "date": "20260402",
-      "ticker": "2327",
-      "reason": "Noninteger shares -7000"
-    },
-    {
-      "date": "20260402",
       "ticker": "2345",
       "reason": "Official 15-grade + total table not matched"
     },
@@ -497,16 +417,6 @@
       "date": "20260402",
       "ticker": "2360",
       "reason": "Official 15-grade + total table not matched"
-    },
-    {
-      "date": "20260402",
-      "ticker": "2382",
-      "reason": "Noninteger shares -1000"
-    },
-    {
-      "date": "20260402",
-      "ticker": "2408",
-      "reason": "Noninteger shares -1962"
     },
     {
       "date": "20260402",
@@ -525,11 +435,6 @@
     },
     {
       "date": "20260410",
-      "ticker": "2327",
-      "reason": "Noninteger shares -3000"
-    },
-    {
-      "date": "20260410",
       "ticker": "2360",
       "reason": "Official 15-grade + total table not matched"
     },
@@ -537,29 +442,9 @@
       "date": "20260410",
       "ticker": "2408",
       "reason": "Official 15-grade + total table not matched"
-    },
-    {
-      "date": "20260410",
-      "ticker": "2882",
-      "reason": "Noninteger shares -3000"
-    },
-    {
-      "date": "20260417",
-      "ticker": "2303",
-      "reason": "Noninteger shares -19751"
-    },
-    {
-      "date": "20260417",
-      "ticker": "2327",
-      "reason": "Noninteger shares -16108"
-    },
-    {
-      "date": "20260424",
-      "ticker": "2344",
-      "reason": "Noninteger shares -565000"
     }
   ],
-  "csv_sha256": "f642dda7c42947001483fbf4553c7238812e03dfc96d3aaeddc568d20997ee9e",
+  "csv_sha256": "5eeb1f59677ffee4ccd0c7f3308c0b376225596a66638043cb0c0a555f408a09",
   "no_production_changes": true,
   "pit": "retrospective_week_end_plus_14_days_proxy"
 }
