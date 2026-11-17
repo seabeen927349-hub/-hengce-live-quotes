@@ -5,6 +5,7 @@ on:
       - research/ab56-grade-recovery-20261117
     paths:
       - .github/workflows/hengce-ab56-grade-recovery.yml
+      - research/ab56/restore_original_grades.py
   workflow_dispatch:
 permissions:
   contents: write
