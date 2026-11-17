@@ -1,0 +1,30 @@
+name: HENGCE Fixed Cross-Chat Display Lock
+
+"on":
+  pull_request:
+    paths:
+      - 'hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json'
+      - 'governance/HENGCE_SCAN_ONCE_CONSISTENCY_LOCK_v1_0_20261111.json'
+      - 'tests/engineering/test_hengce_scan_once_fixed_display_policy.py'
+      - '.github/workflows/hengce-fixed-crosschat-display-guard.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json'
+      - 'governance/HENGCE_SCAN_ONCE_CONSISTENCY_LOCK_v1_0_20261111.json'
+      - 'tests/engineering/test_hengce_scan_once_fixed_display_policy.py'
+      - '.github/workflows/hengce-fixed-crosschat-display-guard.yml'
+
+permissions:
+  contents: read
+jobs:
+  fixed-cross-chat-renderer-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fail on visible section, private SHA or hidden module drift
+        run: python -m unittest discover -s tests/engineering -p 'test_hengce_scan_once_fixed_display_policy.py' -v
