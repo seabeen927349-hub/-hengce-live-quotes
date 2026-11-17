@@ -43,9 +43,10 @@ permissions:
   contents: write
 
 concurrency:
-  # Serialize against existing HBA/FinMind GitHub writers; keep fail-closed
-  # scoped overseas-eod publisher: block changed upstream dependencies, not downstream displays.
-  group: hengce-hba-surveillance-research
+  # Preserve the existing serialized main publisher. A PR has no publish
+  # authority and must have its own validation queue, so frequent workflow_run
+  # wakeups cannot replace/cancel its pending regression check.
+  group: ${{ github.event_name == 'pull_request' && format('hengce-overseas-eod-pr-{0}', github.event.pull_request.number) || 'hengce-hba-surveillance-research' }}
   cancel-in-progress: false
 
 jobs:
