@@ -25,7 +25,7 @@ jobs:
           python-version: '3.12'
       - name: Install parser
         run: python -m pip install --disable-pip-version-check pandas==2.2.3 lxml==5.4.0 requests==2.32.5
-      - name: Inspect TDCC HTML grade schema and verify original raw grades
+      - name: Verify TDCC grade16 adjustment exclusion and stock 400+ shares
         run: python research/ab56/restore_original_grades.py
       - name: Save recovered research records on isolated branch
         if: always()
