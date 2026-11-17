@@ -29,6 +29,32 @@ def synthetic_xlsx():
 
 VIX=b"DATE,OPEN,HIGH,LOW,CLOSE\n11/05/2026,28.18,28.18,28.18,28.18\n11/06/2026,25.64,25.64,25.64,25.64\n"
 
+class OverseasPublicationScopeTests(unittest.TestCase):
+    def test_existing_overseas_profile_preserves_upstream_guards(self):
+        import hengce_publish as publisher
+        p=publisher.PROFILES["overseas-eod"]
+        for output in ("overseas_premarket/latest.json",
+                       "overseas_premarket/source_status_latest.json",
+                       "overseas_premarket/source_status_anytime_latest.json",
+                       "overseas_premarket/history/20261117_sha.json"):
+            self.assertTrue(publisher.matches(output,p["writes"]))
+        for downstream in ("escape_live/finmind_premarket_bridge_shadow.json",
+                           "research/hba_surveillance/latest.json",
+                           "hengce/health/latest.json"):
+            self.assertTrue(publisher.matches(downstream,p["unrelated"]))
+        for upstream in ("eod/20261116/status.json",
+                         "ownership/tdcc/latest.json",
+                         "scripts/hengce_overseas_sox_vix_premarket_v1.py",
+                         "overseas_premarket/latest.json"):
+            self.assertFalse(publisher.matches(upstream,p["unrelated"]))
+        import yaml
+        workflow=yaml.safe_load((Path(__file__).resolve().parents[2]/
+            ".github/workflows/hengce-overseas-sox-vix-premarket.yml").read_text())
+        scripts=[s.get("run","") for s in workflow["jobs"]["overseas-eod"]["steps"]]
+        self.assertEqual(sum("--profile overseas-eod" in s for s in scripts),3)
+        self.assertFalse(any("--profile conservative-all" in s for s in scripts))
+
+
 class OverseasProducerTests(unittest.TestCase):
     def setUp(self):
         self.sraw=synthetic_xlsx();self.vraw=VIX
