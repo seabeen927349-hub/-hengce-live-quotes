@@ -98,6 +98,7 @@
       "SOX_VIX_US_SESSION_AND_TW_TARGET",
       "FUGLE_TIMESTAMPED_SINGLE_NAME_OBSERVATION",
       "FINMIND_TIMESTAMPED_INTRADAY",
+      "FINMIND_AGGREGATE_MARKET_OBSERVATION",
       "RMS_RESEARCH_STATUS",
       "LEGACY_HEALTH_DATE_ONLY",
       "MISSING_DATA_AND_NO_ORDER_AUTHORITY",
@@ -138,6 +139,28 @@
     "pre_ab_full_qualified_no_top5_substitute": true,
     "pre_ab_full_qualified_no_resort_by_score": true,
     "pre_ab_full_qualified_fail_closed": "MISSING_OR_CONFLICT_REPORT_EXPLICITLY_NEVER_INVENT",
-    "pre_ab_full_qualified_diagnostic_date": "2026-11-16"
+    "pre_ab_full_qualified_diagnostic_date": "2026-11-16",
+    "finmind_market_context_required": true,
+    "finmind_market_source": "EXISTING_GOVERNED_PUBLIC_ESCAPE_LIVE_AGGREGATE_VESSEL",
+    "finmind_market_paths": [
+      "escape_live/finmind_twse_common_status.json",
+      "escape_live/finmind_twse_common_context.json",
+      "escape_live/intraday_monitor.json"
+    ],
+    "finmind_market_visible_fields": [
+      "source_market_date",
+      "source_timestamp_taipei",
+      "valid_count",
+      "unknown_count",
+      "advance_count",
+      "decline_count",
+      "flat_count",
+      "net_breadth",
+      "equal_weight_change_rate"
+    ],
+    "finmind_market_freshness_policy": "VERIFY_12_MIN_GENERATED_AND_25_MIN_SOURCE_OR_EXPLICIT_ARCHIVED_NOT_CURRENT",
+    "finmind_market_individual_prices": "NOT_IN_AGGREGATE_CANNOT_SUBSTITUTE_FUGLE",
+    "finmind_market_no_formal_v22d_or_eod_authority": true,
+    "finmind_market_private_readout": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json"
   }
 }
