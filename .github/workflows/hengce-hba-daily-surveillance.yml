@@ -35,6 +35,7 @@ on:
     workflows: ['HENGCE original EOD ingest','HENGCE Governed SOX VIX Premarket EOD','HENGCE Escape TWSE Common FinMind Shadow']
     types: [completed]
   # 2026-11-09: on-demand refresh after canonical 2026-11-09 mother receipt PASS; unchanged scan logic.
+  # 2026-11-17: one-time existing HBA refresh after verified 2026-11-16 Mother receipt mirror; scan code unchanged.
   workflow_dispatch:
 permissions:
   contents: write
