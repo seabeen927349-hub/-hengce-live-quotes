@@ -76,7 +76,7 @@
     "repair_baselines_and_regression_evidence",
     "current_eod_tdcc_data_dates",
     "V2.2_research_ranking_date",
-    "S5_Escape_RMS_and_macro_evidence",
+    "SOX_VIX_FINMIND_RMS_and_macro_evidence",
     "positions_and_quote_date",
     "changes_vs_last_verified_scan"
   ],
@@ -90,8 +90,47 @@
     "V2.2 preferred research mode is NOT_ENABLED for formal selection unless a separate explicit promotion is verified; do not revive Q017.",
     "Do not equate old live/status.json expired cache with proof that all current Fugle quotes are broken.",
     "Never claim a complete new scan if only reading previously stored reports; call it read-only inspection.",
-    "Never self-upgrade market data, change trading authority, rebuild vessels, or replace models as part of a reporting-consistency fix."
+    "Never self-upgrade market data, change trading authority, rebuild vessels, or replace models as part of a reporting-consistency fix.",
+    "User-visible 衡策掃一次 reports MUST follow private main fixed_display_policy and verified fixed readout regardless of chat count; do not show hidden modules, including as unknown; don't confuse different US/TW session dates or same-day current quotes with verified EOD ranking."
   ],
   "original_eod_schedule_taipei": "23:00 Monday-Friday (GitHub cron may be delayed)",
-  "human_owner_override_allowed_only_with_new_dated_verifiable_evidence": true
+  "human_owner_override_allowed_only_with_new_dated_verifiable_evidence": true,
+  "fixed_visible_scan_once_override": {
+    "status": "ACTIVE_USER_APPROVED_DISPLAY_LOCK",
+    "policy_id": "HENGCE_SCAN_ONCE_FIXED_VISIBLE_REPORT_20261117",
+    "private_contract_path": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
+    "private_contract_git_blob_sha": "97f1012b772ec7adbc585968cf7fc3cf5244ff5b",
+    "public_pointer": "hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json",
+    "cross_chat_restore_required": true,
+    "no_hidden_module_display": [
+      "S5",
+      "Escape"
+    ],
+    "show_user_display_modules_in_order": [
+      "ORIGINAL_V22D",
+      "A_B_POSTSCORE",
+      "A_STRONG_DECLINE_LABEL",
+      "ORIGINAL_EOD_THREE_LEGS",
+      "HISTORICAL_MOTHER",
+      "TDCC_PIT",
+      "SOX_VIX_US_SESSION_AND_TW_TARGET",
+      "FUGLE_TIMESTAMPED_SINGLE_NAME_OBSERVATION",
+      "FINMIND_TIMESTAMPED_INTRADAY",
+      "RMS_RESEARCH_STATUS",
+      "LEGACY_HEALTH_DATE_ONLY",
+      "MISSING_DATA_AND_NO_ORDER_AUTHORITY",
+      "GITHUB_PROVENANCE"
+    ],
+    "seven_sections_in_order": [
+      "PROTOCOL_AND_DATA_DATE",
+      "SINGLE_ORIGINAL_V22D_MODEL",
+      "A_B_POSTSCORE_STATUS",
+      "A_STRONG_DECLINE_LABEL",
+      "ENVIRONMENT_AND_DATA_VESSELS",
+      "MISSING_OR_BLOCKED",
+      "SOURCE_AND_EXECUTION_AUTHORITY"
+    ],
+    "preserve_upstream_module_logic": true,
+    "not_a_strategy_or_authority_change": true
+  }
 }
