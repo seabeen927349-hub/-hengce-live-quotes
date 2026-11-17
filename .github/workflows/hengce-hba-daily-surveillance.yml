@@ -10,6 +10,10 @@ on:
       - 'scripts/hengce_hba_decision_report.py'
       - 'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
       - 'tests/hba_surveillance/**'
+      # A new verified original Mother receipt is the real EOD-ready event.
+      # Reuse this HBA scan; never start a new collector or wait for the next
+      # scheduled slot after the upstream canonical bridge is complete.
+      - 'eod/**/receipts/mother.json'
       - '.github/workflows/hengce-hba-daily-surveillance.yml'
   pull_request:
     paths:
