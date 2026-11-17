@@ -78,6 +78,19 @@ PROFILES = {
         ),
         'unrelated': OBSERVABILITY_ONLY + ('escape_live/finmind_premarket_bridge_shadow.json',),
     },
+    # Overseas SOX/VIX publisher reads official vendor EOD and prior TWSE EOD,
+    # but never consumes the downstream FinMind/HBA presentation products.
+    # Only these proven downstream outputs may advance independently. Changes
+    # to EOD, TDCC, code, or other unknown paths remain strict fail-closed.
+    'overseas-eod': {
+        'writes': ('overseas_premarket/latest.json',
+                   'overseas_premarket/source_status_latest.json',
+                   'overseas_premarket/source_status_anytime_latest.json',
+                   'overseas_premarket/history/**'),
+        'unrelated': OBSERVABILITY_ONLY +
+                     ('escape_live/finmind_premarket_bridge_shadow.json',
+                      'research/hba_surveillance/**'),
+    },
     'health-only': {'writes': ('hengce/health/latest.json',), 'unrelated': OBSERVABILITY_ONLY},
     'q017-primary-capture': {
         'writes': PRIMARY_CAPTURE_WRITES,
