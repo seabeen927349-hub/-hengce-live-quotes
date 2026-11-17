@@ -101,6 +101,12 @@ def main():
                     try:
                         path=f"valid/{ticker}.html"
                         body=z.read(path)
+                        if date=="20251212" and ticker=="2308":
+                            frames=pd.read_html(io.StringIO(decode(body)))
+                            probe=[]
+                            for fi,frame in enumerate(frames[:8]):
+                                probe.append({"table":fi,"columns":[str(c) for c in frame.columns],"all_rows":frame.astype(str).values.tolist()})
+                            (OUT/"AB56_FAILED_2308_TABLE_DIAGNOSTIC.json").write_text(json.dumps(probe,ensure_ascii=False,indent=2),encoding="utf-8")
                         if date=="20251212" and ticker=="1303":
                             probe=[]
                             frames=pd.read_html(io.StringIO(decode(body)))
