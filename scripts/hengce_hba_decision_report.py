@@ -473,6 +473,9 @@ def card_judgment(card):
     net = flow['5'].get('net_shares')
     stake = card['ownership']['change'].get('change_400_pp')
     margin = card['leverage']['MarginBalance']['change_5d'].get('change_pct')
+    short = card['leverage']['ShortBalance']['change_5d'].get('change_pct')
+    largest = card['ownership']['change'].get('change_1000_pp')
+    volume_ratio = card['price']['volume_ratio'].get('vs_previous_5_sessions')
     if price is not None and price != 0:
         (support if price > 0 else risk).append('PRICE_5D_UP' if price > 0 else 'PRICE_5D_DOWN')
     if net is not None and net != 0:
@@ -483,6 +486,12 @@ def card_judgment(card):
         (support if stake > 0 else risk).append('TDCC_400_SHARE_UP' if stake > 0 else 'TDCC_400_SHARE_DOWN')
     if margin is not None and margin >= 12:
         risk.append('MARGIN_BALANCE_5D_UP_AT_LEAST_12_PCT')
+    if price is not None and price > 0 and volume_ratio is not None and volume_ratio < 0.8:
+        risk.append('PRICE_UP_WITH_VOLUME_BELOW_80_PCT_OF_PREVIOUS_5D_AVERAGE')
+    if short is not None and short >= 25:
+        risk.append('SHORT_BALANCE_5D_UP_AT_LEAST_25_PCT_CHECK_ABSOLUTE_LOTS')
+    if largest is not None and stake is not None and largest*stake < 0:
+        conflicts.append('TDCC_400_AND_1000_SHARE_CHANGES_DIVERGE')
     if price is not None and net is not None and price*net < 0:
         conflicts.append('PRICE_AND_INSTITUTIONAL_FLOW_DIVERGE')
     if price is not None and stake is not None and price*stake < 0:
@@ -490,9 +499,12 @@ def card_judgment(card):
     if price is not None and price < 0 and margin is not None and margin > 0:
         conflicts.append('PRICE_FALLS_WHILE_MARGIN_BALANCE_RISES')
     missing = []
-    for name, metric in (('PRICE_TREND', card['price']['trend']), ('INSTITUTIONAL_5D', flow['5']),
-                         ('TDCC_CHANGE', card['ownership']['change']),
-                         ('MARGIN_BALANCE', card['leverage']['MarginBalance'])):
+    metrics = [('PRICE_TREND', card['price']['trend']), ('VOLUME_RATIO', card['price']['volume_ratio']),
+               ('PRICE_RANGE', card['price']['range']), ('TDCC_CHANGE', card['ownership']['change']),
+               ('MARGIN_BALANCE', card['leverage']['MarginBalance']['change_5d']),
+               ('SHORT_BALANCE', card['leverage']['ShortBalance']['change_5d'])]
+    metrics += [('INSTITUTIONAL_'+n+'D', item) for n, item in flow.items()]
+    for name, metric in metrics:
         if metric['status'] != 'VERIFIED':
             missing.append(name)
     zone = card['price']['range']

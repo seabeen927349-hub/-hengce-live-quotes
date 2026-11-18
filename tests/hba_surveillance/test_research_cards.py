@@ -114,15 +114,18 @@ class ResearchCardsTests(unittest.TestCase):
 
     def test_judgment_keeps_both_sides_and_conflict(self):
         card = dict(price={'trend': {'status':'VERIFIED','return_5d_pct':-3},
-                           'range': {'status':'VERIFIED','low_twd':21,'high_twd':25}},
+                           'range': {'status':'VERIFIED','low_twd':21,'high_twd':25},
+                           'volume_ratio': {'status':'VERIFIED','vs_previous_5_sessions':0.5}},
                     institutional={'5':{'status':'VERIFIED','net_shares':2000,'net_buy_days':3,'net_sell_days':2}},
                     ownership={'change':{'status':'MISSING'}},
-                    leverage={'MarginBalance':{'status':'VERIFIED','change_5d':{'change_pct':18}}})
+                    leverage={'MarginBalance':{'status':'VERIFIED','change_5d':{'status':'VERIFIED','change_pct':18}},
+                              'ShortBalance':{'status':'VERIFIED','change_5d':{'status':'VERIFIED','change_pct':28}}})
         research = card_judgment(card)
         self.assertIn('INSTITUTIONAL_5D_NET_BUY', research['bull_case'])
         self.assertIn('MARGIN_BALANCE_5D_UP_AT_LEAST_12_PCT', research['bear_case'])
         self.assertEqual(research['strongest_counterevidence'], 'PRICE_AND_INSTITUTIONAL_FLOW_DIVERGE')
         self.assertIn('TDCC_CHANGE', research['gaps'])
+        self.assertIn('SHORT_BALANCE_5D_UP_AT_LEAST_25_PCT_CHECK_ABSOLUTE_LOTS', research['bear_case'])
         self.assertEqual(research['invalidation']['downside_below_twd'], 21)
 
     def test_coverage_keeps_unmatched_price_universe_and_roundtrips(self):
