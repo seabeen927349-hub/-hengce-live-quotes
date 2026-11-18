@@ -19,6 +19,32 @@ class Surveillance(unittest.TestCase):
    with (day/'tdcc_ownership_4d.csv').open('w') as f:
     w=csv.writer(f);w.writerow(['SnapshotDate','ObservedAtTaipei','Ticker','Big400Pct','Big1000Pct','TotalHolders']);w.writerow([date,'2026-10-31T10:00:00+08:00','1101',pct,50,2000])
  def tearDown(self):self.d.cleanup()
+ def test_taiwan_vix_signed_local_observation_is_separate(self):
+  import datetime as dt
+  from zoneinfo import ZoneInfo
+  from hengce_taifex_taiwan_vix_v1 import build, month_url
+  from hengce_hba_daily_surveillance import local_taiwan_vix
+  now=dt.datetime(2026,11,18,9,33,tzinfo=ZoneInfo("Asia/Taipei"))
+  rows={dt.date(2026,11,12):40.28,dt.date(2026,11,13):37.84}
+  v=build(dt.datetime(2026,11,17,15,0,tzinfo=ZoneInfo("Asia/Taipei")),
+          [(2026,11,rows,"a"*64,month_url(2026,11))])
+  dest=self.root/"environment/taifex_taiwan_vix/latest.json"
+  dest.parent.mkdir(parents=True,exist_ok=True)
+  dest.write_text(json.dumps(v))
+  got=local_taiwan_vix(self.root,"2026-11-18","2026-11-17",now)
+  self.assertTrue(got["source_verified"])
+  self.assertEqual(got["date"],"2026-11-13")
+  self.assertEqual(got["close"],37.84)
+  self.assertEqual(got["status"],"SOURCE_DATE_NOT_LAST_TW_EOD")
+  self.assertTrue(got["not_realtime"])
+  self.assertFalse(got["trading_authority"])
+  v["vix_1345"]=900.0
+  dest.write_text(json.dumps(v))
+  self.assertEqual(local_taiwan_vix(self.root,"2026-11-18","2026-11-17",now)["status"],
+                   "MISSING_OR_UNVERIFIED")
+  dest.unlink()
+  self.assertEqual(local_taiwan_vix(self.root,"2026-11-18","2026-11-17",now)["close"],None)
+
  def test_missing_macro_not_neutral(self):
   r=scan(self.root,'2026-11-09');self.assertEqual(r['external_environment']['label'],'資料不足');self.assertEqual(r['data_gate'],'EOD_VALID_MACRO_UNKNOWN');self.assertGreater(len(r['candidates']),0)
  def test_all_alert_evidence_kept_even_when_display_limit_zero(self):

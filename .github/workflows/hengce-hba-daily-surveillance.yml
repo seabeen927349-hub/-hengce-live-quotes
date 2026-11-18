@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/hengce_hba_daily_surveillance.py'
+      - 'scripts/hengce_taifex_taiwan_vix_v1.py'
       - 'scripts/hengce_hba_context_bridge_v1.py'
       - 'scripts/hengce_hba_decision_report.py'
       - 'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
@@ -21,6 +22,7 @@ on:
       - 'governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.*'
       - 'governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md'
       - 'scripts/hengce_hba_daily_surveillance.py'
+      - 'scripts/hengce_taifex_taiwan_vix_v1.py'
       - 'scripts/hengce_hba_context_bridge_v1.py'
       - 'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
       - 'tests/hba_surveillance/**'
@@ -36,7 +38,7 @@ on:
     # Reuse the SAME original EOD producer's successful completion; do not start a new collector.
     # Reuse existing successfully published monitored sources to refresh HBA.
     # No new collectors or recursive FinMind wake-up are introduced.
-    workflows: ['HENGCE original EOD ingest','HENGCE Governed SOX VIX Premarket EOD','HENGCE Escape TWSE Common FinMind Shadow']
+    workflows: ['HENGCE original EOD ingest','HENGCE Governed SOX VIX Premarket EOD' ,'HENGCE Escape TWSE Common FinMind Shadow','HENGCE TAIFEX Taiwan VIX Daily Source']
     types: [completed]
   # 2026-11-09: on-demand refresh after canonical 2026-11-09 mother receipt PASS; unchanged scan logic.
   # 2026-11-17: one-time existing HBA refresh after verified 2026-11-16 Mother receipt mirror; scan code unchanged.
@@ -48,7 +50,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   scan:
-    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository && (github.event.workflow_run.event == 'schedule' || (github.event.workflow_run.name == 'HENGCE Escape TWSE Common FinMind Shadow' && (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_run' || github.event.workflow_run.event == 'workflow_dispatch'))))
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository && (github.event.workflow_run.event == 'schedule' || (github.event.workflow_run.name == 'HENGCE TAIFEX Taiwan VIX Daily Source' && (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')) || (github.event.workflow_run.name == 'HENGCE Escape TWSE Common FinMind Shadow' && (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_run' || github.event.workflow_run.event == 'workflow_dispatch'))))
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:

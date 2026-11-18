@@ -91,6 +91,15 @@ PROFILES = {
                      ('escape_live/finmind_premarket_bridge_shadow.json',
                       'research/hba_surveillance/**'),
     },
+    # Independent official TAIFEX local VIX source is not part of the
+    # overseas US VIX or original TWSE EOD/model/TDCC inputs.
+    'taifex-taiwan-vix': {
+        'writes': ('environment/taifex_taiwan_vix/latest.json',
+                   'environment/taifex_taiwan_vix/history/**'),
+        'unrelated': OBSERVABILITY_ONLY +
+                     ('research/hba_surveillance/**', 'overseas_premarket/**',
+                      'escape_live/finmind_premarket_bridge_shadow.json'),
+    },
     'health-only': {'writes': ('hengce/health/latest.json',), 'unrelated': OBSERVABILITY_ONLY},
     'q017-primary-capture': {
         'writes': PRIMARY_CAPTURE_WRITES,
