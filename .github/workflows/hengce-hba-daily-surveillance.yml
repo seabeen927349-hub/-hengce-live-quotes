@@ -185,7 +185,8 @@ jobs:
             research/hba_surveillance/decision_latest.md
             ${{ runner.temp }}/hengce-hba-publication
           if-no-files-found: ignore
-          retention-days: 14      - name: Build complete research cards from verified HBA sources
+          retention-days: 14
+      - name: Build complete research cards from verified HBA sources
         env:
           EVENT_NAME: ${{ github.event_name }}
         run: |
