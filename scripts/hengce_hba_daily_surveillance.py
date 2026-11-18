@@ -193,7 +193,7 @@ def local_taiwan_vix(root, target, reference_eod=None, now=None):
               "index": "TAIWAN_VIX", "reference_eod": reference_eod,
               "date": None, "close": None, "not_realtime": True,
               "not_model_input": True, "trading_authority": False}
-    path = root / "research/hba_surveillance/taifex_taiwan_vix_latest.json"
+    path = root / "environment/taifex_taiwan_vix/latest.json"
     x = jread(path)
     if not isinstance(x, dict):
         return result
@@ -207,6 +207,7 @@ def local_taiwan_vix(root, target, reference_eod=None, now=None):
         assert (now - asof).total_seconds() <= 10 * 86400
         assert recorded <= dt.date.fromisoformat(target)
         assert recorded <= now.date()
+        assert recorded <= asof.date() and not (recorded == asof.date() and asof.time() < dt.time(14, 0))
         if recorded == now.date():
             assert now.time() >= dt.time(14, 0) and asof.time() >= dt.time(14, 0)
         assert 0 <= (now.date() - recorded).days <= 10
