@@ -1,0 +1,22 @@
+name: HENGCE market source reconciliation
+on:
+  pull_request:
+    paths:
+      - scripts/hengce_hba_market_source_reconcile.py
+      - tests/hba_surveillance/test_market_source_reconcile.py
+      - .github/workflows/hengce-market-source-reconciliation.yml
+permissions:
+  contents: read
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run read-only HBA and reconciliation regression without vendor requests
+        run: python -m unittest discover -s tests/hba_surveillance -p 'test_*.py' -v

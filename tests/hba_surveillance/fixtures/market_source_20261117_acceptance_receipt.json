@@ -1,0 +1,100 @@
+{
+  "coverage": {
+    "corporate_action": {
+      "UNVERIFIED": 1091
+    },
+    "finmind_per_ticker": {
+      "UNVERIFIED": 1091
+    },
+    "fugle_close_comparison": {
+      "MISSING": 1088,
+      "VERIFIED_SHADOW": 3
+    },
+    "fugle_outside_universe": 0,
+    "trading": {
+      "UNVERIFIED": 1091
+    },
+    "twse_close": {
+      "MISSING": 2,
+      "VERIFIED": 1089
+    },
+    "universe": 1091
+  },
+  "evidence_cutoff_taipei": "2026-11-18T18:18:38.973297+08:00",
+  "executed_code_commit": "4580ea551baf07e14ed883c96fa4ba214f8cd0c2",
+  "finmind": {
+    "contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
+    "existing_run_started_at_taipei": "2026-11-17T13:05:17.949313+08:00",
+    "first_vendor_receipt_taipei": null,
+    "input_sha256": {
+      "escape_live/finmind_twse_common_context.json": "e7bcffef724f7e6286078749d32ee89173fb7f7e936648c659b11a7adb0ad5e2",
+      "escape_live/finmind_twse_common_status.json": "2af3b3e1e788e47bc7b41412dbe6d0ed941be45184ada5f3b38724a5e381096d",
+      "escape_live/intraday_monitor.json": "76efafaadf3a6eced2f1e37d353c2f6390116ea148da7b24d77b8cc62b5d1db4"
+    },
+    "latest_market_observation_taipei": "2026-11-17T13:05:10.785974+08:00",
+    "matched_per_ticker_rows": 0,
+    "per_ticker_reason": "AGGREGATE_ONLY_NO_RETAINED_VENDOR_ROWS",
+    "read_at_taipei": "2026-11-18T18:18:38.972892+08:00",
+    "source_schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_AGGREGATE_SHADOW_V3",
+    "source_scope_total": 1088,
+    "source_scope_unknown": 4,
+    "source_scope_valid": 1084,
+    "status": "VERIFIED_AGGREGATE_SHADOW"
+  },
+  "formal_settlement_allowed": false,
+  "fugle": {
+    "comparisons": {
+      "2610": {
+        "different_fields": [],
+        "market_observation_taipei": "2026-11-17T13:30:00+08:00",
+        "status": "VERIFIED_SHADOW"
+      },
+      "6782": {
+        "different_fields": [],
+        "market_observation_taipei": "2026-11-17T13:30:00+08:00",
+        "status": "VERIFIED_SHADOW"
+      },
+      "9933": {
+        "different_fields": [],
+        "market_observation_taipei": "2026-11-17T13:30:00+08:00",
+        "status": "VERIFIED_SHADOW"
+      }
+    },
+    "first_vendor_receipt_taipei": null,
+    "input_sha256": "c457fae1d45a3e6e35cf6cd90bde7ec08621d7683603417a0d0393016cad4900",
+    "private_blob_sha1": "ddba5ec2598b8534606cd16e67bfc7b011c499c2",
+    "private_path": "hengce/private_v22d_autoscan/reports/realtime_quote_observations_latest.json",
+    "private_reference_commit": "74d758cd1fc51da04381bd68c085a4be63bb15f7",
+    "private_repository": "seabeen927349-hub/twse--backfill-test",
+    "read_at_taipei": "2026-11-18T18:18:38.897893+08:00",
+    "receipt_market_timestamp_taipei": "2026-11-17T13:30:00+08:00",
+    "role": "HISTORICAL_SHADOW_ONLY",
+    "source_rows": 3,
+    "source_schema": "HENGCE_FUGLE_VERIFIED_QUOTE_OBSERVATION_V1",
+    "status": "VERIFIED_RECEIPT_SHADOW"
+  },
+  "hba": {
+    "artifact_id": 14416705399,
+    "manifest_sha256": "45fabe6f7df6eed746ddb51605db230881626e1a39958842f28a6e285435eae7",
+    "run_id": 44279219431,
+    "zip_sha256": "8764eab178116aa9d5031ab8cfe6d42ff7efacf693cbb1fdbfc3e31f036771e6"
+  },
+  "market_date": "2026-11-17",
+  "mode": "HISTORICAL_REPLAY",
+  "public_input_commit": "d0f57736c7964825e2c3e2eb314ff02bdc066c88",
+  "report_file": "hengce-pr4-20261117-final-acceptance.json",
+  "report_sha256": "a99b08163145bc6346155a85054817b3f9670ec6507514248397b7d9b3eab666",
+  "schema": "HENGCE_MARKET_SOURCE_RECONCILIATION_ACCEPTANCE_V1",
+  "trading_authority": false,
+  "twse_price_proof": {
+    "availability_kind": "FIRST_FORMAL_LEG_PROMOTION",
+    "available_at": "2026-11-17T22:39:17.710391+08:00",
+    "effective_date": "2026-11-17",
+    "mother_available_at": "2026-11-17T22:43:42.445923+08:00",
+    "mother_sha256": "88464d4063156978b1099e78d3c681a6726d64790726aac3a73150e119023f77",
+    "sha256": "95fd53858d4baff5c83cf511c982958b2a45c436bc67db38c2174b7cfde2e7d3",
+    "source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+    "source_path": "eod/20261117/receipts/price.json",
+    "status": "VERIFIED"
+  }
+}
