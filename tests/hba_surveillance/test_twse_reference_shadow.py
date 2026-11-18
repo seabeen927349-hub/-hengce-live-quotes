@@ -71,7 +71,7 @@ class ShadowTests(unittest.TestCase):
                    'TradingResumptionDate':'1151117','TradingResumptionTime':'103000'}]
         interval = parse_halts(payload,DAY)['1234']
         self.assertTrue(interval[0]['spans_session_open'])
-        self.assertEqual(trading_status({'Trades':'1'},interval,None)['status'], 'HALTED')
+        self.assertEqual(trading_status({'Trades':'1'},interval,None)['status'], 'HALT_RESUMED_DURING_SESSION')
         self.assertEqual(trading_status({'Trades':'0'},None,None)['status'], 'UNVERIFIED')
         self.assertEqual(trading_status({'Trades':'1'},None,None)['observation'], 'TRADE_OBSERVED')
         delisted = parse_delistings([{'Code':'1234','DelistingDate':'115/11/17'}],DAY)['1234']
@@ -96,3 +96,78 @@ class ShadowTests(unittest.TestCase):
         self.assertEqual(result['taiex']['status'], BLOCKED)
         with self.assertRaisesRegex(ValueError, 'OFFICIAL_REFERENCE_BUNDLE_REQUIRED'):
             official_sessions(result,self.cutoff,self.cutoff,{})
+
+
+class OfficialExcerptTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        fixture = Path(__file__).parent/'fixtures/twse_reference_20261117_excerpt.json'
+        cls.sources = json.loads(fixture.read_bytes())['sources']
+
+    def test_taiex_actual_fields_date_and_values(self):
+        sample = self.sources['taiex']
+        self.assertEqual(sample['source_url'], source_urls(DAY)['taiex'])
+        self.assertEqual(sample['response'][0]['Date'], '1151117')
+        observed = parse_taiex(sample['response'], DAY)
+        self.assertEqual((observed['open'], observed['close']), ('40546.64', '40092.11'))
+
+    def test_twta_wu_real_halt_and_resume_interval(self):
+        sample = self.sources['halts']
+        self.assertEqual(sample['source_url'], source_urls(DAY)['halts'])
+        self.assertEqual(parse_halts(sample['response'], DAY), {})
+        interval = parse_halts(sample['response'], date(2026,11,10))['2314']
+        self.assertEqual(interval[0]['halted_at_taipei'], '2026-11-10T08:00:00+08:00')
+        self.assertEqual(interval[0]['resumed_at_taipei'], '2026-11-11T08:00:00+08:00')
+        self.assertEqual(trading_status({'Trades':'0'},interval,None)['status'], 'FULL_SESSION_HALT')
+
+    def test_delisting_real_date_and_ticker(self):
+        sample = self.sources['delistings']
+        self.assertEqual(sample['source_url'], source_urls(DAY)['delistings'])
+        self.assertEqual(parse_delistings(sample['response'], DAY)['2867'], date(2026,9,1))
+        self.assertNotIn('2867', parse_delistings(sample['response'], date(2026,8,31)))
+
+    def test_twt49u_actual_request_response_fields_and_missing_value(self):
+        from urllib.parse import parse_qs, urlsplit
+
+        sample = self.sources['corporate_actions']
+        self.assertEqual(sample['source_url'], source_urls(DAY)['corporate_actions'])
+        self.assertEqual(parse_qs(urlsplit(sample['source_url']).query),
+                         {'startDate':['20261117'], 'endDate':['20261117'], 'response':['json']})
+        response = sample['response']
+        self.assertEqual((response['strDate'], response['endDate']), ('20261117', '20261117'))
+        self.assertEqual(response['data'][0][0], '115年11月17日')
+        self.assertEqual(response['data'][0][-1], 'N/A')
+        result = parse_actions(response, DAY)
+        self.assertEqual(result['006208'][0]['adjustment'], '3.880000')
+        self.assertNotIn('2610', result)
+        with self.assertRaisesRegex(ValueError, 'RANGE_MISMATCH'):
+            parse_actions({**response,'endDate':'20261118'}, DAY)
+        with self.assertRaisesRegex(ValueError, 'RANGE_MISMATCH'):
+            parse_actions({**response,'strDate':'20261116'}, DAY)
+
+
+class TradingClassificationTests(unittest.TestCase):
+    def statuses(self, start, resume_date, resume_time, trades='0'):
+        raw = [{'Code':'1234','TradingHaltDate':'1151117','TradingHaltTime':start,
+                'TradingResumptionDate':resume_date,'TradingResumptionTime':resume_time}]
+        interval = parse_halts(raw, DAY)['1234']
+        return trading_status({'Trades':trades},interval,None)
+
+    def test_intraday_halt_then_resume_leaves_opening_unverified(self):
+        status = self.statuses('101500','1151117','111500','12')
+        self.assertEqual(status['status'], 'HALT_RESUMED_DURING_SESSION')
+        self.assertEqual(status['opening_status'], 'UNVERIFIED')
+        opened = self.statuses('080000','1151117','103000','12')
+        self.assertEqual(opened['status'], 'HALT_RESUMED_DURING_SESSION')
+        self.assertEqual(opened['opening_status'], 'HALTED_AT_OPEN')
+
+    def test_missing_resume_and_conflicting_trades_do_not_prove_full_halt(self):
+        for missing in (None, '', '--', 'N/A'):
+            state = self.statuses('080000',missing,missing)
+            self.assertEqual(state['status'], 'UNVERIFIED')
+            self.assertEqual(state['reason'], 'HALT_END_UNVERIFIED')
+        with self.assertRaisesRegex(ValueError, 'FIELDS_INCOMPLETE'):
+            self.statuses('080000',None,'103000')
+        conflict = self.statuses('080000','1151118','080000','2')
+        self.assertEqual(conflict['status'], 'UNVERIFIED')
+        self.assertEqual(conflict['opening_status'], 'UNVERIFIED')

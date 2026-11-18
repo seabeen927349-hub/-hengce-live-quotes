@@ -169,8 +169,11 @@ def parse_halts(payload, day):
     halts = {}
     for row in payload:
         halted = event_time(row['TradingHaltDate'], row['TradingHaltTime'])
-        resume_date, resume_time = row['TradingResumptionDate'], row['TradingResumptionTime']
-        resumed = event_time(resume_date, resume_time) if resume_date or resume_time else None
+        resume_date, resume_time = (row[k] for k in ('TradingResumptionDate', 'TradingResumptionTime'))
+        missing = (None, '', '--', 'N/A')
+        if (resume_date in missing) != (resume_time in missing):
+            raise ValueError('HALT_RESUMPTION_FIELDS_INCOMPLETE')
+        resumed = event_time(resume_date, resume_time) if resume_date not in missing else None
         if resumed and resumed <= halted:
             raise ValueError('HALT_INTERVAL_INCONSISTENT')
         if halted <= end and (resumed is None or resumed > start):
@@ -178,7 +181,8 @@ def parse_halts(payload, day):
                 'halted_at_taipei':halted.isoformat(),
                 'resumed_at_taipei':resumed.isoformat() if resumed else None,
                 'spans_session_open':halted <= start,
-                'spans_session_close':resumed is None or resumed > end,
+                'spans_session_close':resumed >= end if resumed else None,
+                'resumed_during_session':resumed is not None and start < resumed < end,
             })
     return halts
 
@@ -221,10 +225,20 @@ def trading_status(row, halts, delisted):
                 'delisting_effective_date':delisted.isoformat(),
                 'reason':'POST_DELISTING_TRADE_CONFLICT' if trades > 0 else 'TWSE_EFFECTIVE_DELISTING'}
     if halts:
-        if trades > 0 and any(h['spans_session_open'] and h['spans_session_close'] for h in halts):
-            return {'status':'UNVERIFIED','reason':'FULL_SESSION_HALT_WITH_OBSERVED_TRADES','intervals':halts}
-        return {'status':'HALTED','intervals':halts}
-    return {'status':'UNVERIFIED', 'observation': 'TRADE_OBSERVED' if trades > 0 else 'NO_EXECUTION_EVIDENCE',
+        opening = 'HALTED_AT_OPEN' if any(h['spans_session_open'] for h in halts) else 'UNVERIFIED'
+        evidence = {'opening_status': opening, 'intervals': halts}
+        if any(h['spans_session_open'] and h['spans_session_close'] is True for h in halts):
+            if trades > 0:
+                return {'status':'UNVERIFIED','reason':'FULL_SESSION_HALT_WITH_OBSERVED_TRADES',
+                        **evidence, 'opening_status':'UNVERIFIED'}
+            return {'status':'FULL_SESSION_HALT', **evidence}
+        if any(h['resumed_during_session'] for h in halts):
+            return {'status':'HALT_RESUMED_DURING_SESSION', **evidence}
+        if any(h['resumed_at_taipei'] is None for h in halts):
+            return {'status':'UNVERIFIED','reason':'HALT_END_UNVERIFIED', **evidence}
+        return {'status':'PARTIAL_SESSION_HALT', **evidence}
+    return {'status':'UNVERIFIED', 'opening_status':'UNVERIFIED',
+            'observation': 'TRADE_OBSERVED' if trades > 0 else 'NO_EXECUTION_EVIDENCE',
             'reason':'COMPLETE_OPEN_TIME_TRADEABILITY_NOT_ESTABLISHED'}
 
 

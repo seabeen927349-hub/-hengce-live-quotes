@@ -1,0 +1,115 @@
+{
+  "fixture_kind": "CURATED_EXCERPTS_NOT_ORIGINAL_BYTES",
+  "sources": {
+    "corporate_actions": {
+      "source_url": "https://www.twse.com.tw/rwd/zh/exRight/TWT49U?startDate=20261117&endDate=20261117&response=json",
+      "original_sha256": "ead8f4676fc848b851dfc867377c932c43d9a8360726439dd9e4a07248f8f31a",
+      "first_observed_at_taipei": "2026-11-18T16:54:28.573313+08:00",
+      "response": {
+        "stat": "OK",
+        "fields": [
+          "資料日期",
+          "股票代號",
+          "股票名稱",
+          "除權息前收盤價",
+          "除權息參考價",
+          "權值+息值",
+          "權/息",
+          "漲停價格",
+          "跌停價格",
+          "開盤競價基準",
+          "減除股利參考價",
+          "詳細資料",
+          "最近一次申報資料 季別/日期",
+          "最近一次申報每股 (單位)淨值",
+          "最近一次申報每股 (單位)盈餘"
+        ],
+        "strDate": "20261117",
+        "endDate": "20261117",
+        "data": [
+          [
+            "115年11月17日",
+            "006208",
+            "富邦台50",
+            "220.85",
+            "216.97",
+            "3.880000",
+            "息",
+            "238.65",
+            "195.30",
+            "216.95",
+            "216.97",
+            "006208,20261117",
+            "115年11月17日(https://mops.twse.com.tw/mops/web/t78sb35)",
+            "210.81",
+            "N/A"
+          ],
+          [
+            "115年11月17日",
+            "00690",
+            "兆豐藍籌30",
+            "66.20",
+            "64.20",
+            "2.000000",
+            "息",
+            "70.60",
+            "57.80",
+            "64.20",
+            "64.20",
+            "00690,20261117",
+            "115年11月18日(https://mops.twse.com.tw/mops/web/t78sb35)",
+            "62.79",
+            "N/A"
+          ]
+        ]
+      }
+    },
+    "delistings": {
+      "source_url": "https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml",
+      "original_sha256": "b5e2c7a94e40503482d9d74e8be9c0e7ed9df58fd14805b90d63e7c3f47bcd50",
+      "first_observed_at_taipei": "2026-11-18T16:54:27.218761+08:00",
+      "response": [
+        {
+          "DelistingDate": "115/09/01",
+          "Company": "三商壽",
+          "Code": "2867"
+        },
+        {
+          "DelistingDate": "115/06/23",
+          "Company": "森崴能源",
+          "Code": "6806"
+        }
+      ]
+    },
+    "halts": {
+      "source_url": "https://openapi.twse.com.tw/v1/exchangeReport/TWTAWU",
+      "original_sha256": "14ee8e4457fbc9e9c69635cc576a3341dec33159138721ddaf98ec0da7327f3d",
+      "first_observed_at_taipei": "2026-11-18T16:54:25.140252+08:00",
+      "response": [
+        {
+          "Number": "1",
+          "Code": "2314",
+          "Name": "台揚",
+          "TradingHaltDate": "1151110",
+          "TradingHaltTime": "080000",
+          "TradingResumptionDate": "1151111",
+          "TradingResumptionTime": "080000"
+        }
+      ]
+    },
+    "taiex": {
+      "source_url": "https://openapi.twse.com.tw/v1/indicesReport/MI_5MINS_HIST",
+      "original_sha256": "f673a3c5f3c7c5c2702cda29ecd4b3782aa9af93aca15534ab48a4774691ab20",
+      "first_observed_at_taipei": "2026-11-18T16:55:28.375192+08:00",
+      "response": [
+        {
+          "Date": "1151117",
+          "OpeningIndex": "40546.64",
+          "HighestIndex": "41533.84",
+          "LowestIndex": "39786.45",
+          "ClosingIndex": "40092.11"
+        }
+      ]
+    }
+  }
+}
