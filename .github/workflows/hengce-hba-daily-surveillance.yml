@@ -186,3 +186,104 @@ jobs:
             ${{ runner.temp }}/hengce-hba-publication
           if-no-files-found: ignore
           retention-days: 14
+      - name: Build complete research cards from verified HBA sources
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = pull_request ]; then
+            market_day=2026-11-17
+            cutoff=2026-11-18T10:30:00+08:00
+          else
+            market_day=$(python -c 'import json; print(json.load(open("research/hba_surveillance/latest.json"))["latest_verified_eod"])')
+            cutoff=$(TZ=Asia/Taipei date -Iseconds)
+          fi
+          python scripts/hengce_hba_decision_report.py \
+            --research-cards "$RUNNER_TEMP/hengce-research-cards" \
+            --market-date "$market_day" --evidence-cutoff "$cutoff"
+      - name: Publish independent research cards
+        id: research_cards
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-research-cards-v1-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-research-cards/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Read back published research cards
+        id: read_cards
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-research-cards-v1-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-research-cards-readback/
+      - name: Allow newly published artifact to become visible
+        if: steps.read_cards.outcome == 'failure'
+        run: sleep 5
+      - name: Retry artifact readback
+        if: steps.read_cards.outcome == 'failure'
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-research-cards-v1-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-research-cards-readback/
+      - name: Verify downloaded card hashes, coverage and report examples
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          PYTHONPATH=scripts python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from collections import Counter
+          from pathlib import Path
+
+          from hengce_hba_decision_report import read_research_cards
+          root = Path(os.environ['RUNNER_TEMP'])
+          published = root / 'hengce-research-cards-readback'
+          manifest, cards = read_research_cards(published)
+          for path in published.iterdir():
+              assert path.read_bytes() == (root/'hengce-research-cards'/path.name).read_bytes()
+          print('RESEARCH_CARD_RECEIPT', manifest['market_date'], len(cards),
+                len(manifest['shards']), hashlib.sha256((published/'manifest.json').read_bytes()).hexdigest())
+          if os.environ['EVENT_NAME'] == 'pull_request':
+              assert len(cards) == 1091
+              assert list(cards) == sorted(cards)
+              def evidence_groups(card):
+                  flow = card['institutional']
+                  ownership = card['ownership']
+                  price = card['price']
+                  financing = card['leverage']['MarginBalance']
+                  short = card['leverage']['ShortBalance']
+                  range_ = price['range']
+                  if range_['status'] == 'VERIFIED':
+                      assert range_['role'] == 'HISTORICAL_OBSERVATION_RANGE'
+                      assert range_['method'] == 'MIN_LOW_MAX_HIGH_5_SESSIONS'
+                  for item in (financing, short):
+                      delta = item['change_5d']
+                      if delta.get('change_pct') is not None:
+                          assert type(delta['change_lots']) is int
+                  if flow['20']['status'] != 'VERIFIED':
+                      assert flow['20']['status'] == 'UNVERIFIED' and 'net_shares' not in flow['20']
+                  return {
+                      **{'institutional_'+n+'d': [item['status']] for n, item in flow.items()},
+                      'institutional_all_windows': [item['status'] for item in flow.values()],
+                      'financing': [financing['status'], financing['change_5d']['status']],
+                      'short': [short['status'], short['change_5d']['status']],
+                      'tdcc_latest': [ownership['snapshots'][0]['status']] if ownership['snapshots'] else ['MISSING'],
+                      'tdcc_pair_and_change': [ownership['change']['status']],
+                      'price_close': [price['close_twd_status']],
+                      'price_full': [price[k+'_status'] for k in ('close_twd', 'volume_shares', 'turnover_twd')]
+                                    + [price[k]['status'] for k in ('trend', 'volume_ratio', 'range')],
+                  }
+
+              counts = {}
+              for card in cards.values():
+                  for name, statuses in evidence_groups(card).items():
+                      status = ('UNVERIFIED' if 'UNVERIFIED' in statuses else
+                                'MISSING' if 'MISSING' in statuses else 'VERIFIED')
+                      counts.setdefault(name, Counter())[status] += 1
+              assert all(sum(count.values()) == len(cards) for count in counts.values())
+              print('RESEARCH_CARD_COVERAGE', json.dumps(counts, sort_keys=True))
+              print('RESEARCH_CARD_ENVIRONMENT', json.dumps(manifest['environment'], ensure_ascii=False))
+              for symbol in ('1476', '2597', '3042', '2610'):
+                  print('RESEARCH_CARD_EXAMPLE', json.dumps(cards[symbol], ensure_ascii=False))
+          PY
