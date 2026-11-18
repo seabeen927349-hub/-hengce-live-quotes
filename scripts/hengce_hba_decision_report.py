@@ -9,6 +9,8 @@ import argparse
 import csv
 import hashlib
 import json
+import math
+import statistics
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -332,13 +334,304 @@ def markdown(obj):
        '- 本份研究建議不修改原HBA分層、S5、Escape、RMS、MOM20或已退役策略。'])
     return '\n'.join(lines)+'\n'
 
+
+CARD_SCHEMA = 'HENGCE_RESEARCH_CARD_V1'
+CARD_MAX_BYTES = 900_000
+
+
+def card_metric(eod, days, ticker, leg, field):
+    values = []
+    problems = []
+    for day in days:
+        rows, source = eod[day][leg]
+        row = rows.get(ticker, {})
+        value = fnum(row.get(field))
+        if value is None or not math.isfinite(value):
+            problems.append((day, 'UNVERIFIED' if source['status'] == 'UNVERIFIED' else 'MISSING'))
+        else:
+            values.append(value)
+    if problems:
+        return None, {'status': 'UNVERIFIED' if any(s == 'UNVERIFIED' for _, s in problems) else 'MISSING',
+                      'unavailable_dates': [d for d, _ in problems]}
+    return values, {'status': 'VERIFIED'}
+
+
+def card_prices(eod, days, ticker):
+    base, out = card_metric(eod, days[-6:], ticker, 'price', 'Close')
+    volume, sv = card_metric(eod, days[-6:], ticker, 'price', 'VolumeShares')
+    highs, sh = card_metric(eod, days[-5:], ticker, 'price', 'High')
+    lows, sl = card_metric(eod, days[-5:], ticker, 'price', 'Low')
+    current = {}
+    for key, column in (('close_twd', 'Close'), ('volume_shares', 'VolumeShares'),
+                        ('turnover_twd', 'TurnoverTWD')):
+        value, status = card_metric(eod, days[-1:], ticker, 'price', column)
+        current[key] = value[0] if value else None
+        current[key+'_status'] = status['status']
+        if value and (value[0] < 0 or (column == 'Close' and value[0] == 0)):
+            current[key], current[key+'_status'] = None, 'UNVERIFIED'
+    result = {**current, 'trend': out,
+              'volume_ratio': sv, 'range': {'status': 'MISSING'}}
+    if base is not None:
+        if len(base) == 6 and min(base) > 0:
+            returns = [b/a-1 for a, b in zip(base, base[1:])]
+            out.update(return_5d_pct=round(100*(base[-1]/base[0]-1), 5),
+                       volatility_5d_daily_pct=round(100*statistics.pstdev(returns), 5))
+        else:
+            out.update(status='UNVERIFIED', reason='INVALID_CLOSE_WINDOW')
+    if volume is not None:
+        if len(volume) == 6 and min(volume) >= 0 and sum(volume[:-1]) > 0:
+            sv['vs_previous_5_sessions'] = round(volume[-1]/statistics.mean(volume[:-1]), 5)
+        else:
+            sv.update(status='UNVERIFIED', reason='INVALID_VOLUME_BASE')
+    if highs is not None and lows is not None:
+        if len(highs) == 5 and all(0 < lo <= hi for lo, hi in zip(lows, highs)):
+            result['range'] = {'status': 'VERIFIED', 'method': 'MIN_LOW_MAX_HIGH_5_SESSIONS',
+                               'start': days[-5], 'end': days[-1], 'low_twd': min(lows),
+                               'high_twd': max(highs)}
+        else:
+            result['range'] = {'status': 'UNVERIFIED', 'reason': 'INVALID_OHLC_WINDOW'}
+    elif 'UNVERIFIED' in (sh['status'], sl['status']):
+        result['range'] = {'status': 'UNVERIFIED', 'reason': 'SOURCE_NOT_VERIFIED'}
+    return result
+
+
+def card_flows(eod, dates, ticker):
+    out = {}
+    for n in (5, 10, 20):
+        if len(dates) < n:
+            out[str(n)] = {'status': 'MISSING', 'reason': 'INSUFFICIENT_SESSIONS'}
+            continue
+        window = dates[-n:]
+        values, proof = card_metric(eod, window, ticker, 'institutional', 'TotalNet')
+        if values is not None:
+            proof.update(net_shares=int(sum(values)), net_buy_days=sum(x > 0 for x in values),
+                         net_sell_days=sum(x < 0 for x in values),
+                         flat_days=sum(x == 0 for x in values), start=window[0], end=window[-1])
+        out[str(n)] = proof
+    return out
+
+
+def card_leverage(eod, dates, ticker):
+    result = {}
+    for field in ('MarginBalance', 'ShortBalance'):
+        current, item = card_metric(eod, dates[-1:], ticker, 'margin', field)
+        prior, delta = card_metric(eod, dates[-6:-5], ticker, 'margin', field) if len(dates) >= 6 else (
+            None, {'status': 'MISSING'})
+        if current and current[0] >= 0:
+            item['balance_lots'] = int(current[0])
+            if prior and prior[0] >= 0:
+                delta['change_lots'] = int(current[0]-prior[0])
+                delta['change_pct'] = round(100*(current[0]/prior[0]-1), 5) if prior[0] else None
+            elif prior:
+                delta.update(status='UNVERIFIED', reason='NEGATIVE_BASE_BALANCE')
+        elif current:
+            item.update(status='UNVERIFIED', reason='NEGATIVE_BALANCE')
+        if 'change_lots' not in delta and delta['status'] == 'VERIFIED':
+            delta['status'] = item['status']
+        result[field] = {**item, 'change_5d': delta}
+    return result
+
+
+def card_ownership(weeks, ticker):
+    snapshots = []
+    for rows, source in weeks:
+        item = {'date': source['effective_date'], 'status': source['status']}
+        row = rows.get(ticker)
+        if row is None and item['status'] == 'VERIFIED':
+            item['status'] = 'MISSING'
+        if row is not None:
+            try:
+                big, largest, total = (int(row[k]) for k in ('Big400Shares', 'Big1000Shares', 'TotalShares'))
+                if not 0 <= largest <= big <= total or total <= 0:
+                    raise ValueError('INVALID_GRADE_SHARES')
+                item.update(shares_400_plus=big, shares_1000_plus=largest, total_shares=total,
+                            pct_400_plus=round(100*big/total, 6), pct_1000_plus=round(100*largest/total, 6))
+            except (KeyError, TypeError, ValueError):
+                item['status'] = 'UNVERIFIED'
+        snapshots.append(item)
+    delta = {'status': 'MISSING'}
+    if len(snapshots) == 2:
+        current, prior = snapshots
+        if 'UNVERIFIED' in (current['status'], prior['status']):
+            delta['status'] = 'UNVERIFIED'
+        elif current['status'] == prior['status'] == 'VERIFIED':
+            gap = (date.fromisoformat(current['date'])-date.fromisoformat(prior['date'])).days
+            if 5 <= gap <= 9 and abs(current['total_shares']/prior['total_shares']-1) <= .02:
+                delta = {'status': 'VERIFIED',
+                         'change_400_pp': round(current['pct_400_plus']-prior['pct_400_plus'], 6),
+                         'change_1000_pp': round(current['pct_1000_plus']-prior['pct_1000_plus'], 6)}
+            else:
+                delta = {'status': 'UNVERIFIED', 'reason': 'WEEK_GAP_OR_SHARE_CAPITAL_CHANGE'}
+    return {'snapshots': snapshots, 'change': delta}
+
+
+def card_judgment(card):
+    support, risk, conflicts = [], [], []
+    price = card['price']['trend'].get('return_5d_pct')
+    flow = card['institutional']
+    pos, neg = flow['5'].get('net_buy_days', 0), flow['5'].get('net_sell_days', 0)
+    net = flow['5'].get('net_shares')
+    stake = card['ownership']['change'].get('change_400_pp')
+    margin = card['leverage']['MarginBalance']['change_5d'].get('change_pct')
+    if price is not None and price != 0:
+        (support if price > 0 else risk).append('PRICE_5D_UP' if price > 0 else 'PRICE_5D_DOWN')
+    if net is not None and net != 0:
+        (support if net > 0 else risk).append('INSTITUTIONAL_5D_NET_BUY' if net > 0 else 'INSTITUTIONAL_5D_NET_SELL')
+        if (net > 0 and neg > pos) or (net < 0 and pos > neg):
+            conflicts.append('NET_FLOW_DIRECTION_DIFFERS_FROM_SESSION_MAJORITY')
+    if stake is not None and stake != 0:
+        (support if stake > 0 else risk).append('TDCC_400_SHARE_UP' if stake > 0 else 'TDCC_400_SHARE_DOWN')
+    if margin is not None and margin >= 12:
+        risk.append('MARGIN_BALANCE_5D_UP_AT_LEAST_12_PCT')
+    if price is not None and net is not None and price*net < 0:
+        conflicts.append('PRICE_AND_INSTITUTIONAL_FLOW_DIVERGE')
+    if price is not None and stake is not None and price*stake < 0:
+        conflicts.append('PRICE_AND_TDCC_400_CHANGE_DIVERGE')
+    if price is not None and price < 0 and margin is not None and margin > 0:
+        conflicts.append('PRICE_FALLS_WHILE_MARGIN_BALANCE_RISES')
+    missing = []
+    for name, metric in (('PRICE_TREND', card['price']['trend']), ('INSTITUTIONAL_5D', flow['5']),
+                         ('TDCC_CHANGE', card['ownership']['change']),
+                         ('MARGIN_BALANCE', card['leverage']['MarginBalance'])):
+        if metric['status'] != 'VERIFIED':
+            missing.append(name)
+    zone = card['price']['range']
+    invalidation = {'status': zone['status']}
+    if zone['status'] == 'VERIFIED':
+        invalidation.update(source='NEXT_VERIFIED_TWSE_EOD_CLOSE', downside_below_twd=zone['low_twd'],
+                            upside_above_twd=zone['high_twd'],
+                            action='REASSESS_ORIGINAL_RANGE_HYPOTHESIS')
+    strongest = (conflicts or risk or [None])[0]
+    return {'bull_case': support, 'bear_case': risk, 'contradictions': conflicts,
+            'strongest_counterevidence': strongest, 'gaps': missing, 'invalidation': invalidation,
+            'summary': ' | '.join([
+                'SUPPORT=' + (','.join(support) or 'NONE_VERIFIED'),
+                'RISK=' + (','.join(risk) or 'NONE_VERIFIED'),
+                'CONFLICT=' + (','.join(conflicts) or 'NONE_VERIFIED'),
+                'GAPS=' + (','.join(missing) or 'NONE_IN_CORE_DOMAINS')])}
+
+
+def research_cards(root, market_day, cutoff):
+    from hengce_hba_context_bridge_v1 import card_evidence, card_time
+    from hengce_hba_daily_surveillance import env, local_taiwan_vix
+
+    dates, eod, ownership, calendar_sha = card_evidence(root, market_day, cutoff)
+    market = dates[-1]
+    universe = eod[market]['price'][0]
+    if any(len(t) != 4 or not t.isascii() or not t.isdigit() for t in universe):
+        raise ValueError('ORIGINAL_PRICE_VESSEL_UNIVERSE_SCHEMA')
+    prices = {t: card_prices(eod, dates, t) for t in universe}
+    returns = [p['trend']['return_5d_pct'] for p in prices.values() if p['trend']['status'] == 'VERIFIED']
+    benchmark = statistics.mean(returns) if returns else None
+    cards = []
+    for ticker in sorted(universe):
+        price = prices[ticker]
+        value = price['trend'].get('return_5d_pct')
+        price['relative_strength_5d_pp'] = round(value-benchmark, 5) if value is not None else None
+        card = {'ticker': ticker, 'name': universe[ticker]['Name'], 'price': price,
+                'institutional': card_flows(eod, dates, ticker), 'leverage': card_leverage(eod, dates, ticker),
+                'ownership': card_ownership(ownership, ticker),
+                'market_environment_ref': 'manifest.environment',
+                'evidence_source_ref': 'manifest.provenance',
+                'v22d_selection': {'status': 'UNVERIFIED', 'reason': 'PRIVATE_REPORT_REQUIRED'}}
+        card['research'] = card_judgment(card)
+        cards.append(card)
+    local = local_taiwan_vix(root, market, market, cutoff)
+    overseas = {'status': 'MISSING'}
+    path = root/'overseas_premarket/latest.json'
+    packet = read_json(path)
+    if packet is not None:
+        overseas = {'status': 'UNVERIFIED', 'source_path': str(path.relative_to(root))}
+        try:
+            generated = card_time(packet['generated_at_taipei'])
+            if generated <= cutoff:
+                parsed = env(root, cutoff.date().isoformat())
+                if parsed['status'] == '已核對':
+                    overseas.update(status='VERIFIED', available_at=generated.isoformat(),
+                                    date=parsed['packet_date'], sha256=parsed['packet_sha256'],
+                                    label=parsed['label'], sox=parsed['sox'], us_vix=parsed['vix'])
+        except (KeyError, TypeError, ValueError):
+            pass
+    manifest = {
+        'schema': CARD_SCHEMA, 'market_date': market, 'evidence_cutoff_taipei': cutoff.isoformat(),
+        'coverage': {'definition': 'ALL_ROWS_OF_VERIFIED_NORMALIZED_TWSE_ORIGINAL_PRICE_LEG',
+                     'stocks': len(cards), 'unique_tickers': len(universe)},
+        'authority': {'research_only': True, 'formal_selection': False, 'trading': False, 'broker_execution': False},
+        'environment': {'taiwan_vix': {**local, 'source_path': 'environment/taifex_taiwan_vix/latest.json'}, 'overseas': overseas,
+                        'fugle': {'status': 'UNVERIFIED', 'reason': 'FORMAL_LIVE_PUBLICATION_UNVERIFIED'},
+                        'benchmark': {'method': 'EQUAL_WEIGHT_MATCHED_5D_RAW_CLOSE_RETURNS',
+                                      'stock_count': len(returns), 'return_pct': benchmark,
+                                      'status': 'VERIFIED' if returns else 'MISSING'}},
+        'provenance': {'calendar_sha256': calendar_sha, 'sessions': dates,
+                       'eod': {d: {leg: value[1] for leg, value in eod[d].items()} for d in dates},
+                       'tdcc': [source for _, source in ownership]},
+    }
+    return manifest, cards
+
+
+def card_payload(value):
+    return (json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False)
+            + '\n').encode()
+
+
+def write_research_cards(output, manifest, cards):
+    output.mkdir(parents=True, exist_ok=True)
+    manifest = {**manifest, 'shards': []}
+    for start in range(0, len(cards), 100):
+        name = f'cards-{start//100+1:02}.json'
+        batch = cards[start:start+100]
+        payload = card_payload(batch)
+        if len(payload) >= CARD_MAX_BYTES:
+            raise ValueError('CARD_SHARD_TOO_LARGE')
+        (output/name).write_bytes(payload)
+        manifest['shards'].append({'path': name, 'rows': len(batch),
+                                   'sha256': hashlib.sha256(payload).hexdigest()})
+    data = card_payload(manifest)
+    if len(data) >= CARD_MAX_BYTES:
+        raise ValueError('CARD_MANIFEST_TOO_LARGE')
+    (output/'manifest.json').write_bytes(data)
+
+
+def read_research_cards(output):
+    manifest = json.loads((output/'manifest.json').read_bytes())
+    if manifest['schema'] != CARD_SCHEMA:
+        raise ValueError('INVALID_CARD_SCHEMA')
+    cards = {}
+    for i, shard in enumerate(manifest['shards'], 1):
+        if shard['path'] != f'cards-{i:02}.json':
+            raise ValueError('INVALID_CARD_SHARD_PATH')
+        data = (output/shard['path']).read_bytes()
+        if len(data) >= CARD_MAX_BYTES or hashlib.sha256(data).hexdigest() != shard['sha256']:
+            raise ValueError('CARD_SHARD_SHA_OR_SIZE')
+        rows = json.loads(data)
+        if len(rows) != shard['rows']:
+            raise ValueError('CARD_SHARD_COUNT')
+        for row in rows:
+            if row['ticker'] in cards:
+                raise ValueError('DUPLICATE_RESEARCH_CARD')
+            cards[row['ticker']] = row
+    if len(cards) != manifest['coverage']['stocks'] or sorted(cards) != list(cards):
+        raise ValueError('CARD_UNIVERSE_COUNT')
+    return manifest, cards
+
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('--root',type=Path,default=Path('.'))
     ap.add_argument('--original',default='research/hba_surveillance/latest.json')
     ap.add_argument('--integrated',default='research/hba_surveillance/integrated_latest.json')
     ap.add_argument('--out',default='research/hba_surveillance/decision_latest.json')
+    ap.add_argument('--research-cards', type=Path)
+    ap.add_argument('--market-date', type=date.fromisoformat)
+    ap.add_argument('--evidence-cutoff')
     x=ap.parse_args()
+    if x.research_cards is not None:
+        from hengce_hba_context_bridge_v1 import card_time
+        if x.market_date is None or x.evidence_cutoff is None:
+            ap.error('--research-cards requires --market-date and --evidence-cutoff')
+        manifest, cards = research_cards(x.root, x.market_date, card_time(x.evidence_cutoff))
+        write_research_cards(x.research_cards, manifest, cards)
+        return 0
     original_path=x.root/x.original
     integrated_path=x.root/x.integrated
     obj=build(x.root,read_json(original_path),read_json(integrated_path),

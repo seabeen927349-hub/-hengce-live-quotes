@@ -185,4 +185,56 @@ jobs:
             research/hba_surveillance/decision_latest.md
             ${{ runner.temp }}/hengce-hba-publication
           if-no-files-found: ignore
+          retention-days: 14      - name: Build complete research cards from verified HBA sources
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = pull_request ]; then
+            market_day=2026-11-17
+            cutoff=2026-11-18T10:30:00+08:00
+          else
+            market_day=$(python -c 'import json; print(json.load(open("research/hba_surveillance/latest.json"))["latest_verified_eod"])')
+            cutoff=$(TZ=Asia/Taipei date -Iseconds)
+          fi
+          python scripts/hengce_hba_decision_report.py \
+            --research-cards "$RUNNER_TEMP/hengce-research-cards" \
+            --market-date "$market_day" --evidence-cutoff "$cutoff"
+      - name: Publish independent research cards
+        id: research_cards
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-research-cards-v1
+          path: ${{ runner.temp }}/hengce-research-cards/
+          if-no-files-found: error
           retention-days: 14
+      - name: Read back published research cards
+        uses: actions/download-artifact@v4
+        with:
+          name: hengce-research-cards-v1
+          path: ${{ runner.temp }}/hengce-research-cards-readback/
+      - name: Verify downloaded card hashes, coverage and report examples
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          PYTHONPATH=scripts python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          from hengce_hba_decision_report import read_research_cards
+          root = Path(os.environ['RUNNER_TEMP'])
+          published = root / 'hengce-research-cards-readback'
+          manifest, cards = read_research_cards(published)
+          for path in published.iterdir():
+              assert path.read_bytes() == (root/'hengce-research-cards'/path.name).read_bytes()
+          print('RESEARCH_CARD_RECEIPT', manifest['market_date'], len(cards),
+                len(manifest['shards']), hashlib.sha256((published/'manifest.json').read_bytes()).hexdigest())
+          if os.environ['EVENT_NAME'] == 'pull_request':
+              assert len(cards) == 1091
+              assert list(cards) == sorted(cards)
+              print('RESEARCH_CARD_ENVIRONMENT', json.dumps(manifest['environment'], ensure_ascii=False))
+              for symbol in ('1476', '2597', '3042', '2610'):
+                  print('RESEARCH_CARD_EXAMPLE', json.dumps(cards[symbol], ensure_ascii=False))
+          PY

@@ -7,8 +7,11 @@ selection/position/order authority. All comparisons are point-in-time safe.
 import argparse
 import csv
 import json
-from datetime import date, timedelta
+import hashlib
+import io
+from datetime import date, datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 SCHEMA = 'HENGCE_HBA_INTEGRATED_CONTEXT_RESEARCH_V1'
 
@@ -646,6 +649,161 @@ def markdown(x):
         lines.append(f"- {row['ticker']}：原短期分層{row['original_stage']}；{details}{actual}")
     lines+=['','本輸出為研究附加觀測，沒有下單或資金調度權限。']
     return '\n'.join(lines)+'\n'
+
+
+
+# Research cards use the original promoted bytes and a separate evidence cutoff.
+CARD_LEGS = {
+    'price': ('Name', 'Close', 'High', 'Low', 'VolumeShares', 'TurnoverTWD'),
+    'institutional': ('TotalNet',),
+    'margin': ('MarginBalance', 'ShortBalance'),
+}
+CARD_TZ = ZoneInfo('Asia/Taipei')
+
+
+def card_time(value):
+    stamp = datetime.fromisoformat(value)
+    if stamp.utcoffset() is None:
+        raise ValueError('TIMEZONE_REQUIRED')
+    return stamp.astimezone(CARD_TZ)
+
+
+def card_rows(payloads, required, date_col, effective_date, expected_count):
+    rows = {}
+    for payload in payloads:
+        reader = csv.DictReader(io.StringIO(payload.decode('utf-8-sig'), newline=''))
+        if not (set(required) | {'Ticker', date_col}).issubset(reader.fieldnames or []):
+            raise ValueError('CSV_SCHEMA')
+        for row in reader:
+            ticker = row['Ticker']
+            if not ticker or row[date_col] != effective_date:
+                raise ValueError('CSV_DATE_OR_TICKER')
+            if ticker in rows:
+                raise ValueError('DUPLICATE_TICKER')
+            rows[ticker] = row
+    if type(expected_count) is not int or len(rows) != expected_count:
+        raise ValueError('CSV_ROW_COUNT')
+    return rows
+
+
+def card_eod_leg(root, day, leg, cutoff):
+    folder = root / 'eod' / day.replace('-', '')
+    path = folder / 'receipts' / (leg + '.json')
+    proof = {'source_path': str(path.relative_to(root)), 'effective_date': day}
+    try:
+        status = load(folder / 'status.json')
+        mother = load(folder / 'receipts/mother.json')
+        receipt = load(path)
+        if None in (status, mother, receipt):
+            raise FileNotFoundError('RECEIPT_MISSING')
+        digest = receipt['sha256']
+        source_time = card_time(receipt['promoted_at_taipei'])
+        mother_time = card_time(mother['updated_at_taipei'])
+        if not (date.fromisoformat(day) <= source_time.date() <= mother_time.date()
+                and source_time <= mother_time <= cutoff):
+            raise ValueError('EOD_NOT_AVAILABLE_AT_CUTOFF')
+        if not (status['formal_complete_day'] is True and status['downstream_ready'] is True
+                and status['three_leg_complete'] is True and status[leg+'_status'] == 'COMPLETE'
+                and status[leg+'_date'] == mother['target_date'] == receipt['target_date'] == day
+                and mother['mother_latest_date'] == day and mother['second_mother'] is False
+                and mother['status'] == mother['integrity_status'] == 'PASS'
+                and mother['mother_sha256'] == status['mother_sha256']
+                and digest == status[leg+'_sha256'] == mother['promoted_leg_sha256'][leg]
+                and receipt['rows'] == status[leg+'_rows']
+                and receipt['status'] == 'COMPLETE' and receipt['leg'] == leg
+                and receipt['source'] == status[leg+'_source']):
+            raise ValueError('EOD_RECEIPT_MISMATCH')
+        names = receipt['files']
+        if (not isinstance(names, list) or not names
+                or sorted(names) != sorted(p.name for p in folder.glob(leg+'_[1-9].csv'))):
+            raise ValueError('EOD_FILE_SET_MISMATCH')
+        payloads = []
+        h = hashlib.sha256()
+        for name in sorted(names):
+            blob = (folder / name).read_bytes()
+            h.update(name.encode() + b'\0' + blob + b'\0')
+            payloads.append(blob)
+        if h.hexdigest() != digest:
+            raise ValueError('EOD_SHA_MISMATCH')
+        rows = card_rows(payloads, CARD_LEGS[leg], 'Date', day, receipt['rows'])
+        return rows, dict(proof, status='VERIFIED', source=receipt['source'], sha256=digest,
+                          available_at=source_time.isoformat(), availability_kind='FIRST_FORMAL_LEG_PROMOTION',
+                          mother_available_at=mother_time.isoformat(), mother_sha256=mother['mother_sha256'])
+    except OSError as exc:
+        return {}, dict(proof, status='MISSING', reason=type(exc).__name__)
+    except (KeyError, TypeError, ValueError, csv.Error) as exc:
+        return {}, dict(proof, status='UNVERIFIED', reason=str(exc))
+
+
+def card_tdcc(root, market_day, cutoff):
+    """Use only known weekly snapshots, then verify the newest pair without fallback."""
+    base = root / 'ownership/tdcc'
+    candidates = []
+    for folder in sorted(base.glob('20??????'), reverse=True):
+        try:
+            reference = datetime.strptime(folder.name, '%Y%m%d').date()
+        except ValueError:
+            continue
+        if reference > market_day:
+            continue
+        receipt = load(folder / 'receipt.json')
+        try:
+            seen = card_time(receipt['observed_at_taipei'])
+        except (TypeError, KeyError, ValueError):
+            seen = None
+        if seen is not None and seen > cutoff:
+            continue
+        candidates.append((folder, reference, receipt, seen))
+        if len(candidates) == 2:
+            break
+    results = []
+    for folder, reference, receipt, seen in candidates:
+        proof = {'source_path': str((folder/'receipt.json').relative_to(root)),
+                 'effective_date': reference.isoformat()}
+        try:
+            if receipt is None:
+                raise FileNotFoundError('TDCC_RECEIPT_MISSING')
+            if (receipt['status'] != 'COMPLETE' or receipt['snapshot_date'] != folder.name
+                    or seen is None or seen.date() < reference):
+                raise ValueError('TDCC_RECEIPT_MISMATCH')
+            if not 0 <= (market_day - reference).days <= 15:
+                raise ValueError('TDCC_STALE')
+            raw = (folder/'tdcc_1_5_raw.csv').read_bytes()
+            summary = (folder/'tdcc_ownership_4d.csv').read_bytes()
+            if (hashlib.sha256(raw).hexdigest() != receipt['source_sha256']
+                    or hashlib.sha256(summary).hexdigest() != receipt['summary_sha256']):
+                raise ValueError('TDCC_SHA_MISMATCH')
+            rows = card_rows([summary], ('ObservedAtTaipei', 'Big400Shares', 'Big1000Shares',
+                             'TotalShares'), 'SnapshotDate', folder.name, receipt['summary_rows'])
+            if any(card_time(row['ObservedAtTaipei']) != seen for row in rows.values()):
+                raise ValueError('TDCC_OBSERVATION_MISMATCH')
+            results.append((rows, dict(proof, status='VERIFIED', source=receipt['source'],
+                            available_at=seen.isoformat(), availability_kind='FIRST_SYSTEM_RECEIPT',
+                            sha256=receipt['summary_sha256'], raw_sha256=receipt['source_sha256'])))
+        except OSError as exc:
+            results.append(({}, dict(proof, status='MISSING', reason=type(exc).__name__)))
+        except (TypeError, KeyError, ValueError, csv.Error) as exc:
+            results.append(({}, dict(proof, status='UNVERIFIED', reason=str(exc))))
+    return results
+
+
+def card_evidence(root, market_day, cutoff):
+    from hengce_twse_calendar import is_trading_day, load_manifest
+
+    calendar, _, calendar_sha = load_manifest()
+    if market_day > cutoff.date() or not is_trading_day(market_day, calendar):
+        raise ValueError('INVALID_MARKET_DAY')
+    dates = []
+    day = market_day
+    while len(dates) < 21 and day.year == market_day.year:
+        if is_trading_day(day, calendar):
+            dates.append(day.isoformat())
+        day -= timedelta(days=1)
+    dates.reverse()
+    eod = {day: {leg: card_eod_leg(root, day, leg, cutoff) for leg in CARD_LEGS} for day in dates}
+    if eod[dates[-1]]['price'][1]['status'] != 'VERIFIED':
+        raise ValueError('RESEARCH_UNIVERSE_PRICE_UNVERIFIED')
+    return dates, eod, card_tdcc(root, market_day, cutoff), calendar_sha
 
 
 def main():
