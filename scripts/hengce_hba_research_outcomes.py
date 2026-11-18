@@ -8,6 +8,7 @@ from pathlib import Path
 from hengce_hba_context_bridge_v1 import CARD_TZ, card_eod_leg, card_time
 from hengce_hba_research_ledger import (LIVE, PREFIX, REPLAY, canonical, key_for,
                                         open_archive, sha, unpack)
+from hengce_hba_research_reference import OfficialSessions, load_trust, official_sessions
 from hengce_twse_calendar import CALENDAR_YEAR, is_trading_day, load_manifest, next_trading_day
 
 HORIZONS = (5, 10, 20)
@@ -81,7 +82,10 @@ def settle_one(card, dates, prices, supplemental, policy, asof):
         closes.append(close)
         benchmark.append(float(idx['close']))
         evidence.append({'date': day, 'price_sha256': proof['sha256'],
-                         'tradeability_sha256': info['sha256'], 'benchmark_sha256': idx['sha256']})
+                         'tradeability_sha256': info['sha256'], 'benchmark_sha256': idx['sha256'],
+                         'corporate_action_sha256': info.get('corporate_action_proof', {}).get('sha256'),
+                         'reference_attestations': [idx.get('attestation_sha256'), info.get('attestation_sha256'),
+                             info.get('corporate_action_proof', {}).get('attestation_sha256')]})
     peak, drawdown = stock_open, 0.0
     for close in closes:
         peak = max(peak, close)
@@ -111,6 +115,8 @@ def settlement(record, receipt, ticker, root, asof, policy=None, supplemental=No
     _, cards = unpack(record)
     formed = card_time(record['formed_at_taipei'])
     if receipt:
+        if policy is not None and not isinstance(supplemental, OfficialSessions):
+            raise ValueError('VERIFIED_OFFICIAL_SESSIONS_REQUIRED')
         if record['mode'] != LIVE or receipt['key'] != key_for(record):
             raise ValueError('INVALID_PROSPECTIVE_RECEIPT')
         anchor = card_time(receipt['published_at_taipei'])
@@ -152,7 +158,7 @@ def settlement(record, receipt, ticker, root, asof, policy=None, supplemental=No
     return {**result, **outcomes(cards[ticker])}
 
 
-def load_inputs(data, expected_sha):
+def load_inputs(data, expected_sha, *, publication=None, asof=None):
     if sha(data) != expected_sha:
         raise ValueError('SETTLEMENT_INPUT_SHA_MISMATCH')
     inputs = json.loads(data)
@@ -164,6 +170,8 @@ def load_inputs(data, expected_sha):
             or any(type(x) not in (int, float) or not math.isfinite(x) or not 0 <= x <= 500
                    for x in policy['cost_bps'].values())):
         raise ValueError('SETTLEMENT_POLICY_INVALID')
+    if publication is not None:
+        return policy, official_sessions(inputs, publication, asof, load_trust())
     for day, row in inputs['sessions'].items():
         day = date.fromisoformat(day)
         for evidence in [row['benchmark'], *row['stocks'].values()]:
@@ -220,7 +228,14 @@ def main():
             inputs, reference = archive.read(args.reference_key, args.reference_version)
             if card_time(reference['published_at_taipei']) > asof:
                 p.error('reference publication is after settlement cutoff')
-            policy, supplemental = load_inputs(inputs, reference['sha256'])
+            try:
+                policy, supplemental = load_inputs(inputs, reference['sha256'],
+                    publication=card_time(reference['published_at_taipei']), asof=asof)
+            except (ValueError, KeyError, TypeError, OSError) as exc:
+                reference['verification'] = 'UNVERIFIED'
+                reference['reason'] = str(exc)
+            else:
+                reference['verification'] = 'VERIFIED'
     result = settlement(record, receipt, args.ticker, args.root, asof, policy, supplemental)
     if args.inputs:
         result['inputs_sha256'] = args.inputs_sha

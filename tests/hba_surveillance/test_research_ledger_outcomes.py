@@ -27,6 +27,9 @@ class ObjectLockDouble:
         self.time = card_time('2026-11-18T14:00:00+08:00')
         self.mode = 'COMPLIANCE'
 
+    def get_bucket_versioning(self, **kwargs):
+        return {'Status': 'Enabled'}
+
     def get_object_lock_configuration(self, **kwargs):
         return {'ObjectLockConfiguration': {'ObjectLockEnabled': 'Enabled',
                 'Rule': {'DefaultRetention': {'Mode': self.mode, 'Years': 3}}}}

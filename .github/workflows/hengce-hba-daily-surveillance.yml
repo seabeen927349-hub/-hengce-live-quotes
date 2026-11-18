@@ -11,6 +11,8 @@ on:
       - 'scripts/hengce_hba_decision_report.py'
       - 'scripts/hengce_hba_research_ledger.py'
       - 'scripts/hengce_hba_research_outcomes.py'
+      - 'scripts/hengce_hba_research_reference.py'
+      - 'governance/HENGCE_TWSE_REFERENCE_TRUST_V1.json'
       - 'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
       - 'tests/hba_surveillance/**'
       # A new verified original Mother receipt is the real EOD-ready event.
@@ -23,6 +25,8 @@ on:
       - 'scripts/hengce_hba_decision_report.py'
       - 'scripts/hengce_hba_research_ledger.py'
       - 'scripts/hengce_hba_research_outcomes.py'
+      - 'scripts/hengce_hba_research_reference.py'
+      - 'governance/HENGCE_TWSE_REFERENCE_TRUST_V1.json'
       - 'governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.*'
       - 'governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md'
       - 'scripts/hengce_hba_daily_surveillance.py'

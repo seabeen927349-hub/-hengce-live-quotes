@@ -142,6 +142,8 @@ class LockedArchive:
         self.bucket = dict(Bucket=bucket, ExpectedBucketOwner=owner)
 
     def policy(self):
+        if self.client.get_bucket_versioning(**self.bucket).get('Status') != 'Enabled':
+            raise ValueError('BUCKET_VERSIONING_REQUIRED')
         config = self.client.get_object_lock_configuration(**self.bucket)['ObjectLockConfiguration']
         retention = config.get('Rule', {}).get('DefaultRetention', {})
         if (config.get('ObjectLockEnabled') != 'Enabled' or retention.get('Mode') != 'COMPLIANCE'
