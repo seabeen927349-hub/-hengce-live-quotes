@@ -386,6 +386,7 @@ def card_prices(eod, days, ticker):
     if highs is not None and lows is not None:
         if len(highs) == 5 and all(0 < lo <= hi for lo, hi in zip(lows, highs)):
             result['range'] = {'status': 'VERIFIED', 'method': 'MIN_LOW_MAX_HIGH_5_SESSIONS',
+                               'role': 'HISTORICAL_OBSERVATION_RANGE',
                                'start': days[-5], 'end': days[-1], 'low_twd': min(lows),
                                'high_twd': max(highs)}
         else:
@@ -399,10 +400,13 @@ def card_flows(eod, dates, ticker):
     out = {}
     for n in (5, 10, 20):
         if len(dates) < n:
-            out[str(n)] = {'status': 'MISSING', 'reason': 'INSUFFICIENT_SESSIONS'}
+            out[str(n)] = {'status': 'UNVERIFIED' if n == 20 else 'MISSING',
+                           'reason': 'INSUFFICIENT_SESSIONS'}
             continue
         window = dates[-n:]
         values, proof = card_metric(eod, window, ticker, 'institutional', 'TotalNet')
+        if values is None and n == 20:
+            proof['status'] = 'UNVERIFIED'
         if values is not None:
             proof.update(net_shares=int(sum(values)), net_buy_days=sum(x > 0 for x in values),
                          net_sell_days=sum(x < 0 for x in values),

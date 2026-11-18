@@ -112,6 +112,16 @@ class ResearchCardsTests(unittest.TestCase):
         eod[dates[2]]['institutional'] = ({}, {'status':'UNVERIFIED'})
         self.assertEqual(card_flows(eod, dates, '2610')['5']['status'], 'UNVERIFIED')
 
+    def test_twenty_day_flow_requires_every_session(self):
+        dates = [f'2026-11-{i:02}' for i in range(1, 21)]
+        eod = {d: {'institutional': ({'2610': {'TotalNet': '10'}}, {'status':'VERIFIED'})} for d in dates}
+        self.assertEqual(card_flows(eod, dates, '2610')['20']['net_shares'], 200)
+        for subset in (dates[1:], dates):
+            eod[dates[0]]['institutional'] = ({}, {'status':'MISSING'})
+            result = card_flows(eod, subset, '2610')['20']
+            self.assertEqual(result['status'], 'UNVERIFIED')
+            self.assertNotIn('net_shares', result)
+
     def test_judgment_keeps_both_sides_and_conflict(self):
         card = dict(price={'trend': {'status':'VERIFIED','return_5d_pct':-3},
                            'range': {'status':'VERIFIED','low_twd':21,'high_twd':25},
