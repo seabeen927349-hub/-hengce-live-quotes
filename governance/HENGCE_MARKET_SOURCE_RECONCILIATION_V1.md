@@ -35,3 +35,29 @@ VERIFIED_SHADOW，有差異為 CONFLICT。張數、股數及盤後零股等口�
 口徑，對 1,091 母體的逐股可比列為 0，逐股均 UNVERIFIED。開盤交易狀態與
 公司行動均為 1,091 檔 UNVERIFIED。各資料集仍依原供應商條款處理，不增加
 API 額度、儲存範圍或授權。此工具不改變正式 EOD、V2.2D、選股、結算或 AWS。
+
+## PR-4 最後實證驗收
+
+[可公開驗收收據](../tests/hba_surveillance/fixtures/market_source_20261117_acceptance_receipt.json)
+取自 2026-11-18 18:18:38 台北時間的實際回放。完整報告
+`hengce-pr4-20261117-final-acceptance.json` 保留於工作區
+`/workspace/shared/downloads/`，SHA-256 為
+`a99b08163145bc6346155a85054817b3f9670ec6507514248397b7d9b3eab666`。
+在 repo 中保存可公開收據，用於回查該報告與原輸入；報價仍只保存在既有私人股價檔。
+收據列出 HBA ZIP、manifest、正式價量腿證據及 FinMind 三份原彙總 SHA。
+使用上方 CLI 可重算同日比較。新執行帶有實際新讀取時刻，因此新報告雜湊會變動。
+
+Fugle 原檔可由有權限者在私人 `twse--backfill-test` 的
+`74d758cd1fc51da04381bd68c085a4be63bb15f7` 提交讀取
+`hengce/private_v22d_autoscan/reports/realtime_quote_observations_latest.json`。
+Git blob 為 `ddba5ec2598b8534606cd16e67bfc7b011c499c2`。三筆
+2610、6782、9933 的同日收盤 OHLC 皆一致，僅有市場時刻 11/17 13:30，
+原始供應商首次收件時間缺失。11/18 18:18:38.897893 為本次實際讀取時刻。
+這三筆來自原留存觀測而非合成測試。其他 1,088 檔缺可比 Fugle 觀測。
+
+實際 FinMind 產物核對了 1,088 操作範圍、1,084 有效觀測及 0 檔逐股跨來源
+對帳。程式碼驗證既有 runner 在彙總前仍有 raw_rows 與逐股時間，可做
+同次執行來源交集的記憶體內對帳；現有 TWSE MIS 僅按部分回補代號讀取，
+用途為交易狀態，未持有全市場的第二份同時點、同口徑行情。本輪未執行
+實際全市場逐股對帳或新增請求。未來僅在條款確認允許時保存比對筆數、
+差異分布、原因碼與來源 SHA。工作開始時間與實際收件時間應分開記錄。

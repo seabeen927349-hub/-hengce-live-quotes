@@ -124,3 +124,28 @@ class ReconcileTests(unittest.TestCase):
                 eod.return_value = ({'9933':eod_quote()}, proof)
                 with self.assertRaisesRegex(ValueError,'UNIVERSE_MISMATCH'):
                     report(root,root,root,READ)
+
+
+class PublishedAcceptanceReceiptTests(unittest.TestCase):
+    def test_public_receipt_preserves_coverage_and_excludes_vendor_quotes(self):
+        # This checks the exported acceptance receipt, not a replay of private prices.
+        p = Path(__file__).parent/'fixtures/market_source_20261117_acceptance_receipt.json'
+        raw = p.read_bytes()
+        receipt = json.loads(raw)
+        self.assertEqual(receipt['mode'], 'HISTORICAL_REPLAY')
+        self.assertRegex(receipt['report_sha256'], r'^[a-f0-9]{64}$')
+        self.assertIsNone(receipt['fugle']['first_vendor_receipt_taipei'])
+        self.assertEqual(set(receipt['fugle']['comparisons']), {'2610','9933','6782'})
+        self.assertTrue(all(x['status']=='VERIFIED_SHADOW' and x['different_fields']==[]
+                            for x in receipt['fugle']['comparisons'].values()))
+        coverage = receipt['coverage']
+        self.assertEqual(coverage['universe'], 1091)
+        for key in ('twse_close','fugle_close_comparison','finmind_per_ticker','trading','corporate_action'):
+            self.assertEqual(sum(coverage[key].values()), coverage['universe'])
+        f = receipt['finmind']
+        self.assertEqual((f['source_scope_total'], f['source_scope_valid'], f['matched_per_ticker_rows']),
+                         (1088,1084,0))
+        self.assertFalse(receipt['formal_settlement_allowed'])
+        self.assertFalse(receipt['trading_authority'])
+        for field in (b'last_price_twd', b'close_price_twd', b'open_twd', b'volume_lots', b'quotes'):
+            self.assertNotIn(field, raw)
