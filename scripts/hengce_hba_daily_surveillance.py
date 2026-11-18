@@ -185,13 +185,70 @@ def env(root,target):
     if individual is not None:confirmed['individual_sources']=individual
     return confirmed
 
+
+def local_taiwan_vix(root, target, reference_eod=None, now=None):
+    """Verify signed TAIFEX 13:45 daily observation, separate from US VIX."""
+    now = now or dt.datetime.now(TZ)
+    result = {"status": "MISSING_OR_UNVERIFIED", "source": "TAIFEX",
+              "index": "TAIWAN_VIX", "reference_eod": reference_eod,
+              "date": None, "close": None, "not_realtime": True,
+              "not_model_input": True, "trading_authority": False}
+    path = root / "research/hba_surveillance/taifex_taiwan_vix_latest.json"
+    x = jread(path)
+    if not isinstance(x, dict):
+        return result
+    try:
+        recorded = dt.date.fromisoformat(x["vix_session_date"])
+        asof = dt.datetime.fromisoformat(x["observed_at_taipei"])
+        if asof.tzinfo is None:
+            return result
+        asof = asof.astimezone(TZ)
+        assert now.tzinfo is not None and asof <= now
+        assert (now - asof).total_seconds() <= 10 * 86400
+        assert recorded <= dt.date.fromisoformat(target)
+        assert recorded <= now.date()
+        if recorded == now.date():
+            assert now.time() >= dt.time(14, 0) and asof.time() >= dt.time(14, 0)
+        assert 0 <= (now.date() - recorded).days <= 10
+        assert x["schema"] == "HENGCE_TAIFEX_TAIWAN_VIX_CLOSE_OBSERVATION_V1"
+        assert x["status"] == "OFFICIAL_DAILY_SOURCE_VERIFIED_NOT_FRESHNESS_CLAIM"
+        assert x["source"] == "TAIFEX" and x["index"] == "TAIWAN_VIX"
+        assert x["source_role"] == "LOCAL_RISK_OBSERVATION_ONLY_NO_OVERSEAS_MODEL_INPUT"
+        assert x["source_month"] == recorded.strftime("%Y%m")
+        assert x["source_url"] == ("https://www.taifex.com.tw/file/taifex/"
+              "Dailydownload/vix/log2data/" + x["source_month"] + "new.txt")
+        assert x["observation_time_taipei"] == "13:45:00"
+        assert (isinstance(x["source_raw_sha256"], str) and
+                len(x["source_raw_sha256"]) == 64 and
+                all(ch in "0123456789abcdef" for ch in x["source_raw_sha256"]))
+        assert all(x.get(flag) is False for flag in
+             ("intraday_realtime", "formal_forecast", "model_score_authority",
+              "selection_authority", "trading_authority", "broker_execution"))
+        assert type(x["vix_1345"]) in (int, float) and math.isfinite(x["vix_1345"]) and 0 < x["vix_1345"] < 1000
+        previous = x.get("prior_session_date")
+        if previous is not None:
+            assert dt.date.fromisoformat(previous) < recorded
+            assert type(x["prior_1345"]) in (int, float) and x["prior_1345"] > 0
+            assert abs(x["vix_1345"] - x["prior_1345"] - x["change_1d_points"]) < 0.00011
+        digest = x["receipt_sha256"]
+        assert isinstance(digest, str) and digest == stable_hash({k:v for k,v in x.items() if k != "receipt_sha256"})
+    except (KeyError, ValueError, TypeError, AssertionError, OverflowError):
+        return result
+    aligned = reference_eod is not None and recorded.isoformat() == reference_eod
+    return {**result, "status": "ALIGNED_LAST_TW_EOD" if aligned else "SOURCE_DATE_NOT_LAST_TW_EOD",
+            "source_verified": True, "date": recorded.isoformat(), "close": x["vix_1345"],
+            "change_1d_points": x.get("change_1d_points"),
+            "change_3d_points": x.get("change_3d_points"),
+            "change_5d_points": x.get("change_5d_points"),
+            "observed_at_taipei": asof.isoformat(), "receipt_sha256": digest}
+
 def scan(root, target, limit=15):
     days,stocks=eod(root); latest=days[-1] if days else None
     meta,holding=tdcc(root,target); macro=env(root,target)
     report={'schema':SCOPE,'target_tw_date':target,'latest_verified_eod':latest,
       'source_scope':'TWSE original-vessel 3-leg + canonical TDCC + governed overseas packet',
       'source_coverage':{'available_eod_days':len(days),'available_tdcc_snapshots':len({r['date'] for v in holding.values() for r in v})},
-      'external_environment':macro,'long_term_capital_environment':{'label':'資料不足','reason':'尚無正式20/60/120日資金環境核准憑證；個股法人淨額不可代替跨境資金流'},
+      'external_environment':macro,'local_taiwan_vix':local_taiwan_vix(root,target,latest),'long_term_capital_environment':{'label':'資料不足','reason':'尚無正式20/60/120日資金環境核准憑證；個股法人淨額不可代替跨境資金流'},
       'data_gate':'BLOCKED','candidates':[],'all_candidates':[],'stage_counts':{},'exclusions':[],'explanations':[],
       'not_an_order':True,'no_formula_profit_claim':True,'rules_fixed_ex_ante_for_forward_surveillance':True,
       'capital_cycle_claim_gate':{'status':'HISTORICAL_CYCLE_UNVERIFIED',
@@ -297,6 +354,16 @@ def markdown(report):
       f"- 當日市場廣度代理：{a.get('market_breadth_proxy',{}).get('advancing_share','未知')}（收盤後描述性訊號）",'',
       '## 偵查統計',f"候選股票 {a.get('total_candidates_before_limit',0)} 檔；"+'；'.join(f'{k} {v}' for k,v in a['stage_counts'].items()),'',
       '## 新增／升級',f"新增或升級 {len(a.get('new_or_escalated',[]))} 檔（首次建立基線時均屬新增）",'', '## 需要優先人工覆核的股票','']
+    local=a.get("local_taiwan_vix") or {}
+    if local.get("source_verified") is True:
+        day=local["date"]
+        flag=("與最近正式台股 EOD 對齊" if local["status"]=="ALIGNED_LAST_TW_EOD"
+              else "來源日未對齊最近正式台股 EOD，僅歷史觀測")
+        diff=local.get("change_1d_points")
+        lines.append("- 台灣 VIX（TAIFEX 13:45）：{:.2f}；日期 {}；一日變動 {}點；{}；取得時間 {}。不屬美股VIX／即時行情／選股訊號。".format(
+            local["close"],day,("{:+.2f}".format(diff) if type(diff) in (int,float) else "缺"), flag,local.get("observed_at_taipei")))
+    else:
+        lines.append("- 台灣 VIX（TAIFEX 13:45）：資料不足／來源未驗證；不補造、不當作即時行情。")
     individual=macro.get('individual_sources')
     if individual:
         lines+=['',f"- 美國預期交易日：{individual['expected_us_session']}（台灣次一交易日盤前）"]
