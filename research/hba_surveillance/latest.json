@@ -9423,6 +9423,17 @@
     "status": "資料不足"
   },
   "latest_verified_eod": "2026-11-17",
+  "local_taiwan_vix": {
+    "close": null,
+    "date": null,
+    "index": "TAIWAN_VIX",
+    "not_model_input": true,
+    "not_realtime": true,
+    "reference_eod": "2026-11-17",
+    "source": "TAIFEX",
+    "status": "MISSING_OR_UNVERIFIED",
+    "trading_authority": false
+  },
   "long_term_capital_environment": {
     "label": "資料不足",
     "reason": "尚無正式20/60/120日資金環境核准憑證；個股法人淨額不可代替跨境資金流"
