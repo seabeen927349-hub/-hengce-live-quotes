@@ -38,6 +38,11 @@ name: HENGCE Governed SOX VIX Premarket EOD
     - cron: '13 22 * * 0-4'  # Taipei 06:13
     - cron: '13 23 * * 0-4'  # Taipei 07:13
     - cron: '13 0 * * 1-5'   # Taipei 08:13
+    # Retry official Nasdaq/Cboe SAME-session EOD near the Taiwan open.
+    # Missing VIX still FAILS CLOSED; late receipts are source-only, never backdated.
+    - cron: '35,50 23 * * 0-4' # Taipei 07:35 / 07:50 Mon-Fri
+    - cron: '35,45,55 0 * * 1-5' # Taipei 08:35 / 08:45 / 08:55 Mon-Fri
+    - cron: '10 1 * * 1-5'   # Taipei 09:10 source-only; preopen model window closed
 
 permissions:
   contents: write
