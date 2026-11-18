@@ -171,3 +171,35 @@ class TradingClassificationTests(unittest.TestCase):
         conflict = self.statuses('080000','1151118','080000','2')
         self.assertEqual(conflict['status'], 'UNVERIFIED')
         self.assertEqual(conflict['opening_status'], 'UNVERIFIED')
+
+
+class PreservedCaptureAcceptanceTests(unittest.TestCase):
+    def test_full_original_bytes_match_excerpt_and_replay_the_market(self):
+        fixtures = Path(__file__).parent/'fixtures'
+        archive = fixtures/'twse_reference_original'
+        root = Path(__file__).resolve().parents[2]
+        excerpt = json.loads((fixtures/'twse_reference_20261117_excerpt.json').read_bytes())['sources']
+        cutoff = card_time('2026-11-18T16:55:28.377673+08:00')
+        for kind, url in source_urls(DAY).items():
+            with self.subTest(source=kind):
+                env = json.loads((archive/DAY.isoformat()/(kind+'.json')).read_bytes())
+                receipt = env['receipt']
+                raw = base64.b64decode(receipt['raw_base64'], validate=True)
+                self.assertEqual(sha(raw), excerpt[kind]['original_sha256'])
+                _, proof = open_capture(archive, kind, DAY, url, cutoff)
+                self.assertEqual(proof['first_observed_at_taipei'], excerpt[kind]['first_observed_at_taipei'])
+
+        result = build(root, archive, DAY, cutoff)
+        self.assertEqual(result['mode'], 'HISTORICAL_REPLAY')
+        self.assertFalse(result['formal_settlement_allowed'])
+        self.assertEqual(result['coverage'], {
+            'universe':1091, 'taiex':1, 'trade_observed':1089,
+            'trading':{'UNVERIFIED':1091}, 'corporate_action':{'UNVERIFIED':1091},
+        })
+        self.assertEqual(result['taiex'], {'status':'VERIFIED_SHADOW','open':'40546.64','close':'40092.11'})
+        self.assertEqual(result['official_examples']['halts_during_session'], {})
+        self.assertEqual(result['official_examples']['corporate_action_rows_total'], 25)
+
+        earlier = build(root, archive, DAY, card_time('2026-11-17T23:59:00+08:00'))
+        self.assertTrue(all(x['status']==BLOCKED and x['reason']=='CAPTURE_OUTSIDE_INFORMATION_CUTOFF'
+                            for x in earlier['sources'].values()))
