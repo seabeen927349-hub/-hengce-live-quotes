@@ -33,7 +33,7 @@ def payload_sha(obj):
     return sha(canonical({k:v for k,v in obj.items() if k!='payload_sha256'}))
 
 
-def finmind_context(root, day, cutoff):
+def finmind_context(root, day, cutoff, *, read_clock=None):
     hashes = {}
     try:
         documents = []
@@ -41,6 +41,9 @@ def finmind_context(root, day, cutoff):
             raw = (root/name).read_bytes()
             hashes[name] = sha(raw)
             documents.append(json.loads(raw))
+        # Producer generated_at is initialized before the vendor request.
+        # This run's completed read is the first availability we can assert here.
+        read_at = (read_clock or (lambda: datetime.now(CARD_TZ)))()
         ctx, status, monitor = documents
         if (ctx['schema'] != 'HENGCE_ESCAPE_FINMIND_TWSE_COMMON_AGGREGATE_SHADOW_V3'
                 or status['source'] != 'FinMind'
@@ -67,7 +70,8 @@ def finmind_context(root, day, cutoff):
         observed = datetime.fromisoformat(ctx['latest_source_timestamp'])
         observed = observed.replace(tzinfo=CARD_TZ) if observed.tzinfo is None else observed.astimezone(CARD_TZ)
         if not (ctx['market_date'] == monitor['market_date'] == day.isoformat()
-                and observed.date() == available.date() == day and observed <= available <= cutoff):
+                and observed.date() == available.date() == day and max(observed, available) <= read_at
+                and (cutoff is None or read_at <= cutoff)):
             raise ValueError('FINMIND_WRONG_SESSION_OR_CUTOFF')
         valid, unknown, total = (ctx[k] for k in fields[2:])
         market = ctx['market']
@@ -78,7 +82,7 @@ def finmind_context(root, day, cutoff):
         return {'status':'VERIFIED_AGGREGATE_SHADOW','contract_sha256':METRIC_SHA,
                 'input_sha256':hashes, 'source_schema':ctx['schema'],
                 'latest_market_observation_taipei':observed.isoformat(),
-                'existing_run_observed_at_taipei':available.isoformat(),
+                'existing_run_started_at_taipei':available.isoformat(), 'read_at_taipei':read_at.isoformat(),
                 'first_vendor_receipt_taipei':None,
                 'source_scope_valid':valid,'source_scope_unknown':unknown,'source_scope_total':total,
                 'matched_per_ticker_rows':0, 'per_ticker_reason':'AGGREGATE_ONLY_NO_RETAINED_VENDOR_ROWS'}
@@ -146,6 +150,8 @@ def reconcile_quote(eod, row, day, cutoff):
 def report(root, cards_dir, evidence_dir, cutoff, fugle_raw=None, fugle_sha=None, fugle_read_at=None):
     manifest, cards = read_research_cards(cards_dir)
     day = date.fromisoformat(manifest['market_date'])
+    finmind = finmind_context(root, day, cutoff)
+    cutoff = cutoff or datetime.now(CARD_TZ)
     if card_time(manifest['evidence_cutoff_taipei']) > cutoff:
         raise ValueError('RESEARCH_CARDS_AFTER_CUTOFF')
     eod, proof = card_eod_leg(root, day.isoformat(), 'price', cutoff)
@@ -155,7 +161,6 @@ def report(root, cards_dir, evidence_dir, cutoff, fugle_raw=None, fugle_sha=None
     if any(original[k]!=proof[k] for k in ('sha256','mother_sha256','available_at')):
         raise ValueError('HBA_AND_ORIGINAL_EOD_PROVENANCE_MISMATCH')
     twse = official_reference(root, evidence_dir, day, cutoff)
-    finmind = finmind_context(root, day, cutoff)
     quotes, fugle = fugle_context(fugle_raw, fugle_sha, day, fugle_read_at, cutoff)
     stocks = {}
     for ticker, card in sorted(cards.items()):
@@ -197,7 +202,7 @@ def main():
         p.error('--fugle and --fugle-sha must be provided together')
     raw = args.fugle.read_bytes() if args.fugle else None
     read_at = datetime.now(CARD_TZ)
-    cutoff = card_time(args.asof) if args.asof else read_at
+    cutoff = card_time(args.asof) if args.asof else None
     print(canonical(report(args.root,args.cards,args.twse_evidence,cutoff,raw,args.fugle_sha,read_at)).decode())
 
 

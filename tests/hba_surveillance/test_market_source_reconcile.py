@@ -62,21 +62,22 @@ class ReconcileTests(unittest.TestCase):
             f.write_bytes(canonical(obj))
 
     def test_finmind_triplet_keeps_vendor_denominator(self):
-        result = finmind_context(self.root, DAY, READ)
+        result = finmind_context(self.root, DAY, READ, read_clock=lambda:READ)
         self.assertEqual(result['status'],'VERIFIED_AGGREGATE_SHADOW')
         self.assertEqual((result['source_scope_valid'],result['source_scope_total']), (1084,1088))
         self.assertEqual(result['matched_per_ticker_rows'],0)
         self.assertIsNone(result['first_vendor_receipt_taipei'])
+        self.assertEqual(result['read_at_taipei'], READ.isoformat())
 
     def test_finmind_wrong_cutoff_and_modified_hash_fail_closed(self):
         earlier = card_time('2026-11-17T13:05:11+08:00')
-        self.assertEqual(finmind_context(self.root,DAY,earlier)['status'],'UNVERIFIED')
-        self.assertEqual(finmind_context(self.root,date(2026,11,18),READ)['status'],'UNVERIFIED')
+        self.assertEqual(finmind_context(self.root,DAY,earlier,read_clock=lambda:READ)['status'],'UNVERIFIED')
+        self.assertEqual(finmind_context(self.root,date(2026,11,18),READ,read_clock=lambda:READ)['status'],'UNVERIFIED')
         path = self.root/FINMIND_FILES[0]
         data = json.loads(path.read_bytes())
         data['metric_unknown_count'] += 1
         path.write_bytes(canonical(data))
-        self.assertEqual(finmind_context(self.root,DAY,READ)['status'],'UNVERIFIED')
+        self.assertEqual(finmind_context(self.root,DAY,READ,read_clock=lambda:READ)['status'],'UNVERIFIED')
 
     def test_fugle_receipt_hash_duplicate_and_late_read(self):
         raw = packet([quote()])
