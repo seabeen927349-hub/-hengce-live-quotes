@@ -8,7 +8,7 @@
   "broker_hhi_blocks_core_three_leg_or_mother": false,
   "broker_hhi_capital_authority_created": false,
   "broker_hhi_date": "2026-11-18",
-  "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
+  "broker_hhi_last_result": "ALREADY_COMPLETE_IMMUTABLE",
   "broker_hhi_model_authority_created": false,
   "broker_hhi_receipt": "receipts/broker_hhi.json",
   "broker_hhi_rows": 2337,
@@ -29,19 +29,19 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1091,
       "sha256": "2402044bb7d0d0a9b440a37d2d7a055aa2bb32df2f15c6bb3dcf85a909657bb0"
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1082,
       "sha256": "f4a2ff35713a0450c14ae49907d7ede5f69c4ac6215f7f6ad114ae4c7f2ee4b0"
     },
     {
       "leg": "margin",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1063,
       "sha256": "d723e0b202723206f6d411c26eedc9b6bb5c3e84d4c7b7b6a41a43a74d851713"
     }
@@ -57,16 +57,26 @@
   "market_state_finmind_shadow_blocks_core_three_leg_or_mother": false,
   "market_state_finmind_shadow_formal_classifier_mutated": false,
   "market_state_finmind_shadow_model_authority_created": false,
-  "market_state_finmind_shadow_observed_at_taipei": "2026-11-18T23:13:34.087533+08:00",
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-19T06:31:48.360870+08:00",
   "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
-  "market_state_finmind_shadow_status": "SHADOW_BLOCKED_FAIL_CLOSED",
+  "market_state_finmind_shadow_status": "SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT",
   "market_state_finmind_shadow_trading_authority_created": false,
   "model_authority_created": false,
+  "mother_latest_date": "2026-11-18",
   "mother_pending_legs": [],
-  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
+  "mother_promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
   "mother_promotion_required": true,
   "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "3a6051e8672b80250eb2e58eacce3a7c1da3889ce31d525c9fad850309784253",
+  "mother_source_integrity_status": "PASS",
+  "mother_source_integrity_verified_at_taipei": "2026-11-18T23:17:27.954229+08:00",
   "mother_status": "COMPLETE",
+  "mother_synced_from_existing_canonical_receipt": "/HENGCE_CANONICAL/HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261118.json",
   "parallel_eod_tree": false,
   "parallel_universe": false,
   "pending_legs": [],
@@ -81,16 +91,5 @@
   "system": "HENGCE",
   "target_date": "2026-11-18",
   "three_leg_complete": true,
-  "updated_at_taipei": "2026-11-18T23:17:27.954229+08:00",
-  "mother_receipt": "receipts/mother.json",
-  "mother_latest_date": "2026-11-18",
-  "mother_sha256": "3a6051e8672b80250eb2e58eacce3a7c1da3889ce31d525c9fad850309784253",
-  "mother_promoted_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ],
-  "mother_source_integrity_status": "PASS",
-  "mother_source_integrity_verified_at_taipei": "2026-11-18T23:17:27.954229+08:00",
-  "mother_synced_from_existing_canonical_receipt": "/HENGCE_CANONICAL/HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261118.json"
+  "updated_at_taipei": "2026-11-19T06:31:48.089776+08:00"
 }
