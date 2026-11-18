@@ -25,6 +25,7 @@ from statistics import fmean
 from typing import Any
 
 from finmind_mcp.client import FinMindClient
+from hengce_finmind_inmemory_same_tick_audit import audit_snapshot
 
 from hengce_finmind_twse_common_snapshot_probe import (
     DEFAULT_EXCEPTION_PATH,
@@ -108,6 +109,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
 
     client = FinMindClient()
     raw_rows = await client.query_endpoint(FINMIND_ENDPOINT, {"data_id": ""})
+    finmind_received_at = datetime.now(TAIPEI)
     if not isinstance(raw_rows, list) or not raw_rows:
         raise RuntimeError("FinMind snapshot is empty or malformed")
 
@@ -168,6 +170,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
     mis_session_verified: list[str] = []
     mis_session_unresolved: list[str] = []
     mis_meta: dict[str, Any] = {}
+    mis_matches: dict[str, dict[str, str]] = {}
     if stale_codes:
         try:
             mis_meta, mis_matches = current_mis(market_date_compact, stale_codes)
@@ -181,6 +184,13 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         except Exception as exc:
             mis_status = f"ERROR:{type(exc).__name__}:{exc}"
             mis_session_unresolved = sorted(stale_codes)
+
+    # Audit the existing in-memory rows against only the MIS rows already fetched
+    # for stale-session diagnostics; never add a second FinMind or MIS request.
+    same_tick_audit = audit_snapshot(
+        active_required, snapshot_map, mis_matches, market_date,
+        finmind_received_at, datetime.now(TAIPEI),
+    )
 
     by_industry: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in derived_rows:
@@ -243,6 +253,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "latest_source_timestamp": latest_timestamp,
         "market": market_summary,
         "industry": {key: _summarize(by_industry[key]) for key in sorted(by_industry)},
+        "inmemory_cross_source_audit": same_tick_audit,
         "per_security_rows_persisted": False,
         "raw_finmind_rows_persisted": False,
         "raw_twse_mis_rows_persisted": False,
@@ -274,6 +285,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
         "source": "FinMind",
         "finmind_endpoint": FINMIND_ENDPOINT,
         "twse_master_report_date": master_report_date,
+        "inmemory_cross_source_audit": same_tick_audit,
         "twse_common_master_count": len(common_codes),
         "active_required_count": len(active_required),
         "active_covered_count": len(active_required),
