@@ -1,0 +1,80 @@
+name: HENGCE TAIFEX Taiwan VIX Daily Source
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/hengce_taifex_taiwan_vix_v1.py'
+      - 'scripts/hengce_hba_daily_surveillance.py'
+      - 'scripts/hengce_publish.py'
+      - 'tests/engineering/test_hengce_taifex_taiwan_vix.py'
+      - 'tests/hba_surveillance/test_surveillance.py'
+      - '.github/workflows/hengce-taifex-taiwan-vix-daily.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_taifex_taiwan_vix_v1.py'
+      - '.github/workflows/hengce-taifex-taiwan-vix-daily.yml'
+  workflow_dispatch:
+  schedule:
+    # 14:25 / 15:25 Taiwan after the 13:45 official daily observation
+    - cron: '25 6 * * 1-5'
+    - cron: '25 7 * * 1-5'
+    # 23:20 Taiwan for delayed publication
+    - cron: '20 15 * * 1-5'
+    # 07:20 next morning (UTC Sun-Thu 23:20), never future-fill
+    - cron: '20 23 * * 0-4'
+
+permissions:
+  contents: write
+
+concurrency:
+  # Keep the same serialized guarded publication lane as HBA and overseas.
+  group: ${{ github.event_name == 'pull_request' && format('hengce-taifex-vix-pr-{0}', github.event.pull_request.number) || 'hengce-hba-surveillance-research' }}
+  cancel-in-progress: false
+
+jobs:
+  taifex-vix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout trusted source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source parser, PIT and consumer tests
+        run: |
+          python -m py_compile scripts/hengce_taifex_taiwan_vix_v1.py scripts/hengce_hba_daily_surveillance.py
+          python -m unittest discover -s tests/engineering -p 'test_hengce_taifex_taiwan_vix.py' -v
+          python -m unittest discover -s tests/hba_surveillance -p 'test_surveillance.py' -v
+      - name: Download official TAIFEX Taiwan VIX daily closing source
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          python scripts/hengce_taifex_taiwan_vix_v1.py \
+            --out environment/taifex_taiwan_vix/latest.json \
+            --history-dir environment/taifex_taiwan_vix/history
+      - name: Guarded official source-only publication
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-taifex-vix-bot'
+          git config user.email 'hengce-taifex-vix-bot@users.noreply.github.com'
+          git add environment/taifex_taiwan_vix/latest.json environment/taifex_taiwan_vix/history
+          if git diff --cached --quiet; then
+            echo 'TAIFEX_SOURCE_UNCHANGED: no publication'
+            exit 0
+          fi
+          git commit -m 'data(shadow): official TAIFEX Taiwan VIX 13:45 observation'
+          python scripts/hengce_publish.py --profile taifex-taiwan-vix \
+            --report-dir "${RUNNER_TEMP}/hengce-taifex-publication"
+      - name: Save source publisher receipts
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-taifex-taiwan-vix-source
+          path: ${{ runner.temp }}/hengce-taifex-publication
+          if-no-files-found: ignore
+          retention-days: 10
