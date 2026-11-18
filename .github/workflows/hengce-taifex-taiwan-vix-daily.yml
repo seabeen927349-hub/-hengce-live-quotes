@@ -28,8 +28,9 @@ permissions:
   contents: write
 
 concurrency:
-  # Keep the same serialized guarded publication lane as HBA and overseas.
-  group: ${{ github.event_name == 'pull_request' && format('hengce-taifex-vix-pr-{0}', github.event.pull_request.number) || 'hengce-hba-surveillance-research' }}
+  # Independent source-only queue; guarded publisher verifies every concurrent
+  # write against its exact TAIFEX path lease and authoritative dependencies.
+  group: ${{ github.event_name == 'pull_request' && format('hengce-taifex-vix-pr-{0}', github.event.pull_request.number) || 'hengce-taifex-vix-source' }}
   cancel-in-progress: false
 
 jobs:
