@@ -1,0 +1,23 @@
+name: HENGCE TWSE reference shadow
+on:
+  pull_request:
+    paths:
+      - scripts/hengce_hba_twse_reference_shadow.py
+      - scripts/hengce_hba_research_reference.py
+      - tests/hba_surveillance/**
+      - .github/workflows/hengce-twse-reference-shadow.yml
+permissions:
+  contents: read
+jobs:
+  shadow-reference-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify official-source parsers and existing HBA and ledger contracts offline
+        run: python -m unittest discover -s tests/hba_surveillance -p 'test_*.py' -v
