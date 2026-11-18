@@ -306,8 +306,12 @@ jobs:
           root=Path('eod')/c
           status=json.loads((root/'status.json').read_text(encoding='utf-8'))
           assert status.get('target_date')==f'{c[:4]}-{c[4:6]}-{c[6:]}'
-          for rel in ('market_state_finmind_context.json','receipts/market_state_finmind_shadow.json'):
-              json.loads((root/rel).read_text(encoding='utf-8'))
+          json.loads((root/'receipts/market_state_finmind_shadow.json').read_text(encoding='utf-8'))
+          ctx=root/'market_state_finmind_context.json'
+          if status.get('market_state_finmind_shadow_status')=='OBSERVED_CONTEXT_ATTACHED':
+              assert ctx.is_file(), 'REQUIRED_FINMIND_CONTEXT_MISSING'
+          if ctx.exists():
+              json.loads(ctx.read_text(encoding='utf-8'))
           for leg in ('price','institutional','margin'):
               if status.get(f'{leg}_status')=='COMPLETE':
                   rec=json.loads((root/'receipts'/f'{leg}.json').read_text(encoding='utf-8'))
