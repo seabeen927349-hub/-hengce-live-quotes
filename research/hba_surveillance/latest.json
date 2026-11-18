@@ -9424,14 +9424,20 @@
   },
   "latest_verified_eod": "2026-11-17",
   "local_taiwan_vix": {
-    "close": null,
-    "date": null,
+    "change_1d_points": 0.7,
+    "change_3d_points": 9.27,
+    "change_5d_points": 9.49,
+    "close": 49.55,
+    "date": "2026-11-17",
     "index": "TAIWAN_VIX",
     "not_model_input": true,
     "not_realtime": true,
+    "observed_at_taipei": "2026-11-18T10:15:49.928957+08:00",
+    "receipt_sha256": "bd4c9dfe5ccd9e9e9ccf84e54f25b521aca4d92b942c1c94486af79ddd36cfc4",
     "reference_eod": "2026-11-17",
     "source": "TAIFEX",
-    "status": "MISSING_OR_UNVERIFIED",
+    "source_verified": true,
+    "status": "ALIGNED_LAST_TW_EOD",
     "trading_authority": false
   },
   "long_term_capital_environment": {
