@@ -315,7 +315,8 @@ jobs:
 
   archive-research:
     needs: scan
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.HENGCE_RESEARCH_ARCHIVE_ENABLED == 'true'
+    # Re-enabling requires a separate PR and explicit human approval.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 8
     environment: hengce-research-archive

@@ -94,3 +94,8 @@ AWS 報價。按月列出物件容量與版本保留（GB-month）、PUT/GET/LIS
 COMPLIANCE 保留和同鍵條件建立；實測無條件寫入、刪除、縮短保留皆被拒絕；
 獨立讀取角色須按 key/version 於 Actions 過期後重新核對原件。
 保留到期前即使管理人員也不能移除鎖定物件，依法刪除與誤寫成本須先評估。
+
+
+## 正式排程硬停用
+
+`archive-research` 固定使用 `if: ${{ false }}`。即使 Actions 變數為 `true`，也不會執行 AWS 或 Object Lock 步驟。重新啟用須以獨立 PR 提出並經明確人工批准。
