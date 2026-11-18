@@ -9,6 +9,10 @@ on:
       - 'scripts/hengce_taifex_taiwan_vix_v1.py'
       - 'scripts/hengce_hba_context_bridge_v1.py'
       - 'scripts/hengce_hba_decision_report.py'
+      - 'scripts/hengce_hba_research_ledger.py'
+      - 'scripts/hengce_hba_research_outcomes.py'
+      - 'scripts/hengce_hba_research_reference.py'
+      - 'governance/HENGCE_TWSE_REFERENCE_TRUST_V1.json'
       - 'research/hba_surveillance/data/HENGCE_LIFELONG_GROSS_SUMMARY.csv'
       - 'tests/hba_surveillance/**'
       # A new verified original Mother receipt is the real EOD-ready event.
@@ -19,6 +23,10 @@ on:
   pull_request:
     paths:
       - 'scripts/hengce_hba_decision_report.py'
+      - 'scripts/hengce_hba_research_ledger.py'
+      - 'scripts/hengce_hba_research_outcomes.py'
+      - 'scripts/hengce_hba_research_reference.py'
+      - 'governance/HENGCE_TWSE_REFERENCE_TRUST_V1.json'
       - 'governance/HENGCE_LONGITUDINAL_CAPITAL_CYCLE_HARD_GATE_v1_20261109.*'
       - 'governance/HENGCE_RESEARCH_LITERATURE_FIRST_CONSTITUTION_v1.md'
       - 'scripts/hengce_hba_daily_surveillance.py'
@@ -287,3 +295,60 @@ jobs:
               for symbol in ('1476', '2597', '3042', '2610'):
                   print('RESEARCH_CARD_EXAMPLE', json.dumps(cards[symbol], ensure_ascii=False))
           PY
+
+      - name: Rehearse historical ledger with real archived-market inputs
+        if: github.event_name == 'pull_request'
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/ledger-replay"
+          receipt=$(python scripts/hengce_hba_research_ledger.py \
+            --cards "$RUNNER_TEMP/hengce-research-cards-readback" \
+            --source-commit "$GITHUB_SHA" --replay-dir "$archive")
+          echo "$receipt"
+          retry=$(python scripts/hengce_hba_research_ledger.py \
+            --cards "$RUNNER_TEMP/hengce-research-cards-readback" \
+            --source-commit "$GITHUB_SHA" --replay-dir "$archive")
+          test "$receipt" = "$retry"
+          file=$(printf '%s' "$receipt" | python -c 'import json,sys; print(json.load(sys.stdin)["path"])')
+          python scripts/hengce_hba_research_outcomes.py --replay "$file" --ticker 2610 \
+            --historical-asof 2026-11-18T14:45:50+08:00
+
+  archive-research:
+    needs: scan
+    # Re-enabling requires a separate PR and explicit human approval.
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: hengce-research-archive
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: hengce-research-cards-v1-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hengce-research-cards-to-archive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the Object Lock client
+        run: python -m pip install 'boto3==1.40.0'
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.HENGCE_RESEARCH_ARCHIVE_ROLE_ARN }}
+          aws-region: ${{ vars.HENGCE_RESEARCH_ARCHIVE_REGION }}
+          allowed-account-ids: ${{ vars.HENGCE_RESEARCH_ARCHIVE_OWNER }}
+      - name: Create and verify a retained prospective snapshot
+        env:
+          ARCHIVE_BUCKET: ${{ vars.HENGCE_RESEARCH_ARCHIVE_BUCKET }}
+          ARCHIVE_OWNER: ${{ vars.HENGCE_RESEARCH_ARCHIVE_OWNER }}
+        run: |
+          set -euo pipefail
+          test -n "$ARCHIVE_BUCKET"
+          python scripts/hengce_hba_research_ledger.py \
+            --cards "$RUNNER_TEMP/hengce-research-cards-to-archive" \
+            --source-commit "$GITHUB_SHA" --bucket "$ARCHIVE_BUCKET" --owner "$ARCHIVE_OWNER" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
