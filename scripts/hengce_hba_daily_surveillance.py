@@ -4,7 +4,7 @@ Reads existing EOD original vessel, canonical TDCC and governed overseas premark
 No own data downloader, no model promotion or trading authority.
 """
 from __future__ import annotations
-import argparse,csv,datetime as dt,hashlib,json,statistics
+import argparse,csv,datetime as dt,hashlib,json,math,statistics
 from collections import defaultdict
 from pathlib import Path
 from zoneinfo import ZoneInfo
