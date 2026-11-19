@@ -60,9 +60,9 @@ def parse(raw, asof, *, source_url=URL):
     data = json.loads(raw.decode("utf-8-sig"))
     if not isinstance(data, list):
         raise ValueError("TX_NIGHT_API_SCHEMA_CHANGED")
-    now = asof.astimezone(TZ)
     if asof.tzinfo is None:
         raise ValueError("TX_NIGHT_ASOF_TIMEZONE_REQUIRED")
+    now = asof.astimezone(TZ)
     if urlsplit(source_url).hostname != "openapi.taifex.com.tw":
         raise ValueError("TX_NIGHT_SOURCE_NOT_TAIFEX")
     # Do not take a live/unfinished night-market row or guess a completed 05:00.
@@ -93,7 +93,10 @@ def parse(raw, asof, *, source_url=URL):
         if int(expiry) == yearmonth and day.day >= third_wednesday:
             continue
         last = numeric(item.get("Last"))
-        volume = int(numeric(item.get("Volume"), allow_zero=True))
+        volume_float = numeric(item.get("Volume"), allow_zero=True)
+        if not volume_float.is_integer():
+            raise ValueError("TX_NIGHT_VOLUME_NOT_INTEGER")
+        volume = int(volume_float)
         if volume <= 0:
             continue
         record = {
