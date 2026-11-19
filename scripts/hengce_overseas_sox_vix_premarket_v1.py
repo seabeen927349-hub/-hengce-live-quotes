@@ -25,6 +25,7 @@ TAIPEI=ZoneInfo("Asia/Taipei")
 NEW_YORK=ZoneInfo("America/New_York")
 SOX_URL="https://indexes.nasdaq.com/Index/ExportHistory/SOX"
 VIX_URL="https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+VIX_MIRROR_URL="https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
 MODEL="HENGCE_SOX_VIX_TAIEX_OPEN_GAP_OLS_TRAIN_20181109_20241231_V1"
 COEFFICIENTS=(0.041642424724208524,0.15095610356018835,-0.0036574564504370257)
 CUTS=(-0.19055541322518293,0.0000503213262588,0.12993431163319522,0.32424484685128574)
@@ -110,7 +111,7 @@ def fetch(url,timeout=28):
             if attempt<2:time.sleep(1+attempt)
     raise RuntimeError("VENDOR_FETCH_FAILURE:"+type(last).__name__+":"+str(last)[:280]) from last
 
-def build(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
+def build(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,vix_url=VIX_URL):
     """Build only with known pre-open Taipei time and common completed US EOD."""
     now=asof.astimezone(TAIPEI)
     target=now.date()
@@ -149,7 +150,7 @@ def build(asof,tw_previous,sox,vix,sox_raw,vix_raw,url):
              "raw_sha256":sha(sox_raw),"raw_bytes":len(sox_raw),
              "latest_us_session":latest.isoformat(),"prior_us_session":prior.isoformat(),
              "latest_close":sa,"prior_close":sb},
-      "vix":{"publisher":"Cboe","symbol":"VIX","url":VIX_URL,
+      "vix":{"publisher":"Cboe","symbol":"VIX","url":vix_url,
              "raw_sha256":sha(vix_raw),"raw_bytes":len(vix_raw),
              "latest_us_session":latest.isoformat(),"prior_us_session":prior.isoformat(),
              "latest_close":va,"prior_close":vb}
@@ -208,7 +209,8 @@ def last_completed_us_weekday(asof):
 
 
 def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,
-                       late_source_only=False,continuous_source_only=False):
+                       late_source_only=False,continuous_source_only=False,
+                       vix_url=VIX_URL):
     """Independent official index observations; NEVER a composite model receipt.
 
     The US EOD session date is in America/New_York market time, not the
@@ -250,7 +252,7 @@ def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,
                                  else "EXPECTED_US_EOD_NOT_YET_PUBLISHED"}
 
     a=leg("SOX","Nasdaq",url,sox,sox_raw)
-    b=leg("VIX","Cboe",VIX_URL,vix,vix_raw)
+    b=leg("VIX","Cboe",vix_url,vix,vix_raw)
     common=sorted(d for d in set(sox)&set(vix)
                   if d<target and d.weekday()<5)
     aligned=(a["source_status"]=="EXPECTED_US_EOD_PRESENT" and
@@ -280,6 +282,64 @@ def source_observation(asof,tw_previous,sox,vix,sox_raw,vix_raw,url,*,
     return result
 
 
+def verified_previous_tw_eod(asof,root=Path("eod")):
+    """Prefer signed original 3-leg+mother EOD, NEVER stale FinMind shadow date."""
+    target=asof.astimezone(TAIPEI).date()
+    for p in sorted(root.glob("20??????/status.json"),reverse=True):
+        try:
+            date=dt.datetime.strptime(p.parent.name,"%Y%m%d").date()
+            if not (date<target and (target-date).days<=7):
+                continue
+            obj=json.loads(p.read_text(encoding="utf-8"))
+            if (obj.get("target_date")==date.isoformat()
+                and obj.get("formal_complete_day") is True
+                and obj.get("three_leg_complete") is True
+                and obj.get("mother_status")=="COMPLETE"
+                and obj.get("mother_source_integrity_status")=="PASS"
+                and obj.get("mother_latest_date")==date.isoformat()
+                and all(obj.get(k)==date.isoformat() for k in
+                        ("price_date","institutional_date","margin_date"))
+                and all(obj.get(k)=="COMPLETE" for k in
+                        ("price_status","institutional_status","margin_status"))):
+                return date.isoformat()
+        except (OSError,ValueError,TypeError,KeyError):
+            continue
+    raise ValueError("NO_VERIFIED_RECENT_TWSE_EOD_MOTHER")
+
+
+def get_vix_eod(expected):
+    """Probe both Cboe official CDN hosts, prefer latest actual dated EOD.
+
+    A mirror is NOT an independent market-data publisher. Never manufacture a
+    close or relax the exact US session checks. Log endpoint used in receipt.
+    """
+    best=None
+    errors=[]
+    anchor=None
+    for endpoint in (VIX_URL,VIX_MIRROR_URL):
+        try:
+            raw=fetch(endpoint)
+            rows=cboe_rows(raw)
+            days=[d for d in rows if d<=expected and d.weekday()<5]
+            latest=max(days) if days else dt.date(1900,1,1)
+        except (OSError,ValueError,RuntimeError) as error:
+            errors.append(endpoint+":"+type(error).__name__)
+            continue
+        if anchor is not None:
+            overlap=sorted(set(anchor)&set(rows))
+            for date in overlap[-5:]:
+                require(abs(anchor[date]-rows[date])<=1e-8,
+                        "CBOE_CDN_OVERLAPPING_CLOSE_MISMATCH:"+date.isoformat())
+        else:
+            anchor=rows
+        if best is None or latest>best[0]:
+            best=(latest,raw,rows,endpoint)
+        if latest>=expected:
+            break
+    require(best is not None,"BOTH_CBOE_OFFICIAL_CDN_ENDPOINTS_UNAVAILABLE "+str(errors))
+    return best[1],best[2],best[3]
+
+
 def produce(asof,previous,observations_out=None):
     url=vendor_url(asof.astimezone(TAIPEI).date())
     # Reuse ONLY the two existing official publisher downloads. Publish the
@@ -287,17 +347,18 @@ def produce(asof,previous,observations_out=None):
     # the existing composite model must continue failing closed.
     for attempt in range(3):
         sr=fetch(url)
-        vr=fetch(VIX_URL)
         current=dt.datetime.now(TAIPEI)
-        s=nasdaq_rows(sr);v=cboe_rows(vr)
+        expected=current.date()-dt.timedelta(days=3 if current.weekday()==0 else 1)
+        vr,v,vix_url=get_vix_eod(expected)
+        s=nasdaq_rows(sr)
         if observations_out is not None:
-            observation=source_observation(current,previous,s,v,sr,vr,url)
+            observation=source_observation(current,previous,s,v,sr,vr,url,vix_url=vix_url)
             observations_out.parent.mkdir(parents=True,exist_ok=True)
             observations_out.write_text(
                 json.dumps(observation,indent=2,sort_keys=True,ensure_ascii=False)+"\n",
                 encoding="utf-8")
         try:
-            return build(current,previous,s,v,sr,vr,url)
+            return build(current,previous,s,v,sr,vr,url,vix_url=vix_url)
         except ValueError as error:
             if not str(error).startswith(("LATEST_US_SOURCE_SESSION_MISMATCH",
                                           "LATEST_EXPECTED_US_EOD_NOT_VERIFIED")) or attempt==2:
@@ -315,8 +376,10 @@ def main():
     args=p.parse_args()
     if args.mode=="probe":
         url=vendor_url(dt.datetime.now(TAIPEI).date())
-        sr=fetch(url);vr=fetch(VIX_URL)
-        s=nasdaq_rows(sr);v=cboe_rows(vr)
+        sr=fetch(url)
+        expected=dt.datetime.now(TAIPEI).date()-dt.timedelta(days=1)
+        vr,v,vix_url=get_vix_eod(expected)
+        s=nasdaq_rows(sr)
         z={"status":"SOURCE_PROBE_ONLY","sox_dates":[str(x) for x in sorted(s)[-3:]],
            "sox_latest_values":[s[x] for x in sorted(s)[-3:]],
            "vix_dates":[str(x) for x in sorted(v)[-3:]],
@@ -328,9 +391,10 @@ def main():
         require(args.observations_out is not None,"SOURCE_OBSERVATION_OUTPUT_REQUIRED")
         now=dt.datetime.now(TAIPEI)
         url=vendor_url(now.date())
-        sr=fetch(url);vr=fetch(VIX_URL)
-        observation=source_observation(now,None,nasdaq_rows(sr),cboe_rows(vr),
-                       sr,vr,url,continuous_source_only=True)
+        sr=fetch(url)
+        vr,v,vix_url=get_vix_eod(last_completed_us_weekday(now))
+        observation=source_observation(now,None,nasdaq_rows(sr),v,
+                       sr,vr,url,continuous_source_only=True,vix_url=vix_url)
         args.observations_out.parent.mkdir(parents=True,exist_ok=True)
         args.observations_out.write_text(json.dumps(observation,indent=2,
                        sort_keys=True,ensure_ascii=False)+"\n",encoding="utf-8")
@@ -346,10 +410,10 @@ def main():
         now=dt.datetime.now(TAIPEI)
         require(now.weekday()<5 and now.hour>=9,"NOT_POSTOPEN_TAIWAN_WEEKDAY")
         url=vendor_url(now.date())
-        sr=fetch(url);vr=fetch(VIX_URL)
-        context=json.loads(args.context.read_text(encoding="utf-8"))
-        observation=source_observation(now,context["market_date"],nasdaq_rows(sr),
-                 cboe_rows(vr),sr,vr,url,late_source_only=True)
+        sr=fetch(url)
+        vr,v,vix_url=get_vix_eod(last_completed_us_weekday(now))
+        observation=source_observation(now,verified_previous_tw_eod(now),nasdaq_rows(sr),
+                 v,sr,vr,url,late_source_only=True,vix_url=vix_url)
         args.observations_out.parent.mkdir(parents=True,exist_ok=True)
         args.observations_out.write_text(json.dumps(observation,indent=2,
              sort_keys=True,ensure_ascii=False)+"\n",encoding="utf-8")
@@ -359,9 +423,8 @@ def main():
                           "vix_session":observation["sources"]["vix"]["latest_us_session"]},ensure_ascii=False))
         return 0
     require(args.out is not None,"OUTPUT_PATH_REQUIRED")
-    context=json.loads(args.context.read_text(encoding="utf-8"))
     asof=dt.datetime.now(TAIPEI)
-    packet=produce(asof,context["market_date"],args.observations_out)
+    packet=produce(asof,verified_previous_tw_eod(asof),args.observations_out)
     args.out.parent.mkdir(parents=True,exist_ok=True)
     args.out.write_text(json.dumps(packet,indent=2,sort_keys=True,ensure_ascii=False)+"\n",encoding="utf-8")
     print(json.dumps({"status":packet["status"],"target":packet["target_tw_date"],

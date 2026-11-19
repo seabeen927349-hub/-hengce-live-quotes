@@ -11,7 +11,8 @@ from zoneinfo import ZoneInfo
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts"))
 from hengce_overseas_sox_vix_premarket_v1 import (
     build, nasdaq_rows, cboe_rows, vendor_url, canonical, COEFFICIENTS, CUTS, MODEL,
-    source_observation, last_completed_us_weekday
+    source_observation, last_completed_us_weekday, verified_previous_tw_eod,
+    get_vix_eod, VIX_MIRROR_URL, VIX_URL
 )
 
 TZ=ZoneInfo("Asia/Taipei")
@@ -285,6 +286,44 @@ class OverseasProducerTests(unittest.TestCase):
     def test_no_fabricated_last_close(self):
         self.assertEqual(self.packet()["sources"]["sox"]["latest_close"],9390.25)
         self.assertEqual(self.packet()["sources"]["sox"]["prior_close"],9011.14)
+
+
+    def test_official_taiwan_mother_overrides_stale_finmind(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            p=root/"20261118"/"status.json"
+            p.parent.mkdir(parents=True)
+            obj={"target_date":"2026-11-18","three_leg_complete":True,
+                 "formal_complete_day":True,"mother_status":"COMPLETE",
+                 "mother_source_integrity_status":"PASS",
+                 "mother_latest_date":"2026-11-18",
+                 "price_date":"2026-11-18","institutional_date":"2026-11-18",
+                 "margin_date":"2026-11-18","price_status":"COMPLETE",
+                 "institutional_status":"COMPLETE","margin_status":"COMPLETE"}
+            p.write_text(json.dumps(obj))
+            t=dt.datetime(2026,11,19,8,20,tzinfo=TZ)
+            self.assertEqual(verified_previous_tw_eod(t,root),"2026-11-18")
+            obj["mother_status"]="PENDING"
+            p.write_text(json.dumps(obj))
+            with self.assertRaisesRegex(ValueError,"NO_VERIFIED_RECENT_TWSE_EOD_MOTHER"):
+                verified_previous_tw_eod(t,root)
+
+    def test_cboe_mirror_only_when_official_history_lags(self):
+        from unittest.mock import patch
+        mainraw=b"DATE,OPEN,HIGH,LOW,CLOSE\n11/16/2026,19,20,18,19\n11/17/2026,20,21,19,20\n"
+        mirrorraw=b"DATE,OPEN,HIGH,LOW,CLOSE\n11/17/2026,20,21,19,20\n11/18/2026,21,23,21,23\n"
+        with patch("hengce_overseas_sox_vix_premarket_v1.fetch",
+                   side_effect=[mainraw,mirrorraw]) as mocked:
+            raw,rows,url=get_vix_eod(dt.date(2026,11,18))
+        self.assertEqual(url,VIX_MIRROR_URL)
+        self.assertEqual(rows[dt.date(2026,11,18)],23)
+        self.assertEqual(mocked.call_count,2)
+        with patch("hengce_overseas_sox_vix_premarket_v1.fetch",
+                   side_effect=[mainraw,mainraw]):
+            raw,rows,url=get_vix_eod(dt.date(2026,11,18))
+        self.assertEqual(url,VIX_URL)
+        self.assertNotIn(dt.date(2026,11,18),rows)
 
 if __name__=="__main__":
     unittest.main()

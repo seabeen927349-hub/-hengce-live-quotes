@@ -54,6 +54,8 @@ jobs:
           from pathlib import Path
           from zoneinfo import ZoneInfo
           import json, subprocess, sys
+          sys.path.insert(0,"scripts")
+          from hengce_overseas_sox_vix_premarket_v1 import verified_previous_tw_eod
           now=datetime.now(ZoneInfo("Asia/Taipei"))
           today=now.date()
           status_path=Path("escape_live/finmind_twse_common_status.json")
@@ -77,11 +79,17 @@ jobs:
               "--asof-taipei",now.isoformat(),
               "--out","/tmp/hengce_finmind_premarket_shadow.json"]
           if preopen:
+              try:
+                  canonical_day=verified_previous_tw_eod(now)
+                  args.extend(["--canonical-previous-twse-date",canonical_day])
+              except ValueError as exc:
+                  canonical_day=None
+                  print("NO_VERIFIED_CANONICAL_TW_EOD:",str(exc))
               overseas=Path("overseas_premarket/latest.json")
               if overseas.exists():
                   try:
                       packet=json.loads(overseas.read_text(encoding="utf-8"))
-                      if packet.get("target_tw_date")==today.isoformat() and packet.get("reference_prev_tw_date")==source_date.isoformat():
+                      if canonical_day and packet.get("target_tw_date")==today.isoformat() and packet.get("reference_prev_tw_date")==canonical_day:
                           args.extend(["--premarket",str(overseas)])
                       else:
                           print("NO_PREMARKET_SOURCE: stale or incorrect session; leaving today's market environment as 資料不足")

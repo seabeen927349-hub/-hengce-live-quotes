@@ -1,0 +1,70 @@
+name: HENGCE Official TAIFEX TX Night EOD
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/hengce_taifex_tx_night_v1.py'
+      - 'scripts/hengce_publish.py'
+      - 'tests/engineering/test_hengce_taifex_tx_night.py'
+      - '.github/workflows/hengce-taifex-tx-night.yml'
+  workflow_dispatch:
+  schedule:
+    # Taiwan preopen: 05:47 / 06:17 / 07:17 / 08:17.
+    - cron: '47 21 * * 0-4'
+    - cron: '17 22 * * 0-4'
+    - cron: '17 23 * * 0-4'
+    - cron: '17 0 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('hengce-tx-night-pr-{0}', github.event.pull_request.number) || 'hengce-tx-night-source' }}
+  cancel-in-progress: false
+
+jobs:
+  tx-night-eod:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - name: Checkout trusted main or PR for tests
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run parser and time/session regression tests
+        run: |
+          python -m py_compile scripts/hengce_taifex_tx_night_v1.py scripts/hengce_publish.py
+          python -m unittest discover -s tests/engineering -p 'test_hengce_taifex_tx_night.py' -v
+      - name: Capture finalized official night session
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          python scripts/hengce_taifex_tx_night_v1.py \
+            --out environment/taifex_tx_night/latest.json \
+            --history-dir environment/taifex_tx_night/history
+      - name: Exact-lease publication on current main
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-taifex-tx-night-bot'
+          git config user.email 'hengce-taifex-tx-night-bot@users.noreply.github.com'
+          git add environment/taifex_tx_night/latest.json environment/taifex_tx_night/history
+          if git diff --cached --quiet; then
+            echo 'TX_NIGHT_SOURCE_UNCHANGED'
+            exit 0
+          fi
+          git commit -m 'data(shadow): official TAIFEX TX night EOD observation'
+          python scripts/hengce_publish.py --profile taifex-tx-night \
+            --report-dir "${RUNNER_TEMP}/hengce-tx-night-publication"
+      - name: Save audit receipts
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hengce-taifex-tx-night-source
+          path: ${{ runner.temp }}/hengce-tx-night-publication
+          if-no-files-found: ignore
+          retention-days: 10
