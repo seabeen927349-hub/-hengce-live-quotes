@@ -2,10 +2,10 @@
   "active_covered_count": 1088,
   "active_required_count": 1088,
   "active_universe_transport_full_coverage": true,
-  "context_payload_sha256": "99287d10863a374a29f907344c412cfda3d7afaecf7696ca38b6fad85c99bb55",
-  "current_market_date_count": 1078,
+  "context_payload_sha256": "55266d2eb4ba7cdce4d1be42961da782542546b80416d2fa685cada7025c8ce5",
+  "current_market_date_count": 1082,
   "current_market_date_observed": true,
-  "current_market_date_ratio": 0.99080882,
+  "current_market_date_ratio": 0.99448529,
   "exception_governance": {
     "active_rows": [],
     "path": "governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json",
@@ -14,29 +14,29 @@
   "exempt_missing": [],
   "feature_detector_input_authority": false,
   "finmind_endpoint": "taiwan_stock_tick_snapshot",
-  "finmind_metric_observation_count": 1078,
+  "finmind_metric_observation_count": 1082,
   "formal_eod_authority": false,
   "formal_escape_authority": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-19T11:31:04.539678+08:00",
+  "generated_at_taipei": "2026-11-19T12:10:34.578087+08:00",
   "healthy_transport": true,
   "inmemory_cross_source_audit": {
     "active_scope_count": 1088,
-    "comparison_completed_at_taipei": "2026-11-19T11:31:07.945694+08:00",
+    "comparison_completed_at_taipei": "2026-11-19T12:10:39.822827+08:00",
     "cross_source_candidate_count": 0,
-    "finmind_current_day_count": 1078,
-    "finmind_response_received_at_taipei": "2026-11-19T11:31:05.392352+08:00",
+    "finmind_current_day_count": 1082,
+    "finmind_response_received_at_taipei": "2026-11-19T12:10:35.733810+08:00",
     "formal_eod_authority": false,
     "fully_independently_verified_count": 0,
-    "mis_existing_scope_count": 9,
+    "mis_existing_scope_count": 5,
     "model_authority": false,
     "new_vendor_requests": 0,
     "per_security_rows_persisted": false,
     "raw_vendor_rows_persisted": false,
     "reason_counts": {
-      "FINMIND_NOT_TODAY": 10,
-      "FINMIND_STALE_TRADE_TIME": 638,
-      "SECOND_SOURCE_NOT_COLLECTED": 440
+      "FINMIND_NOT_TODAY": 6,
+      "FINMIND_STALE_TRADE_TIME": 623,
+      "SECOND_SOURCE_NOT_COLLECTED": 459
     },
     "role": "RESEARCH_INTRADAY_DIAGNOSTIC_ONLY",
     "schema": "HENGCE_FINMIND_IN_MEMORY_SAME_TICK_AUDIT_V1",
@@ -46,20 +46,16 @@
     "trading_authority": false
   },
   "intraday_metric_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
-  "latest_source_timestamp": "2026-11-19 11:30:59.914213",
+  "latest_source_timestamp": "2026-11-19 12:10:30.125463",
   "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
-  "metric_unknown_count": 10,
+  "metric_unknown_count": 6,
   "metric_unknown_sample": [
     "1413",
     "1470",
     "1538",
     "1808",
-    "4190",
-    "6671",
     "6722",
-    "6794",
-    "8101",
-    "8482"
+    "6794"
   ],
   "missing_as_zero_forbidden": true,
   "monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
@@ -75,18 +71,14 @@
   "session_context_ratio": 0.99908088,
   "source": "FinMind",
   "source_binding_promotion_authority": false,
-  "stale_or_noncurrent_count": 10,
+  "stale_or_noncurrent_count": 6,
   "stale_or_noncurrent_sample": [
     "1413",
     "1470",
     "1538",
     "1808",
-    "4190",
-    "6671",
     "6722",
-    "6794",
-    "8101",
-    "8482"
+    "6794"
   ],
   "stale_rows_neutralized_as_zero": false,
   "state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
@@ -94,18 +86,18 @@
   "twse_common_master_count": 1088,
   "twse_master_report_date": "1151118",
   "twse_mis_meta": {
-    "current_date_target_count": 9,
+    "current_date_target_count": 5,
     "query_time": {
       "sessionFromTime": "-1",
       "sessionLatestTime": "-1",
       "sessionStr": "UserSession",
       "showChart": "False",
-      "stockInfo": "7282",
-      "stockInfoItem": "5295",
+      "stockInfo": "10297",
+      "stockInfoItem": "4406",
       "sysDate": "20261119",
-      "sysTime": "11:31:07"
+      "sysTime": "12:10:39"
     },
-    "target_match_count": 9
+    "target_match_count": 5
   },
   "twse_mis_metric_values_used": false,
   "twse_mis_secondary_session_status": "PARTIAL_CURRENT_SESSION_CONTEXT",
@@ -113,17 +105,13 @@
   "twse_mis_session_unresolved_sample": [
     "1808"
   ],
-  "twse_mis_session_verified_count": 9,
+  "twse_mis_session_verified_count": 5,
   "twse_mis_session_verified_sample": [
     "1413",
     "1470",
     "1538",
-    "4190",
-    "6671",
     "6722",
-    "6794",
-    "8101",
-    "8482"
+    "6794"
   ],
   "unexpected_missing_count": 0
 }
