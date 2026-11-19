@@ -1,11 +1,11 @@
 {
-  "asof_taipei": "2026-11-19T12:14:39.544036+08:00",
+  "asof_taipei": "2026-11-20T00:42:00.570861+08:00",
   "escape_formal_state": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
   "finmind": {
     "canonical_previous_twse_date": "2026-11-19",
     "context_digest": "2ac2e7271dd813223c3c72a611bbcde5ffedeb5a7b7b515dde02e209bdb1ebb7",
     "current_session_coverage": 0.99448529,
-    "data_role": "CURRENT_INTRADAY_OBSERVATION",
+    "data_role": "PREVIOUS_COMPLETED_TW_SESSION",
     "existing_transport": "taiwan_stock_tick_snapshot",
     "generated_at_taipei": "2026-11-19T12:10:34.578087+08:00",
     "latest_source_taipei": "2026-11-19T12:10:30.125463+08:00",
@@ -44,7 +44,7 @@
   },
   "schema": "HENGCE_FINMIND_PREMARKET_BRIDGE_V1",
   "status": "PASS_READ_ONLY_CONTEXT",
-  "target_tw_date": "2026-11-19",
+  "target_tw_date": "2026-11-20",
   "two_time_scale_display": {
     "decision_policy": {
       "formal_escape_effect": "NONE",
@@ -71,7 +71,7 @@
       "title": "長期資金環境"
     },
     "schema": "HENGCE_TWO_TIME_SCALE_ENVIRONMENT_DISPLAY_V1",
-    "target_tw_date": "2026-11-19",
+    "target_tw_date": "2026-11-20",
     "today_market_environment": {
       "allowed_labels": [
         "強烈偏多",
