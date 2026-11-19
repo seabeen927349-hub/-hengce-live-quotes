@@ -8,7 +8,7 @@
   "broker_hhi_blocks_core_three_leg_or_mother": false,
   "broker_hhi_capital_authority_created": false,
   "broker_hhi_date": "2026-11-19",
-  "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
+  "broker_hhi_last_result": "ALREADY_COMPLETE_IMMUTABLE",
   "broker_hhi_model_authority_created": false,
   "broker_hhi_receipt": "receipts/broker_hhi.json",
   "broker_hhi_rows": 2338,
@@ -29,19 +29,19 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1091,
       "sha256": "84c1f55c3b406b1e87dd2497038d4e6ab54288ed4463b9354d7808510e512acf"
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1082,
       "sha256": "9e340c52c598c377e356605ab4b28c3e956cc3812e0c877149c90c9c3b4f753a"
     },
     {
       "leg": "margin",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1063,
       "sha256": "090ab6667b1ae484586d19c5c03e7049b770cd1a1a1bd44b4aa9f8e837bf2428"
     }
@@ -51,18 +51,16 @@
   "margin_sha256": "090ab6667b1ae484586d19c5c03e7049b770cd1a1a1bd44b4aa9f8e837bf2428",
   "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
   "margin_status": "COMPLETE",
-  "market_state_finmind_context_path": "market_state_finmind_context.json",
-  "market_state_finmind_context_sha256": "fe6f256cee6900681bb72aa0758c5ad506065669368407938e7e5ff0f136a338",
-  "market_state_finmind_context_status": "ATTACHED_RESEARCH_SHADOW",
+  "market_state_finmind_context_status": "NOT_ATTACHED_CURRENT_RUN",
   "market_state_finmind_finmind_latest_lag_seconds": 28831.835,
   "market_state_finmind_market_scope_definition": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING",
   "market_state_finmind_primary_scope": "twse_all_listed_equities",
   "market_state_finmind_shadow_blocks_core_three_leg_or_mother": false,
   "market_state_finmind_shadow_formal_classifier_mutated": false,
   "market_state_finmind_shadow_model_authority_created": false,
-  "market_state_finmind_shadow_observed_at_taipei": "2026-11-19T23:00:31.834681+08:00",
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-20T06:37:17.397605+08:00",
   "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
-  "market_state_finmind_shadow_status": "OBSERVED_CONTEXT_ATTACHED",
+  "market_state_finmind_shadow_status": "SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT",
   "market_state_finmind_shadow_trading_authority_created": false,
   "market_state_finmind_twse_current_date_count": 1086,
   "market_state_finmind_twse_current_date_coverage_ratio": 0.9981617647058824,
@@ -70,10 +68,22 @@
   "market_state_finmind_twse_snapshot_presence_ratio": 1,
   "market_state_finmind_twse_snapshot_present_count": 1088,
   "model_authority_created": false,
+  "mother_latest_date": "2026-11-19",
   "mother_pending_legs": [],
+  "mother_promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
   "mother_promotion_required": true,
   "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+  "mother_receipt": "receipts/mother.json",
+  "mother_rows": 1039718,
+  "mother_sha256": "03da47d3fdd6cc033e2a3750a24ab1f5537976adc96e2a0b29f49daac0ab0882",
+  "mother_source_integrity_status": "PASS",
+  "mother_source_integrity_verified_at_taipei": "2026-11-19T23:08:10.425756+08:00",
   "mother_status": "COMPLETE",
+  "mother_synced_from_existing_canonical_receipt": "/HENGCE_CANONICAL/HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261119.json",
   "parallel_eod_tree": false,
   "parallel_universe": false,
   "pending_legs": [],
@@ -88,17 +98,5 @@
   "system": "HENGCE",
   "target_date": "2026-11-19",
   "three_leg_complete": true,
-  "updated_at_taipei": "2026-11-19T23:08:10.425756+08:00",
-  "mother_promoted_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ],
-  "mother_sha256": "03da47d3fdd6cc033e2a3750a24ab1f5537976adc96e2a0b29f49daac0ab0882",
-  "mother_latest_date": "2026-11-19",
-  "mother_rows": 1039718,
-  "mother_source_integrity_status": "PASS",
-  "mother_source_integrity_verified_at_taipei": "2026-11-19T23:08:10.425756+08:00",
-  "mother_receipt": "receipts/mother.json",
-  "mother_synced_from_existing_canonical_receipt": "/HENGCE_CANONICAL/HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261119.json"
+  "updated_at_taipei": "2026-11-20T06:37:17.223287+08:00"
 }
