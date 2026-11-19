@@ -7666,9 +7666,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-18",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-19T08:29:32.937901+08:00",
+        "observed_at_taipei": "2026-11-19T10:31:27.127222+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "48f84cd707750924b0e92dd53be499be146b0b5341bf8ed846480f598f803df8",
+        "source_observation_sha256": "df2b2d3fd5464ca5daf192f2db43a38dd780eddbec3a049f3a5f6d4fcddb91b4",
         "sox": {
           "change_pct": 0.1029,
           "latest_close": 9652.79660992175,
@@ -7677,11 +7677,11 @@
           "source_status": "當期已更新"
         },
         "vix": {
-          "change_pct": 11.1305,
-          "latest_close": 25.46,
-          "latest_us_session": "2026-11-17",
+          "change_pct": -3.535,
+          "latest_close": 24.56,
+          "latest_us_session": "2026-11-18",
           "publisher": "Cboe",
-          "source_status": "官方資料待更新"
+          "source_status": "當期已更新"
         }
       },
       "label": "資料不足",
@@ -7690,9 +7690,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-18",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-19T08:29:32.937901+08:00",
+        "observed_at_taipei": "2026-11-19T10:31:27.127222+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "48f84cd707750924b0e92dd53be499be146b0b5341bf8ed846480f598f803df8",
+        "source_observation_sha256": "df2b2d3fd5464ca5daf192f2db43a38dd780eddbec3a049f3a5f6d4fcddb91b4",
         "sox": {
           "change_pct": 0.1029,
           "latest_close": 9652.79660992175,
@@ -7701,11 +7701,11 @@
           "source_status": "當期已更新"
         },
         "vix": {
-          "change_pct": 11.1305,
-          "latest_close": 25.46,
-          "latest_us_session": "2026-11-17",
+          "change_pct": -3.535,
+          "latest_close": 24.56,
+          "latest_us_session": "2026-11-18",
           "publisher": "Cboe",
-          "source_status": "官方資料待更新"
+          "source_status": "當期已更新"
         }
       },
       "postopen_individual_sources": null,
