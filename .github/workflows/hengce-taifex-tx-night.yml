@@ -1,6 +1,12 @@
 name: HENGCE Official TAIFEX TX Night EOD
 
 on:
+  # Bootstrap the official source once after a vetted main-branch deploy.
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hengce_taifex_tx_night_v1.py'
+      - '.github/workflows/hengce-taifex-tx-night.yml'
   pull_request:
     paths:
       - 'scripts/hengce_taifex_tx_night_v1.py'
