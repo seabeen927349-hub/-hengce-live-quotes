@@ -2,42 +2,64 @@
   "active_covered_count": 1088,
   "active_required_count": 1088,
   "active_universe_transport_full_coverage": true,
-  "context_payload_sha256": "37e01fb878f31e824a63cb2586143d898dcfc1ab265973d0a30db519c6ff03bd",
-  "current_market_date_count": 1084,
+  "context_payload_sha256": "99287d10863a374a29f907344c412cfda3d7afaecf7696ca38b6fad85c99bb55",
+  "current_market_date_count": 1078,
   "current_market_date_observed": true,
-  "current_market_date_ratio": 0.99632353,
+  "current_market_date_ratio": 0.99080882,
   "exception_governance": {
-    "active_rows": [
-      {
-        "effective_end": "2026-11-17",
-        "effective_start": "2026-04-07",
-        "source_count": 2,
-        "ticker": "1589"
-      }
-    ],
+    "active_rows": [],
     "path": "governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json",
     "sha256": "f227c418e4f88f6420117fe19d5b7da98ce7fd4184534d6b574d3fe5da063797"
   },
-  "exempt_missing": [
-    "1589"
-  ],
+  "exempt_missing": [],
   "feature_detector_input_authority": false,
   "finmind_endpoint": "taiwan_stock_tick_snapshot",
-  "finmind_metric_observation_count": 1084,
+  "finmind_metric_observation_count": 1078,
   "formal_eod_authority": false,
   "formal_escape_authority": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-17T13:05:17.949313+08:00",
+  "generated_at_taipei": "2026-11-19T11:31:04.539678+08:00",
   "healthy_transport": true,
+  "inmemory_cross_source_audit": {
+    "active_scope_count": 1088,
+    "comparison_completed_at_taipei": "2026-11-19T11:31:07.945694+08:00",
+    "cross_source_candidate_count": 0,
+    "finmind_current_day_count": 1078,
+    "finmind_response_received_at_taipei": "2026-11-19T11:31:05.392352+08:00",
+    "formal_eod_authority": false,
+    "fully_independently_verified_count": 0,
+    "mis_existing_scope_count": 9,
+    "model_authority": false,
+    "new_vendor_requests": 0,
+    "per_security_rows_persisted": false,
+    "raw_vendor_rows_persisted": false,
+    "reason_counts": {
+      "FINMIND_NOT_TODAY": 10,
+      "FINMIND_STALE_TRADE_TIME": 638,
+      "SECOND_SOURCE_NOT_COLLECTED": 440
+    },
+    "role": "RESEARCH_INTRADAY_DIAGNOSTIC_ONLY",
+    "schema": "HENGCE_FINMIND_IN_MEMORY_SAME_TICK_AUDIT_V1",
+    "selection_authority": false,
+    "session_date": "2026-11-19",
+    "status": "BLOCKED_NO_SAME_TIME_SECOND_SOURCE",
+    "trading_authority": false
+  },
   "intraday_metric_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
-  "latest_source_timestamp": "2026-11-17 13:05:10.785974",
+  "latest_source_timestamp": "2026-11-19 11:30:59.914213",
   "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
-  "metric_unknown_count": 4,
+  "metric_unknown_count": 10,
   "metric_unknown_sample": [
-    "1435",
+    "1413",
+    "1470",
     "1538",
     "1808",
-    "3593"
+    "4190",
+    "6671",
+    "6722",
+    "6794",
+    "8101",
+    "8482"
   ],
   "missing_as_zero_forbidden": true,
   "monitoring_universe": "ALL_TWSE_LISTED_COMMON_STOCKS",
@@ -53,31 +75,37 @@
   "session_context_ratio": 0.99908088,
   "source": "FinMind",
   "source_binding_promotion_authority": false,
-  "stale_or_noncurrent_count": 4,
+  "stale_or_noncurrent_count": 10,
   "stale_or_noncurrent_sample": [
-    "1435",
+    "1413",
+    "1470",
     "1538",
     "1808",
-    "3593"
+    "4190",
+    "6671",
+    "6722",
+    "6794",
+    "8101",
+    "8482"
   ],
   "stale_rows_neutralized_as_zero": false,
   "state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
   "trading_authority": false,
-  "twse_common_master_count": 1089,
-  "twse_master_report_date": "1151116",
+  "twse_common_master_count": 1088,
+  "twse_master_report_date": "1151118",
   "twse_mis_meta": {
-    "current_date_target_count": 3,
+    "current_date_target_count": 9,
     "query_time": {
       "sessionFromTime": "-1",
       "sessionLatestTime": "-1",
       "sessionStr": "UserSession",
       "showChart": "False",
-      "stockInfo": "115745",
-      "stockInfoItem": "8524",
-      "sysDate": "20261117",
-      "sysTime": "13:05:23"
+      "stockInfo": "7282",
+      "stockInfoItem": "5295",
+      "sysDate": "20261119",
+      "sysTime": "11:31:07"
     },
-    "target_match_count": 3
+    "target_match_count": 9
   },
   "twse_mis_metric_values_used": false,
   "twse_mis_secondary_session_status": "PARTIAL_CURRENT_SESSION_CONTEXT",
@@ -85,11 +113,17 @@
   "twse_mis_session_unresolved_sample": [
     "1808"
   ],
-  "twse_mis_session_verified_count": 3,
+  "twse_mis_session_verified_count": 9,
   "twse_mis_session_verified_sample": [
-    "1435",
+    "1413",
+    "1470",
     "1538",
-    "3593"
+    "4190",
+    "6671",
+    "6722",
+    "6794",
+    "8101",
+    "8482"
   ],
   "unexpected_missing_count": 0
 }
