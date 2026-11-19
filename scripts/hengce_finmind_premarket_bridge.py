@@ -28,16 +28,19 @@ def ensure(condition,message):
     if not condition:
         raise ValueError(message)
 
-def build(context,status,monitor,phase,target,previous,asof,premarket=None):
+def build(context,status,monitor,phase,target,previous,asof,premarket=None,canonical_previous=None):
     """Fail closed on clock, source, coverage or authority mismatch."""
     ensure(phase in ("PREOPEN_PREVIOUS_SESSION","INTRADAY_CURRENT_SESSION"),"bad phase")
     target_day=dt.date.fromisoformat(target)
     source_day=dt.date.fromisoformat(previous)
+    official_source_day=dt.date.fromisoformat(canonical_previous or previous)
     now=stamp(asof)
     ensure(now.date()==target_day and target_day.weekday()<5,"invalid target/asof")
     preopen=phase=="PREOPEN_PREVIOUS_SESSION"
     if preopen:
-        ensure(source_day<target_day and now.hour<9,"preopen needs prior session and before 09:00")
+        ensure(source_day<=official_source_day<target_day and
+               (target_day-official_source_day).days<=7 and now.hour<9,
+               "preopen needs verified canonical prior session and before 09:00")
     else:
         ensure(source_day==target_day and (9,0)<=(now.hour,now.minute)<=(13,45),"not a live TWSE session")
     for label,obj in (("context",context),("status",status),("monitor",monitor)):
@@ -81,7 +84,8 @@ def build(context,status,monitor,phase,target,previous,asof,premarket=None):
     if premarket is not None:
         ensure(preopen and premarket.get("version")=="HENGCE-PREMARKET-V1","bad model packet")
         ensure(premarket.get("target_tw_date")==target and
-               premarket.get("reference_prev_tw_date")==previous,"model/TW session mismatch")
+               premarket.get("reference_prev_tw_date")==official_source_day.isoformat(),
+               "model/canonical TW EOD session mismatch")
         latest_us=dt.date.fromisoformat(premarket["latest_us_session"])
         base_us=dt.date.fromisoformat(premarket["base_us_session"])
         ensure(base_us<latest_us<target_day,"invalid US session chronology")
@@ -158,8 +162,12 @@ def build(context,status,monitor,phase,target,previous,asof,premarket=None):
       "target_tw_date":target,"asof_taipei":now.isoformat(),
       "finmind":{
         "existing_transport":"taiwan_stock_tick_snapshot",
-        "data_role":"PREVIOUS_COMPLETED_TW_SESSION" if preopen else "CURRENT_INTRADAY_OBSERVATION",
-        "source_market_date":previous,"latest_source_taipei":latest.isoformat(),
+        "data_role":("OLDER_FINMIND_HISTORICAL_SHADOW" if preopen and source_day<official_source_day
+                     else "PREVIOUS_COMPLETED_TW_SESSION" if preopen
+                     else "CURRENT_INTRADAY_OBSERVATION"),
+        "source_market_date":previous,
+        "canonical_previous_twse_date":official_source_day.isoformat(),
+        "latest_source_taipei":latest.isoformat(),
         "generated_at_taipei":status["generated_at_taipei"],
         "required_count":n,"observed_count":observed,"unknown_count":unknown,
         "current_session_coverage":coverage,"metric_contract_sha256":METRIC_SHA,
@@ -173,7 +181,7 @@ def build(context,status,monitor,phase,target,previous,asof,premarket=None):
         "interpretation":"Historical session observations, NOT future fund flows or formal Escape metrics."
       },
       "premarket_forecast":prediction,
-      "two_time_scale_display":build_display(prediction,target,previous),
+      "two_time_scale_display":build_display(prediction,target,official_source_day.isoformat()),
       "macro_regime":"UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
       "escape_formal_state":"UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
       "governance":{"new_finmind_fetch":False,"new_market_universe":False,
@@ -189,11 +197,12 @@ def main():
     for field in ("phase","target-tw-date","expected-finmind-session","asof-taipei"):
         p.add_argument("--"+field,required=True)
     p.add_argument("--premarket",type=Path)
+    p.add_argument("--canonical-previous-twse-date")
     a=p.parse_args()
     read=lambda x:json.loads(x.read_text(encoding="utf-8"))
     obj=build(read(a.context),read(a.status),read(a.monitor),
       a.phase,a.target_tw_date,a.expected_finmind_session,a.asof_taipei,
-      read(a.premarket) if a.premarket else None)
+      read(a.premarket) if a.premarket else None,a.canonical_previous_twse_date)
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(obj,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"status":obj["status"],"finmind_date":obj["finmind"]["source_market_date"],
