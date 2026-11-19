@@ -14,12 +14,16 @@ import json
 import math
 import re
 import urllib.request
+from html import unescape
+from html.parser import HTMLParser
+from urllib.parse import urlencode, parse_qs
 from pathlib import Path
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Asia/Taipei")
 URL = "https://openapi.taifex.com.tw/v1/DailyMarketReportFut"
+DAILY_URL = "https://www.taifex.com.tw/cht/3/futDailyMarketReport"
 SCHEMA = "HENGCE_TAIFEX_TX_NIGHT_EOD_OBSERVATION_V1"
 SESSION = "盤後"
 SHA = re.compile(r"^[0-9a-f]{64}$")
@@ -53,7 +57,7 @@ def trading_date(value):
     raise ValueError("TX_NIGHT_BAD_TRADING_DATE")
 
 
-def parse(raw, asof, *, source_url=URL):
+def parse(raw, asof, *, source_url=URL, vendor_raw=None):
     """Only finalized TX night rows; near month determined within the SAME date."""
     if not 20 < len(raw) <= 5_000_000:
         raise ValueError("TX_NIGHT_BAD_SOURCE_SIZE")
@@ -63,7 +67,15 @@ def parse(raw, asof, *, source_url=URL):
     if asof.tzinfo is None:
         raise ValueError("TX_NIGHT_ASOF_TIMEZONE_REQUIRED")
     now = asof.astimezone(TZ)
-    if urlsplit(source_url).hostname != "openapi.taifex.com.tw":
+    parsed=urlsplit(source_url)
+    if not ((parsed.scheme=="https" and parsed.hostname=="openapi.taifex.com.tw"
+             and parsed.path=="/v1/DailyMarketReportFut" and not parsed.query)
+            or (parsed.scheme=="https" and parsed.hostname=="www.taifex.com.tw"
+             and parsed.path=="/cht/3/futDailyMarketReport"
+             and parse_qs(parsed.query).get("commodity_id")==["TX"]
+             and parse_qs(parsed.query).get("marketCode")==["1"]
+             and parse_qs(parsed.query).get("queryType")==["2"]
+             and parse_qs(parsed.query).get("queryDate")==[now.strftime("%Y/%m/%d")])):
         raise ValueError("TX_NIGHT_SOURCE_NOT_TAIFEX")
     # Do not take a live/unfinished night-market row or guess a completed 05:00.
     closed_cutoff = dt.time(5, 15)
@@ -124,7 +136,7 @@ def parse(raw, asof, *, source_url=URL):
         "status": ("OFFICIAL_TX_NIGHT_ASOF_TW_SESSION" if latest_day == now.date()
                    else "OFFICIAL_TX_NIGHT_HISTORICAL_NOT_CURRENT"),
         "source": "TAIFEX", "source_url": source_url,
-        "source_raw_sha256": hashlib.sha256(raw).hexdigest(),
+        "source_raw_sha256": hashlib.sha256(vendor_raw if vendor_raw is not None else raw).hexdigest(),
         "observed_at_taipei": now.isoformat(),
         "product": "TX", "trading_session": SESSION,
         "session_label_semantics": "TAIFEX_NEXT_REGULAR_TRADING_DATE",
@@ -150,13 +162,123 @@ def fetch():
     return raw
 
 
+
+class _TableParser(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.rows=[]
+        self.in_row=False
+        self.in_cell=False
+        self.cells=[]
+        self.cell_parts=[]
+        self.text=[]
+
+    def handle_starttag(self,tag,attrs):
+        if tag=="tr":
+            self.in_row=True
+            self.cells=[]
+        if self.in_row and tag in ("td","th"):
+            self.in_cell=True
+            self.cell_parts=[]
+
+    def handle_data(self,data):
+        self.text.append(data)
+        if self.in_cell:
+            self.cell_parts.append(data)
+
+    def handle_endtag(self,tag):
+        if tag in ("td","th") and self.in_cell:
+            self.cells.append(" ".join(" ".join(self.cell_parts).split()))
+            self.in_cell=False
+        if tag=="tr" and self.in_row:
+            if self.cells:
+                self.rows.append(self.cells)
+            self.in_row=False
+
+
+def website_url(day):
+    return DAILY_URL+"?"+urlencode({
+        "commodity_id":"TX","marketCode":"1",
+        "queryDate":day.strftime("%Y/%m/%d"),"queryType":"2"})
+
+
+def parse_official_website(raw,day):
+    """Accept only a date-matching TAIFEX TX night table, not a cached day page."""
+    if not 100 < len(raw) <= 5_000_000:
+        raise ValueError("TX_NIGHT_WEB_SOURCE_SIZE_INVALID")
+    try:
+        html=raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        html=raw.decode("cp950")
+    p=_TableParser()
+    p.feed(html)
+    content=" ".join(p.text)
+    if not re.search(r"日期\s*[:：]\s*"+re.escape(day.strftime("%Y/%m/%d")),content):
+        raise ValueError("TX_NIGHT_WEB_DATE_MISMATCH")
+    if ("盤後交易時段行情表" not in content
+        or not re.search(r"臺股期貨\s*\(\s*TX\s*\)\s*行情表",content)):
+        raise ValueError("TX_NIGHT_WEB_NOT_TX_AFTERHOURS")
+    records=[]
+    for cells in p.rows:
+        if len(cells)<9 or cells[0].strip()!="TX" or not MONTH.fullmatch(cells[1].strip()):
+            continue
+        if any(not re.fullmatch(r"[\d,]+(?:\.\d+)?",cells[i].strip())
+               for i in (2,3,4,5,8)):
+            continue
+        records.append({
+            "Date":day.strftime("%Y%m%d"),"Contract":"TX",
+            "TradingSession":"盤後","ContractMonth(Week)":cells[1].strip(),
+            "Open":cells[2].strip(),"High":cells[3].strip(),
+            "Low":cells[4].strip(),"Last":cells[5].strip(),
+            "Volume":cells[8].strip()})
+    if not records:
+        raise ValueError("TX_NIGHT_WEB_NO_VALID_TX_ROWS")
+    return json.dumps(records,ensure_ascii=False).encode("utf-8")
+
+
+def fetch_official_website(day):
+    url=website_url(day)
+    req=urllib.request.Request(url,headers={
+        "User-Agent":"Mozilla/5.0 HENGCE-TAIFEX-TX-NIGHT/1.0",
+        "Accept":"text/html,*/*"})
+    with urllib.request.urlopen(req,timeout=25) as response:
+        final=urlsplit(response.geturl())
+        if final.hostname!="www.taifex.com.tw" or final.scheme!="https":
+            raise ValueError("TX_NIGHT_WEB_UNTRUSTED_REDIRECT")
+        raw=response.read(5_000_001)
+    return raw,url
+
+
+def best_official_observation(now):
+    """Use official same-day website if OpenAPI still reports prior session."""
+    api=None
+    try:
+        api=parse(fetch(),now)
+    except (OSError,ValueError,TypeError,KeyError,RuntimeError) as e:
+        api=None
+    if api is not None and api["session_date"]==now.date().isoformat():
+        return api
+    try:
+        source_raw,url=fetch_official_website(now.date())
+        data=parse_official_website(source_raw,now.date())
+        official=parse(data,now,source_url=url,vendor_raw=source_raw)
+        if official["session_date"]==now.date().isoformat():
+            return official
+    except (OSError,ValueError,TypeError,KeyError,RuntimeError):
+        pass
+    if api is not None:
+        return api
+    raise ValueError("TX_NIGHT_NO_VERIFIED_OFFICIAL_SESSION_SOURCE")
+
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--history-dir", type=Path, required=True)
     args = p.parse_args()
     now = dt.datetime.now(TZ)
-    result = parse(fetch(), now)
+    result = best_official_observation(now)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     if args.out.exists():
         prior = json.loads(args.out.read_text(encoding="utf-8"))

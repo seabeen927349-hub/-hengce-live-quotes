@@ -8,7 +8,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-from hengce_taifex_tx_night_v1 import parse, canonical, URL, SCHEMA
+from hengce_taifex_tx_night_v1 import (parse, canonical, URL, SCHEMA,
+    website_url, parse_official_website, best_official_observation)
 
 TZ = ZoneInfo("Asia/Taipei")
 AM = dt.datetime(2026,11,19,5,30,tzinfo=TZ)
@@ -83,6 +84,48 @@ class TXNightTests(unittest.TestCase):
             parse(raw([row(),row(last="28330")]),AM)
         with self.assertRaisesRegex(ValueError,"TX_NIGHT_ASOF_TIMEZONE_REQUIRED"):
             parse(raw([row()]),AM.replace(tzinfo=None))
+
+
+    def test_official_website_recovers_new_session_from_lagging_openapi(self):
+        from unittest.mock import patch
+        html = ("""<html><body><p>日期： 2026/11/19</p>
+           <h1>臺股期貨 ( TX ) 行情表</h1>
+           <p>2026/11/18 15:00~次日05:00 盤後交易時段行情表</p>
+           <table><tr><th>契約</th><th>月份</th></tr>
+           <tr><td>TX</td><td>202612</td><td>40330</td>
+           <td>40689</td><td>39411</td><td>39987</td><td>-345</td>
+           <td>-0.86%</td><td>56051</td></tr>
+           <tr><td>TX</td><td>202701</td><td>40476</td>
+           <td>40747</td><td>39695</td><td>40133</td><td>-343</td>
+           <td>-0.85%</td><td>154</td></tr></table></body></html>""").encode("utf-8")
+        structured=parse_official_website(html,AM.date())
+        p=parse(structured,AM,source_url=website_url(AM.date()),vendor_raw=html)
+        self.assertEqual(p["session_date"],"2026-11-19")
+        self.assertEqual(p["night_last"],39987)
+        self.assertEqual(p["night_volume_contracts"],56051)
+        self.assertIn("www.taifex.com.tw",p["source_url"])
+        self.assertNotEqual(p["source_raw_sha256"],__import__("hashlib").sha256(structured).hexdigest())
+        older=raw([row(day="20261118",month="202612",last="39894",
+                       high="40550",low="39142",open_="40109")])
+        with patch("hengce_taifex_tx_night_v1.fetch",return_value=older), \
+             patch("hengce_taifex_tx_night_v1.fetch_official_website",
+                   return_value=(html,website_url(AM.date()))):
+            actual=best_official_observation(AM)
+        self.assertEqual(actual["night_last"],39987)
+        self.assertEqual(actual["status"],"OFFICIAL_TX_NIGHT_ASOF_TW_SESSION")
+        self.assertFalse(actual["trading_authority"])
+
+    def test_taifex_website_cached_other_date_rejected(self):
+        html=("<p>日期： 2026/11/18</p>"
+              "<h1>臺股期貨 ( TX ) 行情表</h1>"
+              "<p>盤後交易時段行情表</p><table><tr>"
+              "<td>TX</td><td>202612</td><td>10</td><td>12</td>"
+              "<td>9</td><td>11</td><td>-1</td><td>-1%</td>"
+              "<td>100</td></tr></table>").encode()
+        with self.assertRaisesRegex(ValueError,"TX_NIGHT_WEB_DATE_MISMATCH"):
+            parse_official_website(html,AM.date())
+        with self.assertRaisesRegex(ValueError,"TX_NIGHT_SOURCE_NOT_TAIFEX"):
+            parse(raw([row()]),AM,source_url=website_url(AM.date()).replace("marketCode=1","marketCode=0"))
 
     def test_publisher_exact_lease(self):
         import hengce_publish
