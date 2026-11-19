@@ -100,6 +100,17 @@ PROFILES = {
                      ('research/hba_surveillance/**', 'overseas_premarket/**',
                       'escape_live/finmind_premarket_bridge_shadow.json'),
     },
+    # Official TAIFEX TX after-hours EOD: an independent market observation,
+    # never an original three-leg, stock-ranking, or order-execution input.
+    'taifex-tx-night': {
+        'writes': ('environment/taifex_tx_night/latest.json',
+                   'environment/taifex_tx_night/history/**'),
+        'unrelated': OBSERVABILITY_ONLY +
+                     ('research/hba_surveillance/**',
+                      'environment/taifex_taiwan_vix/**',
+                      'overseas_premarket/**',
+                      'escape_live/finmind_premarket_bridge_shadow.json'),
+    },
     'health-only': {'writes': ('hengce/health/latest.json',), 'unrelated': OBSERVABILITY_ONLY},
     'q017-primary-capture': {
         'writes': PRIMARY_CAPTURE_WRITES,
