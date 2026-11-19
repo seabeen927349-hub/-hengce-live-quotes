@@ -315,18 +315,27 @@ def get_vix_eod(expected):
     """
     best=None
     errors=[]
+    anchor=None
     for endpoint in (VIX_URL,VIX_MIRROR_URL):
         try:
             raw=fetch(endpoint)
             rows=cboe_rows(raw)
             days=[d for d in rows if d<=expected and d.weekday()<5]
             latest=max(days) if days else dt.date(1900,1,1)
-            if best is None or latest>best[0]:
-                best=(latest,raw,rows,endpoint)
-            if latest>=expected:
-                break
         except (OSError,ValueError,RuntimeError) as error:
             errors.append(endpoint+":"+type(error).__name__)
+            continue
+        if anchor is not None:
+            overlap=sorted(set(anchor)&set(rows))
+            for date in overlap[-5:]:
+                require(abs(anchor[date]-rows[date])<=1e-8,
+                        "CBOE_CDN_OVERLAPPING_CLOSE_MISMATCH:"+date.isoformat())
+        else:
+            anchor=rows
+        if best is None or latest>best[0]:
+            best=(latest,raw,rows,endpoint)
+        if latest>=expected:
+            break
     require(best is not None,"BOTH_CBOE_OFFICIAL_CDN_ENDPOINTS_UNAVAILABLE "+str(errors))
     return best[1],best[2],best[3]
 
