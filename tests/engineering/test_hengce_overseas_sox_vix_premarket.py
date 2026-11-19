@@ -311,7 +311,7 @@ class OverseasProducerTests(unittest.TestCase):
 
     def test_cboe_mirror_only_when_official_history_lags(self):
         from unittest.mock import patch
-        mainraw=b"DATE,OPEN,HIGH,LOW,CLOSE\n11/17/2026,20,21,19,20\n"
+        mainraw=b"DATE,OPEN,HIGH,LOW,CLOSE\n11/16/2026,19,20,18,19\n11/17/2026,20,21,19,20\n"
         mirrorraw=b"DATE,OPEN,HIGH,LOW,CLOSE\n11/17/2026,20,21,19,20\n11/18/2026,21,23,21,23\n"
         with patch("hengce_overseas_sox_vix_premarket_v1.fetch",
                    side_effect=[mainraw,mirrorraw]) as mocked:
