@@ -11,7 +11,7 @@ import math
 from pathlib import Path
 from zoneinfo import ZoneInfo
 from hengce_two_time_scale_environment_display import build_display
-from hengce_overseas_sox_vix_premarket_v1 import MODEL, COEFFICIENTS, CUTS, canonical, SOX_URL, VIX_URL
+from hengce_overseas_sox_vix_premarket_v1 import MODEL, COEFFICIENTS, CUTS, canonical, SOX_URL, VIX_URL, VIX_MIRROR_URL
 
 TZ = ZoneInfo("Asia/Taipei")
 METRIC_SHA = "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281"
@@ -111,7 +111,7 @@ def build(context,status,monitor,phase,target,previous,asof,premarket=None):
             ensure(sox.get("publisher")=="Nasdaq" and
                    str(sox.get("url","")).startswith(SOX_URL+"?") and
                    vix.get("publisher")=="Cboe" and
-                   vix.get("url")==VIX_URL,"vendor URL contract mismatch")
+                   vix.get("url") in (VIX_URL,VIX_MIRROR_URL),"vendor URL contract mismatch")
             for leg in (sox,vix):
                 ensure(leg.get("latest_us_session")==latest_us.isoformat()
                        and leg.get("prior_us_session")==base_us.isoformat(),
