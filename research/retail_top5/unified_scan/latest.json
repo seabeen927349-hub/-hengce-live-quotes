@@ -3,9 +3,9 @@
   "status": "PRIVATE_CANONICAL_REPORT_POINTER_ONLY",
   "system": "HENGCE",
   "main_report_repository": "seabeen927349-hub/twse--backfill-test",
-  "main_report_path": "hengce/private_v22d_autoscan/reports/latest.md",
-  "main_report_url": "https://github.com/seabeen927349-hub/twse--backfill-test/blob/main/hengce/private_v22d_autoscan/reports/latest.md",
-  "main_json_path": "hengce/private_v22d_autoscan/reports/latest.json",
+  "main_report_path": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
+  "main_report_url": "https://github.com/seabeen927349-hub/twse--backfill-test/blob/main/hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
+  "main_json_path": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
   "model_private": true,
   "public_market_data_source": "seabeen927349-hub/-hengce-live-quotes",
   "active_public_model_rankings": 0,
@@ -16,5 +16,7 @@
   "formal_selection_authority": false,
   "broker_execution": false,
   "authorized_lots": 0,
-  "note": "Only the private original V2.2D runner publishes the current research list. The public TWSE original EOD/TDCC vessel remains read-only source."
+  "note": "Single governed research report is the private fixed readout, preserving original V2.2D ranking and separate signed B research intents. No order authority.",
+  "publication_role": "POINTER_TO_FIXED_V22D_AND_SIGNED_B_REPORT_NOT_DUPLICATE_MODEL",
+  "link_contains_separate_paper_b": true
 }
