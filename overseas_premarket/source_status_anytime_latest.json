@@ -2,13 +2,13 @@
   "capital_authority": false,
   "composite_forecast_emitted": false,
   "composite_readiness": "ANYTIME_SOURCE_ONLY_NO_PREOPEN_FORECAST",
-  "expected_us_session": "2026-11-19",
+  "expected_us_session": "2026-11-20",
   "expected_us_session_basis": "US_EASTERN_1600_WEEKDAY_CLOCK_ONLY",
   "observation_window": "ANYTIME_SOURCE_ONLY",
-  "observed_at_taipei": "2026-11-20T21:06:30.832007+08:00",
+  "observed_at_taipei": "2026-11-21T05:52:19.345419+08:00",
   "reference_prev_tw_date": null,
   "schema": "HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1",
-  "source_observation_sha256": "27db520f1a625ca756452dc81b611d381079ddf8955e8a02de9a22f6cddb6840",
+  "source_observation_sha256": "e9d3b1dde1dd9503763a123aec36ec979d1227c1649d07f369ddf58104fd23a0",
   "sources": {
     "sox": {
       "latest_close": 9419.72239497284,
@@ -16,11 +16,11 @@
       "prior_close": 9652.79660992175,
       "prior_us_session": "2026-11-18",
       "publisher": "Nasdaq",
-      "raw_bytes": 7825,
-      "raw_sha256": "890c3b7c53ddbe692d80658898d12982578686ca26e3bbe42f471858b4de103f",
-      "source_status": "EXPECTED_US_EOD_PRESENT",
+      "raw_bytes": 8472,
+      "raw_sha256": "1c0e0e44b59d134bd5083837e1b191d85953a6da7153e50c9c06be9c6ec16886",
+      "source_status": "EXPECTED_US_EOD_NOT_YET_PUBLISHED",
       "symbol": "SOX",
-      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-26T00:00:00.000&endDate=2026-11-21T00:00:00.000&timeOfDay=EOD"
+      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-27T00:00:00.000&endDate=2026-11-22T00:00:00.000&timeOfDay=EOD"
     },
     "vix": {
       "latest_close": 28.44,
@@ -30,12 +30,12 @@
       "publisher": "Cboe",
       "raw_bytes": 475063,
       "raw_sha256": "0d9c033a1ee06d41832ef98ce17d84910c8c386d890daca5cb24bbf9cd4af8d5",
-      "source_status": "EXPECTED_US_EOD_PRESENT",
+      "source_status": "EXPECTED_US_EOD_NOT_YET_PUBLISHED",
       "symbol": "VIX",
       "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
     }
   },
   "status": "OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY",
-  "target_tw_date": "2026-11-20",
+  "target_tw_date": "2026-11-21",
   "trading_authority": false
 }
