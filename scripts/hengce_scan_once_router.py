@@ -446,8 +446,10 @@ def report(now=None, root=None, *, holdings=None, journal=None, previous=None, v
         if (p.get("schema")=="HENGCE_UNIFIED_PRIVATE_SINGLE_SOURCE_POINTER_V1"
                 and p.get("status")=="PRIVATE_CANONICAL_REPORT_POINTER_ONLY"
                 and p.get("main_report_repository")=="seabeen927349-hub/twse--backfill-test"
-                and p.get("main_report_path")=="hengce/private_v22d_autoscan/reports/latest.md"
+                and p.get("main_report_path")=="hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md"
                 and p.get("broker_execution") is False
+                and p.get("main_json_path")=="hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json"
+                and p.get("link_contains_separate_paper_b") is True
                 and p.get("ranked")==[] and p.get("top5")==[]):
             unified_main={
                 "status":"PRIVATE_CANONICAL_REPORT_POINTER_ONLY",
