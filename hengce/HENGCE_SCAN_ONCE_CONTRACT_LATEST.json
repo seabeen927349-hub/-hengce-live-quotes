@@ -170,5 +170,25 @@
     ],
     "historical_model_exit_watchlist_policy": "REPORT_PRIOR_VERIFIED_EXIT_SCORE_WITH_PRIOR_DATE_BUT_NEVER_AS_TODAY_MODEL_SCORE",
     "historical_model_exit_watchlist_never_reinsert_into_v22d_ab": true
+  },
+  "entry_exit_b_paper": {
+    "status": "ENABLED_SEPARATE_PAPER_READOUT_PENDING_PROSPECTIVE_BATCH",
+    "trigger": "衡策掃一次",
+    "model": "ENTRY_EXIT_V3_B_ML_FIXED5",
+    "never_mix_with_tdcc_ab": true,
+    "display_with_private_fixed_scan_once": true,
+    "display_location": "SECTION_5_B_PAPER_SUBSECTION",
+    "private_repository": "seabeen927349-hub/twse--backfill-test",
+    "private_report_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
+    "private_report_markdown": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
+    "report_field": "entry_exit_b_paper",
+    "current_independent_paper_source": "hengce/entry_exit_b/forward_latest.json",
+    "source_policy": "SIGNATURE_VERIFIED_PROSPECTIVE_DECISIONS_ONLY",
+    "initial_state": "WAITING_FIRST_SIGNED_BATCH",
+    "buy_sell_authority": "PAPER_ONLY",
+    "no_order_execution": true,
+    "no_v22d_weights_or_ranking_change": true,
+    "missing_or_stale": "SHOW_WAIT_SOURCE_DATE_NEVER_SYNTHESIZE_TRADES",
+    "cross_chat_read_required": true
   }
 }
