@@ -66,7 +66,7 @@
     "trigger": "衡策掃一次",
     "private_repository": "seabeen927349-hub/twse--backfill-test",
     "canonical_contract": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "canonical_contract_git_blob_sha": "357585f2ccd37c97adeded6c363a1914c6d67f54",
+    "canonical_contract_git_blob_sha": "03920b1c0fe59f673931176c0a73d10d6d89f06e",
     "readout_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
     "readout_markdown": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
     "cross_chat_read_required": true,
@@ -189,7 +189,8 @@
     "no_order_execution": true,
     "no_v22d_weights_or_ranking_change": true,
     "missing_or_stale": "SHOW_WAIT_SOURCE_DATE_NEVER_SYNTHESIZE_TRADES",
-    "cross_chat_read_required": true
+    "cross_chat_read_required": true,
+    "price_columns_must_show_signed_fill_or_explicit_unfilled": true
   },
   "combined_display_mode_v1": {
     "status": "FROZEN_CONTRACT_IN_PRIVATE_MAIN",
@@ -247,6 +248,25 @@
     "missing_source": "SHOW_MISSING_WITH_REASON_AND_SOURCE_DATE",
     "original_hidden_modules_unchanged": true,
     "only_modify_after_user_approval": true,
-    "requested_date": "2026-11-20"
+    "requested_date": "2026-11-20",
+    "price_display_policy": {
+      "source_close": "FROZEN_VERIFIED_SIGNAL_DAY_EOD_ONLY",
+      "risk_sizing_buffer_multiplier": 1.1,
+      "illustrative_stop_fraction": 0.88,
+      "buy_open_slippage_multiplier": 1.001,
+      "buy_fee_fraction": 0.001425,
+      "sell_open_slippage_multiplier": 0.999,
+      "sell_fee_fraction": 0.001425,
+      "sell_tax_fraction": 0.003,
+      "entry_exit_execution": "NEXT_OFFICIAL_SESSION_OPEN_ONLY_AFTER_SIGNED_PRIOR_SIGNAL",
+      "paper_actual_fill": "EXCLUSIVELY_FROM_SIGNED_OPENING_EVENTS_NO_RETROACTIVE_REPLAY",
+      "historical_fugle_open": "DATED_EX_POST_COMPARISON_NOT_ACTUAL_PAPER_FILL",
+      "pending_sell_execution": "NO_SELL_PRICE_BEFORE_VERIFIED_NEXT_OPEN",
+      "no_model_or_mother_changes": true,
+      "unknown_prices": "DASH_NOT_ZERO",
+      "price_columns_must_appear_in_markdown_and_json": true
+    },
+    "fixed_price_report_required": true,
+    "published_view": "RESEARCH_PRICE_ESTIMATE_SEPARATE_FROM_RFC3161_PAPER_EXECUTION"
   }
 }
