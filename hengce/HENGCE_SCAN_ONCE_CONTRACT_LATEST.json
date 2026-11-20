@@ -224,5 +224,29 @@
     "execution_authority": false,
     "capital_authority_twd": 0,
     "changes_only_by_user": true
+  },
+  "combined_display_mode": {
+    "status": "FIXED_CROSS_CHAT_REPORT_MODE",
+    "id": "HENGCE_SCAN_ONCE_V22D_B_COMBINED_DISPLAY_20261120_V1",
+    "trigger": "衡策掃一次",
+    "source_repository": "seabeen927349-hub/twse--backfill-test",
+    "private_contract": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
+    "readout_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
+    "readout_markdown": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
+    "keep_original_v22d_ranking": true,
+    "display_v22d_main_and_full_prefilter": true,
+    "display_institutional_big400_evidence": true,
+    "display_fugle_current_session_only_if_verified": true,
+    "display_environment_and_original_eod_health": true,
+    "display_independent_signed_b_paper": true,
+    "display_separate_historical_b_recalc": true,
+    "retrospective_source": "hengce/entry_exit_b/recalc_latest.json",
+    "no_unsiged_b_order_claim": true,
+    "no_broker_execution": true,
+    "cross_chat_read_required": true,
+    "missing_source": "SHOW_MISSING_WITH_REASON_AND_SOURCE_DATE",
+    "original_hidden_modules_unchanged": true,
+    "only_modify_after_user_approval": true,
+    "requested_date": "2026-11-20"
   }
 }
