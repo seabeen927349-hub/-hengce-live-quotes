@@ -99,7 +99,7 @@
     "status": "ACTIVE_USER_APPROVED_DISPLAY_LOCK",
     "policy_id": "HENGCE_SCAN_ONCE_FIXED_VISIBLE_REPORT_20261117",
     "private_contract_path": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "private_contract_git_blob_sha": "357585f2ccd37c97adeded6c363a1914c6d67f54",
+    "private_contract_git_blob_sha": "03920b1c0fe59f673931176c0a73d10d6d89f06e",
     "public_pointer": "hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json",
     "cross_chat_restore_required": true,
     "no_hidden_module_display": [
@@ -139,6 +139,9 @@
     "show_signed_entry_exit_b_paper_separately": true,
     "show_historical_b_recalc_separately": true,
     "keep_source_dates_and_report_seven_sections": true,
-    "no_broker_execution": true
+    "no_broker_execution": true,
+    "price_display_locked": true,
+    "entry_exit_b_risk_and_execution_prices": "FROZEN_SEPARATE_ESTIMATES_AND_SIGNED_FILLS",
+    "no_fake_buy_sell_price": true
   }
 }
