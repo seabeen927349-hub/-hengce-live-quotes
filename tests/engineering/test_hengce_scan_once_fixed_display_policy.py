@@ -62,6 +62,27 @@ class FixedScanDisplayPolicyTests(unittest.TestCase):
         self.assertEqual(p["active_strategy_count"],0)
         self.assertFalse(p["broker_order_execution"])
 
+    def test_unified_public_entrypoints_route_to_signed_b_fixed_report(self):
+        fixed="hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md"
+        fixed_json="hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json"
+        for path in ("research/retail_top5/unified_scan/latest.json",
+                     "research/retail_top5/unified_scan/report_latest.json"):
+            with self.subTest(path=path):
+                pointer=json.loads((ROOT/path).read_text(encoding="utf-8"))
+                self.assertEqual(pointer["main_report_path"],fixed)
+                self.assertEqual(pointer["main_json_path"],fixed_json)
+                self.assertTrue(pointer["link_contains_separate_paper_b"])
+                self.assertEqual(pointer["ranked"],[])
+                self.assertEqual(pointer["top5"],[])
+                self.assertFalse(pointer["broker_execution"])
+        entry=(ROOT/"research/retail_top5/unified_scan/report_latest.md").read_text(encoding="utf-8")
+        self.assertIn(fixed,entry)
+        self.assertNotIn("private_v22d_autoscan/reports/latest.md",entry)
+        router=(ROOT/"scripts/hengce_scan_once_router.py").read_text(encoding="utf-8")
+        self.assertIn(f'p.get("main_report_path")=="{fixed}"',router)
+        self.assertIn(f'p.get("main_json_path")=="{fixed_json}"',router)
+        self.assertNotIn('p.get("main_report_path")=="hengce/private_v22d_autoscan/reports/latest.md"',router)
+
     def test_governance_override_prevents_legacy_sections_from_reappearing(self):
         p=json.loads(PUBLIC.read_text(encoding="utf-8"))
         g=json.loads(GOV.read_text(encoding="utf-8"))
