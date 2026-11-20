@@ -6,7 +6,7 @@ import unittest
 ROOT=Path(__file__).resolve().parents[2]
 PUBLIC=ROOT/"hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json"
 GOV=ROOT/"governance/HENGCE_SCAN_ONCE_CONSISTENCY_LOCK_v1_0_20261111.json"
-SOURCE_SHA="357585f2ccd37c97adeded6c363a1914c6d67f54"
+SOURCE_SHA="03920b1c0fe59f673931176c0a73d10d6d89f06e"
 SECTIONS=[
     "PROTOCOL_AND_DATA_DATE","SINGLE_ORIGINAL_V22D_MODEL",
     "A_B_POSTSCORE_STATUS","A_STRONG_DECLINE_LABEL",
@@ -47,6 +47,9 @@ class FixedScanDisplayPolicyTests(unittest.TestCase):
         self.assertEqual(p["combined_display_mode"]["id"],"HENGCE_SCAN_ONCE_V22D_B_COMBINED_DISPLAY_20261120_V1")
         self.assertTrue(p["combined_display_mode"]["display_separate_historical_b_recalc"])
         self.assertTrue(p["combined_display_mode"]["display_independent_signed_b_paper"])
+        self.assertTrue(p["combined_display_mode"]["fixed_price_report_required"])
+        self.assertTrue(p["combined_display_mode"]["price_display_policy"]["no_model_or_mother_changes"])
+        self.assertEqual(p["combined_display_mode"]["price_display_policy"]["paper_actual_fill"],"EXCLUSIVELY_FROM_SIGNED_OPENING_EVENTS_NO_RETROACTIVE_REPLAY")
         self.assertTrue(x["cross_chat_display_must_match_private_main"])
         self.assertTrue(x["verified_report_is_the_only_user_visible_report"])
         self.assertEqual(x["hidden_modules"],HIDDEN)
