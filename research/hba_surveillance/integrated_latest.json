@@ -7748,7 +7748,7 @@
       "status": "NOT_PROVIDED"
     },
     "finmind_shadow": {
-      "latest_source_timestamp": "2026-11-20 11:30:10.534929",
+      "latest_source_timestamp": "2026-11-20 11:59:29.739051",
       "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
       "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
@@ -7766,8 +7766,8 @@
       "primary_source": "FinMind taiwan_stock_tick_snapshot",
       "status": "OBSERVED_SAME_SESSION_SHADOW",
       "transport_full_coverage": true,
-      "unknown_metric_count": 6,
-      "valid_metric_count": 1082
+      "unknown_metric_count": 4,
+      "valid_metric_count": 1084
     },
     "overseas": {
       "anytime_individual_sources": {
