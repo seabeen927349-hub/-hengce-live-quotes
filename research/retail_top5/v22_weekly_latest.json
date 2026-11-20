@@ -2,44 +2,14 @@
   "schema": "HENGCE_V22_WEEKLY_RESEARCH_SCREEN_V1",
   "mode": "RESEARCH_TOP5_ONLY_NO_ORDER",
   "system": "HENGCE",
-  "decision_date": "2026-11-13",
-  "observed_at_taipei": "2026-11-14T06:17:33.749347+08:00",
+  "decision_date": "2026-11-20",
+  "observed_at_taipei": "2026-11-21T06:52:44.535980+08:00",
   "original_screen_commit": "4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6",
   "source_lineage": {
-    "decision": "2026-11-13",
-    "source_cutoff": "2026-10-30",
+    "decision": "2026-11-20",
+    "source_cutoff": "2026-11-06",
     "calendar_lineage": "fa913c9bb4411b20056580a3c87249c24b15ba269277029a80b26d16a89cf190",
     "price_days": [
-      {
-        "date": "2026-10-14",
-        "source": "HENGCE_VERIFIED_GAP_MOTHER_RETROSPECTIVE",
-        "research_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
-        "rows": 1087
-      },
-      {
-        "date": "2026-10-15",
-        "source": "HENGCE_VERIFIED_GAP_MOTHER_RETROSPECTIVE",
-        "research_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
-        "rows": 1085
-      },
-      {
-        "date": "2026-10-16",
-        "source": "HENGCE_VERIFIED_GAP_MOTHER_RETROSPECTIVE",
-        "research_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
-        "rows": 1086
-      },
-      {
-        "date": "2026-10-19",
-        "source": "HENGCE_VERIFIED_GAP_MOTHER_RETROSPECTIVE",
-        "research_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
-        "rows": 1087
-      },
-      {
-        "date": "2026-10-20",
-        "source": "HENGCE_CANONICAL_EOD",
-        "price_sha256": "a373994c0bc1426c8059d61ad143edcf7f6dbefb82dc963e724c0fd9818f9f48",
-        "rows": 1088
-      },
       {
         "date": "2026-10-21",
         "source": "HENGCE_CANONICAL_EOD",
@@ -135,24 +105,40 @@
         "source": "HENGCE_CANONICAL_EOD",
         "price_sha256": "0b37744c30f93741bc4f8727c7f80d249c64caec23efa6d597b2ce431575ce0b",
         "rows": 1090
+      },
+      {
+        "date": "2026-11-16",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "62d0acddda14929b0a384277c7cd07397b30515eee4cc653f552578007729421",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-17",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "95fd53858d4baff5c83cf511c982958b2a45c436bc67db38c2174b7cfde2e7d3",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-18",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "2402044bb7d0d0a9b440a37d2d7a055aa2bb32df2f15c6bb3dcf85a909657bb0",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-19",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "84c1f55c3b406b1e87dd2497038d4e6ab54288ed4463b9354d7808510e512acf",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-20",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "959c4c9b974b615228ad768b38e380ee48c9ae047c7ab21eb3146b9a480c56e6",
+        "rows": 1091
       }
     ],
-    "price_mother_recovered_days": [
-      "2026-10-14",
-      "2026-10-15",
-      "2026-10-16",
-      "2026-10-19"
-    ],
+    "price_mother_recovered_days": [],
     "tdcc_snapshots": [
-      {
-        "snapshot_date": "20261016",
-        "source_type": "HENGCE_EXISTING_G1_457_WEEK_RESEARCH_MOTHER",
-        "research_pit_confidence": "DERIVED_PARENT_AVAILABLE_2026_11_07_NOT_ORIGINAL_OBSERVATION",
-        "parent_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
-        "available_as_of": "2026-11-07",
-        "valid_tickers": 1082,
-        "known_at_decision": true
-      },
       {
         "snapshot_date": "20261022",
         "source_type": "HENGCE_EXISTING_G1_457_WEEK_RESEARCH_MOTHER",
@@ -171,16 +157,25 @@
         "source_type": "CANONICAL_TDCC_FIRST_OBSERVED_RECONCILED_RESEARCH_ONLY",
         "research_pit_confidence": "LATER_VERIFIED_FIRST_OBSERVED_TIME_USED",
         "note": "Original canonical receipt conflicts with immutable proof; research-only reconciliation"
+      },
+      {
+        "snapshot_date": "20261106",
+        "observed_at_taipei": "2026-11-07T04:58:23.886023+08:00",
+        "raw_sha256": "5332a48c7b9c68f01c4912f57fe767fb23fb9a8718d0b92b3ae1bbeda5cd18c9",
+        "first_observed_proof": "/home/runner/work/-hengce-live-quotes/-hengce-live-quotes/ownership/tdcc/provenance/first_observed/5332a48c7b9c68f01c4912f57fe767fb23fb9a8718d0b92b3ae1bbeda5cd18c9.json",
+        "valid_tickers": 2975,
+        "source": "/home/runner/work/-hengce-live-quotes/-hengce-live-quotes/ownership/tdcc/20261106/tdcc_1_5_raw.csv",
+        "source_type": "CANONICAL_TDCC_FIRST_OBSERVED_STRICT",
+        "research_pit_confidence": "FIRST_OBSERVED_VERIFIED"
       }
     ],
     "tdcc_g1_mother_days": [
-      "20261016",
       "20261022"
     ],
     "eod_research_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
     "tdcc_g1_457_week_mother_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
-    "price_records": 22885,
-    "tdcc_records": 5137,
+    "price_records": 22907,
+    "tdcc_records": 7030,
     "historical_asof_proof_missing": false,
     "source_mode": "HENGCE_ORIGINAL_EOD_PLUS_EXISTING_RESEARCH_MOTHER_AND_TDCC"
   },
@@ -188,253 +183,9 @@
   "research_signal_label": "UNVALIDATED_RESEARCH_RANKING_NOT_BUY_INSTRUCTION",
   "fully_prospective_performance_verified": false,
   "historical_asof_proof_missing": false,
-  "qualified_count": 17,
-  "top5": [
-    {
-      "rank": 1,
-      "ticker": "6446",
-      "reference_close": 1380.0,
-      "r20_pct": 15.9664,
-      "r5_pct": 8.6614,
-      "retail_2week_pct": -2.5683,
-      "median_20d_turnover_twd": 3957104360,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 2,
-      "ticker": "6456",
-      "reference_close": 101.5,
-      "r20_pct": 11.2939,
-      "r5_pct": 25.9305,
-      "retail_2week_pct": -3.0799,
-      "median_20d_turnover_twd": 3480994591,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 3,
-      "ticker": "2465",
-      "reference_close": 162.0,
-      "r20_pct": 89.4737,
-      "r5_pct": 43.3628,
-      "retail_2week_pct": -5.4805,
-      "median_20d_turnover_twd": 857440210,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 4,
-      "ticker": "4526",
-      "reference_close": 57.4,
-      "r20_pct": 68.8235,
-      "r5_pct": 16.3121,
-      "retail_2week_pct": -4.3827,
-      "median_20d_turnover_twd": 721044694,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 5,
-      "ticker": "1476",
-      "reference_close": 386.5,
-      "r20_pct": 23.0892,
-      "r5_pct": 11.544,
-      "retail_2week_pct": -4.2873,
-      "median_20d_turnover_twd": 575924702,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    }
-  ],
-  "all_qualified": [
-    {
-      "rank": 1,
-      "ticker": "6446",
-      "reference_close": 1380.0,
-      "r20_pct": 15.9664,
-      "r5_pct": 8.6614,
-      "retail_2week_pct": -2.5683,
-      "median_20d_turnover_twd": 3957104360,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 2,
-      "ticker": "6456",
-      "reference_close": 101.5,
-      "r20_pct": 11.2939,
-      "r5_pct": 25.9305,
-      "retail_2week_pct": -3.0799,
-      "median_20d_turnover_twd": 3480994591,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 3,
-      "ticker": "2465",
-      "reference_close": 162.0,
-      "r20_pct": 89.4737,
-      "r5_pct": 43.3628,
-      "retail_2week_pct": -5.4805,
-      "median_20d_turnover_twd": 857440210,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 4,
-      "ticker": "4526",
-      "reference_close": 57.4,
-      "r20_pct": 68.8235,
-      "r5_pct": 16.3121,
-      "retail_2week_pct": -4.3827,
-      "median_20d_turnover_twd": 721044694,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 5,
-      "ticker": "1476",
-      "reference_close": 386.5,
-      "r20_pct": 23.0892,
-      "r5_pct": 11.544,
-      "retail_2week_pct": -4.2873,
-      "median_20d_turnover_twd": 575924702,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 6,
-      "ticker": "2610",
-      "reference_close": 23.2,
-      "r20_pct": 12.3487,
-      "r5_pct": 9.434,
-      "retail_2week_pct": -1.1078,
-      "median_20d_turnover_twd": 453028056,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 7,
-      "ticker": "4770",
-      "reference_close": 299.0,
-      "r20_pct": 6.7857,
-      "r5_pct": 15.0,
-      "retail_2week_pct": -10.0812,
-      "median_20d_turnover_twd": 347874702,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 8,
-      "ticker": "4720",
-      "reference_close": 31.15,
-      "r20_pct": 20.5029,
-      "r5_pct": 14.9446,
-      "retail_2week_pct": -2.016,
-      "median_20d_turnover_twd": 343747590,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 9,
-      "ticker": "3029",
-      "reference_close": 138.0,
-      "r20_pct": 13.5802,
-      "r5_pct": 22.6667,
-      "retail_2week_pct": -1.4523,
-      "median_20d_turnover_twd": 342885676,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 10,
-      "ticker": "9933",
-      "reference_close": 51.6,
-      "r20_pct": 21.2691,
-      "r5_pct": 16.2162,
-      "retail_2week_pct": -3.1293,
-      "median_20d_turnover_twd": 317557750,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 11,
-      "ticker": "4916",
-      "reference_close": 112.5,
-      "r20_pct": 10.8374,
-      "r5_pct": 35.5422,
-      "retail_2week_pct": -3.2378,
-      "median_20d_turnover_twd": 300254540,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 12,
-      "ticker": "6112",
-      "reference_close": 58.4,
-      "r20_pct": 25.5914,
-      "r5_pct": 13.6187,
-      "retail_2week_pct": -1.256,
-      "median_20d_turnover_twd": 274179868,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 13,
-      "ticker": "1477",
-      "reference_close": 225.5,
-      "r20_pct": 9.466,
-      "r5_pct": 5.8685,
-      "retail_2week_pct": -2.35,
-      "median_20d_turnover_twd": 234488479,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 14,
-      "ticker": "6782",
-      "reference_close": 285.0,
-      "r20_pct": 16.5644,
-      "r5_pct": 3.8251,
-      "retail_2week_pct": -4.9104,
-      "median_20d_turnover_twd": 161032914,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 15,
-      "ticker": "6949",
-      "reference_close": 45.0,
-      "r20_pct": 14.2132,
-      "r5_pct": 19.8402,
-      "retail_2week_pct": -2.1288,
-      "median_20d_turnover_twd": 133414586,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 16,
-      "ticker": "2236",
-      "reference_close": 92.6,
-      "r20_pct": 15.1741,
-      "r5_pct": 3.233,
-      "retail_2week_pct": -3.5379,
-      "median_20d_turnover_twd": 44746874,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    },
-    {
-      "rank": 17,
-      "ticker": "2597",
-      "reference_close": 176.0,
-      "r20_pct": 7.3171,
-      "r5_pct": 10.0,
-      "retail_2week_pct": -1.9858,
-      "median_20d_turnover_twd": 44603764,
-      "chip_date": "2026-10-30",
-      "authorized_lots": 0
-    }
-  ],
+  "qualified_count": 0,
+  "top5": [],
+  "all_qualified": [],
   "selection_authority": false,
   "buy_signal": false,
   "sell_signal": false,

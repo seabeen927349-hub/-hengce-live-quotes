@@ -1,0 +1,196 @@
+{
+  "schema": "HENGCE_V22_WEEKLY_RESEARCH_SCREEN_V1",
+  "mode": "RESEARCH_TOP5_ONLY_NO_ORDER",
+  "system": "HENGCE",
+  "decision_date": "2026-11-20",
+  "observed_at_taipei": "2026-11-21T06:52:44.535980+08:00",
+  "original_screen_commit": "4a0f98fd2bd2a65deb2ebaf61e15e77c6a7893d6",
+  "source_lineage": {
+    "decision": "2026-11-20",
+    "source_cutoff": "2026-11-06",
+    "calendar_lineage": "fa913c9bb4411b20056580a3c87249c24b15ba269277029a80b26d16a89cf190",
+    "price_days": [
+      {
+        "date": "2026-10-21",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "3b6ff161b39682b988454ec243f277562fed4738a365568651c2f29524946cb9",
+        "rows": 1088
+      },
+      {
+        "date": "2026-10-22",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "9a25e7982f665eea6d6128c216ae21c673467ea86eb95d30676b36223ce78df2",
+        "rows": 1088
+      },
+      {
+        "date": "2026-10-27",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "c194142ca2eccb83d99f9f3f636e241a640677245630b06dbc09f7bd7e5bfb36",
+        "rows": 1091
+      },
+      {
+        "date": "2026-10-28",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "587cd284a0b6529a8331670a365e90c6462d831553f5aaf9377f3212b3feac72",
+        "rows": 1091
+      },
+      {
+        "date": "2026-10-29",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "501c705c4ae11aceaa30ac9248e129c21b324045dd1f7472d089667fb4859ab7",
+        "rows": 1091
+      },
+      {
+        "date": "2026-10-30",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "5afe330e9ec83ddd8ddc011619d8be53f3ccfe2b5ae759be710739e63f9809c9",
+        "rows": 1092
+      },
+      {
+        "date": "2026-11-02",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "07ae1b930aa6eaa7a1c05574757d854e2db20b4658eddc88d570079c991cdbb4",
+        "rows": 1092
+      },
+      {
+        "date": "2026-11-03",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "88ce1c89ae1210643e36c82d3d7446e8d0d14c897b086d6b7c025c46428e5a0e",
+        "rows": 1092
+      },
+      {
+        "date": "2026-11-04",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "1ce4321b5c26fe872297221a740e55f34430b3369d98a679341e663ac37f1bf0",
+        "rows": 1092
+      },
+      {
+        "date": "2026-11-05",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "784c34dafaaf10327869e27f99956e65c8ef25351dc1ffcbc113a1f36d481b70",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-06",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "235a415f5327848b6bc7adbbb9dc4d644f2c58d69bdc0ae2f9dc0cda1902f4c5",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-09",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "5ce94b1eaa7a8ad647922d141f271aac41b6387bd36de3496ceda1c8a3350fcf",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-10",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "765ca96f296e1c75f7044d3dfcf713d29dd4406be1b9feb425f2d24be3eec327",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-11",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "b1a06bf8fb2173730563b48ce829d2b016fd9bcf846bacae82d2f5c9856996e6",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-12",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "307654264d164b21126665975c4e7bf20b5c699dc277318851ea5bb294f1c699",
+        "rows": 1090
+      },
+      {
+        "date": "2026-11-13",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "0b37744c30f93741bc4f8727c7f80d249c64caec23efa6d597b2ce431575ce0b",
+        "rows": 1090
+      },
+      {
+        "date": "2026-11-16",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "62d0acddda14929b0a384277c7cd07397b30515eee4cc653f552578007729421",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-17",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "95fd53858d4baff5c83cf511c982958b2a45c436bc67db38c2174b7cfde2e7d3",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-18",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "2402044bb7d0d0a9b440a37d2d7a055aa2bb32df2f15c6bb3dcf85a909657bb0",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-19",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "84c1f55c3b406b1e87dd2497038d4e6ab54288ed4463b9354d7808510e512acf",
+        "rows": 1091
+      },
+      {
+        "date": "2026-11-20",
+        "source": "HENGCE_CANONICAL_EOD",
+        "price_sha256": "959c4c9b974b615228ad768b38e380ee48c9ae047c7ab21eb3146b9a480c56e6",
+        "rows": 1091
+      }
+    ],
+    "price_mother_recovered_days": [],
+    "tdcc_snapshots": [
+      {
+        "snapshot_date": "20261022",
+        "source_type": "HENGCE_EXISTING_G1_457_WEEK_RESEARCH_MOTHER",
+        "research_pit_confidence": "DERIVED_PARENT_AVAILABLE_2026_11_07_NOT_ORIGINAL_OBSERVATION",
+        "parent_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
+        "available_as_of": "2026-11-07",
+        "valid_tickers": 1084,
+        "known_at_decision": true
+      },
+      {
+        "snapshot_date": "20261030",
+        "valid_tickers": 2971,
+        "raw_sha256": "18b34f6eeb80229941f51200558fcc3fec9d405e9b7eb47aceca377e9f18f184",
+        "observed_at_taipei": "2026-11-01T15:41:59.900722+08:00",
+        "receipt_observed_at_taipei": "2026-10-31T23:57:43+08:00",
+        "source_type": "CANONICAL_TDCC_FIRST_OBSERVED_RECONCILED_RESEARCH_ONLY",
+        "research_pit_confidence": "LATER_VERIFIED_FIRST_OBSERVED_TIME_USED",
+        "note": "Original canonical receipt conflicts with immutable proof; research-only reconciliation"
+      },
+      {
+        "snapshot_date": "20261106",
+        "observed_at_taipei": "2026-11-07T04:58:23.886023+08:00",
+        "raw_sha256": "5332a48c7b9c68f01c4912f57fe767fb23fb9a8718d0b92b3ae1bbeda5cd18c9",
+        "first_observed_proof": "/home/runner/work/-hengce-live-quotes/-hengce-live-quotes/ownership/tdcc/provenance/first_observed/5332a48c7b9c68f01c4912f57fe767fb23fb9a8718d0b92b3ae1bbeda5cd18c9.json",
+        "valid_tickers": 2975,
+        "source": "/home/runner/work/-hengce-live-quotes/-hengce-live-quotes/ownership/tdcc/20261106/tdcc_1_5_raw.csv",
+        "source_type": "CANONICAL_TDCC_FIRST_OBSERVED_STRICT",
+        "research_pit_confidence": "FIRST_OBSERVED_VERIFIED"
+      }
+    ],
+    "tdcc_g1_mother_days": [
+      "20261022"
+    ],
+    "eod_research_mother_sha256": "b3275f8d58779fbec864a05066414d27e80cef8a68a76a08051f93808f1f8c93",
+    "tdcc_g1_457_week_mother_sha256": "71083d73a791b6bf25770139c65e8d29012a44e31c39f66479806bf5a562bc88",
+    "price_records": 22907,
+    "tdcc_records": 7030,
+    "historical_asof_proof_missing": false,
+    "source_mode": "HENGCE_ORIGINAL_EOD_PLUS_EXISTING_RESEARCH_MOTHER_AND_TDCC"
+  },
+  "research_only": true,
+  "research_signal_label": "UNVALIDATED_RESEARCH_RANKING_NOT_BUY_INSTRUCTION",
+  "fully_prospective_performance_verified": false,
+  "historical_asof_proof_missing": false,
+  "qualified_count": 0,
+  "top5": [],
+  "all_qualified": [],
+  "selection_authority": false,
+  "buy_signal": false,
+  "sell_signal": false,
+  "broker_execution": false,
+  "capital_authority_twd": 0,
+  "authorized_lots": 0,
+  "formal_strategy_promoted": false
+}
