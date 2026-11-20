@@ -99,7 +99,7 @@
     "status": "ACTIVE_USER_APPROVED_DISPLAY_LOCK",
     "policy_id": "HENGCE_SCAN_ONCE_FIXED_VISIBLE_REPORT_20261117",
     "private_contract_path": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "private_contract_git_blob_sha": "97f1012b772ec7adbc585968cf7fc3cf5244ff5b",
+    "private_contract_git_blob_sha": "357585f2ccd37c97adeded6c363a1914c6d67f54",
     "public_pointer": "hengce/HENGCE_SCAN_ONCE_CONTRACT_LATEST.json",
     "cross_chat_restore_required": true,
     "no_hidden_module_display": [
@@ -131,6 +131,11 @@
       "SOURCE_AND_EXECUTION_AUTHORITY"
     ],
     "preserve_upstream_module_logic": true,
-    "not_a_strategy_or_authority_change": true
+    "not_a_strategy_or_authority_change": true,
+    "combined_report_mode_id": "HENGCE_SCAN_ONCE_V22D_B_COMBINED_DISPLAY_20261120_V1",
+    "show_signed_entry_exit_b_paper_separately": true,
+    "show_historical_b_recalc_separately": true,
+    "keep_source_dates_and_report_seven_sections": true,
+    "no_broker_execution": true
   }
 }
