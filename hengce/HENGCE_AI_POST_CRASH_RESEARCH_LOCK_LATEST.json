@@ -36,5 +36,28 @@
   "research_authority_only": true,
   "formal_universe_lock_unchanged": true,
   "trade_execution_authority": false,
-  "capital_authority": false
+  "capital_authority": false,
+  "latest_research_checkpoint": {
+    "asof": "2026-11-21",
+    "phase": "PHASE1_FULL_UNIVERSE_FINANCIAL_PRECHECK_PARTIAL_CASH_AUDIT",
+    "main_report": "research/ai_post_crash_recovery/HENGCE_AI_RECOVERY_PHASE1_REPORT_20261121.md",
+    "full_472_analysis": "research/ai_post_crash_recovery/HENGCE_AI_RECOVERY_PHASE1_20261121_472_WITH_CASHFLOW_FLAGS.csv",
+    "fundamental_472": "research/ai_post_crash_recovery/HENGCE_AI_RECOVERY_FUNDAMENTAL_FIRST_PASS_472_20261121.csv",
+    "cashflow_20": "research/ai_post_crash_recovery/HENGCE_AI_RECOVERY_20261121_20_STOCK_Q3_CASHFLOW_AUDIT.csv",
+    "twse_electronics_count": 448,
+    "adjacent_tech_count": 24,
+    "nov20_price_coverage": 471,
+    "oct_q3_revenue_eps_precheck": 167,
+    "precheck_and_crash_decline_20pct": 138,
+    "cashflow_sample_audited": 20,
+    "positive_cashflow_and_growth_crash": 12,
+    "negative_operating_cashflow_audited": 6,
+    "remaining_cashflow_audits_within_138": 122,
+    "tpex_complete": false,
+    "ai_business_and_orders_full_audit_complete": false,
+    "valuation_audit_complete": false,
+    "confirmed_buy_trigger_count": 0,
+    "trading_authority_changed": false,
+    "next_work": "Verify 122 residual cashflow audits; company-specific AI product and disclosed order sources; valuation cash conversion; 2025 tariff crash point-in-time post-crash buy signal performance"
+  }
 }
