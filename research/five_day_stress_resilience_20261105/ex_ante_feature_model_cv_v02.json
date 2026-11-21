@@ -1,0 +1,215 @@
+{
+  "research": "HENGCE_XANTE_SHOCK_RESILIENCE_V02",
+  "features_asof": "2026-10-28",
+  "outcome_window": "2026-10-29 to 2026-11-04",
+  "n": 553,
+  "market_pct": -8.69,
+  "models": [
+    {
+      "features": [],
+      "R2_CV": -0.0041,
+      "MAE_CV": 5.2991,
+      "AUC_CV": 0.4669,
+      "top20Mean": -10.469,
+      "bottom20Mean": -5.696,
+      "top20BeatMarket": 40.9091,
+      "bottom20BeatMarket": 66.3636,
+      "coefs": [
+        -8.414367088607603
+      ]
+    },
+    {
+      "features": [
+        "pre_daily_vol_pct"
+      ],
+      "R2_CV": 0.1714,
+      "MAE_CV": 4.5406,
+      "AUC_CV": 0.7691,
+      "top20Mean": -3.799,
+      "bottom20Mean": -11.5625,
+      "top20BeatMarket": 86.3636,
+      "bottom20BeatMarket": 28.1818,
+      "coefs": [
+        -8.4143670886076,
+        -2.9483532167897852
+      ]
+    },
+    {
+      "features": [
+        "pre_maxday_loss_pct"
+      ],
+      "R2_CV": 0.2524,
+      "MAE_CV": 4.3893,
+      "AUC_CV": 0.7689,
+      "top20Mean": -3.5689,
+      "bottom20Mean": -13.2996,
+      "top20BeatMarket": 86.3636,
+      "bottom20BeatMarket": 25.4545,
+      "coefs": [
+        -8.4143670886076,
+        3.48622600308619
+      ]
+    },
+    {
+      "features": [
+        "prior_1007_1028"
+      ],
+      "R2_CV": 0.1681,
+      "MAE_CV": 4.7663,
+      "AUC_CV": 0.7027,
+      "top20Mean": -5.4373,
+      "bottom20Mean": -13.7858,
+      "top20BeatMarket": 62.7273,
+      "bottom20BeatMarket": 16.3636,
+      "coefs": [
+        -8.414367088607605,
+        2.9026917653719035
+      ]
+    },
+    {
+      "features": [
+        "log_prior_money"
+      ],
+      "R2_CV": 0.1465,
+      "MAE_CV": 4.8197,
+      "AUC_CV": 0.6884,
+      "top20Mean": -4.9306,
+      "bottom20Mean": -12.1016,
+      "top20BeatMarket": 75.4545,
+      "bottom20BeatMarket": 30,
+      "coefs": [
+        -8.414367088607605,
+        -2.6500495490660456
+      ]
+    },
+    {
+      "features": [
+        "pre_daily_vol_pct",
+        "prior_1007_1028"
+      ],
+      "R2_CV": 0.3104,
+      "MAE_CV": 4.1504,
+      "AUC_CV": 0.7815,
+      "top20Mean": -3.9767,
+      "bottom20Mean": -14.2943,
+      "top20BeatMarket": 80,
+      "bottom20BeatMarket": 13.6364,
+      "coefs": [
+        -8.414367088607602,
+        -2.6781831001416654,
+        2.6272879861158644
+      ]
+    },
+    {
+      "features": [
+        "pre_daily_vol_pct",
+        "log_prior_money"
+      ],
+      "R2_CV": 0.2078,
+      "MAE_CV": 4.4981,
+      "AUC_CV": 0.7602,
+      "top20Mean": -4.0023,
+      "bottom20Mean": -12.7037,
+      "top20BeatMarket": 86.3636,
+      "bottom20BeatMarket": 21.8182,
+      "coefs": [
+        -8.414367088607602,
+        -2.1598001232782362,
+        -1.5543140777039552
+      ]
+    },
+    {
+      "features": [
+        "pre_daily_vol_pct",
+        "prior_1007_1028",
+        "log_prior_money"
+      ],
+      "R2_CV": 0.3423,
+      "MAE_CV": 4.1047,
+      "AUC_CV": 0.7893,
+      "top20Mean": -3.924,
+      "bottom20Mean": -14.8023,
+      "top20BeatMarket": 80.9091,
+      "bottom20BeatMarket": 11.8182,
+      "coefs": [
+        -8.414367088607603,
+        -1.9563658010964753,
+        2.576662127545411,
+        -1.4330328776874866
+      ]
+    },
+    {
+      "features": [
+        "pre_maxday_loss_pct",
+        "prior_1007_1028",
+        "log_prior_money"
+      ],
+      "R2_CV": 0.3315,
+      "MAE_CV": 4.1911,
+      "AUC_CV": 0.7718,
+      "top20Mean": -3.7182,
+      "bottom20Mean": -14.7764,
+      "top20BeatMarket": 74.5455,
+      "bottom20BeatMarket": 13.6364,
+      "coefs": [
+        -8.414367088607603,
+        1.8859670485835096,
+        1.961633164401093,
+        -1.554076808098671
+      ]
+    },
+    {
+      "features": [
+        "pre_daily_vol_pct",
+        "prior_1007_1028",
+        "log_prior_money",
+        "prior_money_ratio"
+      ],
+      "R2_CV": 0.3427,
+      "MAE_CV": 4.1028,
+      "AUC_CV": 0.7914,
+      "top20Mean": -3.9725,
+      "bottom20Mean": -14.628,
+      "top20BeatMarket": 80.9091,
+      "bottom20BeatMarket": 12.7273,
+      "coefs": [
+        -8.414367088607603,
+        -2.0581867510315925,
+        2.4532365433975385,
+        -1.362349210090932,
+        0.37584359439450926
+      ]
+    },
+    {
+      "features": [
+        "pre_daily_vol_pct",
+        "prior_1007_1028",
+        "log_prior_money",
+        "prior_money_ratio",
+        "prior_1027_1028"
+      ],
+      "R2_CV": 0.3458,
+      "MAE_CV": 4.0467,
+      "AUC_CV": 0.8009,
+      "top20Mean": -3.7028,
+      "bottom20Mean": -14.9525,
+      "top20BeatMarket": 80.9091,
+      "bottom20BeatMarket": 10.9091,
+      "coefs": [
+        -8.414367088607603,
+        -1.4764364854794492,
+        2.482992472897283,
+        -1.364603873408899,
+        0.27115276454064663,
+        -0.8210899554868607
+      ]
+    }
+  ],
+  "notes": [
+    "One crash episode; CV is by stocks not by time.",
+    "Feature set was selected after inspecting this event; in-episode CV overstates independent validation.",
+    "Only predictors available at or before 2026-10-28 used.",
+    "No corporate actions, sector or long-term beta adjustment.",
+    "AUC class label = return greater than -8.69% TAIEX benchmark."
+  ]
+}

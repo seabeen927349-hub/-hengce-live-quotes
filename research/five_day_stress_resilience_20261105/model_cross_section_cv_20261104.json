@@ -1,0 +1,101 @@
+{
+  "model": "HENGCE_5DAY_STRESS_DIAGNOSTIC_v0.1",
+  "asof": "2026-11-04",
+  "n": 542,
+  "features": {
+    "pre": "2026-10-07 to 2026-10-28 prior price return",
+    "mar": "2026-10-29 to 2026-11-04 margin balance pct change",
+    "ins": "2026-10-29 to 2026-11-04 institutional net cash / total turnover pct"
+  },
+  "methods": "TWSE ordinary stocks with liquidity and both flow legs; OLS with intercept; train-fold 2%-98% winsorization and train z-score; deterministic 5-fold cross-sectional CV; dependent variable concurrent five-session return.",
+  "comparison": {
+    "baseline": {
+      "R2_CV": -0.0055,
+      "MAE_CV_pct_points": 5.286,
+      "coefs_std": [
+        -8.4641
+      ],
+      "columns": []
+    },
+    "pretrend": {
+      "R2_CV": 0.1646,
+      "MAE_CV_pct_points": 4.763,
+      "coefs_std": [
+        -8.4641,
+        2.8466
+      ],
+      "columns": [
+        "pre"
+      ]
+    },
+    "margin": {
+      "R2_CV": 0.1477,
+      "MAE_CV_pct_points": 4.797,
+      "coefs_std": [
+        -8.4641,
+        2.6279
+      ],
+      "columns": [
+        "mar"
+      ]
+    },
+    "flows": {
+      "R2_CV": 0.086,
+      "MAE_CV_pct_points": 4.9,
+      "coefs_std": [
+        -8.4641,
+        2.082
+      ],
+      "columns": [
+        "ins"
+      ]
+    },
+    "pre_margin": {
+      "R2_CV": 0.2734,
+      "MAE_CV_pct_points": 4.405,
+      "coefs_std": [
+        -8.4641,
+        2.5172,
+        2.2612
+      ],
+      "columns": [
+        "pre",
+        "mar"
+      ]
+    },
+    "pre_flow": {
+      "R2_CV": 0.2274,
+      "MAE_CV_pct_points": 4.466,
+      "coefs_std": [
+        -8.4641,
+        2.6104,
+        1.7245
+      ],
+      "columns": [
+        "pre",
+        "ins"
+      ]
+    },
+    "all": {
+      "R2_CV": 0.3566,
+      "MAE_CV_pct_points": 4.088,
+      "coefs_std": [
+        -8.4641,
+        2.2201,
+        2.4537,
+        1.9643
+      ],
+      "columns": [
+        "pre",
+        "mar",
+        "ins"
+      ]
+    }
+  },
+  "limitations": [
+    "Same-window margin and institution flows include contemporary information; model is EX-POST EXPLANATORY, cannot be used to trade at 10/29.",
+    "Cross-sectional CV within one market episode is not out-of-time predictive backtest.",
+    "No sector or adjustment for corporate actions; no trading claims or calibrated confidence probabilities.",
+    "Potential endogeneity, omitted price-discovery drivers and factor differences."
+  ]
+}

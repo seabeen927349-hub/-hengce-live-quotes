@@ -1,0 +1,46 @@
+{
+  "study": "HENGCE_2026_VARIABLE_LEAD_MARKET_TRACES_V01",
+  "status": "RESEARCH_NOT_VALIDATED",
+  "signal": "TAIEX_20d_return_gt_3pct AND TWSE_median_stock_20d_return_lt_0pct",
+  "lead_days": [
+    2,
+    4,
+    16,
+    7,
+    15,
+    1,
+    12
+  ],
+  "fresh_signals": 4,
+  "reused_prior_stress": 3,
+  "alert_days_2026": 44,
+  "total_days_2026": 201,
+  "alert_episodes": 17,
+  "forward_10_session_test": {
+    "all": {
+      "success": 12,
+      "alerts": 44,
+      "baseline_success": 47,
+      "baseline_total": 191
+    },
+    "H1": {
+      "success": 8,
+      "alerts": 28,
+      "baseline_success": 22,
+      "baseline_total": 116
+    },
+    "H2": {
+      "success": 4,
+      "alerts": 16,
+      "baseline_success": 25,
+      "baseline_total": 75
+    }
+  },
+  "adaptive_5_to_120_test": {
+    "alerts": 181,
+    "total": 201,
+    "rejected": true
+  },
+  "stock_mother_mutated": false,
+  "trade_authority": false
+}

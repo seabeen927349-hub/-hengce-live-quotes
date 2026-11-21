@@ -1,0 +1,85 @@
+{
+  "status": "RESEARCH_SINGLE_EPISODE_NO_OOT",
+  "criteria": "groups preselected from 10/14-28 prior daily observed volatility; common 560 names; no future turnover filter",
+  "metrics": [
+    {
+      "group": "lowest20",
+      "prior_vol_median": 1.0125303586874617,
+      "first2": {
+        "n": 112,
+        "mean_return": -1.289,
+        "median_return": -1.132,
+        "fraction_up": 30.4,
+        "loss_more_10pct": 0.9
+      },
+      "next3": {
+        "n": 112,
+        "mean_return": -2.562,
+        "median_return": -2.216,
+        "fraction_up": 9.8,
+        "loss_more_10pct": 0.9
+      },
+      "all5": {
+        "n": 112,
+        "mean_return": -3.816,
+        "median_return": -3.038,
+        "fraction_up": 9.8,
+        "loss_more_10pct": 9.8
+      }
+    },
+    {
+      "group": "highest20",
+      "prior_vol_median": 5.018391946323031,
+      "first2": {
+        "n": 112,
+        "mean_return": -7.231,
+        "median_return": -8,
+        "fraction_up": 8.9,
+        "loss_more_10pct": 25.9
+      },
+      "next3": {
+        "n": 112,
+        "mean_return": -4.952,
+        "median_return": -5.888,
+        "fraction_up": 18.8,
+        "loss_more_10pct": 21.4
+      },
+      "all5": {
+        "n": 112,
+        "mean_return": -11.832,
+        "median_return": -12.863,
+        "fraction_up": 7.1,
+        "loss_more_10pct": 66.1
+      }
+    },
+    {
+      "group": "all",
+      "prior_vol_median": 2.3290209504931947,
+      "first2": {
+        "n": 560,
+        "mean_return": -4.686,
+        "median_return": -4.676,
+        "fraction_up": 12.9,
+        "loss_more_10pct": 10.5
+      },
+      "next3": {
+        "n": 560,
+        "mean_return": -4.107,
+        "median_return": -4.131,
+        "fraction_up": 11.6,
+        "loss_more_10pct": 8
+      },
+      "all5": {
+        "n": 560,
+        "mean_return": -8.566,
+        "median_return": -8.608,
+        "fraction_up": 7,
+        "loss_more_10pct": 41.1
+      }
+    }
+  ],
+  "notes": [
+    "First2/Next3 are both within same crash episode and neither is an external validation set.",
+    "Low observed volatility group may represent low beta / defensive sectors."
+  ]
+}

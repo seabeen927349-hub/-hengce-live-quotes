@@ -1,0 +1,42 @@
+{
+  "name": "PRE_SHOCK_VOLATILITY_GAP_SENSITIVITY_V04",
+  "available_price_dates": [
+    "20261014",
+    "20261015",
+    "20261016",
+    "20261019",
+    "20261020",
+    "20261021",
+    "20261022",
+    "20261027",
+    "20261028"
+  ],
+  "skipped_return_pair": "2026-10-22 -> 2026-10-27 has a missing 2026-10-23 date; exclude that multi-session gap",
+  "n": 560,
+  "new_low20": {
+    "n": 112,
+    "mean": -4.071,
+    "median": -3.136,
+    "beat_market_pct": 85.7,
+    "loss_over_15_pct": 0
+  },
+  "new_high20": {
+    "n": 112,
+    "mean": -11.611,
+    "median": -12.857,
+    "beat_market_pct": 25.9,
+    "loss_over_15_pct": 36.6
+  },
+  "old_low20": {
+    "n": 112,
+    "mean": -3.816,
+    "median": -3.038,
+    "beat_market_pct": 86.6,
+    "loss_over_15_pct": 0
+  },
+  "low20_overlap_names": 97,
+  "notes": [
+    "Seven observed close-to-close increments, pre-event only",
+    "No true out-of-event replication; missing trade days remain a data coverage limitation."
+  ]
+}
