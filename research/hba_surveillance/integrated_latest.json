@@ -9186,52 +9186,10 @@
       "valid_metric_count": null
     },
     "overseas": {
-      "anytime_individual_sources": {
-        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-        "expected_us_session": "2026-11-20",
-        "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-21T20:46:59.423578+08:00",
-        "preopen_forecast_authority": false,
-        "source_observation_sha256": "ec9e87e53a9fe0cb1f212bcc574bf70ba2febed7076045a49681dbddb355d43c",
-        "sox": {
-          "change_pct": -10.7342,
-          "latest_close": 8408.59042933662,
-          "latest_us_session": "2026-11-20",
-          "publisher": "Nasdaq",
-          "source_status": "當期已更新"
-        },
-        "vix": {
-          "change_pct": 26.1955,
-          "latest_close": 35.89,
-          "latest_us_session": "2026-11-20",
-          "publisher": "Cboe",
-          "source_status": "當期已更新"
-        }
-      },
+      "anytime_individual_sources": null,
       "label": "資料不足",
-      "observation_role": "SOURCE_ONLY_NOT_GOVERNED_COMPOSITE_FORECAST",
-      "official_source_observation": {
-        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-        "expected_us_session": "2026-11-20",
-        "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-21T20:46:59.423578+08:00",
-        "preopen_forecast_authority": false,
-        "source_observation_sha256": "ec9e87e53a9fe0cb1f212bcc574bf70ba2febed7076045a49681dbddb355d43c",
-        "sox": {
-          "change_pct": -10.7342,
-          "latest_close": 8408.59042933662,
-          "latest_us_session": "2026-11-20",
-          "publisher": "Nasdaq",
-          "source_status": "當期已更新"
-        },
-        "vix": {
-          "change_pct": 26.1955,
-          "latest_close": 35.89,
-          "latest_us_session": "2026-11-20",
-          "publisher": "Cboe",
-          "source_status": "當期已更新"
-        }
-      },
+      "observation_role": "NOT_AVAILABLE",
+      "official_source_observation": null,
       "postopen_individual_sources": null,
       "preopen_individual_sources": null,
       "status": "資料不足"
@@ -9271,7 +9229,7 @@
   "observed_eod_date": "2026-11-20",
   "readiness": "RESEARCH_READY",
   "schema": "HENGCE_HBA_INTEGRATED_CONTEXT_RESEARCH_V1",
-  "target_tw_date": "2026-11-21",
+  "target_tw_date": "2026-11-22",
   "two_group_market_registry": [
     {
       "other_shares": 6553804087,
@@ -23369,7 +23327,7 @@
   "two_group_research": {
     "actual_small_shares_down_count": 769,
     "actual_small_shares_up_count": 315,
-    "age_days": 1,
+    "age_days": 2,
     "authority": {
       "capital": false,
       "rank": false,
@@ -23422,7 +23380,7 @@
     "source": "EXISTING_TDCC_1_5_RAW_AND_RECEIPTS",
     "status": "VERIFIED_TWO_GROUP_RESEARCH",
     "stock_count": 1091,
-    "target_tw_date": "2026-11-21",
+    "target_tw_date": "2026-11-22",
     "two_consecutive_observed_intervals": {
       "first": "20261106..20261113",
       "not_a_full_2026_13week_panel": true,
