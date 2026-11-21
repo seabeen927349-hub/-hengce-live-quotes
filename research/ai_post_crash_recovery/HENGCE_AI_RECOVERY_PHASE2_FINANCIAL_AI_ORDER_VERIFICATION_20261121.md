@@ -90,3 +90,14 @@
 - 公司季別現金流及資產負債初查：https://www.industry-web.com/stock/detail?code=2345（相同 `?code=` 參數依股號）；現金流實際累計申報核對（億元，來源報表以仟元）：https://ww2.money-link.com.tw/TWStock/StockBasic.aspx?SymId=2345&TWMId=Basic_IIAM5 、https://ww2.money-link.com.tw/TWStock/StockBasic.aspx?SymId=2368&TWMId=Basic_IIAM2 、https://ww2.money-link.com.tw/TWStock/StockBasic.aspx?SymId=2383&TWMId=Basic_IIAM5 、https://ww2.money-link.com.tw/TWStock/StockBasic.aspx?SymId=2360&TWMId=Basic_IIAM2 、https://ww2.money-link.com.tw/TWStock/StockBasic.aspx?SymId=2059&TWMId=Basic_IIAM2
 - 本文件AI訂單／法說來源分別在各個股段落列明，對尚未核對之公司沒有創造AI訂單假資料。
 - 股災與關稅的歷史價格、法人、TDCC：衡策正規價格母體和先前2025關稅事件逐股分析，詳情見交叉CSV的相關欄位。
+
+
+## 7. AI 十檔「其他持有人」獨立核對（不與 TDCC 400+ 混算）
+
+正式研究另核對衡策 V7 推估檔 `research/smart_money_crash_2026_1006_1120/OTHER_HOLDERS_WITHDRAWAL_20261002_20261120_EST_V7_FULL_RANK.csv`：**10 檔有 AI 產品／需求證據之候選，按 V7 的「其他持有人」殘餘持股估計口徑，2026/10/02 至 2026/11/13 全數仍為占比減少**。依次：川湖 -0.88pp、台達電 -1.88pp、台積電 -0.43pp、致茂 -0.53pp、金像電 -0.17pp、台光電 -1.08pp、奇鋐 -0.66pp、欣興 -2.15pp、貿聯-KY -2.99pp、光聖 -1.30pp。
+
+這與 **2026/10/02 至 11/20 TDCC 官方 400張以上股東持股占比** 的變化不是同一種指標，例如致茂該指標 +0.69pp、金像電 +0.13pp；不可將級距、日期混用來宣稱「全部主力都在買」。V7 檔案中的11/20 `forecast_nov20_pct` **是模型估計，不是11/20官方實際觀察值**。因此不能基於這一估計宣告11/20已恢復買盤。
+
+此項資訊強化兩個分離結論：**基本面深查候選已經形成，但「可執行的承接時機」尚無確認**。真實AI訂單與市場當下資金是否願意重新買進可以同時為相反狀態；研究必須等待新證據，不能只因營收強就忽略資金去槓桿。
+
+對照逐股表：`research/ai_post_crash_recovery/HENGCE_AI_RECOVERY_20261121_AI10_OTHER_HOLDERS_V7_AND_TDCC_MIX_CHECK.csv`。
