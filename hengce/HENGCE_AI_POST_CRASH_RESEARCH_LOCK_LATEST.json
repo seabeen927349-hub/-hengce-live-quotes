@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "system": "HENGCE",
+  "research_id": "HENGCE-AI-RECOVERY",
+  "status": "USER_APPROVED_RESEARCH_MANDATE_LOCK",
+  "established_date": "2026-11-21",
+  "timezone": "Asia/Taipei",
+  "title": "衡策 AI 股災錯殺與優先承接研究",
+  "source_of_truth": "research/ai_post_crash_recovery/HENGCE_AI_POST_CRASH_RESEARCH_CHARTER_LOCK_V1_20261121.md",
+  "canonical_intent": "尋找 AI 真實訂單與需求持續成長、獲利兌現、財務健康，卻因全球恐慌而被過度拋售的台灣 AI 供應鏈公司；建立經歷史驗證的選股順位與可執行承接條件",
+  "two_decisions": [
+    "WHAT: 基本面品質×價格錯殺",
+    "WHEN: 可觀察且經驗證之價格/資金買點"
+  ],
+  "primary_universe": "ALL_TWSE_LISTED_ELECTRONICS_PIT",
+  "supplemental_universe": "TPEX_AI_SUPPLY_CHAIN_RESEARCH_SHADOW_ONLY_IF_DATA_VERIFIABLE",
+  "historical_primary_analog": "2025-04_TARIFF_CRASH",
+  "frozen_initial_market_snapshot": "2026-11-20",
+  "lookback": "2026_YTD_PLUS_PRIOR_2025_TARIFF",
+  "hard_principles": [
+    "NO_SIX_OR_FIFTEEN_STOCK_UNIVERSE_SUBSTITUTION",
+    "NO_WEEK_ONLY_INFERENCE",
+    "FUNDAMENTALS_AND_VALUATION_FIRST",
+    "10PLUS_NOT_EQUAL_400PLUS",
+    "PIT_NO_LOOKAHEAD",
+    "COST_AND_EXECUTION_AUDIT",
+    "KEEP_WATCH_VS_BUY_SEPARATE",
+    "NO_UNAUTHORIZED_FORMAL_MODEL_OR_TRADE_CHANGES",
+    "NO_MANDATE_DRIFT_WITHOUT_USER_EXPLICIT_CHANGE"
+  ],
+  "cross_chat_resume_triggers": [
+    "繼續衡策 AI 股災錯殺研究",
+    "AI 股災承接研究",
+    "照固定研究章程繼續"
+  ],
+  "research_authority_only": true,
+  "formal_universe_lock_unchanged": true,
+  "trade_execution_authority": false,
+  "capital_authority": false
+}
