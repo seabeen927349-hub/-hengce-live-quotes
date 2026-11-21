@@ -1,0 +1,56 @@
+name: HENGCE TDCC 20261120 Original Vessel Export
+# One-time read-only transport of already-published official weekly snapshots.
+# This is not a collector, second mother, model, or trading authority.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-tdcc-fourth-leg-20261120-transport.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout existing HENGCE canonical TDCC source vessel
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Validate and package exact original TDCC weeks for canonical sidecar
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import csv,hashlib,json,pathlib,shutil
+          checks={"20261030":["91e523a5439c7cbf98b67ea5dc8a20b7665530bfb4f04ef41bbb0b7610c77ab0","18b34f6eeb80229941f51200558fcc3fec9d405e9b7eb47aceca377e9f18f184",2971],"20261106":["5cc98b40c5697cdde442a20ce2aba05ef19cac8c4879f5c8a0b40b421cd4ca30","5332a48c7b9c68f01c4912f57fe767fb23fb9a8718d0b92b3ae1bbeda5cd18c9",2975],"20261113":["e52da6f589c7b8ea0512d978ac4fd6283b2dbe65b8e952d1e6fa56f556bebc81","c3a117022a83a72070d66f4fe81b21d820c09790e24d3f609a2e36f5fd1ad276",2980],"20261120":["30f29a900eec14253ba5c1a88576f3b20142c2c59baa0dac96cf683e5c750cd7","af8528288555b0e0d3791d13893992f667ee28f4c4e8b12d2202668d41e8214d",2983]}
+          for date,(expected_summary,expected_raw,expected_rows) in checks.items():
+              src=pathlib.Path('ownership/tdcc')/date
+              rec=json.loads((src/'receipt.json').read_text(encoding='utf-8'))
+              summary=src/'tdcc_ownership_4d.csv'
+              raw=src/'tdcc_1_5_raw.csv'
+              assert rec['status']=='COMPLETE' and rec['snapshot_date']==date
+              assert rec['summary_sha256']==expected_summary and rec['source_sha256']==expected_raw
+              assert rec['summary_rows']==expected_rows
+              assert hashlib.sha256(summary.read_bytes()).hexdigest()==expected_summary
+              assert hashlib.sha256(raw.read_bytes()).hexdigest()==expected_raw
+              with summary.open(encoding='utf-8-sig',newline='') as f:rows=list(csv.DictReader(f))
+              assert len(rows)==expected_rows
+              assert len({(x['SnapshotDate'],x['Ticker']) for x in rows})==expected_rows
+              assert all(x['SnapshotDate']==date and len(x['Ticker'])==4 and x['Ticker'].isdigit() for x in rows)
+              for x in rows:
+                  assert 0<=float(x['Big1000Pct'])<=float(x['Big400Pct'])<=100
+              out=pathlib.Path('transport')/date
+              out.mkdir(parents=True,exist_ok=True)
+              for f in ('receipt.json','tdcc_ownership_4d.csv','tdcc_1_5_raw.csv'):shutil.copy2(src/f,out/f)
+              print('SOURCE_VERIFIED',date,expected_rows,expected_summary,expected_raw)
+          PY
+      - name: Upload exact verified canonical transport bytes
+        uses: actions/upload-artifact@v4
+        with:
+          name: HENGCE_TDCC_FOURTH_LEG_20261120_SOURCE
+          path: transport/
+          if-no-files-found: error
+          retention-days: 7
