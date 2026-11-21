@@ -58,6 +58,10 @@
     "valuation_audit_complete": false,
     "confirmed_buy_trigger_count": 0,
     "trading_authority_changed": false,
-    "next_work": "Verify 122 residual cashflow audits; company-specific AI product and disclosed order sources; valuation cash conversion; 2025 tariff crash point-in-time post-crash buy signal performance"
+    "next_work": "Verify 122 residual cashflow audits; company-specific AI product and disclosed order sources; valuation cash conversion; 2025 tariff crash point-in-time post-crash buy signal performance",
+    "negative_cashflow_within_138": 4,
+    "cashflow_positive_within_138": 12,
+    "unaudited_within_138": 122,
+    "sample_20_breakdown": "138-member group: 12 positive, 4 negative, 122 unaudited; additional 4 audited outside that group (2 positive, 2 negative)"
   }
 }
