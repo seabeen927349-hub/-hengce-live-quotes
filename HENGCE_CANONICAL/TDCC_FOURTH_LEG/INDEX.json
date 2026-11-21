@@ -14,9 +14,52 @@
   "output_sha256_uncompressed": "a79c33b99dc236f517fe31462197115f6152c0523d968be4abf2a4237af0a5fb",
   "output_sha256_gzip": "d10a3576e09f42041135dae3884f59c73e555c05ce23e524131feee94f1e8b8f",
   "retrieval_contract": [
-    "Always resolve TDCC fourth-leg history from /HENGCE_CANONICAL/TDCC_FOURTH_LEG/INDEX.json first.",
     "Verify the referenced data vessel against the recorded SHA256 before downstream research use.",
     "Do not create or silently substitute a second TDCC mother vessel.",
-    "Production/live PIT authority must be checked separately in AUTHORITY.json."
-  ]
+    "Production/live PIT authority must be checked separately in AUTHORITY.json.",
+    "Read /HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_TDCC_MOTHER_INDEX.json first for official weekly current components; this GitHub INDEX references unchanged historical consolidated candidate.",
+    "Verify each weekly component SHA256 and do not daily-forward-fill TDCC into the daily price mother."
+  ],
+  "canonical_latest_official_weekly_snapshot": "20261120",
+  "canonical_latest_official_weekly_component": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/TDCC_OFFICIAL_20261120_CANONICAL.csv.gz",
+  "canonical_weekly_append_20261121": {
+    "status": "PASS",
+    "rows_added": 11909,
+    "previous_official_component_date": "20261022",
+    "dates": [
+      {
+        "date": "20261030",
+        "rows": 2971,
+        "sha256_gzip": "35bd55f954379479dde441ba365bae27dbb35fd38bfe3c0ca7ba5b7202b4eeb3",
+        "canonical_library_component": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/TDCC_OFFICIAL_20261030_CANONICAL.csv.gz",
+        "source_repo_path": "ownership/tdcc/20261030/tdcc_ownership_4d.csv"
+      },
+      {
+        "date": "20261106",
+        "rows": 2975,
+        "sha256_gzip": "292788abe006c954163a567646b181467a507dbf6b237640312693df645699a4",
+        "canonical_library_component": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/TDCC_OFFICIAL_20261106_CANONICAL.csv.gz",
+        "source_repo_path": "ownership/tdcc/20261106/tdcc_ownership_4d.csv"
+      },
+      {
+        "date": "20261113",
+        "rows": 2980,
+        "sha256_gzip": "160dac0aa3e3f7e85dcb44fb641264eb863d806d57ad79e7e457a70b2e5b9172",
+        "canonical_library_component": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/TDCC_OFFICIAL_20261113_CANONICAL.csv.gz",
+        "source_repo_path": "ownership/tdcc/20261113/tdcc_ownership_4d.csv"
+      },
+      {
+        "date": "20261120",
+        "rows": 2983,
+        "sha256_gzip": "1e9a885a69c8fd80b7e928175bf7dd5d70c4eafc1c9d69fd6c5771d93c6fffc1",
+        "canonical_library_component": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/TDCC_OFFICIAL_20261120_CANONICAL.csv.gz",
+        "source_repo_path": "ownership/tdcc/20261120/tdcc_ownership_4d.csv"
+      }
+    ],
+    "canonical_library_primary_index": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_TDCC_MOTHER_INDEX.json",
+    "canonical_library_receipt": "/HENGCE_CANONICAL/TDCC_FOURTH_LEG/HENGCE_TDCC_WEEKLY_INCREMENTAL_RECEIPT_20261120.json",
+    "original_consolidated_candidate_unchanged": true,
+    "daily_mother_physically_patched": false,
+    "second_mother_created": false
+  }
 }
