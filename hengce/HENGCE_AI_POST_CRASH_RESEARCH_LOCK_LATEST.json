@@ -90,6 +90,21 @@
     "tpex_complete": false,
     "formal_universe_lock_unchanged": true,
     "trading_authority_changed": false,
-    "next_work": "Continue source verification of AI actual order contribution beyond 15; cross-check company cashflow against official filings and 2027 valuation scenarios; 2025 tariff event PIT backtest of an as-of event AI order+cashflow+mispricing ranked shortlist; only then estimate next-session entry triggers and costs"
+    "next_work": "Expand 2027 forward EPS and sensitivity across remaining 130 fundamental-plus-crash names, distinguish AI verified product from non-AI cyclicals, compare normalized P/E with past point-in-time range, validate 2025 tariff crash entry rules",
+    "valuation_study": "research/ai_post_crash_recovery/HENGCE_AI_RECOVERY_20261121_FORWARD_PE_VALUATION_SCENARIOS_V1.md",
+    "forward_valuation_asof": "2026-11-20",
+    "forward_valuation_names": [
+      "2368",
+      "2360",
+      "6442",
+      "3665",
+      "2059",
+      "3017",
+      "2383",
+      "2308"
+    ],
+    "forward_valuation_method": "TTM PE; 2026E 10x stress, 2027E 80pct 15x base (6442 normalized 65 EPS), full 2027E 20x optimistic; each divided by 1.10",
+    "forward_valuation_asof_20261121_complete_for_8": true,
+    "valuation_caveat": "2027 EPS consensus unverified as forward realized earnings; 6442 130 EPS appears concentrated 1 analyst; correct base normalized 65 EPS; valuation estimate not buy point"
   }
 }
