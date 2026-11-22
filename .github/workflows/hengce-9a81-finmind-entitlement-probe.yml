@@ -1,0 +1,78 @@
+name: HENGCE 9A81 existing FinMind Sponsor access probe
+# Isolated research verification. Uses the EXISTING FINMIND_TOKEN in this repo.
+# Publishes nonlicensed metadata only; no trade records, secrets, or individual security data.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-9a81-finmind-entitlement-probe.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-9a81-finmind-existing-token-probe
+  cancel-in-progress: false
+
+jobs:
+  entitlement-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check two published historical dates using existing paid token
+        shell: bash
+        run: |
+          python - <<'PY'
+          import datetime,json,os,pathlib,urllib.parse,urllib.request,urllib.error
+          dates=["2026-01-02","2026-11-20"]
+          token=os.environ.get("FINMIND_TOKEN","").strip()
+          out={"schema":"HENGCE_9A81_FINMIND_ENTITLEMENT_PROBE_V1",
+               "observed_at_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+               "repository":"seabeen927349-hub/-hengce-live-quotes",
+               "finmind_token_available_in_original_repo":bool(token),
+               "probe_dates":dates,"checks":[],"raw_data_persisted":False,
+               "canonical_model_or_orders_touched":False}
+          if token:
+              for day in dates:
+                  url="https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report?"+urllib.parse.urlencode({"securities_trader_id":"9A81","date":day})
+                  req=urllib.request.Request(url,headers={"Authorization":"Bearer "+token,"Accept":"application/json","User-Agent":"HENGCE-9A81-Entitlement-Probe/1.0"})
+                  result={"date":day}
+                  try:
+                      with urllib.request.urlopen(req,timeout=60) as resp:
+                          payload=json.loads(resp.read(25000000).decode("utf-8"))
+                      data=payload.get("data")
+                      if isinstance(data,list):
+                          branch_ok=all(str(row.get("securities_trader_id","")).upper()=="9A81" and str(row.get("date",""))[:10]==day for row in data)
+                          result.update({"response_status":str(payload.get("status","")),"returned_rows":len(data),"branch_and_date_identity_valid":branch_ok,"result":"DATA" if data and branch_ok else "EMPTY_OR_INVALID"})
+                      else:
+                          result.update({"result":"NO_DATA_ARRAY","api_status":str(payload.get("status","")),"api_message":str(payload.get("msg",""))[:250]})
+                  except urllib.error.HTTPError as exc:
+                      result.update({"result":"HTTP_ERROR","http_code":exc.code})
+                  except Exception as exc:
+                      result.update({"result":"OTHER_ERROR","error_type":type(exc).__name__})
+                  out["checks"].append(result)
+          out_path=pathlib.Path("research/9a81_finmind_existing_token_probe.json")
+          out_path.parent.mkdir(parents=True,exist_ok=True)
+          out_path.write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("SANITIZED_FINMIND_9A81_PROBE",json.dumps(out,ensure_ascii=False))
+          PY
+      - name: Commit sanitized probe receipt only
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-research-entitlement-probe-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add research/9a81_finmind_existing_token_probe.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research(9A81): verify existing FinMind sponsor endpoint, no raw records'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
