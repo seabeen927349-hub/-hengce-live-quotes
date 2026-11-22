@@ -1,11 +1,11 @@
 {
-  "asof_taipei": "2026-11-20T12:00:17.722124+08:00",
+  "asof_taipei": "2026-11-23T04:46:26.552590+08:00",
   "escape_formal_state": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
   "finmind": {
     "canonical_previous_twse_date": "2026-11-20",
     "context_digest": "d7498ab81f2c7803db2b963ead6b572c3be8e0bfdab482485f54e81ef78e6c59",
     "current_session_coverage": 0.99632353,
-    "data_role": "CURRENT_INTRADAY_OBSERVATION",
+    "data_role": "PREVIOUS_COMPLETED_TW_SESSION",
     "existing_transport": "taiwan_stock_tick_snapshot",
     "generated_at_taipei": "2026-11-20T11:59:36.915377+08:00",
     "latest_source_taipei": "2026-11-20T11:59:29.739051+08:00",
@@ -38,13 +38,37 @@
     "vendor_turnover_units": 487772926850.0
   },
   "premarket_forecast": {
-    "expected_gap_log_pct": null,
-    "grade": null,
-    "status": "NO_VERIFIED_OVERSEAS_PACKET"
+    "expected_gap_log_pct": -1.75758592,
+    "grade": 1,
+    "overseas_source_sessions": {
+      "base": "2026-11-19",
+      "latest": "2026-11-20"
+    },
+    "source_notice": "Official-vendor EOD captured by governed shadow; not an independently signed data feed or trading signal.",
+    "source_receipt_sha256": "9e1a90331a150eca3ccb9504645b3618701a029d7aafc63a5212c7f481a7fc95",
+    "source_url": {
+      "sox": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-29T00:00:00.000&endDate=2026-11-24T00:00:00.000&timeOfDay=EOD",
+      "vix": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+    },
+    "sox": {
+      "change_pct": -10.73420132,
+      "latest_close": 8408.59042933662
+    },
+    "status": "VERIFIED_GOVERNED_OVERSEAS_SOX_VIX",
+    "vendor_price_integrity": true,
+    "vix": {
+      "change_pct": 26.1954993,
+      "latest_close": 35.89,
+      "risk_band": "HIGH"
+    },
+    "vix_risk": {
+      "vix_level": 35.89,
+      "vix_risk_band": "HIGH"
+    }
   },
   "schema": "HENGCE_FINMIND_PREMARKET_BRIDGE_V1",
   "status": "PASS_READ_ONLY_CONTEXT",
-  "target_tw_date": "2026-11-20",
+  "target_tw_date": "2026-11-23",
   "two_time_scale_display": {
     "decision_policy": {
       "formal_escape_effect": "NONE",
@@ -71,7 +95,7 @@
       "title": "長期資金環境"
     },
     "schema": "HENGCE_TWO_TIME_SCALE_ENVIRONMENT_DISPLAY_V1",
-    "target_tw_date": "2026-11-20",
+    "target_tw_date": "2026-11-23",
     "today_market_environment": {
       "allowed_labels": [
         "強烈偏多",
@@ -80,11 +104,13 @@
         "偏空",
         "強烈偏空"
       ],
-      "grade": null,
-      "label": "資料不足",
+      "caution": "已宣告海外資料與時戳經治理血管查驗；仍只作研究環境顯示，無交易授權",
+      "expected_open_gap_log_pct": -1.75758592,
+      "grade": 1,
+      "label": "強烈偏空",
       "meaning": "僅反映隔夜海外市場對台股開盤的預報，不代表中長期資金轉向",
       "source_scope": "SOX_VIX_PREMARKET",
-      "status": "UNVERIFIED",
+      "status": "GOVERNED_OVERSEAS_VERIFIED_RESEARCH_ONLY",
       "title": "今日市場環境"
     }
   }
