@@ -1,0 +1,82 @@
+name: HENGCE 9A81 FinMind full-year encrypted export
+# Research-only export. Raw licensed rows stay in memory and never enter public Git.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-9a81-encrypted-full-year-export.yml'
+      - 'scripts/hengce_9a81_secure_2026_export.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-9a81-2026-encrypted-export
+  cancel-in-progress: false
+
+jobs:
+  full-year-export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare encrypted export dependencies and validate code
+        run: |
+          python -m pip install --disable-pip-version-check requests cryptography
+          python -m py_compile scripts/hengce_9a81_secure_2026_export.py
+      - name: Fetch all 2026 stock-day price rows and encrypt for separate private research repository
+        id: secure_transfer
+        shell: bash
+        run: |
+          python scripts/hengce_9a81_secure_2026_export.py
+      - name: Verify only ciphertext and sanitized status are published
+        run: |
+          set -euo pipefail
+          test -s research/9a81_secure_2026_envelope.json
+          python - <<'PY'
+          import json,pathlib
+          e=json.loads(pathlib.Path('research/9a81_secure_2026_envelope.json').read_text())
+          s=json.loads(pathlib.Path('research/9a81_secure_2026_status.json').read_text())
+          assert e['schema']=='HENGCE_9A81_2026_ENCRYPTED_TRANSFER_V1'
+          assert s['state']=='ENCRYPTED_COMPLETE'
+          assert e['calendar_days']>=210 and e['price_rows']>=100000
+          assert len(e['payload_b64'])>=20000
+          assert 'raw_price' not in e and 'trades' not in e
+          print('ENCRYPTED_OUTPUT_READY',e['calendar_days'],e['price_rows'])
+          PY
+      - name: Publish ciphertext to original vessel and sanitized receipt
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-9a81-finmind-secure-transfer-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add research/9a81_secure_2026_envelope.json research/9a81_secure_2026_status.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research(9A81): transport 2026 full-year encrypted branch data'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Publish failure-only receipt, without raw data
+        if: failure()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-9a81-finmind-secure-transfer-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if [ -f research/9a81_secure_2026_status.json ]; then
+            git add research/9a81_secure_2026_status.json
+            if ! git diff --cached --quiet; then
+              git commit -m 'research(9A81): record sanitized encrypted-export exception'
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
