@@ -1,0 +1,17 @@
+{
+  "schema": "HENGCE_9A81_2026_ENCRYPTED_TRANSFER_STATUS_V1",
+  "generated_at_utc": "2026-11-22T09:49:12.372892+00:00",
+  "requested_start": "2026-01-01",
+  "requested_end": "2026-11-20",
+  "recipient": "PRIVATE_RESEARCH_REPOSITORY",
+  "source": "FinMind TaiwanStockTradingDailyReport",
+  "encrypted_output_only": true,
+  "state": "ENCRYPTED_COMPLETE",
+  "calendar_days": 213,
+  "successful_days": 213,
+  "exceptions": [],
+  "raw_price_rows": 224861,
+  "distinct_stock_codes": 894,
+  "ciphertext_file": "research/9a81_secure_2026_envelope.json",
+  "plaintext_rows_persisted": false
+}
