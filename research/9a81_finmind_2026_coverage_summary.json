@@ -1,0 +1,1511 @@
+{
+  "schema": "HENGCE_9A81_2026_SANITIZED_DAILY_COVERAGE_V1",
+  "generated_at_utc": "2026-11-22T09:41:00.521060+00:00",
+  "branch": "9A81",
+  "first_requested_date": "2026-01-01",
+  "last_requested_date": "2026-11-20",
+  "calendar_trading_days": 213,
+  "successful_trading_days": 213,
+  "failed_or_empty_days": 0,
+  "price_level_rows_total": 224861,
+  "coverage_complete": true,
+  "exceptions": [],
+  "daily_summary": [
+    {
+      "date": "2026-01-02",
+      "status": "OK",
+      "price_rows": 392,
+      "distinct_stocks": 53,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-05",
+      "status": "OK",
+      "price_rows": 673,
+      "distinct_stocks": 147,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-06",
+      "status": "OK",
+      "price_rows": 668,
+      "distinct_stocks": 109,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-07",
+      "status": "OK",
+      "price_rows": 1045,
+      "distinct_stocks": 124,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-08",
+      "status": "OK",
+      "price_rows": 687,
+      "distinct_stocks": 99,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-09",
+      "status": "OK",
+      "price_rows": 922,
+      "distinct_stocks": 133,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-12",
+      "status": "OK",
+      "price_rows": 648,
+      "distinct_stocks": 99,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-13",
+      "status": "OK",
+      "price_rows": 1015,
+      "distinct_stocks": 138,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-14",
+      "status": "OK",
+      "price_rows": 1455,
+      "distinct_stocks": 208,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-15",
+      "status": "OK",
+      "price_rows": 486,
+      "distinct_stocks": 82,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-16",
+      "status": "OK",
+      "price_rows": 832,
+      "distinct_stocks": 159,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-19",
+      "status": "OK",
+      "price_rows": 978,
+      "distinct_stocks": 113,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-20",
+      "status": "OK",
+      "price_rows": 905,
+      "distinct_stocks": 135,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-21",
+      "status": "OK",
+      "price_rows": 665,
+      "distinct_stocks": 103,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-22",
+      "status": "OK",
+      "price_rows": 1302,
+      "distinct_stocks": 152,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-23",
+      "status": "OK",
+      "price_rows": 873,
+      "distinct_stocks": 99,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-26",
+      "status": "OK",
+      "price_rows": 658,
+      "distinct_stocks": 97,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-27",
+      "status": "OK",
+      "price_rows": 489,
+      "distinct_stocks": 93,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-28",
+      "status": "OK",
+      "price_rows": 536,
+      "distinct_stocks": 84,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-29",
+      "status": "OK",
+      "price_rows": 1042,
+      "distinct_stocks": 145,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-01-30",
+      "status": "OK",
+      "price_rows": 560,
+      "distinct_stocks": 83,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-02",
+      "status": "OK",
+      "price_rows": 1137,
+      "distinct_stocks": 130,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-03",
+      "status": "OK",
+      "price_rows": 820,
+      "distinct_stocks": 136,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-04",
+      "status": "OK",
+      "price_rows": 644,
+      "distinct_stocks": 107,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-05",
+      "status": "OK",
+      "price_rows": 836,
+      "distinct_stocks": 120,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-06",
+      "status": "OK",
+      "price_rows": 1574,
+      "distinct_stocks": 128,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-09",
+      "status": "OK",
+      "price_rows": 1154,
+      "distinct_stocks": 149,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-10",
+      "status": "OK",
+      "price_rows": 764,
+      "distinct_stocks": 151,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-11",
+      "status": "OK",
+      "price_rows": 607,
+      "distinct_stocks": 87,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-23",
+      "status": "OK",
+      "price_rows": 1669,
+      "distinct_stocks": 190,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-24",
+      "status": "OK",
+      "price_rows": 917,
+      "distinct_stocks": 122,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-25",
+      "status": "OK",
+      "price_rows": 1366,
+      "distinct_stocks": 159,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-02-26",
+      "status": "OK",
+      "price_rows": 1160,
+      "distinct_stocks": 233,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-02",
+      "status": "OK",
+      "price_rows": 1017,
+      "distinct_stocks": 146,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-03",
+      "status": "OK",
+      "price_rows": 1070,
+      "distinct_stocks": 114,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-04",
+      "status": "OK",
+      "price_rows": 1508,
+      "distinct_stocks": 161,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-05",
+      "status": "OK",
+      "price_rows": 942,
+      "distinct_stocks": 120,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-06",
+      "status": "OK",
+      "price_rows": 841,
+      "distinct_stocks": 111,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-09",
+      "status": "OK",
+      "price_rows": 873,
+      "distinct_stocks": 79,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-10",
+      "status": "OK",
+      "price_rows": 1176,
+      "distinct_stocks": 156,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-11",
+      "status": "OK",
+      "price_rows": 878,
+      "distinct_stocks": 93,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-12",
+      "status": "OK",
+      "price_rows": 624,
+      "distinct_stocks": 84,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-13",
+      "status": "OK",
+      "price_rows": 872,
+      "distinct_stocks": 96,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-16",
+      "status": "OK",
+      "price_rows": 588,
+      "distinct_stocks": 64,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-17",
+      "status": "OK",
+      "price_rows": 589,
+      "distinct_stocks": 68,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-18",
+      "status": "OK",
+      "price_rows": 1024,
+      "distinct_stocks": 136,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-19",
+      "status": "OK",
+      "price_rows": 980,
+      "distinct_stocks": 123,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-20",
+      "status": "OK",
+      "price_rows": 553,
+      "distinct_stocks": 75,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-23",
+      "status": "OK",
+      "price_rows": 530,
+      "distinct_stocks": 106,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-24",
+      "status": "OK",
+      "price_rows": 374,
+      "distinct_stocks": 50,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-25",
+      "status": "OK",
+      "price_rows": 553,
+      "distinct_stocks": 72,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-26",
+      "status": "OK",
+      "price_rows": 722,
+      "distinct_stocks": 84,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-27",
+      "status": "OK",
+      "price_rows": 604,
+      "distinct_stocks": 104,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-30",
+      "status": "OK",
+      "price_rows": 381,
+      "distinct_stocks": 58,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-03-31",
+      "status": "OK",
+      "price_rows": 604,
+      "distinct_stocks": 108,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-01",
+      "status": "OK",
+      "price_rows": 467,
+      "distinct_stocks": 70,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-02",
+      "status": "OK",
+      "price_rows": 810,
+      "distinct_stocks": 94,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-07",
+      "status": "OK",
+      "price_rows": 420,
+      "distinct_stocks": 67,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-08",
+      "status": "OK",
+      "price_rows": 572,
+      "distinct_stocks": 89,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-09",
+      "status": "OK",
+      "price_rows": 676,
+      "distinct_stocks": 96,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-10",
+      "status": "OK",
+      "price_rows": 516,
+      "distinct_stocks": 80,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-13",
+      "status": "OK",
+      "price_rows": 623,
+      "distinct_stocks": 115,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-14",
+      "status": "OK",
+      "price_rows": 659,
+      "distinct_stocks": 93,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-15",
+      "status": "OK",
+      "price_rows": 1043,
+      "distinct_stocks": 99,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-16",
+      "status": "OK",
+      "price_rows": 1092,
+      "distinct_stocks": 117,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-17",
+      "status": "OK",
+      "price_rows": 831,
+      "distinct_stocks": 90,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-20",
+      "status": "OK",
+      "price_rows": 599,
+      "distinct_stocks": 67,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-21",
+      "status": "OK",
+      "price_rows": 686,
+      "distinct_stocks": 98,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-22",
+      "status": "OK",
+      "price_rows": 1057,
+      "distinct_stocks": 121,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-23",
+      "status": "OK",
+      "price_rows": 1150,
+      "distinct_stocks": 98,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-24",
+      "status": "OK",
+      "price_rows": 780,
+      "distinct_stocks": 116,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-27",
+      "status": "OK",
+      "price_rows": 838,
+      "distinct_stocks": 115,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-28",
+      "status": "OK",
+      "price_rows": 1031,
+      "distinct_stocks": 117,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-29",
+      "status": "OK",
+      "price_rows": 821,
+      "distinct_stocks": 89,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-04-30",
+      "status": "OK",
+      "price_rows": 941,
+      "distinct_stocks": 103,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-04",
+      "status": "OK",
+      "price_rows": 822,
+      "distinct_stocks": 120,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-05",
+      "status": "OK",
+      "price_rows": 558,
+      "distinct_stocks": 98,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-06",
+      "status": "OK",
+      "price_rows": 912,
+      "distinct_stocks": 99,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-07",
+      "status": "OK",
+      "price_rows": 995,
+      "distinct_stocks": 88,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-08",
+      "status": "OK",
+      "price_rows": 1271,
+      "distinct_stocks": 108,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-11",
+      "status": "OK",
+      "price_rows": 1015,
+      "distinct_stocks": 88,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-12",
+      "status": "OK",
+      "price_rows": 1311,
+      "distinct_stocks": 117,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-13",
+      "status": "OK",
+      "price_rows": 2062,
+      "distinct_stocks": 155,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-14",
+      "status": "OK",
+      "price_rows": 1104,
+      "distinct_stocks": 114,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-15",
+      "status": "OK",
+      "price_rows": 1111,
+      "distinct_stocks": 111,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-18",
+      "status": "OK",
+      "price_rows": 1337,
+      "distinct_stocks": 136,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-19",
+      "status": "OK",
+      "price_rows": 2113,
+      "distinct_stocks": 189,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-20",
+      "status": "OK",
+      "price_rows": 1276,
+      "distinct_stocks": 161,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-21",
+      "status": "OK",
+      "price_rows": 1100,
+      "distinct_stocks": 172,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-22",
+      "status": "OK",
+      "price_rows": 876,
+      "distinct_stocks": 122,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-25",
+      "status": "OK",
+      "price_rows": 597,
+      "distinct_stocks": 57,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-26",
+      "status": "OK",
+      "price_rows": 769,
+      "distinct_stocks": 85,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-27",
+      "status": "OK",
+      "price_rows": 1103,
+      "distinct_stocks": 126,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-28",
+      "status": "OK",
+      "price_rows": 1815,
+      "distinct_stocks": 143,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-05-29",
+      "status": "OK",
+      "price_rows": 2281,
+      "distinct_stocks": 232,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-01",
+      "status": "OK",
+      "price_rows": 732,
+      "distinct_stocks": 118,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-02",
+      "status": "OK",
+      "price_rows": 1248,
+      "distinct_stocks": 130,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-03",
+      "status": "OK",
+      "price_rows": 1770,
+      "distinct_stocks": 123,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-04",
+      "status": "OK",
+      "price_rows": 1480,
+      "distinct_stocks": 154,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-05",
+      "status": "OK",
+      "price_rows": 1407,
+      "distinct_stocks": 112,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-08",
+      "status": "OK",
+      "price_rows": 784,
+      "distinct_stocks": 88,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-09",
+      "status": "OK",
+      "price_rows": 1409,
+      "distinct_stocks": 152,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-10",
+      "status": "OK",
+      "price_rows": 1578,
+      "distinct_stocks": 178,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-11",
+      "status": "OK",
+      "price_rows": 1241,
+      "distinct_stocks": 114,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-12",
+      "status": "OK",
+      "price_rows": 1242,
+      "distinct_stocks": 124,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-15",
+      "status": "OK",
+      "price_rows": 919,
+      "distinct_stocks": 131,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-16",
+      "status": "OK",
+      "price_rows": 1329,
+      "distinct_stocks": 144,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-17",
+      "status": "OK",
+      "price_rows": 1185,
+      "distinct_stocks": 121,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-18",
+      "status": "OK",
+      "price_rows": 771,
+      "distinct_stocks": 146,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-22",
+      "status": "OK",
+      "price_rows": 933,
+      "distinct_stocks": 96,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-23",
+      "status": "OK",
+      "price_rows": 1399,
+      "distinct_stocks": 119,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-24",
+      "status": "OK",
+      "price_rows": 1248,
+      "distinct_stocks": 127,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-25",
+      "status": "OK",
+      "price_rows": 1083,
+      "distinct_stocks": 133,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-26",
+      "status": "OK",
+      "price_rows": 1457,
+      "distinct_stocks": 146,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-29",
+      "status": "OK",
+      "price_rows": 1139,
+      "distinct_stocks": 136,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-06-30",
+      "status": "OK",
+      "price_rows": 1055,
+      "distinct_stocks": 134,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-01",
+      "status": "OK",
+      "price_rows": 1013,
+      "distinct_stocks": 111,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-02",
+      "status": "OK",
+      "price_rows": 820,
+      "distinct_stocks": 109,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-03",
+      "status": "OK",
+      "price_rows": 698,
+      "distinct_stocks": 77,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-06",
+      "status": "OK",
+      "price_rows": 627,
+      "distinct_stocks": 94,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-07",
+      "status": "OK",
+      "price_rows": 979,
+      "distinct_stocks": 108,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-08",
+      "status": "OK",
+      "price_rows": 1629,
+      "distinct_stocks": 135,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-09",
+      "status": "OK",
+      "price_rows": 1022,
+      "distinct_stocks": 121,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-13",
+      "status": "OK",
+      "price_rows": 967,
+      "distinct_stocks": 148,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-14",
+      "status": "OK",
+      "price_rows": 1397,
+      "distinct_stocks": 130,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-15",
+      "status": "OK",
+      "price_rows": 1690,
+      "distinct_stocks": 163,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-16",
+      "status": "OK",
+      "price_rows": 952,
+      "distinct_stocks": 112,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-17",
+      "status": "OK",
+      "price_rows": 1111,
+      "distinct_stocks": 122,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-20",
+      "status": "OK",
+      "price_rows": 2048,
+      "distinct_stocks": 202,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-21",
+      "status": "OK",
+      "price_rows": 534,
+      "distinct_stocks": 85,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-22",
+      "status": "OK",
+      "price_rows": 1397,
+      "distinct_stocks": 126,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-23",
+      "status": "OK",
+      "price_rows": 1145,
+      "distinct_stocks": 110,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-24",
+      "status": "OK",
+      "price_rows": 879,
+      "distinct_stocks": 106,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-27",
+      "status": "OK",
+      "price_rows": 684,
+      "distinct_stocks": 124,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-28",
+      "status": "OK",
+      "price_rows": 1937,
+      "distinct_stocks": 220,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-29",
+      "status": "OK",
+      "price_rows": 3221,
+      "distinct_stocks": 244,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-30",
+      "status": "OK",
+      "price_rows": 1686,
+      "distinct_stocks": 127,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-07-31",
+      "status": "OK",
+      "price_rows": 880,
+      "distinct_stocks": 161,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-03",
+      "status": "OK",
+      "price_rows": 814,
+      "distinct_stocks": 98,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-04",
+      "status": "OK",
+      "price_rows": 1064,
+      "distinct_stocks": 140,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-05",
+      "status": "OK",
+      "price_rows": 1248,
+      "distinct_stocks": 135,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-06",
+      "status": "OK",
+      "price_rows": 937,
+      "distinct_stocks": 111,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-07",
+      "status": "OK",
+      "price_rows": 881,
+      "distinct_stocks": 106,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-10",
+      "status": "OK",
+      "price_rows": 906,
+      "distinct_stocks": 127,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-11",
+      "status": "OK",
+      "price_rows": 1281,
+      "distinct_stocks": 129,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-12",
+      "status": "OK",
+      "price_rows": 689,
+      "distinct_stocks": 130,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-13",
+      "status": "OK",
+      "price_rows": 1909,
+      "distinct_stocks": 187,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-14",
+      "status": "OK",
+      "price_rows": 956,
+      "distinct_stocks": 94,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-17",
+      "status": "OK",
+      "price_rows": 1027,
+      "distinct_stocks": 107,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-18",
+      "status": "OK",
+      "price_rows": 819,
+      "distinct_stocks": 136,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-19",
+      "status": "OK",
+      "price_rows": 1118,
+      "distinct_stocks": 123,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-20",
+      "status": "OK",
+      "price_rows": 916,
+      "distinct_stocks": 95,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-21",
+      "status": "OK",
+      "price_rows": 1276,
+      "distinct_stocks": 148,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-24",
+      "status": "OK",
+      "price_rows": 512,
+      "distinct_stocks": 98,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-25",
+      "status": "OK",
+      "price_rows": 831,
+      "distinct_stocks": 99,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-26",
+      "status": "OK",
+      "price_rows": 808,
+      "distinct_stocks": 129,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-27",
+      "status": "OK",
+      "price_rows": 698,
+      "distinct_stocks": 112,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-28",
+      "status": "OK",
+      "price_rows": 887,
+      "distinct_stocks": 133,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-08-31",
+      "status": "OK",
+      "price_rows": 982,
+      "distinct_stocks": 194,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-01",
+      "status": "OK",
+      "price_rows": 764,
+      "distinct_stocks": 103,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-02",
+      "status": "OK",
+      "price_rows": 886,
+      "distinct_stocks": 121,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-03",
+      "status": "OK",
+      "price_rows": 1298,
+      "distinct_stocks": 119,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-04",
+      "status": "OK",
+      "price_rows": 886,
+      "distinct_stocks": 136,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-07",
+      "status": "OK",
+      "price_rows": 528,
+      "distinct_stocks": 57,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-08",
+      "status": "OK",
+      "price_rows": 1133,
+      "distinct_stocks": 123,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-09",
+      "status": "OK",
+      "price_rows": 1010,
+      "distinct_stocks": 123,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-10",
+      "status": "OK",
+      "price_rows": 638,
+      "distinct_stocks": 81,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-11",
+      "status": "OK",
+      "price_rows": 1464,
+      "distinct_stocks": 154,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-14",
+      "status": "OK",
+      "price_rows": 1937,
+      "distinct_stocks": 190,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-15",
+      "status": "OK",
+      "price_rows": 565,
+      "distinct_stocks": 103,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-16",
+      "status": "OK",
+      "price_rows": 801,
+      "distinct_stocks": 150,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-17",
+      "status": "OK",
+      "price_rows": 1615,
+      "distinct_stocks": 198,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-18",
+      "status": "OK",
+      "price_rows": 669,
+      "distinct_stocks": 129,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-21",
+      "status": "OK",
+      "price_rows": 643,
+      "distinct_stocks": 85,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-22",
+      "status": "OK",
+      "price_rows": 704,
+      "distinct_stocks": 104,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-23",
+      "status": "OK",
+      "price_rows": 903,
+      "distinct_stocks": 135,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-24",
+      "status": "OK",
+      "price_rows": 1183,
+      "distinct_stocks": 184,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-29",
+      "status": "OK",
+      "price_rows": 1983,
+      "distinct_stocks": 223,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-09-30",
+      "status": "OK",
+      "price_rows": 1420,
+      "distinct_stocks": 270,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-01",
+      "status": "OK",
+      "price_rows": 1631,
+      "distinct_stocks": 278,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-02",
+      "status": "OK",
+      "price_rows": 1048,
+      "distinct_stocks": 139,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-05",
+      "status": "OK",
+      "price_rows": 889,
+      "distinct_stocks": 124,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-06",
+      "status": "OK",
+      "price_rows": 685,
+      "distinct_stocks": 145,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-07",
+      "status": "OK",
+      "price_rows": 1063,
+      "distinct_stocks": 150,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-08",
+      "status": "OK",
+      "price_rows": 1301,
+      "distinct_stocks": 171,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-12",
+      "status": "OK",
+      "price_rows": 959,
+      "distinct_stocks": 135,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-13",
+      "status": "OK",
+      "price_rows": 1574,
+      "distinct_stocks": 213,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-14",
+      "status": "OK",
+      "price_rows": 1435,
+      "distinct_stocks": 433,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-15",
+      "status": "OK",
+      "price_rows": 1446,
+      "distinct_stocks": 157,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-16",
+      "status": "OK",
+      "price_rows": 959,
+      "distinct_stocks": 103,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-19",
+      "status": "OK",
+      "price_rows": 1510,
+      "distinct_stocks": 189,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-20",
+      "status": "OK",
+      "price_rows": 701,
+      "distinct_stocks": 100,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-21",
+      "status": "OK",
+      "price_rows": 1157,
+      "distinct_stocks": 134,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-22",
+      "status": "OK",
+      "price_rows": 1499,
+      "distinct_stocks": 160,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-27",
+      "status": "OK",
+      "price_rows": 1403,
+      "distinct_stocks": 140,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-28",
+      "status": "OK",
+      "price_rows": 695,
+      "distinct_stocks": 96,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-29",
+      "status": "OK",
+      "price_rows": 842,
+      "distinct_stocks": 90,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-10-30",
+      "status": "OK",
+      "price_rows": 1094,
+      "distinct_stocks": 152,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-02",
+      "status": "OK",
+      "price_rows": 815,
+      "distinct_stocks": 101,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-03",
+      "status": "OK",
+      "price_rows": 1151,
+      "distinct_stocks": 118,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-04",
+      "status": "OK",
+      "price_rows": 1467,
+      "distinct_stocks": 137,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-05",
+      "status": "OK",
+      "price_rows": 1186,
+      "distinct_stocks": 103,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-06",
+      "status": "OK",
+      "price_rows": 1542,
+      "distinct_stocks": 122,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-09",
+      "status": "OK",
+      "price_rows": 1429,
+      "distinct_stocks": 118,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-10",
+      "status": "OK",
+      "price_rows": 1781,
+      "distinct_stocks": 136,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-11",
+      "status": "OK",
+      "price_rows": 1013,
+      "distinct_stocks": 98,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-12",
+      "status": "OK",
+      "price_rows": 1678,
+      "distinct_stocks": 117,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-13",
+      "status": "OK",
+      "price_rows": 1032,
+      "distinct_stocks": 118,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-16",
+      "status": "OK",
+      "price_rows": 1035,
+      "distinct_stocks": 95,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-17",
+      "status": "OK",
+      "price_rows": 2443,
+      "distinct_stocks": 180,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-18",
+      "status": "OK",
+      "price_rows": 1429,
+      "distinct_stocks": 119,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-19",
+      "status": "OK",
+      "price_rows": 2402,
+      "distinct_stocks": 171,
+      "invalid_rows": 0
+    },
+    {
+      "date": "2026-11-20",
+      "status": "OK",
+      "price_rows": 1431,
+      "distinct_stocks": 123,
+      "invalid_rows": 0
+    }
+  ],
+  "raw_licensed_trades_stored": false,
+  "trade_details_in_public_repository": false,
+  "source": "FinMind TaiwanStockTradingDailyReport for 9A81, TaiwanStockTradingDate",
+  "scope_note": "Only metadata of each trading day's response; no stock-level buy/sell or prices persisted.",
+  "other_repo_private_ledger_complete": false
+}
