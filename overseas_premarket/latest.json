@@ -1,20 +1,20 @@
 {
   "authority": "OVERSEAS_PREMARKET_RESEARCH_SHADOW_ONLY_NOT_CANONICAL_STOCK_FLOW",
-  "base_us_session": "2026-11-12",
+  "base_us_session": "2026-11-19",
   "capital_authority": false,
   "direction_forecast": {
-    "expected_taiex_open_gap_log_pct": -0.49673425,
+    "expected_taiex_open_gap_log_pct": -1.75758592,
     "grade": 1,
     "label": "強烈偏空",
-    "sox_log_return_pct": -3.48992749,
-    "sox_simple_return_pct": -3.42973181,
-    "vix_log_return_pct": 3.15815721,
-    "vix_simple_return_pct": 3.20855615
+    "sox_log_return_pct": -11.3551765,
+    "sox_simple_return_pct": -10.73420132,
+    "vix_log_return_pct": 23.26621002,
+    "vix_simple_return_pct": 26.1954993
   },
-  "generated_at_taipei": "2026-11-16T01:15:27.797118+08:00",
-  "latest_us_session": "2026-11-13",
+  "generated_at_taipei": "2026-11-23T04:45:49.415187+08:00",
+  "latest_us_session": "2026-11-20",
   "model": "HENGCE_SOX_VIX_TAIEX_OPEN_GAP_OLS_TRAIN_20181109_20241231_V1",
-  "packet_sha256": "f0963e28db4d2e07364261c1318a55b5c0ecd43b5ee575aef21a40c0a0b06585",
+  "packet_sha256": "9e1a90331a150eca3ccb9504645b3618701a029d7aafc63a5212c7f481a7fc95",
   "provenance_policy": {
     "asof_preopen_only": true,
     "market_interpretation_not_trading_authority": true,
@@ -24,37 +24,37 @@
     "vendor_eod_not_intraday": true,
     "vendor_rows_same_completed_session": true
   },
-  "reference_prev_tw_date": "2026-11-12",
+  "reference_prev_tw_date": "2026-11-20",
   "risk_forecast": {
-    "vix_level": 19.3,
-    "vix_risk_band": "NORMAL"
+    "vix_level": 35.89,
+    "vix_risk_band": "HIGH"
   },
   "sources": {
     "sox": {
-      "latest_close": 10146.32311915594,
-      "latest_us_session": "2026-11-13",
-      "prior_close": 10506.6738548949,
-      "prior_us_session": "2026-11-12",
+      "latest_close": 8408.59042933662,
+      "latest_us_session": "2026-11-20",
+      "prior_close": 9419.72239497284,
+      "prior_us_session": "2026-11-19",
       "publisher": "Nasdaq",
-      "raw_bytes": 7700,
-      "raw_sha256": "463602620da6370dd4681fae7ec7ddefaa3e0b044913d01d3b46a0ef64db2e76",
+      "raw_bytes": 8411,
+      "raw_sha256": "f7f96c829460b22cc9de4d2cc98a9448f128b7139d34f220890fce4d4821e693",
       "symbol": "SOX",
-      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-22T00:00:00.000&endDate=2026-11-17T00:00:00.000&timeOfDay=EOD"
+      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-29T00:00:00.000&endDate=2026-11-24T00:00:00.000&timeOfDay=EOD"
     },
     "vix": {
-      "latest_close": 19.3,
-      "latest_us_session": "2026-11-13",
-      "prior_close": 18.7,
-      "prior_us_session": "2026-11-12",
+      "latest_close": 35.89,
+      "latest_us_session": "2026-11-20",
+      "prior_close": 28.44,
+      "prior_us_session": "2026-11-19",
       "publisher": "Cboe",
-      "raw_bytes": 474859,
-      "raw_sha256": "d4e2b1199951501b7757814b6e1c2356394922a7ea8ef16d85c3a4596e6e2c2d",
+      "raw_bytes": 475114,
+      "raw_sha256": "2a3b180ffb268b7805c17567c0ac7787c74898b0d99f62f550be67eafffd1c16",
       "symbol": "VIX",
       "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
     }
   },
   "status": "PASS_VERIFIED_VENDOR_EOD",
-  "target_tw_date": "2026-11-16",
+  "target_tw_date": "2026-11-23",
   "trading_authority": false,
   "version": "HENGCE-PREMARKET-V1"
 }
