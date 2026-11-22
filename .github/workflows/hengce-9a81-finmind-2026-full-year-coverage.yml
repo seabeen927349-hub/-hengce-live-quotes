@@ -1,0 +1,56 @@
+name: HENGCE 9A81 FinMind 2026 full-year day-coverage audit
+# Existing original-repository FinMind token; no paid stock-level trades persisted.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-9a81-finmind-2026-full-year-coverage.yml'
+      - 'scripts/hengce_9a81_finmind_2026_coverage.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hengce-finmind-9a81-full-year-coverage
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify coverage script parses
+        run: python -m py_compile scripts/hengce_9a81_finmind_2026_coverage.py
+      - name: Fetch all published 2026 trading days for branch 9A81
+        id: capture
+        continue-on-error: true
+        run: python scripts/hengce_9a81_finmind_2026_coverage.py
+      - name: Save sanitized coverage metadata only, never raw data
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-finmind-9a81-coverage-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if [ -s research/9a81_finmind_2026_coverage_summary.json ]; then
+            git add research/9a81_finmind_2026_coverage_summary.json
+            if ! git diff --cached --quiet; then
+              git commit -m 'research(9A81): publish sanitized 2026 FinMind coverage receipt'
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
+      - name: Fail CI when a trading day was not completely verified
+        if: steps.capture.outcome != 'success'
+        run: |
+          echo '9A81 full-year coverage is incomplete; review the sanitized receipt'
+          exit 1
