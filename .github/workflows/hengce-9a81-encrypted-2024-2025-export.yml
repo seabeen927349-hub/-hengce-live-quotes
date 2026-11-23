@@ -1,0 +1,104 @@
+name: HENGCE 9A81 FinMind 2024-2025 full-year encrypted export via original paid source
+# Exact successful 2026 architecture. Public repo holds existing paid FINMIND_TOKEN.
+# No unencrypted licensed rows, personal branch ledger, or secret key published here.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-9a81-encrypted-2024-2025-export.yml'
+      - 'scripts/hengce_9a81_secure_2024_2025_export.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+concurrency:
+  group: hengce-9a81-historical-encrypted-export
+  cancel-in-progress: false
+
+jobs:
+  historical-export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        year: [2024, 2025]
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+      TARGET_YEAR: ${{ matrix.year }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original paid FinMind encryption dependencies
+        run: |
+          python -m pip install --disable-pip-version-check requests cryptography
+          python -m py_compile scripts/hengce_9a81_secure_2024_2025_export.py
+      - name: Verify original repository already has paid token
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${FINMIND_TOKEN:-}" ]; then
+            echo "::error::Original public repository FINMIND_TOKEN unavailable."
+            exit 1
+          fi
+      - name: Download complete historical trading year and encrypt in memory
+        shell: bash
+        run: |
+          set -euo pipefail
+          year="$TARGET_YEAR"
+          python scripts/hengce_9a81_secure_2024_2025_export.py "$year"
+      - name: Validate no licensed data leak and every trading day present
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,os,pathlib
+          y=int(os.environ["TARGET_YEAR"])
+          e=json.loads(pathlib.Path(f"research/9a81_secure_{y}_envelope.json").read_text())
+          s=json.loads(pathlib.Path(f"research/9a81_secure_{y}_status.json").read_text())
+          assert e["schema"]=="HENGCE_9A81_HISTORICAL_ENCRYPTED_TRANSFER_V1"
+          assert e["year"]==s["year"]==y
+          assert e["broker"]=="9A81"
+          assert e["date_start"]==f"{y}-01-01" and e["date_end"]==f"{y}-12-31"
+          assert s["state"]=="ENCRYPTED_COMPLETE"
+          assert s["successful_days"]==s["calendar_days"]==e["calendar_days"]>=200
+          assert e["price_rows"]>0 and e["distinct_stock_codes"]>0
+          assert len(e["payload_b64"])>20000
+          assert "raw_price" not in e and "trades" not in e
+          assert s["plaintext_rows_persisted"] is False
+          print("ORIGINAL_PAID_FINMIND_ENCRYPTED_EXPORT_VERIFIED",y,e["calendar_days"],e["price_rows"])
+          PY
+      - name: Publish only ciphertext and sanitized status to original public repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hengce-9a81-finmind-historical-secure-transfer-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "research/9a81_secure_${TARGET_YEAR}_envelope.json" "research/9a81_secure_${TARGET_YEAR}_status.json"
+          if git diff --cached --quiet; then
+            echo "SAME_YEAR_CIPHERTEXT_ALREADY_PUBLISHED"
+            exit 0
+          fi
+          git commit -m "research(9A81): transport ${TARGET_YEAR} FinMind complete historical ciphertext"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Write sanitized failure-only receipt (never licensed data)
+        if: failure()
+        shell: bash
+        run: |
+          set -euo pipefail
+          f="research/9a81_secure_${TARGET_YEAR}_status.json"
+          if test -s "$f"; then
+            git config user.name 'hengce-9a81-finmind-historical-secure-transfer-bot'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add "$f"
+            if ! git diff --cached --quiet; then
+              git commit -m "research(9A81): record ${TARGET_YEAR} FinMind historical export exception"
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
