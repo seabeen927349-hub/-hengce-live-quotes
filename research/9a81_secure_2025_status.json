@@ -1,0 +1,975 @@
+{
+  "schema": "HENGCE_9A81_HISTORICAL_ENCRYPTED_TRANSFER_STATUS_V1",
+  "year": 2025,
+  "generated_at_utc": "2026-11-23T03:34:34.731371+00:00",
+  "requested_start": "2025-01-01",
+  "requested_end": "2025-12-31",
+  "recipient": "PRIVATE_RESEARCH_REPOSITORY",
+  "source": "FinMind TaiwanStockTradingDailyReport",
+  "encrypted_output_only": true,
+  "state": "FAILED_INCOMPLETE_DAYS",
+  "calendar_days": 243,
+  "successful_days": 51,
+  "exceptions": [
+    {
+      "date": "2025-01-02",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-03",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-06",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-07",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-08",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-09",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-10",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-13",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-14",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-15",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-16",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-17",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-20",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-21",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-01-22",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-03",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-04",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-05",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-06",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-07",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-10",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-11",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-12",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-13",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-14",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-17",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-18",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-19",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-20",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-21",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-24",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-25",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-26",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-02-27",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-03",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-04",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-05",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-06",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-07",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-10",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-11",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-12",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-13",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-14",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-17",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-18",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-19",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-20",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-21",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-24",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-25",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-26",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-27",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-28",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-03-31",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-01",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-02",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-07",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-08",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-09",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-10",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-11",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-14",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-15",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-16",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-17",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-18",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-21",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-22",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-23",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-24",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-25",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-28",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-29",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-04-30",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-02",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-05",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-06",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-07",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-08",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-09",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-12",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-13",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-14",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-15",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-16",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-19",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-20",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-21",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-22",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-23",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-26",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-27",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-28",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-05-29",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-02",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-03",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-04",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-05",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-06",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-09",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-10",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-11",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-12",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-13",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-16",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-17",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-18",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-19",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-20",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-23",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-24",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-25",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-26",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-27",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-06-30",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-01",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-02",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-03",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-04",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-07",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-08",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-09",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-10",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-11",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-14",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-15",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-16",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-17",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-18",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-21",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-22",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-23",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-24",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-25",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-28",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-29",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-30",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-07-31",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-01",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-04",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-05",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-06",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-07",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-08",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-11",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-12",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-13",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-14",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-15",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-18",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-19",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-20",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-21",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-22",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-25",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-26",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-27",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-28",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-08-29",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-01",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-02",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-03",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-04",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-05",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-08",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-09",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-10",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-11",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-12",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-15",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-16",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-17",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-18",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-19",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-22",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-23",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-24",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-25",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-26",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-09-30",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-01",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-02",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-03",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-07",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-08",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-09",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-13",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-14",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-15",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-16",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    },
+    {
+      "date": "2025-10-17",
+      "error_type": "RuntimeError",
+      "error_code": "TRADING_DAY_EMPTY"
+    }
+  ]
+}
