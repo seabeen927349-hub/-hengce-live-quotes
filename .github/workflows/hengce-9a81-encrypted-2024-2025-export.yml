@@ -62,7 +62,9 @@ jobs:
           s=json.loads(pathlib.Path(f"research/9a81_secure_{y}_status.json").read_text())
           assert e["schema"]=="HENGCE_9A81_HISTORICAL_ENCRYPTED_TRANSFER_V1"
           assert e["year"]==s["year"]==y
-          assert e["broker"]=="9A81"
+          assert e["broker"]=="1380_TO_9A81"
+          assert e["broker_alias_validity"]["1380"]=="through 2025-10-17"
+          assert e["broker_alias_validity"]["9A81"]=="from 2025-10-20"
           assert e["date_start"]==f"{y}-01-01" and e["date_end"]==f"{y}-12-31"
           assert s["state"]=="ENCRYPTED_COMPLETE"
           assert s["successful_days"]==s["calendar_days"]==e["calendar_days"]>=200
