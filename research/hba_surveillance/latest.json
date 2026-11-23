@@ -3,7 +3,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -17.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.19,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -19,7 +19,7 @@
       "institution_10d_net_volume_pct": 19.57,
       "institution_5d_net_volume_pct": 40.72,
       "last_price": 98.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -30.79,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "東哥遊艇",
@@ -38,7 +38,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -0.79,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -54,7 +54,7 @@
       "institution_10d_net_volume_pct": 22.28,
       "institution_5d_net_volume_pct": 38.21,
       "last_price": 62.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.06,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "遠雄",
@@ -74,7 +74,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -4.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -90,7 +90,7 @@
       "institution_10d_net_volume_pct": 13.84,
       "institution_5d_net_volume_pct": 36.17,
       "last_price": 49.65,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.59,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大成",
@@ -110,7 +110,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.99,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -126,7 +126,7 @@
       "institution_10d_net_volume_pct": 17.16,
       "institution_5d_net_volume_pct": 31.84,
       "last_price": 36.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -8.86,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "興富發",
@@ -146,7 +146,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.18,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -162,7 +162,7 @@
       "institution_10d_net_volume_pct": 26.54,
       "institution_5d_net_volume_pct": 31.53,
       "last_price": 95.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.56,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "泰宗",
@@ -182,7 +182,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.28,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -198,7 +198,7 @@
       "institution_10d_net_volume_pct": 18.51,
       "institution_5d_net_volume_pct": 30.19,
       "last_price": 343.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -68.37,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "晶碩",
@@ -218,7 +218,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -10.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.45,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -234,7 +234,7 @@
       "institution_10d_net_volume_pct": 21.1,
       "institution_5d_net_volume_pct": 22.49,
       "last_price": 52.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.48,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "榮運",
@@ -254,7 +254,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -8.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.33,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -270,7 +270,7 @@
       "institution_10d_net_volume_pct": 28.08,
       "institution_5d_net_volume_pct": 20.08,
       "last_price": 21.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.29,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華航",
@@ -290,7 +290,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.36,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -306,7 +306,7 @@
       "institution_10d_net_volume_pct": 17.24,
       "institution_5d_net_volume_pct": 18.97,
       "last_price": 110.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.53,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "雷虎",
@@ -326,7 +326,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -30.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -342,7 +342,7 @@
       "institution_10d_net_volume_pct": 17.05,
       "institution_5d_net_volume_pct": 18.44,
       "last_price": 117.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.24,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "立隆電",
@@ -361,7 +361,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -1.79,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -377,7 +377,7 @@
       "institution_10d_net_volume_pct": 19.36,
       "institution_5d_net_volume_pct": 18.32,
       "last_price": 220.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.68,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "聚陽",
@@ -397,7 +397,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.22,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -413,7 +413,7 @@
       "institution_10d_net_volume_pct": 18.41,
       "institution_5d_net_volume_pct": 18.31,
       "last_price": 52.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.4,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "雲豹能源",
@@ -433,7 +433,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -4.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.87,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -449,7 +449,7 @@
       "institution_10d_net_volume_pct": 20.6,
       "institution_5d_net_volume_pct": 17.96,
       "last_price": 67.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.56,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中磊",
@@ -469,7 +469,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.95,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -485,7 +485,7 @@
       "institution_10d_net_volume_pct": 13.83,
       "institution_5d_net_volume_pct": 17.79,
       "last_price": 91.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.72,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "富鼎",
@@ -505,7 +505,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -24.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -521,7 +521,7 @@
       "institution_10d_net_volume_pct": 17.0,
       "institution_5d_net_volume_pct": 17.4,
       "last_price": 28.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.01,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華泰",
@@ -541,7 +541,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.02,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -557,7 +557,7 @@
       "institution_10d_net_volume_pct": 19.75,
       "institution_5d_net_volume_pct": 17.16,
       "last_price": 29.75,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.69,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "和大",
@@ -576,7 +576,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.41,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -592,7 +592,7 @@
       "institution_10d_net_volume_pct": 12.61,
       "institution_5d_net_volume_pct": 17.05,
       "last_price": 283.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -21.36,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "視陽",
@@ -612,7 +612,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.73,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -628,7 +628,7 @@
       "institution_10d_net_volume_pct": 10.96,
       "institution_5d_net_volume_pct": 16.16,
       "last_price": 40.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.02,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "東鹼",
@@ -648,7 +648,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -16.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.51,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -664,7 +664,7 @@
       "institution_10d_net_volume_pct": 14.02,
       "institution_5d_net_volume_pct": 15.73,
       "last_price": 45.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.06,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "漢翔",
@@ -684,7 +684,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -35.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.44,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -700,7 +700,7 @@
       "institution_10d_net_volume_pct": 8.36,
       "institution_5d_net_volume_pct": 15.01,
       "last_price": 26.85,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -33.48,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "全友",
@@ -720,7 +720,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -28.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.97,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -736,7 +736,7 @@
       "institution_10d_net_volume_pct": 5.5,
       "institution_5d_net_volume_pct": 14.92,
       "last_price": 101.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.21,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "美時",
@@ -756,7 +756,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -32.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.93,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -772,7 +772,7 @@
       "institution_10d_net_volume_pct": 1.41,
       "institution_5d_net_volume_pct": 14.34,
       "last_price": 5350.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -42.07,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "川湖",
@@ -792,7 +792,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.48,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -808,7 +808,7 @@
       "institution_10d_net_volume_pct": 11.69,
       "institution_5d_net_volume_pct": 14.33,
       "last_price": 23.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.95,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "普安",
@@ -828,7 +828,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -18.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.74,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -844,7 +844,7 @@
       "institution_10d_net_volume_pct": 11.43,
       "institution_5d_net_volume_pct": 13.99,
       "last_price": 501.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.11,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "亞翔",
@@ -864,7 +864,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.97,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -880,7 +880,7 @@
       "institution_10d_net_volume_pct": 2.14,
       "institution_5d_net_volume_pct": 13.57,
       "last_price": 2890.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.26,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "鴻勁",
@@ -900,7 +900,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.5,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -916,7 +916,7 @@
       "institution_10d_net_volume_pct": 5.84,
       "institution_5d_net_volume_pct": 13.44,
       "last_price": 53.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.23,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "陽明",
@@ -936,7 +936,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.58,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -952,7 +952,7 @@
       "institution_10d_net_volume_pct": 7.19,
       "institution_5d_net_volume_pct": 13.38,
       "last_price": 58.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -32.78,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中華化",
@@ -972,7 +972,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.77,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -988,7 +988,7 @@
       "institution_10d_net_volume_pct": 26.7,
       "institution_5d_net_volume_pct": 13.24,
       "last_price": 44.65,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.22,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "長榮航",
@@ -1008,7 +1008,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -33.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.88,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1024,7 +1024,7 @@
       "institution_10d_net_volume_pct": 5.64,
       "institution_5d_net_volume_pct": 12.4,
       "last_price": 37.85,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -23.5,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "鈞寶",
@@ -1044,7 +1044,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.85,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1060,7 +1060,7 @@
       "institution_10d_net_volume_pct": 2.57,
       "institution_5d_net_volume_pct": 12.13,
       "last_price": 72.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -22.18,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "天二科技",
@@ -1080,7 +1080,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.6,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1096,7 +1096,7 @@
       "institution_10d_net_volume_pct": 7.74,
       "institution_5d_net_volume_pct": 12.08,
       "last_price": 86.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.39,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "三集瑞-KY",
@@ -1116,7 +1116,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1132,7 +1132,7 @@
       "institution_10d_net_volume_pct": 12.69,
       "institution_5d_net_volume_pct": 12.05,
       "last_price": 174.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.31,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "佳必琪",
@@ -1152,7 +1152,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1168,7 +1168,7 @@
       "institution_10d_net_volume_pct": 6.33,
       "institution_5d_net_volume_pct": 11.28,
       "last_price": 97.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.4,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "蔚華科",
@@ -1188,7 +1188,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.75,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1204,7 +1204,7 @@
       "institution_10d_net_volume_pct": 5.01,
       "institution_5d_net_volume_pct": 10.97,
       "last_price": 14.35,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -76.47,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "國慶科技",
@@ -1224,7 +1224,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -5.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.33,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1240,7 +1240,7 @@
       "institution_10d_net_volume_pct": 11.45,
       "institution_5d_net_volume_pct": 10.96,
       "last_price": 364.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -31.18,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "儒鴻",
@@ -1260,7 +1260,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -15.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.64,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1276,7 +1276,7 @@
       "institution_10d_net_volume_pct": 11.05,
       "institution_5d_net_volume_pct": 9.93,
       "last_price": 9.85,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.3,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台達化",
@@ -1296,7 +1296,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -14.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.37,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1312,7 +1312,7 @@
       "institution_10d_net_volume_pct": 0.96,
       "institution_5d_net_volume_pct": 9.83,
       "last_price": 59.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.21,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "康普",
@@ -1332,7 +1332,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -16.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.64,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1348,7 +1348,7 @@
       "institution_10d_net_volume_pct": -3.57,
       "institution_5d_net_volume_pct": 9.67,
       "last_price": 112.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.87,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "聯陽",
@@ -1368,7 +1368,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.99,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1384,7 +1384,7 @@
       "institution_10d_net_volume_pct": 6.74,
       "institution_5d_net_volume_pct": 9.44,
       "last_price": 64.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.65,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "美食-KY",
@@ -1404,7 +1404,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -14.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.69,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1420,7 +1420,7 @@
       "institution_10d_net_volume_pct": 25.64,
       "institution_5d_net_volume_pct": 9.07,
       "last_price": 50.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.36,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台灣虎航",
@@ -1440,7 +1440,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -9.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": 0.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1456,7 +1456,7 @@
       "institution_10d_net_volume_pct": 1.9,
       "institution_5d_net_volume_pct": 8.21,
       "last_price": 211.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -23.35,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "創見",
@@ -1476,7 +1476,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1492,7 +1492,7 @@
       "institution_10d_net_volume_pct": -0.18,
       "institution_5d_net_volume_pct": 7.86,
       "last_price": 50.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.95,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "偉訓",
@@ -1512,7 +1512,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.7,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1528,7 +1528,7 @@
       "institution_10d_net_volume_pct": 1.48,
       "institution_5d_net_volume_pct": 7.65,
       "last_price": 156.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.43,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "力智",
@@ -1548,7 +1548,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.48,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1564,7 +1564,7 @@
       "institution_10d_net_volume_pct": 7.99,
       "institution_5d_net_volume_pct": 7.21,
       "last_price": 69.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.57,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "凱美",
@@ -1584,7 +1584,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.92,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1600,7 +1600,7 @@
       "institution_10d_net_volume_pct": 5.26,
       "institution_5d_net_volume_pct": 7.19,
       "last_price": 23.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -20.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "光鼎",
@@ -1620,7 +1620,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.03,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1636,7 +1636,7 @@
       "institution_10d_net_volume_pct": 10.45,
       "institution_5d_net_volume_pct": 7.05,
       "last_price": 53.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.54,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "凌群",
@@ -1656,7 +1656,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.68,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1672,7 +1672,7 @@
       "institution_10d_net_volume_pct": -22.93,
       "institution_5d_net_volume_pct": 6.24,
       "last_price": 218.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -6.11,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "王品",
@@ -1692,7 +1692,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.04,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1708,7 +1708,7 @@
       "institution_10d_net_volume_pct": 0.94,
       "institution_5d_net_volume_pct": 6.22,
       "last_price": 73.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.36,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "凌華",
@@ -1728,7 +1728,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -15.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.01,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1744,7 +1744,7 @@
       "institution_10d_net_volume_pct": 5.36,
       "institution_5d_net_volume_pct": 5.96,
       "last_price": 13.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.55,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "精英",
@@ -1764,7 +1764,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.91,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1780,7 +1780,7 @@
       "institution_10d_net_volume_pct": 5.79,
       "institution_5d_net_volume_pct": 5.86,
       "last_price": 245.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -40.78,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "長廣",
@@ -1800,7 +1800,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1816,7 +1816,7 @@
       "institution_10d_net_volume_pct": 7.92,
       "institution_5d_net_volume_pct": 5.41,
       "last_price": 257.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.56,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "聯鈞",
@@ -1836,7 +1836,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.24,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1852,7 +1852,7 @@
       "institution_10d_net_volume_pct": 1.14,
       "institution_5d_net_volume_pct": 5.19,
       "last_price": 71.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.31,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "上緯投控",
@@ -1871,7 +1871,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.46,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1887,7 +1887,7 @@
       "institution_10d_net_volume_pct": 4.2,
       "institution_5d_net_volume_pct": 5.17,
       "last_price": 33.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.19,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "日成-KY",
@@ -1907,7 +1907,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -32.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.86,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1923,7 +1923,7 @@
       "institution_10d_net_volume_pct": 1.72,
       "institution_5d_net_volume_pct": 4.31,
       "last_price": 265.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.91,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "全新",
@@ -1943,7 +1943,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -24.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.72,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1959,7 +1959,7 @@
       "institution_10d_net_volume_pct": 8.37,
       "institution_5d_net_volume_pct": 4.03,
       "last_price": 1440.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.86,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "嘉澤",
@@ -1979,7 +1979,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -8.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": 3.74,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -1995,7 +1995,7 @@
       "institution_10d_net_volume_pct": 2.47,
       "institution_5d_net_volume_pct": 3.54,
       "last_price": 180.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.67,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "松川精密",
@@ -2015,7 +2015,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2031,7 +2031,7 @@
       "institution_10d_net_volume_pct": 6.5,
       "institution_5d_net_volume_pct": 3.49,
       "last_price": 290.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.59,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "采鈺",
@@ -2051,7 +2051,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -35.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.95,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2067,7 +2067,7 @@
       "institution_10d_net_volume_pct": 3.12,
       "institution_5d_net_volume_pct": 3.45,
       "last_price": 923.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.84,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "高力",
@@ -2087,7 +2087,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -22.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.92,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2103,7 +2103,7 @@
       "institution_10d_net_volume_pct": 6.25,
       "institution_5d_net_volume_pct": 3.28,
       "last_price": 194.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.57,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "晶心科",
@@ -2123,7 +2123,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -25.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.03,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2139,7 +2139,7 @@
       "institution_10d_net_volume_pct": 4.18,
       "institution_5d_net_volume_pct": 3.13,
       "last_price": 57.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -22.36,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "界霖",
@@ -2159,7 +2159,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.06,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2175,7 +2175,7 @@
       "institution_10d_net_volume_pct": -9.57,
       "institution_5d_net_volume_pct": 2.33,
       "last_price": 291.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -24.47,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "帆宣",
@@ -2195,7 +2195,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -30.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.91,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2211,7 +2211,7 @@
       "institution_10d_net_volume_pct": 3.57,
       "institution_5d_net_volume_pct": 1.99,
       "last_price": 85.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -23.51,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "強茂",
@@ -2231,7 +2231,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -10.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.32,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2247,7 +2247,7 @@
       "institution_10d_net_volume_pct": -1.22,
       "institution_5d_net_volume_pct": 1.51,
       "last_price": 15.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -30.63,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "訊映",
@@ -2267,7 +2267,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.33,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2283,7 +2283,7 @@
       "institution_10d_net_volume_pct": 5.22,
       "institution_5d_net_volume_pct": 1.47,
       "last_price": 225.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.04,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "意騰-KY",
@@ -2303,7 +2303,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": 9.86,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2319,7 +2319,7 @@
       "institution_10d_net_volume_pct": 1.73,
       "institution_5d_net_volume_pct": 1.4,
       "last_price": 69.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.4,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華經",
@@ -2339,7 +2339,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.78,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2355,7 +2355,7 @@
       "institution_10d_net_volume_pct": 7.83,
       "institution_5d_net_volume_pct": 1.25,
       "last_price": 16.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.22,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "三商電",
@@ -2374,7 +2374,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.38,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2389,7 +2389,7 @@
       "institution_10d_net_volume_pct": 39.66,
       "institution_5d_net_volume_pct": 52.02,
       "last_price": 45.15,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -0.67,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "愛山林",
@@ -2408,7 +2408,7 @@
     {
       "counter_evidence": [
         "融資5日增加 27.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -1.69,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2423,7 +2423,7 @@
       "institution_10d_net_volume_pct": 39.03,
       "institution_5d_net_volume_pct": 49.21,
       "last_price": 174.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 27.15,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "潤弘",
@@ -2441,7 +2441,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.4,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2456,7 +2456,7 @@
       "institution_10d_net_volume_pct": 17.66,
       "institution_5d_net_volume_pct": 42.39,
       "last_price": 38.65,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 3.46,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "聯華",
@@ -2476,7 +2476,7 @@
       "counter_evidence": [
         "5日股價回落 -6.5%",
         "融資5日增加 26.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.55,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2491,7 +2491,7 @@
       "institution_10d_net_volume_pct": 18.38,
       "institution_5d_net_volume_pct": 29.36,
       "last_price": 66.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 26.38,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台驊控股",
@@ -2509,7 +2509,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.01,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2524,7 +2524,7 @@
       "institution_10d_net_volume_pct": 23.94,
       "institution_5d_net_volume_pct": 23.99,
       "last_price": 51.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -0.25,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中鼎",
@@ -2543,7 +2543,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.15,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2558,7 +2558,7 @@
       "institution_10d_net_volume_pct": 15.94,
       "institution_5d_net_volume_pct": 11.53,
       "last_price": 25.95,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -2.35,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "南港",
@@ -2578,7 +2578,7 @@
       "counter_evidence": [
         "5日股價回落 -4.9%",
         "融資5日增加 43.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2593,7 +2593,7 @@
       "institution_10d_net_volume_pct": 10.74,
       "institution_5d_net_volume_pct": 10.73,
       "last_price": 30.95,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 42.99,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "安普新",
@@ -2612,7 +2612,7 @@
     {
       "counter_evidence": [
         "融資5日增加 54.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -1.28,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2627,7 +2627,7 @@
       "institution_10d_net_volume_pct": 4.52,
       "institution_5d_net_volume_pct": 8.09,
       "last_price": 69.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 54.55,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "佳醫",
@@ -2646,7 +2646,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -7.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.14,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2661,7 +2661,7 @@
       "institution_10d_net_volume_pct": 1.99,
       "institution_5d_net_volume_pct": 5.06,
       "last_price": 10.15,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 2.31,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中環",
@@ -2680,7 +2680,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.52,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2695,7 +2695,7 @@
       "institution_10d_net_volume_pct": 18.77,
       "institution_5d_net_volume_pct": 4.17,
       "last_price": 71.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 10.25,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "日友",
@@ -2714,7 +2714,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.32,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2729,7 +2729,7 @@
       "institution_10d_net_volume_pct": 3.99,
       "institution_5d_net_volume_pct": 4.0,
       "last_price": 14.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -2.13,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "廣豐",
@@ -2747,7 +2747,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -1.91,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2762,7 +2762,7 @@
       "institution_10d_net_volume_pct": 20.21,
       "institution_5d_net_volume_pct": 35.92,
       "last_price": 102.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.06,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "東方風能",
@@ -2780,7 +2780,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.45,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2795,7 +2795,7 @@
       "institution_10d_net_volume_pct": 16.54,
       "institution_5d_net_volume_pct": 32.28,
       "last_price": 159.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.92,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大統益",
@@ -2813,7 +2813,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.49,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2828,7 +2828,7 @@
       "institution_10d_net_volume_pct": 10.2,
       "institution_5d_net_volume_pct": 31.84,
       "last_price": 516.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.0,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "和泰車",
@@ -2847,7 +2847,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2862,7 +2862,7 @@
       "institution_10d_net_volume_pct": 20.34,
       "institution_5d_net_volume_pct": 29.59,
       "last_price": 18.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.12,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "昆盈",
@@ -2881,7 +2881,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.07,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2896,7 +2896,7 @@
       "institution_10d_net_volume_pct": 25.0,
       "institution_5d_net_volume_pct": 28.59,
       "last_price": 16.55,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.59,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "和成",
@@ -2914,7 +2914,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.03,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2929,7 +2929,7 @@
       "institution_10d_net_volume_pct": 15.75,
       "institution_5d_net_volume_pct": 28.58,
       "last_price": 265.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -9.81,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "信邦",
@@ -2949,7 +2949,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 1.61pp",
         "5日股價回落 -26.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.78,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2964,7 +2964,7 @@
       "institution_10d_net_volume_pct": 20.77,
       "institution_5d_net_volume_pct": 27.56,
       "last_price": 58.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -23.69,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "和椿",
@@ -2982,7 +2982,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.74,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -2997,7 +2997,7 @@
       "institution_10d_net_volume_pct": 11.8,
       "institution_5d_net_volume_pct": 26.91,
       "last_price": 20.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -8.75,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "國建",
@@ -3016,7 +3016,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -31.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.92,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3031,7 +3031,7 @@
       "institution_10d_net_volume_pct": 17.97,
       "institution_5d_net_volume_pct": 26.4,
       "last_price": 85.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -20.26,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "雙鍵",
@@ -3050,7 +3050,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -7.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.42,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3065,7 +3065,7 @@
       "institution_10d_net_volume_pct": 7.68,
       "institution_5d_net_volume_pct": 25.94,
       "last_price": 113.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.3,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "宏全",
@@ -3084,7 +3084,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -28.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3099,7 +3099,7 @@
       "institution_10d_net_volume_pct": 20.93,
       "institution_5d_net_volume_pct": 25.42,
       "last_price": 96.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -47.82,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "國精化",
@@ -3118,7 +3118,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -16.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.81,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3133,7 +3133,7 @@
       "institution_10d_net_volume_pct": 10.6,
       "institution_5d_net_volume_pct": 25.08,
       "last_price": 23.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.75,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "皇昌",
@@ -3152,7 +3152,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.83,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3167,7 +3167,7 @@
       "institution_10d_net_volume_pct": 14.09,
       "institution_5d_net_volume_pct": 24.34,
       "last_price": 53.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.01,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "神達",
@@ -3186,7 +3186,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -31.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3201,7 +3201,7 @@
       "institution_10d_net_volume_pct": 11.62,
       "institution_5d_net_volume_pct": 22.81,
       "last_price": 60.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -14.04,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "熙特爾-創",
@@ -3220,7 +3220,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.35,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3235,7 +3235,7 @@
       "institution_10d_net_volume_pct": 27.86,
       "institution_5d_net_volume_pct": 22.78,
       "last_price": 24.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.68,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華孚",
@@ -3254,7 +3254,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.18,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3269,7 +3269,7 @@
       "institution_10d_net_volume_pct": 13.09,
       "institution_5d_net_volume_pct": 22.39,
       "last_price": 13.85,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -30.07,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "飛宏",
@@ -3288,7 +3288,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.56,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3303,7 +3303,7 @@
       "institution_10d_net_volume_pct": 18.23,
       "institution_5d_net_volume_pct": 21.98,
       "last_price": 171.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "達明",
@@ -3322,7 +3322,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -7.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.12,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3337,7 +3337,7 @@
       "institution_10d_net_volume_pct": 17.83,
       "institution_5d_net_volume_pct": 21.81,
       "last_price": 49.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -8.59,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "上海商銀",
@@ -3356,7 +3356,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -10.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.74,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3371,7 +3371,7 @@
       "institution_10d_net_volume_pct": 21.18,
       "institution_5d_net_volume_pct": 21.62,
       "last_price": 28.35,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.02,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "櫻花建",
@@ -3390,7 +3390,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -7.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3405,7 +3405,7 @@
       "institution_10d_net_volume_pct": 20.45,
       "institution_5d_net_volume_pct": 21.56,
       "last_price": 18.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.88,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "星宇航空",
@@ -3424,7 +3424,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -5.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.31,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3439,7 +3439,7 @@
       "institution_10d_net_volume_pct": 4.25,
       "institution_5d_net_volume_pct": 21.56,
       "last_price": 13.15,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.57,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "統一實",
@@ -3459,7 +3459,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.56pp",
         "5日股價回落 -21.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.25,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3474,7 +3474,7 @@
       "institution_10d_net_volume_pct": 11.15,
       "institution_5d_net_volume_pct": 21.04,
       "last_price": 40.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -23.35,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "佳能",
@@ -3494,7 +3494,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.86pp",
         "5日股價回落 -16.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.39,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3509,7 +3509,7 @@
       "institution_10d_net_volume_pct": 14.29,
       "institution_5d_net_volume_pct": 20.22,
       "last_price": 36.05,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.01,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "東科-KY",
@@ -3528,7 +3528,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.24,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3543,7 +3543,7 @@
       "institution_10d_net_volume_pct": 16.77,
       "institution_5d_net_volume_pct": 20.03,
       "last_price": 33.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -23.28,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "材料*-KY",
@@ -3561,7 +3561,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": 0.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3576,7 +3576,7 @@
       "institution_10d_net_volume_pct": 16.98,
       "institution_5d_net_volume_pct": 19.91,
       "last_price": 225.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.47,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "LINEPAY",
@@ -3595,7 +3595,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -25.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3610,7 +3610,7 @@
       "institution_10d_net_volume_pct": 13.68,
       "institution_5d_net_volume_pct": 19.31,
       "last_price": 72.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -26.64,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "世紀能源",
@@ -3630,7 +3630,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.93pp",
         "5日股價回落 -17.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.82,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3645,7 +3645,7 @@
       "institution_10d_net_volume_pct": 4.36,
       "institution_5d_net_volume_pct": 19.08,
       "last_price": 42.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -9.5,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "倫飛",
@@ -3664,7 +3664,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -8.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.18,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3679,7 +3679,7 @@
       "institution_10d_net_volume_pct": 9.62,
       "institution_5d_net_volume_pct": 18.95,
       "last_price": 101.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.18,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "喬山",
@@ -3698,7 +3698,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.09,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3713,7 +3713,7 @@
       "institution_10d_net_volume_pct": 12.25,
       "institution_5d_net_volume_pct": 18.55,
       "last_price": 30.05,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.92,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "百和",
@@ -3732,7 +3732,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3747,7 +3747,7 @@
       "institution_10d_net_volume_pct": 9.54,
       "institution_5d_net_volume_pct": 18.21,
       "last_price": 21.85,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.3,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "承啟",
@@ -3767,7 +3767,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.72pp",
         "5日股價回落 -26.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.76,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3782,7 +3782,7 @@
       "institution_10d_net_volume_pct": 18.21,
       "institution_5d_net_volume_pct": 18.03,
       "last_price": 83.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -31.37,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "宇隆",
@@ -3801,7 +3801,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3816,7 +3816,7 @@
       "institution_10d_net_volume_pct": 0.24,
       "institution_5d_net_volume_pct": 17.59,
       "last_price": 424.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -20.4,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "勤誠",
@@ -3835,7 +3835,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -7.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.43,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3850,7 +3850,7 @@
       "institution_10d_net_volume_pct": 16.25,
       "institution_5d_net_volume_pct": 17.51,
       "last_price": 88.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -50.45,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華固",
@@ -3869,7 +3869,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.52,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3884,7 +3884,7 @@
       "institution_10d_net_volume_pct": 14.66,
       "institution_5d_net_volume_pct": 16.66,
       "last_price": 20.55,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -20.23,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "可寧衛*",
@@ -3903,7 +3903,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -22.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.41,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3918,7 +3918,7 @@
       "institution_10d_net_volume_pct": 13.45,
       "institution_5d_net_volume_pct": 16.02,
       "last_price": 207.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -21.74,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "達興材料",
@@ -3937,7 +3937,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -24.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.75,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3952,7 +3952,7 @@
       "institution_10d_net_volume_pct": 10.42,
       "institution_5d_net_volume_pct": 16.01,
       "last_price": 53.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.8,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "世紀鋼",
@@ -3971,7 +3971,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.41,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -3986,7 +3986,7 @@
       "institution_10d_net_volume_pct": 12.58,
       "institution_5d_net_volume_pct": 15.95,
       "last_price": 27.45,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.51,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華東",
@@ -4005,7 +4005,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -1.85,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4020,7 +4020,7 @@
       "institution_10d_net_volume_pct": 19.65,
       "institution_5d_net_volume_pct": 15.69,
       "last_price": 84.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -6.49,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "群光",
@@ -4039,7 +4039,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4054,7 +4054,7 @@
       "institution_10d_net_volume_pct": 11.52,
       "institution_5d_net_volume_pct": 15.53,
       "last_price": 198.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.84,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "汎德永業",
@@ -4074,7 +4074,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 1.08pp",
         "5日股價回落 -27.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.8,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4089,7 +4089,7 @@
       "institution_10d_net_volume_pct": 11.38,
       "institution_5d_net_volume_pct": 15.48,
       "last_price": 115.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -32.44,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "揚博",
@@ -4109,7 +4109,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.62pp",
         "5日股價回落 -30.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4124,7 +4124,7 @@
       "institution_10d_net_volume_pct": 2.6,
       "institution_5d_net_volume_pct": 15.48,
       "last_price": 3705.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -39.09,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "健策",
@@ -4143,7 +4143,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -34.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4158,7 +4158,7 @@
       "institution_10d_net_volume_pct": 8.59,
       "institution_5d_net_volume_pct": 15.26,
       "last_price": 83.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -23.38,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "宏致",
@@ -4177,7 +4177,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -7.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.1,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4192,7 +4192,7 @@
       "institution_10d_net_volume_pct": 0.58,
       "institution_5d_net_volume_pct": 15.05,
       "last_price": 40.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.03,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "達麗",
@@ -4212,7 +4212,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.89pp",
         "5日股價回落 -23.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.74,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4227,7 +4227,7 @@
       "institution_10d_net_volume_pct": 8.8,
       "institution_5d_net_volume_pct": 14.88,
       "last_price": 584.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.18,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "AES-KY",
@@ -4246,7 +4246,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -10.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.21,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4261,7 +4261,7 @@
       "institution_10d_net_volume_pct": 4.18,
       "institution_5d_net_volume_pct": 14.87,
       "last_price": 48.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.96,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "群電",
@@ -4280,7 +4280,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -8.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.97,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4295,7 +4295,7 @@
       "institution_10d_net_volume_pct": 12.08,
       "institution_5d_net_volume_pct": 14.79,
       "last_price": 8.79,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.76,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "日勝生",
@@ -4314,7 +4314,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -28.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.08,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4329,7 +4329,7 @@
       "institution_10d_net_volume_pct": 10.1,
       "institution_5d_net_volume_pct": 14.53,
       "last_price": 70.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -24.22,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "所羅門",
@@ -4348,7 +4348,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -22.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.85,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4363,7 +4363,7 @@
       "institution_10d_net_volume_pct": 14.23,
       "institution_5d_net_volume_pct": 14.48,
       "last_price": 40.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -26.79,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "泰碩",
@@ -4382,7 +4382,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.04,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4397,7 +4397,7 @@
       "institution_10d_net_volume_pct": 14.76,
       "institution_5d_net_volume_pct": 14.43,
       "last_price": 31.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -21.26,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "弘憶股",
@@ -4416,7 +4416,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.03,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4431,7 +4431,7 @@
       "institution_10d_net_volume_pct": 7.66,
       "institution_5d_net_volume_pct": 14.1,
       "last_price": 1325.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -22.82,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "緯穎",
@@ -4450,7 +4450,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.89,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4465,7 +4465,7 @@
       "institution_10d_net_volume_pct": 3.81,
       "institution_5d_net_volume_pct": 14.07,
       "last_price": 168.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -28.71,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "精誠",
@@ -4484,7 +4484,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.87,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4499,7 +4499,7 @@
       "institution_10d_net_volume_pct": 1.87,
       "institution_5d_net_volume_pct": 13.92,
       "last_price": 105.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -45.86,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "順德",
@@ -4518,7 +4518,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.51,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4533,7 +4533,7 @@
       "institution_10d_net_volume_pct": 12.46,
       "institution_5d_net_volume_pct": 13.88,
       "last_price": 55.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.91,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "晟銘電",
@@ -4552,7 +4552,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -16.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.12,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4567,7 +4567,7 @@
       "institution_10d_net_volume_pct": 9.1,
       "institution_5d_net_volume_pct": 13.75,
       "last_price": 40.15,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.83,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中再保",
@@ -4586,7 +4586,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -8.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.2,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4601,7 +4601,7 @@
       "institution_10d_net_volume_pct": -3.38,
       "institution_5d_net_volume_pct": 13.72,
       "last_price": 128.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.78,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "拓凱",
@@ -4620,7 +4620,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.41,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4635,7 +4635,7 @@
       "institution_10d_net_volume_pct": 15.66,
       "institution_5d_net_volume_pct": 13.65,
       "last_price": 31.85,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.75,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "海華",
@@ -4654,7 +4654,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4669,7 +4669,7 @@
       "institution_10d_net_volume_pct": 1.47,
       "institution_5d_net_volume_pct": 13.58,
       "last_price": 127.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.67,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中興電",
@@ -4688,7 +4688,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.78,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4703,7 +4703,7 @@
       "institution_10d_net_volume_pct": 12.44,
       "institution_5d_net_volume_pct": 13.55,
       "last_price": 24.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.56,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "寶成",
@@ -4723,7 +4723,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.55pp",
         "5日股價回落 -30.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.79,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4738,7 +4738,7 @@
       "institution_10d_net_volume_pct": 11.82,
       "institution_5d_net_volume_pct": 13.5,
       "last_price": 71.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -26.75,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大毅",
@@ -4757,7 +4757,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.97,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4772,7 +4772,7 @@
       "institution_10d_net_volume_pct": 8.43,
       "institution_5d_net_volume_pct": 13.45,
       "last_price": 66.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.43,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "亞力",
@@ -4791,7 +4791,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -35.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4806,7 +4806,7 @@
       "institution_10d_net_volume_pct": 8.51,
       "institution_5d_net_volume_pct": 13.3,
       "last_price": 285.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.73,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "嘉基",
@@ -4825,7 +4825,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.17,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4840,7 +4840,7 @@
       "institution_10d_net_volume_pct": 9.68,
       "institution_5d_net_volume_pct": 13.3,
       "last_price": 58.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.39,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "豐泰",
@@ -4859,7 +4859,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.39,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4874,7 +4874,7 @@
       "institution_10d_net_volume_pct": 17.31,
       "institution_5d_net_volume_pct": 13.1,
       "last_price": 48.75,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.25,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "羅昇",
@@ -4893,7 +4893,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -4.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.21,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4908,7 +4908,7 @@
       "institution_10d_net_volume_pct": -7.05,
       "institution_5d_net_volume_pct": 13.0,
       "last_price": 42.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.84,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大成鋼",
@@ -4927,7 +4927,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.97,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4942,7 +4942,7 @@
       "institution_10d_net_volume_pct": -0.1,
       "institution_5d_net_volume_pct": 13.0,
       "last_price": 28.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.78,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "映泰",
@@ -4961,7 +4961,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -16.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.24,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -4976,7 +4976,7 @@
       "institution_10d_net_volume_pct": 8.98,
       "institution_5d_net_volume_pct": 12.96,
       "last_price": 196.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.39,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "富邦媒",
@@ -4995,7 +4995,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -17.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.93,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5010,7 +5010,7 @@
       "institution_10d_net_volume_pct": 10.32,
       "institution_5d_net_volume_pct": 12.8,
       "last_price": 36.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.71,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "永豐金",
@@ -5029,7 +5029,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.39,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5044,7 +5044,7 @@
       "institution_10d_net_volume_pct": 7.8,
       "institution_5d_net_volume_pct": 12.74,
       "last_price": 80.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.73,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台塑化",
@@ -5063,7 +5063,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -14.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.99,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5078,7 +5078,7 @@
       "institution_10d_net_volume_pct": 10.51,
       "institution_5d_net_volume_pct": 12.65,
       "last_price": 408.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.77,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "禾榮科",
@@ -5097,7 +5097,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -14.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.17,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5112,7 +5112,7 @@
       "institution_10d_net_volume_pct": 18.76,
       "institution_5d_net_volume_pct": 12.54,
       "last_price": 142.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.99,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "長榮航太",
@@ -5131,7 +5131,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.33,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5146,7 +5146,7 @@
       "institution_10d_net_volume_pct": 6.02,
       "institution_5d_net_volume_pct": 12.0,
       "last_price": 20.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.77,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "仲琦",
@@ -5165,7 +5165,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5180,7 +5180,7 @@
       "institution_10d_net_volume_pct": 9.29,
       "institution_5d_net_volume_pct": 12.0,
       "last_price": 165.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -14.1,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "jpp-KY",
@@ -5200,7 +5200,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 1.14pp",
         "5日股價回落 -29.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.99,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5215,7 +5215,7 @@
       "institution_10d_net_volume_pct": 13.09,
       "institution_5d_net_volume_pct": 11.75,
       "last_price": 441.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.25,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "牧德",
@@ -5234,7 +5234,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.41,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5249,7 +5249,7 @@
       "institution_10d_net_volume_pct": 5.73,
       "institution_5d_net_volume_pct": 11.73,
       "last_price": 75.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -8.39,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "巨大",
@@ -5268,7 +5268,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.82,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5283,7 +5283,7 @@
       "institution_10d_net_volume_pct": 4.13,
       "institution_5d_net_volume_pct": 11.34,
       "last_price": 226.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -33.33,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "AMAX-KY",
@@ -5302,7 +5302,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5317,7 +5317,7 @@
       "institution_10d_net_volume_pct": 8.67,
       "institution_5d_net_volume_pct": 11.33,
       "last_price": 22.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -20.72,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "安集",
@@ -5336,7 +5336,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -24.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.31,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5351,7 +5351,7 @@
       "institution_10d_net_volume_pct": 15.25,
       "institution_5d_net_volume_pct": 11.31,
       "last_price": 63.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -14.22,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "精成科",
@@ -5370,7 +5370,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -32.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.49,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5385,7 +5385,7 @@
       "institution_10d_net_volume_pct": 4.61,
       "institution_5d_net_volume_pct": 11.18,
       "last_price": 344.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.36,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "騰輝電子-KY",
@@ -5404,7 +5404,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.92,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5419,7 +5419,7 @@
       "institution_10d_net_volume_pct": 6.48,
       "institution_5d_net_volume_pct": 11.16,
       "last_price": 1090.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.23,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "新代",
@@ -5439,7 +5439,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.74pp",
         "5日股價回落 -32.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5454,7 +5454,7 @@
       "institution_10d_net_volume_pct": 6.16,
       "institution_5d_net_volume_pct": 11.13,
       "last_price": 482.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -43.41,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "愛普*",
@@ -5473,7 +5473,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -33.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.79,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5488,7 +5488,7 @@
       "institution_10d_net_volume_pct": 4.03,
       "institution_5d_net_volume_pct": 10.82,
       "last_price": 129.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -26.75,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "睿生光電",
@@ -5507,7 +5507,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -24.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.27,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5522,7 +5522,7 @@
       "institution_10d_net_volume_pct": 5.4,
       "institution_5d_net_volume_pct": 10.56,
       "last_price": 41.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -21.88,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "達邁",
@@ -5541,7 +5541,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -22.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.63,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5556,7 +5556,7 @@
       "institution_10d_net_volume_pct": 8.67,
       "institution_5d_net_volume_pct": 10.03,
       "last_price": 95.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -20.24,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "凌航",
@@ -5575,7 +5575,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.62,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5590,7 +5590,7 @@
       "institution_10d_net_volume_pct": 7.12,
       "institution_5d_net_volume_pct": 10.01,
       "last_price": 14.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.39,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "友訊",
@@ -5609,7 +5609,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -18.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.05,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5624,7 +5624,7 @@
       "institution_10d_net_volume_pct": 12.8,
       "institution_5d_net_volume_pct": 9.88,
       "last_price": 211.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.86,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "京鼎",
@@ -5643,7 +5643,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -33.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5658,7 +5658,7 @@
       "institution_10d_net_volume_pct": 2.35,
       "institution_5d_net_volume_pct": 9.85,
       "last_price": 927.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -30.31,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "致茂",
@@ -5677,7 +5677,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -14.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.72,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5692,7 +5692,7 @@
       "institution_10d_net_volume_pct": 3.8,
       "institution_5d_net_volume_pct": 9.61,
       "last_price": 1300.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -32.78,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "貿聯-KY",
@@ -5712,7 +5712,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.52pp",
         "5日股價回落 -36.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5727,7 +5727,7 @@
       "institution_10d_net_volume_pct": 3.56,
       "institution_5d_net_volume_pct": 9.5,
       "last_price": 324.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -29.43,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "禾伸堂",
@@ -5746,7 +5746,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.33,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5761,7 +5761,7 @@
       "institution_10d_net_volume_pct": 14.9,
       "institution_5d_net_volume_pct": 9.33,
       "last_price": 55.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.09,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "錼創科技-KY創",
@@ -5780,7 +5780,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -30.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.79,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5795,7 +5795,7 @@
       "institution_10d_net_volume_pct": 4.75,
       "institution_5d_net_volume_pct": 9.32,
       "last_price": 3670.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -34.72,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大立光",
@@ -5814,7 +5814,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.35,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5829,7 +5829,7 @@
       "institution_10d_net_volume_pct": 7.23,
       "institution_5d_net_volume_pct": 9.32,
       "last_price": 47.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -24.46,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "聚鼎",
@@ -5848,7 +5848,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -18.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.34,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5863,7 +5863,7 @@
       "institution_10d_net_volume_pct": 4.34,
       "institution_5d_net_volume_pct": 9.25,
       "last_price": 133.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.28,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "宇瞻",
@@ -5882,7 +5882,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.71,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5897,7 +5897,7 @@
       "institution_10d_net_volume_pct": 8.52,
       "institution_5d_net_volume_pct": 9.22,
       "last_price": 1100.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.57,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "藥華藥",
@@ -5916,7 +5916,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -11.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.21,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5931,7 +5931,7 @@
       "institution_10d_net_volume_pct": -0.28,
       "institution_5d_net_volume_pct": 9.14,
       "last_price": 95.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -26.16,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "萬海",
@@ -5950,7 +5950,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -28.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.23,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5965,7 +5965,7 @@
       "institution_10d_net_volume_pct": 2.21,
       "institution_5d_net_volume_pct": 9.08,
       "last_price": 384.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -24.74,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "永擎",
@@ -5984,7 +5984,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -8.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -5999,7 +5999,7 @@
       "institution_10d_net_volume_pct": -3.5,
       "institution_5d_net_volume_pct": 9.07,
       "last_price": 252.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.22,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "廣達",
@@ -6018,7 +6018,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -34.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.83,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6033,7 +6033,7 @@
       "institution_10d_net_volume_pct": 11.27,
       "institution_5d_net_volume_pct": 9.01,
       "last_price": 188.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.78,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "訊芯-KY",
@@ -6052,7 +6052,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -8.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.75,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6067,7 +6067,7 @@
       "institution_10d_net_volume_pct": 2.12,
       "institution_5d_net_volume_pct": 8.94,
       "last_price": 1065.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.07,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "祥碩",
@@ -6086,7 +6086,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6101,7 +6101,7 @@
       "institution_10d_net_volume_pct": 14.26,
       "institution_5d_net_volume_pct": 8.58,
       "last_price": 43.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.2,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "詮欣",
@@ -6121,7 +6121,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 4.16pp",
         "5日股價回落 -38.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.91,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6136,7 +6136,7 @@
       "institution_10d_net_volume_pct": 6.5,
       "institution_5d_net_volume_pct": 8.46,
       "last_price": 509.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大量",
@@ -6156,7 +6156,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.85pp",
         "5日股價回落 -29.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.71,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6171,7 +6171,7 @@
       "institution_10d_net_volume_pct": 6.45,
       "institution_5d_net_volume_pct": 8.43,
       "last_price": 110.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -33.25,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "鈺邦",
@@ -6191,7 +6191,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.65pp",
         "5日股價回落 -21.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.69,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6206,7 +6206,7 @@
       "institution_10d_net_volume_pct": 8.86,
       "institution_5d_net_volume_pct": 7.84,
       "last_price": 102.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -54.88,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "三福化",
@@ -6225,7 +6225,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -15.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6240,7 +6240,7 @@
       "institution_10d_net_volume_pct": 10.6,
       "institution_5d_net_volume_pct": 7.71,
       "last_price": 136.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.2,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "來億-KY",
@@ -6259,7 +6259,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.7,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6274,7 +6274,7 @@
       "institution_10d_net_volume_pct": 13.0,
       "institution_5d_net_volume_pct": 7.7,
       "last_price": 167.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.73,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "敦陽科",
@@ -6293,7 +6293,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.24,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6308,7 +6308,7 @@
       "institution_10d_net_volume_pct": 1.77,
       "institution_5d_net_volume_pct": 7.63,
       "last_price": 40.35,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -9.7,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "科妍",
@@ -6327,7 +6327,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -9.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.23,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6342,7 +6342,7 @@
       "institution_10d_net_volume_pct": 0.98,
       "institution_5d_net_volume_pct": 7.33,
       "last_price": 120.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.65,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "帝寶",
@@ -6361,7 +6361,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.09,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6376,7 +6376,7 @@
       "institution_10d_net_volume_pct": 8.13,
       "institution_5d_net_volume_pct": 7.17,
       "last_price": 26.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.52,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "亞航",
@@ -6395,7 +6395,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -35.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6410,7 +6410,7 @@
       "institution_10d_net_volume_pct": 4.67,
       "institution_5d_net_volume_pct": 7.08,
       "last_price": 137.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -25.28,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台虹",
@@ -6429,7 +6429,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -11.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.07,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6444,7 +6444,7 @@
       "institution_10d_net_volume_pct": 6.24,
       "institution_5d_net_volume_pct": 7.05,
       "last_price": 24.35,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.52,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台泥",
@@ -6463,7 +6463,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.51,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6478,7 +6478,7 @@
       "institution_10d_net_volume_pct": 4.89,
       "institution_5d_net_volume_pct": 6.93,
       "last_price": 39.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.71,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "泓德能源",
@@ -6497,7 +6497,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -24.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6512,7 +6512,7 @@
       "institution_10d_net_volume_pct": 7.92,
       "institution_5d_net_volume_pct": 6.59,
       "last_price": 225.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.82,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "上品",
@@ -6531,7 +6531,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.71,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6546,7 +6546,7 @@
       "institution_10d_net_volume_pct": 10.59,
       "institution_5d_net_volume_pct": 6.45,
       "last_price": 59.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -6.54,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "美律",
@@ -6565,7 +6565,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -31.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.75,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6580,7 +6580,7 @@
       "institution_10d_net_volume_pct": 9.19,
       "institution_5d_net_volume_pct": 6.44,
       "last_price": 40.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.07,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "揚明光",
@@ -6599,7 +6599,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -9.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.67,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6614,7 +6614,7 @@
       "institution_10d_net_volume_pct": -3.06,
       "institution_5d_net_volume_pct": 6.31,
       "last_price": 233.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.05,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "長榮",
@@ -6633,7 +6633,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -9.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.1,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6648,7 +6648,7 @@
       "institution_10d_net_volume_pct": 11.57,
       "institution_5d_net_volume_pct": 6.31,
       "last_price": 56.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.59,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "美利達",
@@ -6667,7 +6667,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -5.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.38,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6682,7 +6682,7 @@
       "institution_10d_net_volume_pct": 6.43,
       "institution_5d_net_volume_pct": 6.25,
       "last_price": 29.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.34,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "國產",
@@ -6701,7 +6701,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.77,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6716,7 +6716,7 @@
       "institution_10d_net_volume_pct": 5.44,
       "institution_5d_net_volume_pct": 6.13,
       "last_price": 115.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -31.37,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "聯策",
@@ -6735,7 +6735,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.89,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6750,7 +6750,7 @@
       "institution_10d_net_volume_pct": 0.78,
       "institution_5d_net_volume_pct": 5.83,
       "last_price": 1230.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.99,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "智邦",
@@ -6769,7 +6769,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -30.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.93,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6784,7 +6784,7 @@
       "institution_10d_net_volume_pct": 10.1,
       "institution_5d_net_volume_pct": 5.73,
       "last_price": 53.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.26,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "晶彩科",
@@ -6803,7 +6803,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -15.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.57,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6818,7 +6818,7 @@
       "institution_10d_net_volume_pct": 13.56,
       "institution_5d_net_volume_pct": 5.55,
       "last_price": 19.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -14.52,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "允強",
@@ -6837,7 +6837,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.17,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6852,7 +6852,7 @@
       "institution_10d_net_volume_pct": 9.34,
       "institution_5d_net_volume_pct": 5.51,
       "last_price": 19.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.84,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "菱生",
@@ -6872,7 +6872,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 1.01pp",
         "5日股價回落 -12.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6887,7 +6887,7 @@
       "institution_10d_net_volume_pct": 10.75,
       "institution_5d_net_volume_pct": 5.49,
       "last_price": 163.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.88,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "天鈺",
@@ -6906,7 +6906,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -17.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.87,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6921,7 +6921,7 @@
       "institution_10d_net_volume_pct": -5.72,
       "institution_5d_net_volume_pct": 5.45,
       "last_price": 55.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.77,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "安馳",
@@ -6940,7 +6940,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -28.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6955,7 +6955,7 @@
       "institution_10d_net_volume_pct": 0.68,
       "institution_5d_net_volume_pct": 5.35,
       "last_price": 89.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -21.45,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華邦電",
@@ -6974,7 +6974,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -14.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.81,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -6989,7 +6989,7 @@
       "institution_10d_net_volume_pct": 0.2,
       "institution_5d_net_volume_pct": 5.31,
       "last_price": 45.45,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.2,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "微矽電子-創",
@@ -7008,7 +7008,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7023,7 +7023,7 @@
       "institution_10d_net_volume_pct": 10.0,
       "institution_5d_net_volume_pct": 5.14,
       "last_price": 117.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.59,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "盟立",
@@ -7042,7 +7042,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -15.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.53,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7057,7 +7057,7 @@
       "institution_10d_net_volume_pct": 1.75,
       "institution_5d_net_volume_pct": 5.06,
       "last_price": 83.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -21.87,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "慧洋-KY",
@@ -7076,7 +7076,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -19.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.18,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7091,7 +7091,7 @@
       "institution_10d_net_volume_pct": 11.8,
       "institution_5d_net_volume_pct": 4.82,
       "last_price": 34.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.25,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "松翰",
@@ -7110,7 +7110,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -17.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.01,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7125,7 +7125,7 @@
       "institution_10d_net_volume_pct": 10.09,
       "institution_5d_net_volume_pct": 4.7,
       "last_price": 191.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -6.15,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "德律",
@@ -7145,7 +7145,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 1.90pp",
         "5日股價回落 -38.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.91,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7160,7 +7160,7 @@
       "institution_10d_net_volume_pct": 1.19,
       "institution_5d_net_volume_pct": 4.67,
       "last_price": 35.45,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -44.44,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "東台",
@@ -7179,7 +7179,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -15.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.72,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7194,7 +7194,7 @@
       "institution_10d_net_volume_pct": 2.34,
       "institution_5d_net_volume_pct": 4.53,
       "last_price": 144.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.79,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "士電",
@@ -7214,7 +7214,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.97pp",
         "5日股價回落 -28.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.44,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7229,7 +7229,7 @@
       "institution_10d_net_volume_pct": 2.68,
       "institution_5d_net_volume_pct": 4.43,
       "last_price": 77.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -14.61,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "新日興",
@@ -7248,7 +7248,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -22.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.03,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7263,7 +7263,7 @@
       "institution_10d_net_volume_pct": 12.3,
       "institution_5d_net_volume_pct": 4.41,
       "last_price": 64.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.56,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "立積",
@@ -7282,7 +7282,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -30.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.95,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7297,7 +7297,7 @@
       "institution_10d_net_volume_pct": 5.31,
       "institution_5d_net_volume_pct": 4.28,
       "last_price": 95.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.73,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "日電貿",
@@ -7317,7 +7317,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.56pp",
         "5日股價回落 -15.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.83,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7332,7 +7332,7 @@
       "institution_10d_net_volume_pct": -3.2,
       "institution_5d_net_volume_pct": 3.65,
       "last_price": 116.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.83,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "微星",
@@ -7351,7 +7351,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -35.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.95,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7366,7 +7366,7 @@
       "institution_10d_net_volume_pct": 2.37,
       "institution_5d_net_volume_pct": 3.32,
       "last_price": 283.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.31,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "矽力*-KY",
@@ -7385,7 +7385,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -14.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.14,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7400,7 +7400,7 @@
       "institution_10d_net_volume_pct": 5.29,
       "institution_5d_net_volume_pct": 3.18,
       "last_price": 520.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.76,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "研華",
@@ -7419,7 +7419,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -25.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7434,7 +7434,7 @@
       "institution_10d_net_volume_pct": 6.54,
       "institution_5d_net_volume_pct": 2.96,
       "last_price": 23.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.09,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "兆赫",
@@ -7452,7 +7452,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.26,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7467,7 +7467,7 @@
       "institution_10d_net_volume_pct": -5.05,
       "institution_5d_net_volume_pct": 2.96,
       "last_price": 348.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.09,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "億豐",
@@ -7486,7 +7486,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.55,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7501,7 +7501,7 @@
       "institution_10d_net_volume_pct": 3.97,
       "institution_5d_net_volume_pct": 2.58,
       "last_price": 27.15,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -26.44,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "第一保",
@@ -7520,7 +7520,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -20.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.27,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7535,7 +7535,7 @@
       "institution_10d_net_volume_pct": 1.04,
       "institution_5d_net_volume_pct": 2.54,
       "last_price": 10.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.15,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "彩晶",
@@ -7554,7 +7554,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -14.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.59,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7569,7 +7569,7 @@
       "institution_10d_net_volume_pct": -3.56,
       "institution_5d_net_volume_pct": 2.53,
       "last_price": 287.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -9.74,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "樺漢",
@@ -7588,7 +7588,7 @@
     {
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.71pp",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.21,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7603,7 +7603,7 @@
       "institution_10d_net_volume_pct": -2.52,
       "institution_5d_net_volume_pct": 2.48,
       "last_price": 387.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.43,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "冠西電",
@@ -7623,7 +7623,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 1.11pp",
         "5日股價回落 -30.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7638,7 +7638,7 @@
       "institution_10d_net_volume_pct": 3.04,
       "institution_5d_net_volume_pct": 2.44,
       "last_price": 43.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.89,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "希華",
@@ -7657,7 +7657,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -16.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -4.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7672,7 +7672,7 @@
       "institution_10d_net_volume_pct": 5.98,
       "institution_5d_net_volume_pct": 2.39,
       "last_price": 33.95,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.44,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台新新光金",
@@ -7691,7 +7691,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -24.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.72,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7706,7 +7706,7 @@
       "institution_10d_net_volume_pct": 4.64,
       "institution_5d_net_volume_pct": 2.35,
       "last_price": 136.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.29,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "興勤",
@@ -7726,7 +7726,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.57pp",
         "5日股價回落 -25.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7741,7 +7741,7 @@
       "institution_10d_net_volume_pct": 3.85,
       "institution_5d_net_volume_pct": 2.25,
       "last_price": 26.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -23.03,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "正文",
@@ -7760,7 +7760,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -26.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.82,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7775,7 +7775,7 @@
       "institution_10d_net_volume_pct": 0.72,
       "institution_5d_net_volume_pct": 2.04,
       "last_price": 58.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.4,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "旺宏",
@@ -7794,7 +7794,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -35.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.89,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7809,7 +7809,7 @@
       "institution_10d_net_volume_pct": -0.22,
       "institution_5d_net_volume_pct": 1.91,
       "last_price": 629.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.21,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "南電",
@@ -7828,7 +7828,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.8,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7843,7 +7843,7 @@
       "institution_10d_net_volume_pct": -10.74,
       "institution_5d_net_volume_pct": 1.88,
       "last_price": 162.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.87,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "文曄",
@@ -7862,7 +7862,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -16.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.25,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7877,7 +7877,7 @@
       "institution_10d_net_volume_pct": 4.73,
       "institution_5d_net_volume_pct": 1.78,
       "last_price": 30.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.62,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "宏達電",
@@ -7896,7 +7896,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7911,7 +7911,7 @@
       "institution_10d_net_volume_pct": -3.15,
       "institution_5d_net_volume_pct": 1.66,
       "last_price": 2885.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -22.03,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "穎崴",
@@ -7931,7 +7931,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 1.10pp",
         "5日股價回落 -33.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7946,7 +7946,7 @@
       "institution_10d_net_volume_pct": -5.4,
       "institution_5d_net_volume_pct": 1.48,
       "last_price": 355.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.24,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "聯茂",
@@ -7966,7 +7966,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 1.37pp",
         "5日股價回落 -23.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -7981,7 +7981,7 @@
       "institution_10d_net_volume_pct": 1.5,
       "institution_5d_net_volume_pct": 1.39,
       "last_price": 22.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.45,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "國碩",
@@ -8000,7 +8000,7 @@
     {
       "counter_evidence": [
         "融資5日增加 68.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": 9.89,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8015,7 +8015,7 @@
       "institution_10d_net_volume_pct": 3.65,
       "institution_5d_net_volume_pct": 1.39,
       "last_price": 294.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 68.17,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中華資安",
@@ -8034,7 +8034,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.74,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8049,7 +8049,7 @@
       "institution_10d_net_volume_pct": 3.38,
       "institution_5d_net_volume_pct": 1.35,
       "last_price": 9.85,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -6.17,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台聚",
@@ -8069,7 +8069,7 @@
       "counter_evidence": [
         "TDCC 大額持股本週減少 0.75pp",
         "5日股價回落 -19.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8084,7 +8084,7 @@
       "institution_10d_net_volume_pct": 8.37,
       "institution_5d_net_volume_pct": 1.35,
       "last_price": 3240.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -6.81,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "世芯-KY",
@@ -8103,7 +8103,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.65,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8118,7 +8118,7 @@
       "institution_10d_net_volume_pct": -9.06,
       "institution_5d_net_volume_pct": 1.35,
       "last_price": 52.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -25.08,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "和潤企業",
@@ -8137,7 +8137,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -29.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.92,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8152,7 +8152,7 @@
       "institution_10d_net_volume_pct": -3.36,
       "institution_5d_net_volume_pct": 0.49,
       "last_price": 218.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -22.03,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "志聖",
@@ -8173,7 +8173,7 @@
         "法人5日呈淨賣 -1.99%",
         "TDCC 大額持股本週減少 1.28pp",
         "5日股價回落 -35.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8185,7 +8185,7 @@
       "institution_10d_net_volume_pct": -0.64,
       "institution_5d_net_volume_pct": -1.99,
       "last_price": 247.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.53,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "尖點",
@@ -8202,7 +8202,7 @@
       "counter_evidence": [
         "法人5日呈淨賣 -2.22%",
         "TDCC 大額持股本週減少 0.53pp",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -0.45,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8214,7 +8214,7 @@
       "institution_10d_net_volume_pct": -0.71,
       "institution_5d_net_volume_pct": -2.22,
       "last_price": 109.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 1.6,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "巨鎧精密-創",
@@ -8232,7 +8232,7 @@
         "法人5日呈淨賣 -2.64%",
         "TDCC 大額持股本週減少 1.49pp",
         "5日股價回落 -25.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.91,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8244,7 +8244,7 @@
       "institution_10d_net_volume_pct": -0.35,
       "institution_5d_net_volume_pct": -2.64,
       "last_price": 864.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.89,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "光聖",
@@ -8262,7 +8262,7 @@
         "法人5日呈淨賣 -3.19%",
         "TDCC 大額持股本週減少 0.51pp",
         "5日股價回落 -30.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.99,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8274,7 +8274,7 @@
       "institution_10d_net_volume_pct": -3.25,
       "institution_5d_net_volume_pct": -3.19,
       "last_price": 84.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.4,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "嘉晶",
@@ -8292,7 +8292,7 @@
         "法人5日呈淨賣 -3.38%",
         "TDCC 大額持股本週減少 0.85pp",
         "5日股價回落 -25.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.76,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8304,7 +8304,7 @@
       "institution_10d_net_volume_pct": -1.2,
       "institution_5d_net_volume_pct": -3.38,
       "last_price": 152.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -9.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華通",
@@ -8322,7 +8322,7 @@
         "法人5日呈淨賣 -3.55%",
         "TDCC 大額持股本週減少 4.36pp",
         "5日股價回落 -28.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8334,7 +8334,7 @@
       "institution_10d_net_volume_pct": 2.27,
       "institution_5d_net_volume_pct": -3.55,
       "last_price": 14.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": null,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "百一",
@@ -8352,7 +8352,7 @@
         "法人5日呈淨賣 -4.10%",
         "TDCC 大額持股本週減少 1.73pp",
         "5日股價回落 -26.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.39,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8364,7 +8364,7 @@
       "institution_10d_net_volume_pct": 0.84,
       "institution_5d_net_volume_pct": -4.1,
       "last_price": 147.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.26,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大銀微系統",
@@ -8382,7 +8382,7 @@
         "法人5日呈淨賣 -4.20%",
         "TDCC 大額持股本週減少 0.61pp",
         "5日股價回落 -26.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.92,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8394,7 +8394,7 @@
       "institution_10d_net_volume_pct": 2.64,
       "institution_5d_net_volume_pct": -4.2,
       "last_price": 23.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.08,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "悅城",
@@ -8412,7 +8412,7 @@
         "法人5日呈淨賣 -4.52%",
         "TDCC 大額持股本週減少 0.55pp",
         "5日股價回落 -30.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -11.11,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8424,7 +8424,7 @@
       "institution_10d_net_volume_pct": 1.95,
       "institution_5d_net_volume_pct": -4.52,
       "last_price": 22.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.87,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "穎漢",
@@ -8442,7 +8442,7 @@
         "法人5日呈淨賣 -4.72%",
         "TDCC 大額持股本週減少 1.07pp",
         "5日股價回落 -26.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8454,7 +8454,7 @@
       "institution_10d_net_volume_pct": -6.42,
       "institution_5d_net_volume_pct": -4.72,
       "last_price": 157.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "京元電子",
@@ -8472,7 +8472,7 @@
         "法人5日呈淨賣 -4.85%",
         "TDCC 大額持股本週減少 0.80pp",
         "5日股價回落 -20.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.43,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8484,7 +8484,7 @@
       "institution_10d_net_volume_pct": -6.86,
       "institution_5d_net_volume_pct": -4.85,
       "last_price": 157.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -22.1,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華擎",
@@ -8501,7 +8501,7 @@
       "counter_evidence": [
         "法人5日呈淨賣 -4.91%",
         "TDCC 大額持股本週減少 59.56pp",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.02,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8513,7 +8513,7 @@
       "institution_10d_net_volume_pct": 3.8,
       "institution_5d_net_volume_pct": -4.91,
       "last_price": 68.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -55.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "富采",
@@ -8531,7 +8531,7 @@
         "法人5日呈淨賣 -5.21%",
         "TDCC 大額持股本週減少 0.58pp",
         "5日股價回落 -30.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.97,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8543,7 +8543,7 @@
       "institution_10d_net_volume_pct": 3.18,
       "institution_5d_net_volume_pct": -5.21,
       "last_price": 86.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -25.08,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "威鋒電子",
@@ -8561,7 +8561,7 @@
         "法人5日呈淨賣 -5.49%",
         "TDCC 大額持股本週減少 0.87pp",
         "5日股價回落 -19.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.11,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8573,7 +8573,7 @@
       "institution_10d_net_volume_pct": 7.26,
       "institution_5d_net_volume_pct": -5.49,
       "last_price": 224.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.57,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "碩天",
@@ -8591,7 +8591,7 @@
         "法人5日呈淨賣 -5.57%",
         "TDCC 大額持股本週減少 1.79pp",
         "5日股價回落 -36.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.79,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8603,7 +8603,7 @@
       "institution_10d_net_volume_pct": 2.72,
       "institution_5d_net_volume_pct": -5.57,
       "last_price": 19.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -22.82,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "德淵",
@@ -8621,7 +8621,7 @@
         "法人5日呈淨賣 -5.62%",
         "TDCC 大額持股本週減少 0.73pp",
         "5日股價回落 -31.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8633,7 +8633,7 @@
       "institution_10d_net_volume_pct": -7.74,
       "institution_5d_net_volume_pct": -5.62,
       "last_price": 537.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -6.0,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "欣興",
@@ -8651,7 +8651,7 @@
         "法人5日呈淨賣 -5.98%",
         "TDCC 大額持股本週減少 0.67pp",
         "5日股價回落 -25.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8663,7 +8663,7 @@
       "institution_10d_net_volume_pct": 5.25,
       "institution_5d_net_volume_pct": -5.98,
       "last_price": 51.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.2,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大眾控",
@@ -8681,7 +8681,7 @@
         "法人5日呈淨賣 -6.24%",
         "TDCC 大額持股本週減少 0.51pp",
         "5日股價回落 -27.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.88,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8693,7 +8693,7 @@
       "institution_10d_net_volume_pct": 0.95,
       "institution_5d_net_volume_pct": -6.24,
       "last_price": 21.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.31,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "宏齊",
@@ -8711,7 +8711,7 @@
         "法人5日呈淨賣 -6.72%",
         "TDCC 大額持股本週減少 0.81pp",
         "5日股價回落 -13.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8723,7 +8723,7 @@
       "institution_10d_net_volume_pct": -5.03,
       "institution_5d_net_volume_pct": -6.72,
       "last_price": 31.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.91,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "合勤控",
@@ -8741,7 +8741,7 @@
         "法人5日呈淨賣 -7.11%",
         "TDCC 大額持股本週減少 0.93pp",
         "5日股價回落 -30.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.98,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8753,7 +8753,7 @@
       "institution_10d_net_volume_pct": 3.11,
       "institution_5d_net_volume_pct": -7.11,
       "last_price": 87.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.25,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "惠特",
@@ -8771,7 +8771,7 @@
         "法人5日呈淨賣 -7.19%",
         "TDCC 大額持股本週減少 1.17pp",
         "5日股價回落 -27.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.63,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8783,7 +8783,7 @@
       "institution_10d_net_volume_pct": -6.93,
       "institution_5d_net_volume_pct": -7.19,
       "last_price": 61.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.95,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "南茂",
@@ -8801,7 +8801,7 @@
         "法人5日呈淨賣 -7.43%",
         "TDCC 大額持股本週減少 2.36pp",
         "5日股價回落 -34.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.46,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8813,7 +8813,7 @@
       "institution_10d_net_volume_pct": -1.59,
       "institution_5d_net_volume_pct": -7.43,
       "last_price": 49.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.18,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "時碩工業",
@@ -8831,7 +8831,7 @@
         "法人5日呈淨賣 -7.85%",
         "TDCC 大額持股本週減少 0.74pp",
         "5日股價回落 -29.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8843,7 +8843,7 @@
       "institution_10d_net_volume_pct": 3.23,
       "institution_5d_net_volume_pct": -7.85,
       "last_price": 37.95,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.06,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "全球傳動",
@@ -8861,7 +8861,7 @@
         "法人5日呈淨賣 -7.96%",
         "TDCC 大額持股本週減少 0.68pp",
         "5日股價回落 -14.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.27,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8873,7 +8873,7 @@
       "institution_10d_net_volume_pct": -9.38,
       "institution_5d_net_volume_pct": -7.96,
       "last_price": 42.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -8.96,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "健和興",
@@ -8891,7 +8891,7 @@
         "法人5日呈淨賣 -8.00%",
         "TDCC 大額持股本週減少 0.65pp",
         "5日股價回落 -13.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.56,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8903,7 +8903,7 @@
       "institution_10d_net_volume_pct": 0.19,
       "institution_5d_net_volume_pct": -8.0,
       "last_price": 69.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -6.39,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "至上",
@@ -8922,7 +8922,7 @@
         "TDCC 大額持股本週減少 0.80pp",
         "5日股價回落 -29.6%",
         "融資5日增加 13.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8934,7 +8934,7 @@
       "institution_10d_net_volume_pct": -10.19,
       "institution_5d_net_volume_pct": -8.09,
       "last_price": 470.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 13.15,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "景碩",
@@ -8952,7 +8952,7 @@
         "法人5日呈淨賣 -8.28%",
         "TDCC 大額持股本週減少 0.70pp",
         "5日股價回落 -25.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8964,7 +8964,7 @@
       "institution_10d_net_volume_pct": -7.47,
       "institution_5d_net_volume_pct": -8.28,
       "last_price": 16.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -14.43,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "金橋",
@@ -8982,7 +8982,7 @@
         "法人5日呈淨賣 -9.47%",
         "TDCC 大額持股本週減少 2.56pp",
         "5日股價回落 -34.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -8994,7 +8994,7 @@
       "institution_10d_net_volume_pct": 5.41,
       "institution_5d_net_volume_pct": -9.47,
       "last_price": 19.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -27.14,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "恩德",
@@ -9012,7 +9012,7 @@
         "法人5日呈淨賣 -9.83%",
         "TDCC 大額持股本週減少 1.02pp",
         "5日股價回落 -30.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.92,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9024,7 +9024,7 @@
       "institution_10d_net_volume_pct": 0.67,
       "institution_5d_net_volume_pct": -9.83,
       "last_price": 33.15,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -26.33,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "廣宇",
@@ -9042,7 +9042,7 @@
         "法人5日呈淨賣 -10.09%",
         "TDCC 大額持股本週減少 0.66pp",
         "5日股價回落 -32.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.85,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9054,7 +9054,7 @@
       "institution_10d_net_volume_pct": -1.68,
       "institution_5d_net_volume_pct": -10.09,
       "last_price": 206.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -11.68,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "南亞",
@@ -9072,7 +9072,7 @@
         "法人5日呈淨賣 -10.28%",
         "TDCC 大額持股本週減少 1.04pp",
         "5日股價回落 -34.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.86,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9084,7 +9084,7 @@
       "institution_10d_net_volume_pct": -6.64,
       "institution_5d_net_volume_pct": -10.28,
       "last_price": 187.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.1,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華新科",
@@ -9102,7 +9102,7 @@
         "法人5日呈淨賣 -11.16%",
         "TDCC 大額持股本週減少 0.99pp",
         "5日股價回落 -11.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.69,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9114,7 +9114,7 @@
       "institution_10d_net_volume_pct": -2.6,
       "institution_5d_net_volume_pct": -11.16,
       "last_price": 114.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 0.97,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "豐達科",
@@ -9132,7 +9132,7 @@
         "法人5日呈淨賣 -11.70%",
         "TDCC 大額持股本週減少 1.49pp",
         "5日股價回落 -18.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9144,7 +9144,7 @@
       "institution_10d_net_volume_pct": -10.43,
       "institution_5d_net_volume_pct": -11.7,
       "last_price": 64.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.73,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "乙盛-KY",
@@ -9162,7 +9162,7 @@
         "法人5日呈淨賣 -11.91%",
         "TDCC 大額持股本週減少 0.82pp",
         "5日股價回落 -10.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.04,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9174,7 +9174,7 @@
       "institution_10d_net_volume_pct": -19.66,
       "institution_5d_net_volume_pct": -11.91,
       "last_price": 64.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -39.89,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "宏正",
@@ -9192,7 +9192,7 @@
         "法人5日呈淨賣 -12.81%",
         "TDCC 大額持股本週減少 1.41pp",
         "5日股價回落 -32.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9204,7 +9204,7 @@
       "institution_10d_net_volume_pct": -0.69,
       "institution_5d_net_volume_pct": -12.81,
       "last_price": 22.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -25.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "誠美材",
@@ -9223,7 +9223,7 @@
         "TDCC 大額持股本週減少 0.58pp",
         "5日股價回落 -30.4%",
         "融資5日增加 13.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.89,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9235,7 +9235,7 @@
       "institution_10d_net_volume_pct": -10.12,
       "institution_5d_net_volume_pct": -12.91,
       "last_price": 23.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 13.57,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "吉祥全",
@@ -9253,7 +9253,7 @@
         "法人5日呈淨賣 -13.35%",
         "TDCC 大額持股本週減少 1.22pp",
         "5日股價回落 -23.4%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.09,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9265,7 +9265,7 @@
       "institution_10d_net_volume_pct": -4.82,
       "institution_5d_net_volume_pct": -13.35,
       "last_price": 29.55,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.57,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "光罩",
@@ -9284,7 +9284,7 @@
         "TDCC 大額持股本週減少 3.75pp",
         "5日股價回落 -37.8%",
         "融資5日增加 21.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.88,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9296,7 +9296,7 @@
       "institution_10d_net_volume_pct": 7.03,
       "institution_5d_net_volume_pct": -13.97,
       "last_price": 52.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 21.92,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台玻",
@@ -9314,7 +9314,7 @@
         "法人5日呈淨賣 -14.07%",
         "TDCC 大額持股本週減少 1.12pp",
         "5日股價回落 -26.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9326,7 +9326,7 @@
       "institution_10d_net_volume_pct": -8.71,
       "institution_5d_net_volume_pct": -14.07,
       "last_price": 78.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -28.88,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "鉅祥",
@@ -9344,7 +9344,7 @@
         "法人5日呈淨賣 -15.98%",
         "TDCC 大額持股本週減少 1.10pp",
         "5日股價回落 -29.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.89,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9356,7 +9356,7 @@
       "institution_10d_net_volume_pct": -2.84,
       "institution_5d_net_volume_pct": -15.98,
       "last_price": 29.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -26.61,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台亞",
@@ -9374,7 +9374,7 @@
         "法人5日呈淨賣 -17.00%",
         "TDCC 大額持股本週減少 1.17pp",
         "5日股價回落 -21.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.34,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9386,7 +9386,7 @@
       "institution_10d_net_volume_pct": -14.77,
       "institution_5d_net_volume_pct": -17.0,
       "last_price": 43.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.2,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "偉詮電",
@@ -9404,7 +9404,7 @@
         "法人5日呈淨賣 -17.13%",
         "TDCC 大額持股本週減少 0.76pp",
         "5日股價回落 -15.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.14,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9416,7 +9416,7 @@
       "institution_10d_net_volume_pct": -17.38,
       "institution_5d_net_volume_pct": -17.13,
       "last_price": 59.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.62,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "富田-創",
@@ -9434,7 +9434,7 @@
         "法人5日呈淨賣 -17.30%",
         "TDCC 大額持股本週減少 3.47pp",
         "5日股價回落 -33.3%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.97,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9446,7 +9446,7 @@
       "institution_10d_net_volume_pct": 0.57,
       "institution_5d_net_volume_pct": -17.3,
       "last_price": 67.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.26,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "GIS-KY",
@@ -9464,7 +9464,7 @@
         "法人5日呈淨賣 -18.04%",
         "TDCC 大額持股本週減少 2.38pp",
         "5日股價回落 -31.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.9,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9476,7 +9476,7 @@
       "institution_10d_net_volume_pct": -4.68,
       "institution_5d_net_volume_pct": -18.04,
       "last_price": 54.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -2.69,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "今國光",
@@ -9494,7 +9494,7 @@
         "法人5日呈淨賣 -18.92%",
         "TDCC 大額持股本週減少 7.63pp",
         "5日股價回落 -35.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.99,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9506,7 +9506,7 @@
       "institution_10d_net_volume_pct": 9.72,
       "institution_5d_net_volume_pct": -18.92,
       "last_price": 36.95,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.69,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "泰鼎-KY",
@@ -9524,7 +9524,7 @@
         "法人5日呈淨賣 -19.93%",
         "TDCC 大額持股本週減少 0.69pp",
         "5日股價回落 -16.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.78,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9536,7 +9536,7 @@
       "institution_10d_net_volume_pct": -23.21,
       "institution_5d_net_volume_pct": -19.93,
       "last_price": 25.25,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -20.54,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "仁寶",
@@ -9554,7 +9554,7 @@
         "法人5日呈淨賣 -20.79%",
         "TDCC 大額持股本週減少 0.61pp",
         "5日股價回落 -18.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.7,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9566,7 +9566,7 @@
       "institution_10d_net_volume_pct": 1.15,
       "institution_5d_net_volume_pct": -20.79,
       "last_price": 38.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -2.67,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "台耀",
@@ -9584,7 +9584,7 @@
         "法人5日呈淨賣 -21.48%",
         "TDCC 大額持股本週減少 1.27pp",
         "5日股價回落 -16.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.04,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9596,7 +9596,7 @@
       "institution_10d_net_volume_pct": -23.69,
       "institution_5d_net_volume_pct": -21.48,
       "last_price": 33.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -14.21,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "威健",
@@ -9614,7 +9614,7 @@
         "法人5日呈淨賣 -27.95%",
         "TDCC 大額持股本週減少 0.56pp",
         "5日股價回落 -19.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.41,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9626,7 +9626,7 @@
       "institution_10d_net_volume_pct": -21.45,
       "institution_5d_net_volume_pct": -27.95,
       "last_price": 26.85,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -1.7,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華新",
@@ -9644,7 +9644,7 @@
         "法人5日呈淨賣 -33.25%",
         "TDCC 大額持股本週減少 0.50pp",
         "5日股價回落 -7.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9656,7 +9656,7 @@
       "institution_10d_net_volume_pct": -30.92,
       "institution_5d_net_volume_pct": -33.25,
       "last_price": 17.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.26,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中鋼",
@@ -9962,7 +9962,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -17.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.19,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -9978,7 +9978,7 @@
       "institution_10d_net_volume_pct": 19.57,
       "institution_5d_net_volume_pct": 40.72,
       "last_price": 98.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -30.79,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "東哥遊艇",
@@ -9997,7 +9997,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -0.79,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10013,7 +10013,7 @@
       "institution_10d_net_volume_pct": 22.28,
       "institution_5d_net_volume_pct": 38.21,
       "last_price": 62.9,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -13.06,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "遠雄",
@@ -10033,7 +10033,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -4.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -2.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10049,7 +10049,7 @@
       "institution_10d_net_volume_pct": 13.84,
       "institution_5d_net_volume_pct": 36.17,
       "last_price": 49.65,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.59,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大成",
@@ -10069,7 +10069,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -6.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -3.99,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10085,7 +10085,7 @@
       "institution_10d_net_volume_pct": 17.16,
       "institution_5d_net_volume_pct": 31.84,
       "last_price": 36.1,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -8.86,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "興富發",
@@ -10105,7 +10105,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -21.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.18,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10121,7 +10121,7 @@
       "institution_10d_net_volume_pct": 26.54,
       "institution_5d_net_volume_pct": 31.53,
       "last_price": 95.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.56,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "泰宗",
@@ -10141,7 +10141,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -12.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.28,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10157,7 +10157,7 @@
       "institution_10d_net_volume_pct": 18.51,
       "institution_5d_net_volume_pct": 30.19,
       "last_price": 343.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -68.37,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "晶碩",
@@ -10177,7 +10177,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -10.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -7.45,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10193,7 +10193,7 @@
       "institution_10d_net_volume_pct": 21.1,
       "institution_5d_net_volume_pct": 22.49,
       "last_price": 52.2,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.48,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "榮運",
@@ -10213,7 +10213,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -8.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.33,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10229,7 +10229,7 @@
       "institution_10d_net_volume_pct": 28.08,
       "institution_5d_net_volume_pct": 20.08,
       "last_price": 21.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -4.29,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華航",
@@ -10249,7 +10249,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -23.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -6.36,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10265,7 +10265,7 @@
       "institution_10d_net_volume_pct": 17.24,
       "institution_5d_net_volume_pct": 18.97,
       "last_price": 110.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.53,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "雷虎",
@@ -10285,7 +10285,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -30.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.96,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10301,7 +10301,7 @@
       "institution_10d_net_volume_pct": 17.05,
       "institution_5d_net_volume_pct": 18.44,
       "last_price": 117.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.24,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "立隆電",
@@ -10320,7 +10320,7 @@
     },
     {
       "counter_evidence": [
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -1.79,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10336,7 +10336,7 @@
       "institution_10d_net_volume_pct": 19.36,
       "institution_5d_net_volume_pct": 18.32,
       "last_price": 220.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -5.68,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "聚陽",
@@ -10356,7 +10356,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -13.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.22,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10372,7 +10372,7 @@
       "institution_10d_net_volume_pct": 18.41,
       "institution_5d_net_volume_pct": 18.31,
       "last_price": 52.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.4,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "雲豹能源",
@@ -10392,7 +10392,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -4.9%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -5.87,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10408,7 +10408,7 @@
       "institution_10d_net_volume_pct": 20.6,
       "institution_5d_net_volume_pct": 17.96,
       "last_price": 67.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -3.56,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "中磊",
@@ -10428,7 +10428,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -27.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.95,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10444,7 +10444,7 @@
       "institution_10d_net_volume_pct": 13.83,
       "institution_5d_net_volume_pct": 17.79,
       "last_price": 91.4,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -7.72,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "富鼎",
@@ -10464,7 +10464,7 @@
     {
       "counter_evidence": [
         "5日股價回落 -24.0%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10480,7 +10480,7 @@
       "institution_10d_net_volume_pct": 17.0,
       "institution_5d_net_volume_pct": 17.4,
       "last_price": 28.3,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -18.01,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華泰",
@@ -10506,7 +10506,7 @@
     "status": "HISTORICAL_CYCLE_UNVERIFIED"
   },
   "cleared": [],
-  "data_gate": "EOD_VALID_MACRO_VALID",
+  "data_gate": "EOD_VALID_MACRO_UNKNOWN",
   "exclusions": [],
   "exit_alerts": [
     {
@@ -10514,7 +10514,7 @@
         "法人5日呈淨賣 -1.99%",
         "TDCC 大額持股本週減少 1.28pp",
         "5日股價回落 -35.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.84,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10526,7 +10526,7 @@
       "institution_10d_net_volume_pct": -0.64,
       "institution_5d_net_volume_pct": -1.99,
       "last_price": 247.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -19.53,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "尖點",
@@ -10543,7 +10543,7 @@
       "counter_evidence": [
         "法人5日呈淨賣 -2.22%",
         "TDCC 大額持股本週減少 0.53pp",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -0.45,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10555,7 +10555,7 @@
       "institution_10d_net_volume_pct": -0.71,
       "institution_5d_net_volume_pct": -2.22,
       "last_price": 109.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": 1.6,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "巨鎧精密-創",
@@ -10573,7 +10573,7 @@
         "法人5日呈淨賣 -2.64%",
         "TDCC 大額持股本週減少 1.49pp",
         "5日股價回落 -25.5%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.91,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10585,7 +10585,7 @@
       "institution_10d_net_volume_pct": -0.35,
       "institution_5d_net_volume_pct": -2.64,
       "last_price": 864.0,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -10.89,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "光聖",
@@ -10603,7 +10603,7 @@
         "法人5日呈淨賣 -3.19%",
         "TDCC 大額持股本週減少 0.51pp",
         "5日股價回落 -30.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.99,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10615,7 +10615,7 @@
       "institution_10d_net_volume_pct": -3.25,
       "institution_5d_net_volume_pct": -3.19,
       "last_price": 84.7,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -12.4,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "嘉晶",
@@ -10633,7 +10633,7 @@
         "法人5日呈淨賣 -3.38%",
         "TDCC 大額持股本週減少 0.85pp",
         "5日股價回落 -25.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.76,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10645,7 +10645,7 @@
       "institution_10d_net_volume_pct": -1.2,
       "institution_5d_net_volume_pct": -3.38,
       "last_price": 152.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -9.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "華通",
@@ -10663,7 +10663,7 @@
         "法人5日呈淨賣 -3.55%",
         "TDCC 大額持股本週減少 4.36pp",
         "5日股價回落 -28.7%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.94,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10675,7 +10675,7 @@
       "institution_10d_net_volume_pct": 2.27,
       "institution_5d_net_volume_pct": -3.55,
       "last_price": 14.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": null,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "百一",
@@ -10693,7 +10693,7 @@
         "法人5日呈淨賣 -4.10%",
         "TDCC 大額持股本週減少 1.73pp",
         "5日股價回落 -26.8%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -8.39,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10705,7 +10705,7 @@
       "institution_10d_net_volume_pct": 0.84,
       "institution_5d_net_volume_pct": -4.1,
       "last_price": 147.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.26,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "大銀微系統",
@@ -10723,7 +10723,7 @@
         "法人5日呈淨賣 -4.20%",
         "TDCC 大額持股本週減少 0.61pp",
         "5日股價回落 -26.1%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -9.92,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10735,7 +10735,7 @@
       "institution_10d_net_volume_pct": 2.64,
       "institution_5d_net_volume_pct": -4.2,
       "last_price": 23.6,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -15.08,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "悅城",
@@ -10753,7 +10753,7 @@
         "法人5日呈淨賣 -4.52%",
         "TDCC 大額持股本週減少 0.55pp",
         "5日股價回落 -30.6%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -11.11,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10765,7 +10765,7 @@
       "institution_10d_net_volume_pct": 1.95,
       "institution_5d_net_volume_pct": -4.52,
       "last_price": 22.8,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -17.87,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "穎漢",
@@ -10783,7 +10783,7 @@
         "法人5日呈淨賣 -4.72%",
         "TDCC 大額持股本週減少 1.07pp",
         "5日股價回落 -26.2%",
-        "隔夜海外環境偏空，與個股訊號需交叉檢查"
+        "正式當日SOX/VIX環境未知"
       ],
       "day_return_pct": -10.0,
       "decision_readiness": "CROSS_ENVIRONMENT_REVIEW_PENDING",
@@ -10795,7 +10795,7 @@
       "institution_10d_net_volume_pct": -6.42,
       "institution_5d_net_volume_pct": -4.72,
       "last_price": 157.5,
-      "macro_alignment": "HEADWIND",
+      "macro_alignment": "UNKNOWN_HOLD",
       "margin_change5_pct": -16.85,
       "monitor_next": "下一交易日查法人延續、價量、TDCC新週資料和海外環境；事前設計風險退出條件",
       "name": "京元電子",
@@ -10817,56 +10817,28 @@
     "外部封包缺失不會填入中性，也不會以舊數據冒充當日"
   ],
   "external_environment": {
-    "gap_log_pct": -1.75758592,
-    "grade": 1,
-    "individual_sources": {
-      "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
-      "expected_us_session": "2026-11-20",
-      "observation_window": "ANYTIME_SOURCE_ONLY",
-      "observed_at_taipei": "2026-11-23T22:51:36.180567+08:00",
-      "preopen_forecast_authority": false,
-      "source_observation_sha256": "f9889c42fa4302faef00c00763052fb0c8968cd9b361a8b72cc9c91ab2c7f96a",
-      "sox": {
-        "change_pct": -10.7342,
-        "latest_close": 8408.59042933662,
-        "latest_us_session": "2026-11-20",
-        "publisher": "Nasdaq",
-        "source_status": "當期已更新"
-      },
-      "vix": {
-        "change_pct": 26.1955,
-        "latest_close": 35.89,
-        "latest_us_session": "2026-11-20",
-        "publisher": "Cboe",
-        "source_status": "當期已更新"
-      }
-    },
-    "label": "強烈偏空",
+    "label": "資料不足",
     "packet_date": "2026-11-23",
-    "packet_sha256": "9e1a90331a150eca3ccb9504645b3618701a029d7aafc63a5212c7f481a7fc95",
+    "reason": "SOX/VIX 封包驗證失敗或日期與監控日期不符",
     "source_path": "overseas_premarket/latest.json",
-    "sox": 8408.59042933662,
-    "status": "已核對",
-    "us_session": "2026-11-20",
-    "vix": 35.89,
-    "vix_band": "HIGH"
+    "status": "資料不足"
   },
   "latest_verified_eod": "2026-11-20",
   "local_taiwan_vix": {
-    "change_1d_points": 2.84,
-    "change_3d_points": 2.58,
-    "change_5d_points": 14.29,
-    "close": 52.13,
-    "date": "2026-11-20",
+    "change_1d_points": 3.23,
+    "change_3d_points": 9.59,
+    "change_5d_points": 6.51,
+    "close": 55.36,
+    "date": "2026-11-23",
     "index": "TAIWAN_VIX",
     "not_model_input": true,
     "not_realtime": true,
-    "observed_at_taipei": "2026-11-20T23:38:20.449418+08:00",
-    "receipt_sha256": "5d96fcb95bd133705f717514f4d6df5807251fe07737f39d51466230306c3617",
+    "observed_at_taipei": "2026-11-24T02:29:35.186303+08:00",
+    "receipt_sha256": "e56526e44d6e454629c236b61d57917f0dd222d789162d9b42c57f1cc9215868",
     "reference_eod": "2026-11-20",
     "source": "TAIFEX",
     "source_verified": true,
-    "status": "ALIGNED_LAST_TW_EOD",
+    "status": "SOURCE_DATE_NOT_LAST_TW_EOD",
     "trading_authority": false
   },
   "long_term_capital_environment": {
@@ -10895,6 +10867,6 @@
     "疑似症狀": 159,
     "行情確認（待人工評估）": 0
   },
-  "target_tw_date": "2026-11-23",
+  "target_tw_date": "2026-11-24",
   "total_candidates_before_limit": 286
 }
