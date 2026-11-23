@@ -33,7 +33,7 @@ jobs:
         run: |
           python - <<'PY'
           import datetime,json,os,pathlib,urllib.parse,urllib.request,urllib.error
-          dates=["2026-01-02","2026-11-20"]
+          dates=["2026-01-02","2026-11-20","2026-11-23"]
           token=os.environ.get("FINMIND_TOKEN","").strip()
           out={"schema":"HENGCE_9A81_FINMIND_ENTITLEMENT_PROBE_V1",
                "observed_at_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -60,6 +60,18 @@ jobs:
                   except Exception as exc:
                       result.update({"result":"OTHER_ERROR","error_type":type(exc).__name__})
                   out["checks"].append(result)
+                  if day=="2026-11-23" and result.get("result")=="DATA":
+                      totals={}
+                      for row in data:
+                          sid=str(row.get("stock_id") or "").strip()
+                          if not sid: continue
+                          x=totals.setdefault(sid,[0,0])
+                          x[0]+=int(row.get("buy") or 0)
+                          x[1]+=int(row.get("sell") or 0)
+                      ranking=[{"stock":sid,"buy_shares":v[0],"sell_shares":v[1],"net_shares":v[0]-v[1]} for sid,v in totals.items()]
+                      bought=sorted((x for x in ranking if x["net_shares"]>0),key=lambda x:-x["net_shares"])
+                      sold=sorted((x for x in ranking if x["net_shares"]<0),key=lambda x:x["net_shares"])
+                      print("HENGCE_9A81_20261123_ALLSTOCK_NETBUY_RANKING",json.dumps({"date":day,"observed_distinct_stocks":len(ranking),"positive_count":len(bought),"negative_count":len(sold),"top_positive":bought[:40],"top_negative":sold[:25]},ensure_ascii=False),flush=True)
           out_path=pathlib.Path("research/9a81_finmind_existing_token_probe.json")
           out_path.parent.mkdir(parents=True,exist_ok=True)
           out_path.write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
