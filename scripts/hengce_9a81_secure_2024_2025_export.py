@@ -14,7 +14,11 @@ from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
 
 PUBLIC_TRANSPORT_KEY_B64 = "sEsZLJNAX3HB_-ckjmqUPATit5yHDyQ4ToaYVI7V1X4"
-BRANCH="9A81"
+BROKER_LINEAGE="1380_TO_9A81"
+CROSSOVER_DAY="2025-10-20"
+
+def branch_for_day(day):
+    return "1380" if day < CROSSOVER_DAY else "9A81"
 YEAR=int(sys.argv[1]) if len(sys.argv)>1 else 0
 if YEAR not in (2024,2025):
     raise SystemExit("RUN_ONLY_HISTORICAL_2024_OR_2025")
@@ -56,15 +60,16 @@ def get_calendar(token):
     return days
 
 def fetch_day(day,token):
+    branch=branch_for_day(day)
     rows=get_data("taiwan_stock_trading_daily_report",
-                  {"securities_trader_id":BRANCH,"date":day},token)
+                  {"securities_trader_id":branch,"date":day},token)
     if not rows:
         raise RuntimeError("TRADING_DAY_EMPTY")
     out=[]
     for row in rows:
         if any(x not in row for x in FIELDS):
             raise RuntimeError("MISSING_FIELDS")
-        if str(row["date"])[:10]!=day or str(row["securities_trader_id"]).upper()!=BRANCH:
+        if str(row["date"])[:10]!=day or str(row["securities_trader_id"]).upper()!=branch:
             raise RuntimeError("BRANCH_OR_DATE_MISMATCH")
         code=str(row["stock_id"]).strip()
         if not code:
@@ -74,7 +79,7 @@ def fetch_day(day,token):
         sell=Decimal(str(row["sell"]))
         if pr<=0 or buy<0 or sell<0 or buy!=int(buy) or sell!=int(sell):
             raise RuntimeError("INVALID_PRICE_VOLUME")
-        out.append((day,code,BRANCH,str(pr),int(buy),int(sell)))
+        out.append((day,code,branch,str(pr),int(buy),int(sell)))
     return day,out
 
 def report(s):
@@ -88,7 +93,7 @@ def main():
             "generated_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),
             "requested_start":FIRST,"requested_end":LAST,"recipient":"PRIVATE_RESEARCH_REPOSITORY",
             "source":"FinMind TaiwanStockTradingDailyReport","encrypted_output_only":True,
-            "state":"STARTED"}
+            "state":"STARTED","broker_alias_validity":{"1380":"through 2025-10-17","9A81":"from 2025-10-20"}}
     if not token:
         status["state"]="BLOCKED_NO_TOKEN"
         report(status)
@@ -143,7 +148,8 @@ def main():
             "source_repo":"seabeen927349-hub/-hengce-live-quotes",
             "target_private_repo":"seabeen927349-hub/twse--backfill-test",
             "source":"FinMind TaiwanStockTradingDailyReport",
-            "broker":"9A81",
+            "broker":BROKER_LINEAGE,
+            "broker_alias_validity":{"1380":"through 2025-10-17","9A81":"from 2025-10-20"},
             "date_start":FIRST,"date_end":LAST,
             "calendar_dates":days,
             "calendar_days":len(days),
@@ -160,7 +166,7 @@ def main():
         status.update({"state":"ENCRYPTED_COMPLETE","calendar_days":len(days),
                 "successful_days":len(days),"raw_price_rows":total,
                 "distinct_stock_codes":len(tickers),"ciphertext_file":str(OUT),
-                "plaintext_rows_persisted":False})
+                "plaintext_rows_persisted":False,"broker_alias_validity":{"1380":"through 2025-10-17","9A81":"from 2025-10-20"}})
         report(status)
         print("ENCRYPTED_TRANSFER_READY",json.dumps({k:v for k,v in status.items() if k!="exceptions"},ensure_ascii=False))
     except Exception:
