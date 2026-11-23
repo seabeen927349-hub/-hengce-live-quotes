@@ -1,0 +1,51 @@
+name: HENGCE Research 9661 3042 full-year 2026 flows
+# Independent research. Uses original FINMIND_TOKEN. No changes to canonical EOD/mother/model/order.
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-research-9661-3042-2026-annual.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - name: Fetch yearly 9661 3042 from original sponsor source and verify against independently checked daily figures
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,os,urllib.parse,urllib.request,collections
+          token=os.environ.get("FINMIND_TOKEN","").strip()
+          if not token:raise RuntimeError("NO_EXISTING_FINMIND_TOKEN")
+          params={"data_id":"3042","securities_trader_id":"9661","start_date":"2026-01-01","end_date":"2026-11-23"}
+          url="https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report_secid_agg?"+urllib.parse.urlencode(params)
+          req=urllib.request.Request(url,headers={"Authorization":"Bearer "+token,"Accept":"application/json","User-Agent":"HENGCE-3042-YEAR-SUMMARY-RESEARCH/1.0"})
+          with urllib.request.urlopen(req,timeout=120) as rsp: body=json.loads(rsp.read(40000000))
+          rows=body.get("data")
+          print("HENGCE_ANNUAL_API_META",json.dumps({"response_status":body.get("status"),"message":str(body.get("msg",""))[:250],"data_is_list":isinstance(rows,list),"returned_rows":len(rows) if isinstance(rows,list) else None,"columns":list(rows[0]) if rows else []},ensure_ascii=False),flush=True)
+          if str(body.get("status"))!="200" or not isinstance(rows,list) or not rows:raise RuntimeError("AGG_NO_VALID_RESPONSE")
+          if any(str(x.get("stock_id","")).strip()!="3042" or str(x.get("securities_trader_id","")).strip()!="9661" for x in rows):raise RuntimeError("AGG_WRONG_STOCK_OR_BRANCH")
+          dt=collections.defaultdict(lambda:[0,0,0])
+          for x in rows:
+              day=str(x.get("date",""))[:10]
+              if not "2026-01-01"<=day<="2026-11-23":raise RuntimeError("AGG_WRONG_DATE_"+day)
+              buy=x.get("buy_volume"); sell=x.get("sell_volume")
+              if buy is None or sell is None:raise RuntimeError("AGG_BAD_COLUMNS")
+              dt[day][0]+=int(buy)
+              dt[day][1]+=int(sell)
+              dt[day][2]+=1
+          print("HENGCE_ANNUAL_SAMPLE_DAYS",json.dumps({d:dt.get(d) for d in ("2026-11-20","2026-11-23")},ensure_ascii=False),flush=True)
+          expected={"2026-11-20":(3040,1000),"2026-11-23":(16101,26100)}
+          if any(tuple(dt.get(d,[None,None])[:2])!=x for d,x in expected.items()):raise RuntimeError("AGG_DISAGREES_WITH_VERIFIED_DAILY_SHARES")
+          months=collections.defaultdict(lambda:[0,0,0])
+          for day,(buy,sell,n) in dt.items():
+              x=months[day[:7]]
+              x[0]+=buy;x[1]+=sell;x[2]+=1
+          allbuy=sum(x[0] for x in dt.values());allsell=sum(x[1] for x in dt.values())
+          print("HENGCE_9661_3042_FULLYEAR_VERIFIED",json.dumps({"branch":"9661","stock_id":"3042","from":"2026-01-01","to":"2026-11-23","source":"FinMind SecIdAgg crosschecked with original daily report","rows":len(rows),"days_with_data":len(dt),"buy_shares":allbuy,"sell_shares":allsell,"net_shares":allbuy-allsell,"monthly":[{"month":k,"buy_shares":v[0],"sell_shares":v[1],"net_shares":v[0]-v[1],"observed_days":v[2]} for k,v in sorted(months.items())],"data_available_for_all_calendar_days":False,"official_holdings_not_observed":True,"licensed_rows_persisted":False,"canonical_mutated":False},ensure_ascii=False),flush=True)
+          PY
