@@ -1,21 +1,21 @@
 {
-  "asof_taipei": "2026-11-23T10:16:26.071730+08:00",
+  "asof_taipei": "2026-11-23T10:49:17.447347+08:00",
   "escape_formal_state": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
   "finmind": {
     "canonical_previous_twse_date": "2026-11-23",
-    "context_digest": "80a2c7ede762d905470d18fdfe534c3c047510418adc5eb2dd271b286a0ff353",
-    "current_session_coverage": 0.99448529,
+    "context_digest": "402dc2f6dba6cb88dd61cd5b6329943faecac3b75308083e807d229eabbf4a04",
+    "current_session_coverage": 0.99724265,
     "data_role": "CURRENT_INTRADAY_OBSERVATION",
     "existing_transport": "taiwan_stock_tick_snapshot",
-    "generated_at_taipei": "2026-11-23T10:14:43.447607+08:00",
-    "latest_source_taipei": "2026-11-23T10:14:40.534365+08:00",
+    "generated_at_taipei": "2026-11-23T10:48:27.321626+08:00",
+    "latest_source_taipei": "2026-11-23T10:48:20.015049+08:00",
     "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
-    "monitor_digest": "389f43301bc0516d570f17d5bbf42a47694935548f27c4126760fcb472433333",
-    "observed_count": 1082,
+    "monitor_digest": "2712e02c812a5c796e65457d315c45fe6ea7254e5407b238ac4f05f63ace2f31",
+    "observed_count": 1085,
     "required_count": 1088,
     "source_market_date": "2026-11-23",
-    "status_digest": "92472d4214af89c4effad1dc400ec7aa23e2ff5ad83b33920f2d1fc1a32946de",
-    "unknown_count": 6
+    "status_digest": "55c3ed16ab2c8fb0999a122a42a6ed2b1d52e1632cbd89d2e39f283f101e6ca8",
+    "unknown_count": 3
   },
   "governance": {
     "canonical_eod_replaced": false,
@@ -29,13 +29,13 @@
   },
   "macro_regime": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
   "observed_breadth": {
-    "advancer_share_directional": 0.43546798,
-    "advancers": 442,
-    "decliners": 573,
-    "equal_weight_change_rate_vendor_units": -0.25989834,
+    "advancer_share_directional": 0.26150833,
+    "advancers": 267,
+    "decliners": 754,
+    "equal_weight_change_rate_vendor_units": -1.27152995,
     "interpretation": "Historical session observations, NOT future fund flows or formal Escape metrics.",
-    "unchanged": 67,
-    "vendor_turnover_units": 487192893710.0
+    "unchanged": 64,
+    "vendor_turnover_units": 566964656200.0
   },
   "premarket_forecast": {
     "expected_gap_log_pct": null,
