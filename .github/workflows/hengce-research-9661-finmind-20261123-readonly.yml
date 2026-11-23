@@ -46,4 +46,20 @@ jobs:
               neutral=[x for x in ranks if x['net_shares']==0]
               receipt={'date':day,'branch':'9661','source':'FinMind TaiwanStockTradingDailyReport','api_status':result.get('status'),'price_level_rows':len(rows),'distinct_codes':len(ranks),'buy_count':len(buys),'sell_count':len(sells),'neutral_count':len(neutral),'total_buy_shares':sum(x['buy_shares'] for x in ranks),'total_sell_shares':sum(x['sell_shares'] for x in ranks),'total_net_shares':sum(x['net_shares'] for x in ranks),'buy_top40':buys[:40],'sell_top40':sells[:40],'top_neutral':neutral[:15],'canonical_mutations':False,'raw_rows_persisted':False}
               print('HENGCE_9661_VERIFIED_DAY_RANK '+json.dumps(receipt,ensure_ascii=False),flush=True)
+              crystal=totals.get('3042',[0,0])
+              observed=sum(1 for x in rows if str(x.get('stock_id','')).strip()=='3042')
+              print('HENGCE_9661_3042_VERIFIED '+json.dumps({'date':day,'branch':'9661','ticker':'3042','observed_price_rows':observed,'buy_shares':crystal[0],'sell_shares':crystal[1],'net_shares':crystal[0]-crystal[1],'branch_day_rows':len(rows),'absence_of_rows_not_proof_of_zero':observed==0},ensure_ascii=False),flush=True)
+          day='2026-11-23'
+          branch='9A81'
+          url='https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report?'+urllib.parse.urlencode({'securities_trader_id':branch,'date':day})
+          req=urllib.request.Request(url,headers={'Authorization':'Bearer '+token,'Accept':'application/json','User-Agent':'HENGCE-RESEARCH-3042-READ-ONLY/1.0'})
+          with urllib.request.urlopen(req,timeout=80) as response:
+              body=json.loads(response.read(30000000))
+          rows=body.get('data',[])
+          if str(body.get('status'))!='200' or not isinstance(rows,list) or any(str(x.get('date',''))[:10]!=day or str(x.get('securities_trader_id','')).upper()!=branch for x in rows):
+              raise RuntimeError('9A81_STATUS_DATE_BRANCH_VALIDATION_FAILED')
+          matched=[x for x in rows if str(x.get('stock_id','')).strip()=='3042']
+          buy=sum(int(x.get('buy') or 0) for x in matched)
+          sell=sum(int(x.get('sell') or 0) for x in matched)
+          print('HENGCE_9A81_3042_VERIFIED '+json.dumps({'date':day,'branch':branch,'ticker':'3042','observed_price_rows':len(matched),'buy_shares':buy,'sell_shares':sell,'net_shares':buy-sell,'branch_day_rows':len(rows),'absence_of_rows_not_proof_of_zero':not matched},ensure_ascii=False),flush=True)
           PY
