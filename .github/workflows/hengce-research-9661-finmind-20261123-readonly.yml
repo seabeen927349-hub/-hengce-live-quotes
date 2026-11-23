@@ -1,0 +1,49 @@
+name: HENGCE research-only 9661 FinMind day comparison 20261123
+# One-time read-only broker branch analysis. Canonical EOD, mother, models and orders untouched.
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-research-9661-finmind-20261123-readonly.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - name: Query paid FinMind broker-branch 9661 with existing token, publish aggregates to run log only
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os,json,urllib.parse,urllib.request,datetime,collections
+          token=os.environ.get('FINMIND_TOKEN','').strip()
+          if not token: raise RuntimeError('FINMIND_TOKEN_UNAVAILABLE')
+          dates=['2026-11-20','2026-11-23']
+          for day in dates:
+              params=urllib.parse.urlencode({'securities_trader_id':'9661','date':day})
+              url='https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report?'+params
+              req=urllib.request.Request(url,headers={'Authorization':'Bearer '+token,'Accept':'application/json','User-Agent':'HENGCE-RESEARCH-9661-READ-ONLY/1.0'})
+              with urllib.request.urlopen(req,timeout=80) as response:
+                  result=json.loads(response.read(30000000))
+              rows=result.get('data',[])
+              if str(result.get('status'))!='200' or not isinstance(rows,list):
+                  raise RuntimeError('FINMIND_BAD_STATUS:'+str(result.get('status'))+':'+str(result.get('msg'))[:160])
+              bad=sum(1 for x in rows if str(x.get('date',''))[:10]!=day or str(x.get('securities_trader_id','')).upper()!='9661')
+              if bad:raise RuntimeError('WRONG_DATE_OR_BROKER_ROWS:'+str(bad))
+              totals=collections.defaultdict(lambda:[0,0])
+              for x in rows:
+                  stock=str(x.get('stock_id','')).strip()
+                  if not stock:continue
+                  totals[stock][0]+=int(x.get('buy') or 0)
+                  totals[stock][1]+=int(x.get('sell') or 0)
+              ranks=[{'stock':k,'buy_shares':v[0],'sell_shares':v[1],'net_shares':v[0]-v[1]} for k,v in totals.items()]
+              buys=sorted([x for x in ranks if x['net_shares']>0],key=lambda x:-x['net_shares'])
+              sells=sorted([x for x in ranks if x['net_shares']<0],key=lambda x:x['net_shares'])
+              neutral=[x for x in ranks if x['net_shares']==0]
+              receipt={'date':day,'branch':'9661','source':'FinMind TaiwanStockTradingDailyReport','api_status':result.get('status'),'price_level_rows':len(rows),'distinct_codes':len(ranks),'buy_count':len(buys),'sell_count':len(sells),'neutral_count':len(neutral),'total_buy_shares':sum(x['buy_shares'] for x in ranks),'total_sell_shares':sum(x['sell_shares'] for x in ranks),'total_net_shares':sum(x['net_shares'] for x in ranks),'buy_top40':buys[:40],'sell_top40':sells[:40],'top_neutral':neutral[:15],'canonical_mutations':False,'raw_rows_persisted':False}
+              print('HENGCE_9661_VERIFIED_DAY_RANK '+json.dumps(receipt,ensure_ascii=False),flush=True)
+          PY
