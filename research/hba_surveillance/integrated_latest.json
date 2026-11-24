@@ -9164,7 +9164,7 @@
       "status": "NOT_PROVIDED"
     },
     "finmind_shadow": {
-      "latest_source_timestamp": "2026-11-24 10:58:00.203853",
+      "latest_source_timestamp": "2026-11-24 13:19:30.553236",
       "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
       "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
@@ -9182,17 +9182,17 @@
       "primary_source": "FinMind taiwan_stock_tick_snapshot",
       "status": "OBSERVED_SAME_SESSION_SHADOW",
       "transport_full_coverage": true,
-      "unknown_metric_count": 7,
-      "valid_metric_count": 1081
+      "unknown_metric_count": 2,
+      "valid_metric_count": 1086
     },
     "overseas": {
       "anytime_individual_sources": {
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-23",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-24T10:56:55.390126+08:00",
+        "observed_at_taipei": "2026-11-24T13:18:15.108456+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "1683b188d6566d67bc53b4777be88a88b6fed9590253af05a41532f5d0750392",
+        "source_observation_sha256": "59de38cbc1781dd294c90a80c63c5f45bf17b97823bf1cbb10aac661a38e28bd",
         "sox": {
           "change_pct": 14.0268,
           "latest_close": 9588.04975980834,
@@ -9214,9 +9214,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-23",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-24T10:56:55.390126+08:00",
+        "observed_at_taipei": "2026-11-24T13:18:15.108456+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "1683b188d6566d67bc53b4777be88a88b6fed9590253af05a41532f5d0750392",
+        "source_observation_sha256": "59de38cbc1781dd294c90a80c63c5f45bf17b97823bf1cbb10aac661a38e28bd",
         "sox": {
           "change_pct": 14.0268,
           "latest_close": 9588.04975980834,
