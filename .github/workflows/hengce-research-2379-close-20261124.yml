@@ -16,63 +16,46 @@ jobs:
       FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
       FUGLE_MARKETDATA_API_KEY: ${{ secrets.FUGLE_MARKETDATA_API_KEY }}
     steps:
-      - name: Verify trial auction and cross-market closing auction
+      - name: Full-year Realtek all-branch cumulative flow ranking
         run: |
           python - <<'PY'
-          import os,json,urllib.parse,urllib.request,datetime,collections,concurrent.futures,statistics,io,subprocess,sys
-          day='2026-11-24'
+          import os,json,urllib.parse,urllib.request,collections,concurrent.futures,decimal,time
+          D=decimal.Decimal
           token=os.environ['FINMIND_TOKEN'].strip()
-          def get(url,headers):
-              with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=90) as r: return r.read()
-          fm={'Authorization':'Bearer '+token,'Accept':'application/json'}
-          key=os.environ.get('FUGLE_API_KEY') or os.environ.get('FUGLE_MARKETDATA_API_KEY')
-          try:
-              if not key: raise RuntimeError('FUGLE_KEY_NOT_IN_ENV')
-              x=json.loads(get('https://api.fugle.tw/marketdata/v1.0/stock/intraday/trades/2379?isTrial=true&limit=500&sort=desc',{'X-API-KEY':key}))
-              assert x['date']==day and x['symbol']=='2379'
-              rows=[]
-              for v in x['data']:
-                  t=datetime.datetime.fromtimestamp(v['time']/1e6,datetime.timezone(datetime.timedelta(hours=8))).strftime('%H:%M:%S.%f')
-                  if '13:25'<=t<'13:30': rows.append([t,v.get('price'),v.get('size'),v.get('bid'),v.get('ask')])
-              print('HENGCE_TRIAL '+json.dumps({'date':day,'all_rows':len(x['data']),'closing_trial':sorted(rows)}),flush=True)
-          except Exception as e: print('HENGCE_TRIAL_ERROR '+type(e).__name__+':'+str(e)[:160],flush=True)
-          def calc(t):
-              t=sorted(t,key=lambda x:x['Time'])
-              p=[x for x in t if x['Time']<'13:25']; c=[x for x in t if x['Time'].startswith(('13:30','13:33'))]
-              if not p or not c:return None
-              p0=float(p[-1]['deal_price']); p1=float(c[-1]['deal_price'])
-              if p0<=0:return None
-              v=sum(int(x['volume']) for x in c)
-              return [p0,p1,v,round((p1/p0-1)*100,5),sum(int(x['volume']) for x in t if x['Time']<'13:34')]
-          peers='2379 2454 3034 3227 3529 3592 4961 3661 3443 5274 6415 6531 3035 2401 2303 2330 3711 2308 2317 2383 2357 3044 3189 3324 3017 2059 3653 2360 2345 6669 2327 8046 6223 2449 3006 2408 2337 2344 3260 8299 6488 2376 2382 3231 2881 2882 2892 2884'.split()
-          results={}
-          scope='peer_sample'
-          try:
-              blob=get('https://api.finmindtrade.com/api/v4/storage_objects?dataset=TaiwanStockPriceTick&date='+day,{'Authorization':'Bearer '+token})
-              if not blob.startswith(b'PAR1'): raise RuntimeError('NOT_PARQUET')
-              subprocess.check_call([sys.executable,'-m','pip','-q','install','pyarrow'])
-              import pyarrow.parquet as pq
-              tab=pq.read_table(io.BytesIO(blob),columns=['stock_id','deal_price','volume','Time','date'])
-              groups=collections.defaultdict(list)
-              for v in tab.to_pylist():
-                  k=str(v['stock_id'])
-                  if len(k)==4 and k.isdigit() and int(k)>=1100 and str(v['date'])[:10]==day:
-                      v['Time']=str(v['Time']); groups[k].append(v)
-              for k,t in groups.items():
-                  x=calc(t)
-                  if x:results[k]=x
-              scope='all_four_digit_equity_codes_in_bulk'
-          except Exception as e: print('HENGCE_BULK_ERROR '+type(e).__name__+':'+str(e)[:160],flush=True)
-          if not results:
-              def one(k):
+          dates='2026-01-02 2026-01-05 2026-01-06 2026-01-07 2026-01-08 2026-01-09 2026-01-12 2026-01-13 2026-01-14 2026-01-15 2026-01-16 2026-01-19 2026-01-20 2026-01-21 2026-01-22 2026-01-23 2026-01-26 2026-01-27 2026-01-28 2026-01-29 2026-01-30 2026-02-02 2026-02-03 2026-02-04 2026-02-05 2026-02-06 2026-02-09 2026-02-10 2026-02-11 2026-02-23 2026-02-24 2026-02-25 2026-02-26 2026-03-02 2026-03-03 2026-03-04 2026-03-05 2026-03-06 2026-03-09 2026-03-10 2026-03-11 2026-03-12 2026-03-13 2026-03-16 2026-03-17 2026-03-18 2026-03-19 2026-03-20 2026-03-23 2026-03-24 2026-03-25 2026-03-26 2026-03-27 2026-03-30 2026-03-31 2026-04-01 2026-04-02 2026-04-07 2026-04-08 2026-04-09 2026-04-10 2026-04-13 2026-04-14 2026-04-15 2026-04-16 2026-04-17 2026-04-20 2026-04-21 2026-04-22 2026-04-23 2026-04-24 2026-04-27 2026-04-28 2026-04-29 2026-04-30 2026-05-04 2026-05-05 2026-05-06 2026-05-07 2026-05-08 2026-05-11 2026-05-12 2026-05-13 2026-05-14 2026-05-15 2026-05-18 2026-05-19 2026-05-20 2026-05-21 2026-05-22 2026-05-25 2026-05-26 2026-05-27 2026-05-28 2026-05-29 2026-06-01 2026-06-02 2026-06-03 2026-06-04 2026-06-05 2026-06-08 2026-06-09 2026-06-10 2026-06-11 2026-06-12 2026-06-15 2026-06-16 2026-06-17 2026-06-18 2026-06-22 2026-06-23 2026-06-24 2026-06-25 2026-06-26 2026-06-29 2026-06-30 2026-07-01 2026-07-02 2026-07-03 2026-07-06 2026-07-07 2026-07-08 2026-07-09 2026-07-13 2026-07-14 2026-07-15 2026-07-16 2026-07-17 2026-07-20 2026-07-21 2026-07-22 2026-07-23 2026-07-24 2026-07-27 2026-07-28 2026-07-29 2026-07-30 2026-07-31 2026-08-03 2026-08-04 2026-08-05 2026-08-06 2026-08-07 2026-08-10 2026-08-11 2026-08-12 2026-08-13 2026-08-14 2026-08-17 2026-08-18 2026-08-19 2026-08-20 2026-08-21 2026-08-24 2026-08-25 2026-08-26 2026-08-27 2026-08-28 2026-08-31 2026-09-01 2026-09-02 2026-09-03 2026-09-04 2026-09-07 2026-09-08 2026-09-09 2026-09-10 2026-09-11 2026-09-14 2026-09-15 2026-09-16 2026-09-17 2026-09-18 2026-09-21 2026-09-22 2026-09-23 2026-09-24 2026-09-29 2026-09-30 2026-10-01 2026-10-02 2026-10-05 2026-10-06 2026-10-07 2026-10-08 2026-10-12 2026-10-13 2026-10-14 2026-10-15 2026-10-16 2026-10-19 2026-10-20 2026-10-21 2026-10-22 2026-10-27 2026-10-28 2026-10-29 2026-10-30 2026-11-02 2026-11-03 2026-11-04 2026-11-05 2026-11-06 2026-11-09 2026-11-10 2026-11-11 2026-11-12 2026-11-13 2026-11-16 2026-11-17 2026-11-18 2026-11-19 2026-11-20 2026-11-23 2026-11-24'.split()
+          def fetch(day):
+              for retry in range(2):
                   try:
-                      x=json.loads(get('https://api.finmindtrade.com/api/v4/data?'+urllib.parse.urlencode({'dataset':'TaiwanStockPriceTick','data_id':k,'start_date':day}),fm))
-                      assert str(x['status'])=='200' and x['data'] and all(str(y['date'])[:10]==day and str(y['stock_id'])==k for y in x['data'])
-                      return k,calc(x['data'])
-                  except Exception as e: return k,None
-              with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
-                  for k,v in pool.map(one,peers):
-                      if v:results[k]=v
-          r=sorted(results.items(),key=lambda x:-x[1][3]); v=[x[1][3] for x in r]
-          print('HENGCE_MARKET_CLOSE '+json.dumps({'scope':scope,'count':len(r),'peer_expected':len(peers),'peer_missing':[k for k in peers if k not in results],'median':statistics.median(v) if v else None,'up':sum(x>0 for x in v),'down':sum(x<0 for x in v),'ge_1pct':sum(x>=1 for x in v),'ge_2pct':sum(x>=2 for x in v),'top':r[:25],'bottom':r[-10:],'peers':[[k,results[k]] for k in peers if k in results],'2379_rank':next((i+1 for i,x in enumerate(r) if x[0]=='2379'),None)}),flush=True)
+                      req=urllib.request.Request('https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report?'+urllib.parse.urlencode({'data_id':'2379','date':day}),headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
+                      with urllib.request.urlopen(req,timeout=45) as r: x=json.loads(r.read(30000000))
+                      rows=x['data']
+                      assert str(x['status'])=='200' and rows and all(str(v['date'])[:10]==day and str(v['stock_id'])=='2379' for v in rows)
+                      a=collections.defaultdict(lambda:[0,0,D(0),D(0)])
+                      for v in rows:
+                          k=(str(v['securities_trader_id']).upper(),str(v['securities_trader']))
+                          b=int(v['buy']);s=int(v['sell']);p=D(str(v['price']))
+                          z=a[k];z[0]+=b;z[1]+=s;z[2]+=b*p;z[3]+=s*p
+                      return day,len(rows),dict(a),None
+                  except Exception as e:
+                      error=type(e).__name__+':'+str(e)[:100]
+                      if retry==0: time.sleep(1)
+              return day,0,{},error
+          periods=collections.defaultdict(lambda:collections.defaultdict(lambda:[0,0,D(0),D(0)]))
+          daily=[]; errors=[]
+          def rank(a):
+              return sorted([[k[0],k[1],v[0],v[1],v[0]-v[1],str(v[2]),str(v[3])] for k,v in a.items()],key=lambda x:-x[4])
+          def report(p):
+              r=rank(periods[p]);print('HENGCE_2379_BRANCH_RANK '+json.dumps({'period':p,'days':len([d for d,n in daily if p=='YEAR' or d[:7]==p or (p=='SEP_NOW' and d>='2026-09-01')]),'branches':len(r),'top':r[:30],'bottom':r[-15:][::-1],'sum_net':sum(x[4] for x in r)},ensure_ascii=False),flush=True)
+          with concurrent.futures.ThreadPoolExecutor(max_workers=10) as pool:
+              for day,n,a,e in pool.map(fetch,dates):
+                  if e:
+                      errors.append([day,e]); print('HENGCE_2379_ERROR '+json.dumps([day,e]),flush=True);continue
+                  daily.append([day,n])
+                  for k,v in a.items():
+                      for p in ([day[:7],'YEAR','SEP_NOW'] if day>='2026-09-01' else [day[:7],'YEAR']):
+                          z=periods[p][k]
+                          for i in range(4):z[i]+=v[i]
+                  if len(daily)%25==0: print('HENGCE_2379_PROGRESS '+json.dumps([len(daily),day]),flush=True)
+          for p in ['YEAR','SEP_NOW','2026-09','2026-10','2026-11']:report(p)
+          print('HENGCE_2379_COVERAGE '+json.dumps({'expected':len(dates),'success':len(daily),'errors':errors,'rows':sum(n for d,n in daily)}),flush=True)
           PY
