@@ -129,6 +129,26 @@ class FinMindScopeDuplicateTests(unittest.TestCase):
             _scoped_snapshot_map([{"stock_id": "2330", "change_rate": 1},
                                   {"stock_id": "2330", "change_rate": 2}], {"2330"})
 
+    def test_select_newest_snapshot_in_both_orders(self):
+        from hengce_escape_finmind_twse_common_shadow import _scoped_snapshot_map
+        old = {"stock_id": "2330", "date": "2026-11-23 13:30:00", "change_rate": -2}
+        new = {"stock_id": "2330", "date": "2026-11-24 09:50:00", "change_rate": 2}
+        for rows in ([old, new], [new, old]):
+            self.assertEqual(_scoped_snapshot_map(rows, {"2330"}), {"2330": new})
+
+    def test_same_latest_timestamp_conflict_fails(self):
+        from hengce_escape_finmind_twse_common_shadow import _scoped_snapshot_map
+        one = {"stock_id": "2330", "date": "2026-11-24 09:50:00", "change_rate": 1}
+        with self.assertRaisesRegex(RuntimeError, "conflicting FinMind common-stock IDs"):
+            _scoped_snapshot_map([one, dict(one, change_rate=2)], {"2330"})
+
+    def test_future_snapshot_fails(self):
+        from hengce_escape_finmind_twse_common_shadow import _scoped_snapshot_map
+        now = datetime(2026, 11, 24, 9, 50, tzinfo=TW)
+        row = {"stock_id": "2330", "date": "2026-11-24 10:00:00"}
+        with self.assertRaisesRegex(RuntimeError, "conflicting FinMind common-stock IDs"):
+            _scoped_snapshot_map([row], {"2330"}, now)
+
     def test_missing_common_stock_not_fabricated(self):
         from hengce_escape_finmind_twse_common_shadow import _scoped_snapshot_map
         self.assertEqual(_scoped_snapshot_map([{"stock_id": "0050"}], {"2330"}), {})

@@ -33,6 +33,7 @@ from hengce_finmind_twse_common_snapshot_probe import (
     TAIPEI,
     _active_nontrading_exceptions,
     _date_text,
+    _parse_local_timestamp,
     _fetch_twse_master,
     _sid,
     _twse_common_universe,
@@ -99,39 +100,60 @@ def _summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def _scoped_snapshot_map(
-    raw_rows: list[Any], common_set: set[str]
+    raw_rows: list[Any], common_set: set[str], received_at: datetime | None = None,
 ) -> dict[str, dict[str, Any]]:
-    """Ignore non-universe rows; collapse only identical ordinary-stock duplicates.
-
-    Conflicting ordinary-stock rows remain a hard error. Coverage and freshness
-    are checked by the existing downstream gates, with no universe expansion.
-    """
-    snapshot_map: dict[str, dict[str, Any]] = {}
-    conflicts: set[str] = set()
-    identical_count = 0
-    excluded_count = 0
+    """Select newest source timestamp, retaining same-time conflict protection."""
+    by_code: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    excluded = identical = older = ambiguous = tied = future = 0
     for row in raw_rows:
         if not isinstance(row, dict):
             continue
         code = _sid(row)
         if code not in common_set:
-            excluded_count += 1
+            excluded += 1
             continue
-        if code in snapshot_map:
-            if row != snapshot_map[code]:
-                conflicts.add(code)
-            else:
-                identical_count += 1
+        if row in by_code[code]:
+            identical += 1
+        else:
+            by_code[code].append(row)
+    snapshot_map = {}
+    conflicts = set()
+    for code, rows in by_code.items():
+        stamps = [_parse_local_timestamp(_date_text(row)) for row in rows]
+        if received_at is not None and any(
+            stamp is not None and (stamp - received_at).total_seconds() > 120
+            for stamp in stamps
+        ):
+            future += 1
+            conflicts.add(code)
             continue
-        snapshot_map[code] = row
+        if len(rows) == 1:
+            snapshot_map[code] = rows[0]
+            continue
+        if any(stamp is None for stamp in stamps):
+            ambiguous += 1
+            conflicts.add(code)
+            continue
+        newest = max(stamps)
+        latest = [row for row, stamp in zip(rows, stamps) if stamp == newest]
+        if len(latest) != 1:
+            tied += 1
+            conflicts.add(code)
+            continue
+        snapshot_map[code] = latest[0]
+        older += len(rows) - 1
+    print(json.dumps({
+        "scope": SCOPE, "excluded_outside_scope_rows": excluded,
+        "identical_in_scope_duplicate_rows": identical,
+        "older_in_scope_snapshot_rows": older,
+        "ambiguous_timestamp_conflict_codes": ambiguous,
+        "same_latest_timestamp_conflict_codes": tied,
+        "future_timestamp_conflict_codes": future,
+        "unique_common_stock_rows": len(snapshot_map),
+        "conflict_count": len(conflicts),
+    }, sort_keys=True))
     if conflicts:
         raise RuntimeError(f"conflicting FinMind common-stock IDs:{sorted(conflicts)[:20]}")
-    print(json.dumps({
-        "scope": SCOPE,
-        "excluded_outside_scope_rows": excluded_count,
-        "identical_in_scope_duplicate_rows": identical_count,
-        "unique_common_stock_rows": len(snapshot_map),
-    }, sort_keys=True))
     return snapshot_map
 
 
@@ -156,7 +178,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
     active_required = common_set - active_exceptions
     industries = _industry_map(master_rows, common_set)
 
-    snapshot_map = _scoped_snapshot_map(raw_rows, common_set)
+    snapshot_map = _scoped_snapshot_map(raw_rows, common_set, finmind_received_at)
 
     snapshot_set = set(snapshot_map)
     missing = common_set - snapshot_set
