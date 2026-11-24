@@ -1,0 +1,65 @@
+name: HENGCE research-only 3042 all-branch cumulative ranking
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-research-3042-branch-ranking.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+      FUGLE_MARKETDATA_API_KEY: ${{ secrets.FUGLE_MARKETDATA_API_KEY }}
+    steps:
+      - name: Full-year TXC all-branch cumulative flow ranking
+        run: |
+          python - <<'PY'
+          import os,json,urllib.parse,urllib.request,collections,concurrent.futures,decimal,time
+          D=decimal.Decimal
+          token=os.environ['FINMIND_TOKEN'].strip()
+          dates='2026-01-02 2026-01-05 2026-01-06 2026-01-07 2026-01-08 2026-01-09 2026-01-12 2026-01-13 2026-01-14 2026-01-15 2026-01-16 2026-01-19 2026-01-20 2026-01-21 2026-01-22 2026-01-23 2026-01-26 2026-01-27 2026-01-28 2026-01-29 2026-01-30 2026-02-02 2026-02-03 2026-02-04 2026-02-05 2026-02-06 2026-02-09 2026-02-10 2026-02-11 2026-02-23 2026-02-24 2026-02-25 2026-02-26 2026-03-02 2026-03-03 2026-03-04 2026-03-05 2026-03-06 2026-03-09 2026-03-10 2026-03-11 2026-03-12 2026-03-13 2026-03-16 2026-03-17 2026-03-18 2026-03-19 2026-03-20 2026-03-23 2026-03-24 2026-03-25 2026-03-26 2026-03-27 2026-03-30 2026-03-31 2026-04-01 2026-04-02 2026-04-07 2026-04-08 2026-04-09 2026-04-10 2026-04-13 2026-04-14 2026-04-15 2026-04-16 2026-04-17 2026-04-20 2026-04-21 2026-04-22 2026-04-23 2026-04-24 2026-04-27 2026-04-28 2026-04-29 2026-04-30 2026-05-04 2026-05-05 2026-05-06 2026-05-07 2026-05-08 2026-05-11 2026-05-12 2026-05-13 2026-05-14 2026-05-15 2026-05-18 2026-05-19 2026-05-20 2026-05-21 2026-05-22 2026-05-25 2026-05-26 2026-05-27 2026-05-28 2026-05-29 2026-06-01 2026-06-02 2026-06-03 2026-06-04 2026-06-05 2026-06-08 2026-06-09 2026-06-10 2026-06-11 2026-06-12 2026-06-15 2026-06-16 2026-06-17 2026-06-18 2026-06-22 2026-06-23 2026-06-24 2026-06-25 2026-06-26 2026-06-29 2026-06-30 2026-07-01 2026-07-02 2026-07-03 2026-07-06 2026-07-07 2026-07-08 2026-07-09 2026-07-13 2026-07-14 2026-07-15 2026-07-16 2026-07-17 2026-07-20 2026-07-21 2026-07-22 2026-07-23 2026-07-24 2026-07-27 2026-07-28 2026-07-29 2026-07-30 2026-07-31 2026-08-03 2026-08-04 2026-08-05 2026-08-06 2026-08-07 2026-08-10 2026-08-11 2026-08-12 2026-08-13 2026-08-14 2026-08-17 2026-08-18 2026-08-19 2026-08-20 2026-08-21 2026-08-24 2026-08-25 2026-08-26 2026-08-27 2026-08-28 2026-08-31 2026-09-01 2026-09-02 2026-09-03 2026-09-04 2026-09-07 2026-09-08 2026-09-09 2026-09-10 2026-09-11 2026-09-14 2026-09-15 2026-09-16 2026-09-17 2026-09-18 2026-09-21 2026-09-22 2026-09-23 2026-09-24 2026-09-29 2026-09-30 2026-10-01 2026-10-02 2026-10-05 2026-10-06 2026-10-07 2026-10-08 2026-10-12 2026-10-13 2026-10-14 2026-10-15 2026-10-16 2026-10-19 2026-10-20 2026-10-21 2026-10-22 2026-10-27 2026-10-28 2026-10-29 2026-10-30 2026-11-02 2026-11-03 2026-11-04 2026-11-05 2026-11-06 2026-11-09 2026-11-10 2026-11-11 2026-11-12 2026-11-13 2026-11-16 2026-11-17 2026-11-18 2026-11-19 2026-11-20 2026-11-23 2026-11-24'.split()
+          def fetch(day):
+              for retry in range(2):
+                  try:
+                      req=urllib.request.Request('https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report?'+urllib.parse.urlencode({'data_id':'3042','date':day}),headers={'Authorization':'Bearer '+token,'Accept':'application/json'})
+                      with urllib.request.urlopen(req,timeout=45) as r: x=json.loads(r.read(30000000))
+                      rows=x['data']
+                      assert str(x['status'])=='200' and rows and all(str(v['date'])[:10]==day and str(v['stock_id'])=='3042' for v in rows)
+                      a=collections.defaultdict(lambda:[0,0,D(0),D(0)])
+                      for v in rows:
+                          k=(str(v['securities_trader_id']).upper(),str(v['securities_trader']))
+                          b=int(v['buy']);s=int(v['sell']);p=D(str(v['price']))
+                          z=a[k];z[0]+=b;z[1]+=s;z[2]+=b*p;z[3]+=s*p
+                      return day,len(rows),dict(a),None
+                  except Exception as e:
+                      error=type(e).__name__+':'+str(e)[:100]
+                      if retry==0: time.sleep(1)
+              return day,0,{},error
+          periods=collections.defaultdict(lambda:collections.defaultdict(lambda:[0,0,D(0),D(0)]))
+          daily=[]; errors=[]; focus=collections.defaultdict(list)
+          def rank(a):
+              return sorted([[k[0],k[1],v[0],v[1],v[0]-v[1],str(v[2]),str(v[3])] for k,v in a.items()],key=lambda x:-x[4])
+          def report(p):
+              r=rank(periods[p]);print('HENGCE_3042_BRANCH_RANK '+json.dumps({'period':p,'days':len([d for d,n in daily if p=='YEAR' or d[:7]==p or (p=='SEP_NOW' and d>='2026-09-01') or (p=='CRASH' and d>='2026-10-30') or (p=='NOV16_NOW' and d>='2026-11-16') or (p=='TODAY' and d=='2026-11-24')]),'branches':len(r),'top':r[:30],'bottom':r[-15:][::-1],'sum_net':sum(x[4] for x in r)},ensure_ascii=False),flush=True)
+          with concurrent.futures.ThreadPoolExecutor(max_workers=10) as pool:
+              for day,n,a,e in pool.map(fetch,dates):
+                  if e:
+                      errors.append([day,e]); print('HENGCE_3042_ERROR '+json.dumps([day,e]),flush=True);continue
+                  daily.append([day,n])
+                  for k,v in a.items():
+                      focus[k].append([day,v[0],v[1],str(v[2]),str(v[3])])
+                      for p in [day[:7],'YEAR']+(['SEP_NOW'] if day>='2026-09-01' else [])+(['CRASH'] if day>='2026-10-30' else [])+(['NOV16_NOW'] if day>='2026-11-16' else [])+(['TODAY'] if day=='2026-11-24' else []):
+                          z=periods[p][k]
+                          for i in range(4):z[i]+=v[i]
+                  if len(daily)%25==0: print('HENGCE_3042_PROGRESS '+json.dumps([len(daily),day]),flush=True)
+          for p in ['YEAR','SEP_NOW','2026-09','2026-10','2026-11','CRASH','NOV16_NOW','TODAY']:report(p)
+          keys=set(x[:2][0] for p in ['YEAR','CRASH','NOV16_NOW','TODAY'] for x in rank(periods[p])[:12])|{'9A81','9661'}
+          for k,v in focus.items():
+              if k[0] in keys: print('HENGCE_3042_FOCUS '+json.dumps([k,v],ensure_ascii=False),flush=True)
+          print('HENGCE_3042_COVERAGE '+json.dumps({'expected':len(dates),'success':len(daily),'errors':errors,'rows':sum(n for d,n in daily)}),flush=True)
+          PY
