@@ -1,0 +1,45 @@
+name: HENGCE research-only 2379 closing-price broker comparison
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hengce-research-2379-close-20261124.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+    steps:
+      - name: Read-only FinMind tick and price-level broker research
+        run: |
+          python - <<'PY'
+          import os,json,urllib.parse,urllib.request,collections,decimal
+          D=decimal.Decimal
+          token=os.environ['FINMIND_TOKEN'].strip()
+          day='2026-11-24'; stock='2379'; close=D('694')
+          def get(endpoint,params):
+              req=urllib.request.Request('https://api.finmindtrade.com/api/v4/'+endpoint+'?'+urllib.parse.urlencode(params),headers={'Authorization':'Bearer '+token,'Accept':'application/json','User-Agent':'HENGCE-READONLY-RESEARCH'})
+              with urllib.request.urlopen(req,timeout=60) as r: x=json.loads(r.read(30000000))
+              if str(x.get('status'))!='200': raise RuntimeError(str(x.get('status'))+':'+str(x.get('msg'))[:200])
+              return x['data']
+          try:
+              rows=get('data',{'dataset':'TaiwanStockPriceTick','data_id':stock,'start_date':day})
+              assert rows and all(str(x['date'])[:10]==day and str(x['stock_id'])==stock for x in rows)
+              ticks=sorted(rows,key=lambda x:x['Time'])
+              at=[x for x in ticks if str(x['Time']).startswith('13:30')]
+              earlier=[x for x in ticks if str(x['Time'])<'13:30' and D(str(x['deal_price']))==close]
+              print('HENGCE_2379_TICK '+json.dumps({'rows':len(rows),'tail':ticks[-10:],'at_close':at,'earlier_same_price_volume':sum(int(x['volume']) for x in earlier),'earlier_same_price_count':len(earlier),'at_close_volume':sum(int(x['volume']) for x in at)},ensure_ascii=False),flush=True)
+          except Exception as e: print('HENGCE_2379_TICK_ERROR '+str(e),flush=True)
+          rows=get('taiwan_stock_trading_daily_report',{'data_id':stock,'date':day})
+          assert rows and all(str(x['date'])[:10]==day and str(x['stock_id'])==stock for x in rows)
+          d=collections.defaultdict(lambda:[0,0,0,0])
+          for x in rows:
+              v=d[(str(x['securities_trader_id']),str(x['securities_trader']))]; b=int(x['buy']); s=int(x['sell']); v[2]+=b; v[3]+=s
+              if D(str(x['price']))==close: v[0]+=b;v[1]+=s
+          rank=sorted([[k[0],k[1],*v] for k,v in d.items() if v[0] or v[1]],key=lambda x:-x[2])
+          print('HENGCE_2379_CLOSE '+json.dumps({'price':str(close),'rows':len(rows),'branches':len(d),'buy_at_price':sum(x[2] for x in rank),'sell_at_price':sum(x[3] for x in rank),'buy_rank':rank[:35],'sell_rank':sorted(rank,key=lambda x:-x[3])[:15],'focus':[[k[0],k[1],*v] for k,v in d.items() if k[0] in ('9661','9A81')]},ensure_ascii=False),flush=True)
+          PY
