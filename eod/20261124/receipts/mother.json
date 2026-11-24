@@ -1,0 +1,33 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_ORIGINAL_VESSEL_MOTHER_RECEIPT",
+  "target_date": "2026-11-24",
+  "status": "PASS",
+  "second_mother": false,
+  "model_authority_created": false,
+  "trade_authority_created": false,
+  "mother_latest_date": "2026-11-24",
+  "mother_sha256": "ea93059031a6b8eebf3a1ee5747e915e5f7c8808dfa2c0bf8af7fe01252b28ac",
+  "mother_rows": 1042993,
+  "promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "promoted_leg_sha256": {
+    "price": "f9bd72254ae93ef31a1d90e5f9801fa5d93cb637ebeb7668332f84f9d0fe4824",
+    "institutional": "c2fc3b218d1496e2fbee9acafc2918a8bb4213715d6459966373fc34eee0aee3",
+    "margin": "2cf5c7c1cfdf4602974c2e37e60fa06edfcc2185f745fd4dbf06a042cf971210"
+  },
+  "canonical_mother_path": "/HENGCE_CANONICAL/HENGCE_2026_HIST_MOTHER.csv",
+  "canonical_receipt": "/HENGCE_CANONICAL/HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261124.json",
+  "canonical_integrity": "PASS",
+  "source_run_id": 45404955397,
+  "source_artifact_id": 14925985029,
+  "verified_library_readback": true,
+  "target_mother_rows": 1092,
+  "target_margin_matched_rows": 1063,
+  "missing_margin_rows": 29,
+  "missing_institutional_rows": 16,
+  "verified_at_taipei": "2026-11-24T21:36:40.724039+08:00"
+}
