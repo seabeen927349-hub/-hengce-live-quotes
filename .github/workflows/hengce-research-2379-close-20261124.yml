@@ -13,64 +13,66 @@ jobs:
     timeout-minutes: 12
     env:
       FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+      FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+      FUGLE_MARKETDATA_API_KEY: ${{ secrets.FUGLE_MARKETDATA_API_KEY }}
     steps:
-      - name: Read-only FinMind tick and price-level broker research
+      - name: Verify trial auction and cross-market closing auction
         run: |
           python - <<'PY'
-          import os,json,urllib.parse,urllib.request,collections,decimal
-          D=decimal.Decimal
+          import os,json,urllib.parse,urllib.request,datetime,collections,concurrent.futures,statistics,io,subprocess,sys
+          day='2026-11-24'
           token=os.environ['FINMIND_TOKEN'].strip()
-          day='2026-11-24'; stock='2379'; close=D('694')
-          def get(endpoint,params):
-              req=urllib.request.Request('https://api.finmindtrade.com/api/v4/'+endpoint+'?'+urllib.parse.urlencode(params),headers={'Authorization':'Bearer '+token,'Accept':'application/json','User-Agent':'HENGCE-READONLY-RESEARCH'})
-              with urllib.request.urlopen(req,timeout=60) as r: x=json.loads(r.read(30000000))
-              if str(x.get('status'))!='200': raise RuntimeError(str(x.get('status'))+':'+str(x.get('msg'))[:200])
-              return x['data']
+          def get(url,headers):
+              with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=90) as r: return r.read()
+          fm={'Authorization':'Bearer '+token,'Accept':'application/json'}
+          key=os.environ.get('FUGLE_API_KEY') or os.environ.get('FUGLE_MARKETDATA_API_KEY')
           try:
-              rows=get('data',{'dataset':'TaiwanStockPriceTick','data_id':stock,'start_date':day})
-              assert rows and all(str(x['date'])[:10]==day and str(x['stock_id'])==stock for x in rows)
-              ticks=sorted(rows,key=lambda x:x['Time'])
-              at=[x for x in ticks if str(x['Time']).startswith('13:30')]
-              earlier=[x for x in ticks if str(x['Time'])<'13:30' and D(str(x['deal_price']))==close]
-              print('HENGCE_2379_TICK '+json.dumps({'rows':len(rows),'tail':ticks[-10:],'at_close':at,'earlier_same_price_volume':sum(int(x['volume']) for x in earlier),'earlier_same_price_count':len(earlier),'at_close_volume':sum(int(x['volume']) for x in at)},ensure_ascii=False),flush=True)
-          except Exception as e: print('HENGCE_2379_TICK_ERROR '+str(e),flush=True)
-          rows=get('taiwan_stock_trading_daily_report',{'data_id':stock,'date':day})
-          assert rows and all(str(x['date'])[:10]==day and str(x['stock_id'])==stock for x in rows)
-          d=collections.defaultdict(lambda:[0,0,0,0])
-          for x in rows:
-              v=d[(str(x['securities_trader_id']),str(x['securities_trader']))]; b=int(x['buy']); s=int(x['sell']); v[2]+=b; v[3]+=s
-              if D(str(x['price']))==close: v[0]+=b;v[1]+=s
-          rank=sorted([[k[0],k[1],*v] for k,v in d.items() if v[0] or v[1]],key=lambda x:-x[2])
-          print('HENGCE_2379_CLOSE '+json.dumps({'price':str(close),'rows':len(rows),'branches':len(d),'buy_at_price':sum(x[2] for x in rank),'sell_at_price':sum(x[3] for x in rank),'buy_rank':rank[:35],'sell_rank':sorted(rank,key=lambda x:-x[3])[:15],'focus':[[k[0],k[1],*v] for k,v in d.items() if k[0] in ('9661','9A81')]},ensure_ascii=False),flush=True)
-          import concurrent.futures
-          dates='2026-09-01 2026-09-02 2026-09-03 2026-09-04 2026-09-07 2026-09-08 2026-09-09 2026-09-10 2026-09-11 2026-09-14 2026-09-15 2026-09-16 2026-09-17 2026-09-18 2026-09-21 2026-09-22 2026-09-23 2026-09-24 2026-09-29 2026-09-30 2026-10-01 2026-10-02 2026-10-05 2026-10-06 2026-10-07 2026-10-08 2026-10-12 2026-10-13 2026-10-14 2026-10-15 2026-10-16 2026-10-19 2026-10-20 2026-10-21 2026-10-22 2026-10-27 2026-10-28 2026-10-29 2026-10-30 2026-11-02 2026-11-03 2026-11-04 2026-11-05 2026-11-06 2026-11-09 2026-11-10 2026-11-11 2026-11-12 2026-11-13 2026-11-16 2026-11-17 2026-11-18 2026-11-19 2026-11-20 2026-11-23 2026-11-24'.split()
-          focus={'1470','9268','9800','1590','9200','8440','6160','1560','9600','9136','1440','8880','1650','1480','9A81','9661'}
-          def historical(day):
-              o={'date':day}
-              try:
-                  t=get('data',{'dataset':'TaiwanStockPriceTick','data_id':stock,'start_date':day,'end_date':day})
-                  assert t and all(str(x['date'])[:10]==day and str(x['stock_id'])==stock for x in t)
-                  t.sort(key=lambda x:x['Time'])
-                  prev=[x for x in t if x['Time']<'13:25']
-                  close_t=[x for x in t if x['Time'].startswith('13:30')]
-                  if prev and close_t:
-                      p=float(prev[-1]['deal_price']); c=float(close_t[-1]['deal_price']); v=sum(int(x['volume']) for x in close_t)
-                      o['tick']=[p,c,v,round((c/p-1)*100,4),sum(int(x['volume']) for x in t if x['Time']<'13:31'),sum(int(x['volume']) for x in t if x['Time']<'13:30' and float(x['deal_price'])==c)]
-                  else: o['tick_error']='NO_AUCTION_OR_PREVIOUS'
-              except Exception as e: o['tick_error']=str(e)[:150]
-              try:
-                  r=get('taiwan_stock_trading_daily_report',{'data_id':stock,'date':day})
-                  assert r and all(str(x['date'])[:10]==day and str(x['stock_id'])==stock for x in r)
-                  agg=collections.defaultdict(lambda:[0,0,0,0])
-                  for x in r:
-                      k=str(x['securities_trader_id']).upper()
-                      if k not in focus: continue
-                      b=int(x['buy']);s=int(x['sell']); a=agg[k];a[0]+=b;a[1]+=s
-                      if 'tick' in o and float(x['price'])==o['tick'][1]: a[2]+=b;a[3]+=s
-                  o['branch']=dict(agg)
-              except Exception as e: o['branch_error']=str(e)[:150]
-              return o
-          with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
-              for o in pool.map(historical,dates):
-                  print('HENGCE_2379_HIST '+json.dumps(o,ensure_ascii=False),flush=True)
+              if not key: raise RuntimeError('FUGLE_KEY_NOT_IN_ENV')
+              x=json.loads(get('https://api.fugle.tw/marketdata/v1.0/stock/intraday/trades/2379?isTrial=true&limit=500&sort=desc',{'X-API-KEY':key}))
+              assert x['date']==day and x['symbol']=='2379'
+              rows=[]
+              for v in x['data']:
+                  t=datetime.datetime.fromtimestamp(v['time']/1e6,datetime.timezone(datetime.timedelta(hours=8))).strftime('%H:%M:%S.%f')
+                  if '13:25'<=t<'13:30': rows.append([t,v.get('price'),v.get('size'),v.get('bid'),v.get('ask')])
+              print('HENGCE_TRIAL '+json.dumps({'date':day,'all_rows':len(x['data']),'closing_trial':sorted(rows)}),flush=True)
+          except Exception as e: print('HENGCE_TRIAL_ERROR '+type(e).__name__+':'+str(e)[:160],flush=True)
+          def calc(t):
+              t=sorted(t,key=lambda x:x['Time'])
+              p=[x for x in t if x['Time']<'13:25']; c=[x for x in t if x['Time'].startswith(('13:30','13:33'))]
+              if not p or not c:return None
+              p0=float(p[-1]['deal_price']); p1=float(c[-1]['deal_price'])
+              if p0<=0:return None
+              v=sum(int(x['volume']) for x in c)
+              return [p0,p1,v,round((p1/p0-1)*100,5),sum(int(x['volume']) for x in t if x['Time']<'13:34')]
+          peers='2379 2454 3034 3227 3529 3592 4961 3661 3443 5274 6415 6531 3035 2401 2303 2330 3711 2308 2317 2383 2357 3044 3189 3324 3017 2059 3653 2360 2345 6669 2327 8046 6223 2449 3006 2408 2337 2344 3260 8299 6488 2376 2382 3231 2881 2882 2892 2884'.split()
+          results={}
+          scope='peer_sample'
+          try:
+              blob=get('https://api.finmindtrade.com/api/v4/storage_objects?dataset=TaiwanStockPriceTick&date='+day,{'Authorization':'Bearer '+token})
+              if not blob.startswith(b'PAR1'): raise RuntimeError('NOT_PARQUET')
+              subprocess.check_call([sys.executable,'-m','pip','-q','install','pyarrow'])
+              import pyarrow.parquet as pq
+              tab=pq.read_table(io.BytesIO(blob),columns=['stock_id','deal_price','volume','Time','date'])
+              groups=collections.defaultdict(list)
+              for v in tab.to_pylist():
+                  k=str(v['stock_id'])
+                  if len(k)==4 and k.isdigit() and int(k)>=1100 and str(v['date'])[:10]==day:
+                      v['Time']=str(v['Time']); groups[k].append(v)
+              for k,t in groups.items():
+                  x=calc(t)
+                  if x:results[k]=x
+              scope='all_four_digit_equity_codes_in_bulk'
+          except Exception as e: print('HENGCE_BULK_ERROR '+type(e).__name__+':'+str(e)[:160],flush=True)
+          if not results:
+              def one(k):
+                  try:
+                      x=json.loads(get('https://api.finmindtrade.com/api/v4/data?'+urllib.parse.urlencode({'dataset':'TaiwanStockPriceTick','data_id':k,'start_date':day}),fm))
+                      assert str(x['status'])=='200' and x['data'] and all(str(y['date'])[:10]==day and str(y['stock_id'])==k for y in x['data'])
+                      return k,calc(x['data'])
+                  except Exception as e: return k,None
+              with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
+                  for k,v in pool.map(one,peers):
+                      if v:results[k]=v
+          r=sorted(results.items(),key=lambda x:-x[1][3]); v=[x[1][3] for x in r]
+          print('HENGCE_MARKET_CLOSE '+json.dumps({'scope':scope,'count':len(r),'peer_expected':len(peers),'peer_missing':[k for k in peers if k not in results],'median':statistics.median(v) if v else None,'up':sum(x>0 for x in v),'down':sum(x<0 for x in v),'ge_1pct':sum(x>=1 for x in v),'ge_2pct':sum(x>=2 for x in v),'top':r[:25],'bottom':r[-10:],'peers':[[k,results[k]] for k in peers if k in results],'2379_rank':next((i+1 for i,x in enumerate(r) if x[0]=='2379'),None)}),flush=True)
           PY
