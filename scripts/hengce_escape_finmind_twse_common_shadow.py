@@ -98,6 +98,43 @@ def _summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _scoped_snapshot_map(
+    raw_rows: list[Any], common_set: set[str]
+) -> dict[str, dict[str, Any]]:
+    """Ignore non-universe rows; collapse only identical ordinary-stock duplicates.
+
+    Conflicting ordinary-stock rows remain a hard error. Coverage and freshness
+    are checked by the existing downstream gates, with no universe expansion.
+    """
+    snapshot_map: dict[str, dict[str, Any]] = {}
+    conflicts: set[str] = set()
+    identical_count = 0
+    excluded_count = 0
+    for row in raw_rows:
+        if not isinstance(row, dict):
+            continue
+        code = _sid(row)
+        if code not in common_set:
+            excluded_count += 1
+            continue
+        if code in snapshot_map:
+            if row != snapshot_map[code]:
+                conflicts.add(code)
+            else:
+                identical_count += 1
+            continue
+        snapshot_map[code] = row
+    if conflicts:
+        raise RuntimeError(f"conflicting FinMind common-stock IDs:{sorted(conflicts)[:20]}")
+    print(json.dumps({
+        "scope": SCOPE,
+        "excluded_outside_scope_rows": excluded_count,
+        "identical_in_scope_duplicate_rows": identical_count,
+        "unique_common_stock_rows": len(snapshot_map),
+    }, sort_keys=True))
+    return snapshot_map
+
+
 async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     if not os.environ.get("FINMIND_TOKEN"):
         raise RuntimeError("FINMIND_TOKEN is missing")
@@ -119,19 +156,7 @@ async def collect(exception_path: Path) -> tuple[dict[str, Any], dict[str, Any]]
     active_required = common_set - active_exceptions
     industries = _industry_map(master_rows, common_set)
 
-    snapshot_map: dict[str, dict[str, Any]] = {}
-    duplicates: set[str] = set()
-    for row in raw_rows:
-        if not isinstance(row, dict):
-            continue
-        code = _sid(row)
-        if not code:
-            continue
-        if code in snapshot_map:
-            duplicates.add(code)
-        snapshot_map[code] = row
-    if duplicates:
-        raise RuntimeError(f"duplicate FinMind IDs:{sorted(duplicates)[:20]}")
+    snapshot_map = _scoped_snapshot_map(raw_rows, common_set)
 
     snapshot_set = set(snapshot_map)
     missing = common_set - snapshot_set

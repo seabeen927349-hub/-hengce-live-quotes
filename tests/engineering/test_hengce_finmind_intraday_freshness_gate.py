@@ -110,5 +110,29 @@ class FinMindMonitorFreshnessTests(unittest.TestCase):
             validate(c, s, m, NOW)
 
 
+class FinMindScopeDuplicateTests(unittest.TestCase):
+    def test_out_of_scope_duplicates_do_not_block_common_stocks(self):
+        from hengce_escape_finmind_twse_common_shadow import _scoped_snapshot_map
+        stock = {"stock_id": "2330", "date": "2026-11-24 09:25:00"}
+        etf = {"stock_id": "0050"}
+        out = _scoped_snapshot_map([etf, dict(etf), stock], {"2330"})
+        self.assertEqual(out, {"2330": stock})
+
+    def test_identical_common_stock_duplicates_count_once(self):
+        from hengce_escape_finmind_twse_common_shadow import _scoped_snapshot_map
+        row = {"stock_id": "2330", "change_rate": 1}
+        self.assertEqual(_scoped_snapshot_map([row, dict(row)], {"2330"}), {"2330": row})
+
+    def test_conflicting_common_stock_duplicates_fail_closed(self):
+        from hengce_escape_finmind_twse_common_shadow import _scoped_snapshot_map
+        with self.assertRaisesRegex(RuntimeError, "conflicting FinMind common-stock IDs"):
+            _scoped_snapshot_map([{"stock_id": "2330", "change_rate": 1},
+                                  {"stock_id": "2330", "change_rate": 2}], {"2330"})
+
+    def test_missing_common_stock_not_fabricated(self):
+        from hengce_escape_finmind_twse_common_shadow import _scoped_snapshot_map
+        self.assertEqual(_scoped_snapshot_map([{"stock_id": "0050"}], {"2330"}), {})
+
+
 if __name__ == "__main__":
     unittest.main()
