@@ -5,10 +5,10 @@
   "expected_us_session": "2026-11-23",
   "expected_us_session_basis": "US_EASTERN_1600_WEEKDAY_CLOCK_ONLY",
   "observation_window": "ANYTIME_SOURCE_ONLY",
-  "observed_at_taipei": "2026-11-24T18:22:51.830478+08:00",
+  "observed_at_taipei": "2026-11-24T22:59:21.734350+08:00",
   "reference_prev_tw_date": null,
   "schema": "HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1",
-  "source_observation_sha256": "702a1cf658ea668a1630f637bc21a08150ba99d47a84dd7b3adae4d5a5f2a8e3",
+  "source_observation_sha256": "b8add80534f9f1461a0f5ffa352be9abdf1d714775f2b65d7972a779fbeb70a7",
   "sources": {
     "sox": {
       "latest_close": 9588.04975980834,
@@ -17,7 +17,7 @@
       "prior_us_session": "2026-11-20",
       "publisher": "Nasdaq",
       "raw_bytes": 8413,
-      "raw_sha256": "c48be7c999ce347d21ac0d651aef9d063c4dcb6f411599f229cbe0e77fa83c4e",
+      "raw_sha256": "7c154bee2e6b8b2220f7f9f3126707b1483d264d5e5208f41a704c3bce0fc141",
       "source_status": "EXPECTED_US_EOD_PRESENT",
       "symbol": "SOX",
       "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-30T00:00:00.000&endDate=2026-11-25T00:00:00.000&timeOfDay=EOD"
