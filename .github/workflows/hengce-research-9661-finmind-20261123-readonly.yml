@@ -19,47 +19,49 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
-          import os,json,urllib.parse,urllib.request,datetime,collections
+          import os,json,urllib.parse,urllib.request,datetime,collections,concurrent.futures,decimal
+          D=decimal.Decimal
           token=os.environ.get('FINMIND_TOKEN','').strip()
           if not token: raise RuntimeError('FINMIND_TOKEN_UNAVAILABLE')
-          dates=['2026-11-20','2026-11-23']
-          for day in dates:
-              params=urllib.parse.urlencode({'securities_trader_id':'9661','date':day})
-              url='https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report?'+params
-              req=urllib.request.Request(url,headers={'Authorization':'Bearer '+token,'Accept':'application/json','User-Agent':'HENGCE-RESEARCH-9661-READ-ONLY/1.0'})
-              with urllib.request.urlopen(req,timeout=80) as response:
-                  result=json.loads(response.read(30000000))
-              rows=result.get('data',[])
-              if str(result.get('status'))!='200' or not isinstance(rows,list):
-                  raise RuntimeError('FINMIND_BAD_STATUS:'+str(result.get('status'))+':'+str(result.get('msg'))[:160])
-              bad=sum(1 for x in rows if str(x.get('date',''))[:10]!=day or str(x.get('securities_trader_id','')).upper()!='9661')
-              if bad:raise RuntimeError('WRONG_DATE_OR_BROKER_ROWS:'+str(bad))
-              totals=collections.defaultdict(lambda:[0,0])
-              for x in rows:
-                  stock=str(x.get('stock_id','')).strip()
-                  if not stock:continue
-                  totals[stock][0]+=int(x.get('buy') or 0)
-                  totals[stock][1]+=int(x.get('sell') or 0)
-              ranks=[{'stock':k,'buy_shares':v[0],'sell_shares':v[1],'net_shares':v[0]-v[1]} for k,v in totals.items()]
-              buys=sorted([x for x in ranks if x['net_shares']>0],key=lambda x:-x['net_shares'])
-              sells=sorted([x for x in ranks if x['net_shares']<0],key=lambda x:x['net_shares'])
-              neutral=[x for x in ranks if x['net_shares']==0]
-              receipt={'date':day,'branch':'9661','source':'FinMind TaiwanStockTradingDailyReport','api_status':result.get('status'),'price_level_rows':len(rows),'distinct_codes':len(ranks),'buy_count':len(buys),'sell_count':len(sells),'neutral_count':len(neutral),'total_buy_shares':sum(x['buy_shares'] for x in ranks),'total_sell_shares':sum(x['sell_shares'] for x in ranks),'total_net_shares':sum(x['net_shares'] for x in ranks),'buy_top40':buys[:40],'sell_top40':sells[:40],'top_neutral':neutral[:15],'canonical_mutations':False,'raw_rows_persisted':False}
-              print('HENGCE_9661_VERIFIED_DAY_RANK '+json.dumps(receipt,ensure_ascii=False),flush=True)
-              crystal=totals.get('3042',[0,0])
-              observed=sum(1 for x in rows if str(x.get('stock_id','')).strip()=='3042')
-              print('HENGCE_9661_3042_VERIFIED '+json.dumps({'date':day,'branch':'9661','ticker':'3042','observed_price_rows':observed,'buy_shares':crystal[0],'sell_shares':crystal[1],'net_shares':crystal[0]-crystal[1],'branch_day_rows':len(rows),'absence_of_rows_not_proof_of_zero':observed==0},ensure_ascii=False),flush=True)
-          day='2026-11-23'
-          branch='9A81'
-          url='https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report?'+urllib.parse.urlencode({'securities_trader_id':branch,'date':day})
-          req=urllib.request.Request(url,headers={'Authorization':'Bearer '+token,'Accept':'application/json','User-Agent':'HENGCE-RESEARCH-3042-READ-ONLY/1.0'})
-          with urllib.request.urlopen(req,timeout=80) as response:
-              body=json.loads(response.read(30000000))
-          rows=body.get('data',[])
-          if str(body.get('status'))!='200' or not isinstance(rows,list) or any(str(x.get('date',''))[:10]!=day or str(x.get('securities_trader_id','')).upper()!=branch for x in rows):
-              raise RuntimeError('9A81_STATUS_DATE_BRANCH_VALIDATION_FAILED')
-          matched=[x for x in rows if str(x.get('stock_id','')).strip()=='3042']
-          buy=sum(int(x.get('buy') or 0) for x in matched)
-          sell=sum(int(x.get('sell') or 0) for x in matched)
-          print('HENGCE_9A81_3042_VERIFIED '+json.dumps({'date':day,'branch':branch,'ticker':'3042','observed_price_rows':len(matched),'buy_shares':buy,'sell_shares':sell,'net_shares':buy-sell,'branch_day_rows':len(rows),'absence_of_rows_not_proof_of_zero':not matched},ensure_ascii=False),flush=True)
+          dates='2026-09-01 2026-09-02 2026-09-03 2026-09-04 2026-09-07 2026-09-08 2026-09-09 2026-09-10 2026-09-11 2026-09-14 2026-09-15 2026-09-16 2026-09-17 2026-09-18 2026-09-21 2026-09-22 2026-09-23 2026-09-24 2026-09-29 2026-09-30 2026-10-01 2026-10-02 2026-10-05 2026-10-06 2026-10-07 2026-10-08 2026-10-12 2026-10-13 2026-10-14 2026-10-15 2026-10-16 2026-10-19 2026-10-20 2026-10-21 2026-10-22 2026-10-27 2026-10-28 2026-10-29 2026-10-30 2026-11-02 2026-11-03 2026-11-04 2026-11-05 2026-11-06 2026-11-09 2026-11-10 2026-11-11 2026-11-12 2026-11-13 2026-11-16 2026-11-17 2026-11-18 2026-11-19 2026-11-20 2026-11-23 2026-11-24'.split()
+          def fetch(day):
+              try:
+                  params=urllib.parse.urlencode({'securities_trader_id':'9661','date':day})
+                  req=urllib.request.Request('https://api.finmindtrade.com/api/v4/taiwan_stock_trading_daily_report?'+params,headers={'Authorization':'Bearer '+token,'Accept':'application/json','User-Agent':'HENGCE-RESEARCH-9661-READ-ONLY/1.0'})
+                  with urllib.request.urlopen(req,timeout=80) as response:
+                      result=json.loads(response.read(30000000))
+                  rows=result.get('data',[])
+                  if str(result.get('status'))!='200' or not rows or any(str(x.get('date',''))[:10]!=day or str(x.get('securities_trader_id','')).upper()!='9661' for x in rows): raise RuntimeError('STATUS_DATE_BRANCH_OR_EMPTY')
+                  totals=collections.defaultdict(lambda:[0,0,D(0),D(0)])
+                  for x in rows:
+                      k=str(x['stock_id']); p=D(str(x['price'])); b=int(x.get('buy') or 0); s=int(x.get('sell') or 0)
+                      v=totals[k]; v[0]+=b; v[1]+=s; v[2]+=p*b; v[3]+=p*s
+                  return day,len(rows),dict(totals),None
+              except Exception as exc: return day,0,{},type(exc).__name__+':'+str(exc)[:150]
+          def rank(totals):
+              return sorted([[k,v[0],v[1],str(v[2]),str(v[3]),str(v[2]-v[3])] for k,v in totals.items()],key=lambda x:D(x[5]),reverse=True)
+          periods=collections.defaultdict(lambda:collections.defaultdict(lambda:[0,0,D(0),D(0)]))
+          history=collections.defaultdict(list)
+          daily=[]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+              for day,n,t,e in pool.map(fetch,dates):
+                  if e:
+                      daily.append([day,0,e]); print('HENGCE_9661_DAY_ERROR '+json.dumps([day,e]),flush=True); continue
+                  b=sum(v[2] for v in t.values()); s=sum(v[3] for v in t.values())
+                  daily.append([day,n,len(t),str(b),str(s),str(b-s)])
+                  print('HENGCE_9661_DAY '+json.dumps(daily[-1]),flush=True)
+                  for k,v in t.items():
+                      history[k].append([day,v[0],v[1],str(v[2]),str(v[3])])
+                      for p in (day[:7],'ALL',('NOV_EARLY' if day<'2026-11-12' else 'NOV_REBOUND' if day<'2026-11-16' else 'NOV_CRASH' if day<'2026-11-23' else 'NOV_LATEST')) if day.startswith('2026-11') else (day[:7],'ALL'):
+                          z=periods[p][k]
+                          for i in range(4): z[i]+=v[i]
+                  if day=='2026-11-24': print('HENGCE_9661_TODAY '+json.dumps(rank(t)),flush=True)
+          selected={'3042','2379'}
+          for p,t in periods.items():
+              r=rank(t); top=r[:20]; bottom=r[-20:][::-1]
+              selected.update(x[0] for x in top[:8]+bottom[:8])
+              print('HENGCE_9661_PERIOD '+json.dumps({'period':p,'stocks':len(t),'buy':str(sum(v[2] for v in t.values())),'sell':str(sum(v[3] for v in t.values())),'top':top,'bottom':bottom,'focus':[x for x in r if x[0] in ('3042','2379')]}),flush=True)
+          for k in sorted(selected):
+              print('HENGCE_9661_HISTORY '+json.dumps({'stock':k,'days':history[k]}),flush=True)
+          print('HENGCE_9661_COVERAGE '+json.dumps({'expected':len(dates),'successful':sum(len(x)==6 for x in daily),'daily':daily}),flush=True)
           PY
