@@ -10,7 +10,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 12
     env:
       FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
     steps:
@@ -42,4 +42,35 @@ jobs:
               if D(str(x['price']))==close: v[0]+=b;v[1]+=s
           rank=sorted([[k[0],k[1],*v] for k,v in d.items() if v[0] or v[1]],key=lambda x:-x[2])
           print('HENGCE_2379_CLOSE '+json.dumps({'price':str(close),'rows':len(rows),'branches':len(d),'buy_at_price':sum(x[2] for x in rank),'sell_at_price':sum(x[3] for x in rank),'buy_rank':rank[:35],'sell_rank':sorted(rank,key=lambda x:-x[3])[:15],'focus':[[k[0],k[1],*v] for k,v in d.items() if k[0] in ('9661','9A81')]},ensure_ascii=False),flush=True)
+          import concurrent.futures
+          dates='2026-09-01 2026-09-02 2026-09-03 2026-09-04 2026-09-07 2026-09-08 2026-09-09 2026-09-10 2026-09-11 2026-09-14 2026-09-15 2026-09-16 2026-09-17 2026-09-18 2026-09-21 2026-09-22 2026-09-23 2026-09-24 2026-09-29 2026-09-30 2026-10-01 2026-10-02 2026-10-05 2026-10-06 2026-10-07 2026-10-08 2026-10-12 2026-10-13 2026-10-14 2026-10-15 2026-10-16 2026-10-19 2026-10-20 2026-10-21 2026-10-22 2026-10-27 2026-10-28 2026-10-29 2026-10-30 2026-11-02 2026-11-03 2026-11-04 2026-11-05 2026-11-06 2026-11-09 2026-11-10 2026-11-11 2026-11-12 2026-11-13 2026-11-16 2026-11-17 2026-11-18 2026-11-19 2026-11-20 2026-11-23 2026-11-24'.split()
+          focus={'1470','9268','9800','1590','9200','8440','6160','1560','9600','9136','1440','8880','1650','1480','9A81','9661'}
+          def historical(day):
+              o={'date':day}
+              try:
+                  t=get('data',{'dataset':'TaiwanStockPriceTick','data_id':stock,'start_date':day,'end_date':day})
+                  assert t and all(str(x['date'])[:10]==day and str(x['stock_id'])==stock for x in t)
+                  t.sort(key=lambda x:x['Time'])
+                  prev=[x for x in t if x['Time']<'13:25']
+                  close_t=[x for x in t if x['Time'].startswith('13:30')]
+                  if prev and close_t:
+                      p=float(prev[-1]['deal_price']); c=float(close_t[-1]['deal_price']); v=sum(int(x['volume']) for x in close_t)
+                      o['tick']=[p,c,v,round((c/p-1)*100,4),sum(int(x['volume']) for x in t if x['Time']<'13:31'),sum(int(x['volume']) for x in t if x['Time']<'13:30' and float(x['deal_price'])==c)]
+                  else: o['tick_error']='NO_AUCTION_OR_PREVIOUS'
+              except Exception as e: o['tick_error']=str(e)[:150]
+              try:
+                  r=get('taiwan_stock_trading_daily_report',{'data_id':stock,'date':day})
+                  assert r and all(str(x['date'])[:10]==day and str(x['stock_id'])==stock for x in r)
+                  agg=collections.defaultdict(lambda:[0,0,0,0])
+                  for x in r:
+                      k=str(x['securities_trader_id']).upper()
+                      if k not in focus: continue
+                      b=int(x['buy']);s=int(x['sell']); a=agg[k];a[0]+=b;a[1]+=s
+                      if 'tick' in o and float(x['price'])==o['tick'][1]: a[2]+=b;a[3]+=s
+                  o['branch']=dict(agg)
+              except Exception as e: o['branch_error']=str(e)[:150]
+              return o
+          with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
+              for o in pool.map(historical,dates):
+                  print('HENGCE_2379_HIST '+json.dumps(o,ensure_ascii=False),flush=True)
           PY
