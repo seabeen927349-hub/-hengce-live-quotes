@@ -66,7 +66,7 @@
     "trigger": "衡策掃一次",
     "private_repository": "seabeen927349-hub/twse--backfill-test",
     "canonical_contract": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "canonical_contract_git_blob_sha": "03920b1c0fe59f673931176c0a73d10d6d89f06e",
+    "canonical_contract_git_blob_sha": "396beea2bb3494394b26eea5915725e80430d8b9",
     "readout_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
     "readout_markdown": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
     "cross_chat_read_required": true,
@@ -169,7 +169,9 @@
       "1802"
     ],
     "historical_model_exit_watchlist_policy": "REPORT_PRIOR_VERIFIED_EXIT_SCORE_WITH_PRIOR_DATE_BUT_NEVER_AS_TODAY_MODEL_SCORE",
-    "historical_model_exit_watchlist_never_reinsert_into_v22d_ab": true
+    "historical_model_exit_watchlist_never_reinsert_into_v22d_ab": true,
+    "render_all_seven_even_if_data_missing": true,
+    "no_progress_only_or_shortened_report": true
   },
   "entry_exit_b_paper": {
     "status": "ENABLED_SEPARATE_PAPER_READOUT_PENDING_PROSPECTIVE_BATCH",
@@ -198,7 +200,7 @@
     "policy_id": "HENGCE_SCAN_ONCE_V22D_B_COMBINED_DISPLAY_20261120_V1",
     "private_source_repository": "seabeen927349-hub/twse--backfill-test",
     "private_contract_path": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "private_contract_blob_sha": "357585f2ccd37c97adeded6c363a1914c6d67f54",
+    "private_contract_blob_sha": "396beea2bb3494394b26eea5915725e80430d8b9",
     "private_fixed_readout_markdown": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
     "private_fixed_readout_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
     "paper_b_source": "hengce/entry_exit_b/forward_latest.json",
@@ -268,5 +270,28 @@
     },
     "fixed_price_report_required": true,
     "published_view": "RESEARCH_PRICE_ESTIMATE_SEPARATE_FROM_RFC3161_PAPER_EXECUTION"
+  },
+  "scan_once_source_reconciliation_20261124": {
+    "id": "HENGCE_SCAN_ONCE_SOURCE_RECONCILIATION_20261124_V1",
+    "effective_date": "2026-11-24",
+    "private_repository": "seabeen927349-hub/twse--backfill-test",
+    "private_contract": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
+    "private_contract_blob_sha": "396beea2bb3494394b26eea5915725e80430d8b9",
+    "private_commit": "23e055c2a494a6b57beccad191f1e97b8184f477",
+    "mandatory_visible_sections": [
+      "PROTOCOL_AND_DATA_DATE",
+      "SINGLE_ORIGINAL_V22D_MODEL",
+      "A_B_POSTSCORE_STATUS",
+      "A_STRONG_DECLINE_LABEL",
+      "ENVIRONMENT_AND_DATA_VESSELS",
+      "MISSING_OR_BLOCKED",
+      "SOURCE_AND_EXECUTION_AUTHORITY"
+    ],
+    "render_all_seven_even_if_data_missing": true,
+    "cross_chat_read_required": true,
+    "source_reconciliation": "CHECK_LATEST_CANONICAL_MOTHER_AND_SAME_DATE_EOD_RECEIPTS_PLUS_PRIVATE_ARTIFACT_NOT_STALE_STATUS_ALONE",
+    "no_redownload_verified_legs": true,
+    "finmind": "EXISTING_COLLECTOR_LATEST_SOURCE_TIMESTAMP_DEDUP_NO_PARALLEL_VESSEL_REQUIRE_VERIFIED_PUBLISHED_CURRENT_SESSION_RECEIPT",
+    "no_model_weight_mother_or_trading_authority_change": true
   }
 }
