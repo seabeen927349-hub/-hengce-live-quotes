@@ -1,12 +1,12 @@
 {
   "schema": "HENGCE_9A81_FINMIND_ENTITLEMENT_PROBE_V1",
-  "observed_at_utc": "2026-11-23T11:44:51.132791+00:00",
+  "observed_at_utc": "2026-11-24T12:11:54.242746+00:00",
   "repository": "seabeen927349-hub/-hengce-live-quotes",
   "finmind_token_available_in_original_repo": true,
   "probe_dates": [
     "2026-01-02",
     "2026-11-20",
-    "2026-11-23"
+    "2026-11-24"
   ],
   "checks": [
     {
@@ -24,9 +24,9 @@
       "result": "DATA"
     },
     {
-      "date": "2026-11-23",
+      "date": "2026-11-24",
       "response_status": "200",
-      "returned_rows": 1785,
+      "returned_rows": 383,
       "branch_and_date_identity_valid": true,
       "result": "DATA"
     }
