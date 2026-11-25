@@ -1,6 +1,6 @@
 {
   "schema": "HENGCE_SCAN_REQUEST_V1",
-  "request_id": "transport-selftest-20261125015714514",
-  "requested_at_taipei": "2026-11-25T09:57:14.514+08:00",
+  "request_id": "scan-once-20261125T095846-taipei",
+  "requested_at_taipei": "2026-11-25T09:58:46+08:00",
   "mode": "RESEARCH_ONLY_NO_ORDERS"
 }
