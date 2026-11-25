@@ -8938,12 +8938,75 @@
       "valid_metric_count": null
     },
     "overseas": {
-      "anytime_individual_sources": null,
+      "anytime_individual_sources": {
+        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
+        "expected_us_session": "2026-11-25",
+        "observation_window": "ANYTIME_SOURCE_ONLY",
+        "observed_at_taipei": "2026-11-26T05:48:58.907023+08:00",
+        "preopen_forecast_authority": false,
+        "source_observation_sha256": "21f11acaf33b726d34843ae6b7fd08c8110c1b110501255bb61120ee5847fb1f",
+        "sox": {
+          "change_pct": -7.8801,
+          "latest_close": 8832.50082266461,
+          "latest_us_session": "2026-11-24",
+          "publisher": "Nasdaq",
+          "source_status": "官方資料待更新"
+        },
+        "vix": {
+          "change_pct": -0.9767,
+          "latest_close": 26.36,
+          "latest_us_session": "2026-11-24",
+          "publisher": "Cboe",
+          "source_status": "官方資料待更新"
+        }
+      },
       "label": "資料不足",
-      "observation_role": "NOT_AVAILABLE",
-      "official_source_observation": null,
+      "observation_role": "SOURCE_ONLY_NOT_GOVERNED_COMPOSITE_FORECAST",
+      "official_source_observation": {
+        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
+        "expected_us_session": "2026-11-25",
+        "observation_window": "ANYTIME_SOURCE_ONLY",
+        "observed_at_taipei": "2026-11-26T05:48:58.907023+08:00",
+        "preopen_forecast_authority": false,
+        "source_observation_sha256": "21f11acaf33b726d34843ae6b7fd08c8110c1b110501255bb61120ee5847fb1f",
+        "sox": {
+          "change_pct": -7.8801,
+          "latest_close": 8832.50082266461,
+          "latest_us_session": "2026-11-24",
+          "publisher": "Nasdaq",
+          "source_status": "官方資料待更新"
+        },
+        "vix": {
+          "change_pct": -0.9767,
+          "latest_close": 26.36,
+          "latest_us_session": "2026-11-24",
+          "publisher": "Cboe",
+          "source_status": "官方資料待更新"
+        }
+      },
       "postopen_individual_sources": null,
-      "preopen_individual_sources": null,
+      "preopen_individual_sources": {
+        "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
+        "expected_us_session": "2026-11-25",
+        "observation_window": "PREOPEN_SOURCE_ONLY",
+        "observed_at_taipei": "2026-11-26T05:48:55.503382+08:00",
+        "preopen_forecast_authority": false,
+        "source_observation_sha256": "657f32e78f4dc4c95d365fb0983a8028a14375ad26282ff9ddb02b595592edbd",
+        "sox": {
+          "change_pct": -7.8801,
+          "latest_close": 8832.50082266461,
+          "latest_us_session": "2026-11-24",
+          "publisher": "Nasdaq",
+          "source_status": "官方資料待更新"
+        },
+        "vix": {
+          "change_pct": -0.9767,
+          "latest_close": 26.36,
+          "latest_us_session": "2026-11-24",
+          "publisher": "Cboe",
+          "source_status": "官方資料待更新"
+        }
+      },
       "status": "資料不足"
     },
     "s5": {
