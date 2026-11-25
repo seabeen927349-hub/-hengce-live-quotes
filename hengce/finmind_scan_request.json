@@ -1,7 +1,6 @@
 {
   "schema": "HENGCE_SCAN_REQUEST_V1",
-  "request_id": "bootstrap-20261125-cross-chat-transport",
-  "requested_at_taipei": null,
-  "mode": "RESEARCH_ONLY_NO_ORDERS",
-  "note": "Initial trigger path deployment; not evidence of a user-command scan."
+  "request_id": "transport-selftest-20261125015714514",
+  "requested_at_taipei": "2026-11-25T09:57:14.514+08:00",
+  "mode": "RESEARCH_ONLY_NO_ORDERS"
 }
