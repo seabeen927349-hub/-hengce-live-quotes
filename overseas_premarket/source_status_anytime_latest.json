@@ -2,13 +2,13 @@
   "capital_authority": false,
   "composite_forecast_emitted": false,
   "composite_readiness": "ANYTIME_SOURCE_ONLY_NO_PREOPEN_FORECAST",
-  "expected_us_session": "2026-11-24",
+  "expected_us_session": "2026-11-25",
   "expected_us_session_basis": "US_EASTERN_1600_WEEKDAY_CLOCK_ONLY",
   "observation_window": "ANYTIME_SOURCE_ONLY",
-  "observed_at_taipei": "2026-11-25T19:27:02.065875+08:00",
+  "observed_at_taipei": "2026-11-26T05:48:58.907023+08:00",
   "reference_prev_tw_date": null,
   "schema": "HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1",
-  "source_observation_sha256": "f2352740974fecd4f855c98420a0e4d2211bdab30307ed4ca41b05c80ae6ec05",
+  "source_observation_sha256": "21f11acaf33b726d34843ae6b7fd08c8110c1b110501255bb61120ee5847fb1f",
   "sources": {
     "sox": {
       "latest_close": 8832.50082266461,
@@ -17,10 +17,10 @@
       "prior_us_session": "2026-11-23",
       "publisher": "Nasdaq",
       "raw_bytes": 8413,
-      "raw_sha256": "a0530e0b5a2fecfad1bb4c269ca1144cb8835b76af1a9b6a39913aea55d8cfca",
-      "source_status": "EXPECTED_US_EOD_PRESENT",
+      "raw_sha256": "bb42248bc6a0c09369e44d52d5f02cfcfe0ca8992e3ce581854d5883598eb699",
+      "source_status": "EXPECTED_US_EOD_NOT_YET_PUBLISHED",
       "symbol": "SOX",
-      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-10-31T00:00:00.000&endDate=2026-11-26T00:00:00.000&timeOfDay=EOD"
+      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-11-01T00:00:00.000&endDate=2026-11-27T00:00:00.000&timeOfDay=EOD"
     },
     "vix": {
       "latest_close": 26.36,
@@ -30,12 +30,12 @@
       "publisher": "Cboe",
       "raw_bytes": 475216,
       "raw_sha256": "69026ca2750ca733e8782ce77aa073f20bfaabf511191a5783faa5de959120c6",
-      "source_status": "EXPECTED_US_EOD_PRESENT",
+      "source_status": "EXPECTED_US_EOD_NOT_YET_PUBLISHED",
       "symbol": "VIX",
       "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
     }
   },
   "status": "OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY",
-  "target_tw_date": "2026-11-25",
+  "target_tw_date": "2026-11-26",
   "trading_authority": false
 }
