@@ -13,6 +13,7 @@ name: HENGCE original EOD ingest
 # Manual original-vessel three-leg EOD ingest and canonical mother refresh requested 2026-11-23; workflow behavior unchanged.
 # Manual original-vessel three-leg EOD ingest and canonical mother refresh requested 2026-11-24; workflow behavior unchanged.
 # 2026-11-24 margin official publication confirmed; retry same original vessel without logic changes.
+# 2026-11-25 original EOD ingest and canonical mother refresh requested; existing workflow logic unchanged.
 # Existing HENGCE blood vessel. Research auxiliaries attach inside this same
 # eod/YYYYMMDD path; no parallel collector, mother, universe, or model authority.
 
