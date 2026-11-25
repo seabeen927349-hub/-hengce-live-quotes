@@ -1,4 +1,5 @@
 name: HENGCE original EOD ingest
+# 2026-11-25 evening margin publication retry; existing workflow logic unchanged.
 # Manual existing-vessel EOD refresh requested 2026-11-05; no workflow logic change.
 # Manual original-vessel EOD three-leg ingest requested 2026-11-10 (same pre-existing workflow; no collector or algorithm change).
 # Manual original-vessel EOD retry for 2026-11-06 after stale-run rebase conflict; no workflow logic change.
