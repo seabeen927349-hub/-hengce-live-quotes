@@ -248,3 +248,5 @@ jobs:
           path: ${{ runner.temp }}/hengce-finmind-publication
           if-no-files-found: ignore
           retention-days: 7
+
+# User requested one-time full-market observation 2026-11-25 Taipei; runtime unchanged.
