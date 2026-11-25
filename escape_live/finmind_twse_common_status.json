@@ -2,7 +2,7 @@
   "active_covered_count": 1088,
   "active_required_count": 1088,
   "active_universe_transport_full_coverage": true,
-  "context_payload_sha256": "050e2af314e3f4c9f1a2d718a4cb50f45613e128d28dc20192a06ad6e2ca8d52",
+  "context_payload_sha256": "35390669082e229aa8ca923e8773a3ddf117673e80e8a3893aa91f937e7cb90a",
   "current_market_date_count": 1086,
   "current_market_date_observed": true,
   "current_market_date_ratio": 0.99816176,
@@ -18,25 +18,25 @@
   "formal_eod_authority": false,
   "formal_escape_authority": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-25T12:10:27.317292+08:00",
+  "generated_at_taipei": "2026-11-25T12:55:31.691347+08:00",
   "healthy_transport": true,
   "inmemory_cross_source_audit": {
     "active_scope_count": 1088,
-    "comparison_completed_at_taipei": "2026-11-25T12:10:31.565079+08:00",
+    "comparison_completed_at_taipei": "2026-11-25T12:55:36.876567+08:00",
     "cross_source_candidate_count": 0,
     "finmind_current_day_count": 1086,
-    "finmind_response_received_at_taipei": "2026-11-25T12:10:28.509519+08:00",
+    "finmind_response_received_at_taipei": "2026-11-25T12:55:32.711249+08:00",
     "formal_eod_authority": false,
     "fully_independently_verified_count": 0,
-    "mis_existing_scope_count": 0,
+    "mis_existing_scope_count": 2,
     "model_authority": false,
     "new_vendor_requests": 0,
     "per_security_rows_persisted": false,
     "raw_vendor_rows_persisted": false,
     "reason_counts": {
       "FINMIND_NOT_TODAY": 2,
-      "FINMIND_STALE_TRADE_TIME": 670,
-      "SECOND_SOURCE_NOT_COLLECTED": 416
+      "FINMIND_STALE_TRADE_TIME": 648,
+      "SECOND_SOURCE_NOT_COLLECTED": 438
     },
     "role": "RESEARCH_INTRADAY_DIAGNOSTIC_ONLY",
     "schema": "HENGCE_FINMIND_IN_MEMORY_SAME_TICK_AUDIT_V1",
@@ -46,7 +46,7 @@
     "trading_authority": false
   },
   "intraday_metric_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
-  "latest_source_timestamp": "2026-11-25 12:10:20.623858",
+  "latest_source_timestamp": "2026-11-25 12:55:30.334328",
   "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
   "metric_unknown_count": 2,
   "metric_unknown_sample": [
@@ -62,9 +62,9 @@
   "raw_twse_mis_rows_persisted": false,
   "rolling_metric_authority": false,
   "schema": "HENGCE_ESCAPE_FINMIND_TWSE_COMMON_SHADOW_STATUS_V3",
-  "session_context_count": 1086,
+  "session_context_count": 1088,
   "session_context_may_substitute_metric_observation": false,
-  "session_context_ratio": 0.99816176,
+  "session_context_ratio": 1.0,
   "source": "FinMind",
   "source_binding_promotion_authority": false,
   "stale_or_noncurrent_count": 2,
@@ -77,15 +77,28 @@
   "trading_authority": false,
   "twse_common_master_count": 1088,
   "twse_master_report_date": "1151124",
-  "twse_mis_meta": {},
+  "twse_mis_meta": {
+    "current_date_target_count": 2,
+    "query_time": {
+      "sessionFromTime": "-1",
+      "sessionLatestTime": "-1",
+      "sessionStr": "UserSession",
+      "showChart": "False",
+      "stockInfo": "13298",
+      "stockInfoItem": "8823",
+      "sysDate": "20261125",
+      "sysTime": "12:55:35"
+    },
+    "target_match_count": 2
+  },
   "twse_mis_metric_values_used": false,
-  "twse_mis_secondary_session_status": "ERROR:URLError:<urlopen error [Errno 104] Connection reset by peer>",
-  "twse_mis_session_unresolved_count": 2,
-  "twse_mis_session_unresolved_sample": [
+  "twse_mis_secondary_session_status": "PASS_CURRENT_SESSION_CONTEXT",
+  "twse_mis_session_unresolved_count": 0,
+  "twse_mis_session_unresolved_sample": [],
+  "twse_mis_session_verified_count": 2,
+  "twse_mis_session_verified_sample": [
     "1538",
     "2321"
   ],
-  "twse_mis_session_verified_count": 0,
-  "twse_mis_session_verified_sample": [],
   "unexpected_missing_count": 0
 }
