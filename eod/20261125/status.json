@@ -8,7 +8,7 @@
   "broker_hhi_blocks_core_three_leg_or_mother": false,
   "broker_hhi_capital_authority_created": false,
   "broker_hhi_date": "2026-11-25",
-  "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
+  "broker_hhi_last_result": "ALREADY_COMPLETE_IMMUTABLE",
   "broker_hhi_model_authority_created": false,
   "broker_hhi_receipt": "receipts/broker_hhi.json",
   "broker_hhi_rows": 2333,
@@ -41,7 +41,7 @@
     },
     {
       "leg": "margin",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1063,
       "sha256": "353a115c7faa9533c221dc5b726c6d4bed8c8f35cf4e255dc4398a70d6aea990"
     }
@@ -51,18 +51,16 @@
   "margin_sha256": "353a115c7faa9533c221dc5b726c6d4bed8c8f35cf4e255dc4398a70d6aea990",
   "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
   "margin_status": "COMPLETE",
-  "market_state_finmind_context_path": "market_state_finmind_context.json",
-  "market_state_finmind_context_sha256": "b90ac25d6771279c2cbd16c8b34a0ef2ec26b9a78f729fcae15c1713c25338c9",
-  "market_state_finmind_context_status": "ATTACHED_RESEARCH_SHADOW",
+  "market_state_finmind_context_status": "NOT_ATTACHED_CURRENT_RUN",
   "market_state_finmind_finmind_latest_lag_seconds": 27490.009,
   "market_state_finmind_market_scope_definition": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING",
   "market_state_finmind_primary_scope": "twse_all_listed_equities",
   "market_state_finmind_shadow_blocks_core_three_leg_or_mother": false,
   "market_state_finmind_shadow_formal_classifier_mutated": false,
   "market_state_finmind_shadow_model_authority_created": false,
-  "market_state_finmind_shadow_observed_at_taipei": "2026-11-25T22:38:09.725474+08:00",
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-26T07:30:54.507208+08:00",
   "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
-  "market_state_finmind_shadow_status": "OBSERVED_CONTEXT_ATTACHED",
+  "market_state_finmind_shadow_status": "SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT",
   "market_state_finmind_shadow_trading_authority_created": false,
   "market_state_finmind_twse_current_date_count": 1086,
   "market_state_finmind_twse_current_date_coverage_ratio": 0.9981617647058824,
@@ -70,9 +68,17 @@
   "market_state_finmind_twse_snapshot_presence_ratio": 1,
   "market_state_finmind_twse_snapshot_present_count": 1088,
   "model_authority_created": false,
+  "mother_latest_date": "2026-11-25",
   "mother_pending_legs": [],
+  "mother_promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
   "mother_promotion_required": true,
   "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "2cffc9508f8fe5a0f040029bf5fbc08cc083c603a207621210a59a8bc9997fd8",
   "mother_status": "COMPLETE",
   "parallel_eod_tree": false,
   "parallel_universe": false,
@@ -88,13 +94,5 @@
   "system": "HENGCE",
   "target_date": "2026-11-25",
   "three_leg_complete": true,
-  "updated_at_taipei": "2026-11-25T22:38:09.478358+08:00",
-  "mother_latest_date": "2026-11-25",
-  "mother_receipt": "receipts/mother.json",
-  "mother_sha256": "2cffc9508f8fe5a0f040029bf5fbc08cc083c603a207621210a59a8bc9997fd8",
-  "mother_promoted_legs": [
-    "price",
-    "institutional",
-    "margin"
-  ]
+  "updated_at_taipei": "2026-11-26T07:30:54.308727+08:00"
 }
