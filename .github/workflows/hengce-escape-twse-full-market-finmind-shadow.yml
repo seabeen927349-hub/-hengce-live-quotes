@@ -18,6 +18,7 @@ name: HENGCE Escape TWSE Common FinMind Shadow
       - 'tests/engineering/test_hengce_finmind_schedule_recovery.py'
       - 'governance/HENGCE_TWSE_COMMON_NONTRADING_EXCEPTIONS_20261103.json'
       - '.github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml'
+      - 'hengce/finmind_scan_request.json'
   pull_request:
     paths:
       - 'scripts/hengce_escape_finmind_twse_common_shadow.py'

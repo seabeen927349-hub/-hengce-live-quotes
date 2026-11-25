@@ -66,7 +66,7 @@
     "trigger": "衡策掃一次",
     "private_repository": "seabeen927349-hub/twse--backfill-test",
     "canonical_contract": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "canonical_contract_git_blob_sha": "f5edd9384b84ccf703abcfeaffdca2ad671c280c",
+    "canonical_contract_git_blob_sha": "f9167cbdeccd61b1306d8658fe746d708b8f8e99",
     "readout_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
     "readout_markdown": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
     "cross_chat_read_required": true,
@@ -200,7 +200,7 @@
     "policy_id": "HENGCE_SCAN_ONCE_V22D_B_COMBINED_DISPLAY_20261120_V1",
     "private_source_repository": "seabeen927349-hub/twse--backfill-test",
     "private_contract_path": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "private_contract_blob_sha": "f5edd9384b84ccf703abcfeaffdca2ad671c280c",
+    "private_contract_blob_sha": "f9167cbdeccd61b1306d8658fe746d708b8f8e99",
     "private_fixed_readout_markdown": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.md",
     "private_fixed_readout_json": "hengce/private_v22d_autoscan/reports/scan_once_fixed_latest.json",
     "paper_b_source": "hengce/entry_exit_b/forward_latest.json",
@@ -276,7 +276,7 @@
     "effective_date": "2026-11-24",
     "private_repository": "seabeen927349-hub/twse--backfill-test",
     "private_contract": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "private_contract_blob_sha": "f5edd9384b84ccf703abcfeaffdca2ad671c280c",
+    "private_contract_blob_sha": "f9167cbdeccd61b1306d8658fe746d708b8f8e99",
     "private_commit": "23e055c2a494a6b57beccad191f1e97b8184f477",
     "mandatory_visible_sections": [
       "PROTOCOL_AND_DATA_DATE",
@@ -350,8 +350,50 @@
     "no_model_weight_universe_mother_or_trading_authority_change": true,
     "private_repository": "seabeen927349-hub/twse--backfill-test",
     "private_contract": "hengce/private_v22d_autoscan/HENGCE_FIXED_SCAN_CONTRACT_V1.json",
-    "private_contract_blob_sha": "f5edd9384b84ccf703abcfeaffdca2ad671c280c",
+    "private_contract_blob_sha": "f9167cbdeccd61b1306d8658fe746d708b8f8e99",
     "private_commit": "a80b4b7ddfff5ad97433c392018b6faf2a59330d",
     "execution_workflow": ".github/workflows/hengce-private-v22d-unified-autoscan.yml"
+  },
+  "cross_chat_execution_transport_20261125": {
+    "id": "HENGCE_CROSS_CHAT_EXECUTION_TRANSPORT_20261125_V1",
+    "trigger": "衡策掃一次",
+    "role": "EXECUTE_EXISTING_WORKFLOWS_NOT_A_NEW_MODEL",
+    "workflow_dispatch_optional": true,
+    "connector_method": "GITHUB_CONTENTS_UPDATE_PUSH_PATH_TRIGGER",
+    "authorization": "USER_SCAN_COMMAND_AUTHORIZES_ONLY_ONE_REQUEST_MARKER_UPDATE_PER_REQUIRED_WORKFLOW",
+    "request_files": {
+      "v22d": {
+        "repository_full_name": "seabeen927349-hub/twse--backfill-test",
+        "path": "hengce/private_v22d_autoscan/scan_request.json",
+        "workflow_name": "HENGCE PRIVATE V2.2D Unified 10-Lot Autoscan",
+        "workflow_path": ".github/workflows/hengce-private-v22d-unified-autoscan.yml"
+      },
+      "finmind": {
+        "repository_full_name": "seabeen927349-hub/-hengce-live-quotes",
+        "path": "hengce/finmind_scan_request.json",
+        "workflow_name": "HENGCE Escape TWSE Common FinMind Shadow",
+        "workflow_path": ".github/workflows/hengce-escape-twse-full-market-finmind-shadow.yml",
+        "only_during_twse_session": true
+      }
+    },
+    "steps": [
+      "Read both contracts and reconcile verified sources; if current HBA lags, use existing HBA job before V2.2D.",
+      "Discover GitHub connector fetch_file, update_file and fetch actions; workflow_dispatch is NOT required.",
+      "For each required request file fetch current UTF-8 content and blob sha, then update ONLY that file on main with unique request_id, requested_at_taipei and mode RESEARCH_ONLY_NO_ORDERS. Preserve the returned commit_sha.",
+      "GET https://api.github.com/repos/{repository_full_name}/actions/runs?head_sha={commit_sha}&per_page=10 using GitHub fetch; select exact workflow name and matching head_sha, not another workflow or an earlier run. If not yet listed, recheck without duplicate writes.",
+      "Inspect job steps, run conclusion, and V2.2D per-attempt proof artifact and logs; compare model day, hashes, counts and report readback. FinMind must pass existing coverage and freshness checks. Fetch live Fugle candidate quotes separately.",
+      "Render original seven sections. If no connector write permission or a write fails, show actual attempted action and error; do not infer lack of permission merely from absent dispatch, and do not claim a complete scan."
+    ],
+    "connector_example": "const t={repository_full_name:REPO,path:REQUEST_PATH};const f=await tools.mcp__GitHub__fetch_file(t);const r=await tools.mcp__GitHub__update_file({...t,sha:f.result.sha,content:JSON.stringify({schema:'HENGCE_SCAN_REQUEST_V1',request_id:UNIQUE_REQUEST_ID,requested_at_taipei:CURRENT_TAIPEI_TIME,mode:'RESEARCH_ONLY_NO_ORDERS'},null,2)+'\\n',message:'chore(hengce): execute one requested scan '+UNIQUE_REQUEST_ID,branch:'main'});text(r.result.commit_sha);",
+    "verified_legacy_fallback": "If dedicated request path is unavailable but connector writes are allowed, previously verified fallback is append a unique YAML comment only to existing workflow file on main (no logic changes); fetch current blob SHA, update_file, then look up the resulting commit's run. Never use if request file already successfully written.",
+    "proven_legacy_run_ids": [
+      45526449640,
+      45526461735,
+      45527306146
+    ],
+    "no_model_weight_mother_schedule_or_trading_authority_change": true,
+    "independent_cross_chat_test_required": true,
+    "private_contract_blob_sha": "f9167cbdeccd61b1306d8658fe746d708b8f8e99",
+    "private_commit": "e5527cc47095b3d12cc56fb9aa33ab6ee6a77ce7"
   }
 }
