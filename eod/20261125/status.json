@@ -2,20 +2,25 @@
   "artifact": "EOD_ORIGINAL_VESSEL_INCREMENTAL_INGEST",
   "available_legs": [
     "price",
-    "institutional"
+    "institutional",
+    "margin"
   ],
   "broker_hhi_blocks_core_three_leg_or_mother": false,
   "broker_hhi_capital_authority_created": false,
-  "broker_hhi_last_result": "PENDING_RESEARCH_AUXILIARY",
+  "broker_hhi_date": "2026-11-25",
+  "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
   "broker_hhi_model_authority_created": false,
-  "broker_hhi_pending_reason": "BROKER_SOURCE_BEFORE_1830_TAIPEI",
-  "broker_hhi_status": "PENDING",
+  "broker_hhi_receipt": "receipts/broker_hhi.json",
+  "broker_hhi_rows": 2333,
+  "broker_hhi_sha256": "da27616996e5ee7fb4dd8552caf716cf575ae52b14cea687f77890ecb4973739",
+  "broker_hhi_source_revision_class": "FORWARD_COLLECTED_VENDOR_SNAPSHOT",
+  "broker_hhi_status": "COMPLETE",
   "broker_hhi_trading_authority_created": false,
   "broker_order_execution": false,
   "data_vessel_governance": "ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR",
   "downstream_ready": false,
   "error_legs": [],
-  "formal_complete_day": false,
+  "formal_complete_day": true,
   "institutional_date": "2026-11-25",
   "institutional_rows": 1085,
   "institutional_sha256": "f9a4279f223c33e5412abb102f929801179ddb9515da5926ef770273a1dc70b7",
@@ -24,34 +29,38 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1092,
       "sha256": "a5cb51131653c02ae8b39e5bc36f288ce29842e17be4509e79583c33ebaf907e"
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1085,
       "sha256": "f9a4279f223c33e5412abb102f929801179ddb9515da5926ef770273a1dc70b7"
     },
     {
       "leg": "margin",
-      "reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
-      "result": "PENDING"
+      "result": "PROMOTED",
+      "rows": 1063,
+      "sha256": "353a115c7faa9533c221dc5b726c6d4bed8c8f35cf4e255dc4398a70d6aea990"
     }
   ],
-  "margin_pending_reason": "MARGIN_NOT_READY:很抱歉，沒有符合條件的資料",
-  "margin_status": "PENDING",
+  "margin_date": "2026-11-25",
+  "margin_rows": 1063,
+  "margin_sha256": "353a115c7faa9533c221dc5b726c6d4bed8c8f35cf4e255dc4398a70d6aea990",
+  "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
+  "margin_status": "COMPLETE",
   "market_state_finmind_context_path": "market_state_finmind_context.json",
-  "market_state_finmind_context_sha256": "b39d7ccb9bd7716e7d56bd601ec1566be13310dd25b3b2c6bd418475c671a488",
+  "market_state_finmind_context_sha256": "b90ac25d6771279c2cbd16c8b34a0ef2ec26b9a78f729fcae15c1713c25338c9",
   "market_state_finmind_context_status": "ATTACHED_RESEARCH_SHADOW",
-  "market_state_finmind_finmind_latest_lag_seconds": 10874.127,
+  "market_state_finmind_finmind_latest_lag_seconds": 27490.009,
   "market_state_finmind_market_scope_definition": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING",
   "market_state_finmind_primary_scope": "twse_all_listed_equities",
   "market_state_finmind_shadow_blocks_core_three_leg_or_mother": false,
   "market_state_finmind_shadow_formal_classifier_mutated": false,
   "market_state_finmind_shadow_model_authority_created": false,
-  "market_state_finmind_shadow_observed_at_taipei": "2026-11-25T18:01:13.843523+08:00",
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-25T22:38:09.725474+08:00",
   "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
   "market_state_finmind_shadow_status": "OBSERVED_CONTEXT_ATTACHED",
   "market_state_finmind_shadow_trading_authority_created": false,
@@ -63,7 +72,8 @@
   "model_authority_created": false,
   "mother_pending_legs": [
     "price",
-    "institutional"
+    "institutional",
+    "margin"
   ],
   "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
   "mother_promotion_required": true,
@@ -71,9 +81,7 @@
   "mother_status": "PENDING",
   "parallel_eod_tree": false,
   "parallel_universe": false,
-  "pending_legs": [
-    "margin"
-  ],
+  "pending_legs": [],
   "policy": "ORIGINAL_VESSEL_INDEPENDENT_LEG_PROMOTION_NO_WAIT_FOR_MARGIN",
   "price_date": "2026-11-25",
   "price_rows": 1092,
@@ -81,9 +89,9 @@
   "price_source": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
   "price_status": "COMPLETE",
   "second_mother": false,
-  "status": "PARTIAL",
+  "status": "COMPLETE",
   "system": "HENGCE",
   "target_date": "2026-11-25",
-  "three_leg_complete": false,
-  "updated_at_taipei": "2026-11-25T18:01:13.647485+08:00"
+  "three_leg_complete": true,
+  "updated_at_taipei": "2026-11-25T22:38:09.478358+08:00"
 }
