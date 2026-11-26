@@ -1,10 +1,10 @@
 {
   "system": "HENGCE",
   "artifact": "LEGACY_LIVE_UNIVERSE",
-  "version": "HENGCE_TWSE_ELECTRONICS100_20261125",
-  "generated_at_taipei": "2026-11-25T17:14:37.411407+08:00",
-  "target_date": "2026-11-25",
-  "source_run_id": "HENGCE_TWSE_ELECTRONICS100_20261125",
+  "version": "HENGCE_TWSE_ELECTRONICS100_20261126",
+  "generated_at_taipei": "2026-11-26T16:56:02.302845+08:00",
+  "target_date": "2026-11-26",
+  "source_run_id": "HENGCE_TWSE_ELECTRONICS100_20261126",
   "policy": "TWSE_LISTED_ELECTRONICS_100_HARD_BIND",
   "scope": "TWSE_LISTED_ELECTRONICS_ONLY",
   "authority": "QUOTE_TRANSPORT_MEMBERSHIP_ONLY_NO_MODEL_RANKING_AUTHORITY",
@@ -21,7 +21,7 @@
   ],
   "liquidity_source": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
   "liquidity_source_status": "PASS",
-  "liquidity_source_date": "1151124",
+  "liquidity_source_date": "1151125",
   "requested_count": 100,
   "pin_count": 7,
   "valid_pins": [
@@ -43,98 +43,98 @@
     "6257",
     "6415",
     "2330",
-    "3006",
-    "2412",
-    "2382",
-    "6456",
-    "2379",
     "2454",
-    "2357",
-    "3034",
-    "2317",
-    "2303",
-    "2466",
-    "3711",
-    "2468",
-    "2449",
-    "2474",
-    "3045",
     "2308",
-    "3036",
-    "3035",
-    "3702",
-    "2376",
-    "2356",
-    "3231",
-    "3023",
-    "4938",
-    "2451",
-    "4916",
-    "6669",
-    "4967",
-    "2471",
-    "4904",
-    "2408",
-    "2377",
-    "8112",
-    "2327",
-    "2353",
-    "3706",
-    "3017",
-    "3661",
-    "5469",
-    "5269",
-    "4961",
-    "3443",
-    "5434",
+    "2383",
     "3037",
     "3189",
-    "2345",
-    "3019",
-    "3044",
-    "2301",
-    "3665",
-    "2409",
-    "3481",
-    "2324",
-    "4958",
-    "2441",
-    "8016",
-    "2344",
-    "3008",
-    "2347",
-    "2383",
-    "2385",
-    "3533",
-    "3406",
-    "3596",
-    "6285",
-    "8046",
-    "7769",
-    "3714",
-    "6770",
-    "6414",
-    "2313",
-    "3005",
-    "2323",
-    "2354",
-    "3014",
-    "8271",
     "2368",
-    "5388",
-    "2458",
-    "3576",
-    "2367",
-    "3653",
-    "4915",
-    "2328",
-    "6239",
-    "6214",
-    "3617",
+    "3017",
+    "3008",
+    "2317",
+    "3661",
+    "3665",
+    "3711",
+    "2303",
+    "2345",
+    "2327",
+    "8046",
     "6213",
-    "2337",
+    "2408",
+    "2449",
+    "2059",
+    "2412",
+    "4958",
+    "3653",
+    "2360",
+    "6669",
+    "2344",
+    "3406",
+    "2382",
+    "7769",
+    "3231",
+    "3715",
+    "6770",
+    "3443",
+    "2409",
+    "3006",
+    "2468",
+    "3481",
+    "3026",
+    "2301",
+    "2357",
+    "2313",
+    "2379",
+    "3044",
     "6672",
-    "2492"
+    "2492",
+    "2376",
+    "6442",
+    "2337",
+    "6805",
+    "2355",
+    "6515",
+    "3450",
+    "2455",
+    "3034",
+    "2395",
+    "6139",
+    "6285",
+    "2471",
+    "3533",
+    "2465",
+    "6239",
+    "7788",
+    "6531",
+    "3045",
+    "8039",
+    "3036",
+    "3035",
+    "2356",
+    "6269",
+    "2404",
+    "2486",
+    "4977",
+    "2324",
+    "4916",
+    "3702",
+    "2466",
+    "8150",
+    "4904",
+    "2474",
+    "2377",
+    "2451",
+    "5269",
+    "4938",
+    "6526",
+    "8028",
+    "2464",
+    "3706",
+    "2481",
+    "2467",
+    "3532",
+    "6271",
+    "4967"
   ],
   "rows": [
     {
@@ -144,7 +144,7 @@
       "industry_code": "26",
       "selection_rank": 1,
       "selection_reason": "HENGCE_PIN",
-      "reference_trade_value": 71813673.0
+      "reference_trade_value": 1436640855.0
     },
     {
       "Ticker": "3029",
@@ -153,7 +153,7 @@
       "industry_code": "30",
       "selection_rank": 2,
       "selection_reason": "HENGCE_PIN",
-      "reference_trade_value": 449134502.0
+      "reference_trade_value": 383322020.0
     },
     {
       "Ticker": "2493",
@@ -162,7 +162,7 @@
       "industry_code": "28",
       "selection_rank": 3,
       "selection_reason": "HENGCE_PIN",
-      "reference_trade_value": 15333888.0
+      "reference_trade_value": 211336707.0
     },
     {
       "Ticker": "8213",
@@ -171,7 +171,7 @@
       "industry_code": "28",
       "selection_rank": 4,
       "selection_reason": "HENGCE_PIN",
-      "reference_trade_value": 354150306.0
+      "reference_trade_value": 133011110.0
     },
     {
       "Ticker": "3042",
@@ -180,7 +180,7 @@
       "industry_code": "28",
       "selection_rank": 5,
       "selection_reason": "HENGCE_PIN",
-      "reference_trade_value": 47049748.0
+      "reference_trade_value": 570229694.0
     },
     {
       "Ticker": "6257",
@@ -189,7 +189,7 @@
       "industry_code": "24",
       "selection_rank": 6,
       "selection_reason": "HENGCE_PIN",
-      "reference_trade_value": 65579733.0
+      "reference_trade_value": 740212269.0
     },
     {
       "Ticker": "6415",
@@ -198,7 +198,7 @@
       "industry_code": "24",
       "selection_rank": 7,
       "selection_reason": "HENGCE_PIN",
-      "reference_trade_value": 514942284.0
+      "reference_trade_value": 1553336255.0
     },
     {
       "Ticker": "2330",
@@ -207,79 +207,79 @@
       "industry_code": "24",
       "selection_rank": 8,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 29465076970.0
-    },
-    {
-      "Ticker": "3006",
-      "Name": "晶豪科",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 9,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 12692990195.0
-    },
-    {
-      "Ticker": "2412",
-      "Name": "中華電",
-      "market": "TWSE",
-      "industry_code": "27",
-      "selection_rank": 10,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 10368344534.0
-    },
-    {
-      "Ticker": "2382",
-      "Name": "廣達",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 11,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 7027372214.0
-    },
-    {
-      "Ticker": "6456",
-      "Name": "GIS-KY",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 12,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 5989388636.0
-    },
-    {
-      "Ticker": "2379",
-      "Name": "瑞昱",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 13,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 5805687703.0
+      "reference_trade_value": 179487749840.0
     },
     {
       "Ticker": "2454",
       "Name": "聯發科",
       "market": "TWSE",
       "industry_code": "24",
-      "selection_rank": 14,
+      "selection_rank": 9,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 5596257600.0
+      "reference_trade_value": 88231965505.0
     },
     {
-      "Ticker": "2357",
-      "Name": "華碩",
+      "Ticker": "2308",
+      "Name": "台達電",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 10,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 41922999805.0
+    },
+    {
+      "Ticker": "2383",
+      "Name": "台光電",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 11,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 29768985355.0
+    },
+    {
+      "Ticker": "3037",
+      "Name": "欣興",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 12,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 27656638482.0
+    },
+    {
+      "Ticker": "3189",
+      "Name": "景碩",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 13,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 24972063781.0
+    },
+    {
+      "Ticker": "2368",
+      "Name": "金像電",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 14,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 24330584185.0
+    },
+    {
+      "Ticker": "3017",
+      "Name": "奇鋐",
       "market": "TWSE",
       "industry_code": "25",
       "selection_rank": 15,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 5365900673.0
+      "reference_trade_value": 22012102213.0
     },
     {
-      "Ticker": "3034",
-      "Name": "聯詠",
+      "Ticker": "3008",
+      "Name": "大立光",
       "market": "TWSE",
-      "industry_code": "24",
+      "industry_code": "26",
       "selection_rank": 16,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 4977083639.0
+      "reference_trade_value": 20335867585.0
     },
     {
       "Ticker": "2317",
@@ -288,25 +288,25 @@
       "industry_code": "31",
       "selection_rank": 17,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 4401848616.0
+      "reference_trade_value": 19747591106.0
     },
     {
-      "Ticker": "2303",
-      "Name": "聯電",
+      "Ticker": "3661",
+      "Name": "世芯-KY",
       "market": "TWSE",
       "industry_code": "24",
       "selection_rank": 18,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 4019273735.0
+      "reference_trade_value": 18781950745.0
     },
     {
-      "Ticker": "2466",
-      "Name": "冠西電",
+      "Ticker": "3665",
+      "Name": "貿聯-KY",
       "market": "TWSE",
-      "industry_code": "26",
+      "industry_code": "31",
       "selection_rank": 19,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 3969094999.0
+      "reference_trade_value": 18433617330.0
     },
     {
       "Ticker": "3711",
@@ -315,728 +315,728 @@
       "industry_code": "24",
       "selection_rank": 20,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 3551884570.0
+      "reference_trade_value": 18433340381.0
     },
     {
-      "Ticker": "2468",
-      "Name": "華經",
+      "Ticker": "2303",
+      "Name": "聯電",
       "market": "TWSE",
-      "industry_code": "30",
+      "industry_code": "24",
       "selection_rank": 21,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 3165898738.0
-    },
-    {
-      "Ticker": "2449",
-      "Name": "京元電子",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 22,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 2730264326.0
-    },
-    {
-      "Ticker": "2474",
-      "Name": "可成",
-      "market": "TWSE",
-      "industry_code": "31",
-      "selection_rank": 23,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 2166805422.0
-    },
-    {
-      "Ticker": "3045",
-      "Name": "台灣大",
-      "market": "TWSE",
-      "industry_code": "27",
-      "selection_rank": 24,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1937505607.0
-    },
-    {
-      "Ticker": "2308",
-      "Name": "台達電",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 25,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1726252360.0
-    },
-    {
-      "Ticker": "3036",
-      "Name": "文曄",
-      "market": "TWSE",
-      "industry_code": "29",
-      "selection_rank": 26,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1708233806.0
-    },
-    {
-      "Ticker": "3035",
-      "Name": "智原",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 27,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1642474689.0
-    },
-    {
-      "Ticker": "3702",
-      "Name": "大聯大",
-      "market": "TWSE",
-      "industry_code": "29",
-      "selection_rank": 28,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1594622445.0
-    },
-    {
-      "Ticker": "2376",
-      "Name": "技嘉",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 29,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1419748224.0
-    },
-    {
-      "Ticker": "2356",
-      "Name": "英業達",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 30,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1413969282.0
-    },
-    {
-      "Ticker": "3231",
-      "Name": "緯創",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 31,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1373447780.0
-    },
-    {
-      "Ticker": "3023",
-      "Name": "信邦",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 32,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1368390562.0
-    },
-    {
-      "Ticker": "4938",
-      "Name": "和碩",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 33,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1310179519.0
-    },
-    {
-      "Ticker": "2451",
-      "Name": "創見",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 34,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1303571693.0
-    },
-    {
-      "Ticker": "4916",
-      "Name": "事欣科",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 35,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1193321103.0
-    },
-    {
-      "Ticker": "6669",
-      "Name": "緯穎",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 36,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1148015250.0
-    },
-    {
-      "Ticker": "4967",
-      "Name": "十銓",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 37,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1114552006.0
-    },
-    {
-      "Ticker": "2471",
-      "Name": "資通",
-      "market": "TWSE",
-      "industry_code": "30",
-      "selection_rank": 38,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1034712969.0
-    },
-    {
-      "Ticker": "4904",
-      "Name": "遠傳",
-      "market": "TWSE",
-      "industry_code": "27",
-      "selection_rank": 39,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 1033869554.0
-    },
-    {
-      "Ticker": "2408",
-      "Name": "南亞科",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 40,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 983131395.0
-    },
-    {
-      "Ticker": "2377",
-      "Name": "微星",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 41,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 971767174.0
-    },
-    {
-      "Ticker": "8112",
-      "Name": "至上",
-      "market": "TWSE",
-      "industry_code": "29",
-      "selection_rank": 42,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 914850570.0
-    },
-    {
-      "Ticker": "2327",
-      "Name": "國巨*",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 43,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 903335598.0
-    },
-    {
-      "Ticker": "2353",
-      "Name": "宏碁",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 44,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 884096436.0
-    },
-    {
-      "Ticker": "3706",
-      "Name": "神達",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 45,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 865939503.0
-    },
-    {
-      "Ticker": "3017",
-      "Name": "奇鋐",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 46,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 855004800.0
-    },
-    {
-      "Ticker": "3661",
-      "Name": "世芯-KY",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 47,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 798894900.0
-    },
-    {
-      "Ticker": "5469",
-      "Name": "瀚宇博",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 48,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 783239920.0
-    },
-    {
-      "Ticker": "5269",
-      "Name": "祥碩",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 49,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 753821335.0
-    },
-    {
-      "Ticker": "4961",
-      "Name": "天鈺",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 50,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 753610892.0
-    },
-    {
-      "Ticker": "3443",
-      "Name": "創意",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 51,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 728871060.0
-    },
-    {
-      "Ticker": "5434",
-      "Name": "崇越",
-      "market": "TWSE",
-      "industry_code": "29",
-      "selection_rank": 52,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 725852347.0
-    },
-    {
-      "Ticker": "3037",
-      "Name": "欣興",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 53,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 724767677.0
-    },
-    {
-      "Ticker": "3189",
-      "Name": "景碩",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 54,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 704587652.0
+      "reference_trade_value": 17637951182.0
     },
     {
       "Ticker": "2345",
       "Name": "智邦",
       "market": "TWSE",
       "industry_code": "27",
-      "selection_rank": 55,
+      "selection_rank": 22,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 703903365.0
+      "reference_trade_value": 15213411110.0
     },
     {
-      "Ticker": "3019",
-      "Name": "亞光",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 56,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 679867002.0
-    },
-    {
-      "Ticker": "3044",
-      "Name": "健鼎",
+      "Ticker": "2327",
+      "Name": "國巨*",
       "market": "TWSE",
       "industry_code": "28",
-      "selection_rank": 57,
+      "selection_rank": 23,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 655615615.0
-    },
-    {
-      "Ticker": "2301",
-      "Name": "光寶科",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 58,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 653505024.0
-    },
-    {
-      "Ticker": "3665",
-      "Name": "貿聯-KY",
-      "market": "TWSE",
-      "industry_code": "31",
-      "selection_rank": 59,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 608205440.0
-    },
-    {
-      "Ticker": "2409",
-      "Name": "友達",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 60,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 607625436.0
-    },
-    {
-      "Ticker": "3481",
-      "Name": "群創",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 61,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 583120731.0
-    },
-    {
-      "Ticker": "2324",
-      "Name": "仁寶",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 62,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 548086400.0
-    },
-    {
-      "Ticker": "4958",
-      "Name": "臻鼎-KY",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 63,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 530824155.0
-    },
-    {
-      "Ticker": "2441",
-      "Name": "超豐",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 64,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 517329884.0
-    },
-    {
-      "Ticker": "8016",
-      "Name": "矽創",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 65,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 509528618.0
-    },
-    {
-      "Ticker": "2344",
-      "Name": "華邦電",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 66,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 490562730.0
-    },
-    {
-      "Ticker": "3008",
-      "Name": "大立光",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 67,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 490076080.0
-    },
-    {
-      "Ticker": "2347",
-      "Name": "聯強",
-      "market": "TWSE",
-      "industry_code": "29",
-      "selection_rank": 68,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 483186743.0
-    },
-    {
-      "Ticker": "2383",
-      "Name": "台光電",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 69,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 454098225.0
-    },
-    {
-      "Ticker": "2385",
-      "Name": "群光",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 70,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 449737402.0
-    },
-    {
-      "Ticker": "3533",
-      "Name": "嘉澤",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 71,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 449220730.0
-    },
-    {
-      "Ticker": "3406",
-      "Name": "玉晶光",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 72,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 436924510.0
-    },
-    {
-      "Ticker": "3596",
-      "Name": "智易",
-      "market": "TWSE",
-      "industry_code": "27",
-      "selection_rank": 73,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 418054033.0
-    },
-    {
-      "Ticker": "6285",
-      "Name": "啟碁",
-      "market": "TWSE",
-      "industry_code": "27",
-      "selection_rank": 74,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 407610308.0
+      "reference_trade_value": 15094044402.0
     },
     {
       "Ticker": "8046",
       "Name": "南電",
       "market": "TWSE",
       "industry_code": "28",
-      "selection_rank": 75,
+      "selection_rank": 24,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 388883075.0
-    },
-    {
-      "Ticker": "7769",
-      "Name": "鴻勁",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 76,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 384934400.0
-    },
-    {
-      "Ticker": "3714",
-      "Name": "富采",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 77,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 379550472.0
-    },
-    {
-      "Ticker": "6770",
-      "Name": "力積電",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 78,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 372053735.0
-    },
-    {
-      "Ticker": "6414",
-      "Name": "樺漢",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 79,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 368901528.0
-    },
-    {
-      "Ticker": "2313",
-      "Name": "華通",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 80,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 367087413.0
-    },
-    {
-      "Ticker": "3005",
-      "Name": "神基",
-      "market": "TWSE",
-      "industry_code": "25",
-      "selection_rank": 81,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 360231230.0
-    },
-    {
-      "Ticker": "2323",
-      "Name": "中環",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 82,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 346206793.0
-    },
-    {
-      "Ticker": "2354",
-      "Name": "鴻準",
-      "market": "TWSE",
-      "industry_code": "31",
-      "selection_rank": 83,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 340638684.0
-    },
-    {
-      "Ticker": "3014",
-      "Name": "聯陽",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 84,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 315176805.0
-    },
-    {
-      "Ticker": "8271",
-      "Name": "宇瞻",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 85,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 276120930.0
-    },
-    {
-      "Ticker": "2368",
-      "Name": "金像電",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 86,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 267773040.0
-    },
-    {
-      "Ticker": "5388",
-      "Name": "中磊",
-      "market": "TWSE",
-      "industry_code": "27",
-      "selection_rank": 87,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 264523826.0
-    },
-    {
-      "Ticker": "2458",
-      "Name": "義隆",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 88,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 263242813.0
-    },
-    {
-      "Ticker": "3576",
-      "Name": "聯合再生",
-      "market": "TWSE",
-      "industry_code": "26",
-      "selection_rank": 89,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 258488323.0
-    },
-    {
-      "Ticker": "2367",
-      "Name": "燿華",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 90,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 257612036.0
-    },
-    {
-      "Ticker": "3653",
-      "Name": "健策",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 91,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 249905250.0
-    },
-    {
-      "Ticker": "4915",
-      "Name": "致伸",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 92,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 243879284.0
-    },
-    {
-      "Ticker": "2328",
-      "Name": "廣宇",
-      "market": "TWSE",
-      "industry_code": "28",
-      "selection_rank": 93,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 241653384.0
-    },
-    {
-      "Ticker": "6239",
-      "Name": "力成",
-      "market": "TWSE",
-      "industry_code": "24",
-      "selection_rank": 94,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 233712570.0
-    },
-    {
-      "Ticker": "6214",
-      "Name": "精誠",
-      "market": "TWSE",
-      "industry_code": "30",
-      "selection_rank": 95,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 224072320.0
-    },
-    {
-      "Ticker": "3617",
-      "Name": "碩天",
-      "market": "TWSE",
-      "industry_code": "31",
-      "selection_rank": 96,
-      "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 221592832.0
+      "reference_trade_value": 14383780005.0
     },
     {
       "Ticker": "6213",
       "Name": "聯茂",
       "market": "TWSE",
       "industry_code": "28",
-      "selection_rank": 97,
+      "selection_rank": 25,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 206773240.0
+      "reference_trade_value": 13068058216.0
     },
     {
-      "Ticker": "2337",
-      "Name": "旺宏",
+      "Ticker": "2408",
+      "Name": "南亞科",
       "market": "TWSE",
       "industry_code": "24",
-      "selection_rank": 98,
+      "selection_rank": 26,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 202747576.0
+      "reference_trade_value": 12750613325.0
+    },
+    {
+      "Ticker": "2449",
+      "Name": "京元電子",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 27,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 11657479367.0
+    },
+    {
+      "Ticker": "2059",
+      "Name": "川湖",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 28,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 10155469270.0
+    },
+    {
+      "Ticker": "2412",
+      "Name": "中華電",
+      "market": "TWSE",
+      "industry_code": "27",
+      "selection_rank": 29,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 9444610219.0
+    },
+    {
+      "Ticker": "4958",
+      "Name": "臻鼎-KY",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 30,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 9437166059.0
+    },
+    {
+      "Ticker": "3653",
+      "Name": "健策",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 31,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 8091944530.0
+    },
+    {
+      "Ticker": "2360",
+      "Name": "致茂",
+      "market": "TWSE",
+      "industry_code": "31",
+      "selection_rank": 32,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 8010130352.0
+    },
+    {
+      "Ticker": "6669",
+      "Name": "緯穎",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 33,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 7329241650.0
+    },
+    {
+      "Ticker": "2344",
+      "Name": "華邦電",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 34,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 7283246332.0
+    },
+    {
+      "Ticker": "3406",
+      "Name": "玉晶光",
+      "market": "TWSE",
+      "industry_code": "26",
+      "selection_rank": 35,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 6197132957.0
+    },
+    {
+      "Ticker": "2382",
+      "Name": "廣達",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 36,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 6105643197.0
+    },
+    {
+      "Ticker": "7769",
+      "Name": "鴻勁",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 37,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 5195296970.0
+    },
+    {
+      "Ticker": "3231",
+      "Name": "緯創",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 38,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 4890797550.0
+    },
+    {
+      "Ticker": "3715",
+      "Name": "定穎投控",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 39,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 4784548162.0
+    },
+    {
+      "Ticker": "6770",
+      "Name": "力積電",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 40,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 4656244081.0
+    },
+    {
+      "Ticker": "3443",
+      "Name": "創意",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 41,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 4579451885.0
+    },
+    {
+      "Ticker": "2409",
+      "Name": "友達",
+      "market": "TWSE",
+      "industry_code": "26",
+      "selection_rank": 42,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 4546622256.0
+    },
+    {
+      "Ticker": "3006",
+      "Name": "晶豪科",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 43,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 4375213799.0
+    },
+    {
+      "Ticker": "2468",
+      "Name": "華經",
+      "market": "TWSE",
+      "industry_code": "30",
+      "selection_rank": 44,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 4132535424.0
+    },
+    {
+      "Ticker": "3481",
+      "Name": "群創",
+      "market": "TWSE",
+      "industry_code": "26",
+      "selection_rank": 45,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3992159924.0
+    },
+    {
+      "Ticker": "3026",
+      "Name": "禾伸堂",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 46,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3862399946.0
+    },
+    {
+      "Ticker": "2301",
+      "Name": "光寶科",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 47,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3785695576.0
+    },
+    {
+      "Ticker": "2357",
+      "Name": "華碩",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 48,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3477356795.0
+    },
+    {
+      "Ticker": "2313",
+      "Name": "華通",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 49,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3469049496.0
+    },
+    {
+      "Ticker": "2379",
+      "Name": "瑞昱",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 50,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3406768245.0
+    },
+    {
+      "Ticker": "3044",
+      "Name": "健鼎",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 51,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3397648729.0
     },
     {
       "Ticker": "6672",
       "Name": "騰輝電子-KY",
       "market": "TWSE",
       "industry_code": "28",
-      "selection_rank": 99,
+      "selection_rank": 52,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 202069296.0
+      "reference_trade_value": 3202918125.0
     },
     {
       "Ticker": "2492",
       "Name": "華新科",
       "market": "TWSE",
       "industry_code": "28",
+      "selection_rank": 53,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3168472764.0
+    },
+    {
+      "Ticker": "2376",
+      "Name": "技嘉",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 54,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 3065892196.0
+    },
+    {
+      "Ticker": "6442",
+      "Name": "光聖",
+      "market": "TWSE",
+      "industry_code": "27",
+      "selection_rank": 55,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 2844271031.0
+    },
+    {
+      "Ticker": "2337",
+      "Name": "旺宏",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 56,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 2741785665.0
+    },
+    {
+      "Ticker": "6805",
+      "Name": "富世達",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 57,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 2621352180.0
+    },
+    {
+      "Ticker": "2355",
+      "Name": "敬鵬",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 58,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 2537598529.0
+    },
+    {
+      "Ticker": "6515",
+      "Name": "穎崴",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 59,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 2428967190.0
+    },
+    {
+      "Ticker": "3450",
+      "Name": "聯鈞",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 60,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 2162213265.0
+    },
+    {
+      "Ticker": "2455",
+      "Name": "全新",
+      "market": "TWSE",
+      "industry_code": "27",
+      "selection_rank": 61,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 2059698247.0
+    },
+    {
+      "Ticker": "3034",
+      "Name": "聯詠",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 62,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 2059490311.0
+    },
+    {
+      "Ticker": "2395",
+      "Name": "研華",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 63,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1913965319.0
+    },
+    {
+      "Ticker": "6139",
+      "Name": "亞翔",
+      "market": "TWSE",
+      "industry_code": "31",
+      "selection_rank": 64,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1867808328.0
+    },
+    {
+      "Ticker": "6285",
+      "Name": "啟碁",
+      "market": "TWSE",
+      "industry_code": "27",
+      "selection_rank": 65,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1846349070.0
+    },
+    {
+      "Ticker": "2471",
+      "Name": "資通",
+      "market": "TWSE",
+      "industry_code": "30",
+      "selection_rank": 66,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1791150887.0
+    },
+    {
+      "Ticker": "3533",
+      "Name": "嘉澤",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 67,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1779101970.0
+    },
+    {
+      "Ticker": "2465",
+      "Name": "麗臺",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 68,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1772477669.0
+    },
+    {
+      "Ticker": "6239",
+      "Name": "力成",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 69,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1622544102.0
+    },
+    {
+      "Ticker": "7788",
+      "Name": "松川精密",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 70,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1616028499.0
+    },
+    {
+      "Ticker": "6531",
+      "Name": "愛普*",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 71,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1612925396.0
+    },
+    {
+      "Ticker": "3045",
+      "Name": "台灣大",
+      "market": "TWSE",
+      "industry_code": "27",
+      "selection_rank": 72,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1546552424.0
+    },
+    {
+      "Ticker": "8039",
+      "Name": "台虹",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 73,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1496031798.0
+    },
+    {
+      "Ticker": "3036",
+      "Name": "文曄",
+      "market": "TWSE",
+      "industry_code": "29",
+      "selection_rank": 74,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1402518815.0
+    },
+    {
+      "Ticker": "3035",
+      "Name": "智原",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 75,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1394248904.0
+    },
+    {
+      "Ticker": "2356",
+      "Name": "英業達",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 76,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1334516760.0
+    },
+    {
+      "Ticker": "6269",
+      "Name": "台郡",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 77,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1304846652.0
+    },
+    {
+      "Ticker": "2404",
+      "Name": "漢唐",
+      "market": "TWSE",
+      "industry_code": "31",
+      "selection_rank": 78,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1178969437.0
+    },
+    {
+      "Ticker": "2486",
+      "Name": "一詮",
+      "market": "TWSE",
+      "industry_code": "26",
+      "selection_rank": 79,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1125257714.0
+    },
+    {
+      "Ticker": "4977",
+      "Name": "眾達-KY",
+      "market": "TWSE",
+      "industry_code": "27",
+      "selection_rank": 80,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1023543430.0
+    },
+    {
+      "Ticker": "2324",
+      "Name": "仁寶",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 81,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1013395089.0
+    },
+    {
+      "Ticker": "4916",
+      "Name": "事欣科",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 82,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 1010410820.0
+    },
+    {
+      "Ticker": "3702",
+      "Name": "大聯大",
+      "market": "TWSE",
+      "industry_code": "29",
+      "selection_rank": 83,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 988416764.0
+    },
+    {
+      "Ticker": "2466",
+      "Name": "冠西電",
+      "market": "TWSE",
+      "industry_code": "26",
+      "selection_rank": 84,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 898541997.0
+    },
+    {
+      "Ticker": "8150",
+      "Name": "南茂",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 85,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 866505607.0
+    },
+    {
+      "Ticker": "4904",
+      "Name": "遠傳",
+      "market": "TWSE",
+      "industry_code": "27",
+      "selection_rank": 86,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 856677889.0
+    },
+    {
+      "Ticker": "2474",
+      "Name": "可成",
+      "market": "TWSE",
+      "industry_code": "31",
+      "selection_rank": 87,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 849993087.0
+    },
+    {
+      "Ticker": "2377",
+      "Name": "微星",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 88,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 832020892.0
+    },
+    {
+      "Ticker": "2451",
+      "Name": "創見",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 89,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 829801302.0
+    },
+    {
+      "Ticker": "5269",
+      "Name": "祥碩",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 90,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 817233955.0
+    },
+    {
+      "Ticker": "4938",
+      "Name": "和碩",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 91,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 778120367.0
+    },
+    {
+      "Ticker": "6526",
+      "Name": "達發",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 92,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 761067205.0
+    },
+    {
+      "Ticker": "8028",
+      "Name": "昇陽半導體",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 93,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 760079247.0
+    },
+    {
+      "Ticker": "2464",
+      "Name": "盟立",
+      "market": "TWSE",
+      "industry_code": "31",
+      "selection_rank": 94,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 738709039.0
+    },
+    {
+      "Ticker": "3706",
+      "Name": "神達",
+      "market": "TWSE",
+      "industry_code": "25",
+      "selection_rank": 95,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 666859534.0
+    },
+    {
+      "Ticker": "2481",
+      "Name": "強茂",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 96,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 632699068.0
+    },
+    {
+      "Ticker": "2467",
+      "Name": "志聖",
+      "market": "TWSE",
+      "industry_code": "28",
+      "selection_rank": 97,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 613886959.0
+    },
+    {
+      "Ticker": "3532",
+      "Name": "台勝科",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 98,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 608629288.0
+    },
+    {
+      "Ticker": "6271",
+      "Name": "同欣電",
+      "market": "TWSE",
+      "industry_code": "24",
+      "selection_rank": 99,
+      "selection_reason": "TWSE_TRADE_VALUE",
+      "reference_trade_value": 607729518.0
+    },
+    {
+      "Ticker": "4967",
+      "Name": "十銓",
+      "market": "TWSE",
+      "industry_code": "24",
       "selection_rank": 100,
       "selection_reason": "TWSE_TRADE_VALUE",
-      "reference_trade_value": 190036800.0
+      "reference_trade_value": 607128760.0
     }
   ],
-  "payload_sha256": "a70b31906086412600a7b740b7818826e943102f3f27f69a95fb9bd10ef98716"
+  "payload_sha256": "ae790980e15de4702670dab10472f5c2cf5985b450dd6054575b552fa4f098cc"
 }
