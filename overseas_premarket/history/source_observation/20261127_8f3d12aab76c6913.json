@@ -1,0 +1,41 @@
+{
+  "capital_authority": false,
+  "composite_forecast_emitted": false,
+  "composite_readiness": "BLOCKED_PENDING_ALIGNED_US_EOD",
+  "expected_us_session": "2026-11-26",
+  "expected_us_session_basis": "TAIPEI_PREMARKET_PREVIOUS_WEEKDAY",
+  "observation_window": "PREOPEN_SOURCE_ONLY",
+  "observed_at_taipei": "2026-11-27T07:59:35.007868+08:00",
+  "reference_prev_tw_date": "2026-11-20",
+  "schema": "HENGCE_OVERSEAS_SOURCE_OBSERVATION_V1",
+  "source_observation_sha256": "8f3d12aab76c691388624b1541bb95e1b6d8540d036c3ebefcf6295380a7533d",
+  "sources": {
+    "sox": {
+      "latest_close": 8774.8618628384,
+      "latest_us_session": "2026-11-25",
+      "prior_close": 8832.50082266461,
+      "prior_us_session": "2026-11-24",
+      "publisher": "Nasdaq",
+      "raw_bytes": 8470,
+      "raw_sha256": "f268d8da2f4c9da6d2a10fc4705bee4b21374337bafe578fea44469ce8be3e2f",
+      "source_status": "EXPECTED_US_EOD_NOT_YET_PUBLISHED",
+      "symbol": "SOX",
+      "url": "https://indexes.nasdaq.com/Index/ExportHistory/SOX?startDate=2026-11-02T00:00:00.000&endDate=2026-11-28T00:00:00.000&timeOfDay=EOD"
+    },
+    "vix": {
+      "latest_close": 28.29,
+      "latest_us_session": "2026-11-25",
+      "prior_close": 26.36,
+      "prior_us_session": "2026-11-24",
+      "publisher": "Cboe",
+      "raw_bytes": 475267,
+      "raw_sha256": "ed60df4d8699594795bf3d31614ea3d9f159fa4bd5365cc1318e091500de3b65",
+      "source_status": "EXPECTED_US_EOD_NOT_YET_PUBLISHED",
+      "symbol": "VIX",
+      "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+    }
+  },
+  "status": "OFFICIAL_SOURCES_OBSERVED_NO_MODEL_AUTHORITY",
+  "target_tw_date": "2026-11-27",
+  "trading_authority": false
+}
