@@ -8916,7 +8916,7 @@
       "status": "NOT_PROVIDED"
     },
     "finmind_shadow": {
-      "latest_source_timestamp": "2026-11-26 11:32:20.330159",
+      "latest_source_timestamp": "2026-11-26 12:11:29.548611",
       "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
       "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
@@ -8942,9 +8942,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-25",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-26T11:31:21.894578+08:00",
+        "observed_at_taipei": "2026-11-26T12:10:29.084883+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "22c0209dd9de6ca26f5b45113eac77cabafb643644b78da4e5edda36dc6c4c96",
+        "source_observation_sha256": "240f67ac8889484a92e5229d7b594886eb96a14cc68ebb6f8512ec7a65017ee2",
         "sox": {
           "change_pct": -0.6526,
           "latest_close": 8774.8618628384,
@@ -8966,9 +8966,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-25",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-26T11:31:21.894578+08:00",
+        "observed_at_taipei": "2026-11-26T12:10:29.084883+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "22c0209dd9de6ca26f5b45113eac77cabafb643644b78da4e5edda36dc6c4c96",
+        "source_observation_sha256": "240f67ac8889484a92e5229d7b594886eb96a14cc68ebb6f8512ec7a65017ee2",
         "sox": {
           "change_pct": -0.6526,
           "latest_close": 8774.8618628384,
