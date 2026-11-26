@@ -2,7 +2,7 @@
   "active_covered_count": 1088,
   "active_required_count": 1088,
   "active_universe_transport_full_coverage": true,
-  "context_payload_sha256": "0f4d4b6198156917b4c2f722f428f8c9fb0f277edfa9ba68bfe2a26c835ec541",
+  "context_payload_sha256": "79a150ea23a4126526c9b020216e1b8cd905cbf2aa10839b31749376e0d471b7",
   "current_market_date_count": 1086,
   "current_market_date_observed": true,
   "current_market_date_ratio": 0.99816176,
@@ -18,14 +18,14 @@
   "formal_eod_authority": false,
   "formal_escape_authority": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-26T11:32:29.972022+08:00",
+  "generated_at_taipei": "2026-11-26T12:11:38.441898+08:00",
   "healthy_transport": true,
   "inmemory_cross_source_audit": {
     "active_scope_count": 1088,
-    "comparison_completed_at_taipei": "2026-11-26T11:32:34.819309+08:00",
+    "comparison_completed_at_taipei": "2026-11-26T12:11:42.154165+08:00",
     "cross_source_candidate_count": 0,
     "finmind_current_day_count": 1086,
-    "finmind_response_received_at_taipei": "2026-11-26T11:32:31.076065+08:00",
+    "finmind_response_received_at_taipei": "2026-11-26T12:11:39.256429+08:00",
     "formal_eod_authority": false,
     "fully_independently_verified_count": 0,
     "mis_existing_scope_count": 2,
@@ -35,8 +35,8 @@
     "raw_vendor_rows_persisted": false,
     "reason_counts": {
       "FINMIND_NOT_TODAY": 2,
-      "FINMIND_STALE_TRADE_TIME": 819,
-      "SECOND_SOURCE_NOT_COLLECTED": 267
+      "FINMIND_STALE_TRADE_TIME": 804,
+      "SECOND_SOURCE_NOT_COLLECTED": 282
     },
     "role": "RESEARCH_INTRADAY_DIAGNOSTIC_ONLY",
     "schema": "HENGCE_FINMIND_IN_MEMORY_SAME_TICK_AUDIT_V1",
@@ -46,7 +46,7 @@
     "trading_authority": false
   },
   "intraday_metric_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
-  "latest_source_timestamp": "2026-11-26 11:32:20.330159",
+  "latest_source_timestamp": "2026-11-26 12:11:29.548611",
   "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
   "metric_unknown_count": 2,
   "metric_unknown_sample": [
@@ -84,10 +84,10 @@
       "sessionLatestTime": "-1",
       "sessionStr": "UserSession",
       "showChart": "False",
-      "stockInfo": "14858",
-      "stockInfoItem": "6377",
+      "stockInfo": "20212",
+      "stockInfoItem": "8439",
       "sysDate": "20261126",
-      "sysTime": "11:32:34"
+      "sysTime": "12:11:41"
     },
     "target_match_count": 2
   },
