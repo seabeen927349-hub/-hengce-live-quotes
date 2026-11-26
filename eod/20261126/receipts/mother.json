@@ -1,0 +1,53 @@
+{
+  "system": "HENGCE",
+  "artifact": "EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE_RECEIPT",
+  "target_date": "2026-11-26",
+  "status": "PASS",
+  "second_mother": false,
+  "model_authority_created": false,
+  "trade_authority_created": false,
+  "mother_latest_date": "2026-11-26",
+  "mother_sha256": "6e9be47679c1d5ea1dc045c2413cf51f897a8a49a67ddd6512be56b683d4d5e1",
+  "mother_rows": 1045177,
+  "promoted_legs": [
+    "price",
+    "institutional",
+    "margin"
+  ],
+  "promoted_leg_sha256": {
+    "price": "00dd6d2ec565bf0893ad6ab3702090c64eb57f29eaf12bf438126e16be25c8cb",
+    "institutional": "9f02113f80d31401db8a5b49a516ced51a9717fab37d4d61533aeeac1d50f81c",
+    "margin": "9d6e94935c9155443df036dae33638fa0d84130b9bdff1909941f9b28b8182d5"
+  },
+  "canonical_mother_path": "/HENGCE_CANONICAL/HENGCE_2026_HIST_MOTHER.csv",
+  "canonical_receipt": "/HENGCE_CANONICAL/HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261126.json",
+  "canonical_integrity": "PASS",
+  "source_run_id": 45838914810,
+  "source_artifact_id": 15125539684,
+  "verified_library_readback": true,
+  "target_mother_rows": 1092,
+  "target_margin_matched_rows": 1063,
+  "missing_margin_rows": 29,
+  "missing_institutional_rows": 7,
+  "verified_at_taipei": "2026-11-26T22:28:20.627334+08:00",
+  "pending_legs": [],
+  "canonical_leg_sha256": {
+    "price": "c3e8f0c6d1c68d4a87b0e7ac1ab152a7b73e529b4afffa4109f70e46e5c6bc8a",
+    "institutional": "d9dafd362b1e0072bba5e1e22f3b0d621924874e98e2c43bb985bf05499e9b4f",
+    "margin": "f553563c3b0a176ba19a38df1aa54b40f16dc758cd22ec860ffe5321e721f4b0"
+  },
+  "rule": "PRICE_ROW_UNIVERSE_LEFT_JOIN_MARGIN_AND_INSTITUTIONAL_MISSING_EVIDENCE_NULL",
+  "missing_evidence_is_null": true,
+  "formal_daily_close_ready": true,
+  "three_leg_complete": true,
+  "integrity_result": "/HENGCE_CANONICAL/HENGCE_CANONICAL_INTEGRITY_RESULT_20261126.json",
+  "integrity_status": "PASS",
+  "model_or_schema_mutated": false,
+  "updated_at_taipei": "2026-11-26T22:28:20.627334+08:00",
+  "source_eod_path": "eod/20261126",
+  "source_workflow_run_id": 45838914810,
+  "target_price_rows": 1092,
+  "target_institutional_rows": 1085,
+  "target_margin_rows": 1063,
+  "canonical_library_incremental_receipt": "/HENGCE_CANONICAL/HENGCE_HIST_MOTHER_INCREMENTAL_RECEIPT_20261126.json"
+}
