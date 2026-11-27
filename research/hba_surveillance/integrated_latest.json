@@ -8832,7 +8832,7 @@
       "status": "NOT_PROVIDED"
     },
     "finmind_shadow": {
-      "latest_source_timestamp": "2026-11-27 10:39:25.000000",
+      "latest_source_timestamp": "2026-11-27 11:39:20.000000",
       "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
       "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
