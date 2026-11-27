@@ -8,7 +8,7 @@
   "broker_hhi_blocks_core_three_leg_or_mother": false,
   "broker_hhi_capital_authority_created": false,
   "broker_hhi_date": "2026-11-27",
-  "broker_hhi_last_result": "PROMOTED_SAME_ORIGINAL_VESSEL_RESEARCH_AUXILIARY",
+  "broker_hhi_last_result": "ALREADY_COMPLETE_IMMUTABLE",
   "broker_hhi_model_authority_created": false,
   "broker_hhi_receipt": "receipts/broker_hhi.json",
   "broker_hhi_rows": 2338,
@@ -18,7 +18,7 @@
   "broker_hhi_trading_authority_created": false,
   "broker_order_execution": false,
   "data_vessel_governance": "ALL_NEW_DATA_ATTACH_TO_EXISTING_GOVERNED_HENGCE_VESSEL_NO_PARALLEL_COLLECTOR",
-  "downstream_ready": false,
+  "downstream_ready": true,
   "error_legs": [],
   "formal_complete_day": true,
   "institutional_date": "2026-11-27",
@@ -29,19 +29,19 @@
   "last_run_results": [
     {
       "leg": "price",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1092,
       "sha256": "74d0db81a7d1e0b754f80cf0d2d91799ca06cf88aa271df4e4593f93ed890fab"
     },
     {
       "leg": "institutional",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1086,
       "sha256": "2a810e82852bc5139bcc06ba693cf14eb0d5dc08e90c67a47fed238055ca38a2"
     },
     {
       "leg": "margin",
-      "result": "PROMOTED",
+      "result": "ALREADY_COMPLETE",
       "rows": 1063,
       "sha256": "6933bae24470dddfa3931b97d4d4b0c1cfcbd00a912c9f64c619f028a01c49c7"
     }
@@ -51,18 +51,16 @@
   "margin_sha256": "6933bae24470dddfa3931b97d4d4b0c1cfcbd00a912c9f64c619f028a01c49c7",
   "margin_source": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN",
   "margin_status": "COMPLETE",
-  "market_state_finmind_context_path": "market_state_finmind_context.json",
-  "market_state_finmind_context_sha256": "89c4ea9dd46af6f917949659ca396a11e90af0587c49ab444458e6a25e170fc9",
-  "market_state_finmind_context_status": "ATTACHED_RESEARCH_SHADOW",
+  "market_state_finmind_context_status": "NOT_ATTACHED_CURRENT_RUN",
   "market_state_finmind_finmind_latest_lag_seconds": 30863.598,
   "market_state_finmind_market_scope_definition": "TWSE_CURRENT_LISTED_ORDINARY_EQUITIES_ONLY_EXCLUDES_TPEX_AND_EMERGING",
   "market_state_finmind_primary_scope": "twse_all_listed_equities",
   "market_state_finmind_shadow_blocks_core_three_leg_or_mother": false,
   "market_state_finmind_shadow_formal_classifier_mutated": false,
   "market_state_finmind_shadow_model_authority_created": false,
-  "market_state_finmind_shadow_observed_at_taipei": "2026-11-27T23:35:22.597810+08:00",
+  "market_state_finmind_shadow_observed_at_taipei": "2026-11-28T07:18:55.164081+08:00",
   "market_state_finmind_shadow_receipt": "receipts/market_state_finmind_shadow.json",
-  "market_state_finmind_shadow_status": "OBSERVED_CONTEXT_ATTACHED",
+  "market_state_finmind_shadow_status": "SKIP_NO_HISTORICAL_REALTIME_SNAPSHOT",
   "market_state_finmind_shadow_trading_authority_created": false,
   "market_state_finmind_twse_current_date_count": 1088,
   "market_state_finmind_twse_current_date_coverage_ratio": 1.0,
@@ -70,15 +68,18 @@
   "market_state_finmind_twse_snapshot_presence_ratio": 1.0,
   "market_state_finmind_twse_snapshot_present_count": 1088,
   "model_authority_created": false,
-  "mother_pending_legs": [
+  "mother_latest_date": "2026-11-27",
+  "mother_pending_legs": [],
+  "mother_promoted_legs": [
     "price",
     "institutional",
     "margin"
   ],
-  "mother_pending_reason": "AVAILABLE_LEGS_REQUIRE_CANONICAL_MOTHER_PROMOTION",
   "mother_promotion_required": true,
   "mother_promotion_route": "EXISTING_EOD_TO_CANONICAL_HISTORICAL_MOTHER_BRIDGE",
-  "mother_status": "PENDING",
+  "mother_receipt": "receipts/mother.json",
+  "mother_sha256": "744aa3cfb621b8eb719a7f0a0f8598c9a41f411d0f4960dac89634320bd6849f",
+  "mother_status": "COMPLETE",
   "parallel_eod_tree": false,
   "parallel_universe": false,
   "pending_legs": [],
@@ -93,5 +94,5 @@
   "system": "HENGCE",
   "target_date": "2026-11-27",
   "three_leg_complete": true,
-  "updated_at_taipei": "2026-11-27T23:35:22.357431+08:00"
+  "updated_at_taipei": "2026-11-28T07:18:54.873261+08:00"
 }
