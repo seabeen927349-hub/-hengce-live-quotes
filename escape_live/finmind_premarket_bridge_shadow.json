@@ -1,21 +1,21 @@
 {
-  "asof_taipei": "2026-11-26T13:09:13.404823+08:00",
+  "asof_taipei": "2026-11-27T10:40:04.519329+08:00",
   "escape_formal_state": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
   "finmind": {
-    "canonical_previous_twse_date": "2026-11-26",
-    "context_digest": "465d29c6a507ad339aaa0075d3e412447a4c043950b231dccd3b65034b9e8c0e",
-    "current_session_coverage": 0.99908088,
+    "canonical_previous_twse_date": "2026-11-27",
+    "context_digest": "fa634544fedf341e77b7492bb406318fd3f640666425065b2804487c0523c28a",
+    "current_session_coverage": 1.0,
     "data_role": "CURRENT_INTRADAY_OBSERVATION",
     "existing_transport": "taiwan_stock_tick_snapshot",
-    "generated_at_taipei": "2026-11-26T13:00:40.752795+08:00",
-    "latest_source_taipei": "2026-11-26T13:00:33.405277+08:00",
+    "generated_at_taipei": "2026-11-27T10:39:25.076821+08:00",
+    "latest_source_taipei": "2026-11-27T10:39:25+08:00",
     "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
-    "monitor_digest": "3cf0dd4281d1e1cd46df3020bbb0e40615bcae793d3a49bef4ad1fb597c0fafb",
-    "observed_count": 1087,
+    "monitor_digest": "4047194bf0872087591a14b2a2903b25c513e918c4a39a86c356da589aafbc0d",
+    "observed_count": 1088,
     "required_count": 1088,
-    "source_market_date": "2026-11-26",
-    "status_digest": "c9d2c60c953788b9f242bf4c9404195468343766ba2b1df9961d951d623c7f0d",
-    "unknown_count": 1
+    "source_market_date": "2026-11-27",
+    "status_digest": "48ea79da078d66a3c8ec1d3b1851017aed198157cea4200bd69849fd002d37cf",
+    "unknown_count": 0
   },
   "governance": {
     "canonical_eod_replaced": false,
@@ -29,13 +29,13 @@
   },
   "macro_regime": "UNVERIFIED_NO_FRESH_CANONICAL_PACKET",
   "observed_breadth": {
-    "advancer_share_directional": 0.90779468,
-    "advancers": 955,
-    "decliners": 97,
-    "equal_weight_change_rate_vendor_units": 2.80425023,
+    "advancer_share_directional": 0.5480167,
+    "advancers": 525,
+    "decliners": 433,
+    "equal_weight_change_rate_vendor_units": 0.18852022,
     "interpretation": "Historical session observations, NOT future fund flows or formal Escape metrics.",
-    "unchanged": 35,
-    "vendor_turnover_units": 632278461670.0
+    "unchanged": 130,
+    "vendor_turnover_units": 311153219620.0
   },
   "premarket_forecast": {
     "expected_gap_log_pct": null,
@@ -44,7 +44,7 @@
   },
   "schema": "HENGCE_FINMIND_PREMARKET_BRIDGE_V1",
   "status": "PASS_READ_ONLY_CONTEXT",
-  "target_tw_date": "2026-11-26",
+  "target_tw_date": "2026-11-27",
   "two_time_scale_display": {
     "decision_policy": {
       "formal_escape_effect": "NONE",
@@ -71,7 +71,7 @@
       "title": "長期資金環境"
     },
     "schema": "HENGCE_TWO_TIME_SCALE_ENVIRONMENT_DISPLAY_V1",
-    "target_tw_date": "2026-11-26",
+    "target_tw_date": "2026-11-27",
     "today_market_environment": {
       "allowed_labels": [
         "強烈偏多",
