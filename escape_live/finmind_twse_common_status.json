@@ -2,7 +2,7 @@
   "active_covered_count": 1088,
   "active_required_count": 1088,
   "active_universe_transport_full_coverage": true,
-  "context_payload_sha256": "ce470105c496a5af2f43d1375d3ea6a3ad41311e027a8224fccea5ae03f1fc77",
+  "context_payload_sha256": "1c3abca6ad249ff9f5d9806c7088018fae833181f1adc107a288207a7169a2ac",
   "current_market_date_count": 1088,
   "current_market_date_observed": true,
   "current_market_date_ratio": 1.0,
@@ -18,14 +18,14 @@
   "formal_eod_authority": false,
   "formal_escape_authority": false,
   "formal_metric_authority": false,
-  "generated_at_taipei": "2026-11-27T10:39:25.076821+08:00",
+  "generated_at_taipei": "2026-11-27T11:39:20.014147+08:00",
   "healthy_transport": true,
   "inmemory_cross_source_audit": {
     "active_scope_count": 1088,
-    "comparison_completed_at_taipei": "2026-11-27T10:39:28.720824+08:00",
+    "comparison_completed_at_taipei": "2026-11-27T11:39:23.848598+08:00",
     "cross_source_candidate_count": 0,
     "finmind_current_day_count": 1088,
-    "finmind_response_received_at_taipei": "2026-11-27T10:39:26.294800+08:00",
+    "finmind_response_received_at_taipei": "2026-11-27T11:39:21.298023+08:00",
     "formal_eod_authority": false,
     "fully_independently_verified_count": 0,
     "mis_existing_scope_count": 0,
@@ -34,8 +34,8 @@
     "per_security_rows_persisted": false,
     "raw_vendor_rows_persisted": false,
     "reason_counts": {
-      "FINMIND_STALE_TRADE_TIME": 664,
-      "SECOND_SOURCE_NOT_COLLECTED": 424
+      "FINMIND_STALE_TRADE_TIME": 707,
+      "SECOND_SOURCE_NOT_COLLECTED": 381
     },
     "role": "RESEARCH_INTRADAY_DIAGNOSTIC_ONLY",
     "schema": "HENGCE_FINMIND_IN_MEMORY_SAME_TICK_AUDIT_V1",
@@ -45,7 +45,7 @@
     "trading_authority": false
   },
   "intraday_metric_role": "PROVISIONAL_PRICE_LIQUIDITY_CONTEXT_ONLY",
-  "latest_source_timestamp": "2026-11-27 10:39:25.000000",
+  "latest_source_timestamp": "2026-11-27 11:39:20.000000",
   "metric_contract_sha256": "1d93c171b0b06d49eef19e0bf63e3b086fc366052d6bbc45516928c672f47281",
   "metric_unknown_count": 0,
   "metric_unknown_sample": [],
