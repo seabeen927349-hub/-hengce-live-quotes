@@ -1,4 +1,5 @@
 name: HENGCE original EOD ingest
+# 2026-11-27 manual original three-leg EOD ingest and canonical mother refresh; existing workflow logic unchanged.
 # 2026-11-26 manual original three-leg EOD ingest and canonical mother refresh; existing workflow logic unchanged.
 # 2026-11-25 evening margin publication retry; existing workflow logic unchanged.
 # Manual existing-vessel EOD refresh requested 2026-11-05; no workflow logic change.
