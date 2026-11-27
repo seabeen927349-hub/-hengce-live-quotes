@@ -8832,10 +8832,10 @@
       "status": "NOT_PROVIDED"
     },
     "finmind_shadow": {
-      "latest_source_timestamp": "2026-11-26 13:00:33.405277",
+      "latest_source_timestamp": "2026-11-27 10:39:25.000000",
       "original_recorded_state": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY",
       "role": "INTRADAY_PRICE_LIQUIDITY_SHADOW_ONLY",
-      "status": "STALE_FINMIND_SHADOW"
+      "status": "SHADOW_CONTEXT_READY_NO_FORMAL_AUTHORITY"
     },
     "fugle_whole_market_batch": {
       "last_attempt_date": "2026-11-03",
@@ -8843,24 +8843,24 @@
       "status": "HISTORICAL_403"
     },
     "full_market_intraday_monitor": {
-      "active_required_count": null,
+      "active_required_count": 1088,
       "authority": "DESCRIPTIVE_PRICE_LIQUIDITY_ONLY_NO_FORMAL_ESCAPE_OR_EOD",
       "note": "GitHub紀錄中的全股盤中監控使用FinMind；資料可能是歷史觀測，不能視為查詢當下即時行情",
-      "observed_market_date": "2026-11-26",
+      "observed_market_date": "2026-11-27",
       "primary_source": "FinMind taiwan_stock_tick_snapshot",
-      "status": "STALE_PRIOR_SESSION_MONITOR",
-      "transport_full_coverage": null,
-      "unknown_metric_count": null,
-      "valid_metric_count": null
+      "status": "OBSERVED_SAME_SESSION_SHADOW",
+      "transport_full_coverage": true,
+      "unknown_metric_count": 0,
+      "valid_metric_count": 1088
     },
     "overseas": {
       "anytime_individual_sources": {
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-26",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-27T07:59:38.529895+08:00",
+        "observed_at_taipei": "2026-11-27T08:08:27.477901+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "b7d5cceaad9aa05d801adc56129240b2bf7ed9b11803810c62032e73665194f8",
+        "source_observation_sha256": "f96d690a4b3d2e492245dde5d79b1f0fae97fc098463bddbd52c0d313d2216b8",
         "sox": {
           "change_pct": -0.6526,
           "latest_close": 8774.8618628384,
@@ -8882,9 +8882,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-26",
         "observation_window": "ANYTIME_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-27T07:59:38.529895+08:00",
+        "observed_at_taipei": "2026-11-27T08:08:27.477901+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "b7d5cceaad9aa05d801adc56129240b2bf7ed9b11803810c62032e73665194f8",
+        "source_observation_sha256": "f96d690a4b3d2e492245dde5d79b1f0fae97fc098463bddbd52c0d313d2216b8",
         "sox": {
           "change_pct": -0.6526,
           "latest_close": 8774.8618628384,
@@ -8905,9 +8905,9 @@
         "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
         "expected_us_session": "2026-11-26",
         "observation_window": "PREOPEN_SOURCE_ONLY",
-        "observed_at_taipei": "2026-11-27T07:59:35.007868+08:00",
+        "observed_at_taipei": "2026-11-27T08:08:24.763429+08:00",
         "preopen_forecast_authority": false,
-        "source_observation_sha256": "8f3d12aab76c691388624b1541bb95e1b6d8540d036c3ebefcf6295380a7533d",
+        "source_observation_sha256": "44a5a63991e579006650d2ba1b8ebea85452ac22d822a8666bcc28ac10494f58",
         "sox": {
           "change_pct": -0.6526,
           "latest_close": 8774.8618628384,
