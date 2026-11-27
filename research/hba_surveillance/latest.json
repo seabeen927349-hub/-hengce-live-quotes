@@ -6973,9 +6973,9 @@
       "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
       "expected_us_session": "2026-11-27",
       "observation_window": "ANYTIME_SOURCE_ONLY",
-      "observed_at_taipei": "2026-11-28T07:20:05.370702+08:00",
+      "observed_at_taipei": "2026-11-28T07:40:14.739874+08:00",
       "preopen_forecast_authority": false,
-      "source_observation_sha256": "0465ac75bd9da0c3be7e851b955c71d2edf02ff91a04e1f99bfa6daa6c00f927",
+      "source_observation_sha256": "28c195c15acbffa8d9325e264bbb26ecd6510fc46be36bb62ee440a174330acd",
       "sox": {
         "change_pct": 4.6935,
         "latest_close": 9186.70589758349,
@@ -6995,9 +6995,9 @@
       "data_role": "OFFICIAL_INDEX_EOD_OBSERVATION_NO_TRADING_OR_FORECAST_AUTHORITY",
       "expected_us_session": "2026-11-27",
       "observation_window": "ANYTIME_SOURCE_ONLY",
-      "observed_at_taipei": "2026-11-28T07:20:05.370702+08:00",
+      "observed_at_taipei": "2026-11-28T07:40:14.739874+08:00",
       "preopen_forecast_authority": false,
-      "source_observation_sha256": "0465ac75bd9da0c3be7e851b955c71d2edf02ff91a04e1f99bfa6daa6c00f927",
+      "source_observation_sha256": "28c195c15acbffa8d9325e264bbb26ecd6510fc46be36bb62ee440a174330acd",
       "sox": {
         "change_pct": 4.6935,
         "latest_close": 9186.70589758349,
